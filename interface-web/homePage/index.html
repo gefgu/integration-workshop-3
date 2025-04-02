@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Melody</title>
+  <link rel="stylesheet" href="/static/common-style/common.css" />
+  <link rel="stylesheet" href="/static/homePage/index.css" />
+</head>
+
+<body>
+  <div class="screen">
+    <h1 class="title">Melody</h1>
+
+    <div class="accessibility-switch">
+      <span class="acc-label">Acessibilidade</span>
+
+      <label class="switch">
+        <input type="checkbox" id="accessibilityToggle">
+        <span class="slider round"></span>
+      </label>
+    </div>
+
+    <div class="menu-container">
+      <button class="menu-button" onclick="navigateTo('creation')">Modo de Criação</button>
+      <button class="menu-button" onclick="navigateTo('hear')">Escute a Nota</button>
+      <button class="menu-button" onclick="navigateTo('identify')">Identifique a Nota</button>
+    </div>
+    
+    <button class="help-button" onclick="showTutorial()">?</button>
+    
+    <div class="tutorial-overlay" id="tutorialOverlay">
+      <div class="tutorial-container">
+        <h2 class="tutorial-title">Melody</h2>
+        <p class="tutorial-text">
+          <strong>Modo de Criação:</strong> Crie músicas onde a imaginação da criança a levar<br><br>
+          <strong>Escute a Nota:</strong> Assimile a nota ouvida com sua representação na partitura. No final, escute a melodia.<br><br>
+          <strong>Identifique a Nota:</strong> Assimile a nota escrita com sua representação na partitura. No final, escute a melodia.
+        </p>
+        <button class="tutorial-close" onclick="hideTutorial()">Entendi!</button>
+      </div>
+    </div>
+    
+  </div>
+
+  
+  <script>window.__PAGE_NAME__ = "home";</script>
+  <script src="/static/common-style/bridge.js" defer></script>
+  <script src="/static/homePage/index.js"></script>
+</body>
+</html>

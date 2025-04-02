@@ -1,0 +1,5 @@
+.melodyenv
+__pycache__
+color_analysis_output
+*.png
+*.jpg
