@@ -51,13 +51,6 @@
 
 **Goal:** The child must locate the unconnected point on their own and close the circuit.
 
-**Target Schematic:**
-
-```
-Bateria 9V (+) → nó 1 → Jumper → nó 2 → LED ânodo (+)
-LED cátodo (−) → nó 3 → [FALTA CONECTAR] → nó 4 → Bateria 9V (−)
-```
-
 **Success criteria:** Same as the guided version—LED lit and “circuit closed ✓”—without being told which jumper is missing, unless they make the same mistake twice in a row.
 
 ---
