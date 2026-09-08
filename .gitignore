@@ -1,4 +1,5 @@
-.melodyenv
+.env
+.env.*
+!.env.example
 __pycache__
 color_analysis_output
-
