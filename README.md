@@ -13,7 +13,7 @@ This repository contains all the development of project TedThunder for the cours
 ## Members
 
 - Gabriel Martines
-- Gustavo Henrique Bruno dos Santos
+- Gustavo Henrique Bruno dos Santos (Project Manager)
 - João Vitor Bezerra
 - Julia Mariano
 - Tainara Novaes
