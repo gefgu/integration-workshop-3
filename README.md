@@ -7,6 +7,7 @@ This repository is the starting point for the project source code, documentation
 ## Documentation
 
 - [Documentation index](docs/README.md)
+- [Requirements](docs/REQUIREMENTS.md)
 
 ## Team
 
