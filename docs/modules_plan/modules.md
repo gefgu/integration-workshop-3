@@ -81,6 +81,33 @@
 
 ---
 
+# Bonus Module — Resistor Color Code
+
+### Guided Version
+
+**Objective:** learn how to identify the value of a resistor using its colored bands.
+
+**Components:** 3 resistors with different values (e.g., 220 Ω, 470 Ω, and 1 kΩ).
+
+**Activity:**
+
+- The AI presents the colors and their corresponding numbers.
+- The child learns how to read the resistor bands in the correct sequence.
+- Identifies the value of different resistors.
+- Uses the identified resistor in a circuit.
+
+**Success criterion:** correctly identify the value of 3 resistors using the color code.
+
+### Challenge Version
+
+**Initial state:** three different resistors are available on the tray, without their values being provided.
+
+**Goal:** the AI requests a specific value (e.g., 470 Ω), and the child must identify which resistor has that value using only its color bands.
+
+**Success criterion:** correctly select the requested resistor and use it in the circuit.
+
+---
+
 # Module 04 — Direction of Current (LED)
 
 ### Guided Version
