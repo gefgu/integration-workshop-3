@@ -1,16 +1,14 @@
-# TedThunder - Team #6
+# TedThunder
 
-This repository contains all the development of project TedThunder for the course of Integration Workshop 3 in UTFPR-CT.
+TedThunder is the team project for Integration Workshop 3 at UTFPR-CT.
 
-## Links 🔗
+This repository is the starting point for the project source code, documentation, and supporting materials. Project-specific requirements, architecture, setup instructions, and delivery notes will be added as the project takes shape.
 
-- [Project Overview](Melody.md) 🎵
-- [Blog](Blog.md) :pencil2:
-- [Schedule](https://docs.google.com/spreadsheets/d/16BKpbmt_EArwLnEZPB5oZgRN8s5iP5gV15BQ9Iq-7wM/edit?usp=sharing) :calendar:
-- [Requirements](https://docs.google.com/spreadsheets/d/1uYC0gMrYfBv8li1KcnDvk5HJS1G1zU4XR2CenMT3GNY/edit?usp=sharing) ✔️
-- [Risk Response Plans](https://docs.google.com/document/d/1Hm508SiW-laHHYEpOHIg4PhOxUlGecafFV3NObWFzSE/edit?usp=sharing)
+## Documentation
 
-## Members
+- [Documentation index](docs/README.md)
+
+## Team
 
 - Gabriel Martines
 - Gustavo Henrique Bruno dos Santos (Project Manager)
