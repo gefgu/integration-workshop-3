@@ -189,28 +189,3 @@ Requirement IDs are grouped by area:
 | AR-12 | The system will not sense button state or potentiometer position at all, powered or unpowered. Only camera-visible attributes are known to it. | Not started |
 | AR-13 | The color-code capsule will not reach values outside the eight defined by its discs. | Not started |
 | AR-14 | The discs will not use the full ten-color resistor code, only the five colors listed in FR-VIS-09. | Not started |
-
----
-
-## Traceability
-
-Mapping from the IDs used in the first exported requirements table to the current ones.
-
-| Previous ID | Current ID | Note |
-| --- | --- | --- |
-| FR-01 | FR-CLOUD-03 | Authoring and sharing moved to the companion mobile web app area |
-| FR-02 | FR-GRAPH-01 | |
-| FR-03 | FR-GRAPH-02 | |
-| FR-04 | FR-GRAPH-04 | |
-| FR-05 | FR-GRAPH-03 | |
-| FR-06 | FR-GRAPH-05 | Narrowed to camera-visible attributes; student actions are never sensed, see FR-PWR-06 and FR-GRAPH-14 |
-| FR-07 | FR-GRAPH-06 | |
-| FR-08 | FR-GRAPH-07 | |
-| FR-09 | FR-TUT-01 | |
-| FR-10 | FR-TUT-02 | |
-| FR-11 | FR-GRAPH-08 | |
-| FR-12 | FR-GRAPH-09 | |
-| FR-13 | FR-CNT-03 | |
-| FR-14 | FR-HW-01 | Amended: the attribute-reading clause was dropped, attributes are not sensed |
-| NFR-01 | NFR-PERF-01 | |
-| AR-01 … AR-08 | unchanged | AR-04 amended from 5 V to 9 V to match the modules |
