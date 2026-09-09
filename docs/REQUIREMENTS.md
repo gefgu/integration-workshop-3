@@ -49,7 +49,7 @@ Requirement IDs are grouped by area:
 | FR-GRAPH-02 | The graph shall distinguish electrical nodes, component terminals, internal component edges, and contact edges. | Must | Not started |
 | FR-GRAPH-03 | Each step shall introduce exactly one type of change: node placement, edge placement, or attribute change. | Must | Not started |
 | FR-GRAPH-04 | A step shall be approved when the assembled graph contains the target graph by subgraph isomorphism. | Must | Not started |
-| FR-GRAPH-05 | Component attributes (button state, resistor value, potentiometer position) shall be part of the graph and shall be targetable by a step. | Must | Not started |
+| FR-GRAPH-05 | Component attributes visible to the camera (resistor value, capacitor value, the value dialed on the color-code capsule) shall be part of the graph and shall be targetable by a step. | Must | Not started |
 | FR-GRAPH-06 | Each step shall declare its expected electrical diagnosis, allowing intermediate steps in which the circuit already operates. | Must | Not started |
 | FR-GRAPH-07 | On every board change, the system shall compute the difference between the assembled graph and the current step's target graph. | Must | Not started |
 | FR-GRAPH-08 | Elements present on the board but absent from the target graph shall be tolerated unless they change the electrical diagnosis. | Must | Not started |
@@ -58,6 +58,7 @@ Requirement IDs are grouped by area:
 | FR-GRAPH-11 | Sockets sharing a column within the same bank shall form one electrical node. | Must | Not started |
 | FR-GRAPH-12 | A jumper capsule shall contribute a single internal edge between the two sockets it spans, in length 2 or length 3. | Must | Not started |
 | FR-GRAPH-13 | The value dialed on the color-code capsule shall be carried as the resistance attribute of its internal edge, derived from the three disc colors. | Should | Not started |
+| FR-GRAPH-14 | Actions performed on an energized circuit (button pressed, potentiometer turned) shall not be represented as graph state. A step targeting one shall be approved by the student's answer to a confirmation question presented when the interaction window ends, not by graph comparison. | Must | Not started |
 
 ### Power, energization and safety
 
@@ -67,13 +68,16 @@ Requirement IDs are grouped by area:
 | FR-PWR-02 | Before energizing, the system shall classify the assembled circuit as safe or hazardous. | Must | Not started |
 | FR-PWR-03 | For a circuit classified as safe, the switch matrix shall close the traces of the detected path so that real current flows through the real components inside the capsules. | Must | Not started |
 | FR-PWR-04 | For a circuit classified as hazardous, the switch matrix shall remain open and the consequence shall be presented on screen as a simulation. | Must | Not started |
-| FR-PWR-05 | The system shall recognize at least these hazard classes: short circuit between rails, current not limited through a load, and reversed or unseated capsule in a powered path. | Must | Not started |
-| FR-PWR-06 | While the circuit is energized, the system shall observe live attribute state (button pressed, potentiometer position) by measuring the live circuit. | Must | Not started |
-| FR-PWR-07 | The system shall cut power automatically when a fault is detected during energization, or when a capsule is added to or removed from the board. | Must | Not started |
+| FR-PWR-05 | The system shall recognize at least these hazard classes: a path connecting the battery capsule's two terminals with no load, current not limited through a load, and reversed or unseated capsule in a powered path. | Must | Not started |
+| FR-PWR-06 | An attribute action performed by the student on an energized circuit (pressing the button, turning the potentiometer) shall take effect physically in the real circuit. The system shall not sense it. | Must | Not started |
+| FR-PWR-07 | The system shall cut power automatically when a scan cycle detects that the board changed while energized — a capsule added, removed or moved. | Must | Not started |
 | FR-PWR-08 | The circuit shall be de-energized when the student leaves the current step or presses Energizar a second time. | Should | Not started |
 | FR-PWR-09 | The board's status LED shall indicate that the bench is powered, independently of the student's circuit. | Must | Not started |
 | FR-PWR-10 | When an energized path contains the color-code capsule, the switch matrix shall bypass the capsule and route through the internal resistor bank value matching the dialed value. | Should | Not started |
 | FR-PWR-11 | The substitution performed for the color-code capsule shall not be disclosed to the student in any interface state. | Should | Not started |
+| FR-PWR-12 | A step targeting an attribute shall open an interaction window while the circuit is energized, during which the student performs the action. The window shall last as long as the step's animation or narration. | Must | Not started |
+| FR-PWR-13 | The supply shall be current-limited passively by a resettable fuse and a fixed series resistor, sized so that a short circuit cannot damage any component. The limiter shall be always active and shall require no detection. | Must | Not started |
+| FR-PWR-14 | The series resistance of FR-PWR-13 shall be subtracted from the values computed for display, so the student sees the circuit they built. | Should | Not started |
 
 ### Local interface
 
@@ -84,7 +88,7 @@ Requirement IDs are grouped by area:
 | FR-UI-03 | Energizar shall be a dedicated physical button, distinct from the four interface buttons and the joystick. | Must | Not started |
 | FR-UI-04 | The guided curriculum shall be fully usable with no network connection. | Must | Not started |
 | FR-UI-05 | The bench shall give audio feedback through its speaker for step approval, faults and hints. | Should | Not started |
-| FR-UI-06 | While energized, the interface shall display the current and voltage of the student's circuit. | Should | Not started |
+| FR-UI-06 | While energized, the interface shall display the current and voltage of the student's circuit, computed from the known topology and component values rather than measured. | Should | Not started |
 | FR-UI-07 | A mascot shall react on screen to approvals and to hazard events. | Could | Not started |
 
 ### Tutor and scaffolding
@@ -115,8 +119,8 @@ Requirement IDs are grouped by area:
 | ID | Requirement | Priority | Status |
 | --- | --- | --- | --- |
 | FR-MET-01 | The bench shall provide two integrated probes and shall detect which socket each probe is inserted into. | Should | Not started |
-| FR-MET-02 | The interface shall display the reading for the point measured by the probes. | Should | Not started |
-| FR-MET-03 | Probe measurement shall be available in the modules that teach it (03 and 09). | Could | Not started |
+| FR-MET-02 | The interface shall display the value for the point the probes touch, computed from the known circuit rather than measured. | Should | Not started |
+| FR-MET-03 | Probe readings shall be available in the modules that teach measurement (03 and 09). | Could | Not started |
 
 ### Web app and sync
 
@@ -132,12 +136,12 @@ Requirement IDs are grouped by area:
 
 | ID | Requirement | Priority | Status |
 | --- | --- | --- | --- |
-| FR-HW-01 | Topology scanning shall produce a complete graph on every cycle, with no state carried between cycles; attribute state shall likewise be re-read on every cycle while the circuit is energized. | Must | Not started |
-| FR-HW-02 | The connection table shall provide an 11 × 6 socket grid within 18 × 16 cm, as two banks of three rows separated by a center channel, plus two power rails. | Must | Not started |
+| FR-HW-01 | Topology scanning shall produce a complete graph on every cycle, with no state carried between cycles. | Must | Not started |
+| FR-HW-02 | The connection table shall provide an 11 × 6 socket grid within 18 × 16 cm, as two banks of three rows separated by a center channel. There are no power rails; the battery capsule sits on the grid like any other component. | Must | Not started |
 | FR-HW-03 | The camera shall be mounted on a fixed boom approximately 30 cm above the table, covering the whole grid. | Must | Not started |
 | FR-HW-04 | Vision, graph matching, tutor and interface shall run on a Raspberry Pi 3 B. | Must | Not started |
 | FR-HW-05 | Every component shall be enclosed in a capsule holding the real component; jumpers shall exist in length 2 and length 3 only. | Must | Not started |
-| FR-HW-06 | The switch matrix shall route the 9 V supply between the rails and the detected circuit path. | Must | Not started |
+| FR-HW-06 | The switch matrix shall route the 9 V supply between the nodes occupied by the battery capsule and the detected circuit path. | Must | Not started |
 | FR-HW-07 | The color-code capsule shall contain no resistor; internally it shall be a pass-through between its two terminals. | Should | Not started |
 | FR-HW-08 | The bench shall hold an internal resistor bank with the eight values reachable by the discs: 100 Ω, 170 Ω, 400 Ω, 470 Ω, 1 kΩ, 1.7 kΩ, 4 kΩ and 4.7 kΩ. | Should | Not started |
 | FR-HW-09 | Each disc of the color-code capsule shall have four detents with alternating colors, so that every quarter turn changes the digit. | Should | Not started |
@@ -152,7 +156,7 @@ Requirement IDs are grouped by area:
 | NFR-PERF-02 | A full scan cycle, from camera frame to assembled graph, shall complete within 1 s on the Raspberry Pi 3 B. | Must | Not started |
 | NFR-PERF-03 | Pressing Energizar shall produce either an energized circuit or a refusal within 500 ms. | Must | Not started |
 | NFR-PERF-04 | A hint shall be displayed within 1 s of the graph difference being computed. | Should | Not started |
-| NFR-SAFE-01 | A fault detected during energization shall cut power within 100 ms. | Must | Not started |
+| NFR-SAFE-01 | The passive limiter of FR-PWR-13 shall bound fault current continuously, with no reaction time. A board change detected by the scan shall cut power within one scan cycle. | Must | Not started |
 | NFR-SAFE-02 | No part accessible to the student shall carry more than 9 V, and no mains voltage shall be present in the enclosure. | Must | Not started |
 | NFR-REL-01 | Capsule identification shall be correct in at least 98% of scans under the bench's controlled lighting. | Must | Not started |
 | NFR-REL-02 | The bench shall boot to a usable module screen within 60 s. | Should | Not started |
@@ -179,7 +183,7 @@ Requirement IDs are grouped by area:
 | AR-09 | This delivery will not include a teacher dashboard. | Not started |
 | AR-10 | The system will never energize a path it has classified as hazardous. | Not started |
 | AR-11 | The system will not identify a component without a readable marker; nothing is inferred from shape alone. | Not started |
-| AR-12 | The system will not attempt to read live attribute state (button pressed, potentiometer position) while the circuit is unpowered. This does not cover the color-code discs, which are read by vision. | Not started |
+| AR-12 | The system will not sense button state or potentiometer position at all, powered or unpowered. Only camera-visible attributes are known to it. | Not started |
 | AR-13 | The color-code capsule will not reach values outside the eight defined by its discs. | Not started |
 | AR-14 | The discs will not use the full ten-color resistor code, only the five colors listed in FR-VIS-09. | Not started |
 
@@ -196,7 +200,7 @@ Mapping from the IDs used in the first exported requirements table to the curren
 | FR-03 | FR-GRAPH-02 | |
 | FR-04 | FR-GRAPH-04 | |
 | FR-05 | FR-GRAPH-03 | |
-| FR-06 | FR-GRAPH-05 | Live state is now observed only while energized, see FR-PWR-06 |
+| FR-06 | FR-GRAPH-05 | Narrowed to camera-visible attributes; student actions are never sensed, see FR-PWR-06 and FR-GRAPH-14 |
 | FR-07 | FR-GRAPH-06 | |
 | FR-08 | FR-GRAPH-07 | |
 | FR-09 | FR-TUT-01 | |
@@ -204,6 +208,6 @@ Mapping from the IDs used in the first exported requirements table to the curren
 | FR-11 | FR-GRAPH-08 | |
 | FR-12 | FR-GRAPH-09 | |
 | FR-13 | FR-CNT-03 | |
-| FR-14 | FR-HW-01 | Amended: attribute re-reading applies to the energized state |
+| FR-14 | FR-HW-01 | Amended: the attribute-reading clause was dropped, attributes are not sensed |
 | NFR-01 | NFR-PERF-01 | |
 | AR-01 … AR-08 | unchanged | AR-04 amended from 5 V to 9 V to match the modules |
