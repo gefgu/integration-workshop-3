@@ -8,12 +8,12 @@
 
 **Minimum success criterion:** the battery capsule correctly placed on the matrix, confirmed by the status LED built into the board itself (this is not a component assembled by the child).
 
-**Components:** 1 9V battery capsule.
+**Components:** 1 battery capsule.
 
 **Schematic (final state):**
 
 ```
-9V battery capsule seated on the matrix,
+battery capsule seated on the matrix,
 its (+) and (−) terminals in two different column strips
 ```
 
@@ -37,7 +37,7 @@ its (+) and (−) terminals in two different column strips
 
 **Minimum Success Objective:** LED lit by a simple closed circuit, without a resistor yet (a teaching simplification for this module—the resistor is introduced in Module 03).
 
-**Components:** 1 9V battery, 1 LED, 2 jumpers.
+**Components:** 1 battery capsule, 1 LED, 2 jumpers.
 
 **Schematic (final state):**
 
@@ -61,7 +61,7 @@ its (+) and (−) terminals in two different column strips
 
 **Minimum Success Objective: to** understand that the resistor protects the LED by observing the resulting current value in mA.
 
-**Components:** 1 9V battery, 1 resistor (suggested value: 470 Ω), 1 LED, 2 jumpers.
+**Components:** 1 battery capsule, 1 resistor (suggested value: 470 Ω), 1 LED, 2 jumpers.
 
 **Schematic (final state):**
 
@@ -94,8 +94,8 @@ matching resistor from its internal bank.
 
 | Disc | Meaning | Quadrant colors | Digits reachable |
 | --- | --- | --- | --- |
-| 1st | First digit | brown, yellow, brown, yellow | 1, 4 |
-| 2nd | Second digit | black, violet, black, violet | 0, 7 |
+| 1st | First digit | red, yellow, red, yellow | 2, 4 |
+| 2nd | Second digit | red, violet, red, violet | 2, 7 |
 | 3rd | Multiplier | brown, red, brown, red | ×10, ×100 |
 
 Colors alternate around each disc, so every quarter turn changes the digit. The eight reachable
@@ -103,10 +103,13 @@ values are:
 
 | 1st digit | 2nd digit | Number | ×10 (brown) | ×100 (red) |
 | --- | --- | --- | --- | --- |
-| brown (1) | black (0) | 10 | **100 Ω** | **1 kΩ** |
-| brown (1) | violet (7) | 17 | 170 Ω | 1.7 kΩ |
-| yellow (4) | black (0) | 40 | 400 Ω | 4 kΩ |
+| red (2) | red (2) | 22 | **220 Ω** | **2.2 kΩ** |
+| red (2) | violet (7) | 27 | 270 Ω | 2.7 kΩ |
+| yellow (4) | red (2) | 42 | 420 Ω | 4.2 kΩ |
 | yellow (4) | violet (7) | 47 | **470 Ω** | **4.7 kΩ** |
+
+Every value is at or above 220 Ω, which keeps each branch under the 15 mA ceiling the routing
+hardware imposes.
 
 > **Behind the scenes:** the bench holds these eight resistors internally and switches to the one
 > the child dialed. The child is never told about the substitution — as far as the activity is
@@ -116,7 +119,7 @@ values are:
 
 **Objective:** learn how to identify the value of a resistor using its colored bands.
 
-**Components:** 1 9V battery, 1 color-code resistor capsule, 1 LED, jumpers.
+**Components:** 1 battery capsule, 1 color-code resistor capsule, 1 LED, jumpers.
 
 **Activity:**
 
@@ -146,7 +149,7 @@ color reference on screen.
 
 **Minimum success objective:** to realize that the LED only lights up when connected in one direction.
 
-**Components:** 1 9V battery, 1 470 Ω resistor, 1 LED, 2 jumpers.
+**Components:** 1 battery capsule, 1 470 Ω resistor, 1 LED, 2 jumpers.
 
 **Correct schematic (final state):**
 
@@ -172,7 +175,7 @@ color reference on screen.
 
 **Minimum success objective: to** understand that the pushbutton closes the circuit only while it is pressed.
 
-**Components:** 1 9V battery, 1 470 Ω resistor, 1 LED, 1 pushbutton, jumpers.
+**Components:** 1 battery capsule, 1 470 Ω resistor, 1 LED, 1 pushbutton, jumpers.
 
 **Schematic (final state):**
 
@@ -199,7 +202,7 @@ color reference on screen.
 
 **Minimum success objective:** observe the LED’s brightness varying continuously as the potentiometer is turned.
 
-**Components:** 1 9V battery, 1 potentiometer, 1 LED, jumpers.
+**Components:** 1 battery capsule, 1 potentiometer, 1 LED, jumpers.
 
 **Schematic (final state):**
 
@@ -225,7 +228,7 @@ color reference on screen.
 
 **Minimum success objective:** observe that the LED does not turn off instantly when the power source is turned off, due to the energy stored in the capacitor.
 
-**Components:** 1 9V battery, 1 470 Ω resistor, 1 LED, 1 capacitor, jumpers.
+**Components:** 1 battery capsule, 1 470 Ω resistor, 1 LED, 1 capacitor, jumpers.
 
 **Schematic (final state):**
 
@@ -251,7 +254,7 @@ color reference on screen.
 
 **Minimum success objective:** to relate the variation in the resistor’s value to the change in the sound’s pitch or intensity.
 
-**Components:** 1 9V battery, 1 resistor (variable value), 1 buzzer, jumpers.
+**Components:** 1 battery capsule, 1 resistor (variable value), 1 buzzer, jumpers.
 
 **Schematic (final state):**
 
@@ -314,7 +317,7 @@ The instructor presents a pre-assembled circuit board with **two simultaneous er
 
 > Block 1: “Now you’re going to build an alarm: when you press the button, the LED turns on AND the buzzer sounds at the same time. You already know how to set up each of these parts—the new challenge is putting them all together.”
 
-**Components:** 1 9V battery, 1 pushbutton, 2 resistors, 1 LED, 1 buzzer, jumpers.
+**Components:** 1 battery capsule, 1 pushbutton, 2 resistors, 1 LED, 1 buzzer, jumpers.
 
 **Schematic (final state):**
 
