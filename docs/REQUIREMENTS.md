@@ -55,7 +55,7 @@ Requirement IDs are grouped by area:
 | FR-GRAPH-08 | Elements present on the board but absent from the target graph shall be tolerated unless they change the electrical diagnosis. | Must | Not started |
 | FR-GRAPH-09 | After approving a step, the system shall re-evaluate subsequent steps in cascade, without requiring the student to redo what is already satisfied. | Must | Not started |
 | FR-GRAPH-10 | The assembled graph shall be derived from vision alone: capsule type and orientation from the marker, connectivity from socket occupancy and grid geometry. | Must | Not started |
-| FR-GRAPH-11 | Sockets sharing a column within the same bank shall form one electrical node; each power rail shall form one electrical node. | Must | Not started |
+| FR-GRAPH-11 | Sockets sharing a column within the same bank shall form one electrical node. | Must | Not started |
 | FR-GRAPH-12 | A jumper capsule shall contribute a single internal edge between the two sockets it spans, in length 2 or length 3. | Must | Not started |
 | FR-GRAPH-13 | The value dialed on the color-code capsule shall be carried as the resistance attribute of its internal edge, derived from the three disc colors. | Should | Not started |
 
