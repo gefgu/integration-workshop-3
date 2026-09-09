@@ -55,9 +55,9 @@ table, drops components into it, and presses a single large button to bring the 
 
 The connection matrix is a grid of **11 columns × 6 rows** of sockets, arranged as **two banks of
 3 rows** separated by a center channel — the same idea as a breadboard, scaled up so small hands
-can use it. Each bank strip is roughly 1 × 3 cm. Sockets in the same column and bank are
-electrically tied together. There are no power rails — the battery is a capsule that sits on the
-grid like any other component.
+can use it. Each bank strip is roughly 1 × 3 cm. All six sockets of a column are electrically tied
+together, across both banks — the center channel separates them by hand, not by wiring. There are
+no power rails; the battery is a capsule that sits on the grid like any other component.
 
 ### The components
 
@@ -168,14 +168,15 @@ The full specification of each module, with schematics and success criteria, liv
 
 We presume the system will have the following items:
 
-- Raspberry Pi 3 B
+- Raspberry Pi 3 B (supervisory system: vision, matching, tutor, interface)
 - USB camera, on a fixed boom ~30 cm above the table
 - 7″ display
 - Joystick
 - 4 interface buttons
 - Dedicated Energizar button
-- Switch-matrix board (routing and safety cut-off)
-- 9 V power source
+- Crosspoint switch-matrix board with its own embedded controller (routing, current sensing and
+  safety cut-off)
+- 5 V regulated supply for the student circuit
 - Controlled lighting for the table
 - Speaker
 - Status LED on the board itself
@@ -190,7 +191,7 @@ that need two of the same part:
 
 | Capsule | Qty | Notes |
 | --- | --- | --- |
-| Battery | 1 | 9 V source, placed on the grid like any other capsule |
+| Battery | 1 | Marks where the supply enters; the bench provides the actual 5 V |
 | LED | 2 | Polarized; reversible to demonstrate direction |
 | Resistor 220 Ω | 1 | Module 03 comparison |
 | Resistor 470 Ω | 2 | Default value across modules |
@@ -213,13 +214,14 @@ color code:
 
 | Disc | Meaning | Quadrant colors | Reachable |
 | --- | --- | --- | --- |
-| 1st | First digit | brown, yellow, brown, yellow | 1, 4 |
-| 2nd | Second digit | black, violet, black, violet | 0, 7 |
+| 1st | First digit | red, yellow, red, yellow | 2, 4 |
+| 2nd | Second digit | red, violet, red, violet | 2, 7 |
 | 3rd | Multiplier | brown, red, brown, red | ×10, ×100 |
 
 Colors alternate around each disc, so every quarter turn changes the digit, and the camera always
-has a high-contrast pair to tell apart. Eight values are reachable — 100 Ω, 170 Ω, 400 Ω, 470 Ω,
-1 kΩ, 1.7 kΩ, 4 kΩ and 4.7 kΩ — which includes the canonical 100 Ω, 470 Ω, 1 kΩ and 4.7 kΩ.
+has a high-contrast pair to tell apart. Eight values are reachable — 220 Ω, 270 Ω, 420 Ω, 470 Ω,
+2.2 kΩ, 2.7 kΩ, 4.2 kΩ and 4.7 kΩ — which includes the canonical 220 Ω, 470 Ω, 2.2 kΩ and 4.7 kΩ.
+The lowest is 220 Ω because the routing hardware holds each branch under 15 mA.
 
 When the student energizes a circuit containing this capsule, the switch matrix does not route
 through the capsule. It routes through the **internal resistor bank**: eight real resistors on the
@@ -231,7 +233,7 @@ bench, one per reachable value, and it closes the one the student dialed.
                             ▼
    switch matrix bypasses the capsule and closes:
 
-     ─── [100] [170] [400] [470] [1k] [1.7k] [4k] [4.7k] ───
+     ─── [220] [270] [420] [470] [2.2k] [2.7k] [4.2k] [4.7k] ───
                             ▲
                         selected
 ```
@@ -241,7 +243,7 @@ built, and the LED dims or brightens exactly as the color code says it should.
 
 ## Safety ⚡
 
-The bench runs on 9 V — safe to touch, and there is no mains voltage anywhere near the student.
+The bench runs on 5 V — safe to touch, and there is no mains voltage anywhere near the student.
 Beyond that, the rule is simple and absolute: **a circuit classified as hazardous is never
 energized.** Short circuits and over-current conditions are recognized before the switch matrix
 closes, the consequence is played out on screen instead of in the hardware, and the student is
