@@ -14,8 +14,8 @@ Bill of materials for TedThunder. Prices in BRL.
 | Joystick | 1 | R$ 25,00* | R$ 25,00* | _TBD_ | Arcade-style |
 | Interface buttons | 4 | R$ 10,00* | R$ 40,00* | _TBD_ | Arcade-style, 4 colors |
 | Energizar button | 1 | R$ 20,00* | R$ 20,00* | _TBD_ | Larger and visually distinct from the other four |
-| Switch-matrix board | 1 | R$ 150,00* | R$ 150,00* | _TBD_ | Routing and safety cut-off; PCB + analog switches |
-| 9 V power source | 1 | R$ 50,00* | R$ 50,00* | _TBD_ | Supply for the student's circuit |
+| Crosspoint switch-matrix board | 1 | R$ 150,00* | R$ 150,00* | _TBD_ | Routing, current sensing and safety cut-off; PCB + crosspoint ICs |
+| Isolated AC/DC supply | 1 | R$ 60,00* | R$ 60,00* | _TBD_ | Feeds the regulated 5 V / 3.3 V rails |
 | Power supply (bench) | 1 | R$ 60,00* | R$ 60,00* | _TBD_ | 5 V for the Pi and the display |
 | Table lighting | 2 | R$ 15,00* | R$ 30,00* | _TBD_ | Controlled illumination for the camera |
 | Speaker | 1 | R$ 50,00* | R$ 50,00* | _TBD_ | Audio feedback |
@@ -26,7 +26,7 @@ Bill of materials for TedThunder. Prices in BRL.
 | General electronics | — | R$ 75,00* | R$ 75,00* | _TBD_ | Wiring, connectors, headers, fasteners |
 | Spares | — | R$ 150,00* | R$ 150,00* | _TBD_ | Second Pi, spare buttons, spare capsules |
 | | | | | | |
-| **Total** | | | **R$ 1.690,00*** | | Mostly placeholder — see the warning above |
+| **Total** | | | **R$ 1.700,00*** | | Mostly placeholder — see the warning above |
 
 `*` placeholder value, not researched.
 
