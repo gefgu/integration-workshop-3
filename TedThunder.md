@@ -154,7 +154,12 @@ known circuit**, not measured from it.
 - **Challenge versions.** Each module has a challenge twin: same target circuit, no instructions —
   or a circuit pre-assembled with a deliberate fault to find. Only the final graph is validated.
 - **Creation.** Students build their own challenges and share them with each other through the
-  companion web app.
+  companion mobile web app.
+
+The companion app is deliberately **phone-first**. A teacher moving between benches in a classroom
+has a phone in their pocket, not a laptop under their arm, so the app is laid out for a phone
+screen held in one hand. It is still a web app — the same page adapts to a desktop browser when
+there is one — and it needs no installation, no app store and no account on school machines.
 
 ## Learning modules 📚
 
