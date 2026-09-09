@@ -15,7 +15,7 @@ Requirement IDs are grouped by area:
 | `FR-TUT` | Tutor and scaffolding |
 | `FR-CNT` | Content |
 | `FR-MET` | Multimeter probes |
-| `FR-CLOUD` | Web app and sync |
+| `FR-CLOUD` | Companion mobile web app and sync |
 | `FR-HW` | Bench hardware |
 
 **Priority:** `Must` — required for delivery · `Should` — planned, first to be cut under pressure ·
@@ -122,15 +122,17 @@ Requirement IDs are grouped by area:
 | FR-MET-02 | The interface shall display the value for the point the probes touch, computed from the known circuit rather than measured. | Should | Not started |
 | FR-MET-03 | Probe readings shall be available in the modules that teach measurement (03 and 09). | Could | Not started |
 
-### Web app and sync
+### Companion mobile web app and sync
 
 | ID | Requirement | Priority | Status |
 | --- | --- | --- | --- |
-| FR-CLOUD-01 | The bench shall pair with the companion web app over Wi-Fi. | Should | Not started |
-| FR-CLOUD-02 | Student progress shall sync between the bench and the web app when a connection is available. | Should | Not started |
+| FR-CLOUD-01 | The bench shall pair with the companion mobile web app over Wi-Fi. | Should | Not started |
+| FR-CLOUD-02 | Student progress shall sync between the bench and the companion app when a connection is available. | Should | Not started |
 | FR-CLOUD-03 | Students shall be able to build their own challenges and share them with each other. | Should | Not started |
-| FR-CLOUD-04 | The web app shall run in a browser with no software installation on school machines. | Should | Not started |
-| FR-CLOUD-05 | A challenge authored in the web app shall be validated by the same graph rules as the built-in modules. | Should | Not started |
+| FR-CLOUD-04 | The companion app shall be a mobile web app, laid out for a phone screen first, so the teacher can use it from the phone already in their pocket. | Should | Not started |
+| FR-CLOUD-05 | A challenge authored in the companion app shall be validated by the same graph rules as the built-in modules. | Should | Not started |
+| FR-CLOUD-06 | The same app shall also run on a desktop browser, adapting its layout to the larger screen; phone and desktop shall be the same application, not two builds. | Should | Not started |
+| FR-CLOUD-07 | The app shall run in the browser with no installation, no app store and no account on the school's machines. | Should | Not started |
 
 ### Bench hardware
 
@@ -163,6 +165,7 @@ Requirement IDs are grouped by area:
 | NFR-REL-03 | Disc color reading shall be correct in at least 98% of scans under the bench's controlled lighting. | Should | Not started |
 | NFR-USE-01 | Screen content shall be legible at arm's length by a seated student of 11 to 13 years old. | Must | Not started |
 | NFR-USE-02 | A student shall be able to complete Module 01 without adult assistance. | Must | Not started |
+| NFR-USE-03 | The companion app shall be operable one-handed on a phone screen of 5 inches or larger, in portrait orientation. | Should | Not started |
 | NFR-OPS-01 | The guided curriculum shall run fully offline; cloud connectivity shall be optional. | Must | Not started |
 | NFR-MAINT-01 | Modules, steps, target graphs and hints shall be authored as data; adding a module shall not require a code change. | Should | Not started |
 
@@ -195,7 +198,7 @@ Mapping from the IDs used in the first exported requirements table to the curren
 
 | Previous ID | Current ID | Note |
 | --- | --- | --- |
-| FR-01 | FR-CLOUD-03 | Authoring and sharing moved to the web app area |
+| FR-01 | FR-CLOUD-03 | Authoring and sharing moved to the companion mobile web app area |
 | FR-02 | FR-GRAPH-01 | |
 | FR-03 | FR-GRAPH-02 | |
 | FR-04 | FR-GRAPH-04 | |
