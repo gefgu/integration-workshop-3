@@ -6,18 +6,18 @@
 
 ### Guided Version
 
-**Minimum success criterion:** battery correctly connected to the power buses on the main board, confirmed by the status LED built into the board itself (this is not a component assembled by the child).
+**Minimum success criterion:** the battery capsule correctly placed on the matrix, confirmed by the status LED built into the board itself (this is not a component assembled by the child).
 
-**Components:** 1 9V battery.
+**Components:** 1 9V battery capsule.
 
 **Schematic (final state):**
 
 ```
-9V battery (+) → matrix's positive rail
-9V battery (−) → matrix's negative rail
+9V battery capsule seated on the matrix,
+its (+) and (−) terminals in two different column strips
 ```
 
-**Success criterion:** The board’s status LED lights up—indicating proper power supply, without requiring any load circuit assembly yet.
+**Success criterion:** The board’s status LED lights up—indicating the battery was recognized, without requiring any load circuit assembly yet.
 
 ### Challenge Version
 
@@ -27,7 +27,7 @@
 
 **Target schematic:** identical to that of the guided version.
 
-**Success criterion:** same criterion—status LED on—but without any prior hint about which terminal goes to which bus.
+**Success criterion:** same criterion—status LED on—but without any prior hint about where the capsule goes.
 
 ---
 
@@ -178,7 +178,7 @@ color reference on screen.
 
 ![](./images/esquematico_modulo_05.png)
 
-**Success criterion:** The LED lights up only while the pushbutton is pressed and turns off when released.
+**Success criterion:** During the interaction window the LED lights up only while the pushbutton is pressed and turns off when released; the child confirms what they saw via the button quiz.
 
 ### Challenge Version
 
@@ -189,7 +189,7 @@ color reference on screen.
 **Target Schematic:**
 
 ![](./images/esquematico_modulo_05_desafio.png)
-**Success criterion:** The LED turns on only when both buttons are pressed simultaneously; releasing either one turns the LED off.
+**Success criterion:** the assembled circuit matches the target schematic, and during the interaction window the LED turns on only when both buttons are pressed simultaneously; releasing either one turns it off. The child confirms the behavior via the button quiz.
 
 ---
 
@@ -205,17 +205,17 @@ color reference on screen.
 
 ![](./images/esquematico_modulo_06.png)
 
-**Success criterion:** The LED’s brightness changes in real time as the potentiometer is turned, without any noticeable discrete steps.
+**Success criterion:** during the interaction window the LED’s brightness changes in real time as the potentiometer is turned, without any noticeable discrete steps; the child confirms the observation via the button quiz.
 
 ### Challenge Version
 
 **Initial state:** the same circuit as in the guided version, already assembled.
 
-**Goal:** Adjust the potentiometer until it reaches the “medium” brightness requested by the AI, without numerical instructions—using only your own judgment.
+**Goal:** Before turning anything, predict which way the knob must go to make the LED dimmer. Then sweep the potentiometer through its whole range during the interaction window and check the prediction.
 
 **Target schematic:** identical to the guided version; the variable is the potentiometer’s position, not the circuit topology.
 
-**Success criterion:** the AI visually confirms that the brightness is within the acceptable “medium” range (automatic validation via current reading, not subjective judgment).
+**Success criterion:** the child’s prediction (via the button quiz) matches what they observed while sweeping the knob.
 
 ---
 

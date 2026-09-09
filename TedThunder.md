@@ -47,7 +47,8 @@ table, drops components into it, and presses a single large button to bring the 
 The connection matrix is a grid of **11 columns × 6 rows** of sockets, arranged as **two banks of
 3 rows** separated by a center channel — the same idea as a breadboard, scaled up so small hands
 can use it. Each bank strip is roughly 1 × 3 cm. Sockets in the same column and bank are
-electrically tied together, and two rails run alongside for power.
+electrically tied together. There are no power rails — the battery is a capsule that sits on the
+grid like any other component.
 
 ### The components
 
@@ -91,7 +92,7 @@ removing a component is detected exactly as reliably as adding one.
 Socket positions plus the geometry of the grid are enough to derive the circuit. The result is a
 graph that distinguishes:
 
-- **electrical nodes** — the column strips and rails that are tied together,
+- **electrical nodes** — the column strips whose sockets are tied together,
 - **component terminals** — where each capsule touches the matrix,
 - **internal edges** — the component itself, inside the capsule,
 - **contact edges** — a terminal sitting in a node.
@@ -125,13 +126,26 @@ Nothing is live until the student presses **Energizar**. Then the bench classifi
 The approach is inspired by the
 [Autoroute Breadboard](https://hackaday.io/project/197195-autoroute-breadboard-breadboard) project.
 
-### 5. Attributes — only while it is live
+### 5. Attribute actions — done, not measured
 
-A pressed button and a potentiometer angle are not things a camera 30 cm away can read, and they
-do not need to be. These attributes exist **only while the circuit is energized**: the real
-component sits in the real powered path and simply behaves. The bench observes their effect by
-measuring the live circuit, which is why a step like *"now press the button"* is validated in the
-powered state rather than in the scan.
+A pressed button and a turned potentiometer are not things a camera 30 cm away can read, and the
+bench does not read them at all. It does not need to: the real component sits in the real powered
+path, so the action simply *works*. Press the button and the loop really closes; turn the knob and
+the LED really dims.
+
+When a step asks for one of these actions, the bench energizes the circuit and opens an
+**interaction window** — the screen plays the animation for that step, a potentiometer turning or a
+button going down, and the window lasts exactly as long as that animation and its narration. The
+student performs the action on the real board while it plays.
+
+Nothing is sensed, so nothing is validated electrically. When the window closes the bench asks what
+happened — *"what did the light do?"* — and the student answers with the four buttons. That answer
+is what approves the step, and it doubles as the comprehension check: it is worth more than a
+sensor reading, because it confirms the student actually watched.
+
+The numbers on screen work the same way. The bench knows every component and how they are wired, so
+the milliamps in Module 03 and the values read by the multimeter probes are **computed from the
+known circuit**, not measured from it.
 
 ## Modes 🎛️
 
@@ -140,7 +154,12 @@ powered state rather than in the scan.
 - **Challenge versions.** Each module has a challenge twin: same target circuit, no instructions —
   or a circuit pre-assembled with a deliberate fault to find. Only the final graph is validated.
 - **Creation.** Students build their own challenges and share them with each other through the
-  companion web app.
+  companion mobile web app.
+
+The companion app is deliberately **phone-first**. A teacher moving between benches in a classroom
+has a phone in their pocket, not a laptop under their arm, so the app is laid out for a phone
+screen held in one hand. It is still a web app — the same page adapts to a desktop browser when
+there is one — and it needs no installation, no app store and no account on school machines.
 
 ## Learning modules 📚
 
@@ -187,7 +206,7 @@ that need two of the same part:
 
 | Capsule | Qty | Notes |
 | --- | --- | --- |
-| Battery | 1 | 9 V source, plugged into the rails |
+| Battery | 1 | 9 V source, placed on the grid like any other capsule |
 | LED | 2 | Polarized; reversible to demonstrate direction |
 | Resistor 220 Ω | 1 | Module 03 comparison |
 | Resistor 470 Ω | 2 | Default value across modules |
@@ -240,9 +259,15 @@ built, and the LED dims or brightens exactly as the color code says it should.
 
 The bench runs on 9 V — safe to touch, and there is no mains voltage anywhere near the student.
 Beyond that, the rule is simple and absolute: **a circuit classified as hazardous is never
-energized.** Short circuits and over-current conditions are detected before the switch matrix
+energized.** Short circuits and over-current conditions are recognized before the switch matrix
 closes, the consequence is played out on screen instead of in the hardware, and the student is
 guided through finding the cause. Nothing in the kit requires soldering.
+
+Behind that rule sits a backstop that needs no cleverness at all. The supply is **passively
+current-limited** by a resettable fuse and a small series resistor, sized so that even a dead short
+cannot damage a component. Nothing has to notice a fault for this to work — it is always in
+circuit. If the student rearranges the board while it is live, the next scan sees the change and
+cuts power; the limiter is what covers the moment in between.
 
 ## Documentation 📄
 
