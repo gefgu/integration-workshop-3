@@ -20,8 +20,8 @@ Electricity is invisible, and that is exactly what makes it hard to teach. A stu
 that the long leg of an LED is the anode, that a resistor "limits current", that brown-black-red
 means 1 kΩ — and still have no intuition at all about what is happening inside the wire.
 
-TedThunder is a physical electronics workbench built for students of **Fundamental II (6th to 8th
-grade)** with no prior technical background, developed under the *Cientista na Escola* program.
+TedThunder is a physical electronics workbench built for students of **Fundamental II (7th to 8th
+grade)** with no prior technical background, developed under the Integration Workshop 3 at UTFPR.
 Its goal is technological literacy through practical intuition: the **what** and the **why**, not
 the memorization.
 
@@ -37,7 +37,7 @@ That means we deliberately teach cause and effect instead of rules:
 ### Why a physical bench instead of a simulator?
 
 Online simulators exist and they are useful, but they lose the things that make electronics stick
-for a twelve-year-old:
+for a thirteen-year-old:
 
 - **Motor and tactile memory.** Handling components and placing them on a matrix builds
   three-dimensional spatial reasoning and manual dexterity.
@@ -73,16 +73,7 @@ the real LED, and the real button really opens and closes the loop.
 - A **7″ screen** shows the tutorial, the current step, the hints and the diagnosis.
 - A **joystick** on one side navigates the interface.
 - **4 buttons** on the other side answer quiz questions and confirm choices.
-- A dedicated **Energizar** button — big, obvious, and separate from everything else — is the only
-  way to make the circuit live.
-
-### The loop
-
-```
-   build  ─────►  press Energizar  ─────►  observe  ─────►  next step
-     ▲                                                          │
-     └──────────────  hint / diagnosis  ◄───────────────────────┘
-```
+- A dedicated **Energizar** button for the teeneger to see their circuits come alive.
 
 ## How it works ⚙️
 
@@ -135,26 +126,13 @@ Nothing is live until the student presses **Energizar**. Then the bench classifi
 The approach is inspired by the
 [Autoroute Breadboard](https://hackaday.io/project/197195-autoroute-breadboard-breadboard) project.
 
-### 5. Attribute actions — done, not measured
+### 5. Attribute actions
 
-A pressed button and a turned potentiometer are not things a camera 30 cm away can read, and the
-bench does not read them at all. It does not need to: the real component sits in the real powered
-path, so the action simply *works*. Press the button and the loop really closes; turn the knob and
-the LED really dims.
+The camera can't detect a pressed button or a turned potentiometer. Because the real component sits in a real powered path, the action simply works. When a step asks for one of these actions, the bench energizes the circuit and opens an **interaction window** — the screen plays the animation for that step, a potentiometer turning or a button going down, and the window lasts exactly as long as that animation and its narration. The student performs the action on the real board while it plays.
 
-When a step asks for one of these actions, the bench energizes the circuit and opens an
-**interaction window** — the screen plays the animation for that step, a potentiometer turning or a
-button going down, and the window lasts exactly as long as that animation and its narration. The
-student performs the action on the real board while it plays.
+Nothing is sensed, so nothing is validated electrically. When the window closes the bench asks what happened — *"what did the light do?"* — and the student answers with the four buttons. That answer is what approves the step, and it doubles as the comprehension check: it is worth more than a sensor reading, because it confirms the student actually watched.
 
-Nothing is sensed, so nothing is validated electrically. When the window closes the bench asks what
-happened — *"what did the light do?"* — and the student answers with the four buttons. That answer
-is what approves the step, and it doubles as the comprehension check: it is worth more than a
-sensor reading, because it confirms the student actually watched.
-
-The numbers on screen work the same way. The bench knows every component and how they are wired, so
-the milliamps in Module 03 and the values read by the multimeter probes are **computed from the
-known circuit**, not measured from it.
+As the system know the circuit, it can also show the milliamps (in the later modules) from the simulation.
 
 ## Modes 🎛️
 
@@ -165,10 +143,7 @@ known circuit**, not measured from it.
 - **Creation.** Students build their own challenges and share them with each other through the
   companion mobile web app.
 
-The companion app is deliberately **phone-first**. A teacher moving between benches in a classroom
-has a phone in their pocket, not a laptop under their arm, so the app is laid out for a phone
-screen held in one hand. It is still a web app — the same page adapts to a desktop browser when
-there is one — and it needs no installation, no app store and no account on school machines.
+The companion app is deliberately **phone-first**. A teacher moving between benches in a classroom has a phone in their pocket, not a laptop under their arm, so the app is laid out for a phone screen held in one hand. It is still a web app — the same page adapts to a desktop browser when there is one — and it needs no installation, no app store and no account on school machines.
 
 ## Learning modules 📚
 
@@ -189,7 +164,7 @@ The full specification of each module, with schematics and success criteria, liv
 | 10 | Integrator Challenge (Alarm) | Synthesis: button + resistor + LED + buzzer |
 | Bonus | Resistor Color Code | Reading a resistor's value from its colored bands |
 
-## Components 📷
+## Components 📷 [TO BE UPDATED]
 
 We presume the system will have the following items:
 
@@ -208,7 +183,7 @@ We presume the system will have the following items:
 - Component capsule kit
 - 3D-printed enclosure and connection table
 
-## The capsule kit 🧩
+## The capsule kit 🧩 [TO BE UPDATED]
 
 Proposed inventory, sized by the most demanding module (Module 10) and by the challenge versions
 that need two of the same part:
@@ -228,7 +203,7 @@ that need two of the same part:
 | Jumper, length 2 | 4 | Two-socket bridge |
 | Jumper, length 3 | 4 | Three-socket bridge |
 
-## The color-code capsule 🎨
+## The color-code capsule 🎨 [TO BE UPDATED]
 
 One capsule in the kit is a deliberate illusion. The **color-code resistor** has no resistor inside
 it at all — internally it is just a pass-through between its two terminals. What it has instead is
