@@ -1,4 +1,4 @@
-# TedThunder
+# TedThunder - Team #2
 
 TedThunder is the team project for Integration Workshop 3 at UTFPR-CT.
 
