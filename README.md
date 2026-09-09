@@ -8,6 +8,7 @@ See [TedThunder.md](TedThunder.md) for the full project description.
 
 ## Documentation
 
+- [Blog](blog.md)
 - [Project description](TedThunder.md)
 - [Documentation index](docs/README.md)
 - [Requirements](docs/REQUIREMENTS.md)
