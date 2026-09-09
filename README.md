@@ -12,6 +12,7 @@ See [TedThunder.md](TedThunder.md) for the full project description.
 - [Project description](TedThunder.md)
 - [Documentation index](docs/README.md)
 - [Requirements](docs/REQUIREMENTS.md)
+- [Project risks](docs/ProjectRisks.md)
 
 ## Team
 
