@@ -38,6 +38,8 @@ Requirement IDs are grouped by area:
 | FR-VIS-05 | A capsule that cannot be identified by either method shall be reported on screen as unrecognized; the system shall not guess its type. | Must | Not started |
 | FR-VIS-06 | Identification shall rely on the bench's own controlled lighting and shall not depend on classroom lighting conditions. | Should | Not started |
 | FR-VIS-07 | The system shall detect a capsule that is not seated in a valid socket and report it as a placement error. | Should | Not started |
+| FR-VIS-08 | For the color-code resistor capsule, the system shall read the selected quadrant of each of its three discs from the capsule's top face. | Should | Not started |
+| FR-VIS-09 | Disc reading shall only be required to discriminate the colors actually used by the discs (brown, yellow, black, violet, red). | Should | Not started |
 
 ### Circuit graph model and step validation
 
@@ -55,6 +57,7 @@ Requirement IDs are grouped by area:
 | FR-GRAPH-10 | The assembled graph shall be derived from vision alone: capsule type and orientation from the marker, connectivity from socket occupancy and grid geometry. | Must | Not started |
 | FR-GRAPH-11 | Sockets sharing a column within the same bank shall form one electrical node; each power rail shall form one electrical node. | Must | Not started |
 | FR-GRAPH-12 | A jumper capsule shall contribute a single internal edge between the two sockets it spans, in length 2 or length 3. | Must | Not started |
+| FR-GRAPH-13 | The value dialed on the color-code capsule shall be carried as the resistance attribute of its internal edge, derived from the three disc colors. | Should | Not started |
 
 ### Power, energization and safety
 
@@ -69,6 +72,8 @@ Requirement IDs are grouped by area:
 | FR-PWR-07 | The system shall cut power automatically when a fault is detected during energization, or when a capsule is added to or removed from the board. | Must | Not started |
 | FR-PWR-08 | The circuit shall be de-energized when the student leaves the current step or presses Energizar a second time. | Should | Not started |
 | FR-PWR-09 | The board's status LED shall indicate that the bench is powered, independently of the student's circuit. | Must | Not started |
+| FR-PWR-10 | When an energized path contains the color-code capsule, the switch matrix shall bypass the capsule and route through the internal resistor bank value matching the dialed value. | Should | Not started |
+| FR-PWR-11 | The substitution performed for the color-code capsule shall not be disclosed to the student in any interface state. | Should | Not started |
 
 ### Local interface
 
@@ -102,6 +107,8 @@ Requirement IDs are grouped by area:
 | FR-CNT-03 | Challenge mode shall validate only the final target graph and the inventory constraints, with no intermediate steps. | Must | Not started |
 | FR-CNT-04 | The system shall present conceptual multiple-choice questions answered with the four interface buttons. | Should | Not started |
 | FR-CNT-05 | The system shall record each student's progress across modules. | Should | Not started |
+| FR-CNT-06 | The system shall ship the bonus module on the resistor color code, in guided and challenge versions. | Should | Not started |
+| FR-CNT-07 | The challenge version of the bonus module shall hide the on-screen color reference. | Could | Not started |
 
 ### Multimeter probes
 
@@ -131,6 +138,9 @@ Requirement IDs are grouped by area:
 | FR-HW-04 | Vision, graph matching, tutor and interface shall run on a Raspberry Pi 3 B. | Must | Not started |
 | FR-HW-05 | Every component shall be enclosed in a capsule holding the real component; jumpers shall exist in length 2 and length 3 only. | Must | Not started |
 | FR-HW-06 | The switch matrix shall route the 9 V supply between the rails and the detected circuit path. | Must | Not started |
+| FR-HW-07 | The color-code capsule shall contain no resistor; internally it shall be a pass-through between its two terminals. | Should | Not started |
+| FR-HW-08 | The bench shall hold an internal resistor bank with the eight values reachable by the discs: 100 Ω, 170 Ω, 400 Ω, 470 Ω, 1 kΩ, 1.7 kΩ, 4 kΩ and 4.7 kΩ. | Should | Not started |
+| FR-HW-09 | Each disc of the color-code capsule shall have four detents with alternating colors, so that every quarter turn changes the digit. | Should | Not started |
 
 ---
 
@@ -146,6 +156,7 @@ Requirement IDs are grouped by area:
 | NFR-SAFE-02 | No part accessible to the student shall carry more than 9 V, and no mains voltage shall be present in the enclosure. | Must | Not started |
 | NFR-REL-01 | Capsule identification shall be correct in at least 98% of scans under the bench's controlled lighting. | Must | Not started |
 | NFR-REL-02 | The bench shall boot to a usable module screen within 60 s. | Should | Not started |
+| NFR-REL-03 | Disc color reading shall be correct in at least 98% of scans under the bench's controlled lighting. | Should | Not started |
 | NFR-USE-01 | Screen content shall be legible at arm's length by a seated student of 11 to 13 years old. | Must | Not started |
 | NFR-USE-02 | A student shall be able to complete Module 01 without adult assistance. | Must | Not started |
 | NFR-OPS-01 | The guided curriculum shall run fully offline; cloud connectivity shall be optional. | Must | Not started |
@@ -168,7 +179,9 @@ Requirement IDs are grouped by area:
 | AR-09 | This delivery will not include a teacher dashboard. | Not started |
 | AR-10 | The system will never energize a path it has classified as hazardous. | Not started |
 | AR-11 | The system will not identify a component without a readable marker; nothing is inferred from shape alone. | Not started |
-| AR-12 | The system will not attempt to read live attribute state while the circuit is unpowered. | Not started |
+| AR-12 | The system will not attempt to read live attribute state (button pressed, potentiometer position) while the circuit is unpowered. This does not cover the color-code discs, which are read by vision. | Not started |
+| AR-13 | The color-code capsule will not reach values outside the eight defined by its discs. | Not started |
+| AR-14 | The discs will not use the full ten-color resistor code, only the five colors listed in FR-VIS-09. | Not started |
 
 ---
 

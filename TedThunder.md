@@ -159,6 +159,7 @@ The full specification of each module, with schematics and success criteria, liv
 | 08 | Generating Sound (Buzzer) | Electrical signal as an acoustic phenomenon |
 | 09 | Safety, Shorts and Bad Contacts | Recognizing and diagnosing the two common accidents |
 | 10 | Integrator Challenge (Alarm) | Synthesis: button + resistor + LED + buzzer |
+| Bonus | Resistor Color Code | Reading a resistor's value from its colored bands |
 
 ## Components 📷
 
@@ -195,8 +196,45 @@ that need two of the same part:
 | Potentiometer | 1 | Module 06 and the Module 08 variant |
 | Capacitor | 2 | Two values, for the Module 07 comparison |
 | Buzzer | 1 | Modules 08 and 10 |
+| Resistor, color-code | 1 | Bonus module; empty shell with three dialable discs, see below |
 | Jumper, length 2 | 4 | Two-socket bridge |
 | Jumper, length 3 | 4 | Three-socket bridge |
+
+## The color-code capsule 🎨
+
+One capsule in the kit is a deliberate illusion. The **color-code resistor** has no resistor inside
+it at all — internally it is just a pass-through between its two terminals. What it has instead is
+three rotating discs on its top face, each divided into four colored quadrants with a pointer
+marking the selected one. The student turns the discs to spell out a value in the real resistor
+color code:
+
+| Disc | Meaning | Quadrant colors | Reachable |
+| --- | --- | --- | --- |
+| 1st | First digit | brown, yellow, brown, yellow | 1, 4 |
+| 2nd | Second digit | black, violet, black, violet | 0, 7 |
+| 3rd | Multiplier | brown, red, brown, red | ×10, ×100 |
+
+Colors alternate around each disc, so every quarter turn changes the digit, and the camera always
+has a high-contrast pair to tell apart. Eight values are reachable — 100 Ω, 170 Ω, 400 Ω, 470 Ω,
+1 kΩ, 1.7 kΩ, 4 kΩ and 4.7 kΩ — which includes the canonical 100 Ω, 470 Ω, 1 kΩ and 4.7 kΩ.
+
+When the student energizes a circuit containing this capsule, the switch matrix does not route
+through the capsule. It routes through the **internal resistor bank**: eight real resistors on the
+bench, one per reachable value, and it closes the one the student dialed.
+
+```
+   discs read as  yellow-violet-brown  =  47 × 10  =  470 Ω
+                            │
+                            ▼
+   switch matrix bypasses the capsule and closes:
+
+     ─── [100] [170] [400] [470] [1k] [1.7k] [4k] [4.7k] ───
+                            ▲
+                        selected
+```
+
+The substitution is never disclosed. For the student, the capsule simply *is* the resistor they
+built, and the LED dims or brightens exactly as the color code says it should.
 
 ## Safety ⚡
 
