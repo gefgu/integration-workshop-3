@@ -3,6 +3,17 @@
 An interactive electronics workbench for kids — build a real circuit with your hands, press
 **Energizar**, and watch it actually work.
 
+<table>
+<tr>
+<td width="50%" valign="top"><img src="./docs/images/mechanic_prototype.jpeg" alt="3D render of the TedThunder bench: the connection table, the 7-inch screen on its hinge, the joystick and the buttons" width="100%"></td>
+<td width="50%" valign="top"><img src="./docs/images/guided_example_how_it_works.jpeg" alt="Guided mode interface: the circuit assembled on the bench, the graph extracted from it, the target graph for the step, and the tutor pointing out the missing connection" width="100%"></td>
+</tr>
+<tr>
+<td align="center"><em>The bench — connection table, screen and controls</em></td>
+<td align="center"><em>Guided mode — the assembled graph checked against the step's target</em></td>
+</tr>
+</table>
+
 ## Intro 🔌
 
 Electricity is invisible, and that is exactly what makes it hard to teach. A student can memorize
@@ -39,8 +50,6 @@ for a twelve-year-old:
 
 TedThunder is a self-contained desktop unit. The student works on a **18 × 16 cm** connection
 table, drops components into it, and presses a single large button to bring the circuit to life.
-
-![TedThunder mechanical prototype](./docs/images/mechanic_prototype.jpeg)
 
 ### The table
 
