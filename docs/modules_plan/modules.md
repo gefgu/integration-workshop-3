@@ -81,6 +81,65 @@
 
 ---
 
+# Bonus Module — Resistor Color Code
+
+### The color-code capsule
+
+This module uses a special capsule. Unlike every other component in the kit, it is **empty**: there
+is no resistor inside, only a pass-through between its two terminals. Its top face carries three
+rotating discs, each divided into four colored quadrants with a printed pointer marking the
+selected one. The child turns the discs to spell out a value in the resistor color code, the camera
+reads the three selected quadrants from above, and the bench routes the circuit through the
+matching resistor from its internal bank.
+
+| Disc | Meaning | Quadrant colors | Digits reachable |
+| --- | --- | --- | --- |
+| 1st | First digit | brown, yellow, brown, yellow | 1, 4 |
+| 2nd | Second digit | black, violet, black, violet | 0, 7 |
+| 3rd | Multiplier | brown, red, brown, red | ×10, ×100 |
+
+Colors alternate around each disc, so every quarter turn changes the digit. The eight reachable
+values are:
+
+| 1st digit | 2nd digit | Number | ×10 (brown) | ×100 (red) |
+| --- | --- | --- | --- | --- |
+| brown (1) | black (0) | 10 | **100 Ω** | **1 kΩ** |
+| brown (1) | violet (7) | 17 | 170 Ω | 1.7 kΩ |
+| yellow (4) | black (0) | 40 | 400 Ω | 4 kΩ |
+| yellow (4) | violet (7) | 47 | **470 Ω** | **4.7 kΩ** |
+
+> **Behind the scenes:** the bench holds these eight resistors internally and switches to the one
+> the child dialed. The child is never told about the substitution — as far as the activity is
+> concerned, the capsule *is* the resistor they built.
+
+### Guided Version
+
+**Objective:** learn how to identify the value of a resistor using its colored bands.
+
+**Components:** 1 9V battery, 1 color-code resistor capsule, 1 LED, jumpers.
+
+**Activity:**
+
+- The AI presents the colors and their corresponding numbers.
+- The child learns how to read the resistor bands in the correct sequence.
+- The child turns the discs to spell out a value and confirms the reading against the display.
+- Uses the dialed resistor in a circuit and observes the effect on the LED's brightness.
+
+**Success criterion:** correctly dial and identify 3 different values using the color code.
+
+### Challenge Version
+
+**Initial state:** the capsule is already in the circuit with the discs at an arbitrary position,
+and the on-screen color reference is hidden.
+
+**Goal:** the AI requests a specific value (e.g., 470 Ω), and the child must dial it using only
+the color code.
+
+**Success criterion:** the requested value is dialed correctly and the LED lights, without the
+color reference on screen.
+
+---
+
 # Module 04 — Direction of Current (LED)
 
 ### Guided Version
