@@ -3,3 +3,4 @@
 !.env.example
 __pycache__
 color_analysis_output
+hidden
