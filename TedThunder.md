@@ -90,13 +90,19 @@ the real LED, and the real button really opens and closes the loop.
 
 ### 1. Vision — what is on the table
 
-A low-end camera on a fixed boom about **30 cm** above the table watches the matrix. Each capsule
-carries a small **QR code** as its primary identifier, with **color coding as a fallback** when the
-code cannot be read. From a single frame the system extracts, for every capsule: its type, its
-orientation, and which sockets it occupies.
+A low-end camera on a fixed boom about **30 cm** above the table watches the matrix. 
 
-Every scan produces a complete picture from scratch. No state is carried between cycles, so
-removing a component is detected exactly as reliably as adding one.
+THe extraction of the circuit assembled by the student is performed from an image captured from the camera. THe sistem evaluates every frame received: every camera scan produces a complete picture from scratch. No state is carried between cycles, so removing a component is detected exactly as reliably as adding one (stateless operation).
+
+The technical proccess is divided into four steps:
+
+* 1) ArUco Markers: every component
+carries a small **QR code** as its primary identifier. THe markers are attached to the top of each component and we use OpenCV library (cv2.arUco module) to identify them. By doing that, we have **unique identification** and **pose and orientation estimation** (as long as the four corners of the marker allow the system to calculate an estimative of rotation and position).
+
+
+* 2) Using **color coding as a fallback**: when the
+code cannot be read (by partial oclusions or damage to the QR Code), a second detection layer acts as a redundancy. 
+Since every capsule will be manufactured with standardized colors and shapes, the system can apply color filtering and contour detection to identify each of them. SO, from a single frame, the system extracts, for every capsule: its type, its orientation, and which sockets it occupies.
 
 ### 2. Graph — what the student actually built
 
