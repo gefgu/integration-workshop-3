@@ -43,12 +43,10 @@ What we detailed this week:
   color code.
 
 📄 [Full project description](./TedThunder.md) · 📋 [Requirements](./docs/REQUIREMENTS.md) ·
-📚 [Modules](./docs/modules_plan/modules.md) · 💣 [Risks](./docs/ProjectRisks.md) ·
-💵 [Budget](./docs/Budget.md)
+📚 [Modules](./docs/modules_plan/modules.md) · 💣 [Risks](./docs/ProjectRisks.md) (Very early stage) ·
+💵 [Budget](./docs/Budget.md) (Very early stage)
 
-### Plan B — _(to be filled in)_
-
-_Describe the enhanced version of plan B here._
+### Plan B — "Kendo Tutor" - Not developed
 
 ---
 
@@ -64,7 +62,10 @@ Following the requirements talk, we started writing the project's requirements p
 them into functional, non-functional and anti-requirements, and grouping them by area rather than
 keeping one flat list.
 
-**Proposals presented:** _plan A_, _plan B_, _plan C_ — _(names to be filled in)_
+**Proposals presented:** 
+
+- **A.** **"Smart workbench for electronics education"**
+- **B.** "Kendo Tutor"
 
 ---
 
@@ -76,9 +77,9 @@ Strategies*.
 The team presented three project proposals, named plans A, B and C. After the professors' rebuttal
 we were asked to keep two of the three and bring them back with more detail and specification.
 
-- **A.** _(to be filled in)_
-- **B.** _(to be filled in)_
-- **C.** _(to be filled in)_
+- **A.** "Essay Exam Grader"
+- **B.** "Distance detector for oranges"
+- **C.** **"Smart workbench for electronics education"**
 
 ---
 
