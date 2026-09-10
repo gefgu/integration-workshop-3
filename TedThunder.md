@@ -14,6 +14,17 @@ An interactive electronics workbench for kids — build a real circuit with your
 </tr>
 </table>
 
+<table>
+<tr>
+<td width="50%" valign="top"><img src="./docs/images/led_component_example.jpeg" alt="3D render of an LED capsule: the real LED sits on top of a Lego-like shell marked with (+) and (-), with two legs that drop into the sockets" width="100%"></td>
+<td width="50%" valign="top"><img src="./docs/images/component_example_placement.jpeg" alt="The same LED capsule seated on the socket grid of the bench, bridging two adjacent columns" width="100%"></td>
+</tr>
+<tr>
+<td align="center"><em>A capsule — the real component inside a shell the student can hold</em></td>
+<td align="center"><em>Seated on the grid — its two legs land in two different columns</em></td>
+</tr>
+</table>
+
 ## Intro 🔌
 
 Electricity is invisible, and that is exactly what makes it hard to teach. A student can memorize
