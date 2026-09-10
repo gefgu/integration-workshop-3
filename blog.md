@@ -19,8 +19,10 @@
 **Class:** live reply about the enhanced plans A and B. Bonus: talk with the expert (#1).
 
 As requested, this post describes the enhanced versions of the two plans carried over from last
-week. After today's rebuttal the team picks **one** of them to develop for the rest of the
+week. After today's rebuttal, the team picks **one** of them to develop for the rest of the
 semester.
+
+For Plan A, we vibe-coded a web prototype using a Claude design. With this prototype, we asked a teenager(9th grade) to interact, and based on this interaction and feedback,  we focused mostly on the educational aspect of the project and the best ways to achieve it.
 
 ### Plan A — TedThunder ⚡
 
