@@ -24,6 +24,11 @@ semester.
 
 For Plan A, we vibe-coded a web prototype using a Claude design. With this prototype, we asked a teenager(9th grade) to interact, and based on this interaction and feedback,  we focused mostly on the educational aspect of the project and the best ways to achieve it.
 
+![The test prototype of a guided module: the component tray on the left, the node matrix in the middle with the 9 V battery and the LED already placed, the Energizar button below it, and the tutor panel on the right asking for the resistor to be placed in series](./docs/images/guided_module_prototype.png)
+
+*The test prototype — Module 01, "Acender um LED", at step 4 of 8: the tutor explains that without
+the resistor almost 400 mA would go through the LED and burn it.*
+
 ### Plan A — TedThunder ⚡
 
 An interactive electronics workbench for Fundamental II students (7th to 8th grade). The student
