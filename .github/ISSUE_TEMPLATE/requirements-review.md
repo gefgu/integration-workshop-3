@@ -15,19 +15,19 @@ The checklist is based on the requirement-quality characteristics in [ISO/IEC/IE
 ## Review rules
 
 1. Add 4–8 requirements, including functional, non-functional, or anti-requirements as appropriate.
-2. Assign a reviewer who did not write that requirement.
+2. Have another team member review each requirement.
 3. Review the requirement itself before debating its implementation.
 4. Mark each check **Pass**, **Fix**, or **N/A**.
 5. Resolve every **Fix** and ask the reviewer to confirm the change.
 
 ## Assignment matrix
 
-| Requirement / anti-requirement | Type | Reviewer | Review status |
-| --- | --- | --- | --- |
-| The system shall display a confirmation message after a student completes a guided step. | Functional | Beatriz | Pending |
-| The system shall load the main screen within 2 seconds after startup. | Non-functional | Carlos | Pending |
-| The system shall not energize a circuit that has been classified as hazardous. | Anti-requirement | Alex | Pending |
-| The system shall store the student’s progress when a module step is approved. | Functional | <!-- name --> | Pending |
+| Requirement / anti-requirement | Review status |
+| --- | --- |
+| The system shall display a confirmation message after a student completes a guided step. | Pending |
+| The system shall load the main screen within 2 seconds after startup. | Pending |
+| The system shall not energize a circuit that has been classified as hazardous. | Pending |
+| The system shall store the student’s progress when a module step is approved. | Pending |
 
 ## Requirement review cards
 
@@ -35,9 +35,7 @@ Copy one card for each requirement. An anti-requirement states something the sys
 
 ### `<!-- short title -->`
 
-**Type:** <!-- Functional / Non-functional / Anti-requirement -->
 **Author:** <!-- name -->
-**Reviewer:** <!-- name -->
 **Priority:** <!-- Must / Should / Could, if used -->
 
 > <!-- Paste the requirement here. Prefer: “The system shall …” or “The system shall not …” for an anti-requirement. -->
@@ -46,7 +44,7 @@ Copy one card for each requirement. An anti-requirement states something the sys
 
 #### Quality checklist
 
-| Check | Result | Reviewer note or suggested change |
+| Check | Result | Notes or suggested change |
 | --- | --- | --- |
 | **Necessary** — Does this support a real stakeholder, system, or project need? | <!-- Pass / Fix / N/A --> | <!-- cite the need, or explain the gap --> |
 | **Unambiguous** — Would reasonable readers interpret it the same way? | <!-- Pass / Fix / N/A --> | <!-- identify the ambiguous phrase --> |
@@ -61,6 +59,6 @@ Copy one card for each requirement. An anti-requirement states something the sys
 
 <!-- Write a complete replacement, or leave blank if no rewrite is needed. -->
 
-**Reviewer decision:** <!-- Approved / Changes requested -->
+**Decision:** <!-- Approved / Changes requested -->
 **Author response:** <!-- What changed, or why no change was made -->
 **Re-review completed:** <!-- Yes / No / N/A -->
