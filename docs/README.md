@@ -6,6 +6,7 @@ This directory contains documentation produced for TedThunder.
 
 - [Project description](../TedThunder.md)
 - [Requirements](REQUIREMENTS.md)
+- [Requirements review template](../.github/pull_request_template.md)
 - [Guided modules and challenges](modules_plan/modules.md)
 - [Budget](Budget.md)
 - [Project risks](ProjectRisks.md)
