@@ -1,23 +1,20 @@
 ---
 name: Requirements review
 about: Review 4–8 functional or non-functional requirements
-title: "[Requirements review] "
+title: "[NAME] - [TOPIC]"
 labels: requirements
 assignees: ""
 ---
 
 # Requirements review
 
-Each author writes **4–8 requirements** (functional or non-functional), then
-assigns another team member to review each requirement.
+Each author writes **4–8 requirements** (functional or non-functional), then assigns another team member to review each requirement.
 
-The checklist is based on the requirement-quality characteristics in
-[ISO/IEC/IEEE 29148:2018 — Systems and software engineering — Life cycle
-processes — Requirements engineering](https://www.iso.org/standard/72089.html).
+The checklist is based on the requirement-quality characteristics in [ISO/IEC/IEEE 29148:2018 — Systems and software engineering — Life cycle processes — Requirements engineering](https://www.iso.org/standard/72089.html).
 
 ## Review rules
 
-1. Give each requirement a stable ID, such as `FR-01` or `NFR-01`.
+1. Add 4–8 requirements, including functional, non-functional, or anti-requirements as appropriate.
 2. Assign a reviewer who did not write that requirement.
 3. Review the requirement itself before debating its implementation.
 4. Mark each check **Pass**, **Fix**, or **N/A**.
@@ -25,24 +22,27 @@ processes — Requirements engineering](https://www.iso.org/standard/72089.html)
 
 ## Assignment matrix
 
-| Requirement ID | Type (`FR`/`NFR`) | Author | Reviewer | Review status |
+| Requirement / anti-requirement | Type | Author | Reviewer | Review status |
 | --- | --- | --- | --- | --- |
-| <!-- e.g. FR-01 --> | <!-- functional / non-functional --> | <!-- name --> | <!-- name --> | <!-- Pending / Approved --> |
-| <!-- e.g. NFR-01 --> | <!-- functional / non-functional --> | <!-- name --> | <!-- name --> | <!-- Pending / Approved --> |
-| <!-- add rows until every requirement is assigned --> | | | | |
+| <!-- write requirement here --> | <!-- functional / non-functional / anti-requirement --> | <!-- name --> | <!-- name --> | <!-- Pending / Approved --> |
+| <!-- write requirement here --> | <!-- functional / non-functional / anti-requirement --> | <!-- name --> | <!-- name --> | <!-- Pending / Approved --> |
+| <!-- write requirement here --> | <!-- functional / non-functional / anti-requirement --> | <!-- name --> | <!-- name --> | <!-- Pending / Approved --> |
+| <!-- write requirement here --> | <!-- functional / non-functional / anti-requirement --> | <!-- name --> | <!-- name --> | <!-- Pending / Approved --> |
 
 ## Requirement review cards
 
-Copy one card for each requirement.
+Copy one card for each requirement. An anti-requirement states something the system must explicitly not do.
 
-### `<!-- ID -->` — `<!-- short title -->`
+### `<!-- short title -->`
 
-**Type:** <!-- Functional / Non-functional -->  
-**Author:** <!-- name -->  
-**Reviewer:** <!-- name -->  
+**Type:** <!-- Functional / Non-functional / Anti-requirement -->
+**Author:** <!-- name -->
+**Reviewer:** <!-- name -->
 **Priority:** <!-- Must / Should / Could, if used -->
 
-> <!-- Paste the requirement here. Prefer: “The system shall …” -->
+> <!-- Paste the requirement here. Prefer: “The system shall …” or “The system shall not …” for an anti-requirement. -->
+
+**Anti-requirement:** <!-- What must the system explicitly not do? Write “None” if this requirement has no relevant forbidden behavior. -->
 
 #### Quality checklist
 
@@ -61,7 +61,6 @@ Copy one card for each requirement.
 
 <!-- Write a complete replacement, or leave blank if no rewrite is needed. -->
 
-**Reviewer decision:** <!-- Approved / Changes requested -->  
-**Author response:** <!-- What changed, or why no change was made -->  
+**Reviewer decision:** <!-- Approved / Changes requested -->
+**Author response:** <!-- What changed, or why no change was made -->
 **Re-review completed:** <!-- Yes / No / N/A -->
-
