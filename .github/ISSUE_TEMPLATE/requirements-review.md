@@ -22,12 +22,12 @@ The checklist is based on the requirement-quality characteristics in [ISO/IEC/IE
 
 ## Assignment matrix
 
-| Requirement / anti-requirement | Type | Author | Reviewer | Review status |
-| --- | --- | --- | --- | --- |
-| The system shall display a confirmation message after a student completes a guided step. | Functional | Alex | Beatriz | Pending |
-| The system shall load the main screen within 2 seconds after startup. | Non-functional | Beatriz | Carlos | Pending |
-| The system shall not energize a circuit that has been classified as hazardous. | Anti-requirement | Carlos | Alex | Pending |
-| The system shall store the student’s progress when a module step is approved. | Functional | <!-- name --> | <!-- name --> | Pending |
+| Requirement / anti-requirement | Type | Reviewer | Review status |
+| --- | --- | --- | --- |
+| The system shall display a confirmation message after a student completes a guided step. | Functional | Beatriz | Pending |
+| The system shall load the main screen within 2 seconds after startup. | Non-functional | Carlos | Pending |
+| The system shall not energize a circuit that has been classified as hazardous. | Anti-requirement | Alex | Pending |
+| The system shall store the student’s progress when a module step is approved. | Functional | <!-- name --> | Pending |
 
 ## Requirement review cards
 
