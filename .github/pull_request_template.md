@@ -9,16 +9,6 @@ The checklist is based on the requirement-quality characteristics in
 processes — Requirements engineering](https://www.iso.org/standard/72089.html).
 This is a lightweight peer-review aid, not a formal compliance assessment.
 
-## Pull request information
-
-| Field | Value |
-| --- | --- |
-| PR | <!-- link or number --> |
-| Requirements file | <!-- path --> |
-| Author(s) | <!-- names --> |
-| Review deadline | <!-- date --> |
-| Reviewers | <!-- names --> |
-
 ## Review rules
 
 1. Add 4–8 requirements. Give each one a stable ID, such as `FR-01` or
@@ -73,20 +63,3 @@ the review remains understandable even when the source file changes later.
 **Reviewer decision:** <!-- Approved / Changes requested  -->  
 **Author response:** <!-- What changed, or why no change was made -->  
 **Re-review completed:** <!-- Yes / No / N/A -->
-
-## Final review summary
-
-| Item | Result |
-| --- | --- |
-| Every requirement has an author and a different reviewer | <!-- Yes / No --> |
-| Every requirement has 4–8 entries per author | <!-- Yes / No --> |
-| All checklist items are Pass or explicitly N/A | <!-- Yes / No --> |
-| All requested changes are resolved and re-reviewed | <!-- Yes / No --> |
-| Requirement IDs are unique and traceable to a source need | <!-- Yes / No --> |
-
-**Overall decision:** <!-- Approved / Changes requested -->
-
-**Open questions or follow-up issues:**
-
-<!-- Link issues instead of hiding unresolved decisions in the requirement text. -->
-
