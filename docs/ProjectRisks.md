@@ -1,6 +1,6 @@
 # Project risks 🎲
 
-Risk register for TedThunder.
+Risk register for TedTronics.
 
 > **Status:** the electronics risks below come from the electronics team's own analysis. Risks for
 > the other areas — vision, software, mechanics, project management — are still to be identified.

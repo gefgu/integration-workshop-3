@@ -1,6 +1,7 @@
 .env
 .env.*
 !.env.example
+AGENTS.md
 __pycache__
 color_analysis_output
 hidden

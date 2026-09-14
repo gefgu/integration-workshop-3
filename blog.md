@@ -1,8 +1,10 @@
 # Blog - Team #2
 
+**TedTronics: Tutor Educacional para Eletrônica**
+
 ## Links 🔗
 
-- [Project Review](./TedThunder.md) 🔍
+- [Project Review](./TedTronics.md) 🔍
 - [Requirements](./docs/REQUIREMENTS.md) ✔️
 - [Guided Modules and Challenges](./docs/modules_plan/modules.md) 📚
 - [Risk Analysis](./docs/ProjectRisks.md) 💣
@@ -29,7 +31,7 @@ For Plan A, we vibe-coded a web prototype using a Claude design. With this proto
 *The test prototype — Module 01, "Acender um LED", at step 4 of 8: the tutor explains that without
 the resistor almost 400 mA would go through the LED and burn it.*
 
-### Plan A — TedThunder ⚡
+### Plan A — TedTronics ⚡
 
 An interactive electronics workbench for Fundamental II students (7th to 8th grade). The student
 builds a real circuit out of Lego-like component capsules on a connection table, presses
@@ -49,7 +51,7 @@ What we detailed this week:
 - **Content.** Ten guided modules plus challenge versions, and a bonus module on the resistor
   color code.
 
-📄 [Full project description](./TedThunder.md) · 📋 [Requirements](./docs/REQUIREMENTS.md) ·
+📄 [Full project description](./TedTronics.md) · 📋 [Requirements](./docs/REQUIREMENTS.md) ·
 📚 [Modules](./docs/modules_plan/modules.md) · 💣 [Risks](./docs/ProjectRisks.md) (Very early stage) ·
 💵 [Budget](./docs/Budget.md) (Very early stage)
 
