@@ -1,11 +1,13 @@
-# TedThunder ⚡
+# TedTronics ⚡
+
+**TedTronics: Tutor Educacional para Eletrônica**
 
 An interactive electronics workbench for kids — build a real circuit with your hands, press
 **Energizar**, and watch it actually work.
 
 <table>
 <tr>
-<td width="50%" valign="top"><img src="./docs/images/mechanic_prototype.jpeg" alt="3D render of the TedThunder bench: the connection table, the 7-inch screen on its hinge, the joystick and the buttons" width="100%"></td>
+<td width="50%" valign="top"><img src="./docs/images/mechanic_prototype.jpeg" alt="3D render of the TedTronics bench: the connection table, the 7-inch screen on its hinge, the joystick and the buttons" width="100%"></td>
 <td width="50%" valign="top"><img src="./docs/images/guided_example_how_it_works.jpeg" alt="Guided mode interface: the circuit assembled on the bench, the graph extracted from it, the target graph for the step, and the tutor pointing out the missing connection" width="100%"></td>
 </tr>
 <tr>
@@ -31,7 +33,7 @@ Electricity is invisible, and that is exactly what makes it hard to teach. A stu
 that the long leg of an LED is the anode, that a resistor "limits current", that brown-black-red
 means 1 kΩ — and still have no intuition at all about what is happening inside the wire.
 
-TedThunder is a physical electronics workbench built for students of **Fundamental II (7th to 8th
+TedTronics is a physical electronics workbench built for students of **Fundamental II (7th to 8th
 grade)** with no prior technical background, developed under the Integration Workshop 3 at UTFPR.
 Its goal is technological literacy through practical intuition: the **what** and the **why**, not
 the memorization.
@@ -59,7 +61,7 @@ for a thirteen-year-old:
 
 ## Project description 📋
 
-TedThunder is a self-contained desktop unit. The student works on a **18 × 16 cm** connection
+TedTronics is a self-contained desktop unit. The student works on a **18 × 16 cm** connection
 table, drops components into it, and presses a single large button to bring the circuit to life.
 
 ### The table

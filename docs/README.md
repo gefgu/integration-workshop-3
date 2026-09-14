@@ -1,10 +1,12 @@
-# TedThunder documentation
+# TedTronics documentation
 
-This directory contains documentation produced for TedThunder.
+**TedTronics: Tutor Educacional para Eletrônica**
+
+This directory contains documentation produced for TedTronics.
 
 ## Current documents
 
-- [Project description](../TedThunder.md)
+- [Project description](../TedTronics.md)
 - [Requirements](REQUIREMENTS.md)
 - [Requirements review template](../.github/pull_request_template.md)
 - [Guided modules and challenges](modules_plan/modules.md)

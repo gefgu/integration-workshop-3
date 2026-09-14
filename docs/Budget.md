@@ -1,6 +1,6 @@
 # BOM 💵
 
-Bill of materials for TedThunder. Prices in BRL.
+Bill of materials for TedTronics. Prices in BRL.
 
 # Budget — Workshop 3
 
