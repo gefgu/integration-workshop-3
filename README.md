@@ -8,6 +8,8 @@ It is an interactive electronics workbench for Fundamental II students: they bui
 
 See [TedTronics.md](TedTronics.md) for the full project description.
 
+📄 [Project Notion](https://app.notion.com/p/fdd9670c116e82209954010e6b830a37)
+
 ## Documentation
 
 - [Blog](blog.md)
