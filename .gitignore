@@ -35,3 +35,6 @@ docs/task-plan-clean.csv
 *.tmp
 *~
 *.log
+
+# Claude Code project notes
+CLAUDE.md
