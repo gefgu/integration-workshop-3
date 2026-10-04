@@ -1,0 +1,118 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { analyze, corrente } from '../src/engine/sim.js';
+import { buildPiece, placementError, nearestHole, colX, rowY } from '../src/engine/board.js';
+import { newLesson, newQuiz, validateLesson, matchesTarget, lessonProblems } from '../src/model/lesson.js';
+
+const P = (id, type, a, b, row = 0) => ({ id, type, a, b, row });
+
+const loop = () => [
+  P('bat', 'bateria', 1, 2, 0),
+  P('r', 'resistor_470', 2, 3, 1),
+  P('led', 'led', 3, 4, 2),
+  P('j', 'jumper_longo', 4, 2, 3)
+];
+
+test('analyze: bateria → resistor → LED → volta é válido', () => {
+  const pieces = [
+    P('bat', 'bateria', 1, 2), P('r', 'resistor_470', 1, 3), P('led', 'led', 3, 4), P('w', 'jumper_longo', 4, 2)
+  ];
+  assert.equal(analyze(pieces).code, 'valido');
+});
+
+test('analyze: jumper direto nos polos é curto', () => {
+  assert.equal(analyze([P('bat', 'bateria', 1, 2), P('w', 'jumper_curto', 1, 2, 1)]).code, 'par_duplicado');
+  assert.equal(analyze([P('bat', 'bateria', 1, 2), P('w', 'jumper_curto', 1, 3), P('w2', 'jumper_curto', 3, 2, 1)]).code, 'curto');
+});
+
+test('analyze: sem bateria e sem resistor', () => {
+  assert.equal(analyze([]).code, 'sem_bateria');
+  const pieces = [P('bat', 'bateria', 1, 2), P('led', 'led', 1, 3), P('w', 'jumper_curto', 3, 2, 1)];
+  assert.equal(analyze(pieces).code, 'sem_resistor');
+});
+
+test('buildPiece vira para o outro lado quando sai da bancada', () => {
+  assert.deepEqual(buildPiece('resistor_470', 'x', 11, 0, 1), { id: 'x', type: 'resistor_470', a: 11, b: 10, row: 0 });
+  assert.equal(buildPiece('jumper_longo', 'x', 6, 0, 1).b, 8);
+});
+
+test('linhas do segundo banco (6–11) são válidas', () => {
+  assert.equal(placementError([], P('n', 'resistor_470', 2, 3, 11)), null);
+  assert.equal(validateLesson({ ...newLesson(), board: { pieces: [P('a', 'led', 1, 2, 11)] } }).ok, true);
+  assert.equal(validateLesson({ ...newLesson(), board: { pieces: [P('a', 'led', 1, 2, 12)] } }).ok, false);
+});
+
+test('placementError: limites, sobreposição e bateria única', () => {
+  const pieces = [P('bat', 'bateria', 1, 2, 0)];
+  assert.match(placementError(pieces, P('n', 'resistor_470', 2, 3, 0)), /Já existe/);
+  assert.equal(placementError(pieces, P('n', 'resistor_470', 2, 3, 1)), null);
+  assert.match(placementError(pieces, P('n', 'bateria', 5, 6, 4)), /só tem 1/);
+  assert.match(placementError(pieces, P('n', 'resistor_470', 11, 12, 1)), /sai da bancada/);
+  assert.equal(placementError(pieces, P('bat', 'bateria', 1, 2, 0), 'bat'), null);
+});
+
+test('nearestHole encaixa no furo mais próximo e rejeita fora da bancada', () => {
+  assert.deepEqual(nearestHole(colX(4) + 5, rowY(3) - 4), { col: 4, row: 3 });
+  assert.deepEqual(nearestHole(colX(2), rowY(10) + 3), { col: 2, row: 10 });
+  assert.equal(nearestHole(-200, 10), null);
+});
+
+test('matchesTarget: direção só importa para bateria e LED; linha é ignorada', () => {
+  const target = loop();
+  const same = target.map(p => ({ ...p, row: 5 }));
+  assert.equal(matchesTarget(same, target), true);
+  const resFlipped = target.map(p => (p.id === 'r' ? { ...p, a: 3, b: 2 } : p));
+  assert.equal(matchesTarget(resFlipped, target), true);
+  const ledFlipped = target.map(p => (p.id === 'led' ? { ...p, a: 4, b: 3 } : p));
+  assert.equal(matchesTarget(ledFlipped, target), false);
+  assert.equal(matchesTarget(target.slice(1), target), false);
+});
+
+test('validateLesson aceita lição válida e rejeita lixo', () => {
+  const l = newLesson();
+  l.title = 'Acender um LED';
+  l.board.pieces = loop();
+  l.quizzes = [newQuiz('after')];
+  const round = validateLesson(JSON.parse(JSON.stringify(l)));
+  assert.equal(round.ok, true);
+  assert.deepEqual(round.lesson.board.pieces, l.board.pieces);
+
+  assert.equal(validateLesson(null).ok, false);
+  assert.equal(validateLesson({ ...l, version: 99 }).ok, false);
+  assert.equal(validateLesson({ ...l, board: { pieces: [P('a', 'buzzer', 1, 2)] } }).ok, false);
+  assert.equal(validateLesson({ ...l, board: { pieces: [P('a', 'led', 1, 12)] } }).ok, false);
+  assert.equal(validateLesson({ ...l, quizzes: [{ ...l.quizzes[0], correctId: 'nope' }] }).ok, false);
+});
+
+test('lessonProblems bloqueia título vazio e pergunta sem resposta correta', () => {
+  const l = newLesson();
+  assert.deepEqual(lessonProblems(l), ['Dê um título à lição.']);
+  l.title = 'x';
+  const q = newQuiz();
+  l.quizzes = [q];
+  assert.ok(lessonProblems(l).length > 0);
+  q.prompt = 'Qual?'; q.options[0].text = 'A'; q.options[1].text = 'B';
+  assert.deepEqual(lessonProblems(l), []);
+});
+
+test('limites do kit (MFR8): 2 LEDs, 1 de cada resistor, 6 jumpers curtos, 3 longos', () => {
+  const fill = (type, n) => Array.from({ length: n }, (_, i) => P(type + i, type, 1 + (i % 9), 2 + (i % 9), i));
+  assert.match(placementError(fill('led', 2), P('x', 'led', 5, 6, 11)), /só tem 2/);
+  assert.equal(placementError(fill('led', 1), P('x', 'led', 5, 6, 11)), null);
+  assert.match(placementError(fill('resistor_220', 1), P('x', 'resistor_220', 5, 6, 11)), /só tem 1/);
+  assert.equal(placementError(fill('resistor_220', 1), P('x', 'resistor_1k', 5, 6, 11)), null);
+  assert.match(placementError(fill('jumper_curto', 6), P('x', 'jumper_curto', 5, 6, 11)), /só tem 6/);
+  assert.match(placementError(fill('jumper_longo', 3), P('x', 'jumper_longo', 5, 7, 11)), /só tem 3/);
+  assert.equal(placementError(fill('led', 2), P('led0', 'led', 5, 6, 11), 'led0'), null);
+  const l = { ...newLesson(), board: { pieces: fill('led', 3) } };
+  assert.equal(validateLesson(l).ok, false);
+});
+
+test('corrente depende do valor do resistor e antigos "resistor" migram para 470 Ω', () => {
+  const mk = (type) => analyze([P('bat', 'bateria', 1, 2), P('r', type, 1, 3), P('led', 'led', 3, 4), P('w', 'jumper_longo', 4, 2)]);
+  assert.ok(corrente(mk('resistor_220')) > corrente(mk('resistor_470')));
+  assert.ok(corrente(mk('resistor_470')) > corrente(mk('resistor_1k')));
+  assert.ok(Math.abs(corrente(mk('resistor_470')) - 3 / 470 * 1000) < 1e-9);
+  const l = { ...newLesson(), board: { pieces: [P('a', 'resistor', 1, 2)] } };
+  assert.equal(validateLesson(l).lesson.board.pieces[0].type, 'resistor_470');
+});
