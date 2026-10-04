@@ -38,3 +38,6 @@ docs/task-plan-clean.csv
 
 # Claude Code project notes
 CLAUDE.md
+
+# Electronics plans
+eletronics/*.md
