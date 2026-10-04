@@ -6,3 +6,32 @@ __pycache__
 color_analysis_output
 hidden
 notion-migration
+
+# Claude Code
+.claude/
+
+# Schematic exports
+SCH_*.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Python / node
+.venv/
+venv/
+node_modules/
+*.pyc
+
+# Docs scratch
+docs/task-plan.csv
+docs/task-plan-clean.csv
+
+# Backup / temp
+*.bak
+*.tmp
+*~
+*.log
