@@ -145,12 +145,12 @@ export default function BoardWorkspace({ pieces, onChange, trail = null, ledMa =
                 onPointerDown={(e) => startPieceDrag(p, e)}
                 title={NOMES[p.type]}
                 style={{
-                  position: 'absolute', left: colX(lo) - BODY_PAD, top: rowY(p.row) - 14, width: colX(hi) - colX(lo) + 2 * BODY_PAD,
+                  position: 'absolute', left: colX(lo) - BODY_PAD, top: rowY(p.row) - (p.type.startsWith('jumper') ? SOCKET / 2 : 14), width: colX(hi) - colX(lo) + 2 * BODY_PAD,
                   zIndex: 3, cursor: 'grab', opacity: hidden ? 0.25 : 1,
                   filter: glow && p.type !== 'led' && p.type !== 'buzzer' ? 'drop-shadow(0 0 6px rgba(143,160,115,.9))' : 'none'
                 }}
               >
-                <PieceView type={p.type} width={colX(hi) - colX(lo) + 2 * BODY_PAD} height={28} reversed={p.a > p.b} lit={glow && (p.type === 'led' || p.type === 'buzzer')} brilho={brilho}
+                <PieceView type={p.type} width={colX(hi) - colX(lo) + 2 * BODY_PAD} height={p.type.startsWith('jumper') ? SOCKET : 28} fill reversed={p.a > p.b} lit={glow && (p.type === 'led' || p.type === 'buzzer')} brilho={brilho}
                   value={p.value} onPotStep={p.type === 'potenciometro' ? (dir) => stepPot(p, dir) : undefined}
                   pressed={!!pressed && pressed.has(p.id)} onButton={p.type === 'botao' && onPress ? (down) => onPress(p.id, down) : undefined} />
               </div>
