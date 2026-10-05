@@ -1,5 +1,5 @@
 import { COLS, ROWS } from '../engine/board.js';
-import { DIRECTED, KIT_LIMITS, TYPES, countByType } from '../engine/sim.js';
+import { DIRECTED, KIT_LIMITS, POT_VALUES, TYPES, countByType } from '../engine/sim.js';
 
 export const LESSON_VERSION = 1;
 export const KINDS = ['guided', 'challenge'];
@@ -90,7 +90,9 @@ export function validateLesson(raw) {
     kind: raw.kind,
     board: {
       cols: COLS, rows: ROWS,
-      pieces: pieces.map(p => ({ id: p.id, type: p.type, a: p.a, b: p.b, row: p.row }))
+      pieces: pieces.map(p => (p.type === 'potenciometro' && POT_VALUES.includes(p.value)
+        ? { id: p.id, type: p.type, a: p.a, b: p.b, row: p.row, value: p.value }
+        : { id: p.id, type: p.type, a: p.a, b: p.b, row: p.row }))
     },
     quizzes: raw.quizzes.map(q => ({
       id: q.id, position: q.position, prompt: q.prompt, correctId: q.correctId,
