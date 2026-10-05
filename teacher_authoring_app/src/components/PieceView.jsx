@@ -3,19 +3,20 @@ import { CAPSULE, DEFS, POT_DEFAULT, formatOhms } from '../engine/sim.js';
 /**
  * Visual for one component, sized to `width` × `height`. Used on the board, tray and drag ghost.
  * Capsule colors follow MFR10; the black dots on top follow MFR11.
+ *  - fill: jumpers take the full `height` (on the board they cover the whole square sockets)
  *  - lit: LED glows / buzzer pulses
  *  - value + onPotStep(±1): potentiometer setting with −/+ buttons
  *  - pressed + onButton(down): pushbutton cap that can be held down
  */
 export default function PieceView({
-  type, width, height = 28, lit = false, brilho = 1, pins = true, reversed = false,
+  type, width, height = 28, fill = false, lit = false, brilho = 1, pins = true, reversed = false,
   value, onPotStep, pressed = false, onButton, style
 }) {
   const d = DEFS[type];
   const c = CAPSULE[d.cor];
   const isLed = type === 'led';
   const isJumper = type.startsWith('jumper');
-  const h = isJumper ? 12 : height;
+  const h = isJumper && !fill ? 12 : height;
   const base = {
     width, height: h, background: c.bg, color: c.ink,
     borderRadius: isLed ? (reversed ? '18px 8px 8px 18px' : '8px 18px 18px 8px') : (isJumper ? 6 : 10),
