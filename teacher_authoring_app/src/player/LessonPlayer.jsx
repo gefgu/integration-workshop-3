@@ -74,7 +74,9 @@ function QuizStep({ quiz, onDone, mascotKind }) {
 function BuildStep({ lesson, onDone, mascotKind }) {
   const [pieces, setPieces] = useState([]);
   const [energized, setEnergized] = useState(false);
-  const diag = diagnose(pieces);
+  const [held, setHeld] = useState(() => new Set());
+  const press = (id, down) => setHeld(h => { const n = new Set(h); if (down) n.add(id); else n.delete(id); return n; });
+  const diag = diagnose(pieces, held);
   const matches = matchesTarget(pieces, lesson.board.pieces);
   const complete = matches && energized;
 
@@ -87,7 +89,7 @@ function BuildStep({ lesson, onDone, mascotKind }) {
   return (
     <>
       <Bubble kind={mascotKind} tone={tone} message={msg} />
-      <BoardWorkspace pieces={pieces} onChange={setPieces} trail={lit ? diag.trail : null} ledMa={lit ? diag.mA : 0} />
+      <BoardWorkspace pieces={pieces} onChange={setPieces} trail={lit ? diag.trail : null} ledMa={lit ? diag.mA : 0} pressed={held} onPress={press} />
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, flexWrap: 'wrap' }}>
         <button
           onClick={() => setEnergized(e => !e)}

@@ -311,4 +311,5 @@ button { font-family: inherit; }
 .field-label { display: block; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--color-neutral-600); margin: 10px 0 4px; }
 .text-input { width: 100%; border: 1px solid var(--color-divider); border-radius: 12px; padding: 9px 12px; font: inherit; font-size: 14px; background: var(--color-neutral-100); color: var(--color-text); }
 .problems { margin: 8px 0 0; padding-left: 18px; font-size: 13px; color: var(--color-accent-800); }
+@keyframes pulse { from { transform: scale(1); } to { transform: scale(1.35); } }
 .btn-primary:disabled, .btn-outline:disabled { opacity: .45; cursor: default; }

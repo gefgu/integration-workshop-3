@@ -3,7 +3,7 @@ import {
   COLS, ROWS, BANK_ROWS, SOCKET, BOARD_W, BOARD_H, CHANNEL_TOP, CHANNEL_BOTTOM,
   colX, rowY, span, nearestHole, buildPiece, placementError, flip, nextPieceId
 } from '../engine/board.js';
-import { DEFS, NOMES } from '../engine/sim.js';
+import { CAPSULE, DEFS, NOMES, POT_DEFAULT, POT_VALUES } from '../engine/sim.js';
 import PieceView from './PieceView.jsx';
 import Tray from './Tray.jsx';
 
@@ -14,8 +14,9 @@ const BODY_PAD = SOCKET / 2;
  *  - pieces/onChange: controlled list of { id, type, a, b, row }
  *  - trail: { edgeIds:Set, nodes:Set } of the energized path (or null)
  *  - ledMa: brightness input for lit LEDs
+ *  - pressed/onPress(id, down): held pushbuttons (omit onPress for a non-interactive button)
  */
-export default function BoardWorkspace({ pieces, onChange, trail = null, ledMa = 0, onNotice }) {
+export default function BoardWorkspace({ pieces, onChange, trail = null, ledMa = 0, pressed = null, onPress, onNotice }) {
   const boardRef = useRef(null);
   const [drag, setDrag] = useState(null);
   const [notice, setNotice] = useState(null);
@@ -79,6 +80,12 @@ export default function BoardWorkspace({ pieces, onChange, trail = null, ledMa =
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onChange]);
 
+  function stepPot(p, dir) {
+    const i = POT_VALUES.indexOf(p.value || POT_DEFAULT);
+    const next = POT_VALUES[Math.min(POT_VALUES.length - 1, Math.max(0, i + dir))];
+    onChange(piecesRef.current.map(x => (x.id === p.id ? { ...x, value: next } : x)));
+  }
+
   // Snap preview while dragging over the board.
   let preview = null;
   if (drag && drag.moved && boardRef.current) {
@@ -140,10 +147,12 @@ export default function BoardWorkspace({ pieces, onChange, trail = null, ledMa =
                 style={{
                   position: 'absolute', left: colX(lo) - BODY_PAD, top: rowY(p.row) - 14, width: colX(hi) - colX(lo) + 2 * BODY_PAD,
                   zIndex: 3, cursor: 'grab', opacity: hidden ? 0.25 : 1,
-                  filter: glow && p.type !== 'led' ? 'drop-shadow(0 0 6px rgba(143,160,115,.9))' : 'none'
+                  filter: glow && p.type !== 'led' && p.type !== 'buzzer' ? 'drop-shadow(0 0 6px rgba(143,160,115,.9))' : 'none'
                 }}
               >
-                <PieceView type={p.type} width={colX(hi) - colX(lo) + 2 * BODY_PAD} height={28} reversed={p.a > p.b} lit={glow && p.type === 'led'} brilho={brilho} />
+                <PieceView type={p.type} width={colX(hi) - colX(lo) + 2 * BODY_PAD} height={28} reversed={p.a > p.b} lit={glow && (p.type === 'led' || p.type === 'buzzer')} brilho={brilho}
+                  value={p.value} onPotStep={p.type === 'potenciometro' ? (dir) => stepPot(p, dir) : undefined}
+                  pressed={!!pressed && pressed.has(p.id)} onButton={p.type === 'botao' && onPress ? (down) => onPress(p.id, down) : undefined} />
               </div>
             );
           })}
@@ -152,7 +161,7 @@ export default function BoardWorkspace({ pieces, onChange, trail = null, ledMa =
       </div>
 
       {drag && drag.moved && (
-        <div className="ghost-overlay" style={{ left: drag.x, top: drag.y, background: DEFS[drag.type].color, color: DEFS[drag.type].ink }}>
+        <div className="ghost-overlay" style={{ left: drag.x, top: drag.y, background: CAPSULE[DEFS[drag.type].cor].bg, color: CAPSULE[DEFS[drag.type].cor].ink, border: DEFS[drag.type].cor === 'branco' ? '1px solid #b9b2a4' : 'none' }}>
           {NOMES[drag.type]}
         </div>
       )}
