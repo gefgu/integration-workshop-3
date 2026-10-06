@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { analyze, corrente, DEFS } from '../src/engine/sim.js';
-import { buildPiece, placementError, nearestHole, colX, rowY } from '../src/engine/board.js';
-import { newLesson, newQuiz, validateLesson, matchesTarget, lessonProblems } from '../src/model/lesson.js';
+import { analyze, corrente, DEFS } from '../src/engine/sim.ts';
+import { buildPiece, placementError, nearestHole, colX, rowY } from '../src/engine/board.ts';
+import { newLesson, newQuiz, validateLesson, matchesTarget, lessonProblems } from '../src/model/lesson.ts';
 
 const P = (id, type, a, b, row = 0) => ({ id, type, a, b, row });
 
@@ -114,7 +114,8 @@ test('corrente depende do valor do resistor e antigos "resistor" migram para 470
   assert.ok(corrente(mk('resistor_470')) > corrente(mk('resistor_1k')));
   assert.ok(Math.abs(corrente(mk('resistor_470')) - 3 / 470 * 1000) < 1e-9);
   const l = { ...newLesson(), board: { pieces: [P('a', 'resistor', 1, 2)] } };
-  assert.equal(validateLesson(l).lesson.board.pieces[0].type, 'resistor_470');
+  const migrated = validateLesson(l);
+  assert.equal(migrated.ok === true ? migrated.lesson.board.pieces[0].type : null, 'resistor_470');
 });
 
 test('buzzer sozinho com a bateria fecha o circuito; capacitor bloqueia', () => {
@@ -141,7 +142,8 @@ test('potenciômetro: valor muda a corrente e é preservado no JSON', () => {
   const mk = (value) => [P('bat', 'bateria', 1, 2), { ...P('p', 'potenciometro', 1, 3), value }, P('led', 'led', 3, 4), P('w', 'jumper_longo', 4, 2, 1)];
   assert.ok(corrente(analyze(mk(100))) > corrente(analyze(mk(10000))));
   const l = { ...newLesson(), board: { pieces: [{ ...P('p', 'potenciometro', 1, 2), value: 2200 }] } };
-  assert.equal(validateLesson(l).lesson.board.pieces[0].value, 2200);
+  const parsed = validateLesson(l);
+  assert.equal(parsed.ok === true ? parsed.lesson.board.pieces[0].value : null, 2200);
 });
 
 test('limites do kit: buzzer 1, capacitor 2, botão 2, potenciômetro 1', () => {

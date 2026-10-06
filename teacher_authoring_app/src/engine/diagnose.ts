@@ -1,4 +1,4 @@
-import { analyze, corrente, MSG } from './sim.js';
+import { analyze, corrente, MSG } from './sim.ts';
 
 /**
  * Plain-language read of a circuit, plus the energized path (for glow) when it is valid.

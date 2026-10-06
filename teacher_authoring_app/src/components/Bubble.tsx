@@ -1,4 +1,4 @@
-import Mascot from '../mascot/Mascot.jsx';
+import Mascot from '../mascot/Mascot.tsx';
 
 const TONE_BG = { erro: 'var(--color-accent-200)', ok: 'var(--color-accent-2-200)', obs: 'var(--color-neutral-200)', info: 'var(--color-neutral-100)' };
 const TONE_INK = { erro: 'var(--color-accent-800)', ok: 'var(--color-accent-2-800)', obs: 'var(--color-neutral-800)', info: 'var(--color-neutral-800)' };

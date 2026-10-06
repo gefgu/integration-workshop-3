@@ -1,4 +1,6 @@
-import { CAPSULE, DEFS, POT_DEFAULT, formatOhms } from '../engine/sim.js';
+import { CAPSULE, DEFS, POT_DEFAULT, formatOhms } from '../engine/sim.ts';
+import type { CSSProperties } from 'react';
+import type { PieceType } from '../model/types.ts';
 
 /**
  * Visual for one component, sized to `width` × `height`. Used on the board, tray and drag ghost.
@@ -8,16 +10,17 @@ import { CAPSULE, DEFS, POT_DEFAULT, formatOhms } from '../engine/sim.js';
  *  - value + onPotStep(±1): potentiometer setting with −/+ buttons
  *  - pressed + onButton(down): pushbutton cap that can be held down
  */
+interface PieceViewProps { type: PieceType; width: number; height?: number; fill?: boolean; lit?: boolean; brilho?: number; pins?: boolean; reversed?: boolean; value?: number; onPotStep?: (direction: number) => void; pressed?: boolean; onButton?: (down: boolean) => void; style?: CSSProperties; }
 export default function PieceView({
   type, width, height = 28, fill = false, lit = false, brilho = 1, pins = true, reversed = false,
   value, onPotStep, pressed = false, onButton, style
-}) {
-  const d = DEFS[type];
-  const c = CAPSULE[d.cor];
+}: PieceViewProps) {
+  const d: { len: number; cor: string; text: string; dots?: number; pinA?: string; pinB?: string } = DEFS[type];
+  const c = CAPSULE[d.cor as keyof typeof CAPSULE];
   const isLed = type === 'led';
   const isJumper = type.startsWith('jumper');
   const h = isJumper && !fill ? 12 : height;
-  const base = {
+  const base: CSSProperties = {
     width, height: h, background: c.bg, color: c.ink,
     borderRadius: isLed ? (reversed ? '18px 8px 8px 18px' : '8px 18px 18px 8px') : (isJumper ? 6 : 10),
     boxShadow: 'inset 0 2px 0 rgba(255,255,255,.34), inset 0 -3px 0 rgba(0,0,0,.28)',
