@@ -1,5 +1,5 @@
-import { DEFS, KIT_LIMITS, NOMES, TYPES, countByType } from '../engine/sim.js';
-import PieceView from './PieceView.jsx';
+import { DEFS, KIT_LIMITS, NOMES, TYPES, countByType } from '../engine/sim.ts';
+import PieceView from './PieceView.tsx';
 
 /** Bandeja com os componentes do kit (limites do MFR8). `onDragStart(type, event)` inicia o arraste. */
 export default function Tray({ pieces, onDragStart }) {

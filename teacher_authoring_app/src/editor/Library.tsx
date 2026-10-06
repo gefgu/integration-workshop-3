@@ -19,7 +19,7 @@ export default function Library({ lessons, onNew, onOpen, onTest, onDuplicate, o
             <div style={{ flex: '1 1 220px' }}>
               <div style={{ fontFamily: 'var(--font-heading)', fontSize: 16 }}>{l.title}</div>
               <div style={{ fontSize: 12, color: 'var(--color-neutral-600)' }}>
-                {KIND[l.kind]} · {l.board.pieces.length} peças · {l.quizzes.length} perguntas · {new Date(l.updatedAt).toLocaleString('pt-BR')}
+                {KIND[l.kind]} · {l.board.pieces.length} peças{l.steps && l.steps.length > 0 ? ` · ${l.steps.length} passos` : ""} · {l.quizzes.length} perguntas · {new Date(l.updatedAt).toLocaleString('pt-BR')}
               </div>
             </div>
             <button className="btn-outline" onClick={() => onOpen(l)}>Editar</button>

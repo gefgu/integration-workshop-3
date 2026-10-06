@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-  COLS, ROWS, BANK_ROWS, SOCKET, BOARD_W, BOARD_H, CHANNEL_TOP, CHANNEL_BOTTOM,
+  SOCKET,
   colX, rowY, span, nearestHole, buildPiece, placementError, flip, nextPieceId
-} from '../engine/board.js';
-import { CAPSULE, DEFS, NOMES, POT_DEFAULT, POT_VALUES } from '../engine/sim.js';
-import PieceView from './PieceView.jsx';
-import Tray from './Tray.jsx';
+} from '../engine/board.ts';
+import { CAPSULE, DEFS, NOMES, POT_DEFAULT, POT_VALUES } from '../engine/sim.ts';
+import PieceView from './PieceView.tsx';
+import Tray from './Tray.tsx';
+import Breadboard from './Breadboard.tsx';
+import type { Piece, PieceType, CircuitTrail } from '../model/types.ts';
 
 const BODY_PAD = SOCKET / 2;
 
@@ -15,8 +17,11 @@ const BODY_PAD = SOCKET / 2;
  *  - trail: { edgeIds:Set, nodes:Set } of the energized path (or null)
  *  - ledMa: brightness input for lit LEDs
  *  - pressed/onPress(id, down): held pushbuttons (omit onPress for a non-interactive button)
+ *  - readOnly: a preview — no tray, no dragging, no clearing
+ *  - highlightIds: Set of piece ids drawn with an accent outline (e.g. the current step's piece)
  */
-export default function BoardWorkspace({ pieces, onChange, trail = null, ledMa = 0, pressed = null, onPress, onNotice }) {
+interface BoardWorkspaceProps { pieces: Piece[]; onChange: (pieces: Piece[]) => void; trail?: CircuitTrail | null; ledMa?: number; pressed?: Set<string> | null; onPress?: (id: string, down: boolean) => void; onNotice?: (message: string) => void; readOnly?: boolean; highlightIds?: Set<string> | null; }
+export default function BoardWorkspace({ pieces, onChange, trail = null, ledMa = 0, pressed = null, onPress, onNotice, readOnly = false, highlightIds = null }: BoardWorkspaceProps) {
   const boardRef = useRef(null);
   const [drag, setDrag] = useState(null);
   const [notice, setNotice] = useState(null);
@@ -101,31 +106,9 @@ export default function BoardWorkspace({ pieces, onChange, trail = null, ledMa =
 
   return (
     <div style={{ display: 'flex', gap: 18, alignItems: 'flex-start', justifyContent: 'center' }}>
-      <Tray pieces={pieces} onDragStart={startTrayDrag} />
+      {!readOnly && <Tray pieces={pieces} onDragStart={startTrayDrag} />}
       <div>
-        <div ref={boardRef} style={{ position: 'relative', width: BOARD_W, height: BOARD_H, background: 'var(--color-neutral-200)', borderRadius: 24, boxShadow: 'inset 0 2px 0 rgba(255,255,255,.5), var(--shadow-md)' }}>
-          <div style={{ position: 'absolute', left: 14, top: 10, fontSize: 10, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--color-neutral-500)' }}>
-            2 bancos de {COLS} × {BANK_ROWS} · cada coluna é um único nó elétrico
-          </div>
-          <div style={{ position: 'absolute', left: 14, top: CHANNEL_TOP, width: BOARD_W - 28, height: CHANNEL_BOTTOM - CHANNEL_TOP, borderRadius: 10, background: 'var(--color-neutral-400)', opacity: 0.28 }} />
-
-          {Array.from({ length: COLS }).map((_, ci) => (
-            <div key={'n' + ci} style={{ position: 'absolute', left: colX(ci + 1) - 9, top: 26, width: 18, textAlign: 'center', fontSize: 10, color: trail && trail.nodes.has(ci + 1) ? 'var(--color-accent-2-700)' : 'var(--color-neutral-500)', fontWeight: 700 }}>{ci + 1}</div>
-          ))}
-
-          {Array.from({ length: COLS }).map((_, ci) => (
-            Array.from({ length: ROWS }).map((__, r) => {
-              const on = trail && trail.nodes.has(ci + 1);
-              return (
-                <div key={ci + '-' + r} style={{
-                  position: 'absolute', left: colX(ci + 1) - SOCKET / 2, top: rowY(r) - SOCKET / 2, width: SOCKET, height: SOCKET, borderRadius: 6,
-                  background: on ? 'var(--color-accent-2-500)' : 'var(--color-neutral-300)',
-                  boxShadow: on ? '0 0 8px rgba(143,160,115,.8)' : 'inset 0 2px 3px rgba(0,0,0,.28)'
-                }} />
-              );
-            })
-          ))}
-
+        <Breadboard boardRef={boardRef} trail={trail}>
           {preview && (
             <div style={{
               position: 'absolute', left: colX(span(preview.piece)[0]) - BODY_PAD, top: rowY(preview.piece.row) - 16,
@@ -142,11 +125,12 @@ export default function BoardWorkspace({ pieces, onChange, trail = null, ledMa =
             return (
               <div
                 key={p.id}
-                onPointerDown={(e) => startPieceDrag(p, e)}
+                onPointerDown={readOnly ? undefined : (e) => startPieceDrag(p, e)}
                 title={NOMES[p.type]}
                 style={{
                   position: 'absolute', left: colX(lo) - BODY_PAD, top: rowY(p.row) - (p.type.startsWith('jumper') ? SOCKET / 2 : 14), width: colX(hi) - colX(lo) + 2 * BODY_PAD,
-                  zIndex: 3, cursor: 'grab', opacity: hidden ? 0.25 : 1,
+                  zIndex: 3, cursor: readOnly ? 'default' : 'grab', opacity: hidden ? 0.25 : 1,
+                  outline: highlightIds && highlightIds.has(p.id) ? '3px solid var(--color-accent)' : 'none', outlineOffset: 2, borderRadius: 8,
                   filter: glow && p.type !== 'led' && p.type !== 'buzzer' ? 'drop-shadow(0 0 6px rgba(143,160,115,.9))' : 'none'
                 }}
               >
@@ -156,8 +140,11 @@ export default function BoardWorkspace({ pieces, onChange, trail = null, ledMa =
               </div>
             );
           })}
+        </Breadboard>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, minHeight: 36, marginTop: 8 }}>
+          {!readOnly && <button className="btn-outline" disabled={pieces.length === 0} onClick={() => { setNotice(null); onChange([]); }}>Limpar bancada</button>}
+          <div style={{ fontSize: 13, color: 'var(--color-accent-800)' }} role="status">{notice}</div>
         </div>
-        <div style={{ minHeight: 22, marginTop: 8, fontSize: 13, color: 'var(--color-accent-800)' }} role="status">{notice}</div>
       </div>
 
       {drag && drag.moved && (

@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
-import LessonEditor from './editor/LessonEditor.jsx';
-import LessonPlayer from './player/LessonPlayer.jsx';
-import Library from './editor/Library.jsx';
-import { newLesson } from './model/lesson.js';
-import { loadLessons, saveLessons, upsertLesson, duplicateLesson, downloadLesson, readLessonFile, loadDraft, saveDraft } from './storage/lessonStore.js';
+import LessonEditor from './editor/LessonEditor.tsx';
+import LessonPlayer from './player/LessonPlayer.tsx';
+import Library from './editor/Library.tsx';
+import { newLesson } from './model/lesson.ts';
+import { loadLessons, saveLessons, upsertLesson, duplicateLesson, downloadLesson, readLessonFile, loadDraft, saveDraft } from './storage/lessonStore.ts';
 
 export default function App() {
   const [tab, setTab] = useState('biblioteca');
@@ -31,7 +31,7 @@ export default function App() {
 
   async function importFile(file) {
     const r = await readLessonFile(file);
-    if (!r.ok) { setError(r.error); return; }
+    if (r.ok === false) { setError(r.error); return; }
     const exists = lessons.some(l => l.id === r.lesson.id);
     persist(upsertLesson(lessons, r.lesson));
     setError('');
@@ -66,7 +66,7 @@ export default function App() {
           />
         )}
         {tab === 'editor' && (
-          <LessonEditor lesson={lesson} setLesson={setLesson} onSave={save} onExport={downloadLesson} onTest={() => setTab('testar')} mascotKind={mascotKind} status={status} />
+          <LessonEditor lesson={lesson} setLesson={setLesson} onSave={save} onExport={downloadLesson} onTest={() => setTab('testar')} status={status} />
         )}
         {tab === 'testar' && <LessonPlayer key={lesson.updatedAt + lesson.id} lesson={lesson} onExit={() => setTab('editor')} mascotKind={mascotKind} />}
       </div>

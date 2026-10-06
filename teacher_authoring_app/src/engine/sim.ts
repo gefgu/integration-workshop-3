@@ -39,7 +39,7 @@ export const NOMES = {
   jumper_curto: 'Jumper curto', jumper_longo: 'Jumper longo'
 };
 
-export const TYPES = Object.keys(DEFS);
+export const TYPES = Object.keys(DEFS) as PieceType[];
 
 /** Resistance of the fixed resistors; series resistors add up. */
 export const RESISTOR_OHMS = { resistor_220: 220, resistor_470: 470, resistor_1k: 1000 };
@@ -48,12 +48,12 @@ export const RESISTOR_OHMS = { resistor_220: 220, resistor_470: 470, resistor_1k
 export const POT_VALUES = [100, 220, 470, 1000, 2200, 4700, 10000];
 export const POT_DEFAULT = 1000;
 
-export function pieceOhms(p) {
+export function pieceOhms(p: Piece): number {
   if (p.type === 'potenciometro') return p.value || POT_DEFAULT;
   return RESISTOR_OHMS[p.type] || 0;
 }
 
-export function formatOhms(ohms) {
+export function formatOhms(ohms: number) {
   return ohms >= 1000 ? (ohms / 1000).toString().replace('.', ',') + ' kΩ' : ohms + ' Ω';
 }
 
@@ -65,8 +65,8 @@ export const KIT_LIMITS = {
   jumper_curto: 6, jumper_longo: 3
 };
 
-export function countByType(pieces) {
-  const n = {};
+export function countByType(pieces: Piece[]): Partial<Record<PieceType, number>> {
+  const n: Partial<Record<PieceType, number>> = {};
   for (const p of pieces) n[p.type] = (n[p.type] || 0) + 1;
   return n;
 }
@@ -91,7 +91,7 @@ export const MSG = {
  * `opts.pressed`: Set of pushbutton ids being held. null/undefined = every button
  * counts as pressed (used when judging the design in the editor).
  */
-export function analyze(pieces, opts = {}) {
+export function analyze(pieces: Piece[], opts: { pressed?: Set<string> | null } = {}): CircuitAnalysis {
   const bat = pieces.find(p => p.type === 'bateria');
   for (let i = 0; i < pieces.length; i++) {
     for (let j = i + 1; j < pieces.length; j++) {
@@ -166,7 +166,7 @@ export function analyze(pieces, opts = {}) {
   return { code: iso ? 'peca_isolada' : 'aberto', trail: null };
 }
 
-export function reach(pieces, start, excludeIds) {
+export function reach(pieces: Piece[], start: number, excludeIds: string[]): Set<number> {
   const seen = new Set([start]);
   const q = [start];
   const edges = pieces.filter(p => p.type !== 'bateria' && excludeIds.indexOf(p.id) < 0);
@@ -181,7 +181,8 @@ export function reach(pieces, start, excludeIds) {
 }
 
 /** Current (mA) through the load for an `analyze` result: 5 V source, ~2 V LED drop, buzzer ≈ 250 Ω. */
-export function corrente(an) {
+export function corrente(an: CircuitAnalysis): number {
   if (an.code !== 'valido') return 0;
   return an.load === 'buzzer' ? 5 / (an.ohms + 250) * 1000 : (5 - 2.0) / an.ohms * 1000;
 }
+import type { CircuitAnalysis, Piece, PieceType } from '../model/types.ts';
