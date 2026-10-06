@@ -14,6 +14,8 @@ class Issue:
     category: Category
     family: str  # component family the issue is about (used for per-component overrides)
     part_id: str | None = None
+    expected_part_id: str | None = None
+    actual_part_id: str | None = None
 
 
 def _token(p: Part, dx: int, values: bool) -> tuple:
@@ -82,6 +84,28 @@ def diff_parts(student: list[Part], target: list[Part], opts: MatchOptions) -> l
                 extra.remove((etok, ep))
                 break
 
+    # The right component is present but its terminals connect to different columns/nets.
+    for etok, ep in list(extra):
+        for mtok, mp in missing:
+            if ep.family == mp.family and ep.family != "jumper":
+                category = (
+                    Category.WRONG_VALUE
+                    if values and etok[2] != mtok[2]
+                    else Category.MISCONNECTED_COMPONENT
+                )
+                issues.append(
+                    Issue(
+                        category,
+                        mp.family,
+                        ep.id,
+                        expected_part_id=mp.id,
+                        actual_part_id=ep.id,
+                    )
+                )
+                missing.remove((mtok, mp))
+                extra.remove((etok, ep))
+                break
+
     # 3) A jumper is missing in one place and present in another: it is in the wrong place.
     miss_j = [m for m in missing if m[1].family == "jumper"]
     extra_j = [e for e in extra if e[1].family == "jumper"]
@@ -99,4 +123,42 @@ def diff_parts(student: list[Part], target: list[Part], opts: MatchOptions) -> l
     if not issues:
         # Same pieces, same columns, yet not isomorphic (e.g. strict positions differ).
         issues.append(Issue(Category.INCORRECT_CONNECTION, "*"))
+    return issues
+
+
+def diff_inventory(student: list[Part], target: list[Part], opts: MatchOptions) -> list[Issue]:
+    """Compare placed inventory only; placement lessons deliberately ignore terminals/coordinates."""
+    def token(p: Part) -> tuple:
+        identity = p.ctype if p.family == "jumper" else p.family
+        return identity, p.value if opts.match_values else None
+
+    extra = list(student)
+    missing = []
+    for expected in target:
+        key = token(expected)
+        found = next((i for i, actual in enumerate(extra) if token(actual) == key), None)
+        if found is not None:
+            del extra[found]
+            continue
+        wrong = next((i for i, actual in enumerate(extra)
+                      if actual.family == expected.family and actual.family != "jumper"), None)
+        if wrong is None and expected.family != "jumper":
+            wrong = next((i for i, actual in enumerate(extra) if actual.family != "jumper"), None)
+        if wrong is not None:
+            actual = extra.pop(wrong)
+            category = (
+                Category.WRONG_VALUE
+                if actual.family == expected.family and opts.match_values and actual.value != expected.value
+                else Category.WRONG_COMPONENT
+            )
+            missing.append(Issue(category, expected.family, actual.id, expected.id, actual.id))
+        else:
+            missing.append(Issue(
+                Category.MISSING_CONNECTION if expected.family == "jumper" else Category.MISSING_COMPONENT,
+                expected.family, expected.id,
+            ))
+    issues = list(missing)
+    for actual in extra:
+        category = Category.EXCESS_CONNECTION if actual.family == "jumper" else Category.EXCESS_COMPONENT
+        issues.append(Issue(category, actual.family, actual.id))
     return issues

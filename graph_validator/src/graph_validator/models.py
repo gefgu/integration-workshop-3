@@ -64,13 +64,17 @@ class Category(str, Enum):
     MISSING_COMPONENT = "missing_component"
     MISSING_CONNECTION = "missing_connection"
     EXCESS_CONNECTION = "excess_connection"
+    EXCESS_COMPONENT = "excess_component"
     INCORRECT_CONNECTION = "incorrect_connection"
     REVERSED_POLARITY = "reversed_polarity"
     WRONG_VALUE = "wrong_value"
     WRONG_COMPONENT = "wrong_component"
+    MISCONNECTED_COMPONENT = "misconnected_component"
+    OPEN_CIRCUIT = "open_circuit"
+    SHORT_CIRCUIT = "short_circuit"
 
 
-Action = Literal["place_component", "place_connection", "interact"]
+Action = Literal["place_component", "place_connection", "connect_circuit", "interact"]
 
 
 class InteractSpec(BaseModel):

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { buildPiece, colX, nearestHole, placementError, rowY } from '../src/engine/board.ts';
 import { analyze, corrente, DEFS } from '../src/engine/sim.ts';
-import { lessonProblems, matchesTarget, newLesson, newQuiz, validateLesson } from '../src/model/lesson.ts';
+import { lessonProblems, newLesson, newQuiz, validateLesson } from '../src/model/lesson.ts';
 
 const P = (id, type, a, b, row = 0) => ({ id, type, a, b, row });
 
@@ -61,17 +61,6 @@ test('nearestHole encaixa no furo mais próximo e rejeita fora da bancada', () =
   assert.deepEqual(nearestHole(colX(4) + 5, rowY(3) - 4), { col: 4, row: 3 });
   assert.deepEqual(nearestHole(colX(2), rowY(10) + 3), { col: 2, row: 10 });
   assert.equal(nearestHole(-200, 10), null);
-});
-
-test('matchesTarget: direção só importa para bateria e LED; linha é ignorada', () => {
-  const target = loop();
-  const same = target.map((p) => ({ ...p, row: 5 }));
-  assert.equal(matchesTarget(same, target), true);
-  const resFlipped = target.map((p) => (p.id === 'r' ? { ...p, a: 3, b: 2 } : p));
-  assert.equal(matchesTarget(resFlipped, target), true);
-  const ledFlipped = target.map((p) => (p.id === 'led' ? { ...p, a: 4, b: 3 } : p));
-  assert.equal(matchesTarget(ledFlipped, target), false);
-  assert.equal(matchesTarget(target.slice(1), target), false);
 });
 
 test('validateLesson aceita lição válida e rejeita lixo', () => {

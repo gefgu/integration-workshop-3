@@ -70,3 +70,27 @@ test('lintLesson e feedbackCatalog', async () => {
   assert.equal(method, 'GET');
   assert.equal(cat.categories[0].category, 'complete');
 });
+
+test('validateStep traduz as ligações (nets) da depuração', async () => {
+  const f = reply(200, {
+    approved: true,
+    message: 'ok',
+    graph_hash: 'sp:1',
+    issues: [],
+    debug: {
+      step_id: 's',
+      action: 'connect_circuit',
+      expected_pieces: [],
+      actual_pieces: [],
+      match_values: false,
+      strict_positions: false,
+      expected_nets: ['bateria[b].-  = botao[x].pin'],
+      actual_nets: ['bateria[b].- = resistor[r].pin'],
+      expected_circuit: 'série(botao, resistor)',
+      actual_circuit: 'série(botao, resistor)',
+    },
+  });
+  const r = await validateStep({ lesson: lesson(), pieces: [], stepIdx: 0, debug: true }, f);
+  assert.deepEqual(r.result.debug.expectedNets, ['bateria[b].-  = botao[x].pin']);
+  assert.equal(r.result.debug.actualCircuit, 'série(botao, resistor)');
+});

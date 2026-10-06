@@ -11,7 +11,7 @@ python -m graph_validator.cli validate lesson.json board.json [--teacher] [--ste
 ## How it works
 - **Graph (SFR1):** one node per component terminal (`ctype`, `terminal`, `value`, `col`, `row`). Edges: inside a component, and between terminals in the same column. Rows never create edges (a column is one net across both banks). Battery and LED keep distinct terminals (polarity matters); other parts have orderless `pin` legs.
 - **Match (SFR5/6/8):** networkx VF2 isomorphism behind cheap prefilters (counts, labels, degrees, WL hash). Default: type only. Per step `options`: `match_values` (resistor/pot value), `strict_positions` (compared relative to the circuit's bounding box, so shifting a build never breaks it).
-- **Feedback (SFR12/14/15):** `complete`, `missing_component`, `missing_connection`, `excess_connection`, `incorrect_connection`, `reversed_polarity`, `wrong_value`, `wrong_component`; default pt-BR messages, per-step `overrides: {category: {family|"*": text}}` (SFR15.1).
+- **Feedback (SFR12/14/15):** `complete`, `missing_component`, `missing_connection`, `excess_connection`, `incorrect_connection`, `reversed_polarity`, `wrong_value`, `wrong_component`, `misconnected_component`, `open_circuit`, `short_circuit`; default pt-BR messages, per-step `overrides: {category: {family|"*": text}}` (SFR15.1).
 - **Steps (SFR2/3/4/19/23):** guided = target per step (cumulative `add`, or explicit `pieces` boundary); challenge = final target only. `lint` enforces exactly one action per guided step. `interact` steps are approved from the quiz answer.
 - **Hint (SFR7):** `hint` is returned only when `graph_hash != previous_graph_hash` and the step isn't approved.
 
@@ -23,3 +23,12 @@ python -m graph_validator.cli validate lesson.json board.json [--teacher] [--ste
 
 ## Assumptions
 Short/long jumpers are one family; capacitor value is ignored; camera output already carries a resolved `type` (colour+dots disambiguation stays in vision code). Out of scope: ENFR6 current limits, EFR18 energize gate, smart-capsule behaviour.
+
+## Used by the teacher app
+The teacher authoring app creates steps (auto-split from the final board, then editable) and its **Testar** mode validates through this service. The same FastAPI service also serves MySQL-backed `/workspace` endpoints for lessons, turmas and students. See the repository README for MySQL and migration setup. Once the database is ready, run both:
+```
+cd graph_validator && python3 -m venv .venv && .venv/bin/pip install -e '.[dev]'
+cd teacher_authoring_app && npm run validator   # uvicorn on :8000
+cd teacher_authoring_app && npm run dev         # Vite proxies /api -> :8000
+```
+Extra endpoints for the app: `GET /feedback/categories` (default pt-BR messages for the override UI) and `byStep` in the `/lessons/lint` response.

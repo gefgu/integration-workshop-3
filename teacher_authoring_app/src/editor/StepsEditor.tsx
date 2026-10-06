@@ -8,6 +8,7 @@ import { newQuiz } from '../model/lesson.ts';
 import {
   autoSplit,
   CATEGORIES,
+  connectionStep,
   cumulativeBoard,
   newStep,
   overrideRows,
@@ -29,15 +30,24 @@ const field: CSSProperties = {
   color: 'var(--color-text)',
   userSelect: 'text',
 };
-const ACTION_LABEL = { place_component: 'Colocar peça', place_connection: 'Ligar com jumper', interact: 'Interação' };
+const ACTION_LABEL = {
+  place_component: 'Colocar peça',
+  place_connection: 'Colocar jumper',
+  connect_circuit: 'Conectar circuito',
+  interact: 'Interação',
+};
 const CATEGORY_LABEL = {
   missing_component: 'Falta uma peça',
   missing_connection: 'Falta um fio',
   excess_connection: 'Peça sobrando',
+  excess_component: 'Peça sobrando',
   incorrect_connection: 'Ligação no lugar errado',
   reversed_polarity: 'Polaridade invertida',
   wrong_value: 'Valor errado',
   wrong_component: 'Peça errada',
+  misconnected_component: 'Peça presente, ligação incorreta',
+  open_circuit: 'Circuito aberto',
+  short_circuit: 'Curto-circuito',
 };
 
 /** Debounced advisory lint from graph_validator; `null` = not checked yet, `{offline}` = service down. */
@@ -144,7 +154,21 @@ export default function StepsEditor({ lesson, setLesson, selected, setSelected }
     setSteps(autoSplit(lesson.board.pieces));
     setSelected(null);
   };
-  const addMissing = () => setSteps([...steps, ...autoSplit(unassigned)]);
+  const addMissing = () => {
+    const more = autoSplit(unassigned).filter((s) => s.action !== 'connect_circuit');
+    const circuitIndex = steps.findIndex((s) => s.action === 'connect_circuit');
+    const next = [...steps];
+    next.splice(circuitIndex < 0 ? steps.length : circuitIndex, 0, ...more);
+    if (circuitIndex < 0 && lesson.board.pieces.length) next.push(connectionStep());
+    setSteps(next);
+  };
+  const addCircuitCheck = () => {
+    if (steps.some((s) => s.action === 'connect_circuit')) return;
+    const interactionsAt = steps.findIndex((s) => s.action === 'interact');
+    const next = [...steps];
+    next.splice(interactionsAt < 0 ? next.length : interactionsAt, 0, connectionStep());
+    setSteps(next);
+  };
   const addInteract = () => {
     const q = newQuiz('step');
     setLesson((l) => ({
@@ -165,6 +189,14 @@ export default function StepsEditor({ lesson, setLesson, selected, setSelected }
         </button>
         <button type="button" className="btn-outline" onClick={addInteract}>
           + Passo de interação
+        </button>
+        <button
+          type="button"
+          className="btn-outline"
+          onClick={addCircuitCheck}
+          disabled={steps.some((s) => s.action === 'connect_circuit')}
+        >
+          + Conectar circuito
         </button>
       </div>
       {steps.length === 0 && (
@@ -342,22 +374,31 @@ function StepDetails({ lesson, step, patch, catalog, stepQuizzes }) {
         </label>
       ) : (
         <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', fontSize: 13 }}>
-          <label title="Exige o mesmo valor de resistor/potenciômetro">
-            <input
-              type="checkbox"
-              checked={step.options.matchValues}
-              onChange={(e) => patch((s) => ({ ...s, options: { ...s.options, matchValues: e.target.checked } }))}
-            />{' '}
-            Conferir valores
-          </label>
-          <label title="Exige as peças nas mesmas posições relativas (coluna e linha)">
-            <input
-              type="checkbox"
-              checked={step.options.strictPositions}
-              onChange={(e) => patch((s) => ({ ...s, options: { ...s.options, strictPositions: e.target.checked } }))}
-            />{' '}
-            Conferir posições
-          </label>
+          {(step.action === 'place_component' || step.action === 'connect_circuit') && (
+            <label title="Exige o mesmo valor de resistor/potenciômetro">
+              <input
+                type="checkbox"
+                checked={step.options.matchValues}
+                onChange={(e) => patch((s) => ({ ...s, options: { ...s.options, matchValues: e.target.checked } }))}
+              />{' '}
+              Conferir valores
+            </label>
+          )}
+          {step.action === 'connect_circuit' && (
+            <label title="Desmarcado: as peças podem ficar em outras posições ou em outra ordem (em série ou em paralelo), desde que o circuito seja eletricamente equivalente.">
+              <input
+                type="checkbox"
+                checked={!!step.options?.strictPositions}
+                onChange={(e) => patch((s) => ({ ...s, options: { ...s.options, strictPositions: e.target.checked } }))}
+              />{' '}
+              Fixar posições como no gabarito
+            </label>
+          )}
+          {step.action === 'place_connection' && (
+            <span>
+              Este passo confere apenas a presença do jumper; as ligações serão verificadas em “Conectar circuito”.
+            </span>
+          )}
         </div>
       )}
 

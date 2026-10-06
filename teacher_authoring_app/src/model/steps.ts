@@ -1,15 +1,19 @@
 import { uid } from './ids.ts';
 import type { Lesson, LessonStep, Piece, StepAction, StepOptions } from './types.ts';
 
-export const ACTIONS = ['place_component', 'place_connection', 'interact'];
+export const ACTIONS = ['place_component', 'place_connection', 'connect_circuit', 'interact'];
 export const CATEGORIES = [
   'missing_component',
   'missing_connection',
   'excess_connection',
+  'excess_component',
   'incorrect_connection',
   'reversed_polarity',
   'wrong_value',
   'wrong_component',
+  'misconnected_component',
+  'open_circuit',
+  'short_circuit',
 ];
 
 const isJumper = (type) => type.startsWith('jumper');
@@ -44,9 +48,7 @@ export function newStep(patch: Partial<LessonStep> = {}): LessonStep {
 
 export function stepText(piece: Piece): string {
   if (isJumper(piece.type)) {
-    const lo = Math.min(piece.a, piece.b),
-      hi = Math.max(piece.a, piece.b);
-    return `Ligue as colunas ${lo} e ${hi} com um jumper.`;
+    return `Coloque um jumper de ${Math.abs(piece.a - piece.b)} colunas na bancada. As conexões serão conferidas no passo final.`;
   }
   return `Coloque ${NOME[piece.type] || 'a peça'} na bancada.`;
 }
@@ -59,7 +61,16 @@ export function autoSplit(pieces: Piece[]): LessonStep[] {
   const lo = (p) => Math.min(p.a, p.b);
   const rank = (p) => (p.type === 'bateria' ? 0 : isJumper(p.type) ? 2 : 1);
   const ordered = [...pieces].sort((x, y) => rank(x) - rank(y) || lo(x) - lo(y) || x.id.localeCompare(y.id));
-  return ordered.map((p) => newStep({ action: actionFor(p), pieceId: p.id, text: stepText(p) }));
+  if (!ordered.length) return [];
+  return [...ordered.map((p) => newStep({ action: actionFor(p), pieceId: p.id, text: stepText(p) })), connectionStep()];
+}
+
+export function connectionStep(id = uid('step')): LessonStep {
+  return newStep({
+    id,
+    action: 'connect_circuit',
+    text: 'Agora conecte os componentes conforme o circuito pedido. As ligações serão conferidas nesta etapa.',
+  });
 }
 
 /** The steps a lesson plays: its own, or (for old lessons) an on-the-fly split of the board. */
@@ -85,7 +96,9 @@ export function reconcile(lesson: Lesson): { unassigned: Piece[]; dangling: Less
   const used = new Set(lesson.steps.filter((s) => s.pieceId).map((s) => s.pieceId));
   return {
     unassigned: lesson.board.pieces.filter((p) => !used.has(p.id)),
-    dangling: lesson.steps.filter((s) => s.action !== 'interact' && (!s.pieceId || !ids.has(s.pieceId))),
+    dangling: lesson.steps.filter(
+      (s) => !['interact', 'connect_circuit'].includes(s.action) && (!s.pieceId || !ids.has(s.pieceId))
+    ),
   };
 }
 
@@ -108,6 +121,10 @@ export function stepProblems(lesson: Lesson): string[] {
       if (q?.position !== 'step') out.push(`Passo ${n}: escolha uma pergunta para o passo de interação.`);
       return;
     }
+    if (s.action === 'connect_circuit') {
+      if (s.pieceId) out.push(`Passo ${n}: o passo de conexão não deve conter uma peça.`);
+      return;
+    }
     const p = byId.get(s.pieceId);
     if (!p) {
       out.push(`Passo ${n}: a peça deste passo não está mais na bancada.`);
@@ -119,6 +136,18 @@ export function stepProblems(lesson: Lesson): string[] {
   });
   const missing = lesson.board.pieces.filter((p) => !seen.has(p.id));
   if (missing.length) out.push(`${missing.length} peça(s) da bancada ainda não têm passo.`);
+  const circuitSteps = lesson.steps.filter((s) => s.action === 'connect_circuit');
+  if (lesson.board.pieces.length && circuitSteps.length !== 1)
+    out.push('Adicione exatamente um passo “Conectar circuito” após colocar as peças.');
+  if (circuitSteps.length === 1) {
+    const circuitIndex = lesson.steps.indexOf(circuitSteps[0]);
+    if (
+      lesson.steps
+        .slice(circuitIndex + 1)
+        .some((s) => s.action === 'place_component' || s.action === 'place_connection')
+    )
+      out.push('O passo “Conectar circuito” deve vir depois de todos os passos de colocação.');
+  }
   return out;
 }
 
@@ -150,6 +179,7 @@ export function toValidatorLesson(lesson: Lesson): any {
       const q = quizzes.get(s.quizId);
       return { ...base, interact: { quiz_correct_id: q ? q.correctId : '' } };
     }
+    if (s.action === 'connect_circuit') return { ...base, add: [] };
     const p = byId.get(s.pieceId);
     return { ...base, add: p ? [pieceOut(p)] : [] };
   });
