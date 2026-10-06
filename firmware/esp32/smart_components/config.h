@@ -10,7 +10,12 @@
 // =====================================================================
 
 // ---------- Positions ----------
-constexpr uint8_t NUM_POS = 6;      // POS0..POS2 = bank A row 1, POS3..POS5 = bank B row 12
+// Firmware POSn -> physical slot (PCB v0.4 numbering 1..6). POS0 is the PCB's slot 6: SDA_0 (IO4) and
+// mux Y5 are the lines that v0.4 calls position 6, so the indices are rotated by one.
+//   POS1 = slot 1: bank A row 1, columns 1-3     POS4 = slot 4: bank B row 12, columns 1-3
+//   POS2 = slot 2: bank A row 1, columns 5-7     POS5 = slot 5: bank B row 12, columns 5-7
+//   POS3 = slot 3: bank A row 1, columns 9-11    POS0 = slot 6: bank B row 12, columns 9-11
+constexpr uint8_t NUM_POS = 6;
 constexpr uint8_t MAX_ACTIVE = 3;   // at most 3 capsules working at the same time
 constexpr uint8_t AMMETER_POS = 2;  // INA219 + AQW212 + shunt only on POS2
 

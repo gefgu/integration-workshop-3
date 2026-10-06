@@ -1,13 +1,8 @@
-import { toValidatorLesson } from '../model/steps.ts';
+import { pieceOut, toValidatorLesson } from '../model/steps.ts';
 import type { Lesson, Piece } from '../model/types.ts';
 
 /** The Vite dev server proxies /api to the graph_validator service (see vite.config.js). */
 export const BASE = '/api';
-
-const pieceOut = (p: Piece) =>
-  p.value != null
-    ? { id: p.id, type: p.type, a: p.a, b: p.b, row: p.row, value: p.value }
-    : { id: p.id, type: p.type, a: p.a, b: p.b, row: p.row };
 
 /** Result: { ok:true, data } | { ok:false, offline:true } | { ok:false, error, problems? }. */
 type FetchLike = (input: string, init?: RequestInit) => Promise<any>;

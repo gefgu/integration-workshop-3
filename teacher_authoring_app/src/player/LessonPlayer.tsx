@@ -2,8 +2,10 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { validateStep } from '../api/validator.ts';
 import BoardWorkspace from '../components/BoardWorkspace.tsx';
 import Bubble from '../components/Bubble.tsx';
+import { useCapsules } from '../components/useCapsules.ts';
+import { mergeTrails } from '../engine/capsules.ts';
 import { diagnose } from '../engine/diagnose.ts';
-import { formatOhms, NOMES } from '../engine/sim.ts';
+import { capsuleConfig, formatOhms, isCapsule, NOMES } from '../engine/sim.ts';
 import { cumulativeBoard, effectiveSteps } from '../model/steps.ts';
 
 const PRAISE = ['Boa!', 'Isso aí!', 'Mandou bem!', 'Perfeito!', 'Show!', 'Exato!'];
@@ -55,7 +57,8 @@ function useStepValidation({ lesson, pieces, stepIdx, answer = null, debug = fal
   };
 }
 
-const toneFor = (category) => (category === 'missing_component' || category === 'missing_connection' || category === 'open_circuit' ? 'obs' : 'erro');
+const toneFor = (category) =>
+  category === 'missing_component' || category === 'missing_connection' || category === 'open_circuit' ? 'obs' : 'erro';
 const ISSUE_LABELS = {
   missing_component: 'Falta uma peça',
   missing_connection: 'Falta uma ligação',
@@ -65,18 +68,24 @@ const ISSUE_LABELS = {
   reversed_polarity: 'Polaridade invertida',
   wrong_value: 'Valor diferente',
   wrong_component: 'Peça diferente',
+  wrong_config: 'Cápsula com outro modo',
   misconnected_component: 'Peça presente, ligação incorreta',
   open_circuit: 'Circuito aberto',
   short_circuit: 'Curto-circuito',
 };
 
 function pieceDescription(piece, withPosition = true) {
-  const name =
+  let name =
     piece.type === 'potenciometro' && piece.value
       ? `Potenciômetro ${formatOhms(piece.value)}`
       : NOMES[piece.type] || piece.type;
+  if (isCapsule(piece.type)) {
+    const setting = Object.values(capsuleConfig(piece)).join(' · ');
+    if (setting) name += ` (${setting})`;
+  }
   if (!withPosition) return name;
-  return `${name} (colunas ${Math.min(piece.a, piece.b)}–${Math.max(piece.a, piece.b)}, linha ${piece.row + 1})`;
+  const cols = piece.c != null ? [piece.a, piece.b, piece.c] : [piece.a, piece.b];
+  return `${name} (colunas ${Math.min(...cols)}–${Math.max(...cols)}, linha ${piece.row + 1})`;
 }
 
 function ValidationDebug({ lesson, stepIdx, pieces, result, error, problems }) {
@@ -396,6 +405,7 @@ function BuildStep({ lesson, stepIdx, text, pieces, setPieces, debugEnabled, tim
     });
   const v = useStepValidation({ lesson, pieces, stepIdx, debug: debugEnabled });
   const diag = diagnose(pieces, held);
+  const cap = useCapsules(pieces, held, energized);
 
   // The bubble shows the step's instruction until the student touches the board, then the
   // validator's message — a hint only arrives when the graph actually changed (SFR7).
@@ -425,7 +435,8 @@ function BuildStep({ lesson, stepIdx, text, pieces, setPieces, debugEnabled, tim
     setPieces(
       (lesson.kind === 'challenge' ? lesson.board.pieces : cumulativeBoard(lesson, stepIdx)).map((p) => ({ ...p }))
     );
-  const lit = energized && diag.code === 'valido';
+  const valid = diag.code === 'valido';
+  const lit = energized && (valid || !!cap.driven);
   return (
     <>
       <Bubble kind={mascotKind} tone={tone} message={msg} />
@@ -447,8 +458,9 @@ function BuildStep({ lesson, stepIdx, text, pieces, setPieces, debugEnabled, tim
       <BoardWorkspace
         pieces={pieces}
         onChange={setPieces}
-        trail={lit ? diag.trail : null}
-        ledMa={lit ? diag.mA : 0}
+        trail={lit ? mergeTrails(valid ? diag.trail : null, cap.driven) : null}
+        ledMa={lit ? Math.max(valid ? diag.mA : 0, cap.drivenMa) : 0}
+        readings={cap.readings}
         pressed={held}
         onPress={press}
       />

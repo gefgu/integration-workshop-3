@@ -11,12 +11,14 @@ export const CATEGORIES = [
   'reversed_polarity',
   'wrong_value',
   'wrong_component',
+  'wrong_config',
   'misconnected_component',
   'open_circuit',
   'short_circuit',
 ];
 
 const isJumper = (type) => type.startsWith('jumper');
+const isCapsule = (type) => type.startsWith('capsula_');
 const NOME = {
   bateria: 'a bateria',
   led: 'o LED',
@@ -27,6 +29,11 @@ const NOME = {
   capacitor: 'o capacitor',
   botao: 'o botão',
   potenciometro: 'o potenciômetro',
+  capsula_pulso: 'a cápsula de pulso',
+  capsula_voltimetro: 'a cápsula voltímetro',
+  capsula_amperimetro: 'a cápsula amperímetro',
+  capsula_porta: 'a cápsula de porta lógica',
+  capsula_memoria: 'a cápsula de memória',
 };
 
 export function actionFor(piece: Piece): StepAction {
@@ -59,7 +66,7 @@ export function stepText(piece: Piece): string {
  */
 export function autoSplit(pieces: Piece[]): LessonStep[] {
   const lo = (p) => Math.min(p.a, p.b);
-  const rank = (p) => (p.type === 'bateria' ? 0 : isJumper(p.type) ? 2 : 1);
+  const rank = (p) => (p.type === 'bateria' ? 0 : isJumper(p.type) ? 3 : isCapsule(p.type) ? 2 : 1);
   const ordered = [...pieces].sort((x, y) => rank(x) - rank(y) || lo(x) - lo(y) || x.id.localeCompare(y.id));
   if (!ordered.length) return [];
   return [...ordered.map((p) => newStep({ action: actionFor(p), pieceId: p.id, text: stepText(p) })), connectionStep()];
@@ -151,10 +158,17 @@ export function stepProblems(lesson: Lesson): string[] {
   return out;
 }
 
-const pieceOut = (p: Piece) =>
-  p.value != null
-    ? { id: p.id, type: p.type, a: p.a, b: p.b, row: p.row, value: p.value }
-    : { id: p.id, type: p.type, a: p.a, b: p.b, row: p.row };
+/** A piece as the graph_validator expects it: only the fields that apply to its type. */
+export const pieceOut = (p: Piece) => ({
+  id: p.id,
+  type: p.type,
+  a: p.a,
+  b: p.b,
+  row: p.row,
+  ...(p.value != null ? { value: p.value } : {}),
+  ...(p.c != null ? { c: p.c } : {}),
+  ...(p.config ? { config: p.config } : {}),
+});
 const optsOut = (o: Partial<StepOptions> = {}) => ({
   match_values: !!o.matchValues,
   strict_positions: !!o.strictPositions,

@@ -1,6 +1,6 @@
 """Electrical equivalence of two boards, independent of where the parts sit.
 
-Columns that a jumper joins are one net, so jumpers are wires and never take part in the
+A column is one node within its bank (the two banks are separate). Nodes that a jumper joins are one net, so jumpers are wires and never take part in the
 comparison. Two boards are equivalent when their parts connect the same way up to
 renaming nets and to the order of elements in series or in parallel. Battery and LED
 polarity still matters.
@@ -13,13 +13,13 @@ from __future__ import annotations
 
 import hashlib
 from collections import Counter, defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from itertools import combinations
 
 import networkx as nx
 from networkx.algorithms.isomorphism import GraphMatcher
 
-from .catalog import DIRECTED
+from .catalog import CAPSULES, DIRECTED, ORDERED, node
 from .diff import Issue, diff_inventory
 from .graph import Part, Term
 from .models import Category, MatchOptions
@@ -43,12 +43,12 @@ def netlist(parts: list[Part]) -> Netlist:
 
     for p in parts:
         for t in p.terms:
-            find(t.col)
+            find(node(t.col, t.row))
         if p.family == "jumper":
             a, b = p.terms
-            parent[find(a.col)] = find(b.col)
+            parent[find(node(a.col, a.row))] = find(node(b.col, b.row))
     comps = [p for p in parts if p.family != "jumper"]
-    return Netlist(tuple(comps), tuple(tuple(find(t.col) for t in p.terms) for p in comps))
+    return Netlist(tuple(comps), tuple(tuple(find(node(t.col, t.row)) for t in p.terms) for p in comps))
 
 
 # ---- series/parallel reduction -------------------------------------------------------------
@@ -72,8 +72,8 @@ def _mk(kind: str, children: list[tuple]) -> tuple:
 def reduce_sp(nl: Netlist, values: bool) -> tuple | None:
     """Canonical series/parallel expression from the battery's + net to its - net, or None."""
     bats = [i for i, p in enumerate(nl.parts) if p.family == "bateria"]
-    if len(bats) != 1:
-        return None
+    if len(bats) != 1 or any(len(legs) != 2 for legs in nl.legs):
+        return None  # 3-pin smart capsules are not series/parallel elements
     bi = bats[0]
     plus, minus = nl.legs[bi]
     if plus == minus:
@@ -132,7 +132,7 @@ def net_graph(nl: Netlist, values: bool) -> nx.Graph:
         for n in legs:
             g.add_node(("n", n), kind="net")
     for i, p in enumerate(nl.parts):
-        g.add_node(("p", i), kind=(p.family, p.value if values else None))
+        g.add_node(("p", i), kind=(p.family, p.value if values else None, p.config))
         by: dict[int, list[str]] = defaultdict(list)
         for t, n in zip(p.terms, nl.legs[i]):
             by[n].append(t.name)
@@ -215,7 +215,7 @@ def _dangling(nl: Netlist) -> int:
 
 def _short(nl: Netlist) -> Part | None:
     for p, legs in zip(nl.parts, nl.legs):
-        if len(set(legs)) < len(legs):
+        if len(legs) == 2 and len(set(legs)) < 2:
             return p
     return None
 
@@ -228,9 +228,9 @@ def _signatures(nl: Netlist, values: bool) -> list[tuple]:
     out = []
     for i, (p, legs) in enumerate(zip(nl.parts, nl.legs)):
         leg_sigs = [tuple(sorted((nl.parts[j].family, tn) for j, tn in members[n] if j != i)) for n in legs]
-        if p.ctype not in DIRECTED:
+        if p.ctype not in ORDERED:
             leg_sigs.sort()
-        out.append((p.family, p.value if values else None, tuple(leg_sigs)))
+        out.append((p.family, p.value if values else None, p.config, tuple(leg_sigs)))
     return out
 
 
@@ -253,6 +253,10 @@ def diff_nets(student: list[Part], target: list[Part], opts: MatchOptions) -> li
     )
     if inv:
         return inv
+
+    wrong = _config_issues(student, target, opts)
+    if wrong:
+        return wrong
 
     dirs = sorted((p for p in student if p.ctype in DIRECTED), key=lambda p: p.family == "bateria")
     for k in range(1, len(dirs) + 1):
@@ -284,6 +288,28 @@ def diff_nets(student: list[Part], target: list[Part], opts: MatchOptions) -> li
         missing.remove(mp)
         issues.append(Issue(Category.MISCONNECTED_COMPONENT, mp.family, ep.id, mp.id, ep.id))
     return issues or [Issue(Category.INCORRECT_CONNECTION, "*")]
+
+
+def _config_issues(student: list[Part], target: list[Part], opts: MatchOptions) -> list[Issue]:
+    """Same wiring but a capsule is set to the wrong mode/gate/frequency: one WRONG_CONFIG each."""
+    if not any(p.ctype in CAPSULES for p in student):
+        return []
+    bare = lambda ps: [replace(p, config=()) for p in ps]  # noqa: E731
+    if not equivalent(bare(student), bare(target), opts):
+        return []
+    left = Counter((p.ctype, p.config) for p in target if p.ctype in CAPSULES)
+    extra = []
+    for p in student:
+        if p.ctype in CAPSULES and not _consume(left, (p.ctype, p.config)):
+            extra.append(p)
+    missing = [(c, cfg) for (c, cfg), n in left.items() for _ in range(n)]
+    issues = []
+    for p in extra:
+        k = next((i for i, (c, _) in enumerate(missing) if c == p.ctype), None)
+        if k is not None:
+            missing.pop(k)
+            issues.append(Issue(Category.WRONG_CONFIG, p.family, p.id))
+    return issues
 
 
 def _consume(counter: Counter, key: tuple) -> bool:

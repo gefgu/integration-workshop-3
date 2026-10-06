@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import { CAPSULE, DEFS, formatOhms, POT_DEFAULT } from '../engine/sim.ts';
+import { CAPSULE, DEFS, formatOhms, isCapsule, POT_DEFAULT } from '../engine/sim.ts';
 import type { PieceType } from '../model/types.ts';
 
 /**
@@ -22,6 +22,9 @@ interface PieceViewProps {
   value?: number;
   onPotStep?: (direction: number) => void;
   pressed?: boolean;
+  /** Smart capsule: lines shown on its OLED. */
+  oled?: string[];
+  fault?: boolean;
   onButton?: (down: boolean) => void;
   style?: CSSProperties;
 }
@@ -37,6 +40,8 @@ export default function PieceView({
   value,
   onPotStep,
   pressed = false,
+  oled,
+  fault = false,
   onButton,
   style,
 }: PieceViewProps) {
@@ -65,6 +70,8 @@ export default function PieceView({
     base.background = 'linear-gradient(180deg,#7fe08f,#3f9b4f)';
     base.boxShadow += `, 0 0 ${14 + 26 * brilho}px rgba(110,230,130,${0.5 + 0.4 * brilho})`;
   }
+
+  if (isCapsule(type)) return <CapsuleFace base={base} text={d.text} oled={oled} fault={fault} pins={pins} />;
 
   return (
     <div style={base}>
@@ -106,6 +113,62 @@ export default function PieceView({
           bg={type === 'bateria' ? (reversed ? '#f5ead8' : '#8b9096') : '#fff'}
         />
       )}
+    </div>
+  );
+}
+
+/** Smart capsule: a dark body with the OLED on top and the three pins P1, P2, P3 along the bottom edge. */
+function CapsuleFace({ base, text, oled, fault, pins }) {
+  const lines = oled && oled.length ? oled : [text];
+  return (
+    <div style={{ ...base, justifyContent: 'flex-start', padding: '0 14px' }}>
+      <div
+        className="oled-text"
+        style={{
+          flex: 1,
+          minWidth: 0,
+          height: '78%',
+          borderRadius: 4,
+          background: '#06231d',
+          color: fault ? '#ff9b8f' : '#9ff0d0',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          overflow: 'hidden',
+          fontSize: 9,
+          lineHeight: 1.1,
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {lines.map((line) => (
+          <span key={line}>{line}</span>
+        ))}
+      </div>
+      {pins &&
+        ['P1', 'P2', 'P3'].map((label, i) => (
+          <span
+            key={label}
+            style={{
+              position: 'absolute',
+              left: `${i * 50}%`,
+              bottom: -7,
+              transform: 'translateX(-50%)',
+              width: 15,
+              height: 13,
+              borderRadius: 999,
+              background: '#f5ead8',
+              color: '#22201f',
+              fontSize: 8,
+              fontWeight: 700,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 1px 2px rgba(0,0,0,.3)',
+            }}
+          >
+            {label}
+          </span>
+        ))}
     </div>
   );
 }

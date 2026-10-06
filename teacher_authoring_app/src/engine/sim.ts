@@ -32,6 +32,12 @@ export const DEFS = {
   jumper_longo: { len: 2, cor: 'branco', text: '' },
   jumper_4: { len: 4, cor: 'branco', text: '' },
   jumper_5: { len: 5, cor: 'branco', text: '' },
+  // Smart capsules are passive: three pins (P1, P2, P3) on columns a, a+1, a+2.
+  capsula_pulso: { len: 2, cor: 'preto', text: 'PULSO' },
+  capsula_voltimetro: { len: 2, cor: 'preto', text: 'VOLT' },
+  capsula_amperimetro: { len: 2, cor: 'preto', text: 'AMP' },
+  capsula_porta: { len: 2, cor: 'preto', text: 'PORTA' },
+  capsula_memoria: { len: 2, cor: 'preto', text: 'MEM' },
 };
 
 export const NOMES = {
@@ -48,12 +54,70 @@ export const NOMES = {
   jumper_longo: 'Jumper longo',
   jumper_4: 'Jumper 4 colunas',
   jumper_5: 'Jumper 5 colunas',
+  capsula_pulso: 'Cápsula de pulso',
+  capsula_voltimetro: 'Cápsula voltímetro',
+  capsula_amperimetro: 'Cápsula amperímetro',
+  capsula_porta: 'Cápsula de porta lógica',
+  capsula_memoria: 'Cápsula de memória 1 bit',
 };
+
+/** Smart capsules (EFR32): passive parts whose behaviour the base ESP32 runs. */
+/** At most this many capsules can be active at once (firmware `MAX_ACTIVE`). */
+export const MAX_CAPSULES = 3;
+export const isCapsule = (type: string) => type.startsWith('capsula_');
+export const GATE_OPS = ['and', 'or', 'nand', 'nor', 'xor', 'not'] as const;
+export const MEM_KINDS = ['d', 'sr'] as const;
+export const PULSE_HZ = [0.5, 1, 2, 5, 10];
+export const PULSE_DUTY = [25, 50, 75];
+const CONFIG_DEFAULTS: Record<string, CapsuleConfig> = {
+  capsula_pulso: { hz: 1, duty: 50 },
+  capsula_voltimetro: {},
+  capsula_amperimetro: {},
+  capsula_porta: { op: 'and' },
+  capsula_memoria: { mem: 'd' },
+};
+
+/** The capsule's config with defaults filled in. */
+export function capsuleConfig(p: Pick<Piece, 'type' | 'config'>): CapsuleConfig {
+  return { ...(CONFIG_DEFAULTS[p.type] || {}), ...(p.config || {}) };
+}
+
+/** Same rules as graph_validator's `config_problems`. Empty list = fine. */
+export function configProblems(type: string, config: unknown): string[] {
+  if (!isCapsule(type)) return config && Object.keys(config as object).length ? [`${type} não tem configuração.`] : [];
+  if (config != null && (typeof config !== 'object' || Array.isArray(config))) return ['Configuração inválida.'];
+  const cfg: any = { ...CONFIG_DEFAULTS[type], ...((config as object) || {}) };
+  const out = Object.keys(cfg)
+    .filter((k) => !(k in CONFIG_DEFAULTS[type]))
+    .map((k) => `Opção desconhecida: ${k}.`);
+  if (type === 'capsula_pulso') {
+    if (!(typeof cfg.hz === 'number' && cfg.hz >= 0.5 && cfg.hz <= 10)) out.push('A frequência vai de 0,5 a 10 Hz.');
+    if (!(typeof cfg.duty === 'number' && cfg.duty >= 25 && cfg.duty <= 75)) out.push('O ciclo vai de 25 a 75 %.');
+  } else if (type === 'capsula_porta' && !GATE_OPS.includes(cfg.op)) out.push('Porta lógica inválida.');
+  else if (type === 'capsula_memoria' && !MEM_KINDS.includes(cfg.mem)) out.push('Tipo de memória inválido.');
+  return out;
+}
+
+/** Click on a capsule steps through its setting: gate, memory type or pulse frequency. */
+export function nextConfig(p: Piece, field: 'main' | 'duty' = 'main'): CapsuleConfig | undefined {
+  const cfg = capsuleConfig(p);
+  const step = <T>(list: readonly T[], cur: T) => list[(list.indexOf(cur) + 1) % list.length];
+  if (p.type === 'capsula_porta') return { ...cfg, op: step(GATE_OPS, cfg.op) };
+  if (p.type === 'capsula_memoria') return { ...cfg, mem: step(MEM_KINDS, cfg.mem) };
+  if (p.type === 'capsula_pulso')
+    return field === 'duty' ? { ...cfg, duty: step(PULSE_DUTY, cfg.duty) } : { ...cfg, hz: step(PULSE_HZ, cfg.hz) };
+  return undefined;
+}
 
 export const TYPES = Object.keys(DEFS) as PieceType[];
 
 /** Resistance of the fixed resistors; series resistors add up. */
-export const RESISTOR_OHMS = { resistor_220: 220, resistor_470: 470, resistor_1k: 1000 };
+export const RESISTOR_OHMS: Record<string, number> = {
+  resistor_220: 220,
+  resistor_470: 470,
+  resistor_1k: 1000,
+  capsula_amperimetro: 10,
+};
 
 /** Potentiometer wiper settings (Ω), stepped with −/+ on the piece. */
 export const POT_VALUES = [100, 220, 470, 1000, 2200, 4700, 10000];
@@ -83,6 +147,11 @@ export const KIT_LIMITS = {
   jumper_longo: 3,
   jumper_4: 3,
   jumper_5: 3,
+  capsula_pulso: 3,
+  capsula_voltimetro: 3,
+  capsula_amperimetro: 1,
+  capsula_porta: 3,
+  capsula_memoria: 3,
 };
 
 export function countByType(pieces: Piece[]): Partial<Record<PieceType, number>> {
@@ -111,7 +180,12 @@ export const MSG = {
  * `opts.pressed`: Set of pushbutton ids being held. null/undefined = every button
  * counts as pressed (used when judging the design in the editor).
  */
-export function analyze(pieces: Piece[], opts: { pressed?: Set<string> | null } = {}): CircuitAnalysis {
+export function analyze(all: Piece[], opts: { pressed?: Set<string> | null } = {}): CircuitAnalysis {
+  // Only the ammeter conducts (10 Ω shunt between P1 and P2); the other capsules just sense or drive.
+  // Pieces become edges between nodes; a column is one node per bank, so the banks never connect.
+  const pieces = all
+    .filter((p) => !isCapsule(p.type) || p.type === 'capsula_amperimetro')
+    .map((p) => ({ ...p, a: nodeOf(p.a, p.row), b: nodeOf(p.b, p.row) }));
   const bat = pieces.find((p) => p.type === 'bateria');
   for (let i = 0; i < pieces.length; i++) {
     for (let j = i + 1; j < pieces.length; j++) {
@@ -222,4 +296,5 @@ export function corrente(an: CircuitAnalysis): number {
   return an.load === 'buzzer' ? (5 / (an.ohms + 250)) * 1000 : ((5 - 2.0) / an.ohms) * 1000;
 }
 
-import type { CircuitAnalysis, Piece, PieceType } from '../model/types.ts';
+import type { CapsuleConfig, CircuitAnalysis, Piece, PieceType } from '../model/types.ts';
+import { nodeOf } from './nodes.ts';
