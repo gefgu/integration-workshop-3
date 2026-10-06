@@ -12,6 +12,8 @@ dependencies = [
   "pydantic>=2.5",
   "fastapi>=0.110",
   "uvicorn>=0.27",
+  "SQLAlchemy>=2.0,<3",
+  "alembic>=1.13,<2",
 ]
 
 [project.optional-dependencies]

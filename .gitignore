@@ -25,6 +25,7 @@ Thumbs.db
 venv/
 node_modules/
 *.pyc
+graph_validator/*.sqlite3*
 
 # Docs scratch
 docs/task-plan.csv

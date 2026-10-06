@@ -25,10 +25,8 @@ python -m graph_validator.cli validate lesson.json board.json [--teacher] [--ste
 Short/long jumpers are one family; capacitor value is ignored; camera output already carries a resolved `type` (colour+dots disambiguation stays in vision code). Out of scope: ENFR6 current limits, EFR18 energize gate, smart-capsule behaviour.
 
 ## Used by the teacher app
-The teacher authoring app creates steps (auto-split from the final board, then editable) and its **Testar** mode validates through this service. The same FastAPI service also serves MySQL-backed `/workspace` endpoints for lessons, turmas and students. See the repository README for MySQL and migration setup. Once the database is ready, run both:
+The teacher authoring app creates steps (auto-split from the final board, then editable) and its **Testar** mode validates through this service. The same FastAPI service also serves SQLite-backed `/workspace` endpoints for lessons, turmas and students. See the repository README for setup. After installing the Python and web dependencies, run this from the repository root to apply migrations and start both services:
 ```
-cd graph_validator && python3 -m venv .venv && .venv/bin/pip install -e '.[dev]'
-cd teacher_authoring_app && npm run validator   # uvicorn on :8000
-cd teacher_authoring_app && npm run dev         # Vite proxies /api -> :8000
+./run.sh
 ```
 Extra endpoints for the app: `GET /feedback/categories` (default pt-BR messages for the override UI) and `byStep` in the `/lessons/lint` response.
