@@ -9,7 +9,9 @@ export type PieceType =
   | 'botao'
   | 'potenciometro'
   | 'jumper_curto'
-  | 'jumper_longo';
+  | 'jumper_longo'
+  | 'jumper_4'
+  | 'jumper_5';
 
 export interface Piece {
   id: string;
@@ -22,15 +24,19 @@ export interface Piece {
 
 export type LessonKind = 'guided' | 'challenge';
 export type QuizPosition = 'before' | 'after' | 'step';
-export type StepAction = 'place_component' | 'place_connection' | 'interact';
+export type StepAction = 'place_component' | 'place_connection' | 'connect_circuit' | 'interact';
 export type FeedbackCategory =
   | 'missing_component'
   | 'missing_connection'
   | 'excess_connection'
+  | 'excess_component'
   | 'incorrect_connection'
   | 'reversed_polarity'
   | 'wrong_value'
-  | 'wrong_component';
+  | 'wrong_component'
+  | 'misconnected_component'
+  | 'open_circuit'
+  | 'short_circuit';
 
 export interface QuizOption {
   id: string;

@@ -1,12 +1,12 @@
 import { COLS, ROWS } from '../engine/board.ts';
-import { countByType, DIRECTED, KIT_LIMITS, POT_VALUES, TYPES } from '../engine/sim.ts';
+import { countByType, KIT_LIMITS, POT_VALUES, TYPES } from '../engine/sim.ts';
 import { uid } from './ids.ts';
-import { ACTIONS, CATEGORIES, stepProblems } from './steps.ts';
+import { ACTIONS, autoSplit, CATEGORIES, connectionStep, stepProblems } from './steps.ts';
 import type { Lesson, LessonStep, LessonValidation, Piece, Quiz, QuizOption, QuizPosition } from './types.ts';
 
-export const LESSON_VERSION = 2;
-/** Versions `validateLesson` reads; v1 lessons have no steps and migrate to v2. */
-const READABLE_VERSIONS = [1, 2];
+export const LESSON_VERSION = 3;
+/** Versions `validateLesson` reads; v1/v2 guided lessons migrate to explicit connection steps. */
+const READABLE_VERSIONS = [1, 2, 3];
 export const KINDS = ['guided', 'challenge'];
 /** `step` quizzes belong to an interact step (SFR19) and are not shown before/after the build. */
 export const POSITIONS = ['before', 'after', 'step'];
@@ -101,7 +101,7 @@ export function validateLesson(raw: any): LessonValidation {
   }
   const rawSteps = raw.steps === undefined ? [] : raw.steps;
   if (!Array.isArray(rawSteps)) return fail('Passos inválidos.');
-  const steps = [];
+  let steps = [];
   for (const st of rawSteps) {
     if (!st || typeof st.id !== 'string' || !ACTIONS.includes(st.action)) return fail('Passo inválido.');
     steps.push(cleanStep(st));
@@ -137,6 +137,21 @@ export function validateLesson(raw: any): LessonValidation {
     })),
     updatedAt: typeof raw.updatedAt === 'string' ? raw.updatedAt : new Date().toISOString(),
   };
+  if (raw.version < 3 && lesson.kind === 'guided' && lesson.board.pieces.length) {
+    if (steps.length === 0) steps = autoSplit(lesson.board.pieces);
+    else if (!steps.some((s) => s.action === 'connect_circuit')) {
+      const usedIds = new Set(steps.map((s) => s.id));
+      let id = `${lesson.id}-connect-circuit`;
+      for (let suffix = 2; usedIds.has(id); suffix++) id = `${lesson.id}-connect-circuit-${suffix}`;
+      const circuit = connectionStep(id);
+      let insertAt = 0;
+      steps.forEach((s, i) => {
+        if (s.action === 'place_component' || s.action === 'place_connection') insertAt = i + 1;
+      });
+      steps.splice(insertAt, 0, circuit);
+    }
+    lesson.steps = steps;
+  }
   return { ok: true, lesson };
 }
 
@@ -161,22 +176,6 @@ function cleanStep(st: any) {
     },
     overrides,
   };
-}
-
-function pieceKey(p) {
-  const [x, y] = DIRECTED.has(p.type) ? [p.a, p.b] : [Math.min(p.a, p.b), Math.max(p.a, p.b)];
-  return `${p.type}:${x}-${y}`;
-}
-
-/**
- * True when the student's board has exactly the target's pieces: same type and
- * columns (direction matters only for bateria/LED), whatever row they sit on.
- */
-export function matchesTarget(student: Piece[], target: Piece[]): boolean {
-  if (student.length !== target.length) return false;
-  const a = student.map(pieceKey).sort();
-  const b = target.map(pieceKey).sort();
-  return a.every((k, i) => k === b[i]);
 }
 
 export function slugify(title: string): string {

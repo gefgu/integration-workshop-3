@@ -3,6 +3,7 @@ import { validateStep } from '../api/validator.ts';
 import BoardWorkspace from '../components/BoardWorkspace.tsx';
 import Bubble from '../components/Bubble.tsx';
 import { diagnose } from '../engine/diagnose.ts';
+import { formatOhms, NOMES } from '../engine/sim.ts';
 import { cumulativeBoard, effectiveSteps } from '../model/steps.ts';
 
 const PRAISE = ['Boa!', 'Isso aí!', 'Mandou bem!', 'Perfeito!', 'Show!', 'Exato!'];
@@ -28,7 +29,7 @@ function buildPhases(lesson) {
  * Returns { status: 'checking'|'ok'|'offline'|'error', result?, error?, problems?, retry }.
  * The service only returns a `hint` when the graph changed since the last answer (SFR7).
  */
-function useStepValidation({ lesson, pieces, stepIdx, answer = null }) {
+function useStepValidation({ lesson, pieces, stepIdx, answer = null, debug = false }) {
   const prevHash = useRef(null);
   const seq = useRef(0);
   const [state, setState] = useState<any>({ status: 'checking' });
@@ -36,7 +37,7 @@ function useStepValidation({ lesson, pieces, stepIdx, answer = null }) {
   useEffect(() => {
     const mine = ++seq.current;
     const t = setTimeout(async () => {
-      const r = await validateStep({ lesson, pieces, stepIdx, previousHash: prevHash.current, answer });
+      const r = await validateStep({ lesson, pieces, stepIdx, previousHash: prevHash.current, answer, debug });
       if (mine !== seq.current) return;
       if (r.ok === true) {
         prevHash.current = r.result.graphHash;
@@ -44,7 +45,7 @@ function useStepValidation({ lesson, pieces, stepIdx, answer = null }) {
       } else setState({ status: r.offline ? 'offline' : 'error', error: r.error, problems: r.problems });
     }, 250);
     return () => clearTimeout(t);
-  }, [lesson, pieces, stepIdx, answer]);
+  }, [lesson, pieces, stepIdx, answer, debug]);
   return {
     ...state,
     retry: () => {
@@ -54,13 +55,140 @@ function useStepValidation({ lesson, pieces, stepIdx, answer = null }) {
   };
 }
 
-const toneFor = (category) => (category === 'missing_component' || category === 'missing_connection' ? 'obs' : 'erro');
+const toneFor = (category) => (category === 'missing_component' || category === 'missing_connection' || category === 'open_circuit' ? 'obs' : 'erro');
+const ISSUE_LABELS = {
+  missing_component: 'Falta uma peça',
+  missing_connection: 'Falta uma ligação',
+  excess_connection: 'Ligação a mais',
+  excess_component: 'Peça sobrando',
+  incorrect_connection: 'Ligação incorreta',
+  reversed_polarity: 'Polaridade invertida',
+  wrong_value: 'Valor diferente',
+  wrong_component: 'Peça diferente',
+  misconnected_component: 'Peça presente, ligação incorreta',
+  open_circuit: 'Circuito aberto',
+  short_circuit: 'Curto-circuito',
+};
+
+function pieceDescription(piece, withPosition = true) {
+  const name =
+    piece.type === 'potenciometro' && piece.value
+      ? `Potenciômetro ${formatOhms(piece.value)}`
+      : NOMES[piece.type] || piece.type;
+  if (!withPosition) return name;
+  return `${name} (colunas ${Math.min(piece.a, piece.b)}–${Math.max(piece.a, piece.b)}, linha ${piece.row + 1})`;
+}
+
+function ValidationDebug({ lesson, stepIdx, pieces, result, error, problems }) {
+  const expected =
+    result?.debug?.expectedPieces ??
+    (lesson.kind === 'challenge' ? lesson.board.pieces : cumulativeBoard(lesson, stepIdx));
+  const actual = result?.debug?.actualPieces ?? pieces;
+  const step = effectiveSteps(lesson)[stepIdx];
+  const matchValues = result?.debug?.matchValues ?? step?.options.matchValues ?? false;
+  const strictPositions = result?.debug?.strictPositions ?? step?.options.strictPositions ?? false;
+  const expectedById = new Map(expected.map((piece) => [piece.id, piece]));
+  const actualById = new Map(actual.map((piece) => [piece.id, piece]));
+
+  return (
+    <section className="validation-debug" aria-label="Detalhes da validação">
+      <h3>Depuração da validação</h3>
+      <p>
+        Conferir valores: <strong>{matchValues ? 'sim' : 'não'}</strong> · Posições fixas:{' '}
+        <strong>{strictPositions ? 'sim' : 'não'}</strong>
+      </p>
+      {error && <p className="validation-debug-error">Resposta do validador: {error}</p>}
+      {problems.length > 0 && (
+        <ul className="validation-debug-error">
+          {problems.map((problem) => (
+            <li key={problem}>{problem}</li>
+          ))}
+        </ul>
+      )}
+      <div className="validation-debug-columns">
+        <div>
+          <strong>Esperado nesta etapa</strong>
+          {expected.length ? (
+            <ul>
+              {expected.map((piece) => (
+                <li key={piece.id}>{pieceDescription(piece)}</li>
+              ))}
+            </ul>
+          ) : (
+            <p>Nenhuma peça.</p>
+          )}
+        </div>
+        <div>
+          <strong>Na bancada</strong>
+          {actual.length ? (
+            <ul>
+              {actual.map((piece) => (
+                <li key={piece.id}>{pieceDescription(piece)}</li>
+              ))}
+            </ul>
+          ) : (
+            <p>Nenhuma peça.</p>
+          )}
+        </div>
+      </div>
+      {!strictPositions && (result?.debug?.expectedNets?.length > 0 || result?.debug?.actualNets?.length > 0) && (
+        <div className="validation-debug-columns">
+          <div>
+            <strong>Ligações esperadas</strong>
+            <ul>
+              {result.debug.expectedNets.map((net) => (
+                <li key={net}>{net}</li>
+              ))}
+            </ul>
+            {result.debug.expectedCircuit && <p>Circuito: {result.debug.expectedCircuit}</p>}
+          </div>
+          <div>
+            <strong>Ligações na bancada</strong>
+            <ul>
+              {result.debug.actualNets.map((net) => (
+                <li key={net}>{net}</li>
+              ))}
+            </ul>
+            {result.debug.actualCircuit && <p>Circuito: {result.debug.actualCircuit}</p>}
+          </div>
+        </div>
+      )}
+      {result?.issues?.length > 0 && (
+        <div>
+          <strong>Diferenças apontadas</strong>
+          <ul>
+            {result.issues.map((issue, index) => {
+              const missing = ['missing_component', 'missing_connection'].includes(issue.category);
+              const expectedPiece = expectedById.get(issue.expectedPartId || (missing ? issue.partId : ''));
+              const actualPiece = actualById.get(issue.actualPartId || (!missing ? issue.partId : ''));
+              const detail =
+                issue.category === 'misconnected_component'
+                  ? `Esperado: ${expectedPiece ? pieceDescription(expectedPiece, strictPositions) : issue.family}; encontrado: ${actualPiece ? pieceDescription(actualPiece, strictPositions) : 'não encontrado'}`
+                  : expectedPiece
+                    ? pieceDescription(expectedPiece, strictPositions)
+                    : actualPiece
+                      ? pieceDescription(actualPiece, strictPositions)
+                      : issue.family;
+              return (
+                <li key={`${issue.category}-${issue.partId || index}`}>
+                  {ISSUE_LABELS[issue.category] || issue.category}: {detail}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+      {result?.approved && <p>O validador aprovou o circuito desta etapa.</p>}
+    </section>
+  );
+}
 
 /** "Testar": roda a lição como o aluno veria — perguntas, passos de montagem validados pelo graph_validator. */
 export default function LessonPlayer({ lesson, onExit, mascotKind }) {
   const phases = useMemo(() => buildPhases(lesson), [lesson]);
   const [idx, setIdx] = useState(0);
   const [pieces, setPieces] = useState([]); // the student's board, kept across steps
+  const [debugEnabled, setDebugEnabled] = useState(false);
   const phase = phases[idx];
   const next = () => setIdx((i) => Math.min(i + 1, phases.length - 1));
   const steps = phases.length - 1;
@@ -82,6 +210,10 @@ export default function LessonPlayer({ lesson, onExit, mascotKind }) {
         <button type="button" className="btn-outline" onClick={onExit}>
           Voltar ao editor
         </button>
+        <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13 }}>
+          <input type="checkbox" checked={debugEnabled} onChange={(e) => setDebugEnabled(e.target.checked)} />
+          Depurar validação
+        </label>
       </div>
       {lesson.instruction && (
         <p style={{ margin: 0, maxWidth: 720, fontSize: 14, lineHeight: 1.5 }}>{lesson.instruction}</p>
@@ -108,6 +240,7 @@ export default function LessonPlayer({ lesson, onExit, mascotKind }) {
           text={phase.type === 'step' ? phase.step.text : ''}
           pieces={pieces}
           setPieces={setPieces}
+          debugEnabled={debugEnabled}
           timeLimitS={phase.type === 'challenge' ? lesson.timeLimitS : null}
           onDone={next}
           mascotKind={mascotKind}
@@ -248,7 +381,7 @@ function Countdown({ seconds, running, onExpire }) {
   );
 }
 
-function BuildStep({ lesson, stepIdx, text, pieces, setPieces, timeLimitS, onDone, mascotKind }) {
+function BuildStep({ lesson, stepIdx, text, pieces, setPieces, debugEnabled, timeLimitS, onDone, mascotKind }) {
   const [energized, setEnergized] = useState(false);
   const [held, setHeld] = useState<Set<string>>(() => new Set());
   const [expired, setExpired] = useState(false);
@@ -261,7 +394,7 @@ function BuildStep({ lesson, stepIdx, text, pieces, setPieces, timeLimitS, onDon
       else n.delete(id);
       return n;
     });
-  const v = useStepValidation({ lesson, pieces, stepIdx });
+  const v = useStepValidation({ lesson, pieces, stepIdx, debug: debugEnabled });
   const diag = diagnose(pieces, held);
 
   // The bubble shows the step's instruction until the student touches the board, then the
@@ -296,6 +429,16 @@ function BuildStep({ lesson, stepIdx, text, pieces, setPieces, timeLimitS, onDon
   return (
     <>
       <Bubble kind={mascotKind} tone={tone} message={msg} />
+      {debugEnabled && (
+        <ValidationDebug
+          lesson={lesson}
+          stepIdx={stepIdx}
+          pieces={pieces}
+          result={res}
+          error={v.status === 'error' ? v.error : null}
+          problems={v.problems || []}
+        />
+      )}
       {v.status === 'offline' && (
         <button type="button" className="btn-outline" onClick={v.retry}>
           Tentar de novo

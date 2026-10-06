@@ -36,6 +36,13 @@ async function call(path: string, body: unknown, fetchImpl: FetchLike): Promise<
   if (detail && detail.error === 'invalid_board') {
     return { ok: false, error: 'Há peças em lugar inválido na bancada.', problems: detail.problems || [] };
   }
+  if (detail && detail.error === 'invalid_input') {
+    return { ok: false, error: `Entrada inválida: ${detail.detail}` };
+  }
+  if (Array.isArray(detail)) {
+    const fields = detail.map((issue) => `${issue.loc?.join('.') || 'entrada'}: ${issue.msg}`).join('; ');
+    return { ok: false, error: fields || 'O validador recusou a requisição.' };
+  }
   return { ok: false, error: typeof detail === 'string' ? detail : 'O validador recusou a requisição.' };
 }
 
@@ -47,7 +54,27 @@ function stepResult(d: any) {
     hint: d.hint,
     awaitingAnswer: d.awaiting_answer,
     graphHash: d.graph_hash,
-    issues: d.issues || [],
+    issues: (d.issues || []).map((issue: any) => ({
+      category: issue.category,
+      family: issue.family,
+      partId: issue.part_id,
+      expectedPartId: issue.expected_part_id,
+      actualPartId: issue.actual_part_id,
+    })),
+    debug: d.debug
+      ? {
+          stepId: d.debug.step_id,
+          action: d.debug.action,
+          expectedPieces: d.debug.expected_pieces,
+          actualPieces: d.debug.actual_pieces,
+          matchValues: d.debug.match_values,
+          strictPositions: d.debug.strict_positions,
+          expectedNets: d.debug.expected_nets ?? [],
+          actualNets: d.debug.actual_nets ?? [],
+          expectedCircuit: d.debug.expected_circuit ?? null,
+          actualCircuit: d.debug.actual_circuit ?? null,
+        }
+      : null,
   };
 }
 
@@ -59,7 +86,15 @@ export async function validateStep(
     stepIdx,
     previousHash = null,
     answer = null,
-  }: { lesson: Lesson; pieces: Piece[]; stepIdx: number; previousHash?: string | null; answer?: string | null },
+    debug = false,
+  }: {
+    lesson: Lesson;
+    pieces: Piece[];
+    stepIdx: number;
+    previousHash?: string | null;
+    answer?: string | null;
+    debug?: boolean;
+  },
   fetchImpl: FetchLike = globalThis.fetch
 ): Promise<any> {
   const r = await call(
@@ -70,6 +105,7 @@ export async function validateStep(
       step_idx: stepIdx,
       previous_graph_hash: previousHash,
       answer,
+      debug,
     },
     fetchImpl
   );
