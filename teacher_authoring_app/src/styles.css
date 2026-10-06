@@ -321,6 +321,19 @@ button {
   overflow: auto;
   padding: 0 26px 32px;
 }
+.lesson-editor-layout {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+}
+.lesson-editor-workspace {
+  position: sticky;
+  top: 12px;
+  align-self: flex-start;
+  z-index: 2;
+}
 .header {
   justify-content: center;
 }
@@ -340,6 +353,177 @@ button {
   font-family: var(--font-heading);
   font-size: 17px;
   margin: 0 0 10px;
+}
+.mode-toggle a {
+  display: block;
+  border-radius: 999px;
+  color: var(--color-neutral-600);
+  font-family: var(--font-heading);
+  font-size: 13px;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+.mode-toggle a.active {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+.login-screen {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 24px;
+}
+.login-card {
+  width: min(100%, 420px);
+  padding: 32px;
+}
+.login-brand {
+  color: var(--color-accent-700);
+  font-family: var(--font-heading);
+  font-size: 16px;
+}
+.login-card h1 {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  margin: 8px 0;
+}
+.login-card > p {
+  color: var(--color-neutral-700);
+  font-size: 14px;
+  margin: 0 0 18px;
+}
+.login-submit {
+  margin-top: 20px;
+  width: 100%;
+}
+.login-card small {
+  color: var(--color-neutral-600);
+  display: block;
+  font-size: 12px;
+  margin-top: 14px;
+  text-align: center;
+}
+.login-error,
+.app-error {
+  background: var(--color-accent-200);
+  border-radius: 14px;
+  color: var(--color-accent-800);
+  font-size: 13px;
+  margin: 12px 0 0;
+  padding: 10px 14px;
+}
+.app-error {
+  margin: 0 0 12px;
+}
+.lesson-library {
+  max-width: 1160px;
+  margin: 0 auto;
+}
+.lesson-library-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 4px 0 18px;
+}
+.lesson-library-toolbar h2 {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  margin: 0;
+}
+.lesson-library-toolbar p {
+  color: var(--color-neutral-600);
+  font-size: 14px;
+  margin: 3px 0 0;
+}
+.lesson-library-empty {
+  color: var(--color-neutral-600);
+  font-size: 14px;
+  padding: 24px 0;
+  text-align: center;
+}
+.lesson-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 18px;
+  align-items: stretch;
+}
+.lesson-card {
+  min-width: 0;
+  overflow: hidden;
+  padding: 0;
+}
+.circuit-preview {
+  height: 286px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 1px 1px, rgba(71, 66, 56, 0.12) 1px, transparent 0) 0 0 / 18px 18px,
+    var(--color-neutral-100);
+}
+.circuit-preview-board {
+  flex: none;
+  transform-origin: center;
+}
+.lesson-card-content {
+  padding: 18px;
+}
+.lesson-card-heading {
+  min-height: 66px;
+}
+.lesson-kind {
+  color: var(--color-accent-700);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.lesson-card-heading h3 {
+  font-family: var(--font-heading);
+  font-size: 19px;
+  line-height: 1.2;
+  margin: 5px 0 0;
+  overflow-wrap: anywhere;
+}
+.lesson-card-meta {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+.lesson-card-meta span {
+  background: var(--color-neutral-200);
+  border-radius: 999px;
+  color: var(--color-neutral-700);
+  font-size: 11px;
+  padding: 5px 9px;
+}
+.lesson-card-date {
+  color: var(--color-neutral-600);
+  font-size: 12px;
+  margin: 12px 0 16px;
+}
+.lesson-card-actions,
+.lesson-card-utilities {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.lesson-card-actions .btn-primary,
+.lesson-card-actions .btn-outline {
+  flex: 1;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+.lesson-card-utilities {
+  border-top: 1px solid var(--color-divider);
+  gap: 14px;
+  margin-top: 14px;
+  padding-top: 13px;
 }
 .field-label {
   display: block;
@@ -377,4 +561,10 @@ button {
 .btn-outline:disabled {
   opacity: 0.45;
   cursor: default;
+}
+
+@media (max-width: 1350px) {
+  .lesson-editor-workspace {
+    position: static;
+  }
 }

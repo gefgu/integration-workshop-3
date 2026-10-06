@@ -25,8 +25,8 @@ export default function LessonEditor({ lesson, setLesson, onSave, onExport, onTe
   }
 
   return (
-    <div style={{ display: 'flex', gap: 22, flexWrap: 'wrap', alignItems: 'flex-start', justifyContent: 'center' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 14, alignItems: 'center' }}>
+    <div className="lesson-editor-layout">
+      <div className="lesson-editor-workspace">
         <BoardWorkspace
           pieces={lesson.board.pieces}
           onChange={setPieces}

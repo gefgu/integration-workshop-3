@@ -1,12 +1,17 @@
 import { useRef } from 'react';
+import CircuitPreview from '../components/CircuitPreview.tsx';
 
 const KIND = { guided: 'Lição guiada', challenge: 'Desafio' };
 
 export default function Library({ lessons, onNew, onOpen, onTest, onDuplicate, onExport, onDelete, onImport }) {
   const fileRef = useRef(null);
   return (
-    <div style={{ maxWidth: 820, margin: '0 auto' }}>
-      <div style={{ display: 'flex', gap: 10, marginBottom: 16, flexWrap: 'wrap', justifyContent: 'center' }}>
+    <div className="lesson-library">
+      <div className="lesson-library-toolbar">
+        <div>
+          <h2>Suas lições</h2>
+          <p>Crie atividades e acompanhe seus circuitos.</p>
+        </div>
         <button type="button" className="btn-primary" onClick={onNew}>
           Nova lição
         </button>
@@ -26,41 +31,46 @@ export default function Library({ lessons, onNew, onOpen, onTest, onDuplicate, o
         />
       </div>
       {lessons.length === 0 && (
-        <p style={{ fontSize: 14, color: 'var(--color-neutral-600)' }}>
+        <p className="lesson-library-empty">
           Nenhuma lição salva neste navegador. Crie uma nova ou abra um arquivo .json.
         </p>
       )}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <div className="lesson-card-grid">
         {lessons.map((l) => (
-          <div
-            key={l.id}
-            className="panel"
-            style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap', padding: '14px 18px' }}
-          >
-            <div style={{ flex: '1 1 220px' }}>
-              <div style={{ fontFamily: 'var(--font-heading)', fontSize: 16 }}>{l.title}</div>
-              <div style={{ fontSize: 12, color: 'var(--color-neutral-600)' }}>
-                {KIND[l.kind]} · {l.board.pieces.length} peças
-                {l.steps && l.steps.length > 0 ? ` · ${l.steps.length} passos` : ''} · {l.quizzes.length} perguntas ·{' '}
-                {new Date(l.updatedAt).toLocaleString('pt-BR')}
+          <article key={l.id} className="lesson-card panel">
+            <CircuitPreview pieces={l.board.pieces} label={`Prévia do circuito: ${l.title || 'Lição sem título'}`} />
+            <div className="lesson-card-content">
+              <div className="lesson-card-heading">
+                <span className="lesson-kind">{KIND[l.kind]}</span>
+                <h3>{l.title || 'Lição sem título'}</h3>
+              </div>
+              <div className="lesson-card-meta">
+                <span>{l.board.pieces.length} peças</span>
+                <span>{l.steps?.length || 0} passos</span>
+                <span>{l.quizzes.length} perguntas</span>
+              </div>
+              <p className="lesson-card-date">Atualizada em {new Date(l.updatedAt).toLocaleDateString('pt-BR')}</p>
+              <div className="lesson-card-actions">
+                <button type="button" className="btn-primary" onClick={() => onOpen(l)}>
+                  Editar
+                </button>
+                <button type="button" className="btn-outline" onClick={() => onTest(l)}>
+                  Testar
+                </button>
+              </div>
+              <div className="lesson-card-utilities">
+                <button type="button" className="pill-link-btn" onClick={() => onDuplicate(l)}>
+                  Duplicar
+                </button>
+                <button type="button" className="pill-link-btn" onClick={() => onExport(l)}>
+                  Exportar
+                </button>
+                <button type="button" className="pill-link-btn muted" onClick={() => onDelete(l)}>
+                  Excluir
+                </button>
               </div>
             </div>
-            <button type="button" className="btn-outline" onClick={() => onOpen(l)}>
-              Editar
-            </button>
-            <button type="button" className="btn-outline" onClick={() => onTest(l)}>
-              Testar
-            </button>
-            <button type="button" className="pill-link-btn" onClick={() => onDuplicate(l)}>
-              duplicar
-            </button>
-            <button type="button" className="pill-link-btn" onClick={() => onExport(l)}>
-              exportar
-            </button>
-            <button type="button" className="pill-link-btn muted" onClick={() => onDelete(l)}>
-              excluir
-            </button>
-          </div>
+          </article>
         ))}
       </div>
     </div>
