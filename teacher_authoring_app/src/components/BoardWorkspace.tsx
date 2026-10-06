@@ -95,6 +95,8 @@ export default function BoardWorkspace({
   }
 
   useEffect(() => {
+    if (readOnly) return;
+
     function move(e) {
       const d = dragRef.current;
       if (!d) return;
@@ -134,7 +136,7 @@ export default function BoardWorkspace({
       window.removeEventListener('pointerup', up);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onChange, say, holeAt, begin]);
+  }, [onChange, say, holeAt, begin, readOnly]);
 
   function stepPot(p, dir) {
     const i = POT_VALUES.indexOf(p.value || POT_DEFAULT);
@@ -211,7 +213,7 @@ export default function BoardWorkspace({
                   lit={glow && (p.type === 'led' || p.type === 'buzzer')}
                   brilho={brilho}
                   value={p.value}
-                  onPotStep={p.type === 'potenciometro' ? (dir) => stepPot(p, dir) : undefined}
+                  onPotStep={!readOnly && p.type === 'potenciometro' ? (dir) => stepPot(p, dir) : undefined}
                   pressed={!!pressed && pressed.has(p.id)}
                   onButton={p.type === 'botao' && onPress ? (down) => onPress(p.id, down) : undefined}
                 />
