@@ -147,6 +147,62 @@ button {
   color: var(--color-neutral-600);
 }
 
+.workspace-page {
+  height: 100%;
+  overflow: auto;
+  padding: 24px clamp(20px, 5vw, 72px) 70px;
+  touch-action: pan-y;
+}
+.workspace-page h2 {
+  font-family: var(--font-heading);
+}
+.workspace-form {
+  display: grid;
+  gap: 10px;
+  max-width: 560px;
+  margin: 18px 0;
+}
+.workspace-form h3 {
+  margin: 0;
+}
+.workspace-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+  margin-top: 22px;
+}
+.workspace-section {
+  margin: 22px 0;
+}
+.workspace-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.workspace-actions select {
+  max-width: 420px;
+}
+.workspace-list {
+  padding-left: 24px;
+}
+.workspace-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-divider);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.workspace-checkbox {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.workspace-loading {
+  padding: 24px;
+}
+
 .ghost-overlay {
   position: fixed;
   transform: translate(-50%, -50%);
@@ -353,6 +409,9 @@ button {
   font-family: var(--font-heading);
   font-size: 17px;
   margin: 0 0 10px;
+}
+.workspace-cards .panel {
+  min-height: 150px;
 }
 .mode-toggle a {
   display: block;

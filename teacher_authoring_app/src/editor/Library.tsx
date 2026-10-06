@@ -31,9 +31,7 @@ export default function Library({ lessons, onNew, onOpen, onTest, onDuplicate, o
         />
       </div>
       {lessons.length === 0 && (
-        <p className="lesson-library-empty">
-          Nenhuma lição salva neste navegador. Crie uma nova ou abra um arquivo .json.
-        </p>
+        <p className="lesson-library-empty">Nenhuma lição salva. Crie uma nova ou abra um arquivo .json.</p>
       )}
       <div className="lesson-card-grid">
         {lessons.map((l) => (

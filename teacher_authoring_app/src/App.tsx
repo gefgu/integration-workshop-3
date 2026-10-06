@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   BrowserRouter,
   Navigate,
@@ -10,20 +10,13 @@ import {
   useNavigate,
   useParams,
 } from 'react-router-dom';
+import { workspace } from './api/workspace.ts';
 import LessonEditor from './editor/LessonEditor.tsx';
 import Library from './editor/Library.tsx';
 import { newLesson } from './model/lesson.ts';
 import LessonPlayer from './player/LessonPlayer.tsx';
-import {
-  downloadLesson,
-  duplicateLesson,
-  loadDraft,
-  loadLessons,
-  readLessonFile,
-  saveDraft,
-  saveLessons,
-  upsertLesson,
-} from './storage/lessonStore.ts';
+import { downloadLesson, duplicateLesson, readLessonFile } from './storage/lessonStore.ts';
+import Classes from './workspace/Classes.tsx';
 
 const SESSION_KEY = 'tedtronics-mock-signed-in';
 
@@ -38,26 +31,53 @@ export default function App() {
 function AppRoutes() {
   const navigate = useNavigate();
   const [signedIn, setSignedIn] = useState(() => sessionStorage.getItem(SESSION_KEY) === 'true');
-  const [lessons, setLessons] = useState(loadLessons);
-  const [lesson, setLesson] = useState(() => loadDraft() || newLesson());
+  const [lessons, setLessons] = useState([]);
+  const [lesson, setLesson] = useState(newLesson);
+  const [loaded, setLoaded] = useState(false);
   const [status, setStatus] = useState('');
   const [error, setError] = useState('');
   const mascotKind = 'fox';
 
   useEffect(() => {
-    saveDraft(lesson);
-  }, [lesson]);
+    if (!signedIn) return;
+    let active = true;
+    setLoaded(false);
+    workspace.listLessons().then(
+      (items) => {
+        if (active) {
+          setLessons(items);
+          setError('');
+          setLoaded(true);
+        }
+      },
+      (cause) => {
+        if (active) {
+          setError(cause.message);
+          setLoaded(true);
+        }
+      }
+    );
+    return () => {
+      active = false;
+    };
+  }, [signedIn]);
 
   const flash = (msg) => {
     setStatus(msg);
     setTimeout(() => setStatus(''), 3000);
   };
 
-  const persist = useCallback((next) => {
-    setLessons(next);
-    if (!saveLessons(next))
-      setError('Não foi possível gravar no navegador. Use "Exportar .json" para guardar a lição.');
-  }, []);
+  async function save(selectedLesson) {
+    try {
+      const saved = await workspace.saveLesson(selectedLesson);
+      setLessons((items) => [saved, ...items.filter((item) => item.id !== saved.id)]);
+      setLesson((current) => (current.id === saved.id ? { ...current, updatedAt: saved.updatedAt } : current));
+      setError('');
+      flash('Lição salva no banco de dados.');
+    } catch (cause) {
+      setError((cause as Error).message);
+    }
+  }
 
   const open = (selectedLesson) => {
     const copy = JSON.parse(JSON.stringify(selectedLesson));
@@ -73,11 +93,6 @@ function AppRoutes() {
     navigate(`/editor/${encodeURIComponent(freshLesson.id)}`);
   };
 
-  function save(selectedLesson) {
-    persist(upsertLesson(lessons, selectedLesson));
-    flash('Lição salva na biblioteca deste navegador.');
-  }
-
   async function importFile(file) {
     const result = await readLessonFile(file);
     if (result.ok === false) {
@@ -85,10 +100,28 @@ function AppRoutes() {
       return;
     }
     const exists = lessons.some((savedLesson) => savedLesson.id === result.lesson.id);
-    persist(upsertLesson(lessons, result.lesson));
-    setError('');
-    open(result.lesson);
-    flash(exists ? 'Lição importada (substituiu a de mesmo id).' : 'Lição importada.');
+    try {
+      const saved = await workspace.saveLesson(result.lesson);
+      setLessons((items) => [saved, ...items.filter((item) => item.id !== saved.id)]);
+      open(saved);
+      flash(exists ? 'Lição importada (substituiu a de mesmo id).' : 'Lição importada.');
+    } catch (cause) {
+      setError((cause as Error).message);
+    }
+  }
+
+  async function duplicate(selectedLesson) {
+    await save(duplicateLesson(selectedLesson));
+  }
+
+  async function remove(selectedLesson) {
+    try {
+      await workspace.deleteLesson(selectedLesson.id);
+      setLessons((items) => items.filter((item) => item.id !== selectedLesson.id));
+      setError('');
+    } catch (cause) {
+      setError((cause as Error).message);
+    }
   }
 
   function signIn() {
@@ -100,6 +133,8 @@ function AppRoutes() {
   function signOut() {
     sessionStorage.removeItem(SESSION_KEY);
     setSignedIn(false);
+    setLessons([]);
+    setLesson(newLesson());
     navigate('/login', { replace: true });
   }
 
@@ -109,48 +144,56 @@ function AppRoutes() {
       <Route path="/login" element={signedIn ? <Navigate to="/home" replace /> : <LoginScreen onSignIn={signIn} />} />
       <Route element={<RequireAuth signedIn={signedIn} />}>
         <Route element={<AppLayout lesson={lesson} onSignOut={signOut} />}>
-          <Route
-            path="/home"
-            element={
-              <>
-                {error && <AppError message={error} />}
-                <Library
-                  lessons={lessons}
-                  onNew={create}
-                  onOpen={open}
-                  onTest={(selectedLesson) => {
-                    setLesson(JSON.parse(JSON.stringify(selectedLesson)));
-                    navigate(`/sandbox/${encodeURIComponent(selectedLesson.id)}`);
-                  }}
-                  onDuplicate={(selectedLesson) => persist(upsertLesson(lessons, duplicateLesson(selectedLesson)))}
-                  onExport={downloadLesson}
-                  onDelete={(selectedLesson) =>
-                    persist(lessons.filter((savedLesson) => savedLesson.id !== selectedLesson.id))
-                  }
-                  onImport={importFile}
-                />
-              </>
-            }
-          />
-          <Route
-            path="/editor/:lessonId?"
-            element={
-              <EditorRoute
-                lessons={lessons}
-                lesson={lesson}
-                setLesson={setLesson}
-                onSave={save}
-                onExport={downloadLesson}
-                onTest={() => navigate(`/sandbox/${encodeURIComponent(lesson.id)}`)}
-                status={status}
-                error={error}
+          {!loaded ? (
+            <Route path="*" element={<p className="workspace-loading">Carregando lições…</p>} />
+          ) : (
+            <>
+              <Route
+                path="/home"
+                element={
+                  <>
+                    {error && <AppError message={error} />}
+                    <Library
+                      lessons={lessons}
+                      onNew={create}
+                      onOpen={open}
+                      onTest={(selectedLesson) => {
+                        setLesson(JSON.parse(JSON.stringify(selectedLesson)));
+                        navigate(`/sandbox/${encodeURIComponent(selectedLesson.id)}`);
+                      }}
+                      onDuplicate={duplicate}
+                      onExport={downloadLesson}
+                      onDelete={remove}
+                      onImport={importFile}
+                    />
+                  </>
+                }
               />
-            }
-          />
-          <Route
-            path="/sandbox/:lessonId?"
-            element={<SandboxRoute lessons={lessons} lesson={lesson} setLesson={setLesson} mascotKind={mascotKind} />}
-          />
+              <Route path="/turmas" element={<Classes lessons={lessons} />} />
+              <Route path="/turmas/:classId" element={<Classes lessons={lessons} />} />
+              <Route
+                path="/editor/:lessonId?"
+                element={
+                  <EditorRoute
+                    lessons={lessons}
+                    lesson={lesson}
+                    setLesson={setLesson}
+                    onSave={save}
+                    onExport={downloadLesson}
+                    onTest={() => navigate(`/sandbox/${encodeURIComponent(lesson.id)}`)}
+                    status={status}
+                    error={error}
+                  />
+                }
+              />
+              <Route
+                path="/sandbox/:lessonId?"
+                element={
+                  <SandboxRoute lessons={lessons} lesson={lesson} setLesson={setLesson} mascotKind={mascotKind} />
+                }
+              />
+            </>
+          )}
         </Route>
       </Route>
       <Route path="*" element={<Navigate to={signedIn ? '/home' : '/login'} replace />} />
@@ -172,6 +215,9 @@ function AppLayout({ lesson, onSignOut }) {
         <nav className="mode-toggle" aria-label="Navegação principal">
           <NavLink to="/home" className={({ isActive }) => (isActive ? 'active' : '')}>
             Início
+          </NavLink>
+          <NavLink to="/turmas" className={() => (pathname.startsWith('/turmas') ? 'active' : '')}>
+            Turmas
           </NavLink>
           <NavLink
             to={`/editor/${encodeURIComponent(lesson.id)}`}
