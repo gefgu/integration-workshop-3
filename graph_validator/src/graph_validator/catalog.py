@@ -31,6 +31,8 @@ CATALOG: dict[str, ComponentDef] = {
     "potenciometro": ComponentDef("potenciometro", 1, _PIN, kit_limit=1),
     "jumper_curto": ComponentDef("jumper", 1, _PIN, kit_limit=6),
     "jumper_longo": ComponentDef("jumper", 2, _PIN, kit_limit=3),
+    "jumper_4": ComponentDef("jumper", 4, _PIN, kit_limit=3),
+    "jumper_5": ComponentDef("jumper", 5, _PIN, kit_limit=3),
 }
 
 TYPES = tuple(CATALOG)

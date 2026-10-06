@@ -62,7 +62,23 @@ def test_invalid_board_is_422():
 
 def test_lint_endpoint():
     assert client.post("/lessons/lint", json={"lesson": None}).status_code == 422
-    assert client.post("/lessons/lint", json=lesson()).json() == {"problems": []}
+    assert client.post("/lessons/lint", json=lesson()).json() == {"problems": [], "byStep": []}
+
+
+def test_lint_by_step_pins_error_to_step():
+    l = lesson()
+    l["kind"] = "guided"
+    l["steps"] = [{"id": "s1", "action": "place_component", "pieces": l["steps"][0]["pieces"]}]  # 4 pieces at once
+    out = client.post("/lessons/lint", json=l).json()
+    assert out["byStep"][0]["stepId"] == "s1" and "exactly one action" in out["byStep"][0]["message"]
+    assert out["problems"][0].startswith("step 1 (s1):")
+
+
+def test_feedback_catalog():
+    r = client.get("/feedback/categories").json()
+    cats = {c["category"]: c["defaultMessage"] for c in r["categories"]}
+    assert set(cats) >= {"complete", "reversed_polarity", "missing_connection"} and all(cats.values())
+    assert {"family": "led", "name": "o LED"} in r["families"]
 
 
 def test_cli_roundtrip(tmp_path, capsys):
@@ -72,3 +88,11 @@ def test_cli_roundtrip(tmp_path, capsys):
     bp.write_text(json.dumps(camera(skip="j")))
     assert main(["validate", str(lp), str(bp), "--teacher"]) == 1
     assert "missing_connection" in capsys.readouterr().out
+
+
+def test_empty_board_is_a_valid_board():
+    l = lesson()
+    for board in ({"pieces": []}, {"components": []}):
+        r = client.post("/validate/final", json={"lesson": l, "board": board})
+        assert r.status_code == 200
+        assert r.json()["category"] in ("missing_component", "missing_connection") and not r.json()["approved"]
