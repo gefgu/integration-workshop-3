@@ -390,6 +390,57 @@ button {
   align-self: flex-start;
   z-index: 2;
 }
+.board-tray-column {
+  width: 420px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.board-tray-column > section:first-child {
+  max-height: min(380px, 48vh);
+  overflow-y: auto;
+}
+.schematic-panel {
+  background: var(--color-surface);
+  border-radius: 24px;
+  padding: 12px;
+}
+.schematic-panel h2 {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  margin: 0 0 8px;
+}
+.schematic-viewport {
+  max-height: 210px;
+  overflow: auto;
+  border: 1px solid var(--color-divider);
+  border-radius: 12px;
+  background: var(--color-neutral-100);
+}
+.schematic-viewport svg {
+  display: block;
+}
+.schematic-label {
+  fill: var(--color-neutral-800);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+}
+.schematic-node-label,
+.schematic-polarity {
+  fill: var(--color-accent-2-700);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+}
+.schematic-empty {
+  color: var(--color-neutral-600);
+  font-size: 13px;
+  margin: 0;
+  padding: 32px 16px;
+  text-align: center;
+}
 .header {
   justify-content: center;
 }

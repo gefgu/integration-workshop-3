@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import BoardWorkspace from '../components/BoardWorkspace.tsx';
+import SchematicPreview from '../components/SchematicPreview.tsx';
 import { diagnose } from '../engine/diagnose.ts';
 import { lessonProblems } from '../model/lesson.ts';
 import QuizEditor from './QuizEditor.tsx';
@@ -33,6 +34,7 @@ export default function LessonEditor({ lesson, setLesson, onSave, onExport, onTe
           trail={diag.trail}
           ledMa={diag.mA}
           highlightIds={highlightIds}
+          trayFooter={<SchematicPreview pieces={lesson.board.pieces} />}
         />
       </div>
 

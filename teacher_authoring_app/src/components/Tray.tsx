@@ -38,7 +38,12 @@ export default function Tray({ pieces, onDragStart }) {
               aria-label={NOMES[type]}
               style={{ opacity: left > 0 ? 1 : 0.4, cursor: left > 0 ? 'grab' : 'not-allowed' }}
             >
-              <PieceView type={type} width={DEFS[type].len === 2 ? 56 : 54} height={24} pins={false} />
+              <PieceView
+                type={type}
+                width={type.startsWith('jumper') ? 40 + DEFS[type].len * 8 : 54}
+                height={24}
+                pins={false}
+              />
               <div>
                 <div className="name">{NOMES[type]}</div>
                 <div className="meta">
