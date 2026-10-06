@@ -30,6 +30,8 @@ export const DEFS = {
   potenciometro: { len: 1, cor: 'amarelo', text: '' },
   jumper_curto: { len: 1, cor: 'branco', text: '' },
   jumper_longo: { len: 2, cor: 'branco', text: '' },
+  jumper_4: { len: 4, cor: 'branco', text: '' },
+  jumper_5: { len: 5, cor: 'branco', text: '' },
 };
 
 export const NOMES = {
@@ -44,6 +46,8 @@ export const NOMES = {
   potenciometro: 'Potenciômetro',
   jumper_curto: 'Jumper curto',
   jumper_longo: 'Jumper longo',
+  jumper_4: 'Jumper 4 colunas',
+  jumper_5: 'Jumper 5 colunas',
 };
 
 export const TYPES = Object.keys(DEFS) as PieceType[];
@@ -77,6 +81,8 @@ export const KIT_LIMITS = {
   potenciometro: 1,
   jumper_curto: 6,
   jumper_longo: 3,
+  jumper_4: 3,
+  jumper_5: 3,
 };
 
 export function countByType(pieces: Piece[]): Partial<Record<PieceType, number>> {

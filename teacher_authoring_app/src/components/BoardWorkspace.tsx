@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   buildPiece,
@@ -26,6 +27,7 @@ const BODY_PAD = SOCKET / 2;
  *  - pressed/onPress(id, down): held pushbuttons (omit onPress for a non-interactive button)
  *  - readOnly: a preview — no tray, no dragging, no clearing
  *  - highlightIds: Set of piece ids drawn with an accent outline (e.g. the current step's piece)
+ *  - trayFooter: extra read-only content below the component tray
  */
 interface BoardWorkspaceProps {
   pieces: Piece[];
@@ -37,6 +39,7 @@ interface BoardWorkspaceProps {
   onNotice?: (message: string) => void;
   readOnly?: boolean;
   highlightIds?: Set<string> | null;
+  trayFooter?: ReactNode;
 }
 export default function BoardWorkspace({
   pieces,
@@ -48,6 +51,7 @@ export default function BoardWorkspace({
   onNotice,
   readOnly = false,
   highlightIds = null,
+  trayFooter,
 }: BoardWorkspaceProps) {
   const boardRef = useRef(null);
   const [drag, setDrag] = useState(null);
@@ -159,7 +163,15 @@ export default function BoardWorkspace({
 
   return (
     <div style={{ display: 'flex', gap: 18, alignItems: 'flex-start', justifyContent: 'center' }}>
-      {!readOnly && <Tray pieces={pieces} onDragStart={startTrayDrag} />}
+      {!readOnly &&
+        (trayFooter ? (
+          <div className="board-tray-column">
+            <Tray pieces={pieces} onDragStart={startTrayDrag} />
+            {trayFooter}
+          </div>
+        ) : (
+          <Tray pieces={pieces} onDragStart={startTrayDrag} />
+        ))}
       <div>
         <Breadboard boardRef={boardRef} trail={trail}>
           {preview && (
