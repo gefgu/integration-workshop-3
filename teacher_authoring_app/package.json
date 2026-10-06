@@ -9,13 +9,17 @@
     "preview": "vite preview",
     "test": "node --import tsx --test tests/*.test.ts",
     "validator": "../graph_validator/.venv/bin/uvicorn graph_validator.service.app:app --port 8000",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "biome lint src tests vite.config.ts",
+    "format": "biome format --write src tests vite.config.ts",
+    "check": "biome check src tests vite.config.ts"
   },
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.5.15",
     "@types/node": "^26.6.4",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",

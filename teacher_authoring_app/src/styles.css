@@ -48,7 +48,9 @@
   --shadow-lg: 0 12px 32px color-mix(in srgb, #2e2b25 22%, transparent);
 }
 
-html, body, #root {
+html,
+body,
+#root {
   margin: 0;
   height: 100%;
 }
@@ -60,12 +62,22 @@ body {
   font-family: var(--font-body);
 }
 
-*, *::before, *::after { box-sizing: border-box; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
-a { color: var(--color-accent-700); }
-a:hover { color: var(--color-accent-800); }
+a {
+  color: var(--color-accent-700);
+}
+a:hover {
+  color: var(--color-accent-800);
+}
 
-button { font-family: inherit; }
+button {
+  font-family: inherit;
+}
 
 .app-shell {
   height: 100vh;
@@ -228,7 +240,8 @@ button { font-family: inherit; }
   color: var(--color-neutral-600);
 }
 
-.summary-table th.num, .summary-table td.num {
+.summary-table th.num,
+.summary-table td.num {
   text-align: right;
 }
 
@@ -292,7 +305,7 @@ button { font-family: inherit; }
 }
 
 .oled-text {
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   font-size: 12px;
   letter-spacing: 0.03em;
   text-shadow: 0 0 4px rgba(160, 230, 200, 0.55);
@@ -301,15 +314,67 @@ button { font-family: inherit; }
 }
 
 /* teacher authoring app */
-.app-shell { touch-action: auto; }
-.mode-stage { overflow: auto; padding: 0 26px 32px; }
-.header { justify-content: center; }
-.panel { text-align: left; }
-.mode-stage input, .mode-stage textarea { user-select: text; }
-.panel { background: var(--color-surface); border-radius: 28px; padding: 18px 18px 20px; }
-.panel h2 { font-family: var(--font-heading); font-size: 17px; margin: 0 0 10px; }
-.field-label { display: block; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--color-neutral-600); margin: 10px 0 4px; }
-.text-input { width: 100%; border: 1px solid var(--color-divider); border-radius: 12px; padding: 9px 12px; font: inherit; font-size: 14px; background: var(--color-neutral-100); color: var(--color-text); }
-.problems { margin: 8px 0 0; padding-left: 18px; font-size: 13px; color: var(--color-accent-800); }
-@keyframes pulse { from { transform: scale(1); } to { transform: scale(1.35); } }
-.btn-primary:disabled, .btn-outline:disabled { opacity: .45; cursor: default; }
+.app-shell {
+  touch-action: auto;
+}
+.mode-stage {
+  overflow: auto;
+  padding: 0 26px 32px;
+}
+.header {
+  justify-content: center;
+}
+.panel {
+  text-align: left;
+}
+.mode-stage input,
+.mode-stage textarea {
+  user-select: text;
+}
+.panel {
+  background: var(--color-surface);
+  border-radius: 28px;
+  padding: 18px 18px 20px;
+}
+.panel h2 {
+  font-family: var(--font-heading);
+  font-size: 17px;
+  margin: 0 0 10px;
+}
+.field-label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-neutral-600);
+  margin: 10px 0 4px;
+}
+.text-input {
+  width: 100%;
+  border: 1px solid var(--color-divider);
+  border-radius: 12px;
+  padding: 9px 12px;
+  font: inherit;
+  font-size: 14px;
+  background: var(--color-neutral-100);
+  color: var(--color-text);
+}
+.problems {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  font-size: 13px;
+  color: var(--color-accent-800);
+}
+@keyframes pulse {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.35);
+  }
+}
+.btn-primary:disabled,
+.btn-outline:disabled {
+  opacity: 0.45;
+  cursor: default;
+}

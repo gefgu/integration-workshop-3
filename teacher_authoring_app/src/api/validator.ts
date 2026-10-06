@@ -4,25 +4,35 @@ import type { Lesson, Piece } from '../model/types.ts';
 /** The Vite dev server proxies /api to the graph_validator service (see vite.config.js). */
 export const BASE = '/api';
 
-const pieceOut = (p: Piece) => (p.value != null ? { id: p.id, type: p.type, a: p.a, b: p.b, row: p.row, value: p.value } : { id: p.id, type: p.type, a: p.a, b: p.b, row: p.row });
+const pieceOut = (p: Piece) =>
+  p.value != null
+    ? { id: p.id, type: p.type, a: p.a, b: p.b, row: p.row, value: p.value }
+    : { id: p.id, type: p.type, a: p.a, b: p.b, row: p.row };
 
 /** Result: { ok:true, data } | { ok:false, offline:true } | { ok:false, error, problems? }. */
 type FetchLike = (input: string, init?: RequestInit) => Promise<any>;
 async function call(path: string, body: unknown, fetchImpl: FetchLike): Promise<any> {
-  let res;
+  let res: any;
   try {
-    res = await fetchImpl(BASE + path, body === undefined
-      ? undefined
-      : { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    res = await fetchImpl(
+      BASE + path,
+      body === undefined
+        ? undefined
+        : { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }
+    );
   } catch {
     return { ok: false, offline: true, error: 'Validador offline.' };
   }
   // A proxy with nothing behind it answers 500/502/503/504.
   if (res.status >= 500) return { ok: false, offline: true, error: 'Validador offline.' };
   let json = null;
-  try { json = await res.json(); } catch { /* non-JSON body */ }
+  try {
+    json = await res.json();
+  } catch {
+    /* non-JSON body */
+  }
   if (res.ok) return { ok: true, data: json };
-  const detail = json && json.detail;
+  const detail = json?.detail;
   if (detail && detail.error === 'invalid_board') {
     return { ok: false, error: 'Há peças em lugar inválido na bancada.', problems: detail.problems || [] };
   }
@@ -37,19 +47,32 @@ function stepResult(d: any) {
     hint: d.hint,
     awaitingAnswer: d.awaiting_answer,
     graphHash: d.graph_hash,
-    issues: d.issues || []
+    issues: d.issues || [],
   };
 }
 
 /** Validates the student's `pieces` against step `stepIdx` of `lesson` (challenges: stepIdx 0). */
-export async function validateStep({ lesson, pieces, stepIdx, previousHash = null, answer = null }: { lesson: Lesson; pieces: Piece[]; stepIdx: number; previousHash?: string | null; answer?: string | null }, fetchImpl: FetchLike = globalThis.fetch): Promise<any> {
-  const r = await call('/validate/step', {
-    lesson: toValidatorLesson(lesson),
-    board: { pieces: pieces.map(pieceOut) },
-    step_idx: stepIdx,
-    previous_graph_hash: previousHash,
-    answer
-  }, fetchImpl);
+export async function validateStep(
+  {
+    lesson,
+    pieces,
+    stepIdx,
+    previousHash = null,
+    answer = null,
+  }: { lesson: Lesson; pieces: Piece[]; stepIdx: number; previousHash?: string | null; answer?: string | null },
+  fetchImpl: FetchLike = globalThis.fetch
+): Promise<any> {
+  const r = await call(
+    '/validate/step',
+    {
+      lesson: toValidatorLesson(lesson),
+      board: { pieces: pieces.map(pieceOut) },
+      step_idx: stepIdx,
+      previous_graph_hash: previousHash,
+      answer,
+    },
+    fetchImpl
+  );
   return r.ok === true ? { ok: true, result: stepResult(r.data) } : r;
 }
 

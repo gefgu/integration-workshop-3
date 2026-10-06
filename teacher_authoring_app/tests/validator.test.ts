@@ -1,6 +1,6 @@
-import test from 'node:test';
 import assert from 'node:assert/strict';
-import { validateStep, lintLesson, feedbackCatalog } from '../src/api/validator.ts';
+import test from 'node:test';
+import { feedbackCatalog, lintLesson, validateStep } from '../src/api/validator.ts';
 import { newLesson } from '../src/model/lesson.ts';
 import { autoSplit } from '../src/model/steps.ts';
 
@@ -14,9 +14,23 @@ const lesson = () => {
 const reply = (status, body) => async () => ({ status, ok: status < 400, json: async () => body });
 
 test('validateStep envia lição, bancada e hash anterior e traduz a resposta', async () => {
-  let sent;
-  const f = async (url, init) => { sent = { url, body: JSON.parse(init.body) }; return reply(200, { approved: false, category: 'missing_component', message: 'Falta uma peça.', hint: 'Falta uma peça.', awaiting_answer: false, graph_hash: 'h1', issues: [] })(); };
-  const r = await validateStep({ lesson: lesson(), pieces: [P('bat', 'bateria', 1, 2, 0)], stepIdx: 1, previousHash: 'h0' }, f);
+  let sent: { url: string; body: any } | undefined;
+  const f = async (url, init) => {
+    sent = { url, body: JSON.parse(init.body) };
+    return reply(200, {
+      approved: false,
+      category: 'missing_component',
+      message: 'Falta uma peça.',
+      hint: 'Falta uma peça.',
+      awaiting_answer: false,
+      graph_hash: 'h1',
+      issues: [],
+    })();
+  };
+  const r = await validateStep(
+    { lesson: lesson(), pieces: [P('bat', 'bateria', 1, 2, 0)], stepIdx: 1, previousHash: 'h0' },
+    f
+  );
   assert.equal(sent.url, '/api/validate/step');
   assert.equal(sent.body.step_idx, 1);
   assert.equal(sent.body.previous_graph_hash, 'h0');
@@ -28,13 +42,18 @@ test('validateStep envia lição, bancada e hash anterior e traduz a resposta', 
 });
 
 test('falha de rede e 5xx viram offline', async () => {
-  const down = async () => { throw new TypeError('fetch failed'); };
+  const down = async () => {
+    throw new TypeError('fetch failed');
+  };
   assert.equal((await validateStep({ lesson: lesson(), pieces: [], stepIdx: 0 }, down)).offline, true);
   assert.equal((await lintLesson(lesson(), reply(502, null))).offline, true);
 });
 
 test('invalid_board vira erro legível com a lista de problemas', async () => {
-  const r = await validateStep({ lesson: lesson(), pieces: [], stepIdx: 0 }, reply(422, { detail: { error: 'invalid_board', problems: ['x'] } }));
+  const r = await validateStep(
+    { lesson: lesson(), pieces: [], stepIdx: 0 },
+    reply(422, { detail: { error: 'invalid_board', problems: ['x'] } })
+  );
   assert.equal(r.ok, false);
   assert.equal(r.offline, undefined);
   assert.deepEqual(r.problems, ['x']);
@@ -44,7 +63,10 @@ test('lintLesson e feedbackCatalog', async () => {
   const lint = await lintLesson(lesson(), reply(200, { problems: [], byStep: [] }));
   assert.deepEqual([lint.ok, lint.problems], [true, []]);
   let method = 'x';
-  const cat = await feedbackCatalog(async (url, init) => { method = init ? init.method : 'GET'; return reply(200, { categories: [{ category: 'complete', defaultMessage: 'ok' }], families: [] })(); });
+  const cat = await feedbackCatalog(async (_url, init) => {
+    method = init ? init.method : 'GET';
+    return reply(200, { categories: [{ category: 'complete', defaultMessage: 'ok' }], families: [] })();
+  });
   assert.equal(method, 'GET');
   assert.equal(cat.categories[0].category, 'complete');
 });

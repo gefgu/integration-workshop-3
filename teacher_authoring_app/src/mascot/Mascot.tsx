@@ -19,7 +19,7 @@ export default function Mascot({ kind, message, size = 44 }) {
     if (intervalRef.current) clearInterval(intervalRef.current);
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     const duration = Math.min(4200, Math.max(900, (message || '').length * 45));
-    intervalRef.current = setInterval(() => setTalkFrame(f => !f), 220);
+    intervalRef.current = setInterval(() => setTalkFrame((f) => !f), 220);
     timeoutRef.current = setTimeout(() => {
       clearInterval(intervalRef.current);
       intervalRef.current = null;

@@ -1,8 +1,8 @@
-import test from 'node:test';
 import assert from 'node:assert/strict';
+import test from 'node:test';
+import { buildPiece, colX, nearestHole, placementError, rowY } from '../src/engine/board.ts';
 import { analyze, corrente, DEFS } from '../src/engine/sim.ts';
-import { buildPiece, placementError, nearestHole, colX, rowY } from '../src/engine/board.ts';
-import { newLesson, newQuiz, validateLesson, matchesTarget, lessonProblems } from '../src/model/lesson.ts';
+import { lessonProblems, matchesTarget, newLesson, newQuiz, validateLesson } from '../src/model/lesson.ts';
 
 const P = (id, type, a, b, row = 0) => ({ id, type, a, b, row });
 
@@ -10,19 +10,25 @@ const loop = () => [
   P('bat', 'bateria', 1, 2, 0),
   P('r', 'resistor_470', 2, 3, 1),
   P('led', 'led', 3, 4, 2),
-  P('j', 'jumper_longo', 4, 2, 3)
+  P('j', 'jumper_longo', 4, 2, 3),
 ];
 
 test('analyze: bateria → resistor → LED → volta é válido', () => {
   const pieces = [
-    P('bat', 'bateria', 1, 2), P('r', 'resistor_470', 1, 3), P('led', 'led', 3, 4), P('w', 'jumper_longo', 4, 2)
+    P('bat', 'bateria', 1, 2),
+    P('r', 'resistor_470', 1, 3),
+    P('led', 'led', 3, 4),
+    P('w', 'jumper_longo', 4, 2),
   ];
   assert.equal(analyze(pieces).code, 'valido');
 });
 
 test('analyze: jumper direto nos polos é curto', () => {
   assert.equal(analyze([P('bat', 'bateria', 1, 2), P('w', 'jumper_curto', 1, 2, 1)]).code, 'par_duplicado');
-  assert.equal(analyze([P('bat', 'bateria', 1, 2), P('w', 'jumper_curto', 1, 3), P('w2', 'jumper_curto', 3, 2, 1)]).code, 'curto');
+  assert.equal(
+    analyze([P('bat', 'bateria', 1, 2), P('w', 'jumper_curto', 1, 3), P('w2', 'jumper_curto', 3, 2, 1)]).code,
+    'curto'
+  );
 });
 
 test('analyze: sem bateria e sem resistor', () => {
@@ -59,11 +65,11 @@ test('nearestHole encaixa no furo mais próximo e rejeita fora da bancada', () =
 
 test('matchesTarget: direção só importa para bateria e LED; linha é ignorada', () => {
   const target = loop();
-  const same = target.map(p => ({ ...p, row: 5 }));
+  const same = target.map((p) => ({ ...p, row: 5 }));
   assert.equal(matchesTarget(same, target), true);
-  const resFlipped = target.map(p => (p.id === 'r' ? { ...p, a: 3, b: 2 } : p));
+  const resFlipped = target.map((p) => (p.id === 'r' ? { ...p, a: 3, b: 2 } : p));
   assert.equal(matchesTarget(resFlipped, target), true);
-  const ledFlipped = target.map(p => (p.id === 'led' ? { ...p, a: 4, b: 3 } : p));
+  const ledFlipped = target.map((p) => (p.id === 'led' ? { ...p, a: 4, b: 3 } : p));
   assert.equal(matchesTarget(ledFlipped, target), false);
   assert.equal(matchesTarget(target.slice(1), target), false);
 });
@@ -91,7 +97,9 @@ test('lessonProblems bloqueia título vazio e pergunta sem resposta correta', ()
   const q = newQuiz();
   l.quizzes = [q];
   assert.ok(lessonProblems(l).length > 0);
-  q.prompt = 'Qual?'; q.options[0].text = 'A'; q.options[1].text = 'B';
+  q.prompt = 'Qual?';
+  q.options[0].text = 'A';
+  q.options[1].text = 'B';
   assert.deepEqual(lessonProblems(l), []);
 });
 
@@ -109,37 +117,65 @@ test('limites do kit (MFR8): 2 LEDs, 1 de cada resistor, 6 jumpers curtos, 3 lon
 });
 
 test('corrente depende do valor do resistor e antigos "resistor" migram para 470 Ω', () => {
-  const mk = (type) => analyze([P('bat', 'bateria', 1, 2), P('r', type, 1, 3), P('led', 'led', 3, 4), P('w', 'jumper_longo', 4, 2)]);
+  const mk = (type) =>
+    analyze([P('bat', 'bateria', 1, 2), P('r', type, 1, 3), P('led', 'led', 3, 4), P('w', 'jumper_longo', 4, 2)]);
   assert.ok(corrente(mk('resistor_220')) > corrente(mk('resistor_470')));
   assert.ok(corrente(mk('resistor_470')) > corrente(mk('resistor_1k')));
-  assert.ok(Math.abs(corrente(mk('resistor_470')) - 3 / 470 * 1000) < 1e-9);
+  assert.ok(Math.abs(corrente(mk('resistor_470')) - (3 / 470) * 1000) < 1e-9);
   const l = { ...newLesson(), board: { pieces: [P('a', 'resistor', 1, 2)] } };
   const migrated = validateLesson(l);
   assert.equal(migrated.ok === true ? migrated.lesson.board.pieces[0].type : null, 'resistor_470');
 });
 
 test('buzzer sozinho com a bateria fecha o circuito; capacitor bloqueia', () => {
-  const buzz = analyze([P('bat', 'bateria', 1, 2), P('z', 'buzzer', 1, 3), P('w', 'jumper_longo', 3, 2, 1)].map(x => x));
+  const buzz = analyze(
+    [P('bat', 'bateria', 1, 2), P('z', 'buzzer', 1, 3), P('w', 'jumper_longo', 3, 2, 1)].map((x) => x)
+  );
   assert.equal(buzz.code, 'valido');
   assert.equal(buzz.load, 'buzzer');
   assert.ok(corrente(buzz) > 0);
-  const cap = analyze([P('bat', 'bateria', 1, 2), P('c', 'capacitor', 1, 3), P('led', 'led', 3, 4), P('r', 'resistor_470', 4, 5), P('w', 'jumper_longo', 5, 3, 1), P('w2', 'jumper_curto', 3, 2, 2)]);
+  const cap = analyze([
+    P('bat', 'bateria', 1, 2),
+    P('c', 'capacitor', 1, 3),
+    P('led', 'led', 3, 4),
+    P('r', 'resistor_470', 4, 5),
+    P('w', 'jumper_longo', 5, 3, 1),
+    P('w2', 'jumper_curto', 3, 2, 2),
+  ]);
   assert.notEqual(cap.code, 'valido');
   const onlyCap = analyze([P('bat', 'bateria', 1, 2), P('c', 'capacitor', 1, 3), P('w', 'jumper_longo', 3, 2, 1)]);
   assert.equal(onlyCap.code, 'capacitor');
 });
 
 test('botão só fecha o caminho enquanto pressionado', () => {
-  const pieces = [P('bat', 'bateria', 1, 2), P('b', 'botao', 1, 3), P('led', 'led', 3, 4), P('r', 'resistor_470', 4, 5), P('w', 'jumper_longo', 5, 3, 1), P('w2', 'jumper_curto', 4, 2, 2)];
-  const circuit = [P('bat', 'bateria', 1, 2), P('b', 'botao', 1, 3), P('r', 'resistor_470', 3, 4), P('led', 'led', 4, 5), P('w', 'jumper_longo', 5, 2, 1)];
-  assert.equal(analyze(circuit).code, 'valido');                                   // sem opts: botão conta como pressionado
+  const pieces = [
+    P('bat', 'bateria', 1, 2),
+    P('b', 'botao', 1, 3),
+    P('led', 'led', 3, 4),
+    P('r', 'resistor_470', 4, 5),
+    P('w', 'jumper_longo', 5, 3, 1),
+    P('w2', 'jumper_curto', 4, 2, 2),
+  ];
+  const circuit = [
+    P('bat', 'bateria', 1, 2),
+    P('b', 'botao', 1, 3),
+    P('r', 'resistor_470', 3, 4),
+    P('led', 'led', 4, 5),
+    P('w', 'jumper_longo', 5, 2, 1),
+  ];
+  assert.equal(analyze(circuit).code, 'valido'); // sem opts: botão conta como pressionado
   assert.equal(analyze(circuit, { pressed: new Set() }).code, 'botao_aberto');
   assert.equal(analyze(circuit, { pressed: new Set(['b']) }).code, 'valido');
   assert.ok(pieces.length > 0);
 });
 
 test('potenciômetro: valor muda a corrente e é preservado no JSON', () => {
-  const mk = (value) => [P('bat', 'bateria', 1, 2), { ...P('p', 'potenciometro', 1, 3), value }, P('led', 'led', 3, 4), P('w', 'jumper_longo', 4, 2, 1)];
+  const mk = (value) => [
+    P('bat', 'bateria', 1, 2),
+    { ...P('p', 'potenciometro', 1, 3), value },
+    P('led', 'led', 3, 4),
+    P('w', 'jumper_longo', 4, 2, 1),
+  ];
   assert.ok(corrente(analyze(mk(100))) > corrente(analyze(mk(10000))));
   const l = { ...newLesson(), board: { pieces: [{ ...P('p', 'potenciometro', 1, 2), value: 2200 }] } };
   const parsed = validateLesson(l);
@@ -157,10 +193,14 @@ test('limites do kit: buzzer 1, capacitor 2, botão 2, potenciômetro 1', () => 
 test('cores das cápsulas seguem MFR10 e pontos MFR11 distinguem tipos da mesma cor', () => {
   const cor = (t) => DEFS[t].cor;
   assert.equal(cor('bateria'), 'vermelho');
-  assert.equal(cor('led'), 'verde'); assert.equal(cor('buzzer'), 'verde');
-  assert.equal(cor('resistor_470'), 'azul'); assert.equal(cor('capacitor'), 'azul');
-  assert.equal(cor('botao'), 'amarelo'); assert.equal(cor('potenciometro'), 'amarelo');
-  assert.equal(cor('jumper_curto'), 'branco'); assert.equal(cor('jumper_longo'), 'branco');
+  assert.equal(cor('led'), 'verde');
+  assert.equal(cor('buzzer'), 'verde');
+  assert.equal(cor('resistor_470'), 'azul');
+  assert.equal(cor('capacitor'), 'azul');
+  assert.equal(cor('botao'), 'amarelo');
+  assert.equal(cor('potenciometro'), 'amarelo');
+  assert.equal(cor('jumper_curto'), 'branco');
+  assert.equal(cor('jumper_longo'), 'branco');
   // dots only where a blue-class pair needs them; LED/buzzer/botão/potenciômetro carry none
   assert.ok(DEFS.resistor_470.dots >= 1 && DEFS.capacitor.dots <= 4 && DEFS.resistor_470.dots !== DEFS.capacitor.dots);
   for (const t of ['led', 'buzzer', 'botao', 'potenciometro']) assert.equal(DEFS[t].dots, undefined);
