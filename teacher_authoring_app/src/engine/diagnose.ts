@@ -1,3 +1,4 @@
+import { nodeOf } from './nodes.ts';
 import { analyze, corrente, MSG } from './sim.ts';
 
 /**
@@ -21,7 +22,7 @@ export function diagnose(pieces, pressed = null) {
   if (an.code === 'valido') {
     const bat = pieces.find((p) => p.type === 'bateria');
     const edgeIds = new Set([bat.id, ...an.trail.map((t) => t.id)]);
-    const nodes = new Set([bat.a, bat.b]);
+    const nodes = new Set([nodeOf(bat.a, bat.row), nodeOf(bat.b, bat.row)]);
     an.trail.forEach((t) => {
       nodes.add(t.from);
       nodes.add(t.to);

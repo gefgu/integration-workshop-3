@@ -4,7 +4,7 @@ import time
 
 from hypothesis import given, settings, strategies as st
 
-from graph_validator.catalog import CATALOG, COLS, ROWS
+from graph_validator.catalog import BANK_ROWS, CATALOG, COLS, ROWS
 from graph_validator.match import is_match
 from graph_validator.models import MatchOptions, Piece, board_problems
 
@@ -41,7 +41,13 @@ def test_sfr8_shift_keeps_graph_isomorphic(pieces, data):
     lo_c = min(min(p.a, p.b) for p in pieces); hi_c = max(max(p.a, p.b) for p in pieces)
     lo_r = min(p.row for p in pieces); hi_r = max(p.row for p in pieces)
     dc = data.draw(st.integers(1 - lo_c, COLS - hi_c))
-    dr = data.draw(st.integers(-lo_r, ROWS - 1 - hi_r))
+    # the banks are separate nodes, so rows may only move inside their bank
+    if hi_r < BANK_ROWS:
+        dr = data.draw(st.integers(-lo_r, BANK_ROWS - 1 - hi_r))
+    elif lo_r >= BANK_ROWS:
+        dr = data.draw(st.integers(BANK_ROWS - lo_r, ROWS - 1 - hi_r))
+    else:
+        dr = 0
     moved = shift(pieces, dc, dr)
     assert not board_problems(moved)
     for opts in (MatchOptions(), MatchOptions(strict_positions=True), MatchOptions(match_values=True)):

@@ -1,5 +1,6 @@
 import { COLS, ROWS } from '../engine/board.ts';
-import { countByType, KIT_LIMITS, POT_VALUES, TYPES } from '../engine/sim.ts';
+import { AMMETER_SLOT, slotOf } from '../engine/nodes.ts';
+import { configProblems, countByType, isCapsule, KIT_LIMITS, MAX_CAPSULES, POT_VALUES, TYPES } from '../engine/sim.ts';
 import { uid } from './ids.ts';
 import { ACTIONS, autoSplit, CATEGORIES, connectionStep, stepProblems } from './steps.ts';
 import type { Lesson, LessonStep, LessonValidation, Piece, Quiz, QuizOption, QuizPosition } from './types.ts';
@@ -82,12 +83,24 @@ export function validateLesson(raw: any): LessonValidation {
     if (!isInt(p.a) || !isInt(p.b) || p.a < 1 || p.b < 1 || p.a > COLS || p.b > COLS)
       return fail('Peça fora das 11 colunas.');
     if (!isInt(p.row) || p.row < 0 || p.row >= ROWS) return fail('Peça fora das linhas da bancada.');
+    if (isCapsule(p.type)) {
+      if (!isInt(p.c) || p.b !== p.a + 1 || p.c !== p.a + 2 || p.c > COLS)
+        return fail(`${p.type} precisa de três colunas seguidas (P1, P2, P3).`);
+      const slot = slotOf(p);
+      if (slot == null) return fail(`${p.type} só cabe nos 6 encaixes de cápsula da bancada.`);
+      if (p.type === 'capsula_amperimetro' && slot !== AMMETER_SLOT)
+        return fail(`O amperímetro só funciona no encaixe ${AMMETER_SLOT}.`);
+      const bad = configProblems(p.type, p.config);
+      if (bad.length) return fail(`${p.type}: ${bad[0]}`);
+    } else if (p.c != null || p.config != null) return fail(`${p.type} não tem terceira coluna nem configuração.`);
     if (typeof p.id !== 'string' || ids.has(p.id)) return fail('Peças com id repetido.');
     ids.add(p.id);
   }
   const used = countByType(pieces);
   for (const t of TYPES)
     if ((used[t] || 0) > KIT_LIMITS[t]) return fail(`Peças demais: o kit tem só ${KIT_LIMITS[t]} × ${t}.`);
+  if (pieces.filter((p) => isCapsule(p.type)).length > MAX_CAPSULES)
+    return fail(`No máximo ${MAX_CAPSULES} cápsulas inteligentes ao mesmo tempo.`);
   if (!Array.isArray(raw.quizzes)) return fail('Perguntas inválidas.');
   for (const q of raw.quizzes) {
     if (!q || typeof q.id !== 'string' || !POSITIONS.includes(q.position) || typeof q.prompt !== 'string')
@@ -116,11 +129,11 @@ export function validateLesson(raw: any): LessonValidation {
     board: {
       cols: COLS,
       rows: ROWS,
-      pieces: pieces.map((p) =>
-        p.type === 'potenciometro' && POT_VALUES.includes(p.value)
-          ? { id: p.id, type: p.type, a: p.a, b: p.b, row: p.row, value: p.value }
-          : { id: p.id, type: p.type, a: p.a, b: p.b, row: p.row }
-      ),
+      pieces: pieces.map((p) => {
+        const base = { id: p.id, type: p.type, a: p.a, b: p.b, row: p.row };
+        if (isCapsule(p.type)) return p.config ? { ...base, c: p.c, config: p.config } : { ...base, c: p.c };
+        return p.type === 'potenciometro' && POT_VALUES.includes(p.value) ? { ...base, value: p.value } : base;
+      }),
     },
     steps,
     timeLimitS,

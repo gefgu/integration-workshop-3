@@ -45,6 +45,7 @@ const CATEGORY_LABEL = {
   reversed_polarity: 'Polaridade invertida',
   wrong_value: 'Valor errado',
   wrong_component: 'Peça errada',
+  wrong_config: 'Cápsula com outro modo',
   misconnected_component: 'Peça presente, ligação incorreta',
   open_circuit: 'Circuito aberto',
   short_circuit: 'Curto-circuito',

@@ -6,7 +6,7 @@ from itertools import combinations
 
 import networkx as nx
 
-from .catalog import CATALOG, DIRECTED, piece_value
+from .catalog import CAPSULES, CATALOG, ORDERED, bank, config_key, piece_value
 from .models import DetectedBoard, DetectedComponent, Piece
 
 
@@ -23,6 +23,7 @@ class Part:
     ctype: str
     terms: tuple[Term, ...]
     value: int | None = None
+    config: tuple = ()  # canonical capsule config (see catalog.config_key)
 
     @property
     def family(self) -> str:
@@ -30,8 +31,9 @@ class Part:
 
 
 def part_from_piece(p: Piece) -> Part:
-    ta, tb = CATALOG[p.type].terminals
-    return Part(p.id, p.type, (Term(ta, p.a, p.row), Term(tb, p.b, p.row)), piece_value(p.type, p.value))
+    cols = (p.a, p.b, p.c) if p.type in CAPSULES else (p.a, p.b)
+    terms = tuple(Term(n, col, p.row) for n, col in zip(CATALOG[p.type].terminals, cols))
+    return Part(p.id, p.type, terms, piece_value(p.type, p.value), config_key(p.type, p.config))
 
 
 _ALIASES = {"+": "+", "plus": "+", "-": "-", "−": "-", "minus": "-"}
@@ -42,7 +44,7 @@ def part_from_detected(c: DetectedComponent, index: int) -> Part:
     ctype = c.type
     names = CATALOG[ctype].terminals
     terms = []
-    if ctype in DIRECTED:
+    if ctype in ORDERED:
         by = {_ALIASES.get(k, k): v for k, v in c.terminals.items()}
         for n in names:
             if n not in by:
@@ -53,7 +55,7 @@ def part_from_detected(c: DetectedComponent, index: int) -> Part:
         if len(raw) != 2:
             raise ValueError(f"{c.id or index}: {ctype} needs exactly 2 terminals")
         terms = [Term("pin", t.col, t.row) for t in raw]
-    return Part(c.id or f"c{index}", ctype, tuple(terms), piece_value(ctype, None))
+    return Part(c.id or f"c{index}", ctype, tuple(terms), piece_value(ctype, None), config_key(ctype, c.config))
 
 
 def parts_from_detected(board: DetectedBoard) -> list[Part]:
@@ -67,7 +69,7 @@ def parts_from_pieces(pieces: list[Piece]) -> list[Part]:
 def build_graph(parts: list[Part]) -> nx.Graph:
     """One node per terminal; edges inside a component and between terminals sharing a column.
 
-    Rows never create edges: a column is a single net across both banks. Each node also
+    A column is one net within its bank; the two banks are separate nodes. Each node also
     carries `rel_col`/`rel_row` (position relative to the board's bounding-box origin) so
     strict position matching is translation invariant (SFR8).
     """
@@ -75,16 +77,16 @@ def build_graph(parts: list[Part]) -> nx.Graph:
     all_terms = [t for p in parts for t in p.terms]
     min_col = min((t.col for t in all_terms), default=0)
     min_row = min((t.row for t in all_terms), default=0)
-    by_col: dict[int, list[str]] = {}
+    by_col: dict[tuple[int, int], list[str]] = {}
     for p in parts:
         ids = []
         for i, t in enumerate(p.terms):
             nid = f"{p.id}.{i}:{t.name}"  # index keeps the two orderless "pin" legs distinct
             g.add_node(
-                nid, part=p.id, ctype=p.family, terminal=t.name, value=p.value,
+                nid, part=p.id, ctype=p.family, terminal=t.name, value=p.value, config=p.config,
                 col=t.col, row=t.row, rel_col=t.col - min_col, rel_row=t.row - min_row,
             )
-            by_col.setdefault(t.col, []).append(nid)
+            by_col.setdefault((bank(t.row), t.col), []).append(nid)
             ids.append(nid)
         for a, b in combinations(ids, 2):
             g.add_edge(a, b, kind="component")

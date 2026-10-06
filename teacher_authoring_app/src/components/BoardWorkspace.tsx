@@ -11,8 +11,9 @@ import {
   SOCKET,
   span,
 } from '../engine/board.ts';
-import { CAPSULE, DEFS, NOMES, POT_DEFAULT, POT_VALUES } from '../engine/sim.ts';
-import type { CircuitTrail, Piece } from '../model/types.ts';
+import { AMMETER_SLOT, slotAnchor } from '../engine/nodes.ts';
+import { CAPSULE, DEFS, isCapsule, NOMES, nextConfig, POT_DEFAULT, POT_VALUES } from '../engine/sim.ts';
+import type { CapsuleReading, CircuitTrail, Piece } from '../model/types.ts';
 import Breadboard from './Breadboard.tsx';
 import PieceView from './PieceView.tsx';
 import Tray from './Tray.tsx';
@@ -25,6 +26,7 @@ const BODY_PAD = SOCKET / 2;
  *  - trail: { edgeIds:Set, nodes:Set } of the energized path (or null)
  *  - ledMa: brightness input for lit LEDs
  *  - pressed/onPress(id, down): held pushbuttons (omit onPress for a non-interactive button)
+ *  - readings: OLED text and output level per smart-capsule id (click a capsule to change its setting)
  *  - readOnly: a preview — no tray, no dragging, no clearing
  *  - highlightIds: Set of piece ids drawn with an accent outline (e.g. the current step's piece)
  *  - trayFooter: extra read-only content below the component tray
@@ -37,6 +39,7 @@ interface BoardWorkspaceProps {
   pressed?: Set<string> | null;
   onPress?: (id: string, down: boolean) => void;
   onNotice?: (message: string) => void;
+  readings?: Record<string, CapsuleReading> | null;
   readOnly?: boolean;
   highlightIds?: Set<string> | null;
   trayFooter?: ReactNode;
@@ -49,6 +52,7 @@ export default function BoardWorkspace({
   pressed = null,
   onPress,
   onNotice,
+  readings = null,
   readOnly = false,
   highlightIds = null,
   trayFooter,
@@ -114,8 +118,15 @@ export default function BoardWorkspace({
       setDrag(null);
       const cur = piecesRef.current;
       if (d.id && !d.moved) {
-        // click without moving: flip the piece
-        onChange(cur.map((p) => (p.id === d.id ? flip(p) : p)));
+        // click without moving: flip the piece (a capsule steps through its setting instead)
+        onChange(
+          cur.map((p) => {
+            if (p.id !== d.id) return p;
+            if (!isCapsule(p.type)) return flip(p);
+            const config = nextConfig(p, e.shiftKey ? 'duty' : 'main');
+            return config ? { ...p, config } : p;
+          })
+        );
         setNotice(null);
         return;
       }
@@ -174,6 +185,39 @@ export default function BoardWorkspace({
         ))}
       <div>
         <Breadboard boardRef={boardRef} trail={trail}>
+          {[1, 2, 3, 4, 5, 6].map((slot) => {
+            const { a, row } = slotAnchor(slot);
+            return (
+              <div
+                key={`slot-${slot}`}
+                aria-hidden="true"
+                title={
+                  slot === AMMETER_SLOT ? 'Encaixe 2: único com amperímetro' : `Encaixe ${slot} de cápsula inteligente`
+                }
+                style={{
+                  position: 'absolute',
+                  left: colX(a) - BODY_PAD - 3,
+                  top: rowY(row) - 20,
+                  width: colX(a + 2) - colX(a) + 2 * BODY_PAD + 6,
+                  height: 40,
+                  borderRadius: 10,
+                  border: '1.5px dashed var(--color-neutral-500)',
+                  opacity: 0.55,
+                  pointerEvents: 'none',
+                  fontSize: 9,
+                  fontWeight: 700,
+                  color: 'var(--color-neutral-600)',
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                  justifyContent: 'flex-end',
+                  padding: '0 5px 1px',
+                  boxSizing: 'border-box',
+                }}
+              >
+                {slot === AMMETER_SLOT ? `E${slot} · A` : `E${slot}`}
+              </div>
+            );
+          })}
           {preview && (
             <div
               style={{
@@ -198,7 +242,7 @@ export default function BoardWorkspace({
               <div
                 key={p.id}
                 onPointerDown={readOnly ? undefined : (e) => startPieceDrag(p, e)}
-                title={NOMES[p.type]}
+                title={isCapsule(p.type) ? `${NOMES[p.type]} — clique para mudar (Shift: ciclo)` : NOMES[p.type]}
                 style={{
                   position: 'absolute',
                   left: colX(lo) - BODY_PAD,
@@ -225,6 +269,8 @@ export default function BoardWorkspace({
                   lit={glow && (p.type === 'led' || p.type === 'buzzer')}
                   brilho={brilho}
                   value={p.value}
+                  oled={readings?.[p.id]?.lines}
+                  fault={readings?.[p.id]?.fault}
                   onPotStep={!readOnly && p.type === 'potenciometro' ? (dir) => stepPot(p, dir) : undefined}
                   pressed={!!pressed && pressed.has(p.id)}
                   onButton={p.type === 'botao' && onPress ? (down) => onPress(p.id, down) : undefined}

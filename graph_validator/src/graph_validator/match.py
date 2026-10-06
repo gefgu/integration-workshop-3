@@ -8,7 +8,7 @@ from .models import MatchOptions
 
 
 def _node_attrs(opts: MatchOptions) -> tuple[str, ...]:
-    attrs = ["ctype", "terminal"]
+    attrs = ["ctype", "terminal", "config"]
     if opts.match_values:
         attrs.append("value")
     if opts.strict_positions:

@@ -1,6 +1,8 @@
 import { useCallback, useMemo, useState } from 'react';
 import BoardWorkspace from '../components/BoardWorkspace.tsx';
 import SchematicPreview from '../components/SchematicPreview.tsx';
+import { useCapsules } from '../components/useCapsules.ts';
+import { mergeTrails } from '../engine/capsules.ts';
 import { diagnose } from '../engine/diagnose.ts';
 import { lessonProblems } from '../model/lesson.ts';
 import QuizEditor from './QuizEditor.tsx';
@@ -16,6 +18,7 @@ export default function LessonEditor({ lesson, setLesson, onSave, onExport, onTe
   const setPieces = useCallback((pieces) => setLesson((l) => ({ ...l, board: { ...l.board, pieces } })), [setLesson]);
   const set = (patch) => setLesson((l) => ({ ...l, ...patch }));
   const diag = diagnose(lesson.board.pieces);
+  const cap = useCapsules(lesson.board.pieces, null);
   const selectedStep = selected != null ? lesson.steps[selected] : null;
   const highlightIds = useMemo(() => new Set(selectedStep?.pieceId ? [selectedStep.pieceId] : []), [selectedStep]);
 
@@ -31,8 +34,9 @@ export default function LessonEditor({ lesson, setLesson, onSave, onExport, onTe
         <BoardWorkspace
           pieces={lesson.board.pieces}
           onChange={setPieces}
-          trail={diag.trail}
-          ledMa={diag.mA}
+          trail={mergeTrails(diag.trail, cap.driven)}
+          ledMa={Math.max(diag.mA, cap.drivenMa)}
+          readings={cap.readings}
           highlightIds={highlightIds}
           trayFooter={<SchematicPreview pieces={lesson.board.pieces} />}
         />

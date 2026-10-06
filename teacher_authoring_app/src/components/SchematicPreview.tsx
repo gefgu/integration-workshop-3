@@ -1,5 +1,6 @@
-import { schematicLayout } from '../engine/schematic.ts';
-import { formatOhms, pieceOhms } from '../engine/sim.ts';
+import { nodeBank, nodeCol } from '../engine/nodes.ts';
+import { schematicLayout, sensingCapsules } from '../engine/schematic.ts';
+import { capsuleConfig, formatOhms, NOMES, pieceOhms } from '../engine/sim.ts';
 import type { Piece } from '../model/types.ts';
 
 // IEC 60617-style circuit symbols: rectangular resistors and a multi-cell battery.
@@ -12,6 +13,7 @@ function labelFor(piece: Piece) {
   if (piece.type === 'led') return 'LED';
   if (piece.type === 'buzzer') return 'Buzzer';
   if (piece.type === 'botao') return 'Botão';
+  if (piece.type === 'capsula_amperimetro') return 'Amperímetro';
   return '';
 }
 
@@ -64,7 +66,9 @@ function ComponentSymbol({
               <line x1="10" y1="-7" x2="10" y2="7" />
             </>
           )}
-          {(type.startsWith('resistor') || type === 'potenciometro') && <rect x="-17" y="-7" width="34" height="14" />}
+          {(type.startsWith('resistor') || type === 'potenciometro' || type === 'capsula_amperimetro') && (
+            <rect x="-17" y="-7" width="34" height="14" />
+          )}
           {type === 'potenciometro' && <path d="M -12 15 L 12 -13 M 4 -12 L 12 -13 L 11 -5" />}
           {type === 'capacitor' && (
             <>
@@ -213,7 +217,7 @@ function NetworkDiagram({ nodes, edges }: { nodes: number[]; edges: Piece[] }) {
       </g>
       {nodes.map((node) => (
         <text key={`label-${node}`} x={xFor.get(node)} y="35" textAnchor="middle" className="schematic-node-label">
-          {node}
+          {nodeBank(node) ? `B${nodeCol(node)}` : nodeCol(node)}
         </text>
       ))}
       {edges.map((piece, index) => {
@@ -244,6 +248,7 @@ function NetworkDiagram({ nodes, edges }: { nodes: number[]; edges: Piece[] }) {
 
 export default function SchematicPreview({ pieces }: { pieces: Piece[] }) {
   const layout = schematicLayout(pieces);
+  const capsules = sensingCapsules(pieces);
   return (
     <section className="schematic-panel" aria-labelledby="schematic-heading">
       <h2 id="schematic-heading">Esquemático</h2>
@@ -252,6 +257,17 @@ export default function SchematicPreview({ pieces }: { pieces: Piece[] }) {
         {layout.kind === 'loop' && <LoopDiagram battery={layout.battery} path={layout.path} />}
         {layout.kind === 'network' && <NetworkDiagram nodes={layout.nodes} edges={layout.edges} />}
       </div>
+      {capsules.length > 0 && (
+        <ul className="schematic-capsules">
+          {capsules.map((piece) => (
+            <li key={piece.id}>
+              {NOMES[piece.type]}: P1 col. {piece.a}, P2 col. {piece.b}, P3 col. {piece.c}
+              {Object.values(capsuleConfig(piece)).length > 0 &&
+                ` (${Object.values(capsuleConfig(piece)).join(' · ')})`}
+            </li>
+          ))}
+        </ul>
+      )}
     </section>
   );
 }

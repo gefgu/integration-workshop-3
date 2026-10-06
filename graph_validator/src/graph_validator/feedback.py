@@ -9,6 +9,7 @@ PRIORITY = [
     Category.REVERSED_POLARITY,
     Category.WRONG_VALUE,
     Category.WRONG_COMPONENT,
+    Category.WRONG_CONFIG,
     Category.MISCONNECTED_COMPONENT,
     Category.SHORT_CIRCUIT,
     Category.OPEN_CIRCUIT,
@@ -23,6 +24,9 @@ NAMES = {
     "bateria": "a bateria", "led": "o LED", "buzzer": "o buzzer", "resistor": "o resistor",
     "capacitor": "o capacitor", "botao": "o botão", "potenciometro": "o potenciômetro",
     "jumper": "o jumper", "*": "a peça",
+    "capsula_pulso": "a cápsula de pulso", "capsula_voltimetro": "a cápsula voltímetro",
+    "capsula_amperimetro": "a cápsula amperímetro", "capsula_porta": "a cápsula de porta lógica",
+    "capsula_memoria": "a cápsula de memória",
 }
 
 # SFR15: every category has a default message. Short on purpose (SNFR5: at most 2 lines).
@@ -36,6 +40,7 @@ DEFAULT_MESSAGES: dict[Category, str] = {
     Category.REVERSED_POLARITY: "{nome_cap} só funciona em um sentido. Gire a peça e tente de novo.",
     Category.WRONG_VALUE: "Essa peça é a certa, mas o valor está diferente. Troque por outra da bandeja.",
     Category.WRONG_COMPONENT: "Essa não é a peça deste passo. Troque {nome} pela peça pedida.",
+    Category.WRONG_CONFIG: "{nome_cap} está no lugar certo, mas configurada de outro jeito. Confira o modo mostrado no visor da cápsula.",
     Category.MISCONNECTED_COMPONENT: "{nome_cap} está na bancada, mas suas conexões não correspondem ao pedido. Confira os terminais e as colunas compartilhadas.",
     Category.OPEN_CIRCUIT: "O circuito está aberto: a corrente não consegue dar a volta. Siga o caminho a partir da bateria e veja onde ele para.",
     Category.SHORT_CIRCUIT: "Curto-circuito! A corrente está pegando um atalho sem passar pelas peças. Procure o fio que liga dois pontos que não deveriam se encontrar.",
@@ -57,6 +62,11 @@ _COMPONENT_LABELS = {
     "jumper_longo": "jumper",
     "jumper_4": "jumper",
     "jumper_5": "jumper",
+    "capsula_pulso": "cápsula de pulso",
+    "capsula_voltimetro": "cápsula voltímetro",
+    "capsula_amperimetro": "cápsula amperímetro",
+    "capsula_porta": "cápsula de porta lógica",
+    "capsula_memoria": "cápsula de memória",
 }
 _CONNECTED_OBJECTS = {
     "bateria": "à bateria",
@@ -72,14 +82,20 @@ _CONNECTED_OBJECTS = {
     "jumper_longo": "ao jumper",
     "jumper_4": "ao jumper",
     "jumper_5": "ao jumper",
+    "capsula_pulso": "à cápsula de pulso",
+    "capsula_voltimetro": "à cápsula voltímetro",
+    "capsula_amperimetro": "à cápsula amperímetro",
+    "capsula_porta": "à cápsula de porta lógica",
+    "capsula_memoria": "à cápsula de memória",
 }
 
 
 def misconnected_message(expected: Piece, partner: Piece | None) -> str:
     """Explain that the target component is present, but its expected connection is missing."""
     label = _COMPONENT_LABELS.get(expected.type, "peça")
-    subject = f"A {label}" if expected.type == "bateria" else f"O {label}"
-    participle = "conectada" if expected.type == "bateria" else "conectado"
+    fem = expected.type == "bateria" or expected.type.startswith("capsula_")
+    subject = f"A {label}" if fem else f"O {label}"
+    participle = "conectada" if fem else "conectado"
     if partner is None:
         return f"{subject} está na bancada, mas precisa estar {participle} como no gabarito."
     partner_name = _CONNECTED_OBJECTS.get(partner.type, "ao outro componente")

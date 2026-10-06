@@ -1,4 +1,6 @@
 import type { Piece } from '../model/types.ts';
+import { nodeOf } from './nodes.ts';
+import { isCapsule } from './sim.ts';
 
 export interface OrientedPiece {
   piece: Piece;
@@ -11,7 +13,15 @@ export type SchematicLayout =
   | { kind: 'network'; nodes: number[]; edges: Piece[] };
 
 /** Build a stable view of every placed edge, independent of circuit validity. */
-export function schematicLayout(pieces: Piece[]): SchematicLayout {
+/** Capsules that only sense or drive (everything but the ammeter, which sits in series). */
+export const sensingCapsules = (pieces: Piece[]) =>
+  pieces.filter((piece) => isCapsule(piece.type) && piece.type !== 'capsula_amperimetro');
+
+export function schematicLayout(all: Piece[]): SchematicLayout {
+  // `a`/`b` become node ids: a column is one node per bank, and the banks never connect.
+  const pieces = all
+    .filter((piece) => !sensingCapsules([piece]).length)
+    .map((piece) => ({ ...piece, a: nodeOf(piece.a, piece.row), b: nodeOf(piece.b, piece.row) }));
   if (pieces.length === 0) return { kind: 'empty' };
 
   const batteries = pieces.filter((piece) => piece.type === 'bateria');

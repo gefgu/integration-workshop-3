@@ -11,7 +11,20 @@ export type PieceType =
   | 'jumper_curto'
   | 'jumper_longo'
   | 'jumper_4'
-  | 'jumper_5';
+  | 'jumper_5'
+  | 'capsula_pulso'
+  | 'capsula_voltimetro'
+  | 'capsula_amperimetro'
+  | 'capsula_porta'
+  | 'capsula_memoria';
+
+/** Smart-capsule behaviour. Missing keys fall back to the defaults in `engine/sim.ts`. */
+export interface CapsuleConfig {
+  hz?: number;
+  duty?: number;
+  op?: 'and' | 'or' | 'nand' | 'nor' | 'xor' | 'not';
+  mem?: 'd' | 'sr';
+}
 
 export interface Piece {
   id: string;
@@ -20,6 +33,9 @@ export interface Piece {
   b: number;
   row: number;
   value?: number;
+  /** Third column (P3) of a smart capsule; its pins are a (P1), b = a + 1 (P2) and c = a + 2 (P3). */
+  c?: number;
+  config?: CapsuleConfig;
 }
 
 export type LessonKind = 'guided' | 'challenge';
@@ -34,6 +50,7 @@ export type FeedbackCategory =
   | 'reversed_polarity'
   | 'wrong_value'
   | 'wrong_component'
+  | 'wrong_config'
   | 'misconnected_component'
   | 'open_circuit'
   | 'short_circuit';
@@ -101,6 +118,13 @@ export interface DiagnoseResult {
   trail: CircuitTrail | null;
   mA: number;
   load: 'led' | 'buzzer' | null;
+}
+
+/** What a smart capsule shows on its OLED, plus its P3 output level (`z` = high impedance). */
+export interface CapsuleReading {
+  lines: string[];
+  out: 'alto' | 'baixo' | 'z';
+  fault?: boolean;
 }
 
 export type LessonValidation = { ok: true; lesson: Lesson } | { ok: false; error: string };

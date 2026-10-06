@@ -1,4 +1,5 @@
 import { BANK_ROWS, BOARD_H, BOARD_W, CHANNEL_BOTTOM, CHANNEL_TOP, COLS, colX, rowY, SOCKET } from '../engine/board.ts';
+import { nodeOf } from '../engine/nodes.ts';
 
 /** The visual breadboard surface: numbered columns, two hole banks, and center channel. */
 export default function Breadboard({ boardRef, trail = null, children }) {
@@ -37,7 +38,10 @@ export default function Breadboard({ boardRef, trail = null, children }) {
             width: 18,
             textAlign: 'center',
             fontSize: 10,
-            color: trail?.nodes.has(col) ? 'var(--color-accent-2-700)' : 'var(--color-neutral-500)',
+            color:
+              trail?.nodes.has(nodeOf(col, 0)) || trail?.nodes.has(nodeOf(col, BANK_ROWS))
+                ? 'var(--color-accent-2-700)'
+                : 'var(--color-neutral-500)',
             fontWeight: 700,
           }}
         >
@@ -47,7 +51,7 @@ export default function Breadboard({ boardRef, trail = null, children }) {
 
       {Array.from({ length: COLS }, (_, ci) => ci + 1).map((col) =>
         Array.from({ length: BANK_ROWS * 2 }, (_, row) => row).map((row) => {
-          const on = trail?.nodes.has(col);
+          const on = trail?.nodes.has(nodeOf(col, row));
           return (
             <div
               key={`${col}-${row}`}

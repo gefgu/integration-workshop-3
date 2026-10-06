@@ -1,5 +1,6 @@
 import type { Piece, PieceType } from '../model/types.ts';
-import { countByType, DEFS, KIT_LIMITS, NOMES } from './sim.ts';
+import { AMMETER_SLOT, nearestSlot, slotAnchor, slotOf } from './nodes.ts';
+import { countByType, DEFS, isCapsule, KIT_LIMITS, MAX_CAPSULES, NOMES } from './sim.ts';
 
 /**
  * Two banks of 11 columns × 6 rows (12 rows total) split by a central channel.
@@ -31,7 +32,8 @@ export const CHANNEL_TOP = rowY(BANK_ROWS - 1) + 20;
 export const CHANNEL_BOTTOM = rowY(BANK_ROWS) - 20;
 
 export function span(p: Piece): [number, number] {
-  return [Math.min(p.a, p.b), Math.max(p.a, p.b)];
+  const cols = p.c != null ? [p.a, p.b, p.c] : [p.a, p.b];
+  return [Math.min(...cols), Math.max(...cols)];
 }
 
 /** Board-local point → nearest hole, or null when the point is clearly off the board. */
@@ -56,6 +58,11 @@ export function nearestHole(x: number, y: number, margin = 28): { col: number; r
  */
 export function buildPiece(type: PieceType, id: string, col: number, row: number, dir = 1): Piece | null {
   const len = DEFS[type].len;
+  if (isCapsule(type)) {
+    // Capsules only fit the six fixed slots (PCB v0.4): snap to the nearest one in the same bank.
+    const { a, row: slotRow } = slotAnchor(nearestSlot(col, row));
+    return { id, type, a, b: a + 1, c: a + 2, row: slotRow };
+  }
   const fits = (d: number) => col + d * len >= 1 && col + d * len <= COLS;
   const d = fits(dir) ? dir : fits(-dir) ? -dir : 0;
   if (!d) return null;
@@ -64,8 +71,17 @@ export function buildPiece(type: PieceType, id: string, col: number, row: number
 
 /** Returns an error message, or null when `piece` can be placed. */
 export function placementError(pieces: Piece[], piece: Piece, ignoreId: string | null = null): string | null {
-  if (piece.a < 1 || piece.b < 1 || piece.a > COLS || piece.b > COLS) return 'A peça sai da bancada.';
+  const [first, last] = span(piece);
+  if (first < 1 || last > COLS) return 'A peça sai da bancada.';
   const others = pieces.filter((p) => p.id !== ignoreId);
+  if (isCapsule(piece.type)) {
+    const slot = slotOf(piece);
+    if (slot == null) return 'As cápsulas inteligentes só cabem nos 6 encaixes marcados na bancada.';
+    if (piece.type === 'capsula_amperimetro' && slot !== AMMETER_SLOT)
+      return `O amperímetro só funciona no encaixe ${AMMETER_SLOT} (primeira linha, colunas 5–7).`;
+  }
+  if (isCapsule(piece.type) && others.filter((p) => isCapsule(p.type)).length >= MAX_CAPSULES)
+    return `No máximo ${MAX_CAPSULES} cápsulas inteligentes podem ficar ativas ao mesmo tempo.`;
   const used = countByType(others)[piece.type] || 0;
   if (used >= KIT_LIMITS[piece.type])
     return `O kit só tem ${KIT_LIMITS[piece.type]} × ${NOMES[piece.type]}. Todas já estão na bancada.`;
@@ -80,6 +96,7 @@ export function placementError(pieces: Piece[], piece: Piece, ignoreId: string |
 
 /** Same piece, legs swapped (flips polarity / direction). */
 export function flip(p: Piece): Piece {
+  if (isCapsule(p.type)) return p; // pin roles are fixed; clicking a capsule changes its setting instead
   return { ...p, a: p.b, b: p.a };
 }
 

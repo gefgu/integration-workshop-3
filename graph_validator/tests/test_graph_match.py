@@ -59,7 +59,7 @@ def test_short_and_long_jumper_same_family():
 def test_strict_positions_are_translation_invariant_but_shape_sensitive():
     t = loop()
     opts = MatchOptions(strict_positions=True)
-    shifted = [p.model_copy(update={"a": p.a + 3, "b": p.b + 3, "row": p.row + 4}) for p in t]
+    shifted = [p.model_copy(update={"a": p.a + 3, "b": p.b + 3, "row": p.row + 2}) for p in t]
     assert is_match(G(shifted), G(t), opts)
     # same topology, different layout -> differs only under strict positions
     spread = [P("bat", "bateria", 1, 2, 0), P("r", "resistor_470", 2, 3, 1), P("led", "led", 3, 4, 5), P("j", "jumper_longo", 4, 2, 3)]

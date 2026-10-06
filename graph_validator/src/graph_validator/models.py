@@ -2,11 +2,14 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field, field_validator
 
-from .catalog import CATALOG, COLS, ROWS, TYPES, normalize_type
+from .catalog import (
+    AMMETER_SLOT, CAPSULES, CATALOG, COLS, MAX_CAPSULES, ROWS, SLOT_COLS, SLOT_ROWS, TYPES, config_problems,
+    normalize_type, slot_of,
+)
 
 
 class Piece(BaseModel):
@@ -18,6 +21,8 @@ class Piece(BaseModel):
     b: int
     row: int
     value: int | None = None
+    c: int | None = None  # third column (P3), smart capsules only
+    config: dict[str, Any] | None = None  # smart capsule behaviour (mode, op, hz, duty...)
 
     @field_validator("type", mode="before")
     @classmethod
@@ -43,6 +48,7 @@ class DetectedComponent(BaseModel):
     id: str | None = None
     type: str
     terminals: dict[str, Terminal]
+    config: dict[str, Any] | None = None
 
     @field_validator("type", mode="before")
     @classmethod
@@ -69,6 +75,7 @@ class Category(str, Enum):
     REVERSED_POLARITY = "reversed_polarity"
     WRONG_VALUE = "wrong_value"
     WRONG_COMPONENT = "wrong_component"
+    WRONG_CONFIG = "wrong_config"
     MISCONNECTED_COMPONENT = "misconnected_component"
     OPEN_CIRCUIT = "open_circuit"
     SHORT_CIRCUIT = "short_circuit"
@@ -110,14 +117,27 @@ def board_problems(pieces: list[Piece]) -> list[str]:
         if p.id in seen_ids:
             out.append(f"duplicate piece id {p.id}")
         seen_ids.add(p.id)
-        if not (1 <= p.a <= COLS and 1 <= p.b <= COLS):
+        cols = [p.a, p.b] + ([p.c] if p.type in CAPSULES and p.c is not None else [])
+        if not all(1 <= x <= COLS for x in cols):
             out.append(f"{p.id}: column out of 1..{COLS}")
         if not (0 <= p.row < ROWS):
             out.append(f"{p.id}: row out of 0..{ROWS - 1}")
-        if abs(p.a - p.b) != CATALOG[p.type].length:
-            out.append(f"{p.id}: {p.type} must span {CATALOG[p.type].length} column(s)")
+        if p.type in CAPSULES:
+            if p.c is None or (p.b, p.c) != (p.a + 1, p.a + 2):
+                out.append(f"{p.id}: {p.type} needs three consecutive columns a, a+1, a+2")
+            slot = slot_of(p.a, p.row)
+            if slot is None:
+                out.append(f"{p.id}: {p.type} must sit in a capsule slot (columns {SLOT_COLS}, rows {SLOT_ROWS})")
+            elif p.type == "capsula_amperimetro" and slot != AMMETER_SLOT:
+                out.append(f"{p.id}: the ammeter only works in slot {AMMETER_SLOT}")
+            out += [f"{p.id}: {m}" for m in config_problems(p.type, p.config)]
+        else:
+            if abs(p.a - p.b) != CATALOG[p.type].length:
+                out.append(f"{p.id}: {p.type} must span {CATALOG[p.type].length} column(s)")
+            if p.c is not None or p.config:
+                out.append(f"{p.id}: {p.type} takes no third column or config")
         used[p.type] = used.get(p.type, 0) + 1
-        lo, hi = min(p.a, p.b), max(p.a, p.b)
+        lo, hi = min(cols), max(cols)
         for olo, ohi, oid in spans.get(p.row, []):
             if lo <= ohi and olo <= hi:
                 out.append(f"{p.id} overlaps {oid} on row {p.row}")
@@ -125,6 +145,8 @@ def board_problems(pieces: list[Piece]) -> list[str]:
     for t, n in used.items():
         if n > CATALOG[t].kit_limit:
             out.append(f"kit has only {CATALOG[t].kit_limit} x {t} (found {n})")
+    if sum(n for t, n in used.items() if t in CAPSULES) > MAX_CAPSULES:
+        out.append(f"at most {MAX_CAPSULES} smart capsules can be active at once")
     return out
 
 

@@ -4,7 +4,7 @@ from __future__ import annotations
 from collections import Counter
 from dataclasses import dataclass
 
-from .catalog import DIRECTED
+from .catalog import CAPSULES, DIRECTED, ORDERED, node
 from .graph import Part
 from .models import Category, MatchOptions
 
@@ -19,9 +19,9 @@ class Issue:
 
 
 def _token(p: Part, dx: int, values: bool) -> tuple:
-    cols = tuple(t.col + dx for t in p.terms)
-    cols = cols if p.ctype in DIRECTED else tuple(sorted(cols))
-    return (p.family, cols, p.value if values else None)
+    cols = tuple(node(t.col, t.row) + dx for t in p.terms)
+    cols = cols if p.ctype in ORDERED else tuple(sorted(cols))
+    return (p.family, cols, p.value if values else None, p.config)
 
 
 def _tokens(parts: list[Part], dx: int, values: bool) -> list[tuple[tuple, Part]]:
@@ -66,7 +66,7 @@ def diff_parts(student: list[Part], target: list[Part], opts: MatchOptions) -> l
     for etok, ep in list(extra):
         if ep.ctype not in DIRECTED:
             continue
-        flipped = (etok[0], tuple(reversed(etok[1])), etok[2])
+        flipped = (etok[0], tuple(reversed(etok[1])), etok[2], etok[3])
         for mtok, mp in missing:
             if mtok == flipped:
                 issues.append(Issue(Category.REVERSED_POLARITY, ep.family, ep.id))
@@ -78,7 +78,12 @@ def diff_parts(student: list[Part], target: list[Part], opts: MatchOptions) -> l
     for etok, ep in list(extra):
         for mtok, mp in missing:
             if mtok[1] == etok[1] and ep.family != "jumper" and mp.family != "jumper":
-                cat = Category.WRONG_VALUE if mp.family == ep.family else Category.WRONG_COMPONENT
+                if mp.family == ep.family and mp.family in CAPSULES:
+                    cat = Category.WRONG_CONFIG
+                elif mp.family == ep.family:
+                    cat = Category.WRONG_VALUE
+                else:
+                    cat = Category.WRONG_COMPONENT
                 issues.append(Issue(cat, mp.family, ep.id))
                 missing.remove((mtok, mp))
                 extra.remove((etok, ep))
