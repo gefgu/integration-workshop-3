@@ -42,3 +42,8 @@ CLAUDE.md
 
 # Electronics plans
 eletronics/*.md
+
+# ESP32 build toolchain (arduino-cli + esp32 core), local only
+firmware/esp32/.toolchain/
+firmware/esp32/.uml-check/
+firmware/esp32/test-logs/
