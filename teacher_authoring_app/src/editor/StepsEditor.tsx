@@ -34,7 +34,7 @@ const ACTION_LABEL = {
   place_component: 'Colocar peça',
   place_connection: 'Colocar jumper',
   connect_circuit: 'Conectar circuito',
-  interact: 'Interação',
+  interact: 'Pergunta',
 };
 const CATEGORY_LABEL = {
   missing_component: 'Falta uma peça',
@@ -170,14 +170,14 @@ export default function StepsEditor({ lesson, setLesson, selected, setSelected }
     next.splice(interactionsAt < 0 ? next.length : interactionsAt, 0, connectionStep());
     setSteps(next);
   };
-  const addInteract = () => {
+  const addInteract = (at = steps.length) => {
     const q = newQuiz('step');
-    setLesson((l) => ({
-      ...l,
-      quizzes: [...l.quizzes, q],
-      steps: [...l.steps, newStep({ action: 'interact', quizId: q.id, text: 'Responda à pergunta.' })],
-    }));
-    setSelected(steps.length);
+    setLesson((l) => {
+      const next = [...l.steps];
+      next.splice(at, 0, newStep({ action: 'interact', quizId: q.id, text: 'Responda à pergunta.' }));
+      return { ...l, quizzes: [...l.quizzes, q], steps: next };
+    });
+    setSelected(at);
   };
   const stepQuizzes = lesson.quizzes.filter((q) => q.position === 'step');
   const lintFor = (id) => (lint?.byStep ? lint.byStep.filter((m) => m.stepId === id).map((m) => m.message) : []);
@@ -188,8 +188,8 @@ export default function StepsEditor({ lesson, setLesson, selected, setSelected }
         <button type="button" className="btn-outline" disabled={lesson.board.pieces.length === 0} onClick={generate}>
           Gerar passos
         </button>
-        <button type="button" className="btn-outline" onClick={addInteract}>
-          + Passo de interação
+        <button type="button" className="btn-outline" onClick={() => addInteract()}>
+          + Pergunta no final
         </button>
         <button
           type="button"
@@ -231,9 +231,9 @@ export default function StepsEditor({ lesson, setLesson, selected, setSelected }
         const problems = lintFor(s.id);
         const isDangling = dangling.includes(s);
         return (
-          <div
-            key={s.id}
-            style={{
+          <div key={s.id} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            <div
+              style={{
               background: 'var(--color-bg)',
               borderRadius: 20,
               padding: 12,
@@ -241,8 +241,8 @@ export default function StepsEditor({ lesson, setLesson, selected, setSelected }
               flexDirection: 'column',
               gap: 8,
               outline: open ? '2px solid var(--color-accent)' : 'none',
-            }}
-          >
+              }}
+            >
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <button
                 type="button"
@@ -320,6 +320,16 @@ export default function StepsEditor({ lesson, setLesson, selected, setSelected }
                 stepQuizzes={stepQuizzes}
               />
             )}
+            </div>
+            <button
+              type="button"
+              className="pill-link-btn"
+              style={{ alignSelf: 'center', fontSize: 13 }}
+              onClick={() => addInteract(i + 1)}
+              aria-label={`Adicionar pergunta depois do passo ${i + 1}`}
+            >
+              + Pergunta depois do passo {i + 1}
+            </button>
           </div>
         );
       })}
@@ -327,7 +337,7 @@ export default function StepsEditor({ lesson, setLesson, selected, setSelected }
       {selected != null && steps[selected] && <StepPreview lesson={lesson} idx={selected} />}
 
       {stepQuizzes.length > 0 && (
-        <details>
+        <details open={selected != null && steps[selected]?.action === 'interact'}>
           <summary style={{ fontSize: 13, cursor: 'pointer' }}>Perguntas dos passos de interação</summary>
           <div style={{ marginTop: 8 }}>
             <QuizEditor quizzes={lesson.quizzes} onChange={(quizzes) => set({ quizzes })} only={['step']} />

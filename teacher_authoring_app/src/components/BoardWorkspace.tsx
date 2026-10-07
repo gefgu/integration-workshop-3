@@ -29,7 +29,7 @@ const BODY_PAD = SOCKET / 2;
  *  - readings: OLED text and output level per smart-capsule id (click a capsule to change its setting)
  *  - readOnly: a preview — no tray, no dragging, no clearing
  *  - highlightIds: Set of piece ids drawn with an accent outline (e.g. the current step's piece)
- *  - trayFooter: extra read-only content below the component tray
+ *  - boardFooter: extra content shown below the workbench
  */
 interface BoardWorkspaceProps {
   pieces: Piece[];
@@ -42,7 +42,7 @@ interface BoardWorkspaceProps {
   readings?: Record<string, CapsuleReading> | null;
   readOnly?: boolean;
   highlightIds?: Set<string> | null;
-  trayFooter?: ReactNode;
+  boardFooter?: ReactNode;
 }
 export default function BoardWorkspace({
   pieces,
@@ -55,7 +55,7 @@ export default function BoardWorkspace({
   readings = null,
   readOnly = false,
   highlightIds = null,
-  trayFooter,
+  boardFooter,
 }: BoardWorkspaceProps) {
   const boardRef = useRef(null);
   const [drag, setDrag] = useState(null);
@@ -174,16 +174,12 @@ export default function BoardWorkspace({
 
   return (
     <div style={{ display: 'flex', gap: 18, alignItems: 'flex-start', justifyContent: 'center' }}>
-      {!readOnly &&
-        (trayFooter ? (
-          <div className="board-tray-column">
-            <Tray pieces={pieces} onDragStart={startTrayDrag} />
-            {trayFooter}
-          </div>
-        ) : (
+      {!readOnly && (
+        <div className="board-tray-column">
           <Tray pieces={pieces} onDragStart={startTrayDrag} />
-        ))}
-      <div>
+        </div>
+      )}
+      <div className="board-workbench-column">
         <Breadboard boardRef={boardRef} trail={trail}>
           {[1, 2, 3, 4, 5, 6].map((slot) => {
             const { a, row } = slotAnchor(slot);
@@ -297,6 +293,7 @@ export default function BoardWorkspace({
             {notice}
           </div>
         </div>
+        {boardFooter && <div className="board-footer">{boardFooter}</div>}
       </div>
 
       {drag?.moved && (

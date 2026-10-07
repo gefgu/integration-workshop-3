@@ -7,7 +7,7 @@ export default function Tray({ pieces, onDragStart }) {
   return (
     <section
       style={{
-        width: 420,
+        width: 340,
         flex: 'none',
         background: 'var(--color-surface)',
         borderRadius: 28,
@@ -34,7 +34,7 @@ export default function Tray({ pieces, onDragStart }) {
 
 function TrayGrid({ types, used, onDragStart }) {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+    <div className="tray-grid">
       {types.map((type) => {
         const left = KIT_LIMITS[type] - (used[type] || 0);
         return (

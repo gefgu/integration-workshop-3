@@ -10,6 +10,7 @@ export type PieceType =
   | 'potenciometro'
   | 'jumper_curto'
   | 'jumper_longo'
+  | 'jumper_3'
   | 'jumper_4'
   | 'jumper_5'
   | 'capsula_pulso'
