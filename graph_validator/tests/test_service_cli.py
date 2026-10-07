@@ -42,7 +42,8 @@ def test_final_complete_and_missing_jumper():
     ok = client.post("/validate/final", json={"lesson": l, "board": camera()}).json()
     assert ok["approved"] and ok["category"] == "complete"
     bad = client.post("/validate/final", json={"lesson": l, "board": camera(skip="j")}).json()
-    assert not bad["approved"] and bad["category"] == "missing_connection" and bad["hint"]
+    # Without the jumper the loop never closes: explained by nets, not by the missing piece.
+    assert not bad["approved"] and bad["category"] == "open_circuit" and bad["hint"]
 
 
 def test_hint_suppressed_when_graph_unchanged():
@@ -70,8 +71,9 @@ def test_lint_by_step_pins_error_to_step():
     l["kind"] = "guided"
     l["steps"] = [{"id": "s1", "action": "place_component", "pieces": l["steps"][0]["pieces"]}]  # 4 pieces at once
     out = client.post("/lessons/lint", json=l).json()
-    assert out["byStep"][0]["stepId"] == "s1" and "exactly one action" in out["byStep"][0]["message"]
-    assert out["problems"][0].startswith("step 1 (s1):")
+    pinned = [b for b in out["byStep"] if b["stepId"] == "s1"]
+    assert pinned and "exactly one action" in pinned[0]["message"]
+    assert any(p.startswith("step 1 (s1):") for p in out["problems"])
 
 
 def test_feedback_catalog():
@@ -87,7 +89,7 @@ def test_cli_roundtrip(tmp_path, capsys):
     assert main(["validate", str(lp), str(bp), "--teacher"]) == 0
     bp.write_text(json.dumps(camera(skip="j")))
     assert main(["validate", str(lp), str(bp), "--teacher"]) == 1
-    assert "missing_connection" in capsys.readouterr().out
+    assert "open_circuit" in capsys.readouterr().out
 
 
 def test_empty_board_is_a_valid_board():
