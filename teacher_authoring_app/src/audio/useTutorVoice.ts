@@ -35,6 +35,6 @@ export function useSay(lines: (string | null | undefined)[], order = 0, enabled 
   const key = lines.join('\n');
   // biome-ignore lint/correctness/useExhaustiveDependencies: `key` is the content of `lines`
   useEffect(() => {
-    if (voice && enabled) voice.say(lines, order);
+    if (voice && enabled) return voice.say(lines, order);
   }, [voice, key, order, enabled]);
 }

@@ -72,3 +72,18 @@ test('speaking acompanha o áudio (para a boca do mascote)', async () => {
   voice.setMuted(true);
   assert.equal(voice.hasAudio('Um'), false); // muted: the mascot falls back to its timer
 });
+
+test('StrictMode (efeito, limpeza, efeito) fala cada linha uma vez só', async () => {
+  const { sink, played } = fakeSink();
+  const voice = new TutorVoice(() => sink);
+  voice.manifests = [manifest({ Título: 't.mp3', Pergunta: 'p.mp3' })];
+  for (const lines of [['Título'], ['Pergunta']]) {
+    const cancel = voice.say(lines); // 1st mount
+    cancel(); // simulated cleanup
+    voice.say(lines); // 2nd mount
+  }
+  await tick();
+  sink.end();
+  sink.end();
+  assert.deepEqual(played, ['t.mp3', 'p.mp3']);
+});
