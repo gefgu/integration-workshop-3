@@ -38,7 +38,7 @@ export default function LessonEditor({ lesson, setLesson, onSave, onExport, onTe
           ledMa={Math.max(diag.mA, cap.drivenMa)}
           readings={cap.readings}
           highlightIds={highlightIds}
-          trayFooter={<SchematicPreview pieces={lesson.board.pieces} />}
+          boardFooter={<SchematicPreview pieces={lesson.board.pieces} />}
         />
       </div>
 

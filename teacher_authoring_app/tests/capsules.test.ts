@@ -35,6 +35,22 @@ test('voltímetro lê a queda de tensão no resistor', () => {
   assert.equal(simulateCapsules(wired).readings.m.lines[1], '3,00 V');
 });
 
+test('voltímetro lê um circuito fechado só com resistores', () => {
+  const resistors = [
+    P('bat', 'bateria', 1, 2, 1),
+    P('r1', 'resistor_220', 1, 3, 2),
+    P('r2', 'resistor_470', 3, 2, 3),
+  ];
+  assert.equal(analyze(resistors).code, 'sem_led');
+  const measured = simulateCapsules([
+    ...resistors,
+    slot3('m', 'capsula_voltimetro'),
+    P('w1', 'jumper_longo', 1, 9, 5), // P1 ← battery positive
+    P('w2', 'jumper_longo', 3, 10, 5), // P2 ← midpoint between resistors
+  ]);
+  assert.equal(measured.readings.m.lines[1], '1,59 V');
+});
+
 test('porta lógica avalia os níveis e aciona P3', () => {
   // P1 ligado ao + (5 V), P2 ligado ao − (0 V)
   const wired = (op) => [
@@ -117,23 +133,23 @@ test('os bancos A e B são nós separados', () => {
 
 test('cápsula só cabe nos 6 encaixes e o amperímetro só no encaixe 2', () => {
   assert.deepEqual(slotAnchor(1), { a: 1, row: 0 });
-  assert.deepEqual(slotAnchor(6), { a: 9, row: 11 });
-  assert.equal(slotOf({ a: 5, row: 11 }), 5);
+  assert.deepEqual(slotAnchor(6), { a: 9, row: 6 });
+  assert.equal(slotOf({ a: 5, row: 6 }), 5);
   assert.equal(slotOf({ a: 2, row: 0 }), null);
   // dropping anywhere snaps to the nearest slot of that bank
   const snapped = buildPiece('capsula_porta', 'x', 11, 3);
   assert.deepEqual([snapped?.a, snapped?.b, snapped?.c, snapped?.row], [9, 10, 11, 0]);
   const low = buildPiece('capsula_porta', 'x', 6, 8);
-  assert.deepEqual([low?.a, low?.row], [5, 11]);
+  assert.deepEqual([low?.a, low?.row], [5, 6]);
   assert.match(placementError([], cap('x', 'capsula_porta', 2, 0)) as string, /6 encaixes/);
   assert.match(placementError([], cap('x', 'capsula_amperimetro', 9, 0)) as string, /só funciona/);
   assert.equal(placementError([], cap('x', 'capsula_amperimetro', 5, 0)), null);
   const three = [
     cap('c1', 'capsula_voltimetro', 1, 0),
     cap('c2', 'capsula_voltimetro', 5, 0),
-    cap('c3', 'capsula_voltimetro', 9, 0),
+    cap('c3', 'capsula_voltimetro', 1, 6),
   ];
-  assert.match(placementError(three, cap('d', 'capsula_porta', 1, 11)) as string, /No máximo 3/);
+  assert.match(placementError(three, cap('d', 'capsula_porta', 1, 6)) as string, /No máximo 3/);
   assert.match(
     placementError([cap('a', 'capsula_porta', 1, 0)], P('r', 'resistor_220', 2, 3, 0)) as string,
     /Já existe/

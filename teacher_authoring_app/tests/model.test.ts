@@ -40,6 +40,7 @@ test('analyze: sem bateria e sem resistor', () => {
 test('buildPiece vira para o outro lado quando sai da bancada', () => {
   assert.deepEqual(buildPiece('resistor_470', 'x', 11, 0, 1), { id: 'x', type: 'resistor_470', a: 11, b: 10, row: 0 });
   assert.equal(buildPiece('jumper_longo', 'x', 6, 0, 1).b, 8);
+  assert.equal(buildPiece('jumper_3', 'x', 6, 0, 1).b, 9);
 });
 
 test('linhas do segundo banco (6–11) são válidas', () => {
@@ -92,7 +93,7 @@ test('lessonProblems bloqueia título vazio e pergunta sem resposta correta', ()
   assert.deepEqual(lessonProblems(l), []);
 });
 
-test('limites do kit (MFR8): 2 LEDs, 1 de cada resistor, 6 jumpers curtos, 3 longos', () => {
+test('limites do kit (MFR8): 2 LEDs, 1 de cada resistor, 6 jumpers curtos e 3 de cada jumper longo', () => {
   const fill = (type, n) => Array.from({ length: n }, (_, i) => P(type + i, type, 1 + (i % 9), 2 + (i % 9), i));
   assert.match(placementError(fill('led', 2), P('x', 'led', 5, 6, 11)), /só tem 2/);
   assert.equal(placementError(fill('led', 1), P('x', 'led', 5, 6, 11)), null);
@@ -100,6 +101,7 @@ test('limites do kit (MFR8): 2 LEDs, 1 de cada resistor, 6 jumpers curtos, 3 lon
   assert.equal(placementError(fill('resistor_220', 1), P('x', 'resistor_1k', 5, 6, 11)), null);
   assert.match(placementError(fill('jumper_curto', 6), P('x', 'jumper_curto', 5, 6, 11)), /só tem 6/);
   assert.match(placementError(fill('jumper_longo', 3), P('x', 'jumper_longo', 5, 7, 11)), /só tem 3/);
+  assert.match(placementError(fill('jumper_3', 3), P('x', 'jumper_3', 5, 8, 11)), /só tem 3/);
   assert.equal(placementError(fill('led', 2), P('led0', 'led', 5, 6, 11), 'led0'), null);
   const l = { ...newLesson(), board: { pieces: fill('led', 3) } };
   assert.equal(validateLesson(l).ok, false);

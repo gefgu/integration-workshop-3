@@ -14,7 +14,7 @@ import { workspace } from './api/workspace.ts';
 import LessonEditor from './editor/LessonEditor.tsx';
 import Library from './editor/Library.tsx';
 import { newLesson } from './model/lesson.ts';
-import LessonPlayer from './player/LessonPlayer.tsx';
+import Sandbox from './editor/Sandbox.tsx';
 import { downloadLesson, duplicateLesson, readLessonFile } from './storage/lessonStore.ts';
 import Classes from './workspace/Classes.tsx';
 
@@ -36,8 +36,6 @@ function AppRoutes() {
   const [loaded, setLoaded] = useState(false);
   const [status, setStatus] = useState('');
   const [error, setError] = useState('');
-  const mascotKind = 'fox';
-
   useEffect(() => {
     if (!signedIn) return;
     let active = true;
@@ -159,7 +157,7 @@ function AppRoutes() {
                       onOpen={open}
                       onTest={(selectedLesson) => {
                         setLesson(JSON.parse(JSON.stringify(selectedLesson)));
-                        navigate(`/sandbox/${encodeURIComponent(selectedLesson.id)}`);
+                        navigate('/sandbox');
                       }}
                       onDuplicate={duplicate}
                       onExport={downloadLesson}
@@ -180,17 +178,15 @@ function AppRoutes() {
                     setLesson={setLesson}
                     onSave={save}
                     onExport={downloadLesson}
-                    onTest={() => navigate(`/sandbox/${encodeURIComponent(lesson.id)}`)}
+                    onTest={() => navigate('/sandbox')}
                     status={status}
                     error={error}
                   />
                 }
               />
               <Route
-                path="/sandbox/:lessonId?"
-                element={
-                  <SandboxRoute lessons={lessons} lesson={lesson} setLesson={setLesson} mascotKind={mascotKind} />
-                }
+                path="/sandbox"
+                element={<Sandbox lesson={lesson} onExit={() => navigate(`/editor/${encodeURIComponent(lesson.id)}`)} />}
               />
             </>
           )}
@@ -226,7 +222,7 @@ function AppLayout({ lesson, onSignOut }) {
             Editor
           </NavLink>
           <NavLink
-            to={`/sandbox/${encodeURIComponent(lesson.id)}`}
+            to="/sandbox"
             className={() => (pathname.startsWith('/sandbox') ? 'active' : '')}
           >
             Sandbox
@@ -269,30 +265,6 @@ function EditorRoute({ lessons, lesson, setLesson, onSave, onExport, onTest, sta
         status={status}
       />
     </>
-  );
-}
-
-function SandboxRoute({ lessons, lesson, setLesson, mascotKind }) {
-  const { lessonId } = useParams();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!lessonId || lesson.id === lessonId) return;
-    const savedLesson = lessons.find((item) => item.id === lessonId);
-    if (!savedLesson) {
-      navigate('/home', { replace: true });
-      return;
-    }
-    setLesson(JSON.parse(JSON.stringify(savedLesson)));
-  }, [lessonId, lesson.id, lessons, navigate, setLesson]);
-
-  return (
-    <LessonPlayer
-      key={lesson.updatedAt + lesson.id}
-      lesson={lesson}
-      onExit={() => navigate(`/editor/${encodeURIComponent(lesson.id)}`)}
-      mascotKind={mascotKind}
-    />
   );
 }
 

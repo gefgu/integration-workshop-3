@@ -13,10 +13,10 @@ export const nodeBank = (node: number) => Math.floor(node / BANK_NODE);
 
 /**
  * Smart capsules sit on six fixed slots: P1/P2/P3 on columns 1–3, 5–7 or 9–11 of the first row of
- * bank A (row 0) or the last row of bank B (row 11). Slots are numbered 1–6 like the PCB positions.
+ * bank A (row 0) or the first row of bank B (row 6). Slots are numbered 1–6 like the PCB positions.
  */
 export const SLOT_COLS = [1, 5, 9];
-export const SLOT_ROWS = [0, LAST_ROW];
+export const SLOT_ROWS = [0, BANK_SIZE];
 /** The INA219 and shunt are only wired to slot 2 (bank A, columns 5–7). */
 export const AMMETER_SLOT = 2;
 

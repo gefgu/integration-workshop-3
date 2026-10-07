@@ -61,8 +61,10 @@ export function columnVoltages(pieces: Piece[], pressed: Set<string> | null = nu
   set(nodeOf(bat.b, bat.row), 0);
   set(nodeOf(bat.a, bat.row), SUPPLY_V);
   const an = analyze(pieces, { pressed });
-  if (an.code === 'valido' && an.trail) {
-    const amps = corrente(an) / 1000;
+  if ((an.code === 'valido' || an.code === 'sem_led') && an.trail) {
+    // A closed resistor-only loop still has measurable node voltages even though it is
+    // incomplete as an LED/buzzer lesson circuit.
+    const amps = an.code === 'sem_led' ? SUPPLY_V / an.ohms : corrente(an) / 1000;
     let v = SUPPLY_V;
     for (const step of an.trail) {
       const drop =
