@@ -38,13 +38,26 @@ export class TutorVoice {
   private queue: string[] = [];
   private listeners = new Set<() => void>();
   private batch: { order: number; lines: string[] }[] = [];
+  private flushing = false;
   private sink: AudioSink | null = null;
 
   constructor(private makeSink: () => AudioSink | null = () => (typeof Audio === 'undefined' ? null : new Audio())) {}
 
-  say(lines: (string | null | undefined)[], order = 0): void {
-    this.batch.push({ order, lines: lines.filter(Boolean) as string[] });
-    if (this.batch.length === 1) queueMicrotask(() => this.flush());
+  /**
+   * Returns a cancel function: lines not flushed yet are dropped. Effects use it as their cleanup,
+   * so a component that unmounts in the same tick (or StrictMode's mount → unmount → mount in dev)
+   * does not queue its lines twice.
+   */
+  say(lines: (string | null | undefined)[], order = 0): () => void {
+    const entry = { order, lines: lines.filter(Boolean) as string[] };
+    this.batch.push(entry);
+    if (!this.flushing) {
+      this.flushing = true;
+      queueMicrotask(() => this.flush());
+    }
+    return () => {
+      this.batch = this.batch.filter((e) => e !== entry);
+    };
   }
 
   stop(): void {
@@ -81,6 +94,7 @@ export class TutorVoice {
   private flush(): void {
     const lines = this.batch.sort((x, y) => x.order - y.order).flatMap((b) => b.lines);
     this.batch = [];
+    this.flushing = false;
     if (!lines.length) return;
     this.stop();
     if (this.muted) return;
