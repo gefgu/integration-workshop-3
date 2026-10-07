@@ -114,9 +114,13 @@ def classify(issues: list[Issue]) -> Category:
 def message_for(category: Category, family: str = "*", overrides: Overrides | None = None) -> str:
     """Teacher override per component family, then a category-wide override, then the default (SFR15.1)."""
     per = (overrides or {}).get(category.value, {})
-    text = per.get(family) or per.get("*") or DEFAULT_MESSAGES[category]
+    return fill(per.get(family) or per.get("*") or DEFAULT_MESSAGES[category], family)
+
+
+def fill(template: str, family: str = "*") -> str:
+    """Put the family's pt-BR name into a message template ({nome}, {nome_cap})."""
     nome = NAMES.get(family, NAMES["*"])
-    return text.format(nome=nome, nome_cap=nome[0].upper() + nome[1:])
+    return template.format(nome=nome, nome_cap=nome[0].upper() + nome[1:])
 
 
 def feedback(issues: list[Issue], overrides: Overrides | None = None) -> tuple[Category, str]:

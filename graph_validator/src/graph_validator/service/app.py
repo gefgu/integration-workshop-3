@@ -14,10 +14,12 @@ from ..models import Category
 from ..equiv import describe_canonical, describe_nets
 from ..graph import parts_from_pieces
 from ..steps import StepDebug, StepResult, evaluate_step, lint, lint_issues, resolve_targets
+from .tts import router as tts_router
 from .workspace import router as workspace_router
 
 app = FastAPI(title="TedTronics graph validator")
 app.include_router(workspace_router)
+app.include_router(tts_router)
 
 
 class StepRequest(BaseModel):

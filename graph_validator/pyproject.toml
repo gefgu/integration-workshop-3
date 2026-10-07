@@ -18,6 +18,8 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8", "hypothesis>=6", "httpx>=0.27"]
+# Tutor voice (Piper pt_BR-cadu-medium -> MP3). Voice model: graph_validator/tools/fetch_voice.sh
+tts = ["piper-tts>=1.8", "lameenc>=1.7"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -11,11 +11,17 @@ export function duplicateLesson(lesson: Lesson): Lesson {
 }
 
 export function downloadLesson(lesson: Lesson): void {
-  const blob = new Blob([JSON.stringify(lesson, null, 2)], { type: 'application/json' });
+  downloadBlob(
+    new Blob([JSON.stringify(lesson, null, 2)], { type: 'application/json' }),
+    `${slugify(lesson.title)}.json`
+  );
+}
+
+export function downloadBlob(blob: Blob, filename: string): void {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `${slugify(lesson.title)}.json`;
+  a.download = filename;
   document.body.appendChild(a);
   a.click();
   a.remove();
@@ -24,6 +30,8 @@ export function downloadLesson(lesson: Lesson): void {
 
 /** Reads a File chosen by the teacher. Resolves { ok, lesson } or { ok:false, error }. */
 export async function readLessonFile(file: File): Promise<LessonValidation> {
+  if (file.name.toLowerCase().endsWith('.zip'))
+    return { ok: false, error: 'Importe o arquivo lesson.json de dentro do .zip; o áudio é gerado de novo ao salvar.' };
   let raw: unknown;
   try {
     raw = JSON.parse(await file.text());

@@ -99,7 +99,7 @@ export default function LessonEditor({ lesson, setLesson, onSave, onExport, onTe
             Salvar
           </button>
           <button type="button" className="btn-outline" onClick={() => guarded(onExport)}>
-            Exportar .json
+            Exportar
           </button>
           <button type="button" className="btn-outline" onClick={onTest}>
             Testar
