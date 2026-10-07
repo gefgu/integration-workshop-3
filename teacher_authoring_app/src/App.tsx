@@ -179,7 +179,7 @@ function AppRoutes() {
                       onOpen={open}
                       onTest={(selectedLesson) => {
                         setLesson(JSON.parse(JSON.stringify(selectedLesson)));
-                        navigate('/sandbox');
+                        navigate(lessonTestPath(selectedLesson.id));
                       }}
                       onDuplicate={duplicate}
                       onExport={(selectedLesson) => exportLesson(selectedLesson)}
@@ -200,16 +200,22 @@ function AppRoutes() {
                     setLesson={setLesson}
                     onSave={save}
                     onExport={(selectedLesson) => exportLesson(selectedLesson, true)}
-                    onTest={() => navigate('/sandbox')}
+                    onTest={() => navigate(lessonTestPath(lesson.id))}
                     status={status}
                     error={error}
                   />
                 }
               />
+              {/* One route, so switching modes keeps the free sandbox's board. */}
               <Route
-                path="/sandbox"
+                path="/sandbox/:mode?/:lessonId?"
                 element={
-                  <Sandbox lesson={lesson} onExit={() => navigate(`/editor/${encodeURIComponent(lesson.id)}`)} />
+                  <SandboxRoute
+                    lessons={lessons}
+                    lesson={lesson}
+                    setLesson={setLesson}
+                    onExit={() => navigate(`/editor/${encodeURIComponent(lesson.id)}`)}
+                  />
                 }
               />
             </>
@@ -218,6 +224,34 @@ function AppRoutes() {
       </Route>
       <Route path="*" element={<Navigate to={signedIn ? '/home' : '/login'} replace />} />
     </Routes>
+  );
+}
+
+/** "Testar" opens the lesson validator; the lesson id in the URL makes the page linkable. */
+export const lessonTestPath = (id: string) => `/sandbox/licao/${encodeURIComponent(id)}`;
+
+function SandboxRoute({ lessons, lesson, setLesson, onExit }) {
+  const { mode, lessonId } = useParams();
+  const navigate = useNavigate();
+  const testing = mode === 'licao';
+
+  useEffect(() => {
+    if (mode && !testing) navigate('/sandbox', { replace: true });
+    else if (testing && !lessonId) navigate(lessonTestPath(lesson.id), { replace: true });
+    else if (testing && lessonId !== lesson.id) {
+      const savedLesson = lessons.find((item) => item.id === lessonId);
+      if (savedLesson) setLesson(JSON.parse(JSON.stringify(savedLesson)));
+      else navigate(lessonTestPath(lesson.id), { replace: true }); // unknown id: test the open lesson
+    }
+  }, [mode, testing, lessonId, lesson.id, lessons, navigate, setLesson]);
+
+  return (
+    <Sandbox
+      lesson={lesson}
+      mode={testing ? 'lesson' : 'free'}
+      onMode={(next) => navigate(next === 'lesson' ? lessonTestPath(lesson.id) : '/sandbox')}
+      onExit={onExit}
+    />
   );
 }
 

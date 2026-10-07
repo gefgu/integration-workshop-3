@@ -51,3 +51,24 @@ test('falas do mesmo render tocam em ordem e uma fala nova interrompe a fila', a
   await tick();
   assert.equal(played.length, 3);
 });
+
+test('speaking acompanha o áudio (para a boca do mascote)', async () => {
+  const { sink } = fakeSink();
+  const voice = new TutorVoice(() => sink);
+  voice.manifests = [manifest({ Um: '1.mp3', Dois: '2.mp3' })];
+  const seen: boolean[] = [];
+  voice.subscribe(() => seen.push(voice.speaking));
+  assert.equal(voice.hasAudio('Um'), true);
+  assert.equal(voice.hasAudio('Sem áudio'), false);
+  voice.say(['Um', 'Dois']);
+  await tick();
+  assert.equal(voice.speaking, true);
+  sink.end();
+  await tick();
+  assert.equal(voice.speaking, true); // still talking: second line
+  sink.end();
+  assert.equal(voice.speaking, false);
+  assert.deepEqual(seen, [true, false]);
+  voice.setMuted(true);
+  assert.equal(voice.hasAudio('Um'), false); // muted: the mascot falls back to its timer
+});
