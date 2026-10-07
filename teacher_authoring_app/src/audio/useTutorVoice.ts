@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, useSyncExternalStore } from 'react';
 import type { Lesson } from '../model/types.ts';
 import { loadSystemPack, TutorVoice } from './tutorVoice.ts';
 
@@ -20,6 +20,14 @@ export function useTutorVoice(lesson: Lesson): TutorVoice {
   }, [voice]);
   return voice;
 }
+
+/** Whether the tutor's voice is playing right now (null outside a player). */
+export function useSpeaking(): { voice: TutorVoice | null; speaking: boolean } {
+  const voice = useContext(TutorVoiceContext);
+  const speaking = useSyncExternalStore(voice ? voice.subscribe : noSubscribe, () => !!voice?.speaking);
+  return { voice, speaking };
+}
+const noSubscribe = () => () => {};
 
 /** Speak `lines` whenever they change (`order` sorts lines said in the same render). */
 export function useSay(lines: (string | null | undefined)[], order = 0, enabled = true): void {

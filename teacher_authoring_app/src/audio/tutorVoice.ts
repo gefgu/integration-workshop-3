@@ -33,8 +33,10 @@ export interface AudioSink {
  */
 export class TutorVoice {
   muted = false;
+  speaking = false;
   manifests: (AudioManifest | null | undefined)[] = [];
   private queue: string[] = [];
+  private listeners = new Set<() => void>();
   private batch: { order: number; lines: string[] }[] = [];
   private sink: AudioSink | null = null;
 
@@ -51,6 +53,24 @@ export class TutorVoice {
       this.sink.onended = null;
       this.sink.pause();
     }
+    this.setSpeaking(false);
+  }
+
+  /** True when `text` will be heard (so the mascot can follow the audio instead of a timer). */
+  hasAudio(text: string): boolean {
+    return !this.muted && audioFileFor(text, this.manifests) !== null;
+  }
+
+  /** For useSyncExternalStore: called whenever `speaking` changes. */
+  subscribe = (listener: () => void): (() => void) => {
+    this.listeners.add(listener);
+    return () => this.listeners.delete(listener);
+  };
+
+  private setSpeaking(speaking: boolean): void {
+    if (speaking === this.speaking) return;
+    this.speaking = speaking;
+    for (const listener of this.listeners) listener();
   }
 
   setMuted(muted: boolean): void {
@@ -70,12 +90,20 @@ export class TutorVoice {
 
   private playNext(): void {
     const file = this.queue.shift();
-    if (!file) return;
-    this.sink ??= this.makeSink();
-    if (!this.sink) return;
-    this.sink.onended = () => this.playNext();
-    this.sink.src = audioUrl(file);
-    this.sink.play().catch(() => this.playNext()); // autoplay blocked or file gone: skip it
+    if (file) this.sink ??= this.makeSink();
+    if (!file || !this.sink) {
+      this.setSpeaking(false);
+      return;
+    }
+    const sink = this.sink;
+    sink.onended = () => this.playNext();
+    sink.src = audioUrl(file);
+    sink.play().then(
+      () => {
+        if (sink.onended) this.setSpeaking(true); // not stopped while it was starting
+      },
+      () => this.playNext() // autoplay blocked or file gone: skip it
+    );
   }
 }
 

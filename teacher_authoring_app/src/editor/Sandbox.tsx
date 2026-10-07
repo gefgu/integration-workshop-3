@@ -6,12 +6,11 @@ import { diagnose } from '../engine/diagnose.ts';
 import type { Piece } from '../model/types.ts';
 import LessonPlayer from '../player/LessonPlayer.tsx';
 
-export default function Sandbox({ lesson, onExit }) {
+export default function Sandbox({ lesson, mode, onMode, onExit }) {
   const [pieces, setPieces] = useState<Piece[]>([]);
   const [pressed, setPressed] = useState<Set<string>>(() => new Set());
   const [energized, setEnergized] = useState(false);
   const [validated, setValidated] = useState(false);
-  const [mode, setMode] = useState<'free' | 'lesson'>('free');
   const diag = diagnose(pieces, pressed);
   const capsules = useCapsules(pieces, pressed, energized);
   const valid = diag.code === 'valido';
@@ -34,10 +33,10 @@ export default function Sandbox({ lesson, onExit }) {
   return (
     <div className="sandbox-page">
       <nav className="sandbox-mode-toggle" aria-label="Modo do sandbox">
-        <button type="button" className={mode === 'free' ? 'active' : ''} onClick={() => setMode('free')}>
+        <button type="button" className={mode === 'free' ? 'active' : ''} onClick={() => onMode('free')}>
           Sandbox livre
         </button>
-        <button type="button" className={mode === 'lesson' ? 'active' : ''} onClick={() => setMode('lesson')}>
+        <button type="button" className={mode === 'lesson' ? 'active' : ''} onClick={() => onMode('lesson')}>
           Validador da lição
         </button>
       </nav>
@@ -93,7 +92,9 @@ export default function Sandbox({ lesson, onExit }) {
         )}
       </section>
       <div style={{ display: mode === 'lesson' ? 'block' : 'none', width: '100%' }}>
-        <LessonPlayer key={lesson.id + lesson.updatedAt} lesson={lesson} onExit={onExit} mascotKind="fox" />
+        {mode === 'lesson' && (
+          <LessonPlayer key={lesson.id + lesson.updatedAt} lesson={lesson} onExit={onExit} mascotKind="fox" />
+        )}
       </div>
     </div>
   );
