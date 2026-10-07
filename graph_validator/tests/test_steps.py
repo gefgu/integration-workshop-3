@@ -15,7 +15,8 @@ def lesson(kind="guided", **kw):
             {"id": "s2", "action": "place_component", "add": [P("led", "led", 3, 4, 2).model_dump()]},
             {"id": "s3", "action": "place_connection", "add": [P("j", "jumper_curto", 2, 3, 3).model_dump()]},
             {"id": "s4", "action": "place_connection", "add": [P("j2", "jumper_longo", 4, 2, 4).model_dump()]},
-            {"id": "s5", "action": "interact", "interact": {"quiz_correct_id": "o1"}},
+            {"id": "s5", "action": "connect_circuit", "add": []},
+            {"id": "s6", "action": "interact", "interact": {"quiz_correct_id": "o1"}},
         ],
     }
     d.update(kw)
@@ -29,7 +30,7 @@ def parts(*ids_upto):
 
 def test_cumulative_targets_and_lint_ok():
     l = lesson()
-    assert [len(t) for t in resolve_targets(l)] == [1, 2, 3, 4, 4]
+    assert [len(t) for t in resolve_targets(l)] == [1, 2, 3, 4, 4, 4]
     assert lint(l) == []
 
 
@@ -66,20 +67,20 @@ def test_challenge_only_checks_final_target():
 
 def test_hint_only_after_graph_change():  # SFR7
     l = lesson()
-    first = evaluate_step(l, 2, parts(2))
+    first = evaluate_step(l, 4, parts(2))
     assert first.hint
-    same = evaluate_step(l, 2, parts(2), previous_hash=first.graph_hash)
+    same = evaluate_step(l, 4, parts(2), previous_hash=first.graph_hash)
     assert same.hint is None and same.message
-    changed = evaluate_step(l, 2, parts(1), previous_hash=first.graph_hash)
+    changed = evaluate_step(l, 4, parts(1), previous_hash=first.graph_hash)
     assert changed.hint
 
 
 def test_interact_step_needs_right_answer():  # SFR19
     l = lesson()
     p = parts(4)
-    assert evaluate_step(l, 4, p).awaiting_answer
-    assert not evaluate_step(l, 4, p, answer="nope").approved
-    assert evaluate_step(l, 4, p, answer="o1").approved
+    assert evaluate_step(l, 5, p).awaiting_answer
+    assert not evaluate_step(l, 5, p, answer="nope").approved
+    assert evaluate_step(l, 5, p, answer="o1").approved
 
 
 def test_invalid_board_is_an_error_not_feedback():

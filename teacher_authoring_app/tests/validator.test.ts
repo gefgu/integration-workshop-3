@@ -34,7 +34,7 @@ test('validateStep envia lição, bancada e hash anterior e traduz a resposta', 
   assert.equal(sent.url, '/api/validate/step');
   assert.equal(sent.body.step_idx, 1);
   assert.equal(sent.body.previous_graph_hash, 'h0');
-  assert.equal(sent.body.lesson.steps.length, 2);
+  assert.equal(sent.body.lesson.steps.length, 3);
   assert.deepEqual(sent.body.board.pieces, [P('bat', 'bateria', 1, 2, 0)]);
   assert.equal(r.ok, true);
   assert.equal(r.result.graphHash, 'h1');

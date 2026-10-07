@@ -30,15 +30,15 @@ test('autoSplit: bateria primeiro, componentes por coluna, jumpers por último, 
   const steps = autoSplit(board());
   assert.deepEqual(
     steps.map((s) => s.pieceId),
-    ['bat', 'led', 'j1', 'j2']
+    ['bat', 'led', 'j1', 'j2', null]
   );
   assert.deepEqual(
     steps.map((s) => s.action),
-    ['place_component', 'place_component', 'place_connection', 'place_connection']
+    ['place_component', 'place_component', 'place_connection', 'place_connection', 'connect_circuit']
   );
   assert.match(steps[0].text, /bateria/);
-  assert.match(steps[2].text, /colunas 2 e 3/);
-  assert.equal(new Set(steps.map((s) => s.id)).size, 4);
+  assert.match(steps[2].text, /jumper de 1 colunas/);
+  assert.equal(new Set(steps.map((s) => s.id)).size, 5);
 });
 
 test('cumulativeBoard acumula as peças dos passos até o índice', () => {
@@ -53,7 +53,7 @@ test('cumulativeBoard acumula as peças dos passos até o índice', () => {
 
 test('effectiveSteps: lição antiga sem passos divide a bancada na hora; desafio não tem passos', () => {
   const l = lesson();
-  assert.equal(effectiveSteps(l).length, 4);
+  assert.equal(effectiveSteps(l).length, 5);
   assert.deepEqual(effectiveSteps({ ...l, kind: 'challenge' }), []);
 });
 
@@ -63,14 +63,14 @@ test('stepProblems: cobertura, ação e pergunta do passo de interação', () =>
   l.steps = autoSplit(l.board.pieces);
   assert.deepEqual(stepProblems(l), []);
   l.steps.pop();
-  assert.match(stepProblems(l).join(' '), /1 peça\(s\)/);
+  assert.match(stepProblems(l).join(' '), /Conectar circuito/);
   l.steps[0].action = 'place_connection';
   assert.match(stepProblems(l).join(' '), /Passo 1: a ação/);
   l.steps = [...autoSplit(l.board.pieces), newStep({ action: 'interact' })];
-  assert.match(stepProblems(l).join(' '), /Passo 5: escolha uma pergunta/);
+  assert.match(stepProblems(l).join(' '), /Passo 6: escolha uma pergunta/);
   const q = newQuiz('step');
   l.quizzes = [q];
-  l.steps[4].quizId = q.id;
+  l.steps[5].quizId = q.id;
   assert.deepEqual(stepProblems(l), []);
 });
 
@@ -106,7 +106,7 @@ test('toValidatorLesson (guiada): um passo por peça, opções e sobrescritas no
   l.steps[1].overrides = { reversed_polarity: { led: 'Vire o LED!' } };
   const v = toValidatorLesson(l);
   assert.equal(v.kind, 'guided');
-  assert.equal(v.steps.length, 4);
+  assert.equal(v.steps.length, 5);
   assert.deepEqual(v.steps[0].add, [P('bat', 'bateria', 1, 2, 0)]);
   assert.equal(v.steps[1].options.match_values, true);
   assert.deepEqual(v.steps[1].overrides, { reversed_polarity: { led: 'Vire o LED!' } });
@@ -118,7 +118,7 @@ test('toValidatorLesson: interact usa o correctId da pergunta; desafio vira pass
   const q = newQuiz('step');
   l.quizzes = [q];
   l.steps = [...autoSplit(l.board.pieces), newStep({ action: 'interact', quizId: q.id })];
-  assert.deepEqual(toValidatorLesson(l).steps[4].interact, { quiz_correct_id: q.correctId });
+  assert.deepEqual(toValidatorLesson(l).steps[5].interact, { quiz_correct_id: q.correctId });
   const c: Lesson = { ...lesson(), kind: 'challenge', timeLimitS: 90 };
   const v = toValidatorLesson(c);
   assert.equal(v.steps.length, 1);
@@ -126,7 +126,7 @@ test('toValidatorLesson: interact usa o correctId da pergunta; desafio vira pass
   assert.equal(v.time_limit_s, 90);
 });
 
-test('validateLesson: v1 migra para v2 e v2 preserva passos', () => {
+test('validateLesson: v1 migra para v3 e versões anteriores preservam os passos', () => {
   const v1 = {
     version: 1,
     id: 'l1',
@@ -139,8 +139,8 @@ test('validateLesson: v1 migra para v2 e v2 preserva passos', () => {
   };
   const m = validateLesson(JSON.parse(JSON.stringify(v1)));
   assert.equal(m.ok, true);
-  assert.equal(m.lesson.version, 2);
-  assert.deepEqual(m.lesson.steps, []);
+  assert.equal(m.lesson.version, 3);
+  assert.equal(m.lesson.steps.length, 5);
   assert.equal(m.lesson.timeLimitS, null);
 
   const l = lesson();
@@ -148,10 +148,10 @@ test('validateLesson: v1 migra para v2 e v2 preserva passos', () => {
   l.steps[0].overrides = { reversed_polarity: { bateria: 'Inverta!' }, bogus: { led: 'x' } };
   const round = validateLesson(JSON.parse(JSON.stringify(l)));
   assert.equal(round.ok, true);
-  assert.equal(round.lesson.steps.length, 4);
+  assert.equal(round.lesson.steps.length, 5);
   assert.deepEqual(round.lesson.steps[0].overrides, { reversed_polarity: { bateria: 'Inverta!' } });
   assert.equal(validateLesson({ ...JSON.parse(JSON.stringify(l)), steps: 'x' }).ok, false);
-  assert.equal(validateLesson({ ...JSON.parse(JSON.stringify(l)), version: 3 }).ok, false);
+  assert.equal(validateLesson({ ...JSON.parse(JSON.stringify(l)), version: 3 }).ok, true);
 });
 
 test('lessonProblems inclui os problemas de passos', () => {
