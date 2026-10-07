@@ -4,7 +4,7 @@ import time
 
 from hypothesis import given, settings, strategies as st
 
-from graph_validator.catalog import BANK_ROWS, CATALOG, COLS, ROWS
+from graph_validator.catalog import BANK_ROWS, CAPSULES, CATALOG, COLS, MAX_CAPSULES, ROWS, SLOT_COLS
 from graph_validator.match import is_match
 from graph_validator.models import MatchOptions, Piece, board_problems
 
@@ -63,14 +63,21 @@ def test_sfr6_removing_a_piece_breaks_match():
 
 
 def _max_kit_board(seed):
-    """Every kit piece on the board, packed into few columns so the column cliques are dense."""
+    """Maximum legal kit inventory, including the three-capsule board limit."""
     rnd = random.Random(seed)
     pieces, n = [], 0
     for t, d in CATALOG.items():
+        if t in CAPSULES:
+            continue
         for _ in range(d.kit_limit):
             a = rnd.randint(1, COLS - d.length)
             pieces.append(Piece(id=f"p{n}", type=t, a=a, b=a + d.length, row=n % ROWS))
             n += 1
+    capsule_types = rnd.sample(sorted(CAPSULES), MAX_CAPSULES)
+    slots = [(1, 0), (5, 0), (9, ROWS - 1)]
+    for t, (a, row) in zip(capsule_types, slots):
+        pieces.append(Piece(id=f"p{n}", type=t, a=a, b=a + 1, c=a + 2, row=row))
+        n += 1
     return pieces
 
 
@@ -78,7 +85,7 @@ def test_snfr6_compare_within_200ms_on_max_kit_boards():
     worst = 0.0
     for seed in range(40):
         pieces = _max_kit_board(seed)
-        assert len(pieces) == 21
+        assert len(pieces) == 30
         target = G(pieces)
         # student has the same circuit, built in a different order/orientation
         student = G(list(reversed([p.model_copy(update={"a": p.b, "b": p.a}) if p.type not in ("bateria", "led") else p for p in pieces])))
