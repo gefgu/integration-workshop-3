@@ -5,11 +5,14 @@ from datetime import datetime, timezone
 from typing import Any, Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import Response
 from pydantic import BaseModel, Field, field_validator
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
+from ..tts import lesson_audio, lesson_phrases
+from . import tts
 from .storage import ClassLesson, SavedLesson, SchoolClass, Student, get_session
 
 router = APIRouter(prefix="/workspace")
@@ -140,11 +143,28 @@ def save_lesson(lesson_id: str, body: LessonInput, db: Db) -> dict:
     updated = datetime.now(timezone.utc)
     document = body.model_dump()
     document["updatedAt"] = updated.isoformat()
+    document["audio"] = speak(document)
     item.title = body.title
     item.document = document
     item.updated_at = updated.replace(tzinfo=None)
     commit(db)
     return document
+
+
+def speak(document: dict[str, Any]) -> dict[str, Any]:
+    """Tutor audio for everything the teacher wrote; the save never fails because of it."""
+    synth = tts.synthesizer()
+    if synth is None:
+        return {"voice": None, "status": "unavailable", "detail": "TTS desligado.", "phrases": {}}
+    return lesson_audio(lesson_phrases(document), synth)
+
+
+@router.get("/lessons/{lesson_id}/export.zip")
+def export_lesson(lesson_id: str, db: Db) -> Response:
+    """lesson.json plus audio/<hash>.mp3 for each of its phrases, for the workbench (Raspberry Pi)."""
+    document = own_lesson(db, lesson_id).document
+    phrases = (document.get("audio") or {}).get("phrases") or {}
+    return tts.zip_response(f"licao-{lesson_id}", "lesson.json", document, {f: f for f in phrases.values()})
 
 
 @router.delete("/lessons/{lesson_id}", status_code=204)

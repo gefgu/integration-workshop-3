@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { validateStep } from '../api/validator.ts';
+import { TutorVoiceContext, useSay, useTutorVoice } from '../audio/useTutorVoice.ts';
 import BoardWorkspace from '../components/BoardWorkspace.tsx';
 import Bubble from '../components/Bubble.tsx';
 import { useCapsules } from '../components/useCapsules.ts';
@@ -206,65 +207,102 @@ export default function LessonPlayer({ lesson, onExit, mascotKind }) {
     setIdx(0);
   };
   const stepKey = phase.type === 'step' || phase.type === 'interact' ? phase.step.id : 'challenge';
+  const voice = useTutorVoice(lesson);
+  const [muted, setMuted] = useState(false);
+  useSay([lesson.title, lesson.instruction], -1, idx === 0); // again on "Testar de novo"
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 14, alignItems: 'center', textAlign: 'center' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, flexWrap: 'wrap' }}>
-        <h2 style={{ fontFamily: 'var(--font-heading)', margin: 0, fontSize: 20 }}>
-          {lesson.title || 'Lição sem título'}
-        </h2>
-        <span style={{ fontSize: 13, color: 'var(--color-neutral-600)' }}>
-          {phase.type === 'done' ? 'Concluída' : `Etapa ${idx + 1} de ${steps}`}
-        </span>
-        <button type="button" className="btn-outline" onClick={onExit}>
-          Voltar ao editor
-        </button>
-        <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13 }}>
-          <input type="checkbox" checked={debugEnabled} onChange={(e) => setDebugEnabled(e.target.checked)} />
-          Depurar validação
-        </label>
-      </div>
-      {lesson.instruction && (
-        <p style={{ margin: 0, maxWidth: 720, fontSize: 14, lineHeight: 1.5 }}>{lesson.instruction}</p>
-      )}
-
-      {phase.type === 'quiz' && (
-        <QuizStep key={phase.quiz.id} quiz={phase.quiz} onDone={next} mascotKind={mascotKind} />
-      )}
-      {phase.type === 'interact' && (
-        <InteractStep
-          key={stepKey}
-          lesson={lesson}
-          phase={phase}
-          pieces={pieces}
-          onDone={next}
-          mascotKind={mascotKind}
-        />
-      )}
-      {(phase.type === 'step' || phase.type === 'challenge') && (
-        <BuildStep
-          key={stepKey}
-          lesson={lesson}
-          stepIdx={phase.type === 'step' ? phase.idx : 0}
-          text={phase.type === 'step' ? phase.step.text : ''}
-          pieces={pieces}
-          setPieces={setPieces}
-          debugEnabled={debugEnabled}
-          timeLimitS={phase.type === 'challenge' ? lesson.timeLimitS : null}
-          onDone={next}
-          mascotKind={mascotKind}
-        />
-      )}
-      {phase.type === 'done' && (
-        <>
-          <Bubble kind={mascotKind} tone="ok" message="Lição concluída! É assim que o aluno vai passar por ela." />
-          <button type="button" className="btn-primary" onClick={restart}>
-            Testar de novo
+    <TutorVoiceContext.Provider value={voice}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 14, alignItems: 'center', textAlign: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, flexWrap: 'wrap' }}>
+          <h2 style={{ fontFamily: 'var(--font-heading)', margin: 0, fontSize: 20 }}>
+            {lesson.title || 'Lição sem título'}
+          </h2>
+          <span style={{ fontSize: 13, color: 'var(--color-neutral-600)' }}>
+            {phase.type === 'done' ? 'Concluída' : `Etapa ${idx + 1} de ${steps}`}
+          </span>
+          <button type="button" className="btn-outline" onClick={onExit}>
+            Voltar ao editor
           </button>
-        </>
-      )}
-    </div>
+          <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13 }}>
+            <input type="checkbox" checked={debugEnabled} onChange={(e) => setDebugEnabled(e.target.checked)} />
+            Depurar validação
+          </label>
+          <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13 }}>
+            <input
+              type="checkbox"
+              checked={!muted}
+              onChange={(e) => {
+                setMuted(!e.target.checked);
+                voice.setMuted(!e.target.checked);
+              }}
+            />
+            Voz do tutor
+          </label>
+          <AudioStatus lesson={lesson} />
+        </div>
+        {lesson.instruction && (
+          <p style={{ margin: 0, maxWidth: 720, fontSize: 14, lineHeight: 1.5 }}>{lesson.instruction}</p>
+        )}
+
+        {phase.type === 'quiz' && (
+          <QuizStep key={phase.quiz.id} quiz={phase.quiz} onDone={next} mascotKind={mascotKind} />
+        )}
+        {phase.type === 'interact' && (
+          <InteractStep
+            key={stepKey}
+            lesson={lesson}
+            phase={phase}
+            pieces={pieces}
+            onDone={next}
+            mascotKind={mascotKind}
+          />
+        )}
+        {(phase.type === 'step' || phase.type === 'challenge') && (
+          <BuildStep
+            key={stepKey}
+            lesson={lesson}
+            stepIdx={phase.type === 'step' ? phase.idx : 0}
+            text={phase.type === 'step' ? phase.step.text : ''}
+            pieces={pieces}
+            setPieces={setPieces}
+            debugEnabled={debugEnabled}
+            timeLimitS={phase.type === 'challenge' ? lesson.timeLimitS : null}
+            onDone={next}
+            mascotKind={mascotKind}
+          />
+        )}
+        {phase.type === 'done' && (
+          <>
+            <SpokenBubble
+              kind={mascotKind}
+              tone="ok"
+              message="Lição concluída! É assim que o aluno vai passar por ela."
+            />
+            <button type="button" className="btn-primary" onClick={restart}>
+              Testar de novo
+            </button>
+          </>
+        )}
+      </div>
+    </TutorVoiceContext.Provider>
   );
+}
+
+/** A tutor bubble whose message is also spoken (when its text has audio). */
+function SpokenBubble({ kind, tone, message }) {
+  useSay([message]);
+  return <Bubble kind={kind} tone={tone} message={message} />;
+}
+
+/** Tells the teacher when the preview will be silent, and why. */
+function AudioStatus({ lesson }) {
+  const audio = lesson.audio;
+  let text = '';
+  if (!audio) text = 'Sem áudio: salve a lição para gerar a voz.';
+  else if (audio.status !== 'ok') text = `Sem áudio (${audio.detail || audio.status}).`;
+  if (!text) return null;
+  return <span style={{ fontSize: 12, color: 'var(--color-neutral-600)' }}>{text}</span>;
 }
 
 /** `verify(optionId)` (optional): async server-side check returning { approved, message }. */
@@ -288,6 +326,9 @@ function QuizStep({
   else if (verify && !verdict) msg = 'Conferindo…';
   else if (correct) msg = option.feedback || praise();
   else msg = option.feedback || (verify && verdict.message) || 'Não foi dessa vez. Tente de novo.';
+
+  useSay([quiz.prompt, ...quiz.options.map((o) => o.text)]);
+  useSay(option ? [msg] : [], 1);
 
   async function pick(o) {
     setPicked(o.id);
@@ -336,6 +377,7 @@ function QuizStep({
 /** SFR19: a step that leaves the circuit unchanged — approved by the validator from the student's answer. */
 function InteractStep({ lesson, phase, pieces, onDone, mascotKind }) {
   const quiz = phase.quiz;
+  useSay([phase.step.text], -0.5, !!quiz);
   if (!quiz) {
     return (
       <>
@@ -437,6 +479,7 @@ function BuildStep({ lesson, stepIdx, text, pieces, setPieces, debugEnabled, tim
     );
   const valid = diag.code === 'valido';
   const lit = energized && (valid || !!cap.driven);
+  useSay([msg]);
   return (
     <>
       <Bubble kind={mascotKind} tone={tone} message={msg} />

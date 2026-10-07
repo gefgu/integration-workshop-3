@@ -13,12 +13,17 @@ import {
 import { workspace } from './api/workspace.ts';
 import LessonEditor from './editor/LessonEditor.tsx';
 import Library from './editor/Library.tsx';
-import { newLesson } from './model/lesson.ts';
+import { newLesson, slugify } from './model/lesson.ts';
 import Sandbox from './editor/Sandbox.tsx';
-import { downloadLesson, duplicateLesson, readLessonFile } from './storage/lessonStore.ts';
+import { downloadBlob, downloadLesson, duplicateLesson, readLessonFile } from './storage/lessonStore.ts';
 import Classes from './workspace/Classes.tsx';
 
 const SESSION_KEY = 'tedtronics-mock-signed-in';
+
+function audioStatus(audio) {
+  if (audio?.status === 'ok') return `Voz do tutor: ${Object.keys(audio.phrases).length} falas em áudio.`;
+  return `Sem voz do tutor${audio?.detail ? ` (${audio.detail})` : ''}.`;
+}
 
 export default function App() {
   return (
@@ -67,13 +72,30 @@ function AppRoutes() {
 
   async function save(selectedLesson) {
     try {
+      flash('Salvando e gerando a voz do tutor…');
       const saved = await workspace.saveLesson(selectedLesson);
       setLessons((items) => [saved, ...items.filter((item) => item.id !== saved.id)]);
-      setLesson((current) => (current.id === saved.id ? { ...current, updatedAt: saved.updatedAt } : current));
+      setLesson((current) =>
+        current.id === saved.id ? { ...current, updatedAt: saved.updatedAt, audio: saved.audio } : current
+      );
       setError('');
-      flash('Lição salva no banco de dados.');
+      flash(`Lição salva no banco de dados. ${audioStatus(saved.audio)}`);
+      return saved;
     } catch (cause) {
       setError((cause as Error).message);
+      return null;
+    }
+  }
+
+  /** The .zip carries the tutor's MP3s; a lesson that is not on the server falls back to .json. */
+  async function exportLesson(selectedLesson, saveFirst = false) {
+    const saved = saveFirst ? await save(selectedLesson) : lessons.find((item) => item.id === selectedLesson.id);
+    if (!saved) return downloadLesson(selectedLesson);
+    try {
+      downloadBlob(await workspace.exportZip(saved.id), `${slugify(saved.title)}.zip`);
+    } catch (cause) {
+      setError(`${(cause as Error).message} Baixando só o .json.`);
+      downloadLesson(saved);
     }
   }
 
@@ -160,7 +182,7 @@ function AppRoutes() {
                         navigate('/sandbox');
                       }}
                       onDuplicate={duplicate}
-                      onExport={downloadLesson}
+                      onExport={(selectedLesson) => exportLesson(selectedLesson)}
                       onDelete={remove}
                       onImport={importFile}
                     />
@@ -177,7 +199,7 @@ function AppRoutes() {
                     lesson={lesson}
                     setLesson={setLesson}
                     onSave={save}
-                    onExport={downloadLesson}
+                    onExport={(selectedLesson) => exportLesson(selectedLesson, true)}
                     onTest={() => navigate('/sandbox')}
                     status={status}
                     error={error}
@@ -186,7 +208,9 @@ function AppRoutes() {
               />
               <Route
                 path="/sandbox"
-                element={<Sandbox lesson={lesson} onExit={() => navigate(`/editor/${encodeURIComponent(lesson.id)}`)} />}
+                element={
+                  <Sandbox lesson={lesson} onExit={() => navigate(`/editor/${encodeURIComponent(lesson.id)}`)} />
+                }
               />
             </>
           )}
@@ -221,10 +245,7 @@ function AppLayout({ lesson, onSignOut }) {
           >
             Editor
           </NavLink>
-          <NavLink
-            to="/sandbox"
-            className={() => (pathname.startsWith('/sandbox') ? 'active' : '')}
-          >
+          <NavLink to="/sandbox" className={() => (pathname.startsWith('/sandbox') ? 'active' : '')}>
             Sandbox
           </NavLink>
         </nav>

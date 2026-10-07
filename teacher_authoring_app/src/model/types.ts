@@ -92,6 +92,16 @@ export interface Lesson {
   timeLimitS: number | null;
   quizzes: Quiz[];
   updatedAt: string;
+  /** Written by the server on save: the tutor's MP3 for each phrase (absent until saved). */
+  audio?: AudioManifest;
+}
+
+/** Normalized phrase text → MP3 file name, served at /api/tts/audio/<file>. */
+export interface AudioManifest {
+  voice: string | null;
+  status: 'ok' | 'unavailable' | 'error' | 'missing';
+  phrases: Record<string, string>;
+  detail?: string;
 }
 
 export interface TrailStep {

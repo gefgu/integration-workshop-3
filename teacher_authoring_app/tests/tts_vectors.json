@@ -1,0 +1,7 @@
+[
+  { "in": "Boa!", "out": "Boa!" },
+  { "in": "  Olá   turma  ", "out": "Olá turma" },
+  { "in": "Linha um\nlinha dois\tfim", "out": "Linha um linha dois fim" },
+  { "in": "Coloque o resistor de 470 Ω na bancada.", "out": "Coloque o resistor de 470 Ω na bancada." },
+  { "in": "\n\t ", "out": "" }
+]

@@ -49,7 +49,15 @@ async function request<T>(path: string, method = 'GET', body?: unknown): Promise
   );
 }
 
+/** lesson.json + audio/*.mp3 (the tutor's voice), as the workbench loads it. */
+async function exportZip(id: string): Promise<Blob> {
+  const response = await fetch(`/api/workspace/lessons/${encodeURIComponent(id)}/export.zip`).catch(() => null);
+  if (!response?.ok) throw new Error('Não foi possível exportar o pacote da lição.');
+  return response.blob();
+}
+
 export const workspace = {
+  exportZip,
   listLessons: () => request<Lesson[]>('/lessons'),
   saveLesson: (lesson: Lesson) => request<Lesson>(`/lessons/${encodeURIComponent(lesson.id)}`, 'PUT', lesson),
   deleteLesson: (id: string) => request<void>(`/lessons/${encodeURIComponent(id)}`, 'DELETE'),
