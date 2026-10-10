@@ -41,3 +41,7 @@ CLAUDE.md
 
 # Electronics plans
 eletronics/*.md
+
+# perfboard: local renders
+eletronics/perfboard/.render/
+eletronics/perfboard/tscircuit/.tscircuit/
