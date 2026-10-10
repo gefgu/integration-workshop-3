@@ -45,3 +45,4 @@ eletronics/*.md
 # perfboard: local renders
 eletronics/perfboard/.render/
 eletronics/perfboard/tscircuit/.tscircuit/
+!eletronics/guidelines.md
