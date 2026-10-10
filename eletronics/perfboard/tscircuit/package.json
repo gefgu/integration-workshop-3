@@ -4,6 +4,8 @@
   "type": "module",
   "description": "tscircuit drawings of the perfboard checkpoints (eletronics/perfboard)",
   "scripts": {
+    "postinstall": "node scripts/use-canvas-renderer.mjs",
+    "predev": "node scripts/use-canvas-renderer.mjs",
     "dev": "tscircuit-cli dev",
     "build": "tscircuit-cli build"
   },
