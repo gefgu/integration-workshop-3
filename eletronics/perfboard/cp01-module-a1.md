@@ -6,6 +6,20 @@ with 6 pogo pins each, the smart-position resistors, the capsule service contact
 cable headers. Requirements: EFR16 (3 circuit contacts + separate service contacts),
 EFR27 (shared ground on the service contacts).
 
+## Product decisions (2026-10-09)
+- **The capsules have flat metal pads underneath**, and the pogo pins press up against them.
+  The printed bench needs alignment guides so each pad lands on its pin.
+- **Modules are screwed to the bench** (M3 + standoffs). The standoff height sets how far
+  the pogo pins stick out above the bench surface: choose it once the pins arrive, so they
+  sit at about half their travel when a capsule is in place.
+- **The central boards and the Pi go inside the bench, below the modules**, so the ribbon
+  cables are short.
+- **Pogo pins are ordered, size unknown.** The drawing uses a placeholder (1 mm hole,
+  2 mm pad). Update it when they arrive, before printing the final bench holes.
+
+Drawing: [tscircuit/cp01-module-a1.circuit.tsx](tscircuit/cp01-module-a1.circuit.tsx)
+(snapshots in `tscircuit/__snapshots__/`).
+
 ## Adds
 | Part | Qty | Value / type | Notes |
 |---|---|---|---|

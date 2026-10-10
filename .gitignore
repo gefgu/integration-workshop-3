@@ -47,3 +47,8 @@ eletronics/*.md
 firmware/esp32/.toolchain/
 firmware/esp32/.uml-check/
 firmware/esp32/test-logs/
+
+# perfboard: local renders
+eletronics/perfboard/.render/
+eletronics/perfboard/tscircuit/.tscircuit/
+!eletronics/guidelines.md

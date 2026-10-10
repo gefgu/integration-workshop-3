@@ -67,7 +67,8 @@ At most 3 positions are active at a time (firmware rule).
 ## Checkpoint ladder
 | CP | File | Builds / plugs in | Closing test |
 |---|---|---|---|
-| 00 | [00-standards.md](00-standards.md) | Standards, Fritzing custom parts, grid test piece | Grid matches the printed holes; datasheet checks done |
+| — | [00-standards.md](00-standards.md) + [../guidelines.md](../guidelines.md) | Standards and drawing rules (read first) | — |
+| 00 | [cp00-first-light.md](cp00-first-light.md) | One 100 × 100 mm board cut in two: module A1 columns + ESP32 carrier; the ESP32 powers the battery columns through Dupont jumpers | LED across the battery lights on command |
 | 01 | [cp01-module-a1.md](cp01-module-a1.md) | Module A1, complete | Continuity and isolation of the 4 nodes |
 | 02 | [cp02-power-board.md](cp02-power-board.md) | Power board + fixed-battery dongle | LED circuit on A1 lights; a short latches off in < 1 ms |
 | 03 | [cp03-smart-board-voltmeter.md](cp03-smart-board-voltmeter.md) | Smart board, complete; plug in ESP2 + 4051 ×2 | Position 0 voltmeter matches a multimeter; OLED shows it |
@@ -79,6 +80,15 @@ At most 3 positions are active at a time (firmware rule).
 | 09 | [cp09-integration.md](cp09-integration.md) | Pi, camera, screen, controller, 12 V supply | Place → validate → Energizar → circuit works (D6 gate) |
 
 Fritzing files: see [fritzing/README.md](fritzing/README.md).
+
+## Open product question: series circuits don't fit the geometry
+Every capsule spans 2 adjacent columns, and long jumpers span 3. With these lengths, a
+series loop (battery → resistor → LED → back) **cannot be built inside one bank**, with
+or without the matrix. Parts of length 1 always join odd ↔ even columns, and long jumpers
+join columns of the same parity, so no middle node can touch both battery terminals.
+Only parallel circuits across the battery work. Details and a test in
+[cp00-first-light.md](cp00-first-light.md). The team has to decide how the bench allows
+series circuits.
 
 ## Requirement deviations to discuss with the team
 These are **not** changed in Notion. They're listed so the team can decide.
