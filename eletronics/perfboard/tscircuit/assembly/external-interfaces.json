@@ -1,0 +1,116 @@
+[
+  {
+    "name": "fixed battery harness",
+    "board": "power",
+    "ref": "J_FIXED_BATTERY",
+    "pins": {
+      "1": "removable lead to A1 J_NODE pin3 / C2 positive",
+      "2": "removable lead to A1 J_NODE pin1 / C1 ground"
+    }
+  },
+  {
+    "name": "manual continuity probes",
+    "board": "continuity-fixture",
+    "ref": "J_TEST",
+    "pins": {
+      "1": "removable lead to A1 C4 / J_NODE pin7",
+      "2": "removable lead to A1 C1 / J_NODE pin1"
+    }
+  },
+  {
+    "name": "12-V supply",
+    "board": "power",
+    "ref": "J_INPUT",
+    "pins": {
+      "1": "centre positive 12V",
+      "2": "barrel sleeve GND"
+    }
+  },
+  {
+    "name": "main switch",
+    "board": "power",
+    "ref": "J_SW_MAIN",
+    "pins": {
+      "1": "switch terminal",
+      "2": "switch terminal"
+    }
+  },
+  {
+    "name": "buck 5V",
+    "board": "power",
+    "ref": "J_BUCK_5V",
+    "pins": {
+      "1": "PG unconnected",
+      "2": "EN unconnected",
+      "3": "VIN",
+      "4": "GND",
+      "5": "VOUT"
+    }
+  },
+  {
+    "name": "buck 3V3",
+    "board": "power",
+    "ref": "J_BUCK_3V3",
+    "pins": {
+      "1": "PG unconnected",
+      "2": "EN unconnected",
+      "3": "VIN",
+      "4": "GND",
+      "5": "VOUT"
+    }
+  },
+  {
+    "name": "Pi",
+    "board": "integration",
+    "ref": "J_PI",
+    "pins": {
+      "1": "3.3V",
+      "6": "GND",
+      "19": "GPIO10 MOSI",
+      "21": "GPIO9 MISO",
+      "23": "GPIO11 SCLK",
+      "24": "GPIO8 CE0",
+      "29": "GPIO5 Energizar",
+      "31": "GPIO6 Back"
+    }
+  },
+  {
+    "name": "PN532 carrier labelled SPI harness",
+    "board": "integration",
+    "ref": "J_NFC",
+    "pins": {
+      "1": "3.3V",
+      "2": "GND",
+      "3": "SCK",
+      "4": "MOSI",
+      "5": "MISO",
+      "6": "SSEL"
+    }
+  },
+  {
+    "name": "electronics common ground",
+    "board": "integration",
+    "ref": "J_GROUND",
+    "pins": {
+      "1": "power board GND, no positive supply"
+    }
+  },
+  {
+    "name": "Energizar button",
+    "board": "integration",
+    "ref": "J_SW_ENERGIZE",
+    "pins": {
+      "1": "dry contact",
+      "2": "dry contact"
+    }
+  },
+  {
+    "name": "Back button",
+    "board": "integration",
+    "ref": "J_SW_BACK",
+    "pins": {
+      "1": "dry contact",
+      "2": "dry contact"
+    }
+  }
+]

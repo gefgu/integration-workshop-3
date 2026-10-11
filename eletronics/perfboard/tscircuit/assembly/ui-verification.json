@@ -1,0 +1,31 @@
+{
+  "revision": "238eecf00b3740c7",
+  "unitTests": {
+    "passed": 15,
+    "failed": 0,
+    "assertions": 2206
+  },
+  "browser": {
+    "status": "pass",
+    "checkpoints": 37,
+    "drawings": 26,
+    "checks": [
+      "two simultaneous board views",
+      "draft and cursor survive reload",
+      "one contact action",
+      "local schematic loads",
+      "breadboard focus",
+      "future step blocked",
+      "full explorer return",
+      "mobile no horizontal page overflow",
+      "all local SVG assets available",
+      "no browser errors"
+    ]
+  },
+  "numberLabels": {
+    "status": "pass",
+    "views": 26,
+    "overlaps": []
+  },
+  "scope": "Software and rendering checks only. All browser builds used a disposable database; no hardware acceptance is implied."
+}

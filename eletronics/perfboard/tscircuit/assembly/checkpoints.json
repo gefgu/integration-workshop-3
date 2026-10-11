@@ -1,0 +1,1715 @@
+[
+  {
+    "id": "CP00",
+    "phase": 0,
+    "chapter": "chapter-0",
+    "title": "First light",
+    "win": "ESP32 switches the real four-column LED loop.",
+    "prerequisites": [],
+    "boards": [],
+    "firmware": "factory LED: GPIO32 defaults LOW; explicit enable/disable; GPIO25 stimulus LOW; all future routing/output controls LOW",
+    "firmwareImplemented": false,
+    "links": [
+      "Prototype source only: positive C2 / ground C1; final supply and matrix disconnected.",
+      "OLED uses ESP1 GPIO4 SDA / GPIO16 SCL at 3.3V. Remove diagnostic probes before ordinary operation."
+    ],
+    "equipment": [
+      "USB cable",
+      "Multimeter"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp0-test1",
+        "description": "Identify the exact classic ESP32 DevKit pinout, the USB-powered 5V output and 3V3 output. Identify actual pogo and adapter dimensions before soldering. Confirm the four kit pieces fit the selected rows.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp0-test2",
+        "description": "Unpowered A1: all six contacts within each column <1Ω; different columns >10MΩ with external links isolated. Inspect pin1 and the NODE header mapping.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp0-test3",
+        "description": "Prototype disconnected from A1: measure USB 5V ≤5.25V and 3V3 3.20–3.38V. R_LIMIT is 560Ω ±1%, ≥0.25W. With its output shorted, source current ≤9.5mA; remove short before connecting the kit.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp0-test4",
+        "description": "Place fake battery negative C1 / positive C2, 1kΩ resistor C2–C3, LED anode C3 / cathode C4, and kit jumper C4–C1. Prototype J_OUTPUT pin1→A1 J_NODE pin3 and pin2→pin1. No final-power or matrix cable connected.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp0-test5",
+        "description": "Compatible factory firmware: GPIO32 LOW/reset makes LED OFF; explicit enable lights LED; disable turns it OFF. Record USB-test-source voltage at C2 under load; it is intentionally unregulated and must not be called the final 5V rail.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "Prototype source only: positive C2 / ground C1; final supply and matrix disconnected. OLED uses ESP1 GPIO4 SDA / GPIO16 SCL at 3.3V. Remove diagnostic probes before ordinary operation.",
+      "shots": [
+        "Show first light setup with power OFF and display firmware revision.",
+        "Demonstrate: ESP32 switches the real four-column LED loop.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Disable or reset the ESP32: the LED must go dark without touching the kit.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP01",
+    "phase": 1,
+    "chapter": "chapter-1",
+    "title": "Reject an open contact",
+    "win": "A lifted jumper contact is electronically rejected.",
+    "prerequisites": [
+      "CP00"
+    ],
+    "boards": [],
+    "firmware": "factory fixed-pair continuity: GPIO4 SDA,16 SCL,25 stimulus; ADS1115 0x48; manual source isolation; reject open/wrong/inconclusive, fresh test + explicit enable",
+    "firmwareImplemented": false,
+    "links": [
+      "USB test-source positive lead unplugged; final supply and matrix leads absent.",
+      "TEST_A→A1 C4, TEST_B→C1; JP_RETURN fitted only during diagnostic test.",
+      "Before LED enable: stimulus OFF, JP_RETURN/probes removed, prototype positive restored with power OFF."
+    ],
+    "equipment": [
+      "USB cable",
+      "Multimeter"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp1-test1",
+        "description": "Student supply OFF and positive fixed-battery lead unplugged. TEST_A→C4, TEST_B→C1; fit JP_RETURN only during test. Check stimulus current ≤0.34mA and educational contact voltages 0–5.25V.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp1-test2",
+        "description": "Calibrate open, a known short and 1kΩ. Measure open stimulus voltage Vs with DMM; infer R=10k×V/(Vs−V), accounting for divider gain and input loading. Known short ≤20Ω; ≥100Ω rejected; 20–100Ω or saturated/unstable readings inconclusive and OFF. Compare inferred short with DMM continuity <1Ω.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp1-test3",
+        "description": "Test the actual four-piece scene: correct C4–C1 kit jumper passes; one lifted contact and wrong-node placements fail. Include alternate paths through LED/resistor in calibration; no false pass through a component.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB test-source positive lead unplugged; final supply and matrix leads absent. TEST_A→A1 C4, TEST_B→C1; JP_RETURN fitted only during diagnostic test. Before LED enable: stimulus OFF, JP_RETURN/probes removed, prototype positive restored with power OFF.",
+      "shots": [
+        "Show reject an open contact setup with power OFF and display firmware revision.",
+        "Demonstrate: A lifted jumper contact is electronically rejected.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Lift the return jumper while retaining its convincing visual position: the electronic test rejects it.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP02",
+    "phase": 2,
+    "chapter": "chapter-1",
+    "title": "Reject a wrong node",
+    "win": "A convincing-looking jumper on the wrong node is rejected.",
+    "prerequisites": [
+      "CP01"
+    ],
+    "boards": [],
+    "firmware": "factory fixed-pair continuity: GPIO4 SDA,16 SCL,25 stimulus; ADS1115 0x48; manual source isolation; reject open/wrong/inconclusive, fresh test + explicit enable",
+    "firmwareImplemented": false,
+    "links": [
+      "USB test-source positive lead unplugged; final supply and matrix leads absent.",
+      "TEST_A→A1 C4, TEST_B→C1; JP_RETURN fitted only during diagnostic test.",
+      "Before LED enable: stimulus OFF, JP_RETURN/probes removed, prototype positive restored with power OFF."
+    ],
+    "equipment": [
+      "USB cable",
+      "Multimeter"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp2-test1",
+        "description": "Test the actual four-piece scene: correct C4–C1 kit jumper passes; one lifted contact and wrong-node placements fail. Include alternate paths through LED/resistor in calibration; no false pass through a component.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp2-test2",
+        "description": "Simulated camera approval + failed/inconclusive electrical result keeps student supply OFF. Correction requires a fresh electrical test and separate enable request.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB test-source positive lead unplugged; final supply and matrix leads absent. TEST_A→A1 C4, TEST_B→C1; JP_RETURN fitted only during diagnostic test. Before LED enable: stimulus OFF, JP_RETURN/probes removed, prototype positive restored with power OFF.",
+      "shots": [
+        "Show reject a wrong node setup with power OFF and display firmware revision.",
+        "Demonstrate: A convincing-looking jumper on the wrong node is rejected.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Connect the jumper to a different column: electronic rejection persists despite simulated camera approval.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP03",
+    "phase": 3,
+    "chapter": "chapter-1",
+    "title": "Correction needs a fresh test",
+    "win": "Correcting the jumper requires a fresh pass and a separate enable request.",
+    "prerequisites": [
+      "CP02"
+    ],
+    "boards": [],
+    "firmware": "factory fixed-pair continuity: GPIO4 SDA,16 SCL,25 stimulus; ADS1115 0x48; manual source isolation; reject open/wrong/inconclusive, fresh test + explicit enable",
+    "firmwareImplemented": false,
+    "links": [
+      "USB test-source positive lead unplugged; final supply and matrix leads absent.",
+      "TEST_A→A1 C4, TEST_B→C1; JP_RETURN fitted only during diagnostic test.",
+      "Before LED enable: stimulus OFF, JP_RETURN/probes removed, prototype positive restored with power OFF."
+    ],
+    "equipment": [
+      "USB cable",
+      "Multimeter"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp3-test1",
+        "description": "Before enable: stimulus OFF, JP_RETURN removed, test leads disconnected, fixed battery lead restored with power off. No automatic enable after a passing test.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp3-test2",
+        "description": "Simulated camera approval + failed/inconclusive electrical result keeps student supply OFF. Correction requires a fresh electrical test and separate enable request.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB test-source positive lead unplugged; final supply and matrix leads absent. TEST_A→A1 C4, TEST_B→C1; JP_RETURN fitted only during diagnostic test. Before LED enable: stimulus OFF, JP_RETURN/probes removed, prototype positive restored with power OFF.",
+      "shots": [
+        "Show correction needs a fresh test setup with power OFF and display firmware revision.",
+        "Demonstrate: Correcting the jumper requires a fresh pass and a separate enable request.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Refit the correct jumper without a new test: it must remain OFF until a fresh pass and separate enable request.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP04",
+    "phase": 4,
+    "chapter": "chapter-2",
+    "title": "Capsule greeting",
+    "win": "One capsule displays a real pt-BR greeting.",
+    "prerequisites": [
+      "CP03"
+    ],
+    "boards": [],
+    "firmware": "factory OLED on ESP1: GPIO4 SDA /16 SCL, 0x3C; report identity and OFF/ready; no relay requests",
+    "firmwareImplemented": false,
+    "links": [
+      "Prototype source only: positive C2 / ground C1; final supply and matrix disconnected.",
+      "OLED uses ESP1 GPIO4 SDA / GPIO16 SCL at 3.3V. Remove diagnostic probes before ordinary operation."
+    ],
+    "equipment": [
+      "USB cable",
+      "Multimeter"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp4-test1",
+        "description": "Connect only one OLED at 0x3C to ESP1 FIX_SDA GPIO4 / FIX_SCL GPIO16 using 3.3V logic and removable leads. Use one effective set of pull-ups; continuity fixture must be unplugged when it is not used. Confirm carrier pin labels before power.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp4-test2",
+        "description": "OLED displays greeting with educational source OFF. Display unplug/reconnect and reset do not automatically enable the source.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "Prototype source only: positive C2 / ground C1; final supply and matrix disconnected. OLED uses ESP1 GPIO4 SDA / GPIO16 SCL at 3.3V. Remove diagnostic probes before ordinary operation.",
+      "shots": [
+        "Show capsule greeting setup with power OFF and display firmware revision.",
+        "Demonstrate: One capsule displays a real pt-BR greeting.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Unplug the OLED with power OFF: report missing hardware; a simulated greeting is not a pass.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP05",
+    "phase": 5,
+    "chapter": "chapter-2",
+    "title": "Identity and OFF status",
+    "win": "The capsule displays its identity and actual OFF/ready state.",
+    "prerequisites": [
+      "CP04"
+    ],
+    "boards": [],
+    "firmware": "factory OLED on ESP1: GPIO4 SDA /16 SCL, 0x3C; report identity and OFF/ready; no relay requests",
+    "firmwareImplemented": false,
+    "links": [
+      "Prototype source only: positive C2 / ground C1; final supply and matrix disconnected.",
+      "OLED uses ESP1 GPIO4 SDA / GPIO16 SCL at 3.3V. Remove diagnostic probes before ordinary operation."
+    ],
+    "equipment": [
+      "USB cable",
+      "Multimeter"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp5-test1",
+        "description": "Display position A1, firmware revision, and Desligado/Pronto states. Never substitute a simulated GUI status for an actual hardware observation.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "Prototype source only: positive C2 / ground C1; final supply and matrix disconnected. OLED uses ESP1 GPIO4 SDA / GPIO16 SCL at 3.3V. Remove diagnostic probes before ordinary operation.",
+      "shots": [
+        "Show identity and off status setup with power OFF and display firmware revision.",
+        "Demonstrate: The capsule displays its identity and actual OFF/ready state.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Change identity or remove the capsule: retain OFF and require a new configuration.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP06",
+    "phase": 6,
+    "chapter": "chapter-3",
+    "title": "Voltage calibration",
+    "win": "The voltage input matches known zero and reference readings.",
+    "prerequisites": [
+      "CP05"
+    ],
+    "boards": [],
+    "firmware": "factory voltage: ESP1 OLED + local ADS1115 0x48; USB3V3 to isolated card supply via removable links; P3/ammeter disconnected",
+    "firmwareImplemented": false,
+    "links": [
+      "Prototype source only: positive C2 / ground C1; final supply and matrix disconnected.",
+      "OLED uses ESP1 GPIO4 SDA / GPIO16 SCL at 3.3V. Remove diagnostic probes before ordinary operation.",
+      "Remove the manual continuity fixture (ADC0x48 collision) and direct OLED bus leads; use the temporary smart-card A-side interface through its TCA9517."
+    ],
+    "equipment": [
+      "USB cable",
+      "Multimeter"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp6-test1",
+        "description": "Verify ADS1115 0x48. Sweep P1/P2 within 0–5.25V; compare displayed signed difference with DMM at 0,1,2.5,5V. Error ≤0.10V+5%|reading|, impedance ≥1MΩ, update rate ≥10Hz.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp6-test2",
+        "description": "Reverse sense polarity to show a negative difference; do not apply negative absolute contact voltages. P3 remains disconnected and ammeter paths open.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "Prototype source only: positive C2 / ground C1; final supply and matrix disconnected. OLED uses ESP1 GPIO4 SDA / GPIO16 SCL at 3.3V. Remove diagnostic probes before ordinary operation. Remove the manual continuity fixture (ADC0x48 collision) and direct OLED bus leads; use the temporary smart-card A-side interface through its TCA9517.",
+      "shots": [
+        "Show voltage calibration setup with power OFF and display firmware revision.",
+        "Demonstrate: The voltage input matches known zero and reference readings.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Apply a known reference outside the accepted calibration tolerance: reject the calibration.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP07",
+    "phase": 7,
+    "chapter": "chapter-3",
+    "title": "Read real voltage",
+    "win": "The capsule reading follows the multimeter as loop voltage changes.",
+    "prerequisites": [
+      "CP06"
+    ],
+    "boards": [],
+    "firmware": "factory voltage: ESP1 OLED + local ADS1115 0x48; USB3V3 to isolated card supply via removable links; P3/ammeter disconnected",
+    "firmwareImplemented": false,
+    "links": [
+      "Prototype source only: positive C2 / ground C1; final supply and matrix disconnected.",
+      "OLED uses ESP1 GPIO4 SDA / GPIO16 SCL at 3.3V. Remove diagnostic probes before ordinary operation."
+    ],
+    "equipment": [
+      "USB cable",
+      "Multimeter"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp7-test1",
+        "description": "With prototype source and diagnostic probes isolated as specified, compare capsule V(P1)−V(P2) with DMM at zero and the actual limited-source voltage. Error ≤0.10V+5%|reading|; ≥10 updates/s. All node absolute voltages 0–5.25V.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "Prototype source only: positive C2 / ground C1; final supply and matrix disconnected. OLED uses ESP1 GPIO4 SDA / GPIO16 SCL at 3.3V. Remove diagnostic probes before ordinary operation.",
+      "shots": [
+        "Show read real voltage setup with power OFF and display firmware revision.",
+        "Demonstrate: The capsule reading follows the multimeter as loop voltage changes.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Remove the measured source: display the actual near-zero voltage, not a cached reading.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP08",
+    "phase": 8,
+    "chapter": "chapter-3",
+    "title": "Signed voltage",
+    "win": "Swapping only the measurement leads reverses the reading sign.",
+    "prerequisites": [
+      "CP07"
+    ],
+    "boards": [],
+    "firmware": "factory voltage: ESP1 OLED + local ADS1115 0x48; USB3V3 to isolated card supply via removable links; P3/ammeter disconnected",
+    "firmwareImplemented": false,
+    "links": [
+      "Prototype source only: positive C2 / ground C1; final supply and matrix disconnected.",
+      "OLED uses ESP1 GPIO4 SDA / GPIO16 SCL at 3.3V. Remove diagnostic probes before ordinary operation."
+    ],
+    "equipment": [
+      "USB cable",
+      "Multimeter"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp8-test1",
+        "description": "Power OFF before swapping P1/P2 removable measurement leads. Compare signed differential reading with DMM in both orientations; never apply a negative absolute node voltage. P3 and ammeter paths remain disconnected.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "Prototype source only: positive C2 / ground C1; final supply and matrix disconnected. OLED uses ESP1 GPIO4 SDA / GPIO16 SCL at 3.3V. Remove diagnostic probes before ordinary operation.",
+      "shots": [
+        "Show signed voltage setup with power OFF and display firmware revision.",
+        "Demonstrate: Swapping only the measurement leads reverses the reading sign.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Reverse the test leads: the sign must reverse with the same magnitude tolerance.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP09",
+    "phase": 9,
+    "chapter": "chapter-4",
+    "title": "Regulated rails",
+    "win": "The isolated final regulators produce their specified voltages.",
+    "prerequisites": [
+      "CP08"
+    ],
+    "boards": [],
+    "firmware": "factory final-power qualification: explicit enable/reset; supervised ALIVE link only before CP13; no production authorization",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp9-test1",
+        "description": "Unpowered: every rail >1kΩ to GND after capacitor charging; no accidental node/service connection.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp9-test2",
+        "description": "With links open: 5V buck 4.90–5.04V; 3.3V buck 3.20–3.38V. Current-limited 12V supply, 100mA initially.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "shots": [
+        "Show regulated rails setup with power OFF and display firmware revision.",
+        "Demonstrate: The isolated final regulators produce their specified voltages.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Apply no input: outputs remain unpowered; never invent a regulator reading.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP10",
+    "phase": 10,
+    "chapter": "chapter-4",
+    "title": "Overvoltage guards",
+    "win": "Each supply guard rejects an out-of-range source.",
+    "prerequisites": [
+      "CP09"
+    ],
+    "boards": [],
+    "firmware": "factory final-power qualification: explicit enable/reset; supervised ALIVE link only before CP13; no production authorization",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp10-test1",
+        "description": "Independent OV disconnects: sweep 5V/3V3 buck interfaces with consumers isolated; verify actual thresholds and strict contact peak ≤5.25V during a bounded 12V failed-buck step. Test both guards separately before connecting any IC.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "shots": [
+        "Show overvoltage guards setup with power OFF and display firmware revision.",
+        "Demonstrate: Each supply guard rejects an out-of-range source.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Raise each rail above its documented trip threshold using the bounded fixture: guard must reject.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP11",
+    "phase": 11,
+    "chapter": "chapter-4",
+    "title": "OFF at startup and reset",
+    "win": "The final student rail remains OFF at startup and reset.",
+    "prerequisites": [
+      "CP10"
+    ],
+    "boards": [],
+    "firmware": "factory final-power qualification: explicit enable/reset; supervised ALIVE link only before CP13; no production authorization",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "Factory ALIVE fixture is temporary: J_PROTOTYPE pin2 USB3V3→J_POWER pin9 only during supervised load qualification. LOW/open for startup/reset; remove permanently before CP13."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp11-test1",
+        "description": "Prototype USB positive and 3V3 supply links are removed before connecting final consumer links. Only one educational source may be connected. Inspect all power-board blocks before enabling; the student latch must not be powered as an incomplete circuit.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp11-test2",
+        "description": "Supervised factory qualification only: ALIVE is held LOW for startup/reset tests. All consumer links remain open until voltage guards pass. USB removal, held reset and a power cycle leave 5V_EDU OFF.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link. Factory ALIVE fixture is temporary: J_PROTOTYPE pin2 USB3V3→J_POWER pin9 only during supervised load qualification. LOW/open for startup/reset; remove permanently before CP13.",
+      "shots": [
+        "Show off at startup and reset setup with power OFF and display firmware revision.",
+        "Demonstrate: The final student rail remains OFF at startup and reset.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Reset or reconnect USB with enable previously requested: startup remains OFF.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP12",
+    "phase": 12,
+    "chapter": "chapter-4",
+    "title": "Overload trip and latch",
+    "win": "An overload shuts down and stays latched until a valid reset.",
+    "prerequisites": [
+      "CP11"
+    ],
+    "boards": [],
+    "firmware": "factory final-power qualification: explicit enable/reset; supervised ALIVE link only before CP13; no production authorization",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "Factory ALIVE fixture is temporary: J_PROTOTYPE pin2 USB3V3→J_POWER pin9 only during supervised load qualification. LOW/open for startup/reset; remove permanently before CP13."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp12-test1",
+        "description": "1kΩ and 470Ω rail loads remain enabled; 330Ω or 100Ω load trips and remains latched. At 10mA: 5V_EDU 4.75–5.25V.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp12-test2",
+        "description": "Sweep load: trip threshold must be >10.6mA and ≤12mA; record REF_TRIP and CURRENT_SENSE.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp12-test3",
+        "description": "Supervised factory load test only: with power OFF, USB3V3→matrix J_POWER pin9 holds ALIVE high until CP13 watchdog exists. Explicit enable applies the bounded load; reset under overload must not release the latch. Remove the factory ALIVE link or hold it LOW to simulate heartbeat loss and prove OFF. Remove this link permanently at CP13.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link. Factory ALIVE fixture is temporary: J_PROTOTYPE pin2 USB3V3→J_POWER pin9 only during supervised load qualification. LOW/open for startup/reset; remove permanently before CP13.",
+      "shots": [
+        "Show overload trip and latch setup with power OFF and display firmware revision.",
+        "Demonstrate: An overload shuts down and stays latched until a valid reset.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Apply the qualified overload: shutdown latches; clearing the fault does not re-enable.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP13",
+    "phase": 13,
+    "chapter": "chapter-4",
+    "title": "Heartbeat shutdown",
+    "win": "Stopping the controller heartbeat switches the final rail OFF.",
+    "prerequisites": [
+      "CP12"
+    ],
+    "boards": [],
+    "firmware": "factory final-power qualification: explicit enable/reset; supervised ALIVE link only before CP13; no production authorization",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp13-test1",
+        "description": "Replace any supervised factory ALIVE link with the completed USB-powered hardware watchdog. Send heartbeat ≤100ms; stopping heartbeat or removing USB must switch rail OFF within 350ms and not restart automatically. Record scope timing.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "shots": [
+        "Show heartbeat shutdown setup with power OFF and display firmware revision.",
+        "Demonstrate: Stopping the controller heartbeat switches the final rail OFF.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Hold heartbeat static HIGH or LOW: watchdog must time out and disable power.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP14",
+    "phase": 14,
+    "chapter": "chapter-4",
+    "title": "Cutoff timing and transients",
+    "win": "Measured cutoff timing and contact peaks meet the final limits.",
+    "prerequisites": [
+      "CP13"
+    ],
+    "boards": [],
+    "firmware": "factory final-power qualification: explicit enable/reset; supervised ALIVE link only before CP13; no production authorization",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp14-test1",
+        "description": "Scope current at a switched 100Ω load: source current cut off within 1ms, including frozen controller. Do not use UART timestamps as timing evidence.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp14-test2",
+        "description": "Independent OV disconnects: sweep 5V/3V3 buck interfaces with consumers isolated; verify actual thresholds and strict contact peak ≤5.25V during a bounded 12V failed-buck step. Test both guards separately before connecting any IC.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "shots": [
+        "Show cutoff timing and transients setup with power OFF and display firmware revision.",
+        "Demonstrate: Measured cutoff timing and contact peaks meet the final limits.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Capture the documented cutoff transient; an excessive peak or slow shutdown is a failure.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP15",
+    "phase": 15,
+    "chapter": "chapter-5",
+    "title": "Bounded source and sink",
+    "win": "Smart output drives valid levels and limits short-circuit current.",
+    "prerequisites": [
+      "CP14"
+    ],
+    "boards": [],
+    "firmware": "smart factory mode on ESP2: migrate OLED/ADC service to its isolated position bus; register outputs OFF until qualified; valid heartbeat required",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "For smart-mode bench fixtures, disconnect both fixed battery leads and remove the initial kit loop. Output load: P3→1kΩ→LED anode, LED cathode→GND through removable leads. Logic inputs: HIGH=qualified3V3_SYS through1kΩ; LOW=GND through1kΩ. AND/OR exercise00,01,10,11; NOT exercise0,1. Never parallel another source with P3. Current tests use a documented series path, never an ammeter across the supply."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp15-test1",
+        "description": "P3 low ≤0.5V and high ≥3.5V with measured 2mA load. Short to GND and separately to 5.25V: ≤12mA; scope transient and regulator oscillation.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp15-test2",
+        "description": "Pulse 0.5/1/10Hz and duty 25/50/75%: frequency ±5%; duty ±5 percentage points; measure at the physical node.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link. For smart-mode bench fixtures, disconnect both fixed battery leads and remove the initial kit loop. Output load: P3→1kΩ→LED anode, LED cathode→GND through removable leads. Logic inputs: HIGH=qualified3V3_SYS through1kΩ; LOW=GND through1kΩ. AND/OR exercise00,01,10,11; NOT exercise0,1. Never parallel another source with P3. Current tests use a documented series path, never an ammeter across the supply.",
+      "shots": [
+        "Show bounded source and sink setup with power OFF and display firmware revision.",
+        "Demonstrate: Smart output drives valid levels and limits short-circuit current.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Use the qualified bounded short test: hardware clamps current and remains within limits.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP16",
+    "phase": 16,
+    "chapter": "chapter-5",
+    "title": "Pulse frequency",
+    "win": "The real output changes its blink frequency.",
+    "prerequisites": [
+      "CP15"
+    ],
+    "boards": [],
+    "firmware": "smart factory mode on ESP2: migrate OLED/ADC service to its isolated position bus; register outputs OFF until qualified; valid heartbeat required",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "For smart-mode bench fixtures, disconnect both fixed battery leads and remove the initial kit loop. Output load: P3→1kΩ→LED anode, LED cathode→GND through removable leads. Logic inputs: HIGH=qualified3V3_SYS through1kΩ; LOW=GND through1kΩ. AND/OR exercise00,01,10,11; NOT exercise0,1. Never parallel another source with P3. Current tests use a documented series path, never an ammeter across the supply."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp16-test1",
+        "description": "Use a separately documented LED+1kΩ output fixture on P3. Do not connect the fixed battery to P3. OFF/reset/invalid state disables both output relays.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link. For smart-mode bench fixtures, disconnect both fixed battery leads and remove the initial kit loop. Output load: P3→1kΩ→LED anode, LED cathode→GND through removable leads. Logic inputs: HIGH=qualified3V3_SYS through1kΩ; LOW=GND through1kΩ. AND/OR exercise00,01,10,11; NOT exercise0,1. Never parallel another source with P3. Current tests use a documented series path, never an ammeter across the supply.",
+      "shots": [
+        "Show pulse frequency setup with power OFF and display firmware revision.",
+        "Demonstrate: The real output changes its blink frequency.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Request a frequency outside 0.5–10Hz: reject configuration with output OFF.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP17",
+    "phase": 17,
+    "chapter": "chapter-5",
+    "title": "Pulse duty cycle",
+    "win": "Changing duty cycle changes the real pulse waveform.",
+    "prerequisites": [
+      "CP16"
+    ],
+    "boards": [],
+    "firmware": "smart factory mode on ESP2: migrate OLED/ADC service to its isolated position bus; register outputs OFF until qualified; valid heartbeat required",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "For smart-mode bench fixtures, disconnect both fixed battery leads and remove the initial kit loop. Output load: P3→1kΩ→LED anode, LED cathode→GND through removable leads. Logic inputs: HIGH=qualified3V3_SYS through1kΩ; LOW=GND through1kΩ. AND/OR exercise00,01,10,11; NOT exercise0,1. Never parallel another source with P3. Current tests use a documented series path, never an ammeter across the supply."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp17-test1",
+        "description": "Scope 25%, 50%, 75% duty at a known frequency; error ≤5 percentage points. Frequency 0.5–10Hz ±5%; ≥5ms break-before-make; changing mode first turns output OFF.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link. For smart-mode bench fixtures, disconnect both fixed battery leads and remove the initial kit loop. Output load: P3→1kΩ→LED anode, LED cathode→GND through removable leads. Logic inputs: HIGH=qualified3V3_SYS through1kΩ; LOW=GND through1kΩ. AND/OR exercise00,01,10,11; NOT exercise0,1. Never parallel another source with P3. Current tests use a documented series path, never an ammeter across the supply.",
+      "shots": [
+        "Show pulse duty cycle setup with power OFF and display firmware revision.",
+        "Demonstrate: Changing duty cycle changes the real pulse waveform.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Request duty outside 25–75%: reject configuration with output OFF.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP18",
+    "phase": 18,
+    "chapter": "chapter-6",
+    "title": "AND gate",
+    "win": "The LED follows the AND truth table.",
+    "prerequisites": [
+      "CP17"
+    ],
+    "boards": [],
+    "firmware": "smart factory mode on ESP2: migrate OLED/ADC service to its isolated position bus; register outputs OFF until qualified; valid heartbeat required",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "For smart-mode bench fixtures, disconnect both fixed battery leads and remove the initial kit loop. Output load: P3→1kΩ→LED anode, LED cathode→GND through removable leads. Logic inputs: HIGH=qualified3V3_SYS through1kΩ; LOW=GND through1kΩ. AND/OR exercise00,01,10,11; NOT exercise0,1. Never parallel another source with P3. Current tests use a documented series path, never an ammeter across the supply."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp18-test1",
+        "description": "Test each selected gate truth table using protected input levels. Require 20ms stable input and ≤100ms output response. Confirm open inputs read LOW.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp18-test2",
+        "description": "Record all four AND input combinations using bounded removable links and DMM-confirmed input levels.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link. For smart-mode bench fixtures, disconnect both fixed battery leads and remove the initial kit loop. Output load: P3→1kΩ→LED anode, LED cathode→GND through removable leads. Logic inputs: HIGH=qualified3V3_SYS through1kΩ; LOW=GND through1kΩ. AND/OR exercise00,01,10,11; NOT exercise0,1. Never parallel another source with P3. Current tests use a documented series path, never an ammeter across the supply.",
+      "shots": [
+        "Show and gate setup with power OFF and display firmware revision.",
+        "Demonstrate: The LED follows the AND truth table.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "AND inputs01,10 and00 must remain LOW; only11 may be HIGH.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP19",
+    "phase": 19,
+    "chapter": "chapter-6",
+    "title": "OR gate",
+    "win": "The LED follows the OR truth table.",
+    "prerequisites": [
+      "CP18"
+    ],
+    "boards": [],
+    "firmware": "smart factory mode on ESP2: migrate OLED/ADC service to its isolated position bus; register outputs OFF until qualified; valid heartbeat required",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "For smart-mode bench fixtures, disconnect both fixed battery leads and remove the initial kit loop. Output load: P3→1kΩ→LED anode, LED cathode→GND through removable leads. Logic inputs: HIGH=qualified3V3_SYS through1kΩ; LOW=GND through1kΩ. AND/OR exercise00,01,10,11; NOT exercise0,1. Never parallel another source with P3. Current tests use a documented series path, never an ammeter across the supply."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp19-test1",
+        "description": "Record all four OR input combinations: input ≤1V LOW, ≥3V HIGH; 20ms stability and output response ≤100ms.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link. For smart-mode bench fixtures, disconnect both fixed battery leads and remove the initial kit loop. Output load: P3→1kΩ→LED anode, LED cathode→GND through removable leads. Logic inputs: HIGH=qualified3V3_SYS through1kΩ; LOW=GND through1kΩ. AND/OR exercise00,01,10,11; NOT exercise0,1. Never parallel another source with P3. Current tests use a documented series path, never an ammeter across the supply.",
+      "shots": [
+        "Show or gate setup with power OFF and display firmware revision.",
+        "Demonstrate: The LED follows the OR truth table.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "OR inputs00 must remain LOW;01,10 and11 must be HIGH.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP20",
+    "phase": 20,
+    "chapter": "chapter-6",
+    "title": "NOT gate",
+    "win": "The LED follows the NOT truth table.",
+    "prerequisites": [
+      "CP19"
+    ],
+    "boards": [],
+    "firmware": "smart factory mode on ESP2: migrate OLED/ADC service to its isolated position bus; register outputs OFF until qualified; valid heartbeat required",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "For smart-mode bench fixtures, disconnect both fixed battery leads and remove the initial kit loop. Output load: P3→1kΩ→LED anode, LED cathode→GND through removable leads. Logic inputs: HIGH=qualified3V3_SYS through1kΩ; LOW=GND through1kΩ. AND/OR exercise00,01,10,11; NOT exercise0,1. Never parallel another source with P3. Current tests use a documented series path, never an ammeter across the supply."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp20-test1",
+        "description": "Record LOW→HIGH and HIGH→LOW inversion; retain previous state in the input hysteresis band. Reset and invalid configurations leave output OFF.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link. For smart-mode bench fixtures, disconnect both fixed battery leads and remove the initial kit loop. Output load: P3→1kΩ→LED anode, LED cathode→GND through removable leads. Logic inputs: HIGH=qualified3V3_SYS through1kΩ; LOW=GND through1kΩ. AND/OR exercise00,01,10,11; NOT exercise0,1. Never parallel another source with P3. Current tests use a documented series path, never an ammeter across the supply.",
+      "shots": [
+        "Show not gate setup with power OFF and display firmware revision.",
+        "Demonstrate: The LED follows the NOT truth table.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "NOT inputHIGH must produce LOW; inputLOW must produce HIGH.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP21",
+    "phase": 21,
+    "chapter": "chapter-6",
+    "title": "SR memory",
+    "win": "Set persists, and reset wins.",
+    "prerequisites": [
+      "CP20"
+    ],
+    "boards": [],
+    "firmware": "smart factory mode on ESP2: migrate OLED/ADC service to its isolated position bus; register outputs OFF until qualified; valid heartbeat required",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "For smart-mode bench fixtures, disconnect both fixed battery leads and remove the initial kit loop. Output load: P3→1kΩ→LED anode, LED cathode→GND through removable leads. Logic inputs: HIGH=qualified3V3_SYS through1kΩ; LOW=GND through1kΩ. AND/OR exercise00,01,10,11; NOT exercise0,1. Never parallel another source with P3. Current tests use a documented series path, never an ammeter across the supply."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp21-test1",
+        "description": "Set output, remove the set input and verify retained state. Reset clears it. Simultaneous set/reset resolves to zero.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp21-test2",
+        "description": "Restart, rail OFF or configuration loss clears memory and leaves output disabled.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link. For smart-mode bench fixtures, disconnect both fixed battery leads and remove the initial kit loop. Output load: P3→1kΩ→LED anode, LED cathode→GND through removable leads. Logic inputs: HIGH=qualified3V3_SYS through1kΩ; LOW=GND through1kΩ. AND/OR exercise00,01,10,11; NOT exercise0,1. Never parallel another source with P3. Current tests use a documented series path, never an ammeter across the supply.",
+      "shots": [
+        "Show sr memory setup with power OFF and display firmware revision.",
+        "Demonstrate: Set persists, and reset wins.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Assert set and reset together: reset wins; rail-off loses the stored state.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP22",
+    "phase": 22,
+    "chapter": "chapter-7",
+    "title": "Current calibration",
+    "win": "The ammeter matches known signed currents.",
+    "prerequisites": [
+      "CP21"
+    ],
+    "boards": [],
+    "firmware": "smart factory mode on ESP2: migrate OLED/ADC service to its isolated position bus; register outputs OFF until qualified; valid heartbeat required",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "For smart-mode bench fixtures, disconnect both fixed battery leads and remove the initial kit loop. Output load: P3→1kΩ→LED anode, LED cathode→GND through removable leads. Logic inputs: HIGH=qualified3V3_SYS through1kΩ; LOW=GND through1kΩ. AND/OR exercise00,01,10,11; NOT exercise0,1. Never parallel another source with P3. Current tests use a documented series path, never an ammeter across the supply."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp22-test1",
+        "description": "Current mode ±0/1/5/10mA: error ≤0.20mA+5%|reading|, ≥10 updates/s; voltage modes must leave ammeter switches open.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp22-test2",
+        "description": "INA219 0x40 responds. Use a documented series test arrangement and removable leads; do not assume four-column capsule geometry supports every series arrangement.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp22-test3",
+        "description": "OFF, voltage or output mode opens both ammeter terminals. Verify leakage ≤10µA with test stimulus disconnected.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link. For smart-mode bench fixtures, disconnect both fixed battery leads and remove the initial kit loop. Output load: P3→1kΩ→LED anode, LED cathode→GND through removable leads. Logic inputs: HIGH=qualified3V3_SYS through1kΩ; LOW=GND through1kΩ. AND/OR exercise00,01,10,11; NOT exercise0,1. Never parallel another source with P3. Current tests use a documented series path, never an ammeter across the supply.",
+      "shots": [
+        "Show current calibration setup with power OFF and display firmware revision.",
+        "Demonstrate: The ammeter matches known signed currents.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Use an incorrect current calibration: reject it rather than displaying an accepted value.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP23",
+    "phase": 23,
+    "chapter": "chapter-7",
+    "title": "Read loop current",
+    "win": "Changing a real resistor changes measured series current.",
+    "prerequisites": [
+      "CP22"
+    ],
+    "boards": [],
+    "firmware": "smart factory mode on ESP2: migrate OLED/ADC service to its isolated position bus; register outputs OFF until qualified; valid heartbeat required",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "For smart-mode bench fixtures, disconnect both fixed battery leads and remove the initial kit loop. Output load: P3→1kΩ→LED anode, LED cathode→GND through removable leads. Logic inputs: HIGH=qualified3V3_SYS through1kΩ; LOW=GND through1kΩ. AND/OR exercise00,01,10,11; NOT exercise0,1. Never parallel another source with P3. Current tests use a documented series path, never an ammeter across the supply."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp23-test1",
+        "description": "Power OFF to change the documented series fixture between 1kΩ and 470Ω. Compare OLED current with DMM; ≤0.20mA+5%|reading| error. Never put the ammeter directly across the supply.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link. For smart-mode bench fixtures, disconnect both fixed battery leads and remove the initial kit loop. Output load: P3→1kΩ→LED anode, LED cathode→GND through removable leads. Logic inputs: HIGH=qualified3V3_SYS through1kΩ; LOW=GND through1kΩ. AND/OR exercise00,01,10,11; NOT exercise0,1. Never parallel another source with P3. Current tests use a documented series path, never an ammeter across the supply.",
+      "shots": [
+        "Show read loop current setup with power OFF and display firmware revision.",
+        "Demonstrate: Changing a real resistor changes measured series current.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Exit current mode: both ammeter terminals disconnect; verify rather than shorting the supply.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP24",
+    "phase": 24,
+    "chapter": "chapter-8",
+    "title": "Route one LED loop",
+    "win": "The matrix completes one bounded LED loop.",
+    "prerequisites": [
+      "CP23"
+    ],
+    "boards": [],
+    "firmware": "router+smart production interlock: final power qualified; valid topology; bounded matrix tool current; fresh ACKs",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp24-test1",
+        "description": "MT supply 10.0–12.6V, digital high ≥3.3V, low ≤0.8V; reset and CS active high.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp24-test2",
+        "description": "Sweep all X addresses and Y buses, proving the non-monotonic X address map. Banks share BUS2…BUS7.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp24-test3",
+        "description": "Boot/reset/watchdog expiry: all crosspoints open. Disable rail, clear, configure, precheck, then enable; never configure live.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp24-test4",
+        "description": "Scope full clear + 22-node configuration ≤50ms at the physical strobe pins; verify Ron at 0/2.5/5V.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp24-test5",
+        "description": "Calibrate with 1kΩ 0.1%; distinguish open, short, 220Ω, 1kΩ and diode polarity; resistance error ≤10% after calibration.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link. Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology.",
+      "shots": [
+        "Show route one led loop setup with power OFF and display firmware revision.",
+        "Demonstrate: The matrix completes one bounded LED loop.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Remove enable or a required acknowledgement: matrix LED loop remains OFF.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP25",
+    "phase": 25,
+    "chapter": "chapter-8",
+    "title": "Inspect a routed jumper",
+    "win": "The matrix test tools distinguish a routed short from an open.",
+    "prerequisites": [
+      "CP24"
+    ],
+    "boards": [],
+    "firmware": "router+smart production interlock: final power qualified; valid topology; bounded matrix tool current; fresh ACKs",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp25-test1",
+        "description": "Discharge 1000µF initially at 5V to <0.1V in 3s; keep total analog pin current ≤12mA.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp25-test2",
+        "description": "Any short, unknown/invalid configuration or stale routing generation prevents rail enable; the precheck itself leaves rail off.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp25-test3",
+        "description": "With all power off remove only the fixed battery patch leads; retain every soldered wire. Connect A1 NODE ribbon. In matrix mode no fixed source or fixture stimulus may remain connected.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link. Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology.",
+      "shots": [
+        "Show inspect a routed jumper setup with power OFF and display firmware revision.",
+        "Demonstrate: The matrix test tools distinguish a routed short from an open.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Select a known open diagnostic path: return rejection rather than a false continuity pass.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP26",
+    "phase": 26,
+    "chapter": "chapter-8",
+    "title": "Reject an invalid route",
+    "win": "Invalid or stale routing requests keep power OFF.",
+    "prerequisites": [
+      "CP25"
+    ],
+    "boards": [],
+    "firmware": "router+smart production interlock: final power qualified; valid topology; bounded matrix tool current; fresh ACKs",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp26-test1",
+        "description": "Show a valid second battery position and corresponding kit arrangement. Invalid topology or stale routing generation cannot enable power.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link. Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology.",
+      "shots": [
+        "Show reject an invalid route setup with power OFF and display firmware revision.",
+        "Demonstrate: Invalid or stale routing requests keep power OFF.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Submit the documented invalid topology: reject it without energizing.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP27",
+    "phase": 27,
+    "chapter": "chapter-9",
+    "title": "Qualify A2",
+    "win": "The same capsule works at A2 without changes.",
+    "prerequisites": [
+      "CP26"
+    ],
+    "boards": [],
+    "firmware": "router+smart production interlock: final power qualified; valid topology; bounded matrix tool current; fresh ACKs",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp27-test1",
+        "description": "Repeat CP01 electrical mapping for A2/A3; test NODE00–NODE10 and positions 0/1/2.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp27-test2",
+        "description": "Three active capsules meet meter update rates and output timing concurrently; fourth active request refused.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp27-test3",
+        "description": "Repeat screen, voltage, pulse, gate, memory, current and leakage tests independently on each new card. Three active capsules meet all update/timing limits.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link. Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology.",
+      "shots": [
+        "Show qualify a2 setup with power OFF and display firmware revision.",
+        "Demonstrate: The same capsule works at A2 without changes.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Move or remove the capsule from A2: power shuts down before reconfiguration.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP28",
+    "phase": 28,
+    "chapter": "chapter-9",
+    "title": "Qualify A3",
+    "win": "Three bank-A positions operate with no address collisions.",
+    "prerequisites": [
+      "CP27"
+    ],
+    "boards": [],
+    "firmware": "router+smart production interlock: final power qualified; valid topology; bounded matrix tool current; fresh ACKs",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp28-test1",
+        "description": "Repeat the single-position acceptance at A3; exercise all three bank-A capsules concurrently. Every buffer B-side remains local, and every position retains the same mode capabilities.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link. Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology.",
+      "shots": [
+        "Show qualify a3 setup with power OFF and display firmware revision.",
+        "Demonstrate: Three bank-A positions operate with no address collisions.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Move or remove the capsule from A3: power shuts down before reconfiguration.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP29",
+    "phase": 29,
+    "chapter": "chapter-9",
+    "title": "Qualify B1",
+    "win": "A capsule moves to B1 without rotation or polarity changes.",
+    "prerequisites": [
+      "CP28"
+    ],
+    "boards": [],
+    "firmware": "router+smart production interlock: final power qualified; valid topology; bounded matrix tool current; fresh ACKs",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp29-test1",
+        "description": "Repeat module mapping for B1/B2/B3; verify mirrored service order without renumbering holes.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp29-test2",
+        "description": "Test NODE00–NODE21 and all six smart positions, any combination of three active; no unintended bank-to-bank connection.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link. Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology.",
+      "shots": [
+        "Show qualify b1 setup with power OFF and display firmware revision.",
+        "Demonstrate: A capsule moves to B1 without rotation or polarity changes.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Move the unchanged-orientation capsule to B1: old-position authorization must not energize it.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP30",
+    "phase": 30,
+    "chapter": "chapter-9",
+    "title": "Qualify B2",
+    "win": "The same capsule passes acceptance at B2.",
+    "prerequisites": [
+      "CP29"
+    ],
+    "boards": [],
+    "firmware": "router+smart production interlock: final power qualified; valid topology; bounded matrix tool current; fresh ACKs",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp30-test1",
+        "description": "Repeat single-position voltage, output, current, OLED and movement shutdown checks at B2 with unchanged capsule orientation.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link. Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology.",
+      "shots": [
+        "Show qualify b2 setup with power OFF and display firmware revision.",
+        "Demonstrate: The same capsule passes acceptance at B2.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Remove the capsule from B2: stale identity cannot keep output enabled.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP31",
+    "phase": 31,
+    "chapter": "chapter-9",
+    "title": "Qualify B3",
+    "win": "All six positions work while only three capsules are active.",
+    "prerequisites": [
+      "CP30"
+    ],
+    "boards": [],
+    "firmware": "router+smart production interlock: final power qualified; valid topology; bounded matrix tool current; fresh ACKs",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp31-test1",
+        "description": "Moving a capsule drops rail before configuration; position identity is independent of capsule identity.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp31-test2",
+        "description": "Repeat single-position checks at B3; attempt a fourth active capsule and confirm rejection with power OFF.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link. Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology.",
+      "shots": [
+        "Show qualify b3 setup with power OFF and display firmware revision.",
+        "Demonstrate: All six positions work while only three capsules are active.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Request a fourth active capsule: reject it and retain OFF.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP32",
+    "phase": 32,
+    "chapter": "chapter-10",
+    "title": "Pi communication",
+    "win": "Pi commands reach the controllers with revisioned acknowledgements.",
+    "prerequisites": [
+      "CP31"
+    ],
+    "boards": [],
+    "firmware": "complete Pi/router/smart session and NFC interlock",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp32-test1",
+        "description": "Pi separately powered: its 5V must not connect to bench 5V. Test all four USB/bench-power combinations for backfeeding.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp32-test2",
+        "description": "Verify physical Pi pin mapping and button debounce. Readiness alone does not energize; explicit request is required. Back/reset/restart returns OFF.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link. Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology.",
+      "shots": [
+        "Show pi communication setup with power OFF and display firmware revision.",
+        "Demonstrate: Pi commands reach the controllers with revisioned acknowledgements.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Use a mismatched, expired or duplicate acknowledgement: communication cannot authorize enable.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP33",
+    "phase": 33,
+    "chapter": "chapter-10",
+    "title": "Session-gated enable",
+    "win": "Only a valid session and fresh acknowledgements permit enable.",
+    "prerequisites": [
+      "CP32"
+    ],
+    "boards": [],
+    "firmware": "complete Pi/router/smart session and NFC interlock",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp33-test1",
+        "description": "Factory Pi demonstration uses explicit supervised approval; production mode remains blocked until NFC/full integration acceptance.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link. Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology.",
+      "shots": [
+        "Show session-gated enable setup with power OFF and display firmware revision.",
+        "Demonstrate: Only a valid session and fresh acknowledgements permit enable.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Expire the session or lose communication: output shuts down without autonomous restoration.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP34",
+    "phase": 34,
+    "chapter": "chapter-10",
+    "title": "Known NFC identity",
+    "win": "A known NFC identity participates in approval.",
+    "prerequisites": [
+      "CP33"
+    ],
+    "boards": [],
+    "firmware": "complete Pi/router/smart session and NFC interlock",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp34-test1",
+        "description": "PN532 SPI mode 0, LSB-first, ≤1MHz initial clock: known/unknown/absent tag correctly reported; NFC failure leaves session unapproved.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp34-test2",
+        "description": "Known identity, valid lesson and fresh controller ACKs permit a separate explicit enable request. NFC alone never energizes.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link. Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology.",
+      "shots": [
+        "Show known nfc identity setup with power OFF and display firmware revision.",
+        "Demonstrate: A known NFC identity participates in approval.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Present a known NFC identity without a valid session: NFC alone cannot energize.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP35",
+    "phase": 35,
+    "chapter": "chapter-10",
+    "title": "Reject NFC failures",
+    "win": "Unknown, absent or failed NFC cannot authorize power.",
+    "prerequisites": [
+      "CP34"
+    ],
+    "boards": [],
+    "firmware": "complete Pi/router/smart session and NFC interlock",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp35-test1",
+        "description": "Known tag allows the subsequent readiness checks; unknown/absent/error clears approval. Explicit Energizar is still required after a successful tag.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link. Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology.",
+      "shots": [
+        "Show reject nfc failures setup with power OFF and display firmware revision.",
+        "Demonstrate: Unknown, absent or failed NFC cannot authorize power.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Present unknown, absent or failed NFC: authorization is denied and power stays OFF.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  },
+  {
+    "id": "CP36",
+    "phase": 36,
+    "chapter": "chapter-10",
+    "title": "Complete lesson",
+    "win": "An enclosed full lesson completes with its fault cases demonstrated.",
+    "prerequisites": [
+      "CP35"
+    ],
+    "boards": [],
+    "firmware": "complete Pi/router/smart session and NFC interlock",
+    "firmwareImplemented": false,
+    "links": [
+      "USB prototype source and prototype 3V3 links removed before final supplies connect.",
+      "Use checkpoint-specific bounded test loads; stop and isolate power before changing any link.",
+      "Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology."
+    ],
+    "equipment": [
+      "Multimeter",
+      "Current-limited adjustable supply",
+      "Oscilloscope for timing/transient tests"
+    ],
+    "tests": [
+      {
+        "id": "guided-cp36-test1",
+        "description": "Graph, recognition, predicted current, routing and all active capsule acknowledgements must pass before enable.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp36-test2",
+        "description": "USB unplug/reset or missed heartbeat disables rail and smart outputs within 1s; every restart begins OFF.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp36-test3",
+        "description": "30-minute repeated lessons with no reset, incorrect route or false trip. Series-circuit tests use explicitly documented removable leads where geometry requires them.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp36-test4",
+        "description": "Repeat hardware cutoff ≤1ms, strict transient contact peaks ≤5.25V, 30-minute operation, no backfeed, leakage ≤10µA and every six-position mode. Record oscilloscope readings as text; screenshots remain external.",
+        "source": "manual",
+        "required": true
+      },
+      {
+        "id": "guided-cp36-test5",
+        "description": "Verify enclosure inaccessibility, cable strain relief and all purchased-part fit gates. Production release remains pending until actual evidence is recorded.",
+        "source": "manual",
+        "required": true
+      }
+    ],
+    "filming": {
+      "initialState": "USB prototype source and prototype 3V3 links removed before final supplies connect. Use checkpoint-specific bounded test loads; stop and isolate power before changing any link. Remove all fixed source patch leads before matrix routing. Source node selection now belongs to the qualified matrix topology.",
+      "shots": [
+        "Show complete lesson setup with power OFF and display firmware revision.",
+        "Demonstrate: An enclosed full lesson completes with its fault cases demonstrated.",
+        "Show the documented negative test and actual recorded readings."
+      ],
+      "negative": "Run the complete lesson fault cases, including communication loss and invalid topology: each disables power.",
+      "record": "Record readings and units, equipment, link positions, firmware revision and outcome. Firmware is a contract only; never film simulated readings as measured hardware evidence."
+    }
+  }
+]

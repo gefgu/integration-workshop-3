@@ -1,0 +1,228 @@
+{
+  "revision": "215d7bba6a2a028d",
+  "status": "pass",
+  "scope": "Fresh native layout and hand-wire checks for the presentation revision. Physical hardware and acceptance are unchanged; bench verification remains pending.",
+  "results": [
+    {
+      "board": "a1",
+      "checks": {
+        "diagnostics": [],
+        "pins": [],
+        "nets": [],
+        "schematic": [],
+        "placement": []
+      },
+      "assembly": {
+        "board": "a1",
+        "parts": 7,
+        "nets": 8,
+        "wires": 33,
+        "status": "pass"
+      }
+    },
+    {
+      "board": "a2",
+      "checks": {
+        "diagnostics": [],
+        "pins": [],
+        "nets": [],
+        "schematic": [],
+        "placement": []
+      },
+      "assembly": {
+        "board": "a2",
+        "parts": 7,
+        "nets": 8,
+        "wires": 33,
+        "status": "pass"
+      }
+    },
+    {
+      "board": "a3",
+      "checks": {
+        "diagnostics": [],
+        "pins": [],
+        "nets": [],
+        "schematic": [],
+        "placement": []
+      },
+      "assembly": {
+        "board": "a3",
+        "parts": 6,
+        "nets": 7,
+        "wires": 27,
+        "status": "pass"
+      }
+    },
+    {
+      "board": "b1",
+      "checks": {
+        "diagnostics": [],
+        "pins": [],
+        "nets": [],
+        "schematic": [],
+        "placement": []
+      },
+      "assembly": {
+        "board": "b1",
+        "parts": 7,
+        "nets": 8,
+        "wires": 33,
+        "status": "pass"
+      }
+    },
+    {
+      "board": "b2",
+      "checks": {
+        "diagnostics": [],
+        "pins": [],
+        "nets": [],
+        "schematic": [],
+        "placement": []
+      },
+      "assembly": {
+        "board": "b2",
+        "parts": 7,
+        "nets": 8,
+        "wires": 33,
+        "status": "pass"
+      }
+    },
+    {
+      "board": "b3",
+      "checks": {
+        "diagnostics": [],
+        "pins": [],
+        "nets": [],
+        "schematic": [],
+        "placement": []
+      },
+      "assembly": {
+        "board": "b3",
+        "parts": 6,
+        "nets": 7,
+        "wires": 27,
+        "status": "pass"
+      }
+    },
+    {
+      "board": "power",
+      "checks": {
+        "diagnostics": [],
+        "pins": [],
+        "nets": [],
+        "schematic": [],
+        "placement": []
+      },
+      "assembly": {
+        "board": "power",
+        "parts": 64,
+        "nets": 39,
+        "wires": 167,
+        "status": "pass"
+      }
+    },
+    {
+      "board": "smart-controller",
+      "checks": {
+        "diagnostics": [],
+        "pins": [],
+        "nets": [],
+        "schematic": [],
+        "placement": []
+      },
+      "assembly": {
+        "board": "smart-controller",
+        "parts": 36,
+        "nets": 44,
+        "wires": 142,
+        "status": "pass"
+      }
+    },
+    {
+      "board": "smart-channel",
+      "checks": {
+        "diagnostics": [],
+        "pins": [],
+        "nets": [],
+        "schematic": [],
+        "placement": []
+      },
+      "assembly": {
+        "board": "smart-channel",
+        "parts": 54,
+        "nets": 41,
+        "wires": 127,
+        "status": "pass"
+      }
+    },
+    {
+      "board": "matrix",
+      "checks": {
+        "diagnostics": [],
+        "pins": [],
+        "nets": [],
+        "schematic": [],
+        "placement": []
+      },
+      "assembly": {
+        "board": "matrix",
+        "parts": 55,
+        "nets": 78,
+        "wires": 187,
+        "status": "pass"
+      }
+    },
+    {
+      "board": "integration",
+      "checks": {
+        "diagnostics": [],
+        "pins": [],
+        "nets": [],
+        "schematic": [],
+        "placement": []
+      },
+      "assembly": {
+        "board": "integration",
+        "parts": 9,
+        "nets": 8,
+        "wires": 19,
+        "status": "pass"
+      }
+    },
+    {
+      "board": "continuity-fixture",
+      "checks": {
+        "diagnostics": [],
+        "pins": [],
+        "nets": [],
+        "schematic": [],
+        "placement": []
+      },
+      "assembly": {
+        "board": "continuity-fixture",
+        "parts": 23,
+        "nets": 17,
+        "wires": 48,
+        "status": "pass"
+      }
+    },
+    {
+      "board": "usb-prototype",
+      "checks": {
+        "diagnostics": [],
+        "pins": [],
+        "nets": [],
+        "schematic": [],
+        "placement": []
+      },
+      "assembly": {
+        "board": "usb-prototype",
+        "parts": 8,
+        "nets": 7,
+        "wires": 13,
+        "status": "pass"
+      }
+    }
+  ]
+}

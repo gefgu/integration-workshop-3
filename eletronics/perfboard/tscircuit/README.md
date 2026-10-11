@@ -1,48 +1,37 @@
-# tscircuit drawings of the checkpoints
+# TedTronics guided assembly
 
-Code-drawn versions of the perfboard checkpoints, using [tscircuit](https://github.com/tscircuit/tscircuit).
-One file per checkpoint: `cpNN-*.circuit.tsx`. Snapshots (schematic, PCB, 3D) are in
-`__snapshots__/`, so they can be viewed on GitHub without running anything.
-
-The PCB view stands for the perfboard. Copper traces are the wires you solder by hand, and
-the hole grid is 2.54 mm. Positions follow `../00-standards.md` §5.
-
-## Run
-Everything is installed locally in this folder (`node_modules/`, git-ignored), including
-`bun`, which the CLI needs. Node 20 alone fails in the autorouter (`Map.groupBy`).
-
-```
-npm install                         # once (Node 20 is enough to install)
-npm run dev -- cp01-module-a1.circuit.tsx           # live viewer: http://localhost:3020
-npx tscircuit-cli snapshot cp01-module-a1.circuit.tsx --update --3d   # refresh __snapshots__
+```sh
+cd eletronics/perfboard/tscircuit
+npm ci
+npm run assembly:app
 ```
 
-## Limits
-- Pogo-pin size is a placeholder (1 mm hole, 2 mm pad) until the real part is known.
-- tscircuit autoroutes the wires as copper. Use it to check connectivity and placement,
-  not as the exact wire paths.
+Open **http://127.0.0.1:8080** and create a new guided build. The guide gives one highlighted construction or inspection action per screen, its expected result, and a saved place to resume. TOP and MIRRORED UNDERSIDE stay together. Temporary breadboard steps include a separate top view with connected rows.
 
-## PCB viewer: WebGPU workers are unavailable
+## The journey
 
-The local CLI is patched by `npm install` and `npm run dev` to start the PCB
-viewer with Canvas, even if WebGPU was previously saved in the browser. The
-patch is checked against the installed bundle and fails explicitly if a CLI
-upgrade changes that code. WebGPU can still be selected from the menu for the
-current session. Restart an already-running dev server and reload its page to
-load the patched viewer.
+Thirty-seven checkpoints are grouped into chapters: LED → continuity → screen → voltage → final power → output → logic/memory → current → matrix → expansion → Pi/NFC/integration. The first checkpoint requires USB, a multimeter, the first four bank columns and a small current-limited breadboard switch. **The complete protected power board is not required until the later power chapter (CP09–14).** Matrix chips first enter at CP24.
 
-If the PCB preview is black and displays `Error: WebGPU workers are unavailable`,
-open the PCB toolbar's **View ▼ → Rendering Engine → Canvas**. The viewer saves
-this choice for the current browser and site. This is a preview renderer error;
-changing the circuit or autorouter is not required.
+Choose “Show local schematic” for the current functional circuit and mapped external ports. “Explore full boards” opens the detailed workspace, complete schematics and approximate3D placement companions. Drawings are construction instructions; purchased-part fit and actual electrical behavior must be measured.
 
-If the menu is inaccessible, run this in the browser's developer console on the
-viewer page, then reload:
+Click “Done — next step” after doing the action and checking its result. Measurement actions require an actual recorded pass. Firmware actions require the compatible external firmware revision; **firmware is not supplied by this app**. Without it, leave the action pending. Final timing/transient tests also remain pending until the required oscilloscope and supply are available.
 
-```js
-localStorage.setItem("pcb_viewer_rendering_engine", JSON.stringify("canvas"));
-location.reload();
+SQLite stores construction, inspections, current step, unfinished notes, measured attempts and history at `app/data/assembly.sqlite`. Set `ASSEMBLY_DB` or `ASSEMBLY_PORT` to override these. Export/import transfers the pinned design, drawings and progress into a separate build. Existing fourteen-checkpoint builds keep their original catalog and workspace; create a new build for this redesigned sequence.
+
+## Build and verify
+
+```sh
+npm run build
+npm run verify
+npm run assembly:app:test
+npm run assembly
+npm run assembly:app:build
 ```
 
-The experimental WebGPU renderer requires `navigator.gpu`, Web Workers, and
-`HTMLCanvasElement.transferControlToOffscreen`. Canvas avoids that requirement.
+`build` creates all thirteen circuit exports and native local schematics. `verify` checks local schematics, cumulative construction states, full circuits, copper diagnostics and independent manual-wire/breadboard-row connectivity. Run `assembly` after verification to refresh the public report. Read [guidelines.md](guidelines.md), [AUDIT.md](AUDIT.md), [firmware-contract.md](firmware-contract.md) and the checkpoint instructions linked from [the static reference](assembly/index.html).
+
+Prototype positive and temporary3V3 links must be removed before the qualified final source connects. Removable fixture changes preserve earlier permanent soldering. Bank B keeps the same capsule orientation. Pogo identity, adapter dimensions and actual kit fit remain pending identification/measurement tasks.
+
+For UI development, run the app server and `npm run assembly:app:dev` in another terminal. The server listens only on localhost. It does not communicate with or energize hardware; simulated camera approval never counts as measured evidence.
+
+Contacts in one node column are placed together, then inspected separately. Next step saves construction without a checkbox. The board starts fitted in both orientations; use the mouse wheel to zoom at the pointer, drag to pan, or Fit board to restore context. Older guided builds can explicitly use refreshed drawings when the hardware/checkpoint model is identical; existing progress stays saved.

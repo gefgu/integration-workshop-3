@@ -4,15 +4,31 @@
   "type": "module",
   "description": "tscircuit drawings of the perfboard checkpoints (eletronics/perfboard)",
   "scripts": {
-    "postinstall": "node scripts/use-canvas-renderer.mjs",
-    "predev": "node scripts/use-canvas-renderer.mjs",
+    "postinstall": "node scripts/use-canvas-renderer.mjs && node scripts/use-line-schematics.mjs",
+    "predev": "node scripts/use-canvas-renderer.mjs && node scripts/use-line-schematics.mjs",
     "dev": "tscircuit-cli dev",
-    "build": "tscircuit-cli build"
+    "build": "node scripts/build-all.mjs",
+    "assembly": "node scripts/export-assembly.mjs",
+    "verify": "bun scripts/build-local.tsx && bun scripts/check-partial.tsx && node scripts/validate.mjs",
+    "assembly:app:build": "vite build --config app/vite.config.mjs",
+    "assembly:app": "npm run assembly:app:build && bun app/server.ts",
+    "assembly:app:dev": "vite --config app/vite.config.mjs",
+    "assembly:app:test": "bun test app/tests",
+    "verify:stages": "node scripts/check-stages.mjs",
+    "verify:partial": "bun scripts/check-partial.tsx",
+    "build:local": "bun scripts/build-local.tsx"
   },
   "dependencies": {
-    "@tscircuit/cli": "^0.1.2283",
+    "@jscad/modeling": "2.13.0",
+    "@tscircuit/checks": "0.0.243",
+    "@tscircuit/cli": "0.1.2283",
+    "@tscircuit/core": "0.0.2121",
     "bun": "^1.4.2",
+    "jscad-planner": "0.0.18",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
     "tscircuit": "^0.0.2805",
-    "tsx": "^4.23.15"
+    "tsx": "^4.23.15",
+    "vite": "5.4.6"
   }
 }

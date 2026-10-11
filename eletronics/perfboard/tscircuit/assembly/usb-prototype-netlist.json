@@ -1,0 +1,57 @@
+[
+  {
+    "name": "USB_5V",
+    "pins": [
+      "J_CONTROL.1",
+      "Q_PASS.3",
+      "R_GATE_OFF.2"
+    ]
+  },
+  {
+    "name": "USB_3V3",
+    "pins": [
+      "J_CONTROL.2",
+      "C_USB.1"
+    ]
+  },
+  {
+    "name": "GND",
+    "pins": [
+      "J_CONTROL.3",
+      "Q_ENABLE.1",
+      "R_ENABLE_OFF.2",
+      "J_OUTPUT.2",
+      "C_USB.2"
+    ]
+  },
+  {
+    "name": "EDU_PWR_EN",
+    "pins": [
+      "J_CONTROL.4",
+      "Q_ENABLE.2",
+      "R_ENABLE_OFF.1"
+    ]
+  },
+  {
+    "name": "PROTO_GATE",
+    "pins": [
+      "Q_PASS.1",
+      "Q_ENABLE.3",
+      "R_GATE_OFF.1"
+    ]
+  },
+  {
+    "name": "PROTO_DRAIN",
+    "pins": [
+      "Q_PASS.2",
+      "R_LIMIT.1"
+    ]
+  },
+  {
+    "name": "USB_TEST_LIMITED",
+    "pins": [
+      "R_LIMIT.2",
+      "J_OUTPUT.1"
+    ]
+  }
+]

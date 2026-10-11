@@ -1,0 +1,403 @@
+[
+  {
+    "name": "12V_IN",
+    "pins": [
+      "J_INPUT.1",
+      "F_INPUT.1"
+    ]
+  },
+  {
+    "name": "GND",
+    "pins": [
+      "J_INPUT.2",
+      "C_INPUT.2",
+      "C_INPUT_HF.2",
+      "J_BUCK_5V.4",
+      "J_BUCK_3V3.4",
+      "U_OV_5V.4",
+      "R_OV_5V_BOTTOM.2",
+      "R_UV_5V_BOTTOM.2",
+      "C_OV_5V_IN.2",
+      "C_OV_5V_OUT.2",
+      "U_OV_3V3.4",
+      "R_OV_3V3_BOTTOM.2",
+      "R_UV_3V3_BOTTOM.2",
+      "C_OV_3V3_IN.2",
+      "C_OV_3V3_OUT.2",
+      "Q_ENABLE.1",
+      "C_EDU.2",
+      "U_SENSE.2",
+      "C_SENSE.2",
+      "U_REF.2",
+      "R_TRIP_BOTTOM.2",
+      "R_EDU_BOTTOM.2",
+      "U_TRIP.4",
+      "C_TRIP.2",
+      "U_POR.3",
+      "U_FAULT.2",
+      "U_FAULT.3",
+      "U_FAULT.7",
+      "U_FAULT.12",
+      "U_FAULT.11",
+      "C_FAULT.2",
+      "U_RESET.4",
+      "U_RESET.5",
+      "U_RESET.9",
+      "U_RESET.10",
+      "U_RESET.12",
+      "U_RESET.13",
+      "U_RESET.7",
+      "C_RESET.2",
+      "U_ALLOW.9",
+      "U_ALLOW.10",
+      "U_ALLOW.12",
+      "U_ALLOW.13",
+      "U_ALLOW.7",
+      "C_ALLOW.2",
+      "R_EDU_PWR_EN_OFF.2",
+      "R_EDU_FAULT_RESET_OFF.2",
+      "R_ROUTER_ALIVE_OFF.2",
+      "Q_BATTERY_LED.1",
+      "R_LED_GATE_OFF.2",
+      "J_MATRIX.2",
+      "J_SMART.2",
+      "J_SMART.4",
+      "J_SMART.6",
+      "J_FIXED_BATTERY.2",
+      "J_TEST.2"
+    ]
+  },
+  {
+    "name": "12V_FUSED",
+    "pins": [
+      "F_INPUT.2",
+      "J_SW_MAIN.1"
+    ]
+  },
+  {
+    "name": "12V_SWITCHED",
+    "pins": [
+      "J_SW_MAIN.2",
+      "D_REVERSE.1"
+    ]
+  },
+  {
+    "name": "12V_SYS",
+    "pins": [
+      "D_REVERSE.2",
+      "C_INPUT.1",
+      "C_INPUT_HF.1",
+      "J_BUCK_5V.3",
+      "J_BUCK_3V3.3",
+      "J_MATRIX.10"
+    ]
+  },
+  {
+    "name": "BUCK_5V",
+    "pins": [
+      "J_BUCK_5V.5",
+      "U_OV_5V.1",
+      "U_OV_5V.5",
+      "R_OV_5V_TOP.1",
+      "R_UV_5V_TOP.1",
+      "Q_OV_5V_IN.3",
+      "C_OV_5V_IN.1"
+    ]
+  },
+  {
+    "name": "BUCK_3V3",
+    "pins": [
+      "J_BUCK_3V3.5",
+      "U_OV_3V3.1",
+      "U_OV_3V3.5",
+      "R_OV_3V3_TOP.1",
+      "R_UV_3V3_TOP.1",
+      "Q_OV_3V3_IN.3",
+      "C_OV_3V3_IN.1"
+    ]
+  },
+  {
+    "name": "SAFE_5V",
+    "pins": [
+      "JP_LOGIC.1",
+      "U_OV_5V.7",
+      "Q_OV_5V_OUT.3",
+      "C_OV_5V_OUT.1"
+    ]
+  },
+  {
+    "name": "5V_SYS",
+    "pins": [
+      "JP_LOGIC.2",
+      "F_EDU.1",
+      "R_REF_FEED.1",
+      "U_TRIP.8",
+      "C_TRIP.1",
+      "R_BATTERY_LED.1",
+      "J_MATRIX.4",
+      "J_SMART.1"
+    ]
+  },
+  {
+    "name": "SAFE_3V3",
+    "pins": [
+      "JP_3V3.1",
+      "U_OV_3V3.7",
+      "Q_OV_3V3_OUT.3",
+      "C_OV_3V3_OUT.1"
+    ]
+  },
+  {
+    "name": "3V3_SYS",
+    "pins": [
+      "JP_3V3.2",
+      "U_SENSE.5",
+      "C_SENSE.1",
+      "R_PRESET.1",
+      "R_EDU_ON.1",
+      "U_POR.2",
+      "U_FAULT.14",
+      "U_FAULT.13",
+      "U_FAULT.10",
+      "C_FAULT.1",
+      "U_RESET.14",
+      "C_RESET.1",
+      "U_ALLOW.14",
+      "C_ALLOW.1",
+      "J_MATRIX.3",
+      "J_SMART.5"
+    ]
+  },
+  {
+    "name": "UV_5V",
+    "pins": [
+      "U_OV_5V.2",
+      "R_UV_5V_TOP.2",
+      "R_UV_5V_BOTTOM.1"
+    ]
+  },
+  {
+    "name": "OV_5V",
+    "pins": [
+      "U_OV_5V.3",
+      "R_OV_5V_TOP.2",
+      "R_OV_5V_BOTTOM.1"
+    ]
+  },
+  {
+    "name": "PRESET_N",
+    "pins": [
+      "U_OV_5V.6",
+      "U_OV_3V3.6",
+      "U_TRIP.1",
+      "R_PRESET.2",
+      "U_POR.1",
+      "U_FAULT.4",
+      "U_RESET.2",
+      "J_TEST.5"
+    ]
+  },
+  {
+    "name": "OV_GATE_5V",
+    "pins": [
+      "U_OV_5V.8",
+      "Q_OV_5V_IN.1",
+      "Q_OV_5V_OUT.1"
+    ]
+  },
+  {
+    "name": "OV_MID_5V",
+    "pins": [
+      "Q_OV_5V_IN.2",
+      "Q_OV_5V_OUT.2"
+    ]
+  },
+  {
+    "name": "UV_3V3",
+    "pins": [
+      "U_OV_3V3.2",
+      "R_UV_3V3_TOP.2",
+      "R_UV_3V3_BOTTOM.1"
+    ]
+  },
+  {
+    "name": "OV_3V3",
+    "pins": [
+      "U_OV_3V3.3",
+      "R_OV_3V3_TOP.2",
+      "R_OV_3V3_BOTTOM.1"
+    ]
+  },
+  {
+    "name": "OV_GATE_3V3",
+    "pins": [
+      "U_OV_3V3.8",
+      "Q_OV_3V3_IN.1",
+      "Q_OV_3V3_OUT.1"
+    ]
+  },
+  {
+    "name": "OV_MID_3V3",
+    "pins": [
+      "Q_OV_3V3_IN.2",
+      "Q_OV_3V3_OUT.2"
+    ]
+  },
+  {
+    "name": "PTC_OUT",
+    "pins": [
+      "F_EDU.2",
+      "Q_PASS.3",
+      "R_GATE_OFF.1"
+    ]
+  },
+  {
+    "name": "PASS_GATE",
+    "pins": [
+      "Q_PASS.1",
+      "R_GATE_OFF.2",
+      "Q_ENABLE.3"
+    ]
+  },
+  {
+    "name": "SHUNT_P",
+    "pins": [
+      "Q_PASS.2",
+      "R_SHUNT.1",
+      "U_SENSE.3"
+    ]
+  },
+  {
+    "name": "ALLOW_RAIL",
+    "pins": [
+      "Q_ENABLE.2",
+      "U_ALLOW.6"
+    ]
+  },
+  {
+    "name": "5V_EDU",
+    "pins": [
+      "R_SHUNT.2",
+      "C_EDU.1",
+      "U_SENSE.4",
+      "R_EDU_TOP.1",
+      "J_MATRIX.1",
+      "J_SMART.3",
+      "J_FIXED_BATTERY.1",
+      "J_TEST.1"
+    ]
+  },
+  {
+    "name": "CURRENT_SENSE",
+    "pins": [
+      "U_SENSE.1",
+      "U_TRIP.2",
+      "J_MATRIX.8",
+      "J_TEST.4"
+    ]
+  },
+  {
+    "name": "REF_2V495",
+    "pins": [
+      "U_REF.1",
+      "U_REF.3",
+      "R_REF_FEED.2",
+      "R_TRIP_TOP.1"
+    ]
+  },
+  {
+    "name": "REF_TRIP",
+    "pins": [
+      "R_TRIP_TOP.2",
+      "R_TRIP_BOTTOM.1",
+      "U_TRIP.3",
+      "U_TRIP.6",
+      "J_TEST.3"
+    ]
+  },
+  {
+    "name": "EDU_DIV",
+    "pins": [
+      "R_EDU_TOP.2",
+      "R_EDU_BOTTOM.1",
+      "U_TRIP.5"
+    ]
+  },
+  {
+    "name": "EDU_ON",
+    "pins": [
+      "U_TRIP.7",
+      "R_EDU_ON.2",
+      "Q_BATTERY_LED.2",
+      "R_LED_GATE_OFF.1",
+      "J_SMART.7"
+    ]
+  },
+  {
+    "name": "CLEAR_N",
+    "pins": [
+      "U_FAULT.1",
+      "U_RESET.3"
+    ]
+  },
+  {
+    "name": "EDU_FAULT",
+    "pins": [
+      "U_FAULT.5",
+      "J_MATRIX.6",
+      "J_TEST.6"
+    ]
+  },
+  {
+    "name": "NOT_FAULT",
+    "pins": [
+      "U_FAULT.6",
+      "U_ALLOW.2"
+    ]
+  },
+  {
+    "name": "EDU_FAULT_RESET",
+    "pins": [
+      "U_RESET.1",
+      "R_EDU_FAULT_RESET_OFF.1",
+      "J_MATRIX.7"
+    ]
+  },
+  {
+    "name": "EDU_PWR_EN",
+    "pins": [
+      "U_ALLOW.1",
+      "R_EDU_PWR_EN_OFF.1",
+      "J_MATRIX.5"
+    ]
+  },
+  {
+    "name": "ENABLE_NO_FAULT",
+    "pins": [
+      "U_ALLOW.3",
+      "U_ALLOW.4"
+    ]
+  },
+  {
+    "name": "ROUTER_ALIVE",
+    "pins": [
+      "U_ALLOW.5",
+      "R_ROUTER_ALIVE_OFF.1",
+      "J_MATRIX.9"
+    ]
+  },
+  {
+    "name": "BATTERY_LED_A",
+    "pins": [
+      "R_BATTERY_LED.2",
+      "LED_BATTERY.1"
+    ]
+  },
+  {
+    "name": "BATTERY_LED_K",
+    "pins": [
+      "LED_BATTERY.2",
+      "Q_BATTERY_LED.3"
+    ]
+  }
+]

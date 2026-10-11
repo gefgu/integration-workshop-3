@@ -1,0 +1,408 @@
+[
+  {
+    "name": "USB_3V3",
+    "pins": [
+      "U_ESP2.1",
+      "R_SCL_A.1",
+      "R_SDA_0.1",
+      "R_SDA_1.1",
+      "R_SDA_2.1",
+      "R_SDA_3.1",
+      "R_SDA_4.1",
+      "R_SDA_5.1",
+      "U_WATCH.16",
+      "R_WATCH.1",
+      "C_WATCH_VCC.1",
+      "U_USB_POR.2",
+      "R_USB_POR.1",
+      "J_CH0.8",
+      "J_CH1.8",
+      "J_CH2.8",
+      "J_CH3.8",
+      "J_CH4.8",
+      "J_CH5.8"
+    ]
+  },
+  {
+    "name": "GND",
+    "pins": [
+      "U_ESP2.14",
+      "U_ESP2.20",
+      "U_ESP2.26",
+      "J_POWER.2",
+      "J_POWER.4",
+      "J_POWER.6",
+      "U_WATCH.1",
+      "U_WATCH.8",
+      "U_WATCH.9",
+      "U_WATCH.10",
+      "U_WATCH.11",
+      "C_WATCH_VCC.2",
+      "R_HEART.2",
+      "U_USB_POR.3",
+      "Q_RAIL.1",
+      "R_ALIVE_OFF.2",
+      "R_RAIL_OFF.2",
+      "U_SR0.8",
+      "C_SR0.2",
+      "U_SR1.8",
+      "C_SR1.2",
+      "U_SR2.8",
+      "C_SR2.2",
+      "R_SR_SER_OFF.2",
+      "R_SR_SRCLK_OFF.2",
+      "R_SR_RCLK_OFF.2",
+      "J_CH0.4",
+      "J_CH1.4",
+      "J_CH2.4",
+      "J_CH3.4",
+      "J_CH4.4",
+      "J_CH5.4"
+    ]
+  },
+  {
+    "name": "SR_SRCLK",
+    "pins": [
+      "U_ESP2.9",
+      "U_SR0.11",
+      "U_SR1.11",
+      "U_SR2.11",
+      "R_SR_SRCLK_OFF.1"
+    ]
+  },
+  {
+    "name": "SR_RCLK",
+    "pins": [
+      "U_ESP2.10",
+      "U_SR0.12",
+      "U_SR1.12",
+      "U_SR2.12",
+      "R_SR_RCLK_OFF.1"
+    ]
+  },
+  {
+    "name": "SR_SER",
+    "pins": [
+      "U_ESP2.11",
+      "U_SR0.14",
+      "R_SR_SER_OFF.1"
+    ]
+  },
+  {
+    "name": "HEARTBEAT",
+    "pins": [
+      "U_ESP2.15",
+      "U_WATCH.2",
+      "R_HEART.1"
+    ]
+  },
+  {
+    "name": "SCL_A",
+    "pins": [
+      "U_ESP2.22",
+      "R_SCL_A.2",
+      "J_CH0.9",
+      "J_CH1.9",
+      "J_CH2.9",
+      "J_CH3.9",
+      "J_CH4.9",
+      "J_CH5.9"
+    ]
+  },
+  {
+    "name": "SDA_0",
+    "pins": [
+      "U_ESP2.32",
+      "R_SDA_0.2",
+      "J_CH0.7"
+    ]
+  },
+  {
+    "name": "SDA_1",
+    "pins": [
+      "U_ESP2.25",
+      "R_SDA_1.2",
+      "J_CH1.7"
+    ]
+  },
+  {
+    "name": "SDA_2",
+    "pins": [
+      "U_ESP2.27",
+      "R_SDA_2.2",
+      "J_CH2.7"
+    ]
+  },
+  {
+    "name": "SDA_3",
+    "pins": [
+      "U_ESP2.28",
+      "R_SDA_3.2",
+      "J_CH3.7"
+    ]
+  },
+  {
+    "name": "SDA_4",
+    "pins": [
+      "U_ESP2.30",
+      "R_SDA_4.2",
+      "J_CH4.7"
+    ]
+  },
+  {
+    "name": "SDA_5",
+    "pins": [
+      "U_ESP2.31",
+      "R_SDA_5.2",
+      "J_CH5.7"
+    ]
+  },
+  {
+    "name": "5V_SYS",
+    "pins": [
+      "J_POWER.1",
+      "R_OE.1",
+      "U_SR0.16",
+      "U_SR0.10",
+      "C_SR0.1",
+      "U_SR1.16",
+      "U_SR1.10",
+      "C_SR1.1",
+      "U_SR2.16",
+      "U_SR2.10",
+      "C_SR2.1",
+      "J_CH0.5",
+      "J_CH1.5",
+      "J_CH2.5",
+      "J_CH3.5",
+      "J_CH4.5",
+      "J_CH5.5"
+    ]
+  },
+  {
+    "name": "5V_EDU",
+    "pins": [
+      "J_POWER.3",
+      "J_CH0.10",
+      "J_CH1.10",
+      "J_CH2.10",
+      "J_CH3.10",
+      "J_CH4.10",
+      "J_CH5.10"
+    ]
+  },
+  {
+    "name": "3V3_SYS",
+    "pins": [
+      "J_POWER.5",
+      "J_CH0.6",
+      "J_CH1.6",
+      "J_CH2.6",
+      "J_CH3.6",
+      "J_CH4.6",
+      "J_CH5.6"
+    ]
+  },
+  {
+    "name": "EDU_ON",
+    "pins": [
+      "J_POWER.7",
+      "Q_RAIL.2",
+      "R_RAIL_OFF.1"
+    ]
+  },
+  {
+    "name": "USB_RESET_N",
+    "pins": [
+      "U_WATCH.3",
+      "U_USB_POR.1",
+      "R_USB_POR.2"
+    ]
+  },
+  {
+    "name": "ALIVE",
+    "pins": [
+      "U_WATCH.13",
+      "Q_ALIVE.2",
+      "R_ALIVE_OFF.1"
+    ]
+  },
+  {
+    "name": "WATCH_CX",
+    "pins": [
+      "U_WATCH.14",
+      "C_WATCH.2"
+    ]
+  },
+  {
+    "name": "WATCH_RX",
+    "pins": [
+      "U_WATCH.15",
+      "R_WATCH.2",
+      "C_WATCH.1"
+    ]
+  },
+  {
+    "name": "SR_OE_N",
+    "pins": [
+      "R_OE.2",
+      "Q_ALIVE.3",
+      "U_SR0.13",
+      "U_SR1.13",
+      "U_SR2.13"
+    ]
+  },
+  {
+    "name": "OE_MID",
+    "pins": [
+      "Q_ALIVE.1",
+      "Q_RAIL.3"
+    ]
+  },
+  {
+    "name": "SR_CHAIN_1",
+    "pins": [
+      "U_SR0.9",
+      "U_SR1.14"
+    ]
+  },
+  {
+    "name": "RELAY_0",
+    "pins": [
+      "U_SR0.15",
+      "J_CH0.1"
+    ]
+  },
+  {
+    "name": "RELAY_1",
+    "pins": [
+      "U_SR0.1",
+      "J_CH0.2"
+    ]
+  },
+  {
+    "name": "RELAY_2",
+    "pins": [
+      "U_SR0.2",
+      "J_CH0.3"
+    ]
+  },
+  {
+    "name": "RELAY_3",
+    "pins": [
+      "U_SR0.3",
+      "J_CH1.1"
+    ]
+  },
+  {
+    "name": "RELAY_4",
+    "pins": [
+      "U_SR0.4",
+      "J_CH1.2"
+    ]
+  },
+  {
+    "name": "RELAY_5",
+    "pins": [
+      "U_SR0.5",
+      "J_CH1.3"
+    ]
+  },
+  {
+    "name": "RELAY_6",
+    "pins": [
+      "U_SR0.6",
+      "J_CH2.1"
+    ]
+  },
+  {
+    "name": "RELAY_7",
+    "pins": [
+      "U_SR0.7",
+      "J_CH2.2"
+    ]
+  },
+  {
+    "name": "SR_CHAIN_2",
+    "pins": [
+      "U_SR1.9",
+      "U_SR2.14"
+    ]
+  },
+  {
+    "name": "RELAY_8",
+    "pins": [
+      "U_SR1.15",
+      "J_CH2.3"
+    ]
+  },
+  {
+    "name": "RELAY_9",
+    "pins": [
+      "U_SR1.1",
+      "J_CH3.1"
+    ]
+  },
+  {
+    "name": "RELAY_10",
+    "pins": [
+      "U_SR1.2",
+      "J_CH3.2"
+    ]
+  },
+  {
+    "name": "RELAY_11",
+    "pins": [
+      "U_SR1.3",
+      "J_CH3.3"
+    ]
+  },
+  {
+    "name": "RELAY_12",
+    "pins": [
+      "U_SR1.4",
+      "J_CH4.1"
+    ]
+  },
+  {
+    "name": "RELAY_13",
+    "pins": [
+      "U_SR1.5",
+      "J_CH4.2"
+    ]
+  },
+  {
+    "name": "RELAY_14",
+    "pins": [
+      "U_SR1.6",
+      "J_CH4.3"
+    ]
+  },
+  {
+    "name": "RELAY_15",
+    "pins": [
+      "U_SR1.7",
+      "J_CH5.1"
+    ]
+  },
+  {
+    "name": "SR_CHAIN_3",
+    "pins": [
+      "U_SR2.9"
+    ]
+  },
+  {
+    "name": "RELAY_16",
+    "pins": [
+      "U_SR2.15",
+      "J_CH5.2"
+    ]
+  },
+  {
+    "name": "RELAY_17",
+    "pins": [
+      "U_SR2.1",
+      "J_CH5.3"
+    ]
+  }
+]
