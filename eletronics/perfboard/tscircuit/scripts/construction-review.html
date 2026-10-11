@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tedtronics construction audit — proposal</title>
+<style>
+:root{font:16px system-ui;color:#182a37;background:#eef2f5}body{margin:0}header,main{max-width:1500px;margin:auto;padding:20px}header{background:#fff;border-bottom:1px solid #ccd6df}h1{font-size:26px;margin:0 0 8px}h2{font-size:20px}h3{font-size:16px}.notice{border-left:5px solid #c16b00;padding:12px;background:#fff2d8}.controls{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}select,button{font:inherit;padding:8px;border:1px solid #9facb8;border-radius:6px;background:white}button{cursor:pointer}.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{background:white;padding:16px;border-radius:10px;margin-bottom:16px;min-width:0}.drawing{width:100%;height:420px;touch-action:none;cursor:grab;background:#fafcfd}.legend{font-size:13px;columns:2}.legend p{break-inside:avoid;margin:4px 0}table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:8px;border-bottom:1px solid #dce3ea;text-align:left;vertical-align:top}.scroll{overflow:auto}.muted{color:#546577}details{margin:12px 0}summary{cursor:pointer;font-weight:600}.schematic{max-height:600px;overflow:auto}.schematic svg{width:100%;height:auto;min-width:600px}a{color:#075c94}.badge{display:inline-block;background:#e4edf5;padding:4px 9px;border-radius:12px;font-size:13px}@media(max-width:800px){.pair{grid-template-columns:1fr}.drawing{height:360px}.legend{columns:1}header,main{padding:12px}}
+</style>
+<header><span class="badge">Construction audit · separate proposal · no saved build changes</span><h1>Build fewer difficult connections</h1><p>Stock-board fit studies and CP00–CP08 instructions. Firmware is supplied by your team.</p><div class="notice"><strong>Not released for soldering.</strong> The illustrative grid, module bodies and purchased contact dimensions are unverified. Drawings retain source pin identities; endpoint lines are not prescribed wire routes. Contact support fits the reference grid only; mounting and purchased parts need measurement.</div></header>
+<main>
+<section class="panel"><h2>Review a checkpoint</h2><div class="controls"><label>Checkpoint <select id="cp"></select></label><label>Board <select id="board"></select></label><button id="fit">Fit board</button><button id="toggle">Show schematic alongside</button></div><div id="win"></div></section>
+<div id="layout"><section class="panel"><h2 id="boardTitle"></h2><p id="boardNote" class="muted"></p><div class="controls"><label>Highlight <select id="focus"></select></label></div><div class="pair"><div><h3>TOP — component placement</h3><svg id="top" class="drawing"></svg></div><div><h3>MIRRORED UNDERSIDE — same TOP coordinates</h3><svg id="bottom" class="drawing"></svg></div></div><div id="legend" class="legend"></div></section><section id="schematicPanel" class="panel" hidden><h2>Existing native functional schematic</h2><p>Electrical reference from the current design, not a new proposal circuit or wiring route.</p><select id="section"></select><div id="schematic" class="schematic"></div></section></div>
+<section class="panel"><h2>Current group: placement, then inspection</h2><p>Place one component or entire node column; inspect separately. Wire actions remain individual. All coordinates are provisional TOP column,row, including in the mirrored view.</p><p id="description"></p><div id="pins" class="scroll"></div><h3>Endpoint studies</h3><p>Only endpoints assigned to this checkpoint or earlier are included. Cross-board links require a later harness design, strain relief and electrical review.</p><div id="wires" class="scroll"></div></section>
+<section class="panel"><h2>Acceptance and filming</h2><div id="acceptance"></div></section>
+<section class="panel"><h2>Measured construction baseline</h2><div id="baseline" class="scroll"></div><p id="totals"></p><p class="muted">Solder estimate = part pins + two ends per wire. Shared joints can combine ends; sockets, adapter soldering and external assemblies add work. These are descriptor-derived construction counts, not measured hardware results.</p><p><a href="README.md">Audit findings and architecture recommendation</a> · <a href="early-checkpoints.md">Detailed early construction proposal</a> · <a href="baseline.md">Baseline</a> · <a href="endpoints.csv">Endpoint CSV</a> · <a href="proposal.json">Proposal data</a></p></section>
+</main>
+<script>
+const data=/*PROPOSAL_DATA*/;
+const $=id=>document.getElementById(id),esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
+const table=(headers,rows)=>'<table><thead><tr>'+headers.map(x=>'<th>'+esc(x)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+r.map(x=>'<td>'+esc(x)+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
+const option=(v,t)=>'<option value="'+esc(v)+'">'+esc(t)+'</option>';
+$('cp').innerHTML=data.checkpoints.map(c=>option(c.phase,c.id+' — '+c.title)).join('');
+$('board').innerHTML=data.boards.map(b=>option(b.id,b.id)).join('');
+let selected='',phase=0;
+function board(){return data.boards.find(b=>b.id===$('board').value)}
+function boardWires(){return data.wires.filter(w=>w.phase<=phase&&(w.from.board===board().id||w.to.board===board().id))}
+function point(h,mirror=false){const b=board(),x=(b.stock.width-(b.stock.cols-1)*b.stock.pitch)/2+(h[0]-1)*b.stock.pitch,y=(b.stock.height-(b.stock.rows-1)*b.stock.pitch)/2+(h[1]-1)*b.stock.pitch;return [mirror?b.stock.width-x:x,y]}
+function draw(svg,mirror){const b=board(),s=b.stock;
+ let art='<rect x="0" y="0" width="'+s.width+'" height="'+s.height+'" rx="1" fill="#dcebe2" stroke="#48705d" stroke-width=".3"/>';
+ for(let row=1;row<=s.rows;row++)for(let col=1;col<=s.cols;col++){const [x,y]=point([col,row],mirror);art+='<circle cx="'+x+'" cy="'+y+'" r=".5" fill="#eee" stroke="#819986" stroke-width=".2"/>';}
+ for(let col=1;col<=s.cols;col++)if(col===1||col===s.cols||(col%5===0&&s.cols-col>1)){const [x]=point([col,1],mirror);art+='<text x="'+x+'" y="-1.8" text-anchor="middle" font-size="1.8">'+col+'</text>';}
+ for(let row=1;row<=s.rows;row++)if(row===1||row===s.rows||row%5===0){const [,y]=point([1,row],mirror);art+='<text x="-1.4" y="'+(y+.6)+'" text-anchor="end" font-size="1.8">'+row+'</text>';}
+ b.parts.forEach((p,index)=>{const pts=p.pins.map(pin=>point(pin.hole,mirror)),a=point([p.bounds.xmin,p.bounds.ymin],mirror),z=point([p.bounds.xmax,p.bounds.ymax],mirror),x=Math.min(a[0],z[0]),y=a[1],w=Math.abs(z[0]-a[0]),h=z[1]-a[1],active=p.phase<=phase,focus=selected===p.ref;
+  art+='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+(focus?'#ffd775':active?'#d3e3f7':'#e2e5e8')+'" fill-opacity=".85" stroke="'+(focus?'#bf6500':'#64809a')+'" stroke-width=".35"/>';
+  art+='<text x="'+(x+w/2)+'" y="'+(y-.25)+'" text-anchor="middle" font-size="1.8">'+(index+1)+'</text>';
+  pts.forEach(([x,y],k)=>{art+='<circle cx="'+x+'" cy="'+y+'" r="'+(k===0?'.8':'.65')+'" fill="'+(k===0?'#b63225':'#24597c')+'"/>';});
+  const labelX=s.width+5,labelY=3+index*3.2;art+='<text x="'+labelX+'" y="'+labelY+'" font-size="2.1">'+(index+1)+'. '+esc(p.ref)+'</text>';
+ });
+ const wire=boardWires().find(w=>w.id===selected);
+ if(wire){for(const e of [wire.from,wire.to])if(e.board===b.id){const [x,y]=point(e.hole,mirror);art+='<circle cx="'+x+'" cy="'+y+'" r="1.4" fill="none" stroke="'+wire.color+'" stroke-width=".6"/>';}
+ if(!wire.crossBoard&&mirror){const a=point(wire.from.hole,true),z=point(wire.to.hole,true);art+='<line x1="'+a[0]+'" y1="'+a[1]+'" x2="'+z[0]+'" y2="'+z[1]+'" stroke="'+wire.color+'" stroke-width=".45" stroke-dasharray="1 1"/>';}}
+ svg.innerHTML=art;svg.dataset.fit='-7 -6 '+(s.width+45)+' '+(s.height+12);svg.setAttribute('viewBox',svg.dataset.fit);
+}
+function render(){const b=board(),cp=data.checkpoints[phase];
+ $('boardTitle').textContent=b.id+' · 7×10 cm stock';$('boardNote').textContent=b.stock.status+(b.note?' · '+b.note:'');
+ $('win').innerHTML='<h3>'+esc(cp.id+' — '+cp.win)+'</h3><p><strong>Firmware handoff:</strong> '+esc(cp.firmware)+'</p>';
+ const items=b.parts.filter(p=>p.phase<=phase),wires=boardWires();$('focus').innerHTML=option('','Full board')+items.map(p=>option(p.ref,p.ref+' — '+p.label)).join('')+wires.map(w=>option(w.id,w.net+' · '+w.from.ref+' → '+w.to.ref)).join('');
+ if([...$('focus').options].some(o=>o.value===selected))$('focus').value=selected;else selected='';
+ renderFocus();
+ $('legend').innerHTML=b.parts.map((p,i)=>'<p><strong>'+(i+1)+'. '+esc(p.ref)+'</strong> — '+esc(p.label)+' · CP'+String(p.phase).padStart(2,'0')+(p.adapter?' · '+esc(p.adapter):'')+'</p>').join('');
+ $('acceptance').innerHTML='<h3>Removable link state</h3><ul>'+cp.links.map(l=>'<li>'+esc(l)+'</li>').join('')+'</ul><h3>Measure and record</h3><ol>'+cp.tests.map(t=>'<li>'+esc(t.description)+'</li>').join('')+'</ol><h3>Film the win and the failure</h3><ol>'+cp.filming.shots.map(s=>'<li>'+esc(s)+'</li>').join('')+'</ol><p><strong>Negative demonstration:</strong> '+esc(cp.filming.negative)+'</p><p>'+esc(cp.filming.record)+'</p>';
+ const sections=data.native[b.source]||{};$('section').innerHTML=Object.keys(sections).map(k=>option(k,k)).join('');renderSchematic();
+}
+function renderFocus(){const b=board();draw($('top'),false);draw($('bottom'),true);let parts=b.parts.filter(p=>p.phase<=phase);if(parts.some(p=>p.ref===selected))parts=parts.filter(p=>p.ref===selected);
+ $('description').textContent=parts.find(p=>p.ref===selected)?.description||'Select one component or wire to review its function, coordinates and inspection endpoints. Grey components reserve later installation space.';
+ $('pins').innerHTML=table(['Component','Pin','Role','TOP column,row'],parts.flatMap(p=>p.pins.map(pin=>[p.ref,pin.number,pin.label,pin.hole.join(',')])));
+ let wires=boardWires();if(wires.some(w=>w.id===selected))wires=wires.filter(w=>w.id===selected);
+ $('wires').innerHTML=table(['Net / purpose','From','To','Connection'],wires.map(w=>[w.net+' — '+w.description,w.from.board+' '+w.from.ref+'.'+w.from.pin+' ['+w.from.hole+']',w.to.board+' '+w.to.ref+'.'+w.to.pin+' ['+w.to.hole+']',w.crossBoard?'HARNESS STUDY — unresolved routing':w.bare?'Bare node strap':'Insulated underside wire — route pending']));
+}
+function renderSchematic(){const svg=(data.native[board().source]||{})[$('section').value];$('schematic').innerHTML=typeof svg==='string'?svg:'No native functional schematic for this contact placement study.';}
+$('cp').onchange=()=>{phase=Number($('cp').value);selected='';$('board').value=phase>=6?'voltage-1':phase>=1&&phase<=3?'continuity-1':'contacts-a1';render()};$('board').onchange=()=>{selected='';render()};$('focus').onchange=()=>{selected=$('focus').value;renderFocus()};$('section').onchange=renderSchematic;
+$('fit').onclick=()=>['top','bottom'].forEach(id=>$(id).setAttribute('viewBox',$(id).dataset.fit));
+$('toggle').onclick=()=>{const hidden=!$('schematicPanel').hidden;$('schematicPanel').hidden=hidden;$('layout').className=hidden?'':'pair';$('toggle').textContent=hidden?'Show schematic alongside':'Hide schematic'};
+for(const id of ['top','bottom']){const svg=$(id);let drag;
+ svg.addEventListener('wheel',e=>{e.preventDefault();const [x,y,w,h]=svg.getAttribute('viewBox').split(' ').map(Number),pt=new DOMPoint(e.clientX,e.clientY).matrixTransform(svg.getScreenCTM().inverse()),factor=Math.exp(Math.max(-.3,Math.min(.3,e.deltaY*.001)));if(w*factor<10||w*factor>400)return;svg.setAttribute('viewBox',[pt.x-(pt.x-x)*factor,pt.y-(pt.y-y)*factor,w*factor,h*factor].join(' '))},{passive:false});
+ svg.addEventListener('pointerdown',e=>{if(e.button!==0)return;svg.setPointerCapture(e.pointerId);drag={x:e.clientX,y:e.clientY,v:svg.getAttribute('viewBox').split(' ').map(Number),matrix:svg.getScreenCTM().inverse()}});
+ svg.addEventListener('pointermove',e=>{if(!drag)return;const a=new DOMPoint(drag.x,drag.y).matrixTransform(drag.matrix),z=new DOMPoint(e.clientX,e.clientY).matrixTransform(drag.matrix);svg.setAttribute('viewBox',[drag.v[0]-(z.x-a.x),drag.v[1]-(z.y-a.y),drag.v[2],drag.v[3]].join(' '))});svg.addEventListener('pointerup',()=>drag=null);svg.addEventListener('pointercancel',()=>drag=null);
+}
+$('baseline').innerHTML=table(['Design','Quantity','Original mm','Parts each','Wire segments each','Solder estimate each'],data.metrics.map(m=>[m.id,m.quantity,m.outlineMm.join('×'),m.parts,m.wireSegments,m.estimatedSolderOperations]));
+$('totals').textContent=data.totals.quantity+' permanent boards; '+data.totals.parts+' components; '+data.totals.wireSegments+' wire segments; '+data.totals.adapterParts+' adapter-mounted components. Purchased-part fit and future board allocation remain pending.';
+render();
+</script></html>

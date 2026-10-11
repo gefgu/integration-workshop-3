@@ -1,0 +1,997 @@
+{
+  "revision": "r6-four-board-hybrid",
+  "records": [
+    {
+      "checkpoint": "CP00",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp0-test1",
+          "description": "Identify the exact classic ESP32 DevKit pinout, the USB-powered 5V output and 3V3 output. Identify actual pogo and adapter dimensions before soldering. Confirm the four kit pieces fit the selected rows.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp0-test2",
+          "description": "Unpowered A1: all six contacts within each column <1Ω; different columns >10MΩ with external links isolated. Inspect pin1 and the NODE header mapping.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp0-test3",
+          "description": "Prototype disconnected from A1: measure USB 5V ≤5.25V and 3V3 3.20–3.38V. R_LIMIT is 560Ω ±1%, ≥0.25W. With its output shorted, source current ≤9.5mA; remove short before connecting the kit.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp0-test4",
+          "description": "Place fake battery negative C1 / positive C2, 1kΩ resistor C2–C3, LED anode C3 / cathode C4, and kit jumper C4–C1. Prototype J_OUTPUT pin1→A1 J_NODE pin3 and pin2→pin1. No final-power or matrix cable connected.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp0-test5",
+          "description": "Compatible factory firmware: GPIO32 LOW/reset makes LED OFF; explicit enable lights LED; disable turns it OFF. Record USB-test-source voltage at C2 under load; it is intentionally unregulated and must not be called the final 5V rail.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP01",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp1-test1",
+          "description": "Student supply OFF and positive fixed-battery lead unplugged. TEST_A→C4, TEST_B→C1; fit JP_RETURN only during test. Check stimulus current ≤0.34mA and educational contact voltages 0–5.25V.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp1-test2",
+          "description": "Calibrate open, a known short and 1kΩ. Measure open stimulus voltage Vs with DMM; infer R=11k×V/(Vs−V), accounting for divider gain and input loading. Known short ≤20Ω; ≥100Ω rejected; 20–100Ω or saturated/unstable readings inconclusive and OFF. Compare inferred short with DMM continuity <1Ω.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp1-test3",
+          "description": "Test the actual four-piece scene: correct C4–C1 kit jumper passes; one lifted contact and wrong-node placements fail. Include alternate paths through LED/resistor in calibration; no false pass through a component.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP02",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp2-test1",
+          "description": "Test the actual four-piece scene: correct C4–C1 kit jumper passes; one lifted contact and wrong-node placements fail. Include alternate paths through LED/resistor in calibration; no false pass through a component.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp2-test2",
+          "description": "Simulated camera approval + failed/inconclusive electrical result keeps student supply OFF. Correction requires a fresh electrical test and separate enable request.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP03",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp3-test1",
+          "description": "Before enable: stimulus OFF, JP_RETURN removed, test leads disconnected, fixed battery lead restored with power off. No automatic enable after a passing test.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp3-test2",
+          "description": "Simulated camera approval + failed/inconclusive electrical result keeps student supply OFF. Correction requires a fresh electrical test and separate enable request.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP04",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp4-test1",
+          "description": "Connect only one OLED at 0x3C to ESP1 FIX_SDA GPIO4 / FIX_SCL GPIO16 using 3.3V logic and removable leads. Use one effective set of pull-ups; continuity fixture must be unplugged when it is not used. Confirm carrier pin labels before power.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp4-test2",
+          "description": "OLED displays greeting with educational source OFF. Display unplug/reconnect and reset do not automatically enable the source.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP05",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp5-test1",
+          "description": "Display position A1, firmware revision, and Desligado/Pronto states. Never substitute a simulated GUI status for an actual hardware observation.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP06",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp6-test1",
+          "description": "Verify ADS1115 0x48. Sweep P1/P2 within 0–5.25V; compare displayed signed difference with DMM at 0,1,2.5,5V. Error ≤0.10V+5%|reading|, impedance ≥1MΩ, update rate ≥10Hz.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp6-test2",
+          "description": "Reverse sense polarity to show a negative difference; do not apply negative absolute contact voltages. P3 remains disconnected and ammeter paths open.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP07",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp7-test1",
+          "description": "With prototype source and diagnostic probes isolated as specified, compare capsule V(P1)−V(P2) with DMM at zero and the actual limited-source voltage. Error ≤0.10V+5%|reading|; ≥10 updates/s. All node absolute voltages 0–5.25V.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP08",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp8-test1",
+          "description": "Power OFF before swapping P1/P2 removable measurement leads. Compare signed differential reading with DMM in both orientations; never apply a negative absolute node voltage. P3 and ammeter paths remain disconnected.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP09",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp9-test1",
+          "description": "Unpowered: every rail >1kΩ to GND after capacitor charging; no accidental node/service connection.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp9-test2",
+          "description": "With links open: 5V buck 4.90–5.04V; 3.3V buck 3.20–3.38V. Current-limited 12V supply, 100mA initially.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP10",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp10-test1",
+          "description": "Independent OV disconnects: sweep 5V/3V3 buck interfaces with consumers isolated; verify actual thresholds and strict contact peak ≤5.25V during a bounded 12V failed-buck step. Test both guards separately before connecting any IC.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP11",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp11-test1",
+          "description": "Prototype USB positive and 3V3 supply links are removed before connecting final consumer links. Only one educational source may be connected. Inspect all power-board blocks before enabling; the student latch must not be powered as an incomplete circuit.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp11-test2",
+          "description": "Supervised factory qualification only: ALIVE is held LOW for startup/reset tests. All consumer links remain open until voltage guards pass. USB removal, held reset and a power cycle leave 5V_EDU OFF.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP12",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp12-test1",
+          "description": "1kΩ and 470Ω rail loads remain enabled; 330Ω or 100Ω load trips and remains latched. At 10mA: 5V_EDU 4.75–5.25V.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp12-test2",
+          "description": "Sweep load: trip threshold must be >10.6mA and ≤12mA; record REF_TRIP and CURRENT_SENSE.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp12-test3",
+          "description": "Supervised factory load test only: with power OFF, USB3V3→matrix J_POWER pin9 holds ALIVE high until CP13 watchdog exists. Explicit enable applies the bounded load; reset under overload must not release the latch. Remove the factory ALIVE link or hold it LOW to simulate heartbeat loss and prove OFF. Remove this link permanently at CP13.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP13",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp13-test1",
+          "description": "Replace any supervised factory ALIVE link with the completed USB-powered hardware watchdog. Send heartbeat ≤100ms; stopping heartbeat or removing USB must switch rail OFF within 350ms and not restart automatically. Record scope timing.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP14",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp14-test1",
+          "description": "Scope current at a switched 100Ω load: source current cut off within 1ms, including frozen controller. Do not use UART timestamps as timing evidence.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp14-test2",
+          "description": "Independent OV disconnects: sweep 5V/3V3 buck interfaces with consumers isolated; verify actual thresholds and strict contact peak ≤5.25V during a bounded 12V failed-buck step. Test both guards separately before connecting any IC.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP15",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp15-test1",
+          "description": "P3 low ≤0.5V and high ≥3.5V with measured 2mA load. Short to GND and separately to 5.25V: ≤12mA; scope transient and regulator oscillation.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp15-test2",
+          "description": "Pulse 0.5/1/10Hz and duty 25/50/75%: frequency ±5%; duty ±5 percentage points; measure at the physical node.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP16",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp16-test1",
+          "description": "Use a separately documented LED+1kΩ output fixture on P3. Do not connect the fixed battery to P3. OFF/reset/invalid state disables both output relays.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP17",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp17-test1",
+          "description": "Scope 25%, 50%, 75% duty at a known frequency; error ≤5 percentage points. Frequency 0.5–10Hz ±5%; ≥5ms break-before-make; changing mode first turns output OFF.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP18",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp18-test1",
+          "description": "Test each selected gate truth table using protected input levels. Require 20ms stable input and ≤100ms output response. Confirm open inputs read LOW.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp18-test2",
+          "description": "Record all four AND input combinations using bounded removable links and DMM-confirmed input levels.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP19",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp19-test1",
+          "description": "Record all four OR input combinations: input ≤1V LOW, ≥3V HIGH; 20ms stability and output response ≤100ms.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP20",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp20-test1",
+          "description": "Record LOW→HIGH and HIGH→LOW inversion; retain previous state in the input hysteresis band. Reset and invalid configurations leave output OFF.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP21",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp21-test1",
+          "description": "Set output, remove the set input and verify retained state. Reset clears it. Simultaneous set/reset resolves to zero.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp21-test2",
+          "description": "Restart, rail OFF or configuration loss clears memory and leaves output disabled.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP22",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp22-test1",
+          "description": "Current mode ±0/1/5/10mA: error ≤0.20mA+5%|reading|, ≥10 updates/s; voltage modes must leave ammeter switches open.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp22-test2",
+          "description": "INA226 with external 1Ω shunt 0x40 responds. Use a documented series test arrangement and removable leads; do not assume four-column capsule geometry supports every series arrangement.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp22-test3",
+          "description": "OFF, voltage or output mode opens both ammeter terminals. Verify leakage ≤10µA with test stimulus disconnected.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP23",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp23-test1",
+          "description": "Power OFF to change the documented series fixture between 1kΩ and 470Ω. Compare OLED current with DMM; ≤0.20mA+5%|reading| error. Never put the ammeter directly across the supply.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP24",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp24-test1",
+          "description": "MT supply 10.0–12.6V, digital high ≥3.3V, low ≤0.8V; reset and CS active high.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp24-test2",
+          "description": "Sweep all X addresses and Y buses, proving the non-monotonic X address map. Banks share BUS2…BUS7.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp24-test3",
+          "description": "Boot/reset/watchdog expiry: all crosspoints open. Disable rail, clear, configure, precheck, then enable; never configure live.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp24-test4",
+          "description": "Scope full clear + 22-node configuration ≤50ms at the physical strobe pins; verify Ron at 0/2.5/5V.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp24-test5",
+          "description": "Calibrate with 1kΩ 0.1%; distinguish open, short, 220Ω, 1kΩ and diode polarity; resistance error ≤10% after calibration.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP25",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp25-test1",
+          "description": "Discharge 1000µF initially at 5V to <0.1V in 3s; keep total analog pin current ≤12mA.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp25-test2",
+          "description": "Any short, unknown/invalid configuration or stale routing generation prevents rail enable; the precheck itself leaves rail off.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp25-test3",
+          "description": "With all power off remove only the fixed battery patch leads; retain every soldered wire. Connect A1 NODE ribbon. In matrix mode no fixed source or fixture stimulus may remain connected.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP26",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp26-test1",
+          "description": "Show a valid second battery position and corresponding kit arrangement. Invalid topology or stale routing generation cannot enable power.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP27",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp27-test1",
+          "description": "Repeat CP01 electrical mapping for A2/A3; test NODE00–NODE10 and positions 0/1/2.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp27-test2",
+          "description": "Three active capsules meet meter update rates and output timing concurrently; fourth active request refused.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp27-test3",
+          "description": "Repeat screen, voltage, pulse, gate, memory, current and leakage tests independently on each new card. Three active capsules meet all update/timing limits.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP28",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp28-test1",
+          "description": "Repeat the single-position acceptance at A3; exercise all three bank-A capsules concurrently. Every buffer B-side remains local, and every position retains the same mode capabilities.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP29",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp29-test1",
+          "description": "Repeat module mapping for B1/B2/B3; verify mirrored service order without renumbering holes.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp29-test2",
+          "description": "Test NODE00–NODE21 and all six smart positions, any combination of three active; no unintended bank-to-bank connection.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP30",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp30-test1",
+          "description": "Repeat single-position voltage, output, current, OLED and movement shutdown checks at B2 with unchanged capsule orientation.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP31",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp31-test1",
+          "description": "Moving a capsule drops rail before configuration; position identity is independent of capsule identity.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp31-test2",
+          "description": "Repeat single-position checks at B3; attempt a fourth active capsule and confirm rejection with power OFF.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP32",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp32-test1",
+          "description": "Pi separately powered: its 5V must not connect to bench 5V. Test all four USB/bench-power combinations for backfeeding.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp32-test2",
+          "description": "Verify physical Pi pin mapping and button debounce. Readiness alone does not energize; explicit request is required. Back/reset/restart returns OFF.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP33",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp33-test1",
+          "description": "Factory Pi demonstration uses explicit supervised approval; production mode remains blocked until NFC/full integration acceptance.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP34",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp34-test1",
+          "description": "RC522 SPI mode 0, MSB-first, ≤1MHz initial clock: known/unknown/absent tag correctly reported; NFC failure leaves session unapproved.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp34-test2",
+          "description": "Known identity, valid lesson and fresh controller ACKs permit a separate explicit enable request. NFC alone never energizes.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP35",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp35-test1",
+          "description": "Known tag allows the subsequent readiness checks; unknown/absent/error clears approval. Explicit Energizar is still required after a successful tag.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP36",
+      "status": "pending",
+      "hardwareSerial": null,
+      "firmwareRevision": null,
+      "equipment": [],
+      "links": [],
+      "measurements": [],
+      "waveformFiles": [],
+      "timestamp": null,
+      "tests": [
+        {
+          "id": "guided-cp36-test1",
+          "description": "Graph, recognition, predicted current, routing and all active capsule acknowledgements must pass before enable.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp36-test2",
+          "description": "USB unplug/reset or missed heartbeat disables rail and smart outputs within 1s; every restart begins OFF.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp36-test3",
+          "description": "30-minute repeated lessons with no reset, incorrect route or false trip. Series-circuit tests use explicitly documented removable leads where geometry requires them.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp36-test4",
+          "description": "Repeat hardware cutoff ≤1ms, strict transient contact peaks ≤5.25V, 30-minute operation, no backfeed, leakage ≤10µA and every six-position mode. Record oscilloscope readings as text; screenshots remain external.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        },
+        {
+          "id": "guided-cp36-test5",
+          "description": "Verify enclosure inaccessibility, cable strain relief and all purchased-part fit gates. Production release remains pending until actual evidence is recorded.",
+          "source": "manual",
+          "required": true,
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

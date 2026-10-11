@@ -1,5 +1,8 @@
 # Firmware and bench contracts
 
+> New construction uses [revision5/firmware.md](revision5/firmware.md). Its measured-carrier interfaces, 11kΩ stimulus, shared bank scanners, RC522 and tighter watchdog timing supersede the legacy mappings below. Existing app/catalog builds remain on their original revision.
+
+
 Earlier soldered hardware is immutable across construction checkpoints; later functional groups are added without rework. Early checkpoint firmware is an explicit supervised factory-test mode with bounded fixtures and no production lesson/session authorization. CP36 implements the complete interlock contract. This document specifies interfaces; it does not implement checkpoint firmware.
 
 ## Power and state machine

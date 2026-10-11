@@ -1,4 +1,24 @@
-# Perfboard audit — revision 4
+# Perfboard audit
+
+## Four-board hybrid candidate
+
+[Revision6](revision6/README.md) evaluates two 10×20 cm contact boards above one power/protection and one router/matrix/interface board on a removable tray. It retains all revision5 functional components/nets and CP00–CP36 phases, with a separate smart PCB contract and temporary reference fixture. `assessment.json` distinguishes software checks from measured fit, construction access, powered qualification and fabrication. Unknown measurements remain pending; no third lower board is authorized. Do not treat the inherited smart layouts as manufactured PCBs.
+
+## Implemented revision 5
+
+The independent [revision-5 model and PDFs](revision5/README.md) supersede revision 4 for new construction. It uses only provisional 7×10 cm stock layouts, shared bank voltage scanners, socketed DIP support, six isolated current-module interfaces and RC522. Existing app progress stays pinned to its earlier revision.
+
+Native complete-board and functional-sheet checks, pad copper/style checks and every checkpoint’s local wire connectivity regenerate with `npm run build:revision5`; inspect [the generated report](revision5/checks.json) for actual current results. No fabricated traces are generated. These checks establish descriptor/geometry consistency, not powered behavior or a measured stock fit.
+
+Corrected during implementation: local buffer bias avoids relying on millivolt output swing at ground; PhotoMOS LED resistors now meet the recommended drive range with driver-drop allowance; current-sense Kelvin connections terminate directly at the external shunt; INA226 factory VBUS routing must be inspected rather than grounded; continuity stimulus is 11kΩ±1% to respect the 0.34mA bound; RC522 uses MSB-first SPI; ESP2 joystick uses ADC1; router/smart watchdog domains are independent; temporary supply links and unused buffer-input ties have explicit removal phases. CP00 includes its temporary solderless source drawing and fixed LED loop.
+
+The design remains an engineering prototype. Adapter reduction (47→23) does not make its 27 stock boards, 341 distribution posts and 279 harness conductors a minimum-work optimum. Purchased dimensions, precision/protection sourcing, firmware scheduling and bench qualification remain release gates. [Firmware handoff](revision5/firmware.md) and [purchasing review](revision5/sourcing.md) describe those limits.
+
+## Historical revision-4 evidence
+
+## Subsequent construction review
+
+The [7×10 cm stock-board construction audit](construction-audit/README.md) compares the existing seventeen-board design with simpler construction options and provides separate CP00–CP08 placement studies. The user now requires only 7×10 cm double-sided fiberglass stock for new permanent layouts. These studies are not a released replacement catalog, firmware implementation or physical verification. Existing revision-4 software evidence below applies to its original circuits and outlines.
 
 ## Status and scope
 

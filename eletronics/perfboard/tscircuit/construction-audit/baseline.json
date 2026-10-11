@@ -1,0 +1,474 @@
+{
+  "sourceHashes": {
+    "design/boards.mjs": "50ef48de49204bf94ca586d06cd8430257d89e03461bf71250425cf5875d9258",
+    "design/model.mjs": "d58491b3fc559371d03e6b1a67bef6f4bf0b4f4aea7f4d554d3c2741fa4baa02",
+    "design/stages.mjs": "f1241a6926a9ed6b849b74e66562ed0dca0ea1e353470fb15ca048698a3d5782",
+    "design/cables.mjs": "75b27272da12f20ff03b892caa35f0e4b201e17c373b99187964e3efe5a0da08",
+    "design/checkpoints.mjs": "6515a5dad0fe83be900b5bd227fabafbe1f7200af9260ab8c54d96b19df2b901"
+  },
+  "metrics": [
+    {
+      "id": "a1",
+      "quantity": 1,
+      "temporary": false,
+      "outlineMm": [
+        71.1,
+        100
+      ],
+      "parts": 7,
+      "installedPins": 48,
+      "adapterParts": 0,
+      "connectorPins": 20,
+      "wireSegments": 33,
+      "wireEndpoints": 66,
+      "bareSegments": 20,
+      "estimatedSolderOperations": 114,
+      "maxWireAttachmentsAtPin": 3,
+      "wireLengthMm": 1501.1400000000003,
+      "sections": [
+        {
+          "name": "Nodes",
+          "parts": 4
+        },
+        {
+          "name": "Service",
+          "parts": 3
+        }
+      ],
+      "originalOutlineFitsStock": false
+    },
+    {
+      "id": "a2",
+      "quantity": 1,
+      "temporary": false,
+      "outlineMm": [
+        71.1,
+        100
+      ],
+      "parts": 7,
+      "installedPins": 48,
+      "adapterParts": 0,
+      "connectorPins": 20,
+      "wireSegments": 33,
+      "wireEndpoints": 66,
+      "bareSegments": 20,
+      "estimatedSolderOperations": 114,
+      "maxWireAttachmentsAtPin": 3,
+      "wireLengthMm": 1501.1400000000003,
+      "sections": [
+        {
+          "name": "Nodes",
+          "parts": 4
+        },
+        {
+          "name": "Service",
+          "parts": 3
+        }
+      ],
+      "originalOutlineFitsStock": false
+    },
+    {
+      "id": "a3",
+      "quantity": 1,
+      "temporary": false,
+      "outlineMm": [
+        53.34,
+        100
+      ],
+      "parts": 6,
+      "installedPins": 42,
+      "adapterParts": 0,
+      "connectorPins": 20,
+      "wireSegments": 27,
+      "wireEndpoints": 54,
+      "bareSegments": 15,
+      "estimatedSolderOperations": 96,
+      "maxWireAttachmentsAtPin": 3,
+      "wireLengthMm": 1193.8,
+      "sections": [
+        {
+          "name": "Nodes",
+          "parts": 3
+        },
+        {
+          "name": "Service",
+          "parts": 3
+        }
+      ],
+      "originalOutlineFitsStock": true
+    },
+    {
+      "id": "b1",
+      "quantity": 1,
+      "temporary": false,
+      "outlineMm": [
+        71.1,
+        100
+      ],
+      "parts": 7,
+      "installedPins": 48,
+      "adapterParts": 0,
+      "connectorPins": 20,
+      "wireSegments": 33,
+      "wireEndpoints": 66,
+      "bareSegments": 20,
+      "estimatedSolderOperations": 114,
+      "maxWireAttachmentsAtPin": 3,
+      "wireLengthMm": 1480.8200000000002,
+      "sections": [
+        {
+          "name": "Nodes",
+          "parts": 4
+        },
+        {
+          "name": "Service",
+          "parts": 3
+        }
+      ],
+      "originalOutlineFitsStock": false
+    },
+    {
+      "id": "b2",
+      "quantity": 1,
+      "temporary": false,
+      "outlineMm": [
+        71.1,
+        100
+      ],
+      "parts": 7,
+      "installedPins": 48,
+      "adapterParts": 0,
+      "connectorPins": 20,
+      "wireSegments": 33,
+      "wireEndpoints": 66,
+      "bareSegments": 20,
+      "estimatedSolderOperations": 114,
+      "maxWireAttachmentsAtPin": 3,
+      "wireLengthMm": 1480.8200000000002,
+      "sections": [
+        {
+          "name": "Nodes",
+          "parts": 4
+        },
+        {
+          "name": "Service",
+          "parts": 3
+        }
+      ],
+      "originalOutlineFitsStock": false
+    },
+    {
+      "id": "b3",
+      "quantity": 1,
+      "temporary": false,
+      "outlineMm": [
+        53.34,
+        100
+      ],
+      "parts": 6,
+      "installedPins": 42,
+      "adapterParts": 0,
+      "connectorPins": 20,
+      "wireSegments": 27,
+      "wireEndpoints": 54,
+      "bareSegments": 15,
+      "estimatedSolderOperations": 96,
+      "maxWireAttachmentsAtPin": 3,
+      "wireLengthMm": 1173.4799999999998,
+      "sections": [
+        {
+          "name": "Nodes",
+          "parts": 3
+        },
+        {
+          "name": "Service",
+          "parts": 3
+        }
+      ],
+      "originalOutlineFitsStock": true
+    },
+    {
+      "id": "power",
+      "quantity": 1,
+      "temporary": false,
+      "outlineMm": [
+        100,
+        200
+      ],
+      "parts": 64,
+      "installedPins": 220,
+      "adapterParts": 7,
+      "connectorPins": 46,
+      "wireSegments": 167,
+      "wireEndpoints": 334,
+      "bareSegments": 0,
+      "estimatedSolderOperations": 554,
+      "maxWireAttachmentsAtPin": 55,
+      "wireLengthMm": 15737.84,
+      "sections": [
+        {
+          "name": "Input",
+          "parts": 10
+        },
+        {
+          "name": "VoltageGuard",
+          "parts": 18
+        },
+        {
+          "name": "Student",
+          "parts": 8
+        },
+        {
+          "name": "Reference",
+          "parts": 10
+        },
+        {
+          "name": "Latch",
+          "parts": 10
+        },
+        {
+          "name": "Indicator",
+          "parts": 4
+        },
+        {
+          "name": "Outputs",
+          "parts": 4
+        }
+      ],
+      "originalOutlineFitsStock": false
+    },
+    {
+      "id": "smart-controller",
+      "quantity": 1,
+      "temporary": false,
+      "outlineMm": [
+        100,
+        200
+      ],
+      "parts": 36,
+      "installedPins": 223,
+      "adapterParts": 0,
+      "connectorPins": 70,
+      "wireSegments": 142,
+      "wireEndpoints": 284,
+      "bareSegments": 0,
+      "estimatedSolderOperations": 507,
+      "maxWireAttachmentsAtPin": 31,
+      "wireLengthMm": 11572.240000000003,
+      "sections": [
+        {
+          "name": "Controller",
+          "parts": 9
+        },
+        {
+          "name": "Watchdog",
+          "parts": 12
+        },
+        {
+          "name": "Registers",
+          "parts": 9
+        },
+        {
+          "name": "Channels",
+          "parts": 6
+        }
+      ],
+      "originalOutlineFitsStock": false
+    },
+    {
+      "id": "smart-channel",
+      "quantity": 6,
+      "temporary": false,
+      "outlineMm": [
+        100,
+        150
+      ],
+      "parts": 54,
+      "installedPins": 170,
+      "adapterParts": 6,
+      "connectorPins": 20,
+      "wireSegments": 127,
+      "wireEndpoints": 254,
+      "bareSegments": 0,
+      "estimatedSolderOperations": 424,
+      "maxWireAttachmentsAtPin": 36,
+      "wireLengthMm": 7673.339999999996,
+      "sections": [
+        {
+          "name": "Interface",
+          "parts": 7
+        },
+        {
+          "name": "Voltage",
+          "parts": 12
+        },
+        {
+          "name": "Current",
+          "parts": 11
+        },
+        {
+          "name": "Limits",
+          "parts": 16
+        },
+        {
+          "name": "Output",
+          "parts": 8
+        }
+      ],
+      "originalOutlineFitsStock": false
+    },
+    {
+      "id": "matrix",
+      "quantity": 1,
+      "temporary": false,
+      "outlineMm": [
+        150,
+        150
+      ],
+      "parts": 55,
+      "installedPins": 338,
+      "adapterParts": 2,
+      "connectorPins": 79,
+      "wireSegments": 187,
+      "wireEndpoints": 374,
+      "bareSegments": 0,
+      "estimatedSolderOperations": 712,
+      "maxWireAttachmentsAtPin": 51,
+      "wireLengthMm": 15544.800000000008,
+      "sections": [
+        {
+          "name": "Controller",
+          "parts": 4
+        },
+        {
+          "name": "Watchdog",
+          "parts": 10
+        },
+        {
+          "name": "Control",
+          "parts": 15
+        },
+        {
+          "name": "Matrix",
+          "parts": 6
+        },
+        {
+          "name": "Nodes",
+          "parts": 6
+        },
+        {
+          "name": "Tools",
+          "parts": 10
+        },
+        {
+          "name": "Return",
+          "parts": 4
+        }
+      ],
+      "originalOutlineFitsStock": false
+    },
+    {
+      "id": "integration",
+      "quantity": 1,
+      "temporary": false,
+      "outlineMm": [
+        100,
+        100
+      ],
+      "parts": 9,
+      "installedPins": 59,
+      "adapterParts": 0,
+      "connectorPins": 51,
+      "wireSegments": 19,
+      "wireEndpoints": 38,
+      "bareSegments": 0,
+      "estimatedSolderOperations": 97,
+      "maxWireAttachmentsAtPin": 6,
+      "wireLengthMm": 929.64,
+      "sections": [
+        {
+          "name": "Pi",
+          "parts": 2
+        },
+        {
+          "name": "Buttons",
+          "parts": 7
+        }
+      ],
+      "originalOutlineFitsStock": false
+    },
+    {
+      "id": "continuity-fixture",
+      "quantity": 1,
+      "temporary": false,
+      "outlineMm": [
+        100,
+        100
+      ],
+      "parts": 23,
+      "installedPins": 66,
+      "adapterParts": 2,
+      "connectorPins": 9,
+      "wireSegments": 48,
+      "wireEndpoints": 96,
+      "bareSegments": 0,
+      "estimatedSolderOperations": 162,
+      "maxWireAttachmentsAtPin": 14,
+      "wireLengthMm": 3312.1600000000003,
+      "sections": [
+        {
+          "name": "Interface",
+          "parts": 5
+        },
+        {
+          "name": "Stimulus",
+          "parts": 6
+        },
+        {
+          "name": "Sense",
+          "parts": 12
+        }
+      ],
+      "originalOutlineFitsStock": false
+    },
+    {
+      "id": "usb-prototype",
+      "quantity": 1,
+      "temporary": true,
+      "outlineMm": [
+        54,
+        82
+      ],
+      "parts": 8,
+      "installedPins": 20,
+      "adapterParts": 0,
+      "connectorPins": 6,
+      "wireSegments": 9,
+      "wireEndpoints": 18,
+      "bareSegments": 0,
+      "estimatedSolderOperations": 0,
+      "maxWireAttachmentsAtPin": 4,
+      "wireLengthMm": 469.90000000000003,
+      "sections": [
+        {
+          "name": "Switch",
+          "parts": 8
+        }
+      ],
+      "originalOutlineFitsStock": true
+    }
+  ],
+  "totals": {
+    "quantity": 17,
+    "parts": 551,
+    "installedPins": 2202,
+    "adapterParts": 47,
+    "connectorPins": 495,
+    "wireSegments": 1511,
+    "wireEndpoints": 3022,
+    "bareSegments": 110,
+    "estimatedSolderOperations": 5224,
+    "cables": 22,
+    "cableConductors": 209
+  }
+}

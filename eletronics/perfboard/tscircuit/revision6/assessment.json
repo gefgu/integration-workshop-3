@@ -1,0 +1,159 @@
+{
+  "revision": "r6-four-board-hybrid",
+  "decision": "pending",
+  "softwareStatus": "pass",
+  "mechanicalStatus": "pending",
+  "electricalStatus": "pending",
+  "manufacturingStatus": "pending",
+  "netPreservation": {
+    "comparedPins": 1659,
+    "issues": [],
+    "functionalPartsCompared": 457
+  },
+  "height": {
+    "status": "pending",
+    "requiredHeightMm": null,
+    "availableHeightMm": null
+  },
+  "stockStatus": "pending",
+  "planarStatus": "pending",
+  "metrics": {
+    "revision5": {
+      "boards": 27,
+      "parts": 798,
+      "functionalParts": 457,
+      "terminalPosts": 341,
+      "pins": 2162,
+      "wires": 1392,
+      "adapters": 23,
+      "estimatedBoardSolderOperations": 4946,
+      "maxLocalWireAttachments": 2
+    },
+    "permanent": {
+      "boards": 4,
+      "parts": 190,
+      "functionalParts": 167,
+      "terminalPosts": 23,
+      "pins": 863,
+      "wires": 580,
+      "adapters": 9,
+      "estimatedBoardSolderOperations": 2023,
+      "maxLocalWireAttachments": 2
+    },
+    "smartReference": {
+      "boards": 12,
+      "parts": 522,
+      "functionalParts": 290,
+      "terminalPosts": 232,
+      "pins": 1213,
+      "wires": 795,
+      "adapters": 14,
+      "estimatedBoardSolderOperations": 2803,
+      "maxLocalWireAttachments": 2
+    },
+    "harnessConductors": 210,
+    "harnessEndTerminations": 420,
+    "caveat": "Permanent totals count four perfboards only. SmartReference totals describe inherited electrical contracts, not PCB dimensions or fabrication files. Module internals, sockets and adapters are excluded from solder estimates."
+  },
+  "wiring": [
+    {
+      "board": "contact-a",
+      "wires": 97,
+      "crossings": 49,
+      "lengthMm": 3086.0999999999963,
+      "sensitiveMaxLengthMm": 0,
+      "status": "pending physical access and noise/stability review; crossings require insulated wires"
+    },
+    {
+      "board": "contact-b",
+      "wires": 97,
+      "crossings": 23,
+      "lengthMm": 3075.9399999999964,
+      "sensitiveMaxLengthMm": 0,
+      "status": "pending physical access and noise/stability review; crossings require insulated wires"
+    },
+    {
+      "board": "power",
+      "wires": 167,
+      "crossings": 854,
+      "lengthMm": 8557.259999999998,
+      "sensitiveMaxLengthMm": 86.36,
+      "status": "pending physical access and noise/stability review; crossings require insulated wires"
+    },
+    {
+      "board": "router-matrix",
+      "wires": 219,
+      "crossings": 2259,
+      "lengthMm": 14168.11999999999,
+      "sensitiveMaxLengthMm": 66.03999999999999,
+      "status": "pending physical access and noise/stability review; crossings require insulated wires"
+    }
+  ],
+  "maxWireAttachments": 2,
+  "permanentBoardCount": 4,
+  "smartReferenceLayoutCount": 12,
+  "prototype": {
+    "status": "full-7x10-layout-failed",
+    "finding": "smart-reference: U_SMART_SAFETY_USB_POR does not fit 26x38",
+    "earlyStatus": "provisional-pad-fit"
+  },
+  "evaluation": {
+    "permanentIds": [
+      "contact-a",
+      "contact-b",
+      "power",
+      "router-matrix"
+    ],
+    "smartReferenceIds": [
+      "smart-core",
+      "smart-safety",
+      "measurement-a-precision",
+      "measurement-a-buffers",
+      "bank-a-position-0",
+      "bank-a-position-1",
+      "bank-a-position-2",
+      "measurement-b-precision",
+      "measurement-b-buffers",
+      "bank-b-position-3",
+      "bank-b-position-4",
+      "bank-b-position-5"
+    ],
+    "lowerBoardLimit": 2,
+    "tray": "Removable; harnesses detachable; no desoldering for extraction",
+    "contactGeometry": {
+      "columnsPerBank": 11,
+      "columnPitchMm": 17.78,
+      "rowPitchMm": 10.16,
+      "columnSpanMm": 177.8,
+      "rowSpanMm": 50.8
+    },
+    "mechanicalStatus": "pending",
+    "electricalStatus": "pending",
+    "manufacturingStatus": "pending",
+    "exclusions": [
+      "Smart reference layouts are not PCB designs or Gerbers",
+      "Buck bodies and smart PCB bodies require measured tray/enclosure allocation"
+    ],
+    "fitFailurePolicy": "Fail the four-perfboard arrangement; report minimum PCB consolidation; do not add a lower board",
+    "boardMap": [
+      "contact-a",
+      "contact-b",
+      "power",
+      "router-matrix",
+      "smart-core",
+      "smart-safety",
+      "measurement-a-precision",
+      "measurement-a-buffers",
+      "bank-a-position-0",
+      "bank-a-position-1",
+      "bank-a-position-2",
+      "measurement-b-precision",
+      "measurement-b-buffers",
+      "bank-b-position-3",
+      "bank-b-position-4",
+      "bank-b-position-5"
+    ]
+  },
+  "reason": "Software consistency passes; measured fit, build access, bench qualification and smart PCB fabrication remain open.",
+  "buildRelease": false
+}

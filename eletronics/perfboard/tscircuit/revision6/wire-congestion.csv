@@ -1,0 +1,5 @@
+"board","wire segments","proper segment crossings","prescribed length mm","max sensitive path mm"
+"contact-a","97","49","3086.1","0.0"
+"contact-b","97","23","3075.9","0.0"
+"power","167","854","8557.3","86.4"
+"router-matrix","219","2259","14168.1","66.0"

@@ -17,7 +17,7 @@ function bound(p) { const xs=p.pins.map(p=>p.hole[0]),ys=p.pins.map(p=>p.hole[1]
 // Shelf-free deterministic placement into documented grid holes. This does not route wires.
 // Stable order keeps repeated smart cards identical. Locked pogo coordinates never move.
 export function place(b) {
- const occupied=[...b.parts.filter(p=>p.locked).map(bound),...b.mounts.map(([x,y])=>({xmin:x-.85,xmax:x+.85,ymin:y-.85,ymax:y+.85}))];
+ const occupied=[...b.parts.filter(p=>p.locked).map(bound),...(b.keepouts??[]),...b.mounts.map(([x,y])=>({xmin:x-.85,xmax:x+.85,ymin:y-.85,ymax:y+.85}))];
  for(const p of b.parts.filter(p=>!p.locked)) {
    const old=bound(p),w=old.xmax-old.xmin,h=old.ymax-old.ymin;let found=false;
    for(let j=4;j<b.rows-2&&!found;j++)for(let i=4;i<b.cols-2&&!found;i++) {
