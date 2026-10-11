@@ -1,0 +1,261 @@
+{
+  "status": "pass",
+  "scope": "Native pad/copper geometry only. No routed copper: hand-wire connectivity is checked separately.",
+  "results": [
+    {
+      "board": "contact-a",
+      "results": [
+        {
+          "stage": "shorts",
+          "ok": true,
+          "exitCode": 0
+        },
+        {
+          "stage": "pcb-style",
+          "ok": true,
+          "exitCode": 0
+        }
+      ]
+    },
+    {
+      "board": "contact-b",
+      "results": [
+        {
+          "stage": "shorts",
+          "ok": true,
+          "exitCode": 0
+        },
+        {
+          "stage": "pcb-style",
+          "ok": true,
+          "exitCode": 0
+        }
+      ]
+    },
+    {
+      "board": "power",
+      "results": [
+        {
+          "stage": "shorts",
+          "ok": true,
+          "exitCode": 0
+        },
+        {
+          "stage": "pcb-style",
+          "ok": true,
+          "exitCode": 0
+        }
+      ]
+    },
+    {
+      "board": "router-matrix",
+      "results": [
+        {
+          "stage": "shorts",
+          "ok": true,
+          "exitCode": 0
+        },
+        {
+          "stage": "pcb-style",
+          "ok": true,
+          "exitCode": 0
+        }
+      ]
+    },
+    {
+      "board": "smart-core",
+      "results": [
+        {
+          "stage": "shorts",
+          "ok": true,
+          "exitCode": 0
+        },
+        {
+          "stage": "pcb-style",
+          "ok": true,
+          "exitCode": 0
+        }
+      ]
+    },
+    {
+      "board": "smart-safety",
+      "results": [
+        {
+          "stage": "shorts",
+          "ok": true,
+          "exitCode": 0
+        },
+        {
+          "stage": "pcb-style",
+          "ok": true,
+          "exitCode": 0
+        }
+      ]
+    },
+    {
+      "board": "measurement-a-precision",
+      "results": [
+        {
+          "stage": "shorts",
+          "ok": true,
+          "exitCode": 0
+        },
+        {
+          "stage": "pcb-style",
+          "ok": true,
+          "exitCode": 0
+        }
+      ]
+    },
+    {
+      "board": "measurement-a-buffers",
+      "results": [
+        {
+          "stage": "shorts",
+          "ok": true,
+          "exitCode": 0
+        },
+        {
+          "stage": "pcb-style",
+          "ok": true,
+          "exitCode": 0
+        }
+      ]
+    },
+    {
+      "board": "bank-a-position-0",
+      "results": [
+        {
+          "stage": "shorts",
+          "ok": true,
+          "exitCode": 0
+        },
+        {
+          "stage": "pcb-style",
+          "ok": true,
+          "exitCode": 0
+        }
+      ]
+    },
+    {
+      "board": "bank-a-position-1",
+      "results": [
+        {
+          "stage": "shorts",
+          "ok": true,
+          "exitCode": 0
+        },
+        {
+          "stage": "pcb-style",
+          "ok": true,
+          "exitCode": 0
+        }
+      ]
+    },
+    {
+      "board": "bank-a-position-2",
+      "results": [
+        {
+          "stage": "shorts",
+          "ok": true,
+          "exitCode": 0
+        },
+        {
+          "stage": "pcb-style",
+          "ok": true,
+          "exitCode": 0
+        }
+      ]
+    },
+    {
+      "board": "measurement-b-precision",
+      "results": [
+        {
+          "stage": "shorts",
+          "ok": true,
+          "exitCode": 0
+        },
+        {
+          "stage": "pcb-style",
+          "ok": true,
+          "exitCode": 0
+        }
+      ]
+    },
+    {
+      "board": "measurement-b-buffers",
+      "results": [
+        {
+          "stage": "shorts",
+          "ok": true,
+          "exitCode": 0
+        },
+        {
+          "stage": "pcb-style",
+          "ok": true,
+          "exitCode": 0
+        }
+      ]
+    },
+    {
+      "board": "bank-b-position-3",
+      "results": [
+        {
+          "stage": "shorts",
+          "ok": true,
+          "exitCode": 0
+        },
+        {
+          "stage": "pcb-style",
+          "ok": true,
+          "exitCode": 0
+        }
+      ]
+    },
+    {
+      "board": "bank-b-position-4",
+      "results": [
+        {
+          "stage": "shorts",
+          "ok": true,
+          "exitCode": 0
+        },
+        {
+          "stage": "pcb-style",
+          "ok": true,
+          "exitCode": 0
+        }
+      ]
+    },
+    {
+      "board": "bank-b-position-5",
+      "results": [
+        {
+          "stage": "shorts",
+          "ok": true,
+          "exitCode": 0
+        },
+        {
+          "stage": "pcb-style",
+          "ok": true,
+          "exitCode": 0
+        }
+      ]
+    },
+    {
+      "board": "smart-early",
+      "results": [
+        {
+          "stage": "shorts",
+          "ok": true,
+          "exitCode": 0
+        },
+        {
+          "stage": "pcb-style",
+          "ok": true,
+          "exitCode": 0
+        }
+      ]
+    }
+  ]
+}

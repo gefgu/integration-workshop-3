@@ -1,0 +1,4876 @@
+{
+  "status": "pass",
+  "scope": "Proposal geometry and source identity only; no electrical or physical acceptance",
+  "checks": [
+    {
+      "name": "contacts-a1.J_NODE00: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "contacts-a1.J_NODE00: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "contacts-a1.J_NODE00.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE00.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE00.3: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE00.4: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE00.5: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE00.6: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE01: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "contacts-a1.J_NODE01: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "contacts-a1.J_NODE01.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE01.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE01.3: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE01.4: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE01.5: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE01.6: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE02: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "contacts-a1.J_NODE02: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "contacts-a1.J_NODE02.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE02.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE02.3: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE02.4: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE02.5: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE02.6: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE03: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "contacts-a1.J_NODE03: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "contacts-a1.J_NODE03.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE03.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE03.3: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE03.4: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE03.5: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE03.6: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_SERVICE: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "contacts-a1.J_SERVICE: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "contacts-a1.J_SERVICE.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_SERVICE.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_SERVICE.3: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_SERVICE.4: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "contacts-a1.J_NODE: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "contacts-a1.J_NODE.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE.3: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE.4: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE.5: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE.6: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE.7: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE.8: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE.9: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_NODE.10: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_SMART: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "contacts-a1.J_SMART: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "contacts-a1.J_SMART.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_SMART.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_SMART.3: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_SMART.4: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_SMART.5: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_SMART.6: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_SMART.7: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_SMART.8: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_SMART.9: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1.J_SMART.10: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "contacts-a1: J_NODE00/J_NODE01 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "contacts-a1: J_NODE00/J_NODE02 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "contacts-a1: J_NODE00/J_NODE03 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "contacts-a1: J_NODE00/J_SERVICE envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "contacts-a1: J_NODE00/J_NODE envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "contacts-a1: J_NODE00/J_SMART envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "contacts-a1: J_NODE01/J_NODE02 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "contacts-a1: J_NODE01/J_NODE03 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "contacts-a1: J_NODE01/J_SERVICE envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "contacts-a1: J_NODE01/J_NODE envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "contacts-a1: J_NODE01/J_SMART envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "contacts-a1: J_NODE02/J_NODE03 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "contacts-a1: J_NODE02/J_SERVICE envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "contacts-a1: J_NODE02/J_NODE envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "contacts-a1: J_NODE02/J_SMART envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "contacts-a1: J_NODE03/J_SERVICE envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "contacts-a1: J_NODE03/J_NODE envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "contacts-a1: J_NODE03/J_SMART envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "contacts-a1: J_SERVICE/J_NODE envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "contacts-a1: J_SERVICE/J_SMART envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "contacts-a1: J_NODE/J_SMART envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.3: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.4: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.5: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.6: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.7: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.8: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.9: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.10: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.11: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.12: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.13: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.14: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.15: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.16: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.17: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.18: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.19: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.20: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.21: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.22: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.23: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.24: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.25: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.26: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.27: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.28: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.29: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.30: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.31: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.32: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.33: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.34: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.35: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.36: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.37: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.U_ESP1.38: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.J_FIXTURE: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "esp1-carrier-1.J_FIXTURE: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "esp1-carrier-1.J_FIXTURE.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.J_FIXTURE.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.J_FIXTURE.3: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.J_FIXTURE.4: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.J_FIXTURE.5: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.J_PROTOTYPE: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "esp1-carrier-1.J_PROTOTYPE: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "esp1-carrier-1.J_PROTOTYPE.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.J_PROTOTYPE.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.J_PROTOTYPE.3: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1.J_PROTOTYPE.4: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "esp1-carrier-1: U_ESP1/J_FIXTURE envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "esp1-carrier-1: U_ESP1/J_PROTOTYPE envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "esp1-carrier-1: J_FIXTURE/J_PROTOTYPE envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1.J_CONTROL: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "continuity-1.J_CONTROL: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "continuity-1.J_CONTROL.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.J_CONTROL.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.J_CONTROL.3: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.J_CONTROL.4: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.J_CONTROL.5: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.J_TEST: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "continuity-1.J_TEST: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "continuity-1.J_TEST.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.J_TEST.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.JP_RETURN: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "continuity-1.JP_RETURN: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "continuity-1.JP_RETURN.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.JP_RETURN.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.R_SDA: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "continuity-1.R_SDA: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "continuity-1.R_SDA.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.R_SDA.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.R_SCL: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "continuity-1.R_SCL: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "continuity-1.R_SCL.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.R_SCL.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.D_STIM: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "continuity-1.D_STIM: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "continuity-1.D_STIM.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.D_STIM.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.R_STIM: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "continuity-1.R_STIM: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "continuity-1.R_STIM.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.R_STIM.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.K_STIM: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "continuity-1.K_STIM: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "continuity-1.K_STIM.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.K_STIM.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.K_STIM.3: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.K_STIM.4: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.R_LED: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "continuity-1.R_LED: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "continuity-1.R_LED.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.R_LED.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.R_OFF: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "continuity-1.R_OFF: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "continuity-1.R_OFF.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.R_OFF.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.Q_STIM: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "continuity-1.Q_STIM: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "continuity-1.Q_STIM.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.Q_STIM.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.Q_STIM.3: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.R_A_TOP: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "continuity-1.R_A_TOP: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "continuity-1.R_A_TOP.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.R_A_TOP.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.R_A_BOTTOM: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "continuity-1.R_A_BOTTOM: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "continuity-1.R_A_BOTTOM.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.R_A_BOTTOM.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.C_A: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "continuity-1.C_A: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "continuity-1.C_A.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.C_A.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.R_ADC_A: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "continuity-1.R_ADC_A: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "continuity-1.R_ADC_A.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.R_ADC_A.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.R_B_TOP: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "continuity-1.R_B_TOP: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "continuity-1.R_B_TOP.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.R_B_TOP.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.R_B_BOTTOM: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "continuity-1.R_B_BOTTOM: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "continuity-1.R_B_BOTTOM.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.R_B_BOTTOM.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.C_B: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "continuity-1.C_B: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "continuity-1.C_B.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.C_B.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.R_ADC_B: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "continuity-1.R_ADC_B: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "continuity-1.R_ADC_B.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.R_ADC_B.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.U_BUFFER: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "continuity-1.U_BUFFER: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "continuity-1.U_BUFFER.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.U_BUFFER.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.U_BUFFER.3: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.U_BUFFER.4: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.U_BUFFER.5: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.U_BUFFER.6: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.U_BUFFER.7: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.U_BUFFER.8: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.C_BUFFER: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "continuity-1.C_BUFFER: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "continuity-1.C_BUFFER.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.C_BUFFER.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.U_ADC: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "continuity-1.U_ADC: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "continuity-1.U_ADC.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.U_ADC.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.U_ADC.3: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.U_ADC.4: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.U_ADC.5: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.U_ADC.6: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.U_ADC.7: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.U_ADC.8: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.U_ADC.9: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.U_ADC.10: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.C_ADC: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "continuity-1.C_ADC: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "continuity-1.C_ADC.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1.C_ADC.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "continuity-1: J_CONTROL/J_TEST envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_CONTROL/JP_RETURN envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_CONTROL/R_SDA envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_CONTROL/R_SCL envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_CONTROL/D_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_CONTROL/R_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_CONTROL/K_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_CONTROL/R_LED envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_CONTROL/R_OFF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_CONTROL/Q_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_CONTROL/R_A_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_CONTROL/R_A_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_CONTROL/C_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_CONTROL/R_ADC_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_CONTROL/R_B_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_CONTROL/R_B_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_CONTROL/C_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_CONTROL/R_ADC_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_CONTROL/U_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_CONTROL/C_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_CONTROL/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_CONTROL/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_TEST/JP_RETURN envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_TEST/R_SDA envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_TEST/R_SCL envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_TEST/D_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_TEST/R_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_TEST/K_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_TEST/R_LED envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_TEST/R_OFF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_TEST/Q_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_TEST/R_A_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_TEST/R_A_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_TEST/C_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_TEST/R_ADC_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_TEST/R_B_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_TEST/R_B_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_TEST/C_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_TEST/R_ADC_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_TEST/U_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_TEST/C_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_TEST/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: J_TEST/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: JP_RETURN/R_SDA envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: JP_RETURN/R_SCL envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: JP_RETURN/D_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: JP_RETURN/R_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: JP_RETURN/K_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: JP_RETURN/R_LED envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: JP_RETURN/R_OFF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: JP_RETURN/Q_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: JP_RETURN/R_A_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: JP_RETURN/R_A_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: JP_RETURN/C_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: JP_RETURN/R_ADC_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: JP_RETURN/R_B_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: JP_RETURN/R_B_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: JP_RETURN/C_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: JP_RETURN/R_ADC_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: JP_RETURN/U_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: JP_RETURN/C_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: JP_RETURN/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: JP_RETURN/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SDA/R_SCL envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SDA/D_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SDA/R_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SDA/K_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SDA/R_LED envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SDA/R_OFF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SDA/Q_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SDA/R_A_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SDA/R_A_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SDA/C_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SDA/R_ADC_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SDA/R_B_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SDA/R_B_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SDA/C_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SDA/R_ADC_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SDA/U_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SDA/C_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SDA/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SDA/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SCL/D_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SCL/R_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SCL/K_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SCL/R_LED envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SCL/R_OFF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SCL/Q_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SCL/R_A_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SCL/R_A_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SCL/C_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SCL/R_ADC_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SCL/R_B_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SCL/R_B_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SCL/C_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SCL/R_ADC_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SCL/U_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SCL/C_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SCL/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_SCL/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: D_STIM/R_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: D_STIM/K_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: D_STIM/R_LED envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: D_STIM/R_OFF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: D_STIM/Q_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: D_STIM/R_A_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: D_STIM/R_A_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: D_STIM/C_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: D_STIM/R_ADC_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: D_STIM/R_B_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: D_STIM/R_B_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: D_STIM/C_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: D_STIM/R_ADC_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: D_STIM/U_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: D_STIM/C_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: D_STIM/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: D_STIM/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_STIM/K_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_STIM/R_LED envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_STIM/R_OFF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_STIM/Q_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_STIM/R_A_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_STIM/R_A_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_STIM/C_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_STIM/R_ADC_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_STIM/R_B_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_STIM/R_B_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_STIM/C_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_STIM/R_ADC_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_STIM/U_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_STIM/C_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_STIM/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_STIM/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: K_STIM/R_LED envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: K_STIM/R_OFF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: K_STIM/Q_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: K_STIM/R_A_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: K_STIM/R_A_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: K_STIM/C_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: K_STIM/R_ADC_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: K_STIM/R_B_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: K_STIM/R_B_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: K_STIM/C_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: K_STIM/R_ADC_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: K_STIM/U_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: K_STIM/C_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: K_STIM/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: K_STIM/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_LED/R_OFF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_LED/Q_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_LED/R_A_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_LED/R_A_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_LED/C_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_LED/R_ADC_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_LED/R_B_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_LED/R_B_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_LED/C_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_LED/R_ADC_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_LED/U_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_LED/C_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_LED/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_LED/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_OFF/Q_STIM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_OFF/R_A_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_OFF/R_A_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_OFF/C_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_OFF/R_ADC_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_OFF/R_B_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_OFF/R_B_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_OFF/C_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_OFF/R_ADC_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_OFF/U_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_OFF/C_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_OFF/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_OFF/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: Q_STIM/R_A_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: Q_STIM/R_A_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: Q_STIM/C_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: Q_STIM/R_ADC_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: Q_STIM/R_B_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: Q_STIM/R_B_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: Q_STIM/C_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: Q_STIM/R_ADC_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: Q_STIM/U_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: Q_STIM/C_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: Q_STIM/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: Q_STIM/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_A_TOP/R_A_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_A_TOP/C_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_A_TOP/R_ADC_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_A_TOP/R_B_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_A_TOP/R_B_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_A_TOP/C_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_A_TOP/R_ADC_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_A_TOP/U_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_A_TOP/C_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_A_TOP/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_A_TOP/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_A_BOTTOM/C_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_A_BOTTOM/R_ADC_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_A_BOTTOM/R_B_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_A_BOTTOM/R_B_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_A_BOTTOM/C_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_A_BOTTOM/R_ADC_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_A_BOTTOM/U_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_A_BOTTOM/C_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_A_BOTTOM/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_A_BOTTOM/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: C_A/R_ADC_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: C_A/R_B_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: C_A/R_B_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: C_A/C_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: C_A/R_ADC_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: C_A/U_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: C_A/C_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: C_A/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: C_A/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_ADC_A/R_B_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_ADC_A/R_B_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_ADC_A/C_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_ADC_A/R_ADC_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_ADC_A/U_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_ADC_A/C_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_ADC_A/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_ADC_A/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_B_TOP/R_B_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_B_TOP/C_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_B_TOP/R_ADC_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_B_TOP/U_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_B_TOP/C_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_B_TOP/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_B_TOP/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_B_BOTTOM/C_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_B_BOTTOM/R_ADC_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_B_BOTTOM/U_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_B_BOTTOM/C_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_B_BOTTOM/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_B_BOTTOM/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: C_B/R_ADC_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: C_B/U_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: C_B/C_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: C_B/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: C_B/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_ADC_B/U_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_ADC_B/C_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_ADC_B/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: R_ADC_B/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: U_BUFFER/C_BUFFER envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: U_BUFFER/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: U_BUFFER/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: C_BUFFER/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: C_BUFFER/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "continuity-1: U_ADC/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1.J_MODULE: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "voltage-1.J_MODULE: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "voltage-1.J_MODULE.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.J_MODULE.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.J_MODULE.3: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.J_MODULE.4: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.J_MODULE.5: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.J_MODULE.6: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.J_MODULE.7: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.J_MODULE.8: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.J_MODULE.9: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.J_MODULE.10: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.J_CONTROL: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "voltage-1.J_CONTROL: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "voltage-1.J_CONTROL.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.J_CONTROL.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.J_CONTROL.3: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.J_CONTROL.4: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.J_CONTROL.5: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.J_CONTROL.6: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.J_CONTROL.7: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.J_CONTROL.8: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.J_CONTROL.9: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.J_CONTROL.10: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_BUS: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "voltage-1.U_BUS: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "voltage-1.U_BUS.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_BUS.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_BUS.3: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_BUS.4: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_BUS.5: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_BUS.6: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_BUS.7: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_BUS.8: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.C_BUS_A: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "voltage-1.C_BUS_A: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "voltage-1.C_BUS_A.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.C_BUS_A.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.C_BUS_B: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "voltage-1.C_BUS_B: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "voltage-1.C_BUS_B.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.C_BUS_B.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.R_SDA: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "voltage-1.R_SDA: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "voltage-1.R_SDA.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.R_SDA.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.R_SCL: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "voltage-1.R_SCL: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "voltage-1.R_SCL.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.R_SCL.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.R_P1_TOP: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "voltage-1.R_P1_TOP: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "voltage-1.R_P1_TOP.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.R_P1_TOP.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.R_P1_BOTTOM: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "voltage-1.R_P1_BOTTOM: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "voltage-1.R_P1_BOTTOM.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.R_P1_BOTTOM.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.R_P2_TOP: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "voltage-1.R_P2_TOP: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "voltage-1.R_P2_TOP.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.R_P2_TOP.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.R_P2_BOTTOM: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "voltage-1.R_P2_BOTTOM: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "voltage-1.R_P2_BOTTOM.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.R_P2_BOTTOM.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.C_P1: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "voltage-1.C_P1: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "voltage-1.C_P1.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.C_P1.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.C_P2: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "voltage-1.C_P2: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "voltage-1.C_P2.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.C_P2.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_VBUF: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "voltage-1.U_VBUF: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "voltage-1.U_VBUF.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_VBUF.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_VBUF.3: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_VBUF.4: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_VBUF.5: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_VBUF.6: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_VBUF.7: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_VBUF.8: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.C_VBUF: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "voltage-1.C_VBUF: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "voltage-1.C_VBUF.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.C_VBUF.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.R_ADC1: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "voltage-1.R_ADC1: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "voltage-1.R_ADC1.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.R_ADC1.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.R_ADC2: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "voltage-1.R_ADC2: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "voltage-1.R_ADC2.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.R_ADC2.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_ADC: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "voltage-1.U_ADC: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "voltage-1.U_ADC.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_ADC.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_ADC.3: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_ADC.4: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_ADC.5: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_ADC.6: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_ADC.7: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_ADC.8: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_ADC.9: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.U_ADC.10: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.C_ADC: translated source pins",
+      "status": "pass",
+      "detail": "Manufacturer numbering and relative lead coordinates preserved."
+    },
+    {
+      "name": "voltage-1.C_ADC: reference body bounds",
+      "status": "pass",
+      "detail": "Uses original provisional envelope; not purchased-part verification."
+    },
+    {
+      "name": "voltage-1.C_ADC.1: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1.C_ADC.2: unique stock hole",
+      "status": "pass",
+      "detail": "Assumed grid only."
+    },
+    {
+      "name": "voltage-1: J_MODULE/J_CONTROL envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_MODULE/U_BUS envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_MODULE/C_BUS_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_MODULE/C_BUS_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_MODULE/R_SDA envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_MODULE/R_SCL envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_MODULE/R_P1_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_MODULE/R_P1_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_MODULE/R_P2_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_MODULE/R_P2_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_MODULE/C_P1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_MODULE/C_P2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_MODULE/U_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_MODULE/C_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_MODULE/R_ADC1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_MODULE/R_ADC2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_MODULE/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_MODULE/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_CONTROL/U_BUS envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_CONTROL/C_BUS_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_CONTROL/C_BUS_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_CONTROL/R_SDA envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_CONTROL/R_SCL envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_CONTROL/R_P1_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_CONTROL/R_P1_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_CONTROL/R_P2_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_CONTROL/R_P2_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_CONTROL/C_P1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_CONTROL/C_P2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_CONTROL/U_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_CONTROL/C_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_CONTROL/R_ADC1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_CONTROL/R_ADC2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_CONTROL/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: J_CONTROL/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: U_BUS/C_BUS_A envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: U_BUS/C_BUS_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: U_BUS/R_SDA envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: U_BUS/R_SCL envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: U_BUS/R_P1_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: U_BUS/R_P1_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: U_BUS/R_P2_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: U_BUS/R_P2_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: U_BUS/C_P1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: U_BUS/C_P2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: U_BUS/U_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: U_BUS/C_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: U_BUS/R_ADC1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: U_BUS/R_ADC2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: U_BUS/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: U_BUS/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_A/C_BUS_B envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_A/R_SDA envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_A/R_SCL envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_A/R_P1_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_A/R_P1_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_A/R_P2_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_A/R_P2_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_A/C_P1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_A/C_P2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_A/U_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_A/C_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_A/R_ADC1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_A/R_ADC2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_A/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_A/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_B/R_SDA envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_B/R_SCL envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_B/R_P1_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_B/R_P1_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_B/R_P2_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_B/R_P2_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_B/C_P1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_B/C_P2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_B/U_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_B/C_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_B/R_ADC1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_B/R_ADC2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_B/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_BUS_B/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SDA/R_SCL envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SDA/R_P1_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SDA/R_P1_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SDA/R_P2_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SDA/R_P2_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SDA/C_P1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SDA/C_P2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SDA/U_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SDA/C_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SDA/R_ADC1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SDA/R_ADC2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SDA/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SDA/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SCL/R_P1_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SCL/R_P1_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SCL/R_P2_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SCL/R_P2_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SCL/C_P1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SCL/C_P2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SCL/U_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SCL/C_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SCL/R_ADC1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SCL/R_ADC2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SCL/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_SCL/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P1_TOP/R_P1_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P1_TOP/R_P2_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P1_TOP/R_P2_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P1_TOP/C_P1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P1_TOP/C_P2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P1_TOP/U_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P1_TOP/C_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P1_TOP/R_ADC1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P1_TOP/R_ADC2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P1_TOP/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P1_TOP/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P1_BOTTOM/R_P2_TOP envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P1_BOTTOM/R_P2_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P1_BOTTOM/C_P1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P1_BOTTOM/C_P2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P1_BOTTOM/U_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P1_BOTTOM/C_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P1_BOTTOM/R_ADC1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P1_BOTTOM/R_ADC2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P1_BOTTOM/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P1_BOTTOM/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P2_TOP/R_P2_BOTTOM envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P2_TOP/C_P1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P2_TOP/C_P2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P2_TOP/U_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P2_TOP/C_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P2_TOP/R_ADC1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P2_TOP/R_ADC2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P2_TOP/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P2_TOP/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P2_BOTTOM/C_P1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P2_BOTTOM/C_P2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P2_BOTTOM/U_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P2_BOTTOM/C_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P2_BOTTOM/R_ADC1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P2_BOTTOM/R_ADC2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P2_BOTTOM/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_P2_BOTTOM/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_P1/C_P2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_P1/U_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_P1/C_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_P1/R_ADC1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_P1/R_ADC2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_P1/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_P1/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_P2/U_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_P2/C_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_P2/R_ADC1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_P2/R_ADC2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_P2/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_P2/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: U_VBUF/C_VBUF envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: U_VBUF/R_ADC1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: U_VBUF/R_ADC2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: U_VBUF/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: U_VBUF/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_VBUF/R_ADC1 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_VBUF/R_ADC2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_VBUF/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: C_VBUF/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_ADC1/R_ADC2 envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_ADC1/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_ADC1/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_ADC2/U_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: R_ADC2/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "voltage-1: U_ADC/C_ADC envelopes",
+      "status": "pass",
+      "detail": "No overlapping source-reference envelopes."
+    },
+    {
+      "name": "a1:wire:NODE00:J_NODE00.1~J_NODE00.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE00:J_NODE00.2~J_NODE00.3: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE00:J_NODE00.3~J_NODE00.4: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE00:J_NODE00.4~J_NODE00.5: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE00:J_NODE00.5~J_NODE00.6: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE00:J_NODE.1~J_NODE00.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE00:J_NODE00.1~J_SMART.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE01:J_NODE01.1~J_NODE01.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE01:J_NODE01.2~J_NODE01.3: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE01:J_NODE01.3~J_NODE01.4: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE01:J_NODE01.4~J_NODE01.5: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE01:J_NODE01.5~J_NODE01.6: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE01:J_NODE.3~J_NODE01.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE01:J_NODE01.1~J_SMART.3: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE02:J_NODE02.1~J_NODE02.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE02:J_NODE02.2~J_NODE02.3: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE02:J_NODE02.3~J_NODE02.4: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE02:J_NODE02.4~J_NODE02.5: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE02:J_NODE02.5~J_NODE02.6: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE02:J_NODE.5~J_NODE02.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE02:J_NODE02.1~J_SMART.5: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE03:J_NODE03.1~J_NODE03.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE03:J_NODE03.2~J_NODE03.3: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE03:J_NODE03.3~J_NODE03.4: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE03:J_NODE03.4~J_NODE03.5: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE03:J_NODE03.5~J_NODE03.6: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:NODE03:J_NODE.7~J_NODE03.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:SCL_0:J_SERVICE.1~J_SMART.9: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:SDA_0:J_SERVICE.2~J_SMART.7: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:GND:J_SERVICE.3~J_SMART.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:GND:J_SERVICE.3~J_SMART.4: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:GND:J_SERVICE.3~J_SMART.6: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "a1:wire:3V3_SYS:J_SERVICE.4~J_SMART.8: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "matrix:wire:USB_3V3:J_FIXTURE.1~J_PROTOTYPE.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "matrix:wire:USB_3V3:J_FIXTURE.1~U_ESP1.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "matrix:wire:GND:J_FIXTURE.2~J_PROTOTYPE.3: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "matrix:wire:GND:J_FIXTURE.2~U_ESP1.14: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "matrix:wire:GND:J_FIXTURE.2~U_ESP1.20: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "matrix:wire:GND:J_FIXTURE.2~U_ESP1.26: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "matrix:wire:EDU_PWR_EN:J_PROTOTYPE.4~U_ESP1.7: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "matrix:wire:FIX_SDA:J_FIXTURE.3~U_ESP1.32: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "matrix:wire:FIX_SCL:J_FIXTURE.4~U_ESP1.31: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "matrix:wire:FIX_STIM:J_FIXTURE.5~U_ESP1.9: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "matrix:wire:USB_5V:J_PROTOTYPE.1~U_ESP1.19: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:USB_3V3:C_ADC.1~C_BUFFER.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:USB_3V3:C_ADC.1~D_STIM.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:USB_3V3:C_ADC.1~J_CONTROL.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:USB_3V3:C_ADC.1~R_LED.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:USB_3V3:C_ADC.1~R_SCL.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:USB_3V3:C_ADC.1~R_SDA.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:USB_3V3:C_ADC.1~U_ADC.8: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:USB_3V3:C_ADC.1~U_BUFFER.8: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:GND:C_A.2~C_ADC.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:GND:C_A.2~C_B.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:GND:C_A.2~C_BUFFER.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:GND:C_A.2~J_CONTROL.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:GND:C_A.2~JP_RETURN.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:GND:C_A.2~Q_STIM.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:GND:C_A.2~R_A_BOTTOM.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:GND:C_A.2~R_B_BOTTOM.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:GND:C_A.2~R_OFF.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:GND:C_A.2~U_ADC.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:GND:C_A.2~U_ADC.3: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:GND:C_A.2~U_ADC.6: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:GND:C_A.2~U_ADC.7: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:GND:C_A.2~U_BUFFER.4: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:FIX_SDA:J_CONTROL.3~R_SDA.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:FIX_SDA:J_CONTROL.3~U_ADC.9: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:FIX_SCL:J_CONTROL.4~R_SCL.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:FIX_SCL:J_CONTROL.4~U_ADC.10: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:FIX_STIM:J_CONTROL.5~Q_STIM.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:FIX_STIM:J_CONTROL.5~R_OFF.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:TEST_A:J_TEST.1~K_STIM.4: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:TEST_A:J_TEST.1~R_A_TOP.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:TEST_B:JP_RETURN.1~J_TEST.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:TEST_B:J_TEST.2~R_B_TOP.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:STIM_FEED:D_STIM.2~R_STIM.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:STIM_LIMIT:K_STIM.3~R_STIM.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:STIM_LED_A:K_STIM.1~R_LED.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:STIM_LED_K:K_STIM.2~Q_STIM.3: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:DIV_A:C_A.1~R_A_BOTTOM.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:DIV_A:C_A.1~R_A_TOP.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:DIV_A:C_A.1~U_BUFFER.3: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:BUF_A:R_ADC_A.1~U_BUFFER.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:BUF_A:R_ADC_A.1~U_BUFFER.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:ADC_A:R_ADC_A.2~U_ADC.4: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:DIV_B:C_B.1~R_B_BOTTOM.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:DIV_B:C_B.1~R_B_TOP.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:DIV_B:C_B.1~U_BUFFER.5: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:BUF_B:R_ADC_B.1~U_BUFFER.6: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:BUF_B:R_ADC_B.1~U_BUFFER.7: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "continuity-fixture:wire:ADC_B:R_ADC_B.2~U_ADC.5: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:P1_RAW:J_MODULE.1~R_P1_TOP.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:GND:C_ADC.2~C_BUS_A.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:GND:C_ADC.2~C_BUS_B.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:GND:C_ADC.2~C_P1.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:GND:C_ADC.2~C_P2.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:GND:C_ADC.2~C_VBUF.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:GND:C_ADC.2~J_CONTROL.4: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:GND:C_ADC.2~J_MODULE.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:GND:C_ADC.2~J_MODULE.4: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:GND:C_ADC.2~J_MODULE.6: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:GND:C_ADC.2~R_P1_BOTTOM.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:GND:C_ADC.2~R_P2_BOTTOM.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:GND:C_ADC.2~U_ADC.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:GND:C_ADC.2~U_ADC.3: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:GND:C_ADC.2~U_ADC.6: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:GND:C_ADC.2~U_ADC.7: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:GND:C_ADC.2~U_BUS.4: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:GND:C_ADC.2~U_VBUF.4: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:P2_RAW:J_MODULE.3~R_P2_TOP.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:SDA_B:J_MODULE.7~R_SDA.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:SDA_B:J_MODULE.7~U_ADC.9: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:SDA_B:J_MODULE.7~U_BUS.6: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:3V3_SYS:C_ADC.1~C_BUS_B.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:3V3_SYS:C_ADC.1~C_VBUF.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:3V3_SYS:C_ADC.1~J_CONTROL.6: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:3V3_SYS:C_ADC.1~J_MODULE.8: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:3V3_SYS:C_ADC.1~R_SCL.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:3V3_SYS:C_ADC.1~R_SDA.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:3V3_SYS:C_ADC.1~U_ADC.8: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:3V3_SYS:C_ADC.1~U_BUS.8: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:3V3_SYS:C_ADC.1~U_VBUF.8: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:SCL_B:J_MODULE.9~R_SCL.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:SCL_B:J_MODULE.9~U_ADC.10: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:SCL_B:J_MODULE.9~U_BUS.7: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:SDA_A:J_CONTROL.7~U_BUS.3: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:USB_3V3:C_BUS_A.1~J_CONTROL.8: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:USB_3V3:C_BUS_A.1~U_BUS.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:USB_3V3:C_BUS_A.1~U_BUS.5: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:SCL_A:J_CONTROL.9~U_BUS.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:DIV_P1:C_P1.1~R_P1_BOTTOM.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:DIV_P1:C_P1.1~R_P1_TOP.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:DIV_P1:C_P1.1~U_VBUF.3: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:DIV_P2:C_P2.1~R_P2_BOTTOM.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:DIV_P2:C_P2.1~R_P2_TOP.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:DIV_P2:C_P2.1~U_VBUF.5: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:BUFFER_P1:R_ADC1.1~U_VBUF.1: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:BUFFER_P1:R_ADC1.1~U_VBUF.2: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:BUFFER_P2:R_ADC2.1~U_VBUF.6: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:BUFFER_P2:R_ADC2.1~U_VBUF.7: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:ADC_P1:R_ADC1.2~U_ADC.4: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "smart-channel:wire:ADC_P2:R_ADC2.2~U_ADC.5: source net membership",
+      "status": "pass",
+      "detail": "Both endpoints belong to the same original electrical net."
+    },
+    {
+      "name": "matrix.U_ESP1: future placement preserved",
+      "status": "pass",
+      "detail": "Capacity study never relocates earlier permanent pins."
+    },
+    {
+      "name": "matrix.J_FIXTURE: future placement preserved",
+      "status": "pass",
+      "detail": "Capacity study never relocates earlier permanent pins."
+    },
+    {
+      "name": "matrix.J_PROTOTYPE: future placement preserved",
+      "status": "pass",
+      "detail": "Capacity study never relocates earlier permanent pins."
+    },
+    {
+      "name": "smart-channel.J_MODULE: future placement preserved",
+      "status": "pass",
+      "detail": "Capacity study never relocates earlier permanent pins."
+    },
+    {
+      "name": "smart-channel.J_CONTROL: future placement preserved",
+      "status": "pass",
+      "detail": "Capacity study never relocates earlier permanent pins."
+    },
+    {
+      "name": "smart-channel.U_BUS: future placement preserved",
+      "status": "pass",
+      "detail": "Capacity study never relocates earlier permanent pins."
+    },
+    {
+      "name": "smart-channel.C_BUS_A: future placement preserved",
+      "status": "pass",
+      "detail": "Capacity study never relocates earlier permanent pins."
+    },
+    {
+      "name": "smart-channel.C_BUS_B: future placement preserved",
+      "status": "pass",
+      "detail": "Capacity study never relocates earlier permanent pins."
+    },
+    {
+      "name": "smart-channel.R_SDA: future placement preserved",
+      "status": "pass",
+      "detail": "Capacity study never relocates earlier permanent pins."
+    },
+    {
+      "name": "smart-channel.R_SCL: future placement preserved",
+      "status": "pass",
+      "detail": "Capacity study never relocates earlier permanent pins."
+    },
+    {
+      "name": "smart-channel.R_P1_TOP: future placement preserved",
+      "status": "pass",
+      "detail": "Capacity study never relocates earlier permanent pins."
+    },
+    {
+      "name": "smart-channel.R_P1_BOTTOM: future placement preserved",
+      "status": "pass",
+      "detail": "Capacity study never relocates earlier permanent pins."
+    },
+    {
+      "name": "smart-channel.R_P2_TOP: future placement preserved",
+      "status": "pass",
+      "detail": "Capacity study never relocates earlier permanent pins."
+    },
+    {
+      "name": "smart-channel.R_P2_BOTTOM: future placement preserved",
+      "status": "pass",
+      "detail": "Capacity study never relocates earlier permanent pins."
+    },
+    {
+      "name": "smart-channel.C_P1: future placement preserved",
+      "status": "pass",
+      "detail": "Capacity study never relocates earlier permanent pins."
+    },
+    {
+      "name": "smart-channel.C_P2: future placement preserved",
+      "status": "pass",
+      "detail": "Capacity study never relocates earlier permanent pins."
+    },
+    {
+      "name": "smart-channel.U_VBUF: future placement preserved",
+      "status": "pass",
+      "detail": "Capacity study never relocates earlier permanent pins."
+    },
+    {
+      "name": "smart-channel.C_VBUF: future placement preserved",
+      "status": "pass",
+      "detail": "Capacity study never relocates earlier permanent pins."
+    },
+    {
+      "name": "smart-channel.R_ADC1: future placement preserved",
+      "status": "pass",
+      "detail": "Capacity study never relocates earlier permanent pins."
+    },
+    {
+      "name": "smart-channel.R_ADC2: future placement preserved",
+      "status": "pass",
+      "detail": "Capacity study never relocates earlier permanent pins."
+    },
+    {
+      "name": "smart-channel.U_ADC: future placement preserved",
+      "status": "pass",
+      "detail": "Capacity study never relocates earlier permanent pins."
+    },
+    {
+      "name": "smart-channel.C_ADC: future placement preserved",
+      "status": "pass",
+      "detail": "Capacity study never relocates earlier permanent pins."
+    },
+    {
+      "name": "a1/Nodes: hidden connector MPN",
+      "status": "pass",
+      "detail": "Existing native schematic text only."
+    },
+    {
+      "name": "a1/Service: hidden connector MPN",
+      "status": "pass",
+      "detail": "Existing native schematic text only."
+    },
+    {
+      "name": "a1/Service@4: hidden connector MPN",
+      "status": "pass",
+      "detail": "Existing native schematic text only."
+    },
+    {
+      "name": "a1/Service@0: hidden connector MPN",
+      "status": "pass",
+      "detail": "Existing native schematic text only."
+    },
+    {
+      "name": "matrix/Controller: hidden connector MPN",
+      "status": "pass",
+      "detail": "Existing native schematic text only."
+    },
+    {
+      "name": "matrix/Controller@0: hidden connector MPN",
+      "status": "pass",
+      "detail": "Existing native schematic text only."
+    },
+    {
+      "name": "matrix/Controller@11: hidden connector MPN",
+      "status": "pass",
+      "detail": "Existing native schematic text only."
+    },
+    {
+      "name": "matrix/Watchdog: hidden connector MPN",
+      "status": "pass",
+      "detail": "Existing native schematic text only."
+    },
+    {
+      "name": "matrix/Control: hidden connector MPN",
+      "status": "pass",
+      "detail": "Existing native schematic text only."
+    },
+    {
+      "name": "matrix/Matrix: hidden connector MPN",
+      "status": "pass",
+      "detail": "Existing native schematic text only."
+    },
+    {
+      "name": "matrix/Nodes: hidden connector MPN",
+      "status": "pass",
+      "detail": "Existing native schematic text only."
+    },
+    {
+      "name": "matrix/Tools: hidden connector MPN",
+      "status": "pass",
+      "detail": "Existing native schematic text only."
+    },
+    {
+      "name": "matrix/Return: hidden connector MPN",
+      "status": "pass",
+      "detail": "Existing native schematic text only."
+    },
+    {
+      "name": "continuity-fixture/Interface: hidden connector MPN",
+      "status": "pass",
+      "detail": "Existing native schematic text only."
+    },
+    {
+      "name": "continuity-fixture/Stimulus: hidden connector MPN",
+      "status": "pass",
+      "detail": "Existing native schematic text only."
+    },
+    {
+      "name": "continuity-fixture/Sense: hidden connector MPN",
+      "status": "pass",
+      "detail": "Existing native schematic text only."
+    },
+    {
+      "name": "smart-channel/Interface: hidden connector MPN",
+      "status": "pass",
+      "detail": "Existing native schematic text only."
+    },
+    {
+      "name": "smart-channel/Voltage: hidden connector MPN",
+      "status": "pass",
+      "detail": "Existing native schematic text only."
+    },
+    {
+      "name": "smart-channel/Current: hidden connector MPN",
+      "status": "pass",
+      "detail": "Existing native schematic text only."
+    },
+    {
+      "name": "smart-channel/Limits: hidden connector MPN",
+      "status": "pass",
+      "detail": "Existing native schematic text only."
+    },
+    {
+      "name": "smart-channel/Output: hidden connector MPN",
+      "status": "pass",
+      "detail": "Existing native schematic text only."
+    },
+    {
+      "name": "usb-prototype/Switch: hidden connector MPN",
+      "status": "pass",
+      "detail": "Existing native schematic text only."
+    }
+  ]
+}

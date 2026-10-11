@@ -58,11 +58,19 @@ export function finish(b) {
   for(const [netIndex,n] of b.nets.entries()) {
     const ordered=[...n.pins].sort((a,c)=>staged(a)-staged(c)||(n.bare?Number(pinAt(b,c).part.body==='pogo')-Number(pinAt(b,a).part.body==='pogo'):0)||a.localeCompare(c,undefined,{numeric:true}));
     const barePins=ordered.filter(ep=>pinAt(b,ep).part.body==='pogo');
+    if(n.starRoot){
+      const index=ordered.indexOf(n.starRoot);
+      if(index<0||staged(n.starRoot)>staged(ordered[0]))throw Error(`${b.id}: invalid early star root for ${n.name}`);
+      ordered.splice(index,1);ordered.unshift(n.starRoot);
+    }
     const root=ordered[0];
     for(let k=1;k<ordered.length;k++) {
       const to=ordered[k];
       const bare=n.bare&&barePins.includes(to)&&barePins.includes(root);
-      const from=bare?barePins[barePins.indexOf(to)-1]:root;
+      // Revision 5 prescribes a growing distribution chain rather than attaching
+      // every branch to an IC leg. Earlier links are immutable as phases advance.
+      // This selects electrical joints only; it does not autoroute PCB copper.
+      const from=bare?barePins[barePins.indexOf(to)-1]:b.distributionChain&&!n.starRoot?ordered[k-1]:root;
       const a=pinAt(b,from).pin.hole,c=pinAt(b,to).pin.hole;
       const bend=[a[0],c[1]];let path=[a];
       if(bend[0]!==a[0]||bend[1]!==a[1])path.push(bend);

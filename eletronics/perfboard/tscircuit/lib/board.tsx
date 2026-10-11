@@ -41,8 +41,8 @@ export function Component({board,p}:{board:any,p:any}) {
    {p.body==='pogo'?p.pins.map((pin:any)=><courtyardrect key={pin.number} pcbX={coordinate(board,pin.hole)[0]-cx} pcbY={coordinate(board,pin.hole)[1]-cy} width={2} height={2} />):<courtyardrect pcbX={0} pcbY={0} width={(p.bounds.xmax-p.bounds.xmin)*PITCH} height={(p.bounds.ymax-p.bounds.ymin)*PITCH} />}
  </footprint>;
  const labels=Object.fromEntries(p.pins.map((pin:any)=>[`pin${pin.number}`,pin.label]));
- const pinAttributes=Object.fromEntries(p.pins.map((pin:any)=>[ `pin${pin.number}`, /^NC/.test(pin.label)||p.stageOpenPins?.includes(pin.number)?{doNotConnect:true}: /^(VCC|VDD|VIN|VS|VCCA|VCCB|3V3|LED_A)$/.test(pin.label)||(p.mpn==='TL431ACLP'&&pin.label==='K')?{requiresPower:true}: /^(GND|GND_L|GND_R1|GND_R2|VSS|VEE|LED_K)$/.test(pin.label)||(p.mpn==='TL431ACLP'&&pin.label==='A')?{requiresGround:true}: {isPassive:true} ]));
- const common={name:p.ref,displayName:p.label,manufacturerPartNumber:p.mpn,pinAttributes,pcbX:cx,pcbY:cy,layer:p.side,schX:p.sch[0],schY:p.sch[1],schSheetName:"Circuit",footprint,cadModel:{jscad:bodyModel(p,board)}};
+ const pinAttributes=Object.fromEntries(p.pins.map((pin:any)=>[ `pin${pin.number}`, /^NC/.test(pin.label)||p.stageOpenPins?.includes(pin.number)?{doNotConnect:true}: /^(VCC|VDD|VIN|VS|VCCA|VCCB|3V3|LED_A)$/.test(pin.label)||(p.mpn==='TL431ACLP'&&pin.label==='K')||(p.mpn==='ULN2003AN'&&pin.label==='COM')?{requiresPower:true}: /^(GND|GND_L|GND_R1|GND_R2|VSS|VEE|LED_K)$/.test(pin.label)||(p.mpn==='TL431ACLP'&&pin.label==='A')?{requiresGround:true}: {isPassive:true} ]));
+ const common={name:p.ref,displayName:p.schematicLabel??p.label,manufacturerPartNumber:p.mpn,pinAttributes,pcbX:cx,pcbY:cy,layer:p.side,schX:p.sch[0],schY:p.sch[1],schRotation:p.schRotation,schSheetName:"Circuit",footprint,cadModel:{jscad:bodyModel(p,board)}};
  if(p.kind==='resistor')return <resistor {...common} resistance={p.value} />;
  if(p.kind==='capacitor')return <capacitor {...common} capacitance={p.value} polarized={['470uF','10uF'].includes(p.value)} />;
  if(p.kind==='diode')return <diode {...common} />;
