@@ -1,0 +1,69 @@
+[
+  {
+    "name": "PI_3V3",
+    "pins": [
+      "J_PI.1",
+      "J_NFC.1",
+      "R_ENERGIZE.1",
+      "R_BACK.1"
+    ]
+  },
+  {
+    "name": "GND",
+    "pins": [
+      "J_PI.6",
+      "J_NFC.2",
+      "J_SW_ENERGIZE.2",
+      "J_SW_BACK.2",
+      "C_ENERGIZE.2",
+      "C_BACK.2",
+      "J_GROUND.1"
+    ]
+  },
+  {
+    "name": "MOSI",
+    "pins": [
+      "J_PI.19",
+      "J_NFC.4"
+    ]
+  },
+  {
+    "name": "MISO",
+    "pins": [
+      "J_PI.21",
+      "J_NFC.5"
+    ]
+  },
+  {
+    "name": "SCLK",
+    "pins": [
+      "J_PI.23",
+      "J_NFC.3"
+    ]
+  },
+  {
+    "name": "CE0_N",
+    "pins": [
+      "J_PI.24",
+      "J_NFC.6"
+    ]
+  },
+  {
+    "name": "ENERGIZE_N",
+    "pins": [
+      "J_PI.29",
+      "J_SW_ENERGIZE.1",
+      "R_ENERGIZE.2",
+      "C_ENERGIZE.1"
+    ]
+  },
+  {
+    "name": "BACK_N",
+    "pins": [
+      "J_PI.31",
+      "J_SW_BACK.1",
+      "R_BACK.2",
+      "C_BACK.1"
+    ]
+  }
+]

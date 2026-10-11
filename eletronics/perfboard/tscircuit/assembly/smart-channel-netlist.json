@@ -1,0 +1,375 @@
+[
+  {
+    "name": "P1_RAW",
+    "pins": [
+      "J_MODULE.1",
+      "R_P1_TOP.1",
+      "K_AMM_P.3"
+    ]
+  },
+  {
+    "name": "GND",
+    "pins": [
+      "J_MODULE.2",
+      "J_MODULE.4",
+      "J_MODULE.6",
+      "J_CONTROL.4",
+      "U_BUS.4",
+      "C_BUS_A.2",
+      "C_BUS_B.2",
+      "R_P1_BOTTOM.2",
+      "R_P2_BOTTOM.2",
+      "C_P1.2",
+      "C_P2.2",
+      "U_VBUF.4",
+      "C_VBUF.2",
+      "U_ADC.1",
+      "U_ADC.3",
+      "U_ADC.6",
+      "U_ADC.7",
+      "C_ADC.2",
+      "U_CURRENT.3",
+      "U_CURRENT.7",
+      "U_CURRENT.8",
+      "C_CURRENT.2",
+      "R_K_AMM_P_OFF.2",
+      "Q_K_AMM_P.1",
+      "R_K_AMM_N_OFF.2",
+      "Q_K_AMM_N.1",
+      "R_HI_BOTTOM.2",
+      "R_LO_BOTTOM.2",
+      "C_REFHI.2",
+      "C_REFLO.2",
+      "R_SINK_SENSE.2",
+      "U_LIMIT.4",
+      "C_LIMIT.2",
+      "R_K_HIGH_OFF.2",
+      "Q_K_HIGH.1",
+      "R_K_LOW_OFF.2",
+      "Q_K_LOW.1"
+    ]
+  },
+  {
+    "name": "P2_RAW",
+    "pins": [
+      "J_MODULE.3",
+      "R_P2_TOP.1",
+      "K_AMM_N.4"
+    ]
+  },
+  {
+    "name": "P3_RAW",
+    "pins": [
+      "J_MODULE.5",
+      "K_HIGH.4",
+      "K_LOW.3"
+    ]
+  },
+  {
+    "name": "SDA_B",
+    "pins": [
+      "J_MODULE.7",
+      "U_BUS.6",
+      "R_SDA.1",
+      "U_ADC.9",
+      "U_CURRENT.6"
+    ]
+  },
+  {
+    "name": "3V3_SYS",
+    "pins": [
+      "J_MODULE.8",
+      "J_CONTROL.6",
+      "U_BUS.8",
+      "C_BUS_B.1",
+      "R_SDA.2",
+      "R_SCL.2",
+      "U_VBUF.8",
+      "C_VBUF.1",
+      "U_ADC.8",
+      "C_ADC.1",
+      "U_CURRENT.4",
+      "C_CURRENT.1"
+    ]
+  },
+  {
+    "name": "SCL_B",
+    "pins": [
+      "J_MODULE.9",
+      "U_BUS.7",
+      "R_SCL.1",
+      "U_ADC.10",
+      "U_CURRENT.5"
+    ]
+  },
+  {
+    "name": "HIGH_REQ",
+    "pins": [
+      "J_CONTROL.1",
+      "R_K_HIGH_OFF.1",
+      "Q_K_HIGH.2"
+    ]
+  },
+  {
+    "name": "LOW_REQ",
+    "pins": [
+      "J_CONTROL.2",
+      "R_K_LOW_OFF.1",
+      "Q_K_LOW.2"
+    ]
+  },
+  {
+    "name": "AMM_REQ",
+    "pins": [
+      "J_CONTROL.3",
+      "R_K_AMM_P_OFF.1",
+      "Q_K_AMM_P.2",
+      "R_K_AMM_N_OFF.1",
+      "Q_K_AMM_N.2"
+    ]
+  },
+  {
+    "name": "5V_SYS",
+    "pins": [
+      "J_CONTROL.5",
+      "R_K_AMM_P_LED.1",
+      "R_K_AMM_N_LED.1",
+      "U_LIMIT.8",
+      "C_LIMIT.1",
+      "R_K_HIGH_LED.1",
+      "R_K_LOW_LED.1"
+    ]
+  },
+  {
+    "name": "SDA_A",
+    "pins": [
+      "J_CONTROL.7",
+      "U_BUS.3"
+    ]
+  },
+  {
+    "name": "USB_3V3",
+    "pins": [
+      "J_CONTROL.8",
+      "U_BUS.1",
+      "U_BUS.5",
+      "C_BUS_A.1"
+    ]
+  },
+  {
+    "name": "SCL_A",
+    "pins": [
+      "J_CONTROL.9",
+      "U_BUS.2"
+    ]
+  },
+  {
+    "name": "5V_EDU",
+    "pins": [
+      "J_CONTROL.10",
+      "R_HI_TOP.1",
+      "R_LO_TOP.1",
+      "R_SOURCE_SENSE.1"
+    ]
+  },
+  {
+    "name": "DIV_P1",
+    "pins": [
+      "R_P1_TOP.2",
+      "R_P1_BOTTOM.1",
+      "C_P1.1",
+      "U_VBUF.3"
+    ]
+  },
+  {
+    "name": "DIV_P2",
+    "pins": [
+      "R_P2_TOP.2",
+      "R_P2_BOTTOM.1",
+      "C_P2.1",
+      "U_VBUF.5"
+    ]
+  },
+  {
+    "name": "BUFFER_P1",
+    "pins": [
+      "U_VBUF.1",
+      "U_VBUF.2",
+      "R_ADC1.1"
+    ]
+  },
+  {
+    "name": "BUFFER_P2",
+    "pins": [
+      "U_VBUF.6",
+      "U_VBUF.7",
+      "R_ADC2.1"
+    ]
+  },
+  {
+    "name": "ADC_P1",
+    "pins": [
+      "R_ADC1.2",
+      "U_ADC.4"
+    ]
+  },
+  {
+    "name": "ADC_P2",
+    "pins": [
+      "R_ADC2.2",
+      "U_ADC.5"
+    ]
+  },
+  {
+    "name": "SHUNT_P",
+    "pins": [
+      "R_SHUNT.1",
+      "U_CURRENT.1",
+      "K_AMM_P.4"
+    ]
+  },
+  {
+    "name": "SHUNT_N",
+    "pins": [
+      "R_SHUNT.2",
+      "U_CURRENT.2",
+      "K_AMM_N.3"
+    ]
+  },
+  {
+    "name": "K_AMM_P_LED",
+    "pins": [
+      "K_AMM_P.1",
+      "R_K_AMM_P_LED.2"
+    ]
+  },
+  {
+    "name": "K_AMM_P_CATHODE",
+    "pins": [
+      "K_AMM_P.2",
+      "Q_K_AMM_P.3"
+    ]
+  },
+  {
+    "name": "K_AMM_N_LED",
+    "pins": [
+      "K_AMM_N.1",
+      "R_K_AMM_N_LED.2"
+    ]
+  },
+  {
+    "name": "K_AMM_N_CATHODE",
+    "pins": [
+      "K_AMM_N.2",
+      "Q_K_AMM_N.3"
+    ]
+  },
+  {
+    "name": "REF_HI",
+    "pins": [
+      "R_HI_TOP.2",
+      "R_HI_BOTTOM.1",
+      "C_REFHI.1",
+      "U_LIMIT.3"
+    ]
+  },
+  {
+    "name": "REF_LO",
+    "pins": [
+      "R_LO_TOP.2",
+      "R_LO_BOTTOM.1",
+      "C_REFLO.1",
+      "U_LIMIT.5"
+    ]
+  },
+  {
+    "name": "SOURCE_SENSE",
+    "pins": [
+      "R_SOURCE_SENSE.2",
+      "U_LIMIT.2",
+      "C_HI_COMP.2",
+      "Q_HIGH.2"
+    ]
+  },
+  {
+    "name": "SINK_SENSE",
+    "pins": [
+      "R_SINK_SENSE.1",
+      "U_LIMIT.6",
+      "C_LO_COMP.2",
+      "Q_LOW.1"
+    ]
+  },
+  {
+    "name": "HI_GATE_DRIVE",
+    "pins": [
+      "U_LIMIT.1",
+      "R_HI_GATE.1",
+      "C_HI_COMP.1"
+    ]
+  },
+  {
+    "name": "LO_GATE_DRIVE",
+    "pins": [
+      "U_LIMIT.7",
+      "R_LO_GATE.1",
+      "C_LO_COMP.1"
+    ]
+  },
+  {
+    "name": "HI_GATE",
+    "pins": [
+      "R_HI_GATE.2",
+      "Q_HIGH.1"
+    ]
+  },
+  {
+    "name": "LO_GATE",
+    "pins": [
+      "R_LO_GATE.2",
+      "Q_LOW.2"
+    ]
+  },
+  {
+    "name": "SOURCE_OUT",
+    "pins": [
+      "Q_HIGH.3",
+      "K_HIGH.3"
+    ]
+  },
+  {
+    "name": "SINK_IN",
+    "pins": [
+      "Q_LOW.3",
+      "K_LOW.4"
+    ]
+  },
+  {
+    "name": "K_HIGH_LED",
+    "pins": [
+      "K_HIGH.1",
+      "R_K_HIGH_LED.2"
+    ]
+  },
+  {
+    "name": "K_HIGH_CATHODE",
+    "pins": [
+      "K_HIGH.2",
+      "Q_K_HIGH.3"
+    ]
+  },
+  {
+    "name": "K_LOW_LED",
+    "pins": [
+      "K_LOW.1",
+      "R_K_LOW_LED.2"
+    ]
+  },
+  {
+    "name": "K_LOW_CATHODE",
+    "pins": [
+      "K_LOW.2",
+      "Q_K_LOW.3"
+    ]
+  }
+]

@@ -1,0 +1,6935 @@
+{
+  "local": {
+    "revision": "238eecf00b3740c7",
+    "status": "pass",
+    "scope": "Sheet frames omitted only from teaching SVGs to fit the local function; original native sheets remain checked. Native functional schematics derived from original pin/net membership; explicit ports preserve every external net.",
+    "results": [
+      {
+        "board": "a1",
+        "section": "Nodes",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "NODE00",
+            "local": [
+              "J_NODE00.1",
+              "J_NODE00.2",
+              "J_NODE00.3",
+              "J_NODE00.4",
+              "J_NODE00.5",
+              "J_NODE00.6"
+            ],
+            "destinations": [
+              "J_NODE.1",
+              "J_SMART.1"
+            ]
+          },
+          {
+            "net": "NODE01",
+            "local": [
+              "J_NODE01.1",
+              "J_NODE01.2",
+              "J_NODE01.3",
+              "J_NODE01.4",
+              "J_NODE01.5",
+              "J_NODE01.6"
+            ],
+            "destinations": [
+              "J_NODE.3",
+              "J_SMART.3"
+            ]
+          },
+          {
+            "net": "NODE02",
+            "local": [
+              "J_NODE02.1",
+              "J_NODE02.2",
+              "J_NODE02.3",
+              "J_NODE02.4",
+              "J_NODE02.5",
+              "J_NODE02.6"
+            ],
+            "destinations": [
+              "J_NODE.5",
+              "J_SMART.5"
+            ]
+          },
+          {
+            "net": "NODE03",
+            "local": [
+              "J_NODE03.1",
+              "J_NODE03.2",
+              "J_NODE03.3",
+              "J_NODE03.4",
+              "J_NODE03.5",
+              "J_NODE03.6"
+            ],
+            "destinations": [
+              "J_NODE.7"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "a1",
+        "section": "Service",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "NODE00",
+            "local": [
+              "J_NODE.1",
+              "J_SMART.1"
+            ],
+            "destinations": [
+              "J_NODE00.1",
+              "J_NODE00.2",
+              "J_NODE00.3",
+              "J_NODE00.4",
+              "J_NODE00.5",
+              "J_NODE00.6"
+            ]
+          },
+          {
+            "net": "NODE01",
+            "local": [
+              "J_NODE.3",
+              "J_SMART.3"
+            ],
+            "destinations": [
+              "J_NODE01.1",
+              "J_NODE01.2",
+              "J_NODE01.3",
+              "J_NODE01.4",
+              "J_NODE01.5",
+              "J_NODE01.6"
+            ]
+          },
+          {
+            "net": "NODE02",
+            "local": [
+              "J_NODE.5",
+              "J_SMART.5"
+            ],
+            "destinations": [
+              "J_NODE02.1",
+              "J_NODE02.2",
+              "J_NODE02.3",
+              "J_NODE02.4",
+              "J_NODE02.5",
+              "J_NODE02.6"
+            ]
+          },
+          {
+            "net": "NODE03",
+            "local": [
+              "J_NODE.7"
+            ],
+            "destinations": [
+              "J_NODE03.1",
+              "J_NODE03.2",
+              "J_NODE03.3",
+              "J_NODE03.4",
+              "J_NODE03.5",
+              "J_NODE03.6"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "a2",
+        "section": "Nodes",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "NODE04",
+            "local": [
+              "J_NODE04.1",
+              "J_NODE04.2",
+              "J_NODE04.3",
+              "J_NODE04.4",
+              "J_NODE04.5",
+              "J_NODE04.6"
+            ],
+            "destinations": [
+              "J_NODE.1",
+              "J_SMART.1"
+            ]
+          },
+          {
+            "net": "NODE05",
+            "local": [
+              "J_NODE05.1",
+              "J_NODE05.2",
+              "J_NODE05.3",
+              "J_NODE05.4",
+              "J_NODE05.5",
+              "J_NODE05.6"
+            ],
+            "destinations": [
+              "J_NODE.3",
+              "J_SMART.3"
+            ]
+          },
+          {
+            "net": "NODE06",
+            "local": [
+              "J_NODE06.1",
+              "J_NODE06.2",
+              "J_NODE06.3",
+              "J_NODE06.4",
+              "J_NODE06.5",
+              "J_NODE06.6"
+            ],
+            "destinations": [
+              "J_NODE.5",
+              "J_SMART.5"
+            ]
+          },
+          {
+            "net": "NODE07",
+            "local": [
+              "J_NODE07.1",
+              "J_NODE07.2",
+              "J_NODE07.3",
+              "J_NODE07.4",
+              "J_NODE07.5",
+              "J_NODE07.6"
+            ],
+            "destinations": [
+              "J_NODE.7"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "a2",
+        "section": "Service",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "NODE04",
+            "local": [
+              "J_NODE.1",
+              "J_SMART.1"
+            ],
+            "destinations": [
+              "J_NODE04.1",
+              "J_NODE04.2",
+              "J_NODE04.3",
+              "J_NODE04.4",
+              "J_NODE04.5",
+              "J_NODE04.6"
+            ]
+          },
+          {
+            "net": "NODE05",
+            "local": [
+              "J_NODE.3",
+              "J_SMART.3"
+            ],
+            "destinations": [
+              "J_NODE05.1",
+              "J_NODE05.2",
+              "J_NODE05.3",
+              "J_NODE05.4",
+              "J_NODE05.5",
+              "J_NODE05.6"
+            ]
+          },
+          {
+            "net": "NODE06",
+            "local": [
+              "J_NODE.5",
+              "J_SMART.5"
+            ],
+            "destinations": [
+              "J_NODE06.1",
+              "J_NODE06.2",
+              "J_NODE06.3",
+              "J_NODE06.4",
+              "J_NODE06.5",
+              "J_NODE06.6"
+            ]
+          },
+          {
+            "net": "NODE07",
+            "local": [
+              "J_NODE.7"
+            ],
+            "destinations": [
+              "J_NODE07.1",
+              "J_NODE07.2",
+              "J_NODE07.3",
+              "J_NODE07.4",
+              "J_NODE07.5",
+              "J_NODE07.6"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "a3",
+        "section": "Nodes",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "NODE08",
+            "local": [
+              "J_NODE08.1",
+              "J_NODE08.2",
+              "J_NODE08.3",
+              "J_NODE08.4",
+              "J_NODE08.5",
+              "J_NODE08.6"
+            ],
+            "destinations": [
+              "J_NODE.1",
+              "J_SMART.1"
+            ]
+          },
+          {
+            "net": "NODE09",
+            "local": [
+              "J_NODE09.1",
+              "J_NODE09.2",
+              "J_NODE09.3",
+              "J_NODE09.4",
+              "J_NODE09.5",
+              "J_NODE09.6"
+            ],
+            "destinations": [
+              "J_NODE.3",
+              "J_SMART.3"
+            ]
+          },
+          {
+            "net": "NODE10",
+            "local": [
+              "J_NODE10.1",
+              "J_NODE10.2",
+              "J_NODE10.3",
+              "J_NODE10.4",
+              "J_NODE10.5",
+              "J_NODE10.6"
+            ],
+            "destinations": [
+              "J_NODE.5",
+              "J_SMART.5"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "a3",
+        "section": "Service",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "NODE08",
+            "local": [
+              "J_NODE.1",
+              "J_SMART.1"
+            ],
+            "destinations": [
+              "J_NODE08.1",
+              "J_NODE08.2",
+              "J_NODE08.3",
+              "J_NODE08.4",
+              "J_NODE08.5",
+              "J_NODE08.6"
+            ]
+          },
+          {
+            "net": "NODE09",
+            "local": [
+              "J_NODE.3",
+              "J_SMART.3"
+            ],
+            "destinations": [
+              "J_NODE09.1",
+              "J_NODE09.2",
+              "J_NODE09.3",
+              "J_NODE09.4",
+              "J_NODE09.5",
+              "J_NODE09.6"
+            ]
+          },
+          {
+            "net": "NODE10",
+            "local": [
+              "J_NODE.5",
+              "J_SMART.5"
+            ],
+            "destinations": [
+              "J_NODE10.1",
+              "J_NODE10.2",
+              "J_NODE10.3",
+              "J_NODE10.4",
+              "J_NODE10.5",
+              "J_NODE10.6"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "b1",
+        "section": "Nodes",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "NODE11",
+            "local": [
+              "J_NODE11.1",
+              "J_NODE11.2",
+              "J_NODE11.3",
+              "J_NODE11.4",
+              "J_NODE11.5",
+              "J_NODE11.6"
+            ],
+            "destinations": [
+              "J_NODE.1",
+              "J_SMART.1"
+            ]
+          },
+          {
+            "net": "NODE12",
+            "local": [
+              "J_NODE12.1",
+              "J_NODE12.2",
+              "J_NODE12.3",
+              "J_NODE12.4",
+              "J_NODE12.5",
+              "J_NODE12.6"
+            ],
+            "destinations": [
+              "J_NODE.3",
+              "J_SMART.3"
+            ]
+          },
+          {
+            "net": "NODE13",
+            "local": [
+              "J_NODE13.1",
+              "J_NODE13.2",
+              "J_NODE13.3",
+              "J_NODE13.4",
+              "J_NODE13.5",
+              "J_NODE13.6"
+            ],
+            "destinations": [
+              "J_NODE.5",
+              "J_SMART.5"
+            ]
+          },
+          {
+            "net": "NODE14",
+            "local": [
+              "J_NODE14.1",
+              "J_NODE14.2",
+              "J_NODE14.3",
+              "J_NODE14.4",
+              "J_NODE14.5",
+              "J_NODE14.6"
+            ],
+            "destinations": [
+              "J_NODE.7"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "b1",
+        "section": "Service",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "NODE11",
+            "local": [
+              "J_NODE.1",
+              "J_SMART.1"
+            ],
+            "destinations": [
+              "J_NODE11.1",
+              "J_NODE11.2",
+              "J_NODE11.3",
+              "J_NODE11.4",
+              "J_NODE11.5",
+              "J_NODE11.6"
+            ]
+          },
+          {
+            "net": "NODE12",
+            "local": [
+              "J_NODE.3",
+              "J_SMART.3"
+            ],
+            "destinations": [
+              "J_NODE12.1",
+              "J_NODE12.2",
+              "J_NODE12.3",
+              "J_NODE12.4",
+              "J_NODE12.5",
+              "J_NODE12.6"
+            ]
+          },
+          {
+            "net": "NODE13",
+            "local": [
+              "J_NODE.5",
+              "J_SMART.5"
+            ],
+            "destinations": [
+              "J_NODE13.1",
+              "J_NODE13.2",
+              "J_NODE13.3",
+              "J_NODE13.4",
+              "J_NODE13.5",
+              "J_NODE13.6"
+            ]
+          },
+          {
+            "net": "NODE14",
+            "local": [
+              "J_NODE.7"
+            ],
+            "destinations": [
+              "J_NODE14.1",
+              "J_NODE14.2",
+              "J_NODE14.3",
+              "J_NODE14.4",
+              "J_NODE14.5",
+              "J_NODE14.6"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "b2",
+        "section": "Nodes",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "NODE15",
+            "local": [
+              "J_NODE15.1",
+              "J_NODE15.2",
+              "J_NODE15.3",
+              "J_NODE15.4",
+              "J_NODE15.5",
+              "J_NODE15.6"
+            ],
+            "destinations": [
+              "J_NODE.1",
+              "J_SMART.1"
+            ]
+          },
+          {
+            "net": "NODE16",
+            "local": [
+              "J_NODE16.1",
+              "J_NODE16.2",
+              "J_NODE16.3",
+              "J_NODE16.4",
+              "J_NODE16.5",
+              "J_NODE16.6"
+            ],
+            "destinations": [
+              "J_NODE.3",
+              "J_SMART.3"
+            ]
+          },
+          {
+            "net": "NODE17",
+            "local": [
+              "J_NODE17.1",
+              "J_NODE17.2",
+              "J_NODE17.3",
+              "J_NODE17.4",
+              "J_NODE17.5",
+              "J_NODE17.6"
+            ],
+            "destinations": [
+              "J_NODE.5",
+              "J_SMART.5"
+            ]
+          },
+          {
+            "net": "NODE18",
+            "local": [
+              "J_NODE18.1",
+              "J_NODE18.2",
+              "J_NODE18.3",
+              "J_NODE18.4",
+              "J_NODE18.5",
+              "J_NODE18.6"
+            ],
+            "destinations": [
+              "J_NODE.7"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "b2",
+        "section": "Service",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "NODE15",
+            "local": [
+              "J_NODE.1",
+              "J_SMART.1"
+            ],
+            "destinations": [
+              "J_NODE15.1",
+              "J_NODE15.2",
+              "J_NODE15.3",
+              "J_NODE15.4",
+              "J_NODE15.5",
+              "J_NODE15.6"
+            ]
+          },
+          {
+            "net": "NODE16",
+            "local": [
+              "J_NODE.3",
+              "J_SMART.3"
+            ],
+            "destinations": [
+              "J_NODE16.1",
+              "J_NODE16.2",
+              "J_NODE16.3",
+              "J_NODE16.4",
+              "J_NODE16.5",
+              "J_NODE16.6"
+            ]
+          },
+          {
+            "net": "NODE17",
+            "local": [
+              "J_NODE.5",
+              "J_SMART.5"
+            ],
+            "destinations": [
+              "J_NODE17.1",
+              "J_NODE17.2",
+              "J_NODE17.3",
+              "J_NODE17.4",
+              "J_NODE17.5",
+              "J_NODE17.6"
+            ]
+          },
+          {
+            "net": "NODE18",
+            "local": [
+              "J_NODE.7"
+            ],
+            "destinations": [
+              "J_NODE18.1",
+              "J_NODE18.2",
+              "J_NODE18.3",
+              "J_NODE18.4",
+              "J_NODE18.5",
+              "J_NODE18.6"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "b3",
+        "section": "Nodes",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "NODE19",
+            "local": [
+              "J_NODE19.1",
+              "J_NODE19.2",
+              "J_NODE19.3",
+              "J_NODE19.4",
+              "J_NODE19.5",
+              "J_NODE19.6"
+            ],
+            "destinations": [
+              "J_NODE.1",
+              "J_SMART.1"
+            ]
+          },
+          {
+            "net": "NODE20",
+            "local": [
+              "J_NODE20.1",
+              "J_NODE20.2",
+              "J_NODE20.3",
+              "J_NODE20.4",
+              "J_NODE20.5",
+              "J_NODE20.6"
+            ],
+            "destinations": [
+              "J_NODE.3",
+              "J_SMART.3"
+            ]
+          },
+          {
+            "net": "NODE21",
+            "local": [
+              "J_NODE21.1",
+              "J_NODE21.2",
+              "J_NODE21.3",
+              "J_NODE21.4",
+              "J_NODE21.5",
+              "J_NODE21.6"
+            ],
+            "destinations": [
+              "J_NODE.5",
+              "J_SMART.5"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "b3",
+        "section": "Service",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "NODE19",
+            "local": [
+              "J_NODE.1",
+              "J_SMART.1"
+            ],
+            "destinations": [
+              "J_NODE19.1",
+              "J_NODE19.2",
+              "J_NODE19.3",
+              "J_NODE19.4",
+              "J_NODE19.5",
+              "J_NODE19.6"
+            ]
+          },
+          {
+            "net": "NODE20",
+            "local": [
+              "J_NODE.3",
+              "J_SMART.3"
+            ],
+            "destinations": [
+              "J_NODE20.1",
+              "J_NODE20.2",
+              "J_NODE20.3",
+              "J_NODE20.4",
+              "J_NODE20.5",
+              "J_NODE20.6"
+            ]
+          },
+          {
+            "net": "NODE21",
+            "local": [
+              "J_NODE.5",
+              "J_SMART.5"
+            ],
+            "destinations": [
+              "J_NODE21.1",
+              "J_NODE21.2",
+              "J_NODE21.3",
+              "J_NODE21.4",
+              "J_NODE21.5",
+              "J_NODE21.6"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "power",
+        "section": "Input",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "GND",
+            "local": [
+              "J_INPUT.2",
+              "C_INPUT.2",
+              "C_INPUT_HF.2",
+              "J_BUCK_5V.4",
+              "J_BUCK_3V3.4"
+            ],
+            "destinations": [
+              "U_OV_5V.4",
+              "R_OV_5V_BOTTOM.2",
+              "R_UV_5V_BOTTOM.2",
+              "C_OV_5V_IN.2",
+              "C_OV_5V_OUT.2",
+              "U_OV_3V3.4",
+              "R_OV_3V3_BOTTOM.2",
+              "R_UV_3V3_BOTTOM.2",
+              "C_OV_3V3_IN.2",
+              "C_OV_3V3_OUT.2",
+              "Q_ENABLE.1",
+              "C_EDU.2",
+              "U_SENSE.2",
+              "C_SENSE.2",
+              "U_REF.2",
+              "R_TRIP_BOTTOM.2",
+              "R_EDU_BOTTOM.2",
+              "U_TRIP.4",
+              "C_TRIP.2",
+              "U_POR.3",
+              "U_FAULT.2",
+              "U_FAULT.3",
+              "U_FAULT.7",
+              "U_FAULT.12",
+              "U_FAULT.11",
+              "C_FAULT.2",
+              "U_RESET.4",
+              "U_RESET.5",
+              "U_RESET.9",
+              "U_RESET.10",
+              "U_RESET.12",
+              "U_RESET.13",
+              "U_RESET.7",
+              "C_RESET.2",
+              "U_ALLOW.9",
+              "U_ALLOW.10",
+              "U_ALLOW.12",
+              "U_ALLOW.13",
+              "U_ALLOW.7",
+              "C_ALLOW.2",
+              "R_EDU_PWR_EN_OFF.2",
+              "R_EDU_FAULT_RESET_OFF.2",
+              "R_ROUTER_ALIVE_OFF.2",
+              "Q_BATTERY_LED.1",
+              "R_LED_GATE_OFF.2",
+              "J_MATRIX.2",
+              "J_SMART.2",
+              "J_SMART.4",
+              "J_SMART.6",
+              "J_FIXED_BATTERY.2",
+              "J_TEST.2"
+            ]
+          },
+          {
+            "net": "12V_SYS",
+            "local": [
+              "D_REVERSE.2",
+              "C_INPUT.1",
+              "C_INPUT_HF.1",
+              "J_BUCK_5V.3",
+              "J_BUCK_3V3.3"
+            ],
+            "destinations": [
+              "J_MATRIX.10"
+            ]
+          },
+          {
+            "net": "BUCK_5V",
+            "local": [
+              "J_BUCK_5V.5"
+            ],
+            "destinations": [
+              "U_OV_5V.1",
+              "U_OV_5V.5",
+              "R_OV_5V_TOP.1",
+              "R_UV_5V_TOP.1",
+              "Q_OV_5V_IN.3",
+              "C_OV_5V_IN.1"
+            ]
+          },
+          {
+            "net": "BUCK_3V3",
+            "local": [
+              "J_BUCK_3V3.5"
+            ],
+            "destinations": [
+              "U_OV_3V3.1",
+              "U_OV_3V3.5",
+              "R_OV_3V3_TOP.1",
+              "R_UV_3V3_TOP.1",
+              "Q_OV_3V3_IN.3",
+              "C_OV_3V3_IN.1"
+            ]
+          },
+          {
+            "net": "SAFE_5V",
+            "local": [
+              "JP_LOGIC.1"
+            ],
+            "destinations": [
+              "U_OV_5V.7",
+              "Q_OV_5V_OUT.3",
+              "C_OV_5V_OUT.1"
+            ]
+          },
+          {
+            "net": "5V_SYS",
+            "local": [
+              "JP_LOGIC.2"
+            ],
+            "destinations": [
+              "F_EDU.1",
+              "R_REF_FEED.1",
+              "U_TRIP.8",
+              "C_TRIP.1",
+              "R_BATTERY_LED.1",
+              "J_MATRIX.4",
+              "J_SMART.1"
+            ]
+          },
+          {
+            "net": "SAFE_3V3",
+            "local": [
+              "JP_3V3.1"
+            ],
+            "destinations": [
+              "U_OV_3V3.7",
+              "Q_OV_3V3_OUT.3",
+              "C_OV_3V3_OUT.1"
+            ]
+          },
+          {
+            "net": "3V3_SYS",
+            "local": [
+              "JP_3V3.2"
+            ],
+            "destinations": [
+              "U_SENSE.5",
+              "C_SENSE.1",
+              "R_PRESET.1",
+              "R_EDU_ON.1",
+              "U_POR.2",
+              "U_FAULT.14",
+              "U_FAULT.13",
+              "U_FAULT.10",
+              "C_FAULT.1",
+              "U_RESET.14",
+              "C_RESET.1",
+              "U_ALLOW.14",
+              "C_ALLOW.1",
+              "J_MATRIX.3",
+              "J_SMART.5"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "power",
+        "section": "VoltageGuard",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "GND",
+            "local": [
+              "U_OV_5V.4",
+              "R_OV_5V_BOTTOM.2",
+              "R_UV_5V_BOTTOM.2",
+              "C_OV_5V_IN.2",
+              "C_OV_5V_OUT.2",
+              "U_OV_3V3.4",
+              "R_OV_3V3_BOTTOM.2",
+              "R_UV_3V3_BOTTOM.2",
+              "C_OV_3V3_IN.2",
+              "C_OV_3V3_OUT.2"
+            ],
+            "destinations": [
+              "J_INPUT.2",
+              "C_INPUT.2",
+              "C_INPUT_HF.2",
+              "J_BUCK_5V.4",
+              "J_BUCK_3V3.4",
+              "Q_ENABLE.1",
+              "C_EDU.2",
+              "U_SENSE.2",
+              "C_SENSE.2",
+              "U_REF.2",
+              "R_TRIP_BOTTOM.2",
+              "R_EDU_BOTTOM.2",
+              "U_TRIP.4",
+              "C_TRIP.2",
+              "U_POR.3",
+              "U_FAULT.2",
+              "U_FAULT.3",
+              "U_FAULT.7",
+              "U_FAULT.12",
+              "U_FAULT.11",
+              "C_FAULT.2",
+              "U_RESET.4",
+              "U_RESET.5",
+              "U_RESET.9",
+              "U_RESET.10",
+              "U_RESET.12",
+              "U_RESET.13",
+              "U_RESET.7",
+              "C_RESET.2",
+              "U_ALLOW.9",
+              "U_ALLOW.10",
+              "U_ALLOW.12",
+              "U_ALLOW.13",
+              "U_ALLOW.7",
+              "C_ALLOW.2",
+              "R_EDU_PWR_EN_OFF.2",
+              "R_EDU_FAULT_RESET_OFF.2",
+              "R_ROUTER_ALIVE_OFF.2",
+              "Q_BATTERY_LED.1",
+              "R_LED_GATE_OFF.2",
+              "J_MATRIX.2",
+              "J_SMART.2",
+              "J_SMART.4",
+              "J_SMART.6",
+              "J_FIXED_BATTERY.2",
+              "J_TEST.2"
+            ]
+          },
+          {
+            "net": "BUCK_5V",
+            "local": [
+              "U_OV_5V.1",
+              "U_OV_5V.5",
+              "R_OV_5V_TOP.1",
+              "R_UV_5V_TOP.1",
+              "Q_OV_5V_IN.3",
+              "C_OV_5V_IN.1"
+            ],
+            "destinations": [
+              "J_BUCK_5V.5"
+            ]
+          },
+          {
+            "net": "BUCK_3V3",
+            "local": [
+              "U_OV_3V3.1",
+              "U_OV_3V3.5",
+              "R_OV_3V3_TOP.1",
+              "R_UV_3V3_TOP.1",
+              "Q_OV_3V3_IN.3",
+              "C_OV_3V3_IN.1"
+            ],
+            "destinations": [
+              "J_BUCK_3V3.5"
+            ]
+          },
+          {
+            "net": "SAFE_5V",
+            "local": [
+              "U_OV_5V.7",
+              "Q_OV_5V_OUT.3",
+              "C_OV_5V_OUT.1"
+            ],
+            "destinations": [
+              "JP_LOGIC.1"
+            ]
+          },
+          {
+            "net": "SAFE_3V3",
+            "local": [
+              "U_OV_3V3.7",
+              "Q_OV_3V3_OUT.3",
+              "C_OV_3V3_OUT.1"
+            ],
+            "destinations": [
+              "JP_3V3.1"
+            ]
+          },
+          {
+            "net": "PRESET_N",
+            "local": [
+              "U_OV_5V.6",
+              "U_OV_3V3.6"
+            ],
+            "destinations": [
+              "U_TRIP.1",
+              "R_PRESET.2",
+              "U_POR.1",
+              "U_FAULT.4",
+              "U_RESET.2",
+              "J_TEST.5"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "power",
+        "section": "Student",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "GND",
+            "local": [
+              "Q_ENABLE.1",
+              "C_EDU.2",
+              "U_SENSE.2",
+              "C_SENSE.2"
+            ],
+            "destinations": [
+              "J_INPUT.2",
+              "C_INPUT.2",
+              "C_INPUT_HF.2",
+              "J_BUCK_5V.4",
+              "J_BUCK_3V3.4",
+              "U_OV_5V.4",
+              "R_OV_5V_BOTTOM.2",
+              "R_UV_5V_BOTTOM.2",
+              "C_OV_5V_IN.2",
+              "C_OV_5V_OUT.2",
+              "U_OV_3V3.4",
+              "R_OV_3V3_BOTTOM.2",
+              "R_UV_3V3_BOTTOM.2",
+              "C_OV_3V3_IN.2",
+              "C_OV_3V3_OUT.2",
+              "U_REF.2",
+              "R_TRIP_BOTTOM.2",
+              "R_EDU_BOTTOM.2",
+              "U_TRIP.4",
+              "C_TRIP.2",
+              "U_POR.3",
+              "U_FAULT.2",
+              "U_FAULT.3",
+              "U_FAULT.7",
+              "U_FAULT.12",
+              "U_FAULT.11",
+              "C_FAULT.2",
+              "U_RESET.4",
+              "U_RESET.5",
+              "U_RESET.9",
+              "U_RESET.10",
+              "U_RESET.12",
+              "U_RESET.13",
+              "U_RESET.7",
+              "C_RESET.2",
+              "U_ALLOW.9",
+              "U_ALLOW.10",
+              "U_ALLOW.12",
+              "U_ALLOW.13",
+              "U_ALLOW.7",
+              "C_ALLOW.2",
+              "R_EDU_PWR_EN_OFF.2",
+              "R_EDU_FAULT_RESET_OFF.2",
+              "R_ROUTER_ALIVE_OFF.2",
+              "Q_BATTERY_LED.1",
+              "R_LED_GATE_OFF.2",
+              "J_MATRIX.2",
+              "J_SMART.2",
+              "J_SMART.4",
+              "J_SMART.6",
+              "J_FIXED_BATTERY.2",
+              "J_TEST.2"
+            ]
+          },
+          {
+            "net": "5V_SYS",
+            "local": [
+              "F_EDU.1"
+            ],
+            "destinations": [
+              "JP_LOGIC.2",
+              "R_REF_FEED.1",
+              "U_TRIP.8",
+              "C_TRIP.1",
+              "R_BATTERY_LED.1",
+              "J_MATRIX.4",
+              "J_SMART.1"
+            ]
+          },
+          {
+            "net": "3V3_SYS",
+            "local": [
+              "U_SENSE.5",
+              "C_SENSE.1"
+            ],
+            "destinations": [
+              "JP_3V3.2",
+              "R_PRESET.1",
+              "R_EDU_ON.1",
+              "U_POR.2",
+              "U_FAULT.14",
+              "U_FAULT.13",
+              "U_FAULT.10",
+              "C_FAULT.1",
+              "U_RESET.14",
+              "C_RESET.1",
+              "U_ALLOW.14",
+              "C_ALLOW.1",
+              "J_MATRIX.3",
+              "J_SMART.5"
+            ]
+          },
+          {
+            "net": "ALLOW_RAIL",
+            "local": [
+              "Q_ENABLE.2"
+            ],
+            "destinations": [
+              "U_ALLOW.6"
+            ]
+          },
+          {
+            "net": "5V_EDU",
+            "local": [
+              "R_SHUNT.2",
+              "C_EDU.1",
+              "U_SENSE.4"
+            ],
+            "destinations": [
+              "R_EDU_TOP.1",
+              "J_MATRIX.1",
+              "J_SMART.3",
+              "J_FIXED_BATTERY.1",
+              "J_TEST.1"
+            ]
+          },
+          {
+            "net": "CURRENT_SENSE",
+            "local": [
+              "U_SENSE.1"
+            ],
+            "destinations": [
+              "U_TRIP.2",
+              "J_MATRIX.8",
+              "J_TEST.4"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "power",
+        "section": "Reference",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "GND",
+            "local": [
+              "U_REF.2",
+              "R_TRIP_BOTTOM.2",
+              "R_EDU_BOTTOM.2",
+              "U_TRIP.4",
+              "C_TRIP.2"
+            ],
+            "destinations": [
+              "J_INPUT.2",
+              "C_INPUT.2",
+              "C_INPUT_HF.2",
+              "J_BUCK_5V.4",
+              "J_BUCK_3V3.4",
+              "U_OV_5V.4",
+              "R_OV_5V_BOTTOM.2",
+              "R_UV_5V_BOTTOM.2",
+              "C_OV_5V_IN.2",
+              "C_OV_5V_OUT.2",
+              "U_OV_3V3.4",
+              "R_OV_3V3_BOTTOM.2",
+              "R_UV_3V3_BOTTOM.2",
+              "C_OV_3V3_IN.2",
+              "C_OV_3V3_OUT.2",
+              "Q_ENABLE.1",
+              "C_EDU.2",
+              "U_SENSE.2",
+              "C_SENSE.2",
+              "U_POR.3",
+              "U_FAULT.2",
+              "U_FAULT.3",
+              "U_FAULT.7",
+              "U_FAULT.12",
+              "U_FAULT.11",
+              "C_FAULT.2",
+              "U_RESET.4",
+              "U_RESET.5",
+              "U_RESET.9",
+              "U_RESET.10",
+              "U_RESET.12",
+              "U_RESET.13",
+              "U_RESET.7",
+              "C_RESET.2",
+              "U_ALLOW.9",
+              "U_ALLOW.10",
+              "U_ALLOW.12",
+              "U_ALLOW.13",
+              "U_ALLOW.7",
+              "C_ALLOW.2",
+              "R_EDU_PWR_EN_OFF.2",
+              "R_EDU_FAULT_RESET_OFF.2",
+              "R_ROUTER_ALIVE_OFF.2",
+              "Q_BATTERY_LED.1",
+              "R_LED_GATE_OFF.2",
+              "J_MATRIX.2",
+              "J_SMART.2",
+              "J_SMART.4",
+              "J_SMART.6",
+              "J_FIXED_BATTERY.2",
+              "J_TEST.2"
+            ]
+          },
+          {
+            "net": "5V_SYS",
+            "local": [
+              "R_REF_FEED.1",
+              "U_TRIP.8",
+              "C_TRIP.1"
+            ],
+            "destinations": [
+              "JP_LOGIC.2",
+              "F_EDU.1",
+              "R_BATTERY_LED.1",
+              "J_MATRIX.4",
+              "J_SMART.1"
+            ]
+          },
+          {
+            "net": "3V3_SYS",
+            "local": [
+              "R_PRESET.1",
+              "R_EDU_ON.1"
+            ],
+            "destinations": [
+              "JP_3V3.2",
+              "U_SENSE.5",
+              "C_SENSE.1",
+              "U_POR.2",
+              "U_FAULT.14",
+              "U_FAULT.13",
+              "U_FAULT.10",
+              "C_FAULT.1",
+              "U_RESET.14",
+              "C_RESET.1",
+              "U_ALLOW.14",
+              "C_ALLOW.1",
+              "J_MATRIX.3",
+              "J_SMART.5"
+            ]
+          },
+          {
+            "net": "PRESET_N",
+            "local": [
+              "U_TRIP.1",
+              "R_PRESET.2"
+            ],
+            "destinations": [
+              "U_OV_5V.6",
+              "U_OV_3V3.6",
+              "U_POR.1",
+              "U_FAULT.4",
+              "U_RESET.2",
+              "J_TEST.5"
+            ]
+          },
+          {
+            "net": "5V_EDU",
+            "local": [
+              "R_EDU_TOP.1"
+            ],
+            "destinations": [
+              "R_SHUNT.2",
+              "C_EDU.1",
+              "U_SENSE.4",
+              "J_MATRIX.1",
+              "J_SMART.3",
+              "J_FIXED_BATTERY.1",
+              "J_TEST.1"
+            ]
+          },
+          {
+            "net": "CURRENT_SENSE",
+            "local": [
+              "U_TRIP.2"
+            ],
+            "destinations": [
+              "U_SENSE.1",
+              "J_MATRIX.8",
+              "J_TEST.4"
+            ]
+          },
+          {
+            "net": "REF_TRIP",
+            "local": [
+              "R_TRIP_TOP.2",
+              "R_TRIP_BOTTOM.1",
+              "U_TRIP.3",
+              "U_TRIP.6"
+            ],
+            "destinations": [
+              "J_TEST.3"
+            ]
+          },
+          {
+            "net": "EDU_ON",
+            "local": [
+              "U_TRIP.7",
+              "R_EDU_ON.2"
+            ],
+            "destinations": [
+              "Q_BATTERY_LED.2",
+              "R_LED_GATE_OFF.1",
+              "J_SMART.7"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "power",
+        "section": "Latch",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "GND",
+            "local": [
+              "U_POR.3",
+              "U_FAULT.2",
+              "U_FAULT.3",
+              "U_FAULT.7",
+              "U_FAULT.12",
+              "U_FAULT.11",
+              "C_FAULT.2",
+              "U_RESET.4",
+              "U_RESET.5",
+              "U_RESET.9",
+              "U_RESET.10",
+              "U_RESET.12",
+              "U_RESET.13",
+              "U_RESET.7",
+              "C_RESET.2",
+              "U_ALLOW.9",
+              "U_ALLOW.10",
+              "U_ALLOW.12",
+              "U_ALLOW.13",
+              "U_ALLOW.7",
+              "C_ALLOW.2",
+              "R_EDU_PWR_EN_OFF.2",
+              "R_EDU_FAULT_RESET_OFF.2",
+              "R_ROUTER_ALIVE_OFF.2"
+            ],
+            "destinations": [
+              "J_INPUT.2",
+              "C_INPUT.2",
+              "C_INPUT_HF.2",
+              "J_BUCK_5V.4",
+              "J_BUCK_3V3.4",
+              "U_OV_5V.4",
+              "R_OV_5V_BOTTOM.2",
+              "R_UV_5V_BOTTOM.2",
+              "C_OV_5V_IN.2",
+              "C_OV_5V_OUT.2",
+              "U_OV_3V3.4",
+              "R_OV_3V3_BOTTOM.2",
+              "R_UV_3V3_BOTTOM.2",
+              "C_OV_3V3_IN.2",
+              "C_OV_3V3_OUT.2",
+              "Q_ENABLE.1",
+              "C_EDU.2",
+              "U_SENSE.2",
+              "C_SENSE.2",
+              "U_REF.2",
+              "R_TRIP_BOTTOM.2",
+              "R_EDU_BOTTOM.2",
+              "U_TRIP.4",
+              "C_TRIP.2",
+              "Q_BATTERY_LED.1",
+              "R_LED_GATE_OFF.2",
+              "J_MATRIX.2",
+              "J_SMART.2",
+              "J_SMART.4",
+              "J_SMART.6",
+              "J_FIXED_BATTERY.2",
+              "J_TEST.2"
+            ]
+          },
+          {
+            "net": "3V3_SYS",
+            "local": [
+              "U_POR.2",
+              "U_FAULT.14",
+              "U_FAULT.13",
+              "U_FAULT.10",
+              "C_FAULT.1",
+              "U_RESET.14",
+              "C_RESET.1",
+              "U_ALLOW.14",
+              "C_ALLOW.1"
+            ],
+            "destinations": [
+              "JP_3V3.2",
+              "U_SENSE.5",
+              "C_SENSE.1",
+              "R_PRESET.1",
+              "R_EDU_ON.1",
+              "J_MATRIX.3",
+              "J_SMART.5"
+            ]
+          },
+          {
+            "net": "PRESET_N",
+            "local": [
+              "U_POR.1",
+              "U_FAULT.4",
+              "U_RESET.2"
+            ],
+            "destinations": [
+              "U_OV_5V.6",
+              "U_OV_3V3.6",
+              "U_TRIP.1",
+              "R_PRESET.2",
+              "J_TEST.5"
+            ]
+          },
+          {
+            "net": "ALLOW_RAIL",
+            "local": [
+              "U_ALLOW.6"
+            ],
+            "destinations": [
+              "Q_ENABLE.2"
+            ]
+          },
+          {
+            "net": "EDU_FAULT",
+            "local": [
+              "U_FAULT.5"
+            ],
+            "destinations": [
+              "J_MATRIX.6",
+              "J_TEST.6"
+            ]
+          },
+          {
+            "net": "EDU_FAULT_RESET",
+            "local": [
+              "U_RESET.1",
+              "R_EDU_FAULT_RESET_OFF.1"
+            ],
+            "destinations": [
+              "J_MATRIX.7"
+            ]
+          },
+          {
+            "net": "EDU_PWR_EN",
+            "local": [
+              "U_ALLOW.1",
+              "R_EDU_PWR_EN_OFF.1"
+            ],
+            "destinations": [
+              "J_MATRIX.5"
+            ]
+          },
+          {
+            "net": "ROUTER_ALIVE",
+            "local": [
+              "U_ALLOW.5",
+              "R_ROUTER_ALIVE_OFF.1"
+            ],
+            "destinations": [
+              "J_MATRIX.9"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "power",
+        "section": "Indicator",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "GND",
+            "local": [
+              "Q_BATTERY_LED.1",
+              "R_LED_GATE_OFF.2"
+            ],
+            "destinations": [
+              "J_INPUT.2",
+              "C_INPUT.2",
+              "C_INPUT_HF.2",
+              "J_BUCK_5V.4",
+              "J_BUCK_3V3.4",
+              "U_OV_5V.4",
+              "R_OV_5V_BOTTOM.2",
+              "R_UV_5V_BOTTOM.2",
+              "C_OV_5V_IN.2",
+              "C_OV_5V_OUT.2",
+              "U_OV_3V3.4",
+              "R_OV_3V3_BOTTOM.2",
+              "R_UV_3V3_BOTTOM.2",
+              "C_OV_3V3_IN.2",
+              "C_OV_3V3_OUT.2",
+              "Q_ENABLE.1",
+              "C_EDU.2",
+              "U_SENSE.2",
+              "C_SENSE.2",
+              "U_REF.2",
+              "R_TRIP_BOTTOM.2",
+              "R_EDU_BOTTOM.2",
+              "U_TRIP.4",
+              "C_TRIP.2",
+              "U_POR.3",
+              "U_FAULT.2",
+              "U_FAULT.3",
+              "U_FAULT.7",
+              "U_FAULT.12",
+              "U_FAULT.11",
+              "C_FAULT.2",
+              "U_RESET.4",
+              "U_RESET.5",
+              "U_RESET.9",
+              "U_RESET.10",
+              "U_RESET.12",
+              "U_RESET.13",
+              "U_RESET.7",
+              "C_RESET.2",
+              "U_ALLOW.9",
+              "U_ALLOW.10",
+              "U_ALLOW.12",
+              "U_ALLOW.13",
+              "U_ALLOW.7",
+              "C_ALLOW.2",
+              "R_EDU_PWR_EN_OFF.2",
+              "R_EDU_FAULT_RESET_OFF.2",
+              "R_ROUTER_ALIVE_OFF.2",
+              "J_MATRIX.2",
+              "J_SMART.2",
+              "J_SMART.4",
+              "J_SMART.6",
+              "J_FIXED_BATTERY.2",
+              "J_TEST.2"
+            ]
+          },
+          {
+            "net": "5V_SYS",
+            "local": [
+              "R_BATTERY_LED.1"
+            ],
+            "destinations": [
+              "JP_LOGIC.2",
+              "F_EDU.1",
+              "R_REF_FEED.1",
+              "U_TRIP.8",
+              "C_TRIP.1",
+              "J_MATRIX.4",
+              "J_SMART.1"
+            ]
+          },
+          {
+            "net": "EDU_ON",
+            "local": [
+              "Q_BATTERY_LED.2",
+              "R_LED_GATE_OFF.1"
+            ],
+            "destinations": [
+              "U_TRIP.7",
+              "R_EDU_ON.2",
+              "J_SMART.7"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "power",
+        "section": "Outputs",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "GND",
+            "local": [
+              "J_MATRIX.2",
+              "J_SMART.2",
+              "J_SMART.4",
+              "J_SMART.6",
+              "J_FIXED_BATTERY.2",
+              "J_TEST.2"
+            ],
+            "destinations": [
+              "J_INPUT.2",
+              "C_INPUT.2",
+              "C_INPUT_HF.2",
+              "J_BUCK_5V.4",
+              "J_BUCK_3V3.4",
+              "U_OV_5V.4",
+              "R_OV_5V_BOTTOM.2",
+              "R_UV_5V_BOTTOM.2",
+              "C_OV_5V_IN.2",
+              "C_OV_5V_OUT.2",
+              "U_OV_3V3.4",
+              "R_OV_3V3_BOTTOM.2",
+              "R_UV_3V3_BOTTOM.2",
+              "C_OV_3V3_IN.2",
+              "C_OV_3V3_OUT.2",
+              "Q_ENABLE.1",
+              "C_EDU.2",
+              "U_SENSE.2",
+              "C_SENSE.2",
+              "U_REF.2",
+              "R_TRIP_BOTTOM.2",
+              "R_EDU_BOTTOM.2",
+              "U_TRIP.4",
+              "C_TRIP.2",
+              "U_POR.3",
+              "U_FAULT.2",
+              "U_FAULT.3",
+              "U_FAULT.7",
+              "U_FAULT.12",
+              "U_FAULT.11",
+              "C_FAULT.2",
+              "U_RESET.4",
+              "U_RESET.5",
+              "U_RESET.9",
+              "U_RESET.10",
+              "U_RESET.12",
+              "U_RESET.13",
+              "U_RESET.7",
+              "C_RESET.2",
+              "U_ALLOW.9",
+              "U_ALLOW.10",
+              "U_ALLOW.12",
+              "U_ALLOW.13",
+              "U_ALLOW.7",
+              "C_ALLOW.2",
+              "R_EDU_PWR_EN_OFF.2",
+              "R_EDU_FAULT_RESET_OFF.2",
+              "R_ROUTER_ALIVE_OFF.2",
+              "Q_BATTERY_LED.1",
+              "R_LED_GATE_OFF.2"
+            ]
+          },
+          {
+            "net": "12V_SYS",
+            "local": [
+              "J_MATRIX.10"
+            ],
+            "destinations": [
+              "D_REVERSE.2",
+              "C_INPUT.1",
+              "C_INPUT_HF.1",
+              "J_BUCK_5V.3",
+              "J_BUCK_3V3.3"
+            ]
+          },
+          {
+            "net": "5V_SYS",
+            "local": [
+              "J_MATRIX.4",
+              "J_SMART.1"
+            ],
+            "destinations": [
+              "JP_LOGIC.2",
+              "F_EDU.1",
+              "R_REF_FEED.1",
+              "U_TRIP.8",
+              "C_TRIP.1",
+              "R_BATTERY_LED.1"
+            ]
+          },
+          {
+            "net": "3V3_SYS",
+            "local": [
+              "J_MATRIX.3",
+              "J_SMART.5"
+            ],
+            "destinations": [
+              "JP_3V3.2",
+              "U_SENSE.5",
+              "C_SENSE.1",
+              "R_PRESET.1",
+              "R_EDU_ON.1",
+              "U_POR.2",
+              "U_FAULT.14",
+              "U_FAULT.13",
+              "U_FAULT.10",
+              "C_FAULT.1",
+              "U_RESET.14",
+              "C_RESET.1",
+              "U_ALLOW.14",
+              "C_ALLOW.1"
+            ]
+          },
+          {
+            "net": "PRESET_N",
+            "local": [
+              "J_TEST.5"
+            ],
+            "destinations": [
+              "U_OV_5V.6",
+              "U_OV_3V3.6",
+              "U_TRIP.1",
+              "R_PRESET.2",
+              "U_POR.1",
+              "U_FAULT.4",
+              "U_RESET.2"
+            ]
+          },
+          {
+            "net": "5V_EDU",
+            "local": [
+              "J_MATRIX.1",
+              "J_SMART.3",
+              "J_FIXED_BATTERY.1",
+              "J_TEST.1"
+            ],
+            "destinations": [
+              "R_SHUNT.2",
+              "C_EDU.1",
+              "U_SENSE.4",
+              "R_EDU_TOP.1"
+            ]
+          },
+          {
+            "net": "CURRENT_SENSE",
+            "local": [
+              "J_MATRIX.8",
+              "J_TEST.4"
+            ],
+            "destinations": [
+              "U_SENSE.1",
+              "U_TRIP.2"
+            ]
+          },
+          {
+            "net": "REF_TRIP",
+            "local": [
+              "J_TEST.3"
+            ],
+            "destinations": [
+              "R_TRIP_TOP.2",
+              "R_TRIP_BOTTOM.1",
+              "U_TRIP.3",
+              "U_TRIP.6"
+            ]
+          },
+          {
+            "net": "EDU_ON",
+            "local": [
+              "J_SMART.7"
+            ],
+            "destinations": [
+              "U_TRIP.7",
+              "R_EDU_ON.2",
+              "Q_BATTERY_LED.2",
+              "R_LED_GATE_OFF.1"
+            ]
+          },
+          {
+            "net": "EDU_FAULT",
+            "local": [
+              "J_MATRIX.6",
+              "J_TEST.6"
+            ],
+            "destinations": [
+              "U_FAULT.5"
+            ]
+          },
+          {
+            "net": "EDU_FAULT_RESET",
+            "local": [
+              "J_MATRIX.7"
+            ],
+            "destinations": [
+              "U_RESET.1",
+              "R_EDU_FAULT_RESET_OFF.1"
+            ]
+          },
+          {
+            "net": "EDU_PWR_EN",
+            "local": [
+              "J_MATRIX.5"
+            ],
+            "destinations": [
+              "U_ALLOW.1",
+              "R_EDU_PWR_EN_OFF.1"
+            ]
+          },
+          {
+            "net": "ROUTER_ALIVE",
+            "local": [
+              "J_MATRIX.9"
+            ],
+            "destinations": [
+              "U_ALLOW.5",
+              "R_ROUTER_ALIVE_OFF.1"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "smart-controller",
+        "section": "Controller",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "USB_3V3",
+            "local": [
+              "U_ESP2.1",
+              "R_SCL_A.1",
+              "R_SDA_0.1",
+              "R_SDA_1.1",
+              "R_SDA_2.1",
+              "R_SDA_3.1",
+              "R_SDA_4.1",
+              "R_SDA_5.1"
+            ],
+            "destinations": [
+              "U_WATCH.16",
+              "R_WATCH.1",
+              "C_WATCH_VCC.1",
+              "U_USB_POR.2",
+              "R_USB_POR.1",
+              "J_CH0.8",
+              "J_CH1.8",
+              "J_CH2.8",
+              "J_CH3.8",
+              "J_CH4.8",
+              "J_CH5.8"
+            ]
+          },
+          {
+            "net": "GND",
+            "local": [
+              "U_ESP2.14",
+              "U_ESP2.20",
+              "U_ESP2.26",
+              "J_POWER.2",
+              "J_POWER.4",
+              "J_POWER.6"
+            ],
+            "destinations": [
+              "U_WATCH.1",
+              "U_WATCH.8",
+              "U_WATCH.9",
+              "U_WATCH.10",
+              "U_WATCH.11",
+              "C_WATCH_VCC.2",
+              "R_HEART.2",
+              "U_USB_POR.3",
+              "Q_RAIL.1",
+              "R_ALIVE_OFF.2",
+              "R_RAIL_OFF.2",
+              "U_SR0.8",
+              "C_SR0.2",
+              "U_SR1.8",
+              "C_SR1.2",
+              "U_SR2.8",
+              "C_SR2.2",
+              "R_SR_SER_OFF.2",
+              "R_SR_SRCLK_OFF.2",
+              "R_SR_RCLK_OFF.2",
+              "J_CH0.4",
+              "J_CH1.4",
+              "J_CH2.4",
+              "J_CH3.4",
+              "J_CH4.4",
+              "J_CH5.4"
+            ]
+          },
+          {
+            "net": "SR_SRCLK",
+            "local": [
+              "U_ESP2.9"
+            ],
+            "destinations": [
+              "U_SR0.11",
+              "U_SR1.11",
+              "U_SR2.11",
+              "R_SR_SRCLK_OFF.1"
+            ]
+          },
+          {
+            "net": "SR_RCLK",
+            "local": [
+              "U_ESP2.10"
+            ],
+            "destinations": [
+              "U_SR0.12",
+              "U_SR1.12",
+              "U_SR2.12",
+              "R_SR_RCLK_OFF.1"
+            ]
+          },
+          {
+            "net": "SR_SER",
+            "local": [
+              "U_ESP2.11"
+            ],
+            "destinations": [
+              "U_SR0.14",
+              "R_SR_SER_OFF.1"
+            ]
+          },
+          {
+            "net": "HEARTBEAT",
+            "local": [
+              "U_ESP2.15"
+            ],
+            "destinations": [
+              "U_WATCH.2",
+              "R_HEART.1"
+            ]
+          },
+          {
+            "net": "SCL_A",
+            "local": [
+              "U_ESP2.22",
+              "R_SCL_A.2"
+            ],
+            "destinations": [
+              "J_CH0.9",
+              "J_CH1.9",
+              "J_CH2.9",
+              "J_CH3.9",
+              "J_CH4.9",
+              "J_CH5.9"
+            ]
+          },
+          {
+            "net": "SDA_0",
+            "local": [
+              "U_ESP2.32",
+              "R_SDA_0.2"
+            ],
+            "destinations": [
+              "J_CH0.7"
+            ]
+          },
+          {
+            "net": "SDA_1",
+            "local": [
+              "U_ESP2.25",
+              "R_SDA_1.2"
+            ],
+            "destinations": [
+              "J_CH1.7"
+            ]
+          },
+          {
+            "net": "SDA_2",
+            "local": [
+              "U_ESP2.27",
+              "R_SDA_2.2"
+            ],
+            "destinations": [
+              "J_CH2.7"
+            ]
+          },
+          {
+            "net": "SDA_3",
+            "local": [
+              "U_ESP2.28",
+              "R_SDA_3.2"
+            ],
+            "destinations": [
+              "J_CH3.7"
+            ]
+          },
+          {
+            "net": "SDA_4",
+            "local": [
+              "U_ESP2.30",
+              "R_SDA_4.2"
+            ],
+            "destinations": [
+              "J_CH4.7"
+            ]
+          },
+          {
+            "net": "SDA_5",
+            "local": [
+              "U_ESP2.31",
+              "R_SDA_5.2"
+            ],
+            "destinations": [
+              "J_CH5.7"
+            ]
+          },
+          {
+            "net": "5V_SYS",
+            "local": [
+              "J_POWER.1"
+            ],
+            "destinations": [
+              "R_OE.1",
+              "U_SR0.16",
+              "U_SR0.10",
+              "C_SR0.1",
+              "U_SR1.16",
+              "U_SR1.10",
+              "C_SR1.1",
+              "U_SR2.16",
+              "U_SR2.10",
+              "C_SR2.1",
+              "J_CH0.5",
+              "J_CH1.5",
+              "J_CH2.5",
+              "J_CH3.5",
+              "J_CH4.5",
+              "J_CH5.5"
+            ]
+          },
+          {
+            "net": "5V_EDU",
+            "local": [
+              "J_POWER.3"
+            ],
+            "destinations": [
+              "J_CH0.10",
+              "J_CH1.10",
+              "J_CH2.10",
+              "J_CH3.10",
+              "J_CH4.10",
+              "J_CH5.10"
+            ]
+          },
+          {
+            "net": "3V3_SYS",
+            "local": [
+              "J_POWER.5"
+            ],
+            "destinations": [
+              "J_CH0.6",
+              "J_CH1.6",
+              "J_CH2.6",
+              "J_CH3.6",
+              "J_CH4.6",
+              "J_CH5.6"
+            ]
+          },
+          {
+            "net": "EDU_ON",
+            "local": [
+              "J_POWER.7"
+            ],
+            "destinations": [
+              "Q_RAIL.2",
+              "R_RAIL_OFF.1"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "smart-controller",
+        "section": "Watchdog",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "USB_3V3",
+            "local": [
+              "U_WATCH.16",
+              "R_WATCH.1",
+              "C_WATCH_VCC.1",
+              "U_USB_POR.2",
+              "R_USB_POR.1"
+            ],
+            "destinations": [
+              "U_ESP2.1",
+              "R_SCL_A.1",
+              "R_SDA_0.1",
+              "R_SDA_1.1",
+              "R_SDA_2.1",
+              "R_SDA_3.1",
+              "R_SDA_4.1",
+              "R_SDA_5.1",
+              "J_CH0.8",
+              "J_CH1.8",
+              "J_CH2.8",
+              "J_CH3.8",
+              "J_CH4.8",
+              "J_CH5.8"
+            ]
+          },
+          {
+            "net": "GND",
+            "local": [
+              "U_WATCH.1",
+              "U_WATCH.8",
+              "U_WATCH.9",
+              "U_WATCH.10",
+              "U_WATCH.11",
+              "C_WATCH_VCC.2",
+              "R_HEART.2",
+              "U_USB_POR.3",
+              "Q_RAIL.1",
+              "R_ALIVE_OFF.2",
+              "R_RAIL_OFF.2"
+            ],
+            "destinations": [
+              "U_ESP2.14",
+              "U_ESP2.20",
+              "U_ESP2.26",
+              "J_POWER.2",
+              "J_POWER.4",
+              "J_POWER.6",
+              "U_SR0.8",
+              "C_SR0.2",
+              "U_SR1.8",
+              "C_SR1.2",
+              "U_SR2.8",
+              "C_SR2.2",
+              "R_SR_SER_OFF.2",
+              "R_SR_SRCLK_OFF.2",
+              "R_SR_RCLK_OFF.2",
+              "J_CH0.4",
+              "J_CH1.4",
+              "J_CH2.4",
+              "J_CH3.4",
+              "J_CH4.4",
+              "J_CH5.4"
+            ]
+          },
+          {
+            "net": "HEARTBEAT",
+            "local": [
+              "U_WATCH.2",
+              "R_HEART.1"
+            ],
+            "destinations": [
+              "U_ESP2.15"
+            ]
+          },
+          {
+            "net": "5V_SYS",
+            "local": [
+              "R_OE.1"
+            ],
+            "destinations": [
+              "J_POWER.1",
+              "U_SR0.16",
+              "U_SR0.10",
+              "C_SR0.1",
+              "U_SR1.16",
+              "U_SR1.10",
+              "C_SR1.1",
+              "U_SR2.16",
+              "U_SR2.10",
+              "C_SR2.1",
+              "J_CH0.5",
+              "J_CH1.5",
+              "J_CH2.5",
+              "J_CH3.5",
+              "J_CH4.5",
+              "J_CH5.5"
+            ]
+          },
+          {
+            "net": "EDU_ON",
+            "local": [
+              "Q_RAIL.2",
+              "R_RAIL_OFF.1"
+            ],
+            "destinations": [
+              "J_POWER.7"
+            ]
+          },
+          {
+            "net": "SR_OE_N",
+            "local": [
+              "R_OE.2",
+              "Q_ALIVE.3"
+            ],
+            "destinations": [
+              "U_SR0.13",
+              "U_SR1.13",
+              "U_SR2.13"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "smart-controller",
+        "section": "Registers",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "GND",
+            "local": [
+              "U_SR0.8",
+              "C_SR0.2",
+              "U_SR1.8",
+              "C_SR1.2",
+              "U_SR2.8",
+              "C_SR2.2",
+              "R_SR_SER_OFF.2",
+              "R_SR_SRCLK_OFF.2",
+              "R_SR_RCLK_OFF.2"
+            ],
+            "destinations": [
+              "U_ESP2.14",
+              "U_ESP2.20",
+              "U_ESP2.26",
+              "J_POWER.2",
+              "J_POWER.4",
+              "J_POWER.6",
+              "U_WATCH.1",
+              "U_WATCH.8",
+              "U_WATCH.9",
+              "U_WATCH.10",
+              "U_WATCH.11",
+              "C_WATCH_VCC.2",
+              "R_HEART.2",
+              "U_USB_POR.3",
+              "Q_RAIL.1",
+              "R_ALIVE_OFF.2",
+              "R_RAIL_OFF.2",
+              "J_CH0.4",
+              "J_CH1.4",
+              "J_CH2.4",
+              "J_CH3.4",
+              "J_CH4.4",
+              "J_CH5.4"
+            ]
+          },
+          {
+            "net": "SR_SRCLK",
+            "local": [
+              "U_SR0.11",
+              "U_SR1.11",
+              "U_SR2.11",
+              "R_SR_SRCLK_OFF.1"
+            ],
+            "destinations": [
+              "U_ESP2.9"
+            ]
+          },
+          {
+            "net": "SR_RCLK",
+            "local": [
+              "U_SR0.12",
+              "U_SR1.12",
+              "U_SR2.12",
+              "R_SR_RCLK_OFF.1"
+            ],
+            "destinations": [
+              "U_ESP2.10"
+            ]
+          },
+          {
+            "net": "SR_SER",
+            "local": [
+              "U_SR0.14",
+              "R_SR_SER_OFF.1"
+            ],
+            "destinations": [
+              "U_ESP2.11"
+            ]
+          },
+          {
+            "net": "5V_SYS",
+            "local": [
+              "U_SR0.16",
+              "U_SR0.10",
+              "C_SR0.1",
+              "U_SR1.16",
+              "U_SR1.10",
+              "C_SR1.1",
+              "U_SR2.16",
+              "U_SR2.10",
+              "C_SR2.1"
+            ],
+            "destinations": [
+              "J_POWER.1",
+              "R_OE.1",
+              "J_CH0.5",
+              "J_CH1.5",
+              "J_CH2.5",
+              "J_CH3.5",
+              "J_CH4.5",
+              "J_CH5.5"
+            ]
+          },
+          {
+            "net": "SR_OE_N",
+            "local": [
+              "U_SR0.13",
+              "U_SR1.13",
+              "U_SR2.13"
+            ],
+            "destinations": [
+              "R_OE.2",
+              "Q_ALIVE.3"
+            ]
+          },
+          {
+            "net": "RELAY_0",
+            "local": [
+              "U_SR0.15"
+            ],
+            "destinations": [
+              "J_CH0.1"
+            ]
+          },
+          {
+            "net": "RELAY_1",
+            "local": [
+              "U_SR0.1"
+            ],
+            "destinations": [
+              "J_CH0.2"
+            ]
+          },
+          {
+            "net": "RELAY_2",
+            "local": [
+              "U_SR0.2"
+            ],
+            "destinations": [
+              "J_CH0.3"
+            ]
+          },
+          {
+            "net": "RELAY_3",
+            "local": [
+              "U_SR0.3"
+            ],
+            "destinations": [
+              "J_CH1.1"
+            ]
+          },
+          {
+            "net": "RELAY_4",
+            "local": [
+              "U_SR0.4"
+            ],
+            "destinations": [
+              "J_CH1.2"
+            ]
+          },
+          {
+            "net": "RELAY_5",
+            "local": [
+              "U_SR0.5"
+            ],
+            "destinations": [
+              "J_CH1.3"
+            ]
+          },
+          {
+            "net": "RELAY_6",
+            "local": [
+              "U_SR0.6"
+            ],
+            "destinations": [
+              "J_CH2.1"
+            ]
+          },
+          {
+            "net": "RELAY_7",
+            "local": [
+              "U_SR0.7"
+            ],
+            "destinations": [
+              "J_CH2.2"
+            ]
+          },
+          {
+            "net": "RELAY_8",
+            "local": [
+              "U_SR1.15"
+            ],
+            "destinations": [
+              "J_CH2.3"
+            ]
+          },
+          {
+            "net": "RELAY_9",
+            "local": [
+              "U_SR1.1"
+            ],
+            "destinations": [
+              "J_CH3.1"
+            ]
+          },
+          {
+            "net": "RELAY_10",
+            "local": [
+              "U_SR1.2"
+            ],
+            "destinations": [
+              "J_CH3.2"
+            ]
+          },
+          {
+            "net": "RELAY_11",
+            "local": [
+              "U_SR1.3"
+            ],
+            "destinations": [
+              "J_CH3.3"
+            ]
+          },
+          {
+            "net": "RELAY_12",
+            "local": [
+              "U_SR1.4"
+            ],
+            "destinations": [
+              "J_CH4.1"
+            ]
+          },
+          {
+            "net": "RELAY_13",
+            "local": [
+              "U_SR1.5"
+            ],
+            "destinations": [
+              "J_CH4.2"
+            ]
+          },
+          {
+            "net": "RELAY_14",
+            "local": [
+              "U_SR1.6"
+            ],
+            "destinations": [
+              "J_CH4.3"
+            ]
+          },
+          {
+            "net": "RELAY_15",
+            "local": [
+              "U_SR1.7"
+            ],
+            "destinations": [
+              "J_CH5.1"
+            ]
+          },
+          {
+            "net": "RELAY_16",
+            "local": [
+              "U_SR2.15"
+            ],
+            "destinations": [
+              "J_CH5.2"
+            ]
+          },
+          {
+            "net": "RELAY_17",
+            "local": [
+              "U_SR2.1"
+            ],
+            "destinations": [
+              "J_CH5.3"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "smart-controller",
+        "section": "Channels",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "USB_3V3",
+            "local": [
+              "J_CH0.8",
+              "J_CH1.8",
+              "J_CH2.8",
+              "J_CH3.8",
+              "J_CH4.8",
+              "J_CH5.8"
+            ],
+            "destinations": [
+              "U_ESP2.1",
+              "R_SCL_A.1",
+              "R_SDA_0.1",
+              "R_SDA_1.1",
+              "R_SDA_2.1",
+              "R_SDA_3.1",
+              "R_SDA_4.1",
+              "R_SDA_5.1",
+              "U_WATCH.16",
+              "R_WATCH.1",
+              "C_WATCH_VCC.1",
+              "U_USB_POR.2",
+              "R_USB_POR.1"
+            ]
+          },
+          {
+            "net": "GND",
+            "local": [
+              "J_CH0.4",
+              "J_CH1.4",
+              "J_CH2.4",
+              "J_CH3.4",
+              "J_CH4.4",
+              "J_CH5.4"
+            ],
+            "destinations": [
+              "U_ESP2.14",
+              "U_ESP2.20",
+              "U_ESP2.26",
+              "J_POWER.2",
+              "J_POWER.4",
+              "J_POWER.6",
+              "U_WATCH.1",
+              "U_WATCH.8",
+              "U_WATCH.9",
+              "U_WATCH.10",
+              "U_WATCH.11",
+              "C_WATCH_VCC.2",
+              "R_HEART.2",
+              "U_USB_POR.3",
+              "Q_RAIL.1",
+              "R_ALIVE_OFF.2",
+              "R_RAIL_OFF.2",
+              "U_SR0.8",
+              "C_SR0.2",
+              "U_SR1.8",
+              "C_SR1.2",
+              "U_SR2.8",
+              "C_SR2.2",
+              "R_SR_SER_OFF.2",
+              "R_SR_SRCLK_OFF.2",
+              "R_SR_RCLK_OFF.2"
+            ]
+          },
+          {
+            "net": "SCL_A",
+            "local": [
+              "J_CH0.9",
+              "J_CH1.9",
+              "J_CH2.9",
+              "J_CH3.9",
+              "J_CH4.9",
+              "J_CH5.9"
+            ],
+            "destinations": [
+              "U_ESP2.22",
+              "R_SCL_A.2"
+            ]
+          },
+          {
+            "net": "SDA_0",
+            "local": [
+              "J_CH0.7"
+            ],
+            "destinations": [
+              "U_ESP2.32",
+              "R_SDA_0.2"
+            ]
+          },
+          {
+            "net": "SDA_1",
+            "local": [
+              "J_CH1.7"
+            ],
+            "destinations": [
+              "U_ESP2.25",
+              "R_SDA_1.2"
+            ]
+          },
+          {
+            "net": "SDA_2",
+            "local": [
+              "J_CH2.7"
+            ],
+            "destinations": [
+              "U_ESP2.27",
+              "R_SDA_2.2"
+            ]
+          },
+          {
+            "net": "SDA_3",
+            "local": [
+              "J_CH3.7"
+            ],
+            "destinations": [
+              "U_ESP2.28",
+              "R_SDA_3.2"
+            ]
+          },
+          {
+            "net": "SDA_4",
+            "local": [
+              "J_CH4.7"
+            ],
+            "destinations": [
+              "U_ESP2.30",
+              "R_SDA_4.2"
+            ]
+          },
+          {
+            "net": "SDA_5",
+            "local": [
+              "J_CH5.7"
+            ],
+            "destinations": [
+              "U_ESP2.31",
+              "R_SDA_5.2"
+            ]
+          },
+          {
+            "net": "5V_SYS",
+            "local": [
+              "J_CH0.5",
+              "J_CH1.5",
+              "J_CH2.5",
+              "J_CH3.5",
+              "J_CH4.5",
+              "J_CH5.5"
+            ],
+            "destinations": [
+              "J_POWER.1",
+              "R_OE.1",
+              "U_SR0.16",
+              "U_SR0.10",
+              "C_SR0.1",
+              "U_SR1.16",
+              "U_SR1.10",
+              "C_SR1.1",
+              "U_SR2.16",
+              "U_SR2.10",
+              "C_SR2.1"
+            ]
+          },
+          {
+            "net": "5V_EDU",
+            "local": [
+              "J_CH0.10",
+              "J_CH1.10",
+              "J_CH2.10",
+              "J_CH3.10",
+              "J_CH4.10",
+              "J_CH5.10"
+            ],
+            "destinations": [
+              "J_POWER.3"
+            ]
+          },
+          {
+            "net": "3V3_SYS",
+            "local": [
+              "J_CH0.6",
+              "J_CH1.6",
+              "J_CH2.6",
+              "J_CH3.6",
+              "J_CH4.6",
+              "J_CH5.6"
+            ],
+            "destinations": [
+              "J_POWER.5"
+            ]
+          },
+          {
+            "net": "RELAY_0",
+            "local": [
+              "J_CH0.1"
+            ],
+            "destinations": [
+              "U_SR0.15"
+            ]
+          },
+          {
+            "net": "RELAY_1",
+            "local": [
+              "J_CH0.2"
+            ],
+            "destinations": [
+              "U_SR0.1"
+            ]
+          },
+          {
+            "net": "RELAY_2",
+            "local": [
+              "J_CH0.3"
+            ],
+            "destinations": [
+              "U_SR0.2"
+            ]
+          },
+          {
+            "net": "RELAY_3",
+            "local": [
+              "J_CH1.1"
+            ],
+            "destinations": [
+              "U_SR0.3"
+            ]
+          },
+          {
+            "net": "RELAY_4",
+            "local": [
+              "J_CH1.2"
+            ],
+            "destinations": [
+              "U_SR0.4"
+            ]
+          },
+          {
+            "net": "RELAY_5",
+            "local": [
+              "J_CH1.3"
+            ],
+            "destinations": [
+              "U_SR0.5"
+            ]
+          },
+          {
+            "net": "RELAY_6",
+            "local": [
+              "J_CH2.1"
+            ],
+            "destinations": [
+              "U_SR0.6"
+            ]
+          },
+          {
+            "net": "RELAY_7",
+            "local": [
+              "J_CH2.2"
+            ],
+            "destinations": [
+              "U_SR0.7"
+            ]
+          },
+          {
+            "net": "RELAY_8",
+            "local": [
+              "J_CH2.3"
+            ],
+            "destinations": [
+              "U_SR1.15"
+            ]
+          },
+          {
+            "net": "RELAY_9",
+            "local": [
+              "J_CH3.1"
+            ],
+            "destinations": [
+              "U_SR1.1"
+            ]
+          },
+          {
+            "net": "RELAY_10",
+            "local": [
+              "J_CH3.2"
+            ],
+            "destinations": [
+              "U_SR1.2"
+            ]
+          },
+          {
+            "net": "RELAY_11",
+            "local": [
+              "J_CH3.3"
+            ],
+            "destinations": [
+              "U_SR1.3"
+            ]
+          },
+          {
+            "net": "RELAY_12",
+            "local": [
+              "J_CH4.1"
+            ],
+            "destinations": [
+              "U_SR1.4"
+            ]
+          },
+          {
+            "net": "RELAY_13",
+            "local": [
+              "J_CH4.2"
+            ],
+            "destinations": [
+              "U_SR1.5"
+            ]
+          },
+          {
+            "net": "RELAY_14",
+            "local": [
+              "J_CH4.3"
+            ],
+            "destinations": [
+              "U_SR1.6"
+            ]
+          },
+          {
+            "net": "RELAY_15",
+            "local": [
+              "J_CH5.1"
+            ],
+            "destinations": [
+              "U_SR1.7"
+            ]
+          },
+          {
+            "net": "RELAY_16",
+            "local": [
+              "J_CH5.2"
+            ],
+            "destinations": [
+              "U_SR2.15"
+            ]
+          },
+          {
+            "net": "RELAY_17",
+            "local": [
+              "J_CH5.3"
+            ],
+            "destinations": [
+              "U_SR2.1"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "smart-channel",
+        "section": "Interface",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "P1_RAW",
+            "local": [
+              "J_MODULE.1"
+            ],
+            "destinations": [
+              "R_P1_TOP.1",
+              "K_AMM_P.3"
+            ]
+          },
+          {
+            "net": "GND",
+            "local": [
+              "J_MODULE.2",
+              "J_MODULE.4",
+              "J_MODULE.6",
+              "J_CONTROL.4",
+              "U_BUS.4",
+              "C_BUS_A.2",
+              "C_BUS_B.2"
+            ],
+            "destinations": [
+              "R_P1_BOTTOM.2",
+              "R_P2_BOTTOM.2",
+              "C_P1.2",
+              "C_P2.2",
+              "U_VBUF.4",
+              "C_VBUF.2",
+              "U_ADC.1",
+              "U_ADC.3",
+              "U_ADC.6",
+              "U_ADC.7",
+              "C_ADC.2",
+              "U_CURRENT.3",
+              "U_CURRENT.7",
+              "U_CURRENT.8",
+              "C_CURRENT.2",
+              "R_K_AMM_P_OFF.2",
+              "Q_K_AMM_P.1",
+              "R_K_AMM_N_OFF.2",
+              "Q_K_AMM_N.1",
+              "R_HI_BOTTOM.2",
+              "R_LO_BOTTOM.2",
+              "C_REFHI.2",
+              "C_REFLO.2",
+              "R_SINK_SENSE.2",
+              "U_LIMIT.4",
+              "C_LIMIT.2",
+              "R_K_HIGH_OFF.2",
+              "Q_K_HIGH.1",
+              "R_K_LOW_OFF.2",
+              "Q_K_LOW.1"
+            ]
+          },
+          {
+            "net": "P2_RAW",
+            "local": [
+              "J_MODULE.3"
+            ],
+            "destinations": [
+              "R_P2_TOP.1",
+              "K_AMM_N.4"
+            ]
+          },
+          {
+            "net": "P3_RAW",
+            "local": [
+              "J_MODULE.5"
+            ],
+            "destinations": [
+              "K_HIGH.4",
+              "K_LOW.3"
+            ]
+          },
+          {
+            "net": "SDA_B",
+            "local": [
+              "J_MODULE.7",
+              "U_BUS.6",
+              "R_SDA.1"
+            ],
+            "destinations": [
+              "U_ADC.9",
+              "U_CURRENT.6"
+            ]
+          },
+          {
+            "net": "3V3_SYS",
+            "local": [
+              "J_MODULE.8",
+              "J_CONTROL.6",
+              "U_BUS.8",
+              "C_BUS_B.1",
+              "R_SDA.2",
+              "R_SCL.2"
+            ],
+            "destinations": [
+              "U_VBUF.8",
+              "C_VBUF.1",
+              "U_ADC.8",
+              "C_ADC.1",
+              "U_CURRENT.4",
+              "C_CURRENT.1"
+            ]
+          },
+          {
+            "net": "SCL_B",
+            "local": [
+              "J_MODULE.9",
+              "U_BUS.7",
+              "R_SCL.1"
+            ],
+            "destinations": [
+              "U_ADC.10",
+              "U_CURRENT.5"
+            ]
+          },
+          {
+            "net": "HIGH_REQ",
+            "local": [
+              "J_CONTROL.1"
+            ],
+            "destinations": [
+              "R_K_HIGH_OFF.1",
+              "Q_K_HIGH.2"
+            ]
+          },
+          {
+            "net": "LOW_REQ",
+            "local": [
+              "J_CONTROL.2"
+            ],
+            "destinations": [
+              "R_K_LOW_OFF.1",
+              "Q_K_LOW.2"
+            ]
+          },
+          {
+            "net": "AMM_REQ",
+            "local": [
+              "J_CONTROL.3"
+            ],
+            "destinations": [
+              "R_K_AMM_P_OFF.1",
+              "Q_K_AMM_P.2",
+              "R_K_AMM_N_OFF.1",
+              "Q_K_AMM_N.2"
+            ]
+          },
+          {
+            "net": "5V_SYS",
+            "local": [
+              "J_CONTROL.5"
+            ],
+            "destinations": [
+              "R_K_AMM_P_LED.1",
+              "R_K_AMM_N_LED.1",
+              "U_LIMIT.8",
+              "C_LIMIT.1",
+              "R_K_HIGH_LED.1",
+              "R_K_LOW_LED.1"
+            ]
+          },
+          {
+            "net": "5V_EDU",
+            "local": [
+              "J_CONTROL.10"
+            ],
+            "destinations": [
+              "R_HI_TOP.1",
+              "R_LO_TOP.1",
+              "R_SOURCE_SENSE.1"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "smart-channel",
+        "section": "Voltage",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "P1_RAW",
+            "local": [
+              "R_P1_TOP.1"
+            ],
+            "destinations": [
+              "J_MODULE.1",
+              "K_AMM_P.3"
+            ]
+          },
+          {
+            "net": "GND",
+            "local": [
+              "R_P1_BOTTOM.2",
+              "R_P2_BOTTOM.2",
+              "C_P1.2",
+              "C_P2.2",
+              "U_VBUF.4",
+              "C_VBUF.2",
+              "U_ADC.1",
+              "U_ADC.3",
+              "U_ADC.6",
+              "U_ADC.7",
+              "C_ADC.2"
+            ],
+            "destinations": [
+              "J_MODULE.2",
+              "J_MODULE.4",
+              "J_MODULE.6",
+              "J_CONTROL.4",
+              "U_BUS.4",
+              "C_BUS_A.2",
+              "C_BUS_B.2",
+              "U_CURRENT.3",
+              "U_CURRENT.7",
+              "U_CURRENT.8",
+              "C_CURRENT.2",
+              "R_K_AMM_P_OFF.2",
+              "Q_K_AMM_P.1",
+              "R_K_AMM_N_OFF.2",
+              "Q_K_AMM_N.1",
+              "R_HI_BOTTOM.2",
+              "R_LO_BOTTOM.2",
+              "C_REFHI.2",
+              "C_REFLO.2",
+              "R_SINK_SENSE.2",
+              "U_LIMIT.4",
+              "C_LIMIT.2",
+              "R_K_HIGH_OFF.2",
+              "Q_K_HIGH.1",
+              "R_K_LOW_OFF.2",
+              "Q_K_LOW.1"
+            ]
+          },
+          {
+            "net": "P2_RAW",
+            "local": [
+              "R_P2_TOP.1"
+            ],
+            "destinations": [
+              "J_MODULE.3",
+              "K_AMM_N.4"
+            ]
+          },
+          {
+            "net": "SDA_B",
+            "local": [
+              "U_ADC.9"
+            ],
+            "destinations": [
+              "J_MODULE.7",
+              "U_BUS.6",
+              "R_SDA.1",
+              "U_CURRENT.6"
+            ]
+          },
+          {
+            "net": "3V3_SYS",
+            "local": [
+              "U_VBUF.8",
+              "C_VBUF.1",
+              "U_ADC.8",
+              "C_ADC.1"
+            ],
+            "destinations": [
+              "J_MODULE.8",
+              "J_CONTROL.6",
+              "U_BUS.8",
+              "C_BUS_B.1",
+              "R_SDA.2",
+              "R_SCL.2",
+              "U_CURRENT.4",
+              "C_CURRENT.1"
+            ]
+          },
+          {
+            "net": "SCL_B",
+            "local": [
+              "U_ADC.10"
+            ],
+            "destinations": [
+              "J_MODULE.9",
+              "U_BUS.7",
+              "R_SCL.1",
+              "U_CURRENT.5"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "smart-channel",
+        "section": "Current",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "P1_RAW",
+            "local": [
+              "K_AMM_P.3"
+            ],
+            "destinations": [
+              "J_MODULE.1",
+              "R_P1_TOP.1"
+            ]
+          },
+          {
+            "net": "GND",
+            "local": [
+              "U_CURRENT.3",
+              "U_CURRENT.7",
+              "U_CURRENT.8",
+              "C_CURRENT.2",
+              "R_K_AMM_P_OFF.2",
+              "Q_K_AMM_P.1",
+              "R_K_AMM_N_OFF.2",
+              "Q_K_AMM_N.1"
+            ],
+            "destinations": [
+              "J_MODULE.2",
+              "J_MODULE.4",
+              "J_MODULE.6",
+              "J_CONTROL.4",
+              "U_BUS.4",
+              "C_BUS_A.2",
+              "C_BUS_B.2",
+              "R_P1_BOTTOM.2",
+              "R_P2_BOTTOM.2",
+              "C_P1.2",
+              "C_P2.2",
+              "U_VBUF.4",
+              "C_VBUF.2",
+              "U_ADC.1",
+              "U_ADC.3",
+              "U_ADC.6",
+              "U_ADC.7",
+              "C_ADC.2",
+              "R_HI_BOTTOM.2",
+              "R_LO_BOTTOM.2",
+              "C_REFHI.2",
+              "C_REFLO.2",
+              "R_SINK_SENSE.2",
+              "U_LIMIT.4",
+              "C_LIMIT.2",
+              "R_K_HIGH_OFF.2",
+              "Q_K_HIGH.1",
+              "R_K_LOW_OFF.2",
+              "Q_K_LOW.1"
+            ]
+          },
+          {
+            "net": "P2_RAW",
+            "local": [
+              "K_AMM_N.4"
+            ],
+            "destinations": [
+              "J_MODULE.3",
+              "R_P2_TOP.1"
+            ]
+          },
+          {
+            "net": "SDA_B",
+            "local": [
+              "U_CURRENT.6"
+            ],
+            "destinations": [
+              "J_MODULE.7",
+              "U_BUS.6",
+              "R_SDA.1",
+              "U_ADC.9"
+            ]
+          },
+          {
+            "net": "3V3_SYS",
+            "local": [
+              "U_CURRENT.4",
+              "C_CURRENT.1"
+            ],
+            "destinations": [
+              "J_MODULE.8",
+              "J_CONTROL.6",
+              "U_BUS.8",
+              "C_BUS_B.1",
+              "R_SDA.2",
+              "R_SCL.2",
+              "U_VBUF.8",
+              "C_VBUF.1",
+              "U_ADC.8",
+              "C_ADC.1"
+            ]
+          },
+          {
+            "net": "SCL_B",
+            "local": [
+              "U_CURRENT.5"
+            ],
+            "destinations": [
+              "J_MODULE.9",
+              "U_BUS.7",
+              "R_SCL.1",
+              "U_ADC.10"
+            ]
+          },
+          {
+            "net": "AMM_REQ",
+            "local": [
+              "R_K_AMM_P_OFF.1",
+              "Q_K_AMM_P.2",
+              "R_K_AMM_N_OFF.1",
+              "Q_K_AMM_N.2"
+            ],
+            "destinations": [
+              "J_CONTROL.3"
+            ]
+          },
+          {
+            "net": "5V_SYS",
+            "local": [
+              "R_K_AMM_P_LED.1",
+              "R_K_AMM_N_LED.1"
+            ],
+            "destinations": [
+              "J_CONTROL.5",
+              "U_LIMIT.8",
+              "C_LIMIT.1",
+              "R_K_HIGH_LED.1",
+              "R_K_LOW_LED.1"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "smart-channel",
+        "section": "Limits",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "GND",
+            "local": [
+              "R_HI_BOTTOM.2",
+              "R_LO_BOTTOM.2",
+              "C_REFHI.2",
+              "C_REFLO.2",
+              "R_SINK_SENSE.2",
+              "U_LIMIT.4",
+              "C_LIMIT.2"
+            ],
+            "destinations": [
+              "J_MODULE.2",
+              "J_MODULE.4",
+              "J_MODULE.6",
+              "J_CONTROL.4",
+              "U_BUS.4",
+              "C_BUS_A.2",
+              "C_BUS_B.2",
+              "R_P1_BOTTOM.2",
+              "R_P2_BOTTOM.2",
+              "C_P1.2",
+              "C_P2.2",
+              "U_VBUF.4",
+              "C_VBUF.2",
+              "U_ADC.1",
+              "U_ADC.3",
+              "U_ADC.6",
+              "U_ADC.7",
+              "C_ADC.2",
+              "U_CURRENT.3",
+              "U_CURRENT.7",
+              "U_CURRENT.8",
+              "C_CURRENT.2",
+              "R_K_AMM_P_OFF.2",
+              "Q_K_AMM_P.1",
+              "R_K_AMM_N_OFF.2",
+              "Q_K_AMM_N.1",
+              "R_K_HIGH_OFF.2",
+              "Q_K_HIGH.1",
+              "R_K_LOW_OFF.2",
+              "Q_K_LOW.1"
+            ]
+          },
+          {
+            "net": "5V_SYS",
+            "local": [
+              "U_LIMIT.8",
+              "C_LIMIT.1"
+            ],
+            "destinations": [
+              "J_CONTROL.5",
+              "R_K_AMM_P_LED.1",
+              "R_K_AMM_N_LED.1",
+              "R_K_HIGH_LED.1",
+              "R_K_LOW_LED.1"
+            ]
+          },
+          {
+            "net": "5V_EDU",
+            "local": [
+              "R_HI_TOP.1",
+              "R_LO_TOP.1",
+              "R_SOURCE_SENSE.1"
+            ],
+            "destinations": [
+              "J_CONTROL.10"
+            ]
+          },
+          {
+            "net": "SOURCE_OUT",
+            "local": [
+              "Q_HIGH.3"
+            ],
+            "destinations": [
+              "K_HIGH.3"
+            ]
+          },
+          {
+            "net": "SINK_IN",
+            "local": [
+              "Q_LOW.3"
+            ],
+            "destinations": [
+              "K_LOW.4"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "smart-channel",
+        "section": "Output",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "GND",
+            "local": [
+              "R_K_HIGH_OFF.2",
+              "Q_K_HIGH.1",
+              "R_K_LOW_OFF.2",
+              "Q_K_LOW.1"
+            ],
+            "destinations": [
+              "J_MODULE.2",
+              "J_MODULE.4",
+              "J_MODULE.6",
+              "J_CONTROL.4",
+              "U_BUS.4",
+              "C_BUS_A.2",
+              "C_BUS_B.2",
+              "R_P1_BOTTOM.2",
+              "R_P2_BOTTOM.2",
+              "C_P1.2",
+              "C_P2.2",
+              "U_VBUF.4",
+              "C_VBUF.2",
+              "U_ADC.1",
+              "U_ADC.3",
+              "U_ADC.6",
+              "U_ADC.7",
+              "C_ADC.2",
+              "U_CURRENT.3",
+              "U_CURRENT.7",
+              "U_CURRENT.8",
+              "C_CURRENT.2",
+              "R_K_AMM_P_OFF.2",
+              "Q_K_AMM_P.1",
+              "R_K_AMM_N_OFF.2",
+              "Q_K_AMM_N.1",
+              "R_HI_BOTTOM.2",
+              "R_LO_BOTTOM.2",
+              "C_REFHI.2",
+              "C_REFLO.2",
+              "R_SINK_SENSE.2",
+              "U_LIMIT.4",
+              "C_LIMIT.2"
+            ]
+          },
+          {
+            "net": "P3_RAW",
+            "local": [
+              "K_HIGH.4",
+              "K_LOW.3"
+            ],
+            "destinations": [
+              "J_MODULE.5"
+            ]
+          },
+          {
+            "net": "HIGH_REQ",
+            "local": [
+              "R_K_HIGH_OFF.1",
+              "Q_K_HIGH.2"
+            ],
+            "destinations": [
+              "J_CONTROL.1"
+            ]
+          },
+          {
+            "net": "LOW_REQ",
+            "local": [
+              "R_K_LOW_OFF.1",
+              "Q_K_LOW.2"
+            ],
+            "destinations": [
+              "J_CONTROL.2"
+            ]
+          },
+          {
+            "net": "5V_SYS",
+            "local": [
+              "R_K_HIGH_LED.1",
+              "R_K_LOW_LED.1"
+            ],
+            "destinations": [
+              "J_CONTROL.5",
+              "R_K_AMM_P_LED.1",
+              "R_K_AMM_N_LED.1",
+              "U_LIMIT.8",
+              "C_LIMIT.1"
+            ]
+          },
+          {
+            "net": "SOURCE_OUT",
+            "local": [
+              "K_HIGH.3"
+            ],
+            "destinations": [
+              "Q_HIGH.3"
+            ]
+          },
+          {
+            "net": "SINK_IN",
+            "local": [
+              "K_LOW.4"
+            ],
+            "destinations": [
+              "Q_LOW.3"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "matrix",
+        "section": "Controller",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "USB_3V3",
+            "local": [
+              "U_ESP1.1",
+              "J_FIXTURE.1",
+              "J_PROTOTYPE.2"
+            ],
+            "destinations": [
+              "U_WATCH.16",
+              "R_WATCH.1",
+              "C_WATCH_VCC.1",
+              "U_USB_POR.2",
+              "R_USB_POR.1",
+              "U_DIAG.8",
+              "C_DIAG_VCC.1",
+              "U_FAULT_RETURN.5",
+              "C_RETURN.1",
+              "R_KADC_LED.1"
+            ]
+          },
+          {
+            "net": "GND",
+            "local": [
+              "U_ESP1.14",
+              "U_ESP1.20",
+              "U_ESP1.26",
+              "J_POWER.2",
+              "J_FIXTURE.2",
+              "J_PROTOTYPE.3"
+            ],
+            "destinations": [
+              "U_WATCH.1",
+              "U_WATCH.8",
+              "U_WATCH.9",
+              "U_WATCH.10",
+              "U_WATCH.11",
+              "C_WATCH_VCC.2",
+              "R_HEART.2",
+              "U_USB_POR.3",
+              "Q_BUF.1",
+              "R_ALIVE_OFF.2",
+              "U_ADDR.8",
+              "C_ADDR.2",
+              "U_BUFFER.9",
+              "U_BUFFER.12",
+              "U_BUFFER.7",
+              "C_BUFFER.2",
+              "R_XBAR_DAT_OFF.2",
+              "R_XBAR_CLK_OFF.2",
+              "R_XBAR_LATCH_OFF.2",
+              "R_STB_A_IN_OFF.2",
+              "R_STB_B_IN_OFF.2",
+              "R_RST_RELEASE_OFF.2",
+              "Q_RESET_ALIVE.1",
+              "R_STBA_OFF.2",
+              "R_STBB_OFF.2",
+              "U_MT_A.16",
+              "U_MT_A.20",
+              "U_MT_A.35",
+              "C_MT0.2",
+              "C_MT0_BULK.2",
+              "U_MT_B.16",
+              "U_MT_B.20",
+              "U_MT_B.35",
+              "C_MT1.2",
+              "C_MT1_BULK.2",
+              "R_DISCHARGE.2",
+              "R_CAL.2",
+              "R_DIAG_BOTTOM.2",
+              "C_DIAG.2",
+              "U_DIAG.4",
+              "U_DIAG.5",
+              "C_DIAG_VCC.2",
+              "U_FAULT_RETURN.1",
+              "U_FAULT_RETURN.3",
+              "C_RETURN.2",
+              "K_ADC.2"
+            ]
+          },
+          {
+            "net": "XBAR_DAT",
+            "local": [
+              "U_ESP1.21"
+            ],
+            "destinations": [
+              "U_ADDR.14",
+              "R_XBAR_DAT_OFF.1"
+            ]
+          },
+          {
+            "net": "XBAR_CLK",
+            "local": [
+              "U_ESP1.28"
+            ],
+            "destinations": [
+              "U_ADDR.11",
+              "R_XBAR_CLK_OFF.1"
+            ]
+          },
+          {
+            "net": "XBAR_LATCH",
+            "local": [
+              "U_ESP1.22"
+            ],
+            "destinations": [
+              "U_ADDR.12",
+              "R_XBAR_LATCH_OFF.1"
+            ]
+          },
+          {
+            "net": "STB_A_IN",
+            "local": [
+              "U_ESP1.27"
+            ],
+            "destinations": [
+              "U_BUFFER.2",
+              "R_STB_A_IN_OFF.1"
+            ]
+          },
+          {
+            "net": "STB_B_IN",
+            "local": [
+              "U_ESP1.25"
+            ],
+            "destinations": [
+              "U_BUFFER.5",
+              "R_STB_B_IN_OFF.1"
+            ]
+          },
+          {
+            "net": "RST_RELEASE",
+            "local": [
+              "U_ESP1.11"
+            ],
+            "destinations": [
+              "R_RST_RELEASE_OFF.1",
+              "Q_RESET_RELEASE.2"
+            ]
+          },
+          {
+            "net": "HEARTBEAT",
+            "local": [
+              "U_ESP1.8"
+            ],
+            "destinations": [
+              "U_WATCH.2",
+              "R_HEART.1"
+            ]
+          },
+          {
+            "net": "FAULT_USB",
+            "local": [
+              "U_ESP1.6"
+            ],
+            "destinations": [
+              "U_FAULT_RETURN.4"
+            ]
+          },
+          {
+            "net": "CURRENT_USB",
+            "local": [
+              "U_ESP1.5"
+            ],
+            "destinations": [
+              "K_ADC.4"
+            ]
+          },
+          {
+            "net": "DIAG_ADC",
+            "local": [
+              "U_ESP1.3"
+            ],
+            "destinations": [
+              "U_DIAG.1",
+              "U_DIAG.2"
+            ]
+          },
+          {
+            "net": "5V_EDU",
+            "local": [
+              "J_POWER.1"
+            ],
+            "destinations": [
+              "U_MT_A.37",
+              "U_MT_B.37"
+            ]
+          },
+          {
+            "net": "3V3_SYS",
+            "local": [
+              "J_POWER.3"
+            ],
+            "destinations": [
+              "D_SOURCE.1"
+            ]
+          },
+          {
+            "net": "5V_SYS",
+            "local": [
+              "J_POWER.4"
+            ],
+            "destinations": [
+              "R_BUF_OE.1",
+              "U_ADDR.16",
+              "U_ADDR.10",
+              "C_ADDR.1",
+              "U_BUFFER.10",
+              "U_BUFFER.13",
+              "U_BUFFER.14",
+              "C_BUFFER.1",
+              "U_MT_A.36",
+              "U_MT_B.36"
+            ]
+          },
+          {
+            "net": "EDU_FAULT",
+            "local": [
+              "J_POWER.6"
+            ],
+            "destinations": [
+              "U_FAULT_RETURN.2"
+            ]
+          },
+          {
+            "net": "CURRENT_SENSE",
+            "local": [
+              "J_POWER.8"
+            ],
+            "destinations": [
+              "K_ADC.3"
+            ]
+          },
+          {
+            "net": "ALIVE",
+            "local": [
+              "J_POWER.9"
+            ],
+            "destinations": [
+              "U_WATCH.13",
+              "Q_BUF.2",
+              "R_ALIVE_OFF.1",
+              "Q_RESET_ALIVE.2"
+            ]
+          },
+          {
+            "net": "12V_SYS",
+            "local": [
+              "J_POWER.10"
+            ],
+            "destinations": [
+              "R_RESET_ON.1",
+              "U_MT_A.40",
+              "C_MT0.1",
+              "C_MT0_BULK.1",
+              "U_MT_B.40",
+              "C_MT1.1",
+              "C_MT1_BULK.1"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "matrix",
+        "section": "Watchdog",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "USB_3V3",
+            "local": [
+              "U_WATCH.16",
+              "R_WATCH.1",
+              "C_WATCH_VCC.1",
+              "U_USB_POR.2",
+              "R_USB_POR.1"
+            ],
+            "destinations": [
+              "U_ESP1.1",
+              "J_FIXTURE.1",
+              "J_PROTOTYPE.2",
+              "U_DIAG.8",
+              "C_DIAG_VCC.1",
+              "U_FAULT_RETURN.5",
+              "C_RETURN.1",
+              "R_KADC_LED.1"
+            ]
+          },
+          {
+            "net": "GND",
+            "local": [
+              "U_WATCH.1",
+              "U_WATCH.8",
+              "U_WATCH.9",
+              "U_WATCH.10",
+              "U_WATCH.11",
+              "C_WATCH_VCC.2",
+              "R_HEART.2",
+              "U_USB_POR.3",
+              "Q_BUF.1",
+              "R_ALIVE_OFF.2"
+            ],
+            "destinations": [
+              "U_ESP1.14",
+              "U_ESP1.20",
+              "U_ESP1.26",
+              "J_POWER.2",
+              "J_FIXTURE.2",
+              "J_PROTOTYPE.3",
+              "U_ADDR.8",
+              "C_ADDR.2",
+              "U_BUFFER.9",
+              "U_BUFFER.12",
+              "U_BUFFER.7",
+              "C_BUFFER.2",
+              "R_XBAR_DAT_OFF.2",
+              "R_XBAR_CLK_OFF.2",
+              "R_XBAR_LATCH_OFF.2",
+              "R_STB_A_IN_OFF.2",
+              "R_STB_B_IN_OFF.2",
+              "R_RST_RELEASE_OFF.2",
+              "Q_RESET_ALIVE.1",
+              "R_STBA_OFF.2",
+              "R_STBB_OFF.2",
+              "U_MT_A.16",
+              "U_MT_A.20",
+              "U_MT_A.35",
+              "C_MT0.2",
+              "C_MT0_BULK.2",
+              "U_MT_B.16",
+              "U_MT_B.20",
+              "U_MT_B.35",
+              "C_MT1.2",
+              "C_MT1_BULK.2",
+              "R_DISCHARGE.2",
+              "R_CAL.2",
+              "R_DIAG_BOTTOM.2",
+              "C_DIAG.2",
+              "U_DIAG.4",
+              "U_DIAG.5",
+              "C_DIAG_VCC.2",
+              "U_FAULT_RETURN.1",
+              "U_FAULT_RETURN.3",
+              "C_RETURN.2",
+              "K_ADC.2"
+            ]
+          },
+          {
+            "net": "HEARTBEAT",
+            "local": [
+              "U_WATCH.2",
+              "R_HEART.1"
+            ],
+            "destinations": [
+              "U_ESP1.8"
+            ]
+          },
+          {
+            "net": "5V_SYS",
+            "local": [
+              "R_BUF_OE.1"
+            ],
+            "destinations": [
+              "J_POWER.4",
+              "U_ADDR.16",
+              "U_ADDR.10",
+              "C_ADDR.1",
+              "U_BUFFER.10",
+              "U_BUFFER.13",
+              "U_BUFFER.14",
+              "C_BUFFER.1",
+              "U_MT_A.36",
+              "U_MT_B.36"
+            ]
+          },
+          {
+            "net": "ALIVE",
+            "local": [
+              "U_WATCH.13",
+              "Q_BUF.2",
+              "R_ALIVE_OFF.1"
+            ],
+            "destinations": [
+              "J_POWER.9",
+              "Q_RESET_ALIVE.2"
+            ]
+          },
+          {
+            "net": "XBAR_OE_N",
+            "local": [
+              "R_BUF_OE.2",
+              "Q_BUF.3"
+            ],
+            "destinations": [
+              "U_ADDR.13",
+              "U_BUFFER.1",
+              "U_BUFFER.4"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "matrix",
+        "section": "Control",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "GND",
+            "local": [
+              "U_ADDR.8",
+              "C_ADDR.2",
+              "U_BUFFER.9",
+              "U_BUFFER.12",
+              "U_BUFFER.7",
+              "C_BUFFER.2",
+              "R_XBAR_DAT_OFF.2",
+              "R_XBAR_CLK_OFF.2",
+              "R_XBAR_LATCH_OFF.2",
+              "R_STB_A_IN_OFF.2",
+              "R_STB_B_IN_OFF.2",
+              "R_RST_RELEASE_OFF.2",
+              "Q_RESET_ALIVE.1",
+              "R_STBA_OFF.2",
+              "R_STBB_OFF.2"
+            ],
+            "destinations": [
+              "U_ESP1.14",
+              "U_ESP1.20",
+              "U_ESP1.26",
+              "J_POWER.2",
+              "J_FIXTURE.2",
+              "J_PROTOTYPE.3",
+              "U_WATCH.1",
+              "U_WATCH.8",
+              "U_WATCH.9",
+              "U_WATCH.10",
+              "U_WATCH.11",
+              "C_WATCH_VCC.2",
+              "R_HEART.2",
+              "U_USB_POR.3",
+              "Q_BUF.1",
+              "R_ALIVE_OFF.2",
+              "U_MT_A.16",
+              "U_MT_A.20",
+              "U_MT_A.35",
+              "C_MT0.2",
+              "C_MT0_BULK.2",
+              "U_MT_B.16",
+              "U_MT_B.20",
+              "U_MT_B.35",
+              "C_MT1.2",
+              "C_MT1_BULK.2",
+              "R_DISCHARGE.2",
+              "R_CAL.2",
+              "R_DIAG_BOTTOM.2",
+              "C_DIAG.2",
+              "U_DIAG.4",
+              "U_DIAG.5",
+              "C_DIAG_VCC.2",
+              "U_FAULT_RETURN.1",
+              "U_FAULT_RETURN.3",
+              "C_RETURN.2",
+              "K_ADC.2"
+            ]
+          },
+          {
+            "net": "XBAR_DAT",
+            "local": [
+              "U_ADDR.14",
+              "R_XBAR_DAT_OFF.1"
+            ],
+            "destinations": [
+              "U_ESP1.21"
+            ]
+          },
+          {
+            "net": "XBAR_CLK",
+            "local": [
+              "U_ADDR.11",
+              "R_XBAR_CLK_OFF.1"
+            ],
+            "destinations": [
+              "U_ESP1.28"
+            ]
+          },
+          {
+            "net": "XBAR_LATCH",
+            "local": [
+              "U_ADDR.12",
+              "R_XBAR_LATCH_OFF.1"
+            ],
+            "destinations": [
+              "U_ESP1.22"
+            ]
+          },
+          {
+            "net": "STB_A_IN",
+            "local": [
+              "U_BUFFER.2",
+              "R_STB_A_IN_OFF.1"
+            ],
+            "destinations": [
+              "U_ESP1.27"
+            ]
+          },
+          {
+            "net": "STB_B_IN",
+            "local": [
+              "U_BUFFER.5",
+              "R_STB_B_IN_OFF.1"
+            ],
+            "destinations": [
+              "U_ESP1.25"
+            ]
+          },
+          {
+            "net": "RST_RELEASE",
+            "local": [
+              "R_RST_RELEASE_OFF.1",
+              "Q_RESET_RELEASE.2"
+            ],
+            "destinations": [
+              "U_ESP1.11"
+            ]
+          },
+          {
+            "net": "5V_SYS",
+            "local": [
+              "U_ADDR.16",
+              "U_ADDR.10",
+              "C_ADDR.1",
+              "U_BUFFER.10",
+              "U_BUFFER.13",
+              "U_BUFFER.14",
+              "C_BUFFER.1"
+            ],
+            "destinations": [
+              "J_POWER.4",
+              "R_BUF_OE.1",
+              "U_MT_A.36",
+              "U_MT_B.36"
+            ]
+          },
+          {
+            "net": "ALIVE",
+            "local": [
+              "Q_RESET_ALIVE.2"
+            ],
+            "destinations": [
+              "J_POWER.9",
+              "U_WATCH.13",
+              "Q_BUF.2",
+              "R_ALIVE_OFF.1"
+            ]
+          },
+          {
+            "net": "12V_SYS",
+            "local": [
+              "R_RESET_ON.1"
+            ],
+            "destinations": [
+              "J_POWER.10",
+              "U_MT_A.40",
+              "C_MT0.1",
+              "C_MT0_BULK.1",
+              "U_MT_B.40",
+              "C_MT1.1",
+              "C_MT1_BULK.1"
+            ]
+          },
+          {
+            "net": "XBAR_OE_N",
+            "local": [
+              "U_ADDR.13",
+              "U_BUFFER.1",
+              "U_BUFFER.4"
+            ],
+            "destinations": [
+              "R_BUF_OE.2",
+              "Q_BUF.3"
+            ]
+          },
+          {
+            "net": "AX0",
+            "local": [
+              "U_ADDR.15"
+            ],
+            "destinations": [
+              "U_MT_A.5",
+              "U_MT_B.5"
+            ]
+          },
+          {
+            "net": "AX1",
+            "local": [
+              "U_ADDR.1"
+            ],
+            "destinations": [
+              "U_MT_A.22",
+              "U_MT_B.22"
+            ]
+          },
+          {
+            "net": "AX2",
+            "local": [
+              "U_ADDR.2"
+            ],
+            "destinations": [
+              "U_MT_A.23",
+              "U_MT_B.23"
+            ]
+          },
+          {
+            "net": "AX3",
+            "local": [
+              "U_ADDR.3"
+            ],
+            "destinations": [
+              "U_MT_A.4",
+              "U_MT_B.4"
+            ]
+          },
+          {
+            "net": "AY0",
+            "local": [
+              "U_ADDR.4"
+            ],
+            "destinations": [
+              "U_MT_A.24",
+              "U_MT_B.24"
+            ]
+          },
+          {
+            "net": "AY1",
+            "local": [
+              "U_ADDR.5"
+            ],
+            "destinations": [
+              "U_MT_A.25",
+              "U_MT_B.25"
+            ]
+          },
+          {
+            "net": "AY2",
+            "local": [
+              "U_ADDR.6"
+            ],
+            "destinations": [
+              "U_MT_A.2",
+              "U_MT_B.2"
+            ]
+          },
+          {
+            "net": "XBAR_DATA",
+            "local": [
+              "U_ADDR.7"
+            ],
+            "destinations": [
+              "U_MT_A.38",
+              "U_MT_B.38"
+            ]
+          },
+          {
+            "net": "STROBE_A",
+            "local": [
+              "U_BUFFER.3",
+              "R_STBA_OFF.1"
+            ],
+            "destinations": [
+              "U_MT_A.18"
+            ]
+          },
+          {
+            "net": "STROBE_B",
+            "local": [
+              "U_BUFFER.6",
+              "R_STBB_OFF.1"
+            ],
+            "destinations": [
+              "U_MT_B.18"
+            ]
+          },
+          {
+            "net": "XBAR_RESET",
+            "local": [
+              "R_RESET_ON.2",
+              "Q_RESET_RELEASE.3"
+            ],
+            "destinations": [
+              "U_MT_A.3",
+              "U_MT_B.3"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "matrix",
+        "section": "Matrix",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "GND",
+            "local": [
+              "U_MT_A.16",
+              "U_MT_A.20",
+              "U_MT_A.35",
+              "C_MT0.2",
+              "C_MT0_BULK.2",
+              "U_MT_B.16",
+              "U_MT_B.20",
+              "U_MT_B.35",
+              "C_MT1.2",
+              "C_MT1_BULK.2"
+            ],
+            "destinations": [
+              "U_ESP1.14",
+              "U_ESP1.20",
+              "U_ESP1.26",
+              "J_POWER.2",
+              "J_FIXTURE.2",
+              "J_PROTOTYPE.3",
+              "U_WATCH.1",
+              "U_WATCH.8",
+              "U_WATCH.9",
+              "U_WATCH.10",
+              "U_WATCH.11",
+              "C_WATCH_VCC.2",
+              "R_HEART.2",
+              "U_USB_POR.3",
+              "Q_BUF.1",
+              "R_ALIVE_OFF.2",
+              "U_ADDR.8",
+              "C_ADDR.2",
+              "U_BUFFER.9",
+              "U_BUFFER.12",
+              "U_BUFFER.7",
+              "C_BUFFER.2",
+              "R_XBAR_DAT_OFF.2",
+              "R_XBAR_CLK_OFF.2",
+              "R_XBAR_LATCH_OFF.2",
+              "R_STB_A_IN_OFF.2",
+              "R_STB_B_IN_OFF.2",
+              "R_RST_RELEASE_OFF.2",
+              "Q_RESET_ALIVE.1",
+              "R_STBA_OFF.2",
+              "R_STBB_OFF.2",
+              "R_DISCHARGE.2",
+              "R_CAL.2",
+              "R_DIAG_BOTTOM.2",
+              "C_DIAG.2",
+              "U_DIAG.4",
+              "U_DIAG.5",
+              "C_DIAG_VCC.2",
+              "U_FAULT_RETURN.1",
+              "U_FAULT_RETURN.3",
+              "C_RETURN.2",
+              "K_ADC.2"
+            ]
+          },
+          {
+            "net": "5V_EDU",
+            "local": [
+              "U_MT_A.37",
+              "U_MT_B.37"
+            ],
+            "destinations": [
+              "J_POWER.1"
+            ]
+          },
+          {
+            "net": "5V_SYS",
+            "local": [
+              "U_MT_A.36",
+              "U_MT_B.36"
+            ],
+            "destinations": [
+              "J_POWER.4",
+              "R_BUF_OE.1",
+              "U_ADDR.16",
+              "U_ADDR.10",
+              "C_ADDR.1",
+              "U_BUFFER.10",
+              "U_BUFFER.13",
+              "U_BUFFER.14",
+              "C_BUFFER.1"
+            ]
+          },
+          {
+            "net": "12V_SYS",
+            "local": [
+              "U_MT_A.40",
+              "C_MT0.1",
+              "C_MT0_BULK.1",
+              "U_MT_B.40",
+              "C_MT1.1",
+              "C_MT1_BULK.1"
+            ],
+            "destinations": [
+              "J_POWER.10",
+              "R_RESET_ON.1"
+            ]
+          },
+          {
+            "net": "AX0",
+            "local": [
+              "U_MT_A.5",
+              "U_MT_B.5"
+            ],
+            "destinations": [
+              "U_ADDR.15"
+            ]
+          },
+          {
+            "net": "AX1",
+            "local": [
+              "U_MT_A.22",
+              "U_MT_B.22"
+            ],
+            "destinations": [
+              "U_ADDR.1"
+            ]
+          },
+          {
+            "net": "AX2",
+            "local": [
+              "U_MT_A.23",
+              "U_MT_B.23"
+            ],
+            "destinations": [
+              "U_ADDR.2"
+            ]
+          },
+          {
+            "net": "AX3",
+            "local": [
+              "U_MT_A.4",
+              "U_MT_B.4"
+            ],
+            "destinations": [
+              "U_ADDR.3"
+            ]
+          },
+          {
+            "net": "AY0",
+            "local": [
+              "U_MT_A.24",
+              "U_MT_B.24"
+            ],
+            "destinations": [
+              "U_ADDR.4"
+            ]
+          },
+          {
+            "net": "AY1",
+            "local": [
+              "U_MT_A.25",
+              "U_MT_B.25"
+            ],
+            "destinations": [
+              "U_ADDR.5"
+            ]
+          },
+          {
+            "net": "AY2",
+            "local": [
+              "U_MT_A.2",
+              "U_MT_B.2"
+            ],
+            "destinations": [
+              "U_ADDR.6"
+            ]
+          },
+          {
+            "net": "XBAR_DATA",
+            "local": [
+              "U_MT_A.38",
+              "U_MT_B.38"
+            ],
+            "destinations": [
+              "U_ADDR.7"
+            ]
+          },
+          {
+            "net": "STROBE_A",
+            "local": [
+              "U_MT_A.18"
+            ],
+            "destinations": [
+              "U_BUFFER.3",
+              "R_STBA_OFF.1"
+            ]
+          },
+          {
+            "net": "STROBE_B",
+            "local": [
+              "U_MT_B.18"
+            ],
+            "destinations": [
+              "U_BUFFER.6",
+              "R_STBB_OFF.1"
+            ]
+          },
+          {
+            "net": "XBAR_RESET",
+            "local": [
+              "U_MT_A.3",
+              "U_MT_B.3"
+            ],
+            "destinations": [
+              "R_RESET_ON.2",
+              "Q_RESET_RELEASE.3"
+            ]
+          },
+          {
+            "net": "NODE00",
+            "local": [
+              "U_MT_A.33"
+            ],
+            "destinations": [
+              "J_A1.1"
+            ]
+          },
+          {
+            "net": "NODE01",
+            "local": [
+              "U_MT_A.32"
+            ],
+            "destinations": [
+              "J_A1.3"
+            ]
+          },
+          {
+            "net": "NODE02",
+            "local": [
+              "U_MT_A.31"
+            ],
+            "destinations": [
+              "J_A1.5"
+            ]
+          },
+          {
+            "net": "NODE03",
+            "local": [
+              "U_MT_A.30"
+            ],
+            "destinations": [
+              "J_A1.7"
+            ]
+          },
+          {
+            "net": "NODE04",
+            "local": [
+              "U_MT_A.29"
+            ],
+            "destinations": [
+              "J_A2.1"
+            ]
+          },
+          {
+            "net": "NODE05",
+            "local": [
+              "U_MT_A.28"
+            ],
+            "destinations": [
+              "J_A2.3"
+            ]
+          },
+          {
+            "net": "NODE06",
+            "local": [
+              "U_MT_A.8"
+            ],
+            "destinations": [
+              "J_A2.5"
+            ]
+          },
+          {
+            "net": "NODE07",
+            "local": [
+              "U_MT_A.9"
+            ],
+            "destinations": [
+              "J_A2.7"
+            ]
+          },
+          {
+            "net": "NODE08",
+            "local": [
+              "U_MT_A.10"
+            ],
+            "destinations": [
+              "J_A3.1"
+            ]
+          },
+          {
+            "net": "NODE09",
+            "local": [
+              "U_MT_A.11"
+            ],
+            "destinations": [
+              "J_A3.3"
+            ]
+          },
+          {
+            "net": "NODE10",
+            "local": [
+              "U_MT_A.12"
+            ],
+            "destinations": [
+              "J_A3.5"
+            ]
+          },
+          {
+            "net": "SOURCE_HI",
+            "local": [
+              "U_MT_A.13"
+            ],
+            "destinations": [
+              "R_SOURCE_HI.2"
+            ]
+          },
+          {
+            "net": "SOURCE_LO",
+            "local": [
+              "U_MT_A.27"
+            ],
+            "destinations": [
+              "R_SOURCE_LO.2"
+            ]
+          },
+          {
+            "net": "DIAG_NODE",
+            "local": [
+              "U_MT_A.26"
+            ],
+            "destinations": [
+              "R_DIAG_TOP.1"
+            ]
+          },
+          {
+            "net": "DISCHARGE",
+            "local": [
+              "U_MT_A.6"
+            ],
+            "destinations": [
+              "R_DISCHARGE.1"
+            ]
+          },
+          {
+            "net": "CAL_LOAD",
+            "local": [
+              "U_MT_A.7"
+            ],
+            "destinations": [
+              "R_CAL.1"
+            ]
+          },
+          {
+            "net": "NODE11",
+            "local": [
+              "U_MT_B.33"
+            ],
+            "destinations": [
+              "J_B1.1"
+            ]
+          },
+          {
+            "net": "NODE12",
+            "local": [
+              "U_MT_B.32"
+            ],
+            "destinations": [
+              "J_B1.3"
+            ]
+          },
+          {
+            "net": "NODE13",
+            "local": [
+              "U_MT_B.31"
+            ],
+            "destinations": [
+              "J_B1.5"
+            ]
+          },
+          {
+            "net": "NODE14",
+            "local": [
+              "U_MT_B.30"
+            ],
+            "destinations": [
+              "J_B1.7"
+            ]
+          },
+          {
+            "net": "NODE15",
+            "local": [
+              "U_MT_B.29"
+            ],
+            "destinations": [
+              "J_B2.1"
+            ]
+          },
+          {
+            "net": "NODE16",
+            "local": [
+              "U_MT_B.28"
+            ],
+            "destinations": [
+              "J_B2.3"
+            ]
+          },
+          {
+            "net": "NODE17",
+            "local": [
+              "U_MT_B.8"
+            ],
+            "destinations": [
+              "J_B2.5"
+            ]
+          },
+          {
+            "net": "NODE18",
+            "local": [
+              "U_MT_B.9"
+            ],
+            "destinations": [
+              "J_B2.7"
+            ]
+          },
+          {
+            "net": "NODE19",
+            "local": [
+              "U_MT_B.10"
+            ],
+            "destinations": [
+              "J_B3.1"
+            ]
+          },
+          {
+            "net": "NODE20",
+            "local": [
+              "U_MT_B.11"
+            ],
+            "destinations": [
+              "J_B3.3"
+            ]
+          },
+          {
+            "net": "NODE21",
+            "local": [
+              "U_MT_B.12"
+            ],
+            "destinations": [
+              "J_B3.5"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "matrix",
+        "section": "Nodes",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "NODE00",
+            "local": [
+              "J_A1.1"
+            ],
+            "destinations": [
+              "U_MT_A.33"
+            ]
+          },
+          {
+            "net": "NODE01",
+            "local": [
+              "J_A1.3"
+            ],
+            "destinations": [
+              "U_MT_A.32"
+            ]
+          },
+          {
+            "net": "NODE02",
+            "local": [
+              "J_A1.5"
+            ],
+            "destinations": [
+              "U_MT_A.31"
+            ]
+          },
+          {
+            "net": "NODE03",
+            "local": [
+              "J_A1.7"
+            ],
+            "destinations": [
+              "U_MT_A.30"
+            ]
+          },
+          {
+            "net": "NODE04",
+            "local": [
+              "J_A2.1"
+            ],
+            "destinations": [
+              "U_MT_A.29"
+            ]
+          },
+          {
+            "net": "NODE05",
+            "local": [
+              "J_A2.3"
+            ],
+            "destinations": [
+              "U_MT_A.28"
+            ]
+          },
+          {
+            "net": "NODE06",
+            "local": [
+              "J_A2.5"
+            ],
+            "destinations": [
+              "U_MT_A.8"
+            ]
+          },
+          {
+            "net": "NODE07",
+            "local": [
+              "J_A2.7"
+            ],
+            "destinations": [
+              "U_MT_A.9"
+            ]
+          },
+          {
+            "net": "NODE08",
+            "local": [
+              "J_A3.1"
+            ],
+            "destinations": [
+              "U_MT_A.10"
+            ]
+          },
+          {
+            "net": "NODE09",
+            "local": [
+              "J_A3.3"
+            ],
+            "destinations": [
+              "U_MT_A.11"
+            ]
+          },
+          {
+            "net": "NODE10",
+            "local": [
+              "J_A3.5"
+            ],
+            "destinations": [
+              "U_MT_A.12"
+            ]
+          },
+          {
+            "net": "NODE11",
+            "local": [
+              "J_B1.1"
+            ],
+            "destinations": [
+              "U_MT_B.33"
+            ]
+          },
+          {
+            "net": "NODE12",
+            "local": [
+              "J_B1.3"
+            ],
+            "destinations": [
+              "U_MT_B.32"
+            ]
+          },
+          {
+            "net": "NODE13",
+            "local": [
+              "J_B1.5"
+            ],
+            "destinations": [
+              "U_MT_B.31"
+            ]
+          },
+          {
+            "net": "NODE14",
+            "local": [
+              "J_B1.7"
+            ],
+            "destinations": [
+              "U_MT_B.30"
+            ]
+          },
+          {
+            "net": "NODE15",
+            "local": [
+              "J_B2.1"
+            ],
+            "destinations": [
+              "U_MT_B.29"
+            ]
+          },
+          {
+            "net": "NODE16",
+            "local": [
+              "J_B2.3"
+            ],
+            "destinations": [
+              "U_MT_B.28"
+            ]
+          },
+          {
+            "net": "NODE17",
+            "local": [
+              "J_B2.5"
+            ],
+            "destinations": [
+              "U_MT_B.8"
+            ]
+          },
+          {
+            "net": "NODE18",
+            "local": [
+              "J_B2.7"
+            ],
+            "destinations": [
+              "U_MT_B.9"
+            ]
+          },
+          {
+            "net": "NODE19",
+            "local": [
+              "J_B3.1"
+            ],
+            "destinations": [
+              "U_MT_B.10"
+            ]
+          },
+          {
+            "net": "NODE20",
+            "local": [
+              "J_B3.3"
+            ],
+            "destinations": [
+              "U_MT_B.11"
+            ]
+          },
+          {
+            "net": "NODE21",
+            "local": [
+              "J_B3.5"
+            ],
+            "destinations": [
+              "U_MT_B.12"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "matrix",
+        "section": "Tools",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "USB_3V3",
+            "local": [
+              "U_DIAG.8",
+              "C_DIAG_VCC.1"
+            ],
+            "destinations": [
+              "U_ESP1.1",
+              "J_FIXTURE.1",
+              "J_PROTOTYPE.2",
+              "U_WATCH.16",
+              "R_WATCH.1",
+              "C_WATCH_VCC.1",
+              "U_USB_POR.2",
+              "R_USB_POR.1",
+              "U_FAULT_RETURN.5",
+              "C_RETURN.1",
+              "R_KADC_LED.1"
+            ]
+          },
+          {
+            "net": "GND",
+            "local": [
+              "R_DISCHARGE.2",
+              "R_CAL.2",
+              "R_DIAG_BOTTOM.2",
+              "C_DIAG.2",
+              "U_DIAG.4",
+              "U_DIAG.5",
+              "C_DIAG_VCC.2"
+            ],
+            "destinations": [
+              "U_ESP1.14",
+              "U_ESP1.20",
+              "U_ESP1.26",
+              "J_POWER.2",
+              "J_FIXTURE.2",
+              "J_PROTOTYPE.3",
+              "U_WATCH.1",
+              "U_WATCH.8",
+              "U_WATCH.9",
+              "U_WATCH.10",
+              "U_WATCH.11",
+              "C_WATCH_VCC.2",
+              "R_HEART.2",
+              "U_USB_POR.3",
+              "Q_BUF.1",
+              "R_ALIVE_OFF.2",
+              "U_ADDR.8",
+              "C_ADDR.2",
+              "U_BUFFER.9",
+              "U_BUFFER.12",
+              "U_BUFFER.7",
+              "C_BUFFER.2",
+              "R_XBAR_DAT_OFF.2",
+              "R_XBAR_CLK_OFF.2",
+              "R_XBAR_LATCH_OFF.2",
+              "R_STB_A_IN_OFF.2",
+              "R_STB_B_IN_OFF.2",
+              "R_RST_RELEASE_OFF.2",
+              "Q_RESET_ALIVE.1",
+              "R_STBA_OFF.2",
+              "R_STBB_OFF.2",
+              "U_MT_A.16",
+              "U_MT_A.20",
+              "U_MT_A.35",
+              "C_MT0.2",
+              "C_MT0_BULK.2",
+              "U_MT_B.16",
+              "U_MT_B.20",
+              "U_MT_B.35",
+              "C_MT1.2",
+              "C_MT1_BULK.2",
+              "U_FAULT_RETURN.1",
+              "U_FAULT_RETURN.3",
+              "C_RETURN.2",
+              "K_ADC.2"
+            ]
+          },
+          {
+            "net": "DIAG_ADC",
+            "local": [
+              "U_DIAG.1",
+              "U_DIAG.2"
+            ],
+            "destinations": [
+              "U_ESP1.3"
+            ]
+          },
+          {
+            "net": "3V3_SYS",
+            "local": [
+              "D_SOURCE.1"
+            ],
+            "destinations": [
+              "J_POWER.3"
+            ]
+          },
+          {
+            "net": "SOURCE_HI",
+            "local": [
+              "R_SOURCE_HI.2"
+            ],
+            "destinations": [
+              "U_MT_A.13"
+            ]
+          },
+          {
+            "net": "SOURCE_LO",
+            "local": [
+              "R_SOURCE_LO.2"
+            ],
+            "destinations": [
+              "U_MT_A.27"
+            ]
+          },
+          {
+            "net": "DIAG_NODE",
+            "local": [
+              "R_DIAG_TOP.1"
+            ],
+            "destinations": [
+              "U_MT_A.26"
+            ]
+          },
+          {
+            "net": "DISCHARGE",
+            "local": [
+              "R_DISCHARGE.1"
+            ],
+            "destinations": [
+              "U_MT_A.6"
+            ]
+          },
+          {
+            "net": "CAL_LOAD",
+            "local": [
+              "R_CAL.1"
+            ],
+            "destinations": [
+              "U_MT_A.7"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "matrix",
+        "section": "Return",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "USB_3V3",
+            "local": [
+              "U_FAULT_RETURN.5",
+              "C_RETURN.1",
+              "R_KADC_LED.1"
+            ],
+            "destinations": [
+              "U_ESP1.1",
+              "J_FIXTURE.1",
+              "J_PROTOTYPE.2",
+              "U_WATCH.16",
+              "R_WATCH.1",
+              "C_WATCH_VCC.1",
+              "U_USB_POR.2",
+              "R_USB_POR.1",
+              "U_DIAG.8",
+              "C_DIAG_VCC.1"
+            ]
+          },
+          {
+            "net": "GND",
+            "local": [
+              "U_FAULT_RETURN.1",
+              "U_FAULT_RETURN.3",
+              "C_RETURN.2",
+              "K_ADC.2"
+            ],
+            "destinations": [
+              "U_ESP1.14",
+              "U_ESP1.20",
+              "U_ESP1.26",
+              "J_POWER.2",
+              "J_FIXTURE.2",
+              "J_PROTOTYPE.3",
+              "U_WATCH.1",
+              "U_WATCH.8",
+              "U_WATCH.9",
+              "U_WATCH.10",
+              "U_WATCH.11",
+              "C_WATCH_VCC.2",
+              "R_HEART.2",
+              "U_USB_POR.3",
+              "Q_BUF.1",
+              "R_ALIVE_OFF.2",
+              "U_ADDR.8",
+              "C_ADDR.2",
+              "U_BUFFER.9",
+              "U_BUFFER.12",
+              "U_BUFFER.7",
+              "C_BUFFER.2",
+              "R_XBAR_DAT_OFF.2",
+              "R_XBAR_CLK_OFF.2",
+              "R_XBAR_LATCH_OFF.2",
+              "R_STB_A_IN_OFF.2",
+              "R_STB_B_IN_OFF.2",
+              "R_RST_RELEASE_OFF.2",
+              "Q_RESET_ALIVE.1",
+              "R_STBA_OFF.2",
+              "R_STBB_OFF.2",
+              "U_MT_A.16",
+              "U_MT_A.20",
+              "U_MT_A.35",
+              "C_MT0.2",
+              "C_MT0_BULK.2",
+              "U_MT_B.16",
+              "U_MT_B.20",
+              "U_MT_B.35",
+              "C_MT1.2",
+              "C_MT1_BULK.2",
+              "R_DISCHARGE.2",
+              "R_CAL.2",
+              "R_DIAG_BOTTOM.2",
+              "C_DIAG.2",
+              "U_DIAG.4",
+              "U_DIAG.5",
+              "C_DIAG_VCC.2"
+            ]
+          },
+          {
+            "net": "FAULT_USB",
+            "local": [
+              "U_FAULT_RETURN.4"
+            ],
+            "destinations": [
+              "U_ESP1.6"
+            ]
+          },
+          {
+            "net": "CURRENT_USB",
+            "local": [
+              "K_ADC.4"
+            ],
+            "destinations": [
+              "U_ESP1.5"
+            ]
+          },
+          {
+            "net": "EDU_FAULT",
+            "local": [
+              "U_FAULT_RETURN.2"
+            ],
+            "destinations": [
+              "J_POWER.6"
+            ]
+          },
+          {
+            "net": "CURRENT_SENSE",
+            "local": [
+              "K_ADC.3"
+            ],
+            "destinations": [
+              "J_POWER.8"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "integration",
+        "section": "Pi",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "PI_3V3",
+            "local": [
+              "J_PI.1",
+              "J_NFC.1"
+            ],
+            "destinations": [
+              "R_ENERGIZE.1",
+              "R_BACK.1"
+            ]
+          },
+          {
+            "net": "GND",
+            "local": [
+              "J_PI.6",
+              "J_NFC.2"
+            ],
+            "destinations": [
+              "J_SW_ENERGIZE.2",
+              "J_SW_BACK.2",
+              "C_ENERGIZE.2",
+              "C_BACK.2",
+              "J_GROUND.1"
+            ]
+          },
+          {
+            "net": "ENERGIZE_N",
+            "local": [
+              "J_PI.29"
+            ],
+            "destinations": [
+              "J_SW_ENERGIZE.1",
+              "R_ENERGIZE.2",
+              "C_ENERGIZE.1"
+            ]
+          },
+          {
+            "net": "BACK_N",
+            "local": [
+              "J_PI.31"
+            ],
+            "destinations": [
+              "J_SW_BACK.1",
+              "R_BACK.2",
+              "C_BACK.1"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "integration",
+        "section": "Buttons",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "PI_3V3",
+            "local": [
+              "R_ENERGIZE.1",
+              "R_BACK.1"
+            ],
+            "destinations": [
+              "J_PI.1",
+              "J_NFC.1"
+            ]
+          },
+          {
+            "net": "GND",
+            "local": [
+              "J_SW_ENERGIZE.2",
+              "J_SW_BACK.2",
+              "C_ENERGIZE.2",
+              "C_BACK.2",
+              "J_GROUND.1"
+            ],
+            "destinations": [
+              "J_PI.6",
+              "J_NFC.2"
+            ]
+          },
+          {
+            "net": "ENERGIZE_N",
+            "local": [
+              "J_SW_ENERGIZE.1",
+              "R_ENERGIZE.2",
+              "C_ENERGIZE.1"
+            ],
+            "destinations": [
+              "J_PI.29"
+            ]
+          },
+          {
+            "net": "BACK_N",
+            "local": [
+              "J_SW_BACK.1",
+              "R_BACK.2",
+              "C_BACK.1"
+            ],
+            "destinations": [
+              "J_PI.31"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "continuity-fixture",
+        "section": "Interface",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "USB_3V3",
+            "local": [
+              "J_CONTROL.1",
+              "R_SDA.1",
+              "R_SCL.1"
+            ],
+            "destinations": [
+              "D_STIM.1",
+              "R_LED.1",
+              "U_BUFFER.8",
+              "C_BUFFER.1",
+              "U_ADC.8",
+              "C_ADC.1"
+            ]
+          },
+          {
+            "net": "GND",
+            "local": [
+              "J_CONTROL.2",
+              "JP_RETURN.2"
+            ],
+            "destinations": [
+              "R_OFF.2",
+              "Q_STIM.1",
+              "R_A_BOTTOM.2",
+              "C_A.2",
+              "R_B_BOTTOM.2",
+              "C_B.2",
+              "U_BUFFER.4",
+              "C_BUFFER.2",
+              "U_ADC.1",
+              "U_ADC.3",
+              "U_ADC.6",
+              "U_ADC.7",
+              "C_ADC.2"
+            ]
+          },
+          {
+            "net": "FIX_SDA",
+            "local": [
+              "J_CONTROL.3",
+              "R_SDA.2"
+            ],
+            "destinations": [
+              "U_ADC.9"
+            ]
+          },
+          {
+            "net": "FIX_SCL",
+            "local": [
+              "J_CONTROL.4",
+              "R_SCL.2"
+            ],
+            "destinations": [
+              "U_ADC.10"
+            ]
+          },
+          {
+            "net": "FIX_STIM",
+            "local": [
+              "J_CONTROL.5"
+            ],
+            "destinations": [
+              "R_OFF.1",
+              "Q_STIM.2"
+            ]
+          },
+          {
+            "net": "TEST_A",
+            "local": [
+              "J_TEST.1"
+            ],
+            "destinations": [
+              "K_STIM.4",
+              "R_A_TOP.1"
+            ]
+          },
+          {
+            "net": "TEST_B",
+            "local": [
+              "J_TEST.2",
+              "JP_RETURN.1"
+            ],
+            "destinations": [
+              "R_B_TOP.1"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "continuity-fixture",
+        "section": "Stimulus",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "USB_3V3",
+            "local": [
+              "D_STIM.1",
+              "R_LED.1"
+            ],
+            "destinations": [
+              "J_CONTROL.1",
+              "R_SDA.1",
+              "R_SCL.1",
+              "U_BUFFER.8",
+              "C_BUFFER.1",
+              "U_ADC.8",
+              "C_ADC.1"
+            ]
+          },
+          {
+            "net": "GND",
+            "local": [
+              "R_OFF.2",
+              "Q_STIM.1"
+            ],
+            "destinations": [
+              "J_CONTROL.2",
+              "JP_RETURN.2",
+              "R_A_BOTTOM.2",
+              "C_A.2",
+              "R_B_BOTTOM.2",
+              "C_B.2",
+              "U_BUFFER.4",
+              "C_BUFFER.2",
+              "U_ADC.1",
+              "U_ADC.3",
+              "U_ADC.6",
+              "U_ADC.7",
+              "C_ADC.2"
+            ]
+          },
+          {
+            "net": "FIX_STIM",
+            "local": [
+              "R_OFF.1",
+              "Q_STIM.2"
+            ],
+            "destinations": [
+              "J_CONTROL.5"
+            ]
+          },
+          {
+            "net": "TEST_A",
+            "local": [
+              "K_STIM.4"
+            ],
+            "destinations": [
+              "J_TEST.1",
+              "R_A_TOP.1"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "continuity-fixture",
+        "section": "Sense",
+        "status": "pass",
+        "ports": [
+          {
+            "net": "USB_3V3",
+            "local": [
+              "U_BUFFER.8",
+              "C_BUFFER.1",
+              "U_ADC.8",
+              "C_ADC.1"
+            ],
+            "destinations": [
+              "J_CONTROL.1",
+              "R_SDA.1",
+              "R_SCL.1",
+              "D_STIM.1",
+              "R_LED.1"
+            ]
+          },
+          {
+            "net": "GND",
+            "local": [
+              "R_A_BOTTOM.2",
+              "C_A.2",
+              "R_B_BOTTOM.2",
+              "C_B.2",
+              "U_BUFFER.4",
+              "C_BUFFER.2",
+              "U_ADC.1",
+              "U_ADC.3",
+              "U_ADC.6",
+              "U_ADC.7",
+              "C_ADC.2"
+            ],
+            "destinations": [
+              "J_CONTROL.2",
+              "JP_RETURN.2",
+              "R_OFF.2",
+              "Q_STIM.1"
+            ]
+          },
+          {
+            "net": "FIX_SDA",
+            "local": [
+              "U_ADC.9"
+            ],
+            "destinations": [
+              "J_CONTROL.3",
+              "R_SDA.2"
+            ]
+          },
+          {
+            "net": "FIX_SCL",
+            "local": [
+              "U_ADC.10"
+            ],
+            "destinations": [
+              "J_CONTROL.4",
+              "R_SCL.2"
+            ]
+          },
+          {
+            "net": "TEST_A",
+            "local": [
+              "R_A_TOP.1"
+            ],
+            "destinations": [
+              "J_TEST.1",
+              "K_STIM.4"
+            ]
+          },
+          {
+            "net": "TEST_B",
+            "local": [
+              "R_B_TOP.1"
+            ],
+            "destinations": [
+              "J_TEST.2",
+              "JP_RETURN.1"
+            ]
+          }
+        ],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "board": "usb-prototype",
+        "section": "Switch",
+        "status": "pass",
+        "ports": [],
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      }
+    ]
+  },
+  "partial": {
+    "revision": "238eecf00b3740c7",
+    "status": "pass",
+    "scope": "Native tscircuit checks of each distinct cumulative construction state; no bench measurements.",
+    "results": [
+      {
+        "instance": "a1",
+        "checkpoint": "CP00",
+        "parts": 5,
+        "reservedConnectorPins": [],
+        "status": "pass",
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "instance": "a1",
+        "checkpoint": "CP04",
+        "parts": 7,
+        "reservedConnectorPins": [],
+        "status": "pass",
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "instance": "a2",
+        "checkpoint": "CP27",
+        "parts": 7,
+        "reservedConnectorPins": [],
+        "status": "pass",
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "instance": "a3",
+        "checkpoint": "CP28",
+        "parts": 6,
+        "reservedConnectorPins": [],
+        "status": "pass",
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "instance": "b1",
+        "checkpoint": "CP29",
+        "parts": 7,
+        "reservedConnectorPins": [],
+        "status": "pass",
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "instance": "b2",
+        "checkpoint": "CP30",
+        "parts": 7,
+        "reservedConnectorPins": [],
+        "status": "pass",
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "instance": "b3",
+        "checkpoint": "CP31",
+        "parts": 6,
+        "reservedConnectorPins": [],
+        "status": "pass",
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "instance": "power",
+        "checkpoint": "CP09",
+        "parts": 14,
+        "reservedConnectorPins": [
+          {
+            "ref": "J_BUCK_5V",
+            "pins": [
+              5
+            ]
+          },
+          {
+            "ref": "J_BUCK_3V3",
+            "pins": [
+              5
+            ]
+          },
+          {
+            "ref": "JP_LOGIC",
+            "pins": [
+              1
+            ]
+          },
+          {
+            "ref": "JP_3V3",
+            "pins": [
+              1
+            ]
+          },
+          {
+            "ref": "J_MATRIX",
+            "pins": [
+              5,
+              7,
+              9
+            ]
+          },
+          {
+            "ref": "J_SMART",
+            "pins": [
+              7
+            ]
+          },
+          {
+            "ref": "J_TEST",
+            "pins": [
+              3,
+              5
+            ]
+          }
+        ],
+        "status": "pass",
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "instance": "power",
+        "checkpoint": "CP10",
+        "parts": 32,
+        "reservedConnectorPins": [
+          {
+            "ref": "J_MATRIX",
+            "pins": [
+              5,
+              7,
+              9
+            ]
+          },
+          {
+            "ref": "J_SMART",
+            "pins": [
+              7
+            ]
+          },
+          {
+            "ref": "J_TEST",
+            "pins": [
+              3
+            ]
+          }
+        ],
+        "status": "pass",
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "instance": "power",
+        "checkpoint": "CP11",
+        "parts": 64,
+        "reservedConnectorPins": [],
+        "status": "pass",
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "instance": "smart-controller",
+        "checkpoint": "CP15",
+        "parts": 36,
+        "reservedConnectorPins": [],
+        "status": "pass",
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "instance": "smart-channel:0",
+        "checkpoint": "CP06",
+        "parts": 19,
+        "reservedConnectorPins": [
+          {
+            "ref": "J_MODULE",
+            "pins": [
+              5
+            ]
+          },
+          {
+            "ref": "J_CONTROL",
+            "pins": [
+              1,
+              2,
+              3,
+              5,
+              10
+            ]
+          }
+        ],
+        "status": "pass",
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "instance": "smart-channel:0",
+        "checkpoint": "CP15",
+        "parts": 43,
+        "reservedConnectorPins": [
+          {
+            "ref": "J_CONTROL",
+            "pins": [
+              3
+            ]
+          }
+        ],
+        "status": "pass",
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "instance": "smart-channel:0",
+        "checkpoint": "CP22",
+        "parts": 54,
+        "reservedConnectorPins": [],
+        "status": "pass",
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "instance": "matrix",
+        "checkpoint": "CP00",
+        "parts": 3,
+        "reservedConnectorPins": [
+          {
+            "ref": "U_ESP1",
+            "pins": [
+              3,
+              5,
+              6,
+              8,
+              11,
+              21,
+              22,
+              25,
+              27,
+              28,
+              30
+            ]
+          }
+        ],
+        "status": "pass",
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "instance": "matrix",
+        "checkpoint": "CP11",
+        "parts": 8,
+        "reservedConnectorPins": [
+          {
+            "ref": "U_ESP1",
+            "pins": [
+              3,
+              8,
+              11,
+              21,
+              22,
+              25,
+              27,
+              28
+            ]
+          },
+          {
+            "ref": "J_POWER",
+            "pins": [
+              1,
+              3,
+              4,
+              9,
+              10
+            ]
+          }
+        ],
+        "status": "pass",
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "instance": "matrix",
+        "checkpoint": "CP13",
+        "parts": 18,
+        "reservedConnectorPins": [
+          {
+            "ref": "U_ESP1",
+            "pins": [
+              3,
+              11,
+              21,
+              22,
+              25,
+              27,
+              28
+            ]
+          },
+          {
+            "ref": "J_POWER",
+            "pins": [
+              1,
+              3,
+              10
+            ]
+          }
+        ],
+        "status": "pass",
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "instance": "matrix",
+        "checkpoint": "CP24",
+        "parts": 55,
+        "reservedConnectorPins": [],
+        "status": "pass",
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "instance": "integration",
+        "checkpoint": "CP32",
+        "parts": 8,
+        "reservedConnectorPins": [
+          {
+            "ref": "J_PI",
+            "pins": [
+              19,
+              21,
+              23,
+              24
+            ]
+          }
+        ],
+        "status": "pass",
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "instance": "integration",
+        "checkpoint": "CP34",
+        "parts": 9,
+        "reservedConnectorPins": [],
+        "status": "pass",
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "instance": "continuity-fixture",
+        "checkpoint": "CP01",
+        "parts": 23,
+        "reservedConnectorPins": [],
+        "status": "pass",
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      },
+      {
+        "instance": "usb-prototype",
+        "checkpoint": "CP00",
+        "parts": 8,
+        "reservedConnectorPins": [],
+        "status": "pass",
+        "checks": {
+          "source": [],
+          "pins": [],
+          "netlist": [],
+          "schematic": [],
+          "placement": []
+        }
+      }
+    ]
+  },
+  "construction": {
+    "status": "pass",
+    "revision": "238eecf00b3740c7",
+    "phases": [
+      {
+        "checkpoint": "CP00",
+        "items": 70,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP01",
+        "items": 143,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP02",
+        "items": 143,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP03",
+        "items": 143,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP04",
+        "items": 155,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP05",
+        "items": 155,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP06",
+        "items": 227,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP07",
+        "items": 227,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP08",
+        "items": 227,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP09",
+        "items": 270,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP10",
+        "items": 332,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP11",
+        "items": 482,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP12",
+        "items": 482,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP13",
+        "items": 519,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP14",
+        "items": 519,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP15",
+        "items": 772,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP16",
+        "items": 772,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP17",
+        "items": 772,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP18",
+        "items": 772,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP19",
+        "items": 772,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP20",
+        "items": 772,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP21",
+        "items": 772,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP22",
+        "items": 811,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP23",
+        "items": 811,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP24",
+        "items": 983,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP25",
+        "items": 983,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP26",
+        "items": 983,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP27",
+        "items": 1208,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP28",
+        "items": 1426,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP29",
+        "items": 1650,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP30",
+        "items": 1874,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP31",
+        "items": 2091,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP32",
+        "items": 2113,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP33",
+        "items": 2113,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP34",
+        "items": 2121,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP35",
+        "items": 2121,
+        "status": "pass"
+      },
+      {
+        "checkpoint": "CP36",
+        "items": 2122,
+        "status": "pass"
+      }
+    ],
+    "negativeControls": 1,
+    "scope": "Software dependency and cumulative connectivity checks. No physical measurements."
+  },
+  "status": "pass",
+  "scope": "Software checks of compiled design and manual wiring instructions. Bench measurements and physical fit are pending.",
+  "results": [
+    {
+      "board": "a1",
+      "compiledSha256": "6b2f044d20bb8d6b0b15e417730b99588bc8a469ef48e8abdcbf7bee25a559c7",
+      "stages": {
+        "source": [],
+        "pin_specification": [],
+        "netlist": [],
+        "schematic_placement": [],
+        "placement": [],
+        "assembly": {
+          "board": "a1",
+          "parts": 7,
+          "nets": 8,
+          "wires": 33,
+          "status": "pass"
+        },
+        "pcb-style": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No PCB style issues detected in circuit.json\nPCB style overview written to /home/gustavo/Documents/UTFPR/oficinas/integration-workshop-3/eletronics/perfboard/tscircuit/checks/check-pcb-style/pcb.svg"
+        },
+        "shorts": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No shorts detected in circuit.json"
+        }
+      }
+    },
+    {
+      "board": "a2",
+      "compiledSha256": "3f8dc7dc9adf8aa439fedb1d8c55039f1e0acd9812c59299f411fe0d43034829",
+      "stages": {
+        "source": [],
+        "pin_specification": [],
+        "netlist": [],
+        "schematic_placement": [],
+        "placement": [],
+        "assembly": {
+          "board": "a2",
+          "parts": 7,
+          "nets": 8,
+          "wires": 33,
+          "status": "pass"
+        },
+        "pcb-style": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No PCB style issues detected in circuit.json\nPCB style overview written to /home/gustavo/Documents/UTFPR/oficinas/integration-workshop-3/eletronics/perfboard/tscircuit/checks/check-pcb-style/pcb.svg"
+        },
+        "shorts": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No shorts detected in circuit.json"
+        }
+      }
+    },
+    {
+      "board": "a3",
+      "compiledSha256": "e6734db6ff173922e52ea87ede89fd00f75eaab352e413303c898fe9c42417d7",
+      "stages": {
+        "source": [],
+        "pin_specification": [],
+        "netlist": [],
+        "schematic_placement": [],
+        "placement": [],
+        "assembly": {
+          "board": "a3",
+          "parts": 6,
+          "nets": 7,
+          "wires": 27,
+          "status": "pass"
+        },
+        "pcb-style": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No PCB style issues detected in circuit.json\nPCB style overview written to /home/gustavo/Documents/UTFPR/oficinas/integration-workshop-3/eletronics/perfboard/tscircuit/checks/check-pcb-style/pcb.svg"
+        },
+        "shorts": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No shorts detected in circuit.json"
+        }
+      }
+    },
+    {
+      "board": "b1",
+      "compiledSha256": "5e2e5e417519282f3c6c65905d08d422d365980bc2c315d837252a925a7bba9b",
+      "stages": {
+        "source": [],
+        "pin_specification": [],
+        "netlist": [],
+        "schematic_placement": [],
+        "placement": [],
+        "assembly": {
+          "board": "b1",
+          "parts": 7,
+          "nets": 8,
+          "wires": 33,
+          "status": "pass"
+        },
+        "pcb-style": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No PCB style issues detected in circuit.json\nPCB style overview written to /home/gustavo/Documents/UTFPR/oficinas/integration-workshop-3/eletronics/perfboard/tscircuit/checks/check-pcb-style/pcb.svg"
+        },
+        "shorts": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No shorts detected in circuit.json"
+        }
+      }
+    },
+    {
+      "board": "b2",
+      "compiledSha256": "60bb29934886ae44de1a6df1033ab77de25c834c8d21ef75ea6384e0ab012f2b",
+      "stages": {
+        "source": [],
+        "pin_specification": [],
+        "netlist": [],
+        "schematic_placement": [],
+        "placement": [],
+        "assembly": {
+          "board": "b2",
+          "parts": 7,
+          "nets": 8,
+          "wires": 33,
+          "status": "pass"
+        },
+        "pcb-style": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No PCB style issues detected in circuit.json\nPCB style overview written to /home/gustavo/Documents/UTFPR/oficinas/integration-workshop-3/eletronics/perfboard/tscircuit/checks/check-pcb-style/pcb.svg"
+        },
+        "shorts": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No shorts detected in circuit.json"
+        }
+      }
+    },
+    {
+      "board": "b3",
+      "compiledSha256": "8ebbc481a98d8c461ee504715ba612cb56b0608c7df7580dae5488d3fb6eb11f",
+      "stages": {
+        "source": [],
+        "pin_specification": [],
+        "netlist": [],
+        "schematic_placement": [],
+        "placement": [],
+        "assembly": {
+          "board": "b3",
+          "parts": 6,
+          "nets": 7,
+          "wires": 27,
+          "status": "pass"
+        },
+        "pcb-style": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No PCB style issues detected in circuit.json\nPCB style overview written to /home/gustavo/Documents/UTFPR/oficinas/integration-workshop-3/eletronics/perfboard/tscircuit/checks/check-pcb-style/pcb.svg"
+        },
+        "shorts": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No shorts detected in circuit.json"
+        }
+      }
+    },
+    {
+      "board": "power",
+      "compiledSha256": "118f33f30367ded62466e2a859265318c42c69d5dd9f9fbf63bb0a96890bac35",
+      "stages": {
+        "source": [],
+        "pin_specification": [],
+        "netlist": [],
+        "schematic_placement": [],
+        "placement": [],
+        "assembly": {
+          "board": "power",
+          "parts": 64,
+          "nets": 39,
+          "wires": 167,
+          "status": "pass"
+        },
+        "pcb-style": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No PCB style issues detected in circuit.json\nPCB style overview written to /home/gustavo/Documents/UTFPR/oficinas/integration-workshop-3/eletronics/perfboard/tscircuit/checks/check-pcb-style/pcb.svg"
+        },
+        "shorts": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No shorts detected in circuit.json"
+        }
+      }
+    },
+    {
+      "board": "smart-controller",
+      "compiledSha256": "96dc0d1f7e2cf2304429dc2f6176cb70d2323ad7507cb51274c15153547682c3",
+      "stages": {
+        "source": [],
+        "pin_specification": [],
+        "netlist": [],
+        "schematic_placement": [],
+        "placement": [],
+        "assembly": {
+          "board": "smart-controller",
+          "parts": 36,
+          "nets": 44,
+          "wires": 142,
+          "status": "pass"
+        },
+        "pcb-style": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No PCB style issues detected in circuit.json\nPCB style overview written to /home/gustavo/Documents/UTFPR/oficinas/integration-workshop-3/eletronics/perfboard/tscircuit/checks/check-pcb-style/pcb.svg"
+        },
+        "shorts": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No shorts detected in circuit.json"
+        }
+      }
+    },
+    {
+      "board": "smart-channel",
+      "compiledSha256": "db6cbede75f495b2db3e6d9ef4f804be40b2b47420915e392004c67dba30242e",
+      "stages": {
+        "source": [],
+        "pin_specification": [],
+        "netlist": [],
+        "schematic_placement": [],
+        "placement": [],
+        "assembly": {
+          "board": "smart-channel",
+          "parts": 54,
+          "nets": 41,
+          "wires": 127,
+          "status": "pass"
+        },
+        "pcb-style": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No PCB style issues detected in circuit.json\nPCB style overview written to /home/gustavo/Documents/UTFPR/oficinas/integration-workshop-3/eletronics/perfboard/tscircuit/checks/check-pcb-style/pcb.svg"
+        },
+        "shorts": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No shorts detected in circuit.json"
+        }
+      }
+    },
+    {
+      "board": "matrix",
+      "compiledSha256": "eb4386aab52d770e41cadd26ca90ccdd5879776a705e518026094f87d2fd3f12",
+      "stages": {
+        "source": [],
+        "pin_specification": [],
+        "netlist": [],
+        "schematic_placement": [],
+        "placement": [],
+        "assembly": {
+          "board": "matrix",
+          "parts": 55,
+          "nets": 78,
+          "wires": 187,
+          "status": "pass"
+        },
+        "pcb-style": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No PCB style issues detected in circuit.json\nPCB style overview written to /home/gustavo/Documents/UTFPR/oficinas/integration-workshop-3/eletronics/perfboard/tscircuit/checks/check-pcb-style/pcb.svg"
+        },
+        "shorts": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No shorts detected in circuit.json"
+        }
+      }
+    },
+    {
+      "board": "integration",
+      "compiledSha256": "c4547be0815726e77d1e15e7734cf0422960f75723728c0952ade94e69fc34af",
+      "stages": {
+        "source": [],
+        "pin_specification": [],
+        "netlist": [],
+        "schematic_placement": [],
+        "placement": [],
+        "assembly": {
+          "board": "integration",
+          "parts": 9,
+          "nets": 8,
+          "wires": 19,
+          "status": "pass"
+        },
+        "pcb-style": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No PCB style issues detected in circuit.json\nPCB style overview written to /home/gustavo/Documents/UTFPR/oficinas/integration-workshop-3/eletronics/perfboard/tscircuit/checks/check-pcb-style/pcb.svg"
+        },
+        "shorts": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No shorts detected in circuit.json"
+        }
+      }
+    },
+    {
+      "board": "continuity-fixture",
+      "compiledSha256": "d622ee4397885ce538c3d04cf5c209f400b32fe835b23ba4734f68a322aa21ac",
+      "stages": {
+        "source": [],
+        "pin_specification": [],
+        "netlist": [],
+        "schematic_placement": [],
+        "placement": [],
+        "assembly": {
+          "board": "continuity-fixture",
+          "parts": 23,
+          "nets": 17,
+          "wires": 48,
+          "status": "pass"
+        },
+        "pcb-style": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No PCB style issues detected in circuit.json\nPCB style overview written to /home/gustavo/Documents/UTFPR/oficinas/integration-workshop-3/eletronics/perfboard/tscircuit/checks/check-pcb-style/pcb.svg"
+        },
+        "shorts": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No shorts detected in circuit.json"
+        }
+      }
+    },
+    {
+      "board": "usb-prototype",
+      "compiledSha256": "3e35121ab886830cfd179847383d7a48db48bf883dfc2341cd149d60c35f61f6",
+      "stages": {
+        "source": [],
+        "pin_specification": [],
+        "netlist": [],
+        "schematic_placement": [],
+        "placement": [],
+        "assembly": {
+          "board": "usb-prototype",
+          "parts": 8,
+          "nets": 7,
+          "wires": 13,
+          "status": "pass"
+        },
+        "pcb-style": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No PCB style issues detected in circuit.json\nPCB style overview written to /home/gustavo/Documents/UTFPR/oficinas/integration-workshop-3/eletronics/perfboard/tscircuit/checks/check-pcb-style/pcb.svg"
+        },
+        "shorts": {
+          "exitCode": 0,
+          "signal": null,
+          "output": "No shorts detected in circuit.json"
+        }
+      }
+    }
+  ],
+  "assembly": {
+    "results": [
+      {
+        "board": "a1",
+        "parts": 7,
+        "nets": 8,
+        "wires": 33,
+        "status": "pass"
+      },
+      {
+        "board": "a2",
+        "parts": 7,
+        "nets": 8,
+        "wires": 33,
+        "status": "pass"
+      },
+      {
+        "board": "a3",
+        "parts": 6,
+        "nets": 7,
+        "wires": 27,
+        "status": "pass"
+      },
+      {
+        "board": "b1",
+        "parts": 7,
+        "nets": 8,
+        "wires": 33,
+        "status": "pass"
+      },
+      {
+        "board": "b2",
+        "parts": 7,
+        "nets": 8,
+        "wires": 33,
+        "status": "pass"
+      },
+      {
+        "board": "b3",
+        "parts": 6,
+        "nets": 7,
+        "wires": 27,
+        "status": "pass"
+      },
+      {
+        "board": "power",
+        "parts": 64,
+        "nets": 39,
+        "wires": 167,
+        "status": "pass"
+      },
+      {
+        "board": "smart-controller",
+        "parts": 36,
+        "nets": 44,
+        "wires": 142,
+        "status": "pass"
+      },
+      {
+        "board": "smart-channel",
+        "parts": 54,
+        "nets": 41,
+        "wires": 127,
+        "status": "pass"
+      },
+      {
+        "board": "matrix",
+        "parts": 55,
+        "nets": 78,
+        "wires": 187,
+        "status": "pass"
+      },
+      {
+        "board": "integration",
+        "parts": 9,
+        "nets": 8,
+        "wires": 19,
+        "status": "pass"
+      },
+      {
+        "board": "continuity-fixture",
+        "parts": 23,
+        "nets": 17,
+        "wires": 48,
+        "status": "pass"
+      },
+      {
+        "board": "usb-prototype",
+        "parts": 8,
+        "nets": 7,
+        "wires": 13,
+        "status": "pass"
+      }
+    ],
+    "cables": 22,
+    "negativeControls": 2,
+    "staticCalculations": {
+      "p3CurrentMax_mA": 10.625795576522599,
+      "p1p2OffLeakageMax_uA": 3.651515151515151,
+      "overvoltageTripMax_V": 5.227528628628628
+    },
+    "scope": "Compiled connectivity/pad transforms and prescribed insulated hand wiring; no physical bench measurements."
+  }
+}

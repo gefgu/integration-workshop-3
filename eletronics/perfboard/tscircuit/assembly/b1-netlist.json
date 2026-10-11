@@ -1,0 +1,87 @@
+[
+  {
+    "name": "NODE11",
+    "pins": [
+      "J_NODE11.1",
+      "J_NODE11.2",
+      "J_NODE11.3",
+      "J_NODE11.4",
+      "J_NODE11.5",
+      "J_NODE11.6",
+      "J_NODE.1",
+      "J_SMART.1"
+    ],
+    "bare": true
+  },
+  {
+    "name": "NODE12",
+    "pins": [
+      "J_NODE12.1",
+      "J_NODE12.2",
+      "J_NODE12.3",
+      "J_NODE12.4",
+      "J_NODE12.5",
+      "J_NODE12.6",
+      "J_NODE.3",
+      "J_SMART.3"
+    ],
+    "bare": true
+  },
+  {
+    "name": "NODE13",
+    "pins": [
+      "J_NODE13.1",
+      "J_NODE13.2",
+      "J_NODE13.3",
+      "J_NODE13.4",
+      "J_NODE13.5",
+      "J_NODE13.6",
+      "J_NODE.5",
+      "J_SMART.5"
+    ],
+    "bare": true
+  },
+  {
+    "name": "NODE14",
+    "pins": [
+      "J_NODE14.1",
+      "J_NODE14.2",
+      "J_NODE14.3",
+      "J_NODE14.4",
+      "J_NODE14.5",
+      "J_NODE14.6",
+      "J_NODE.7"
+    ],
+    "bare": true
+  },
+  {
+    "name": "SCL_3",
+    "pins": [
+      "J_SERVICE.1",
+      "J_SMART.9"
+    ]
+  },
+  {
+    "name": "SDA_3",
+    "pins": [
+      "J_SERVICE.2",
+      "J_SMART.7"
+    ]
+  },
+  {
+    "name": "GND",
+    "pins": [
+      "J_SERVICE.3",
+      "J_SMART.2",
+      "J_SMART.4",
+      "J_SMART.6"
+    ]
+  },
+  {
+    "name": "3V3_SYS",
+    "pins": [
+      "J_SERVICE.4",
+      "J_SMART.8"
+    ]
+  }
+]

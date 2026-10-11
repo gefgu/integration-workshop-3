@@ -1,0 +1,657 @@
+[
+  {
+    "name": "USB_3V3",
+    "pins": [
+      "U_ESP1.1",
+      "J_FIXTURE.1",
+      "J_PROTOTYPE.2",
+      "U_WATCH.16",
+      "R_WATCH.1",
+      "C_WATCH_VCC.1",
+      "U_USB_POR.2",
+      "R_USB_POR.1",
+      "U_DIAG.8",
+      "C_DIAG_VCC.1",
+      "U_FAULT_RETURN.5",
+      "C_RETURN.1",
+      "R_KADC_LED.1"
+    ]
+  },
+  {
+    "name": "GND",
+    "pins": [
+      "U_ESP1.14",
+      "U_ESP1.20",
+      "U_ESP1.26",
+      "J_POWER.2",
+      "J_FIXTURE.2",
+      "J_PROTOTYPE.3",
+      "U_WATCH.1",
+      "U_WATCH.8",
+      "U_WATCH.9",
+      "U_WATCH.10",
+      "U_WATCH.11",
+      "C_WATCH_VCC.2",
+      "R_HEART.2",
+      "U_USB_POR.3",
+      "Q_BUF.1",
+      "R_ALIVE_OFF.2",
+      "U_ADDR.8",
+      "C_ADDR.2",
+      "U_BUFFER.9",
+      "U_BUFFER.12",
+      "U_BUFFER.7",
+      "C_BUFFER.2",
+      "R_XBAR_DAT_OFF.2",
+      "R_XBAR_CLK_OFF.2",
+      "R_XBAR_LATCH_OFF.2",
+      "R_STB_A_IN_OFF.2",
+      "R_STB_B_IN_OFF.2",
+      "R_RST_RELEASE_OFF.2",
+      "Q_RESET_ALIVE.1",
+      "R_STBA_OFF.2",
+      "R_STBB_OFF.2",
+      "U_MT_A.16",
+      "U_MT_A.20",
+      "U_MT_A.35",
+      "C_MT0.2",
+      "C_MT0_BULK.2",
+      "U_MT_B.16",
+      "U_MT_B.20",
+      "U_MT_B.35",
+      "C_MT1.2",
+      "C_MT1_BULK.2",
+      "R_DISCHARGE.2",
+      "R_CAL.2",
+      "R_DIAG_BOTTOM.2",
+      "C_DIAG.2",
+      "U_DIAG.4",
+      "U_DIAG.5",
+      "C_DIAG_VCC.2",
+      "U_FAULT_RETURN.1",
+      "U_FAULT_RETURN.3",
+      "C_RETURN.2",
+      "K_ADC.2"
+    ]
+  },
+  {
+    "name": "XBAR_DAT",
+    "pins": [
+      "U_ESP1.21",
+      "U_ADDR.14",
+      "R_XBAR_DAT_OFF.1"
+    ]
+  },
+  {
+    "name": "XBAR_CLK",
+    "pins": [
+      "U_ESP1.28",
+      "U_ADDR.11",
+      "R_XBAR_CLK_OFF.1"
+    ]
+  },
+  {
+    "name": "XBAR_LATCH",
+    "pins": [
+      "U_ESP1.22",
+      "U_ADDR.12",
+      "R_XBAR_LATCH_OFF.1"
+    ]
+  },
+  {
+    "name": "STB_A_IN",
+    "pins": [
+      "U_ESP1.27",
+      "U_BUFFER.2",
+      "R_STB_A_IN_OFF.1"
+    ]
+  },
+  {
+    "name": "STB_B_IN",
+    "pins": [
+      "U_ESP1.25",
+      "U_BUFFER.5",
+      "R_STB_B_IN_OFF.1"
+    ]
+  },
+  {
+    "name": "RST_RELEASE",
+    "pins": [
+      "U_ESP1.11",
+      "R_RST_RELEASE_OFF.1",
+      "Q_RESET_RELEASE.2"
+    ]
+  },
+  {
+    "name": "HEARTBEAT",
+    "pins": [
+      "U_ESP1.8",
+      "U_WATCH.2",
+      "R_HEART.1"
+    ]
+  },
+  {
+    "name": "EDU_PWR_EN",
+    "pins": [
+      "U_ESP1.7",
+      "J_POWER.5",
+      "J_PROTOTYPE.4"
+    ]
+  },
+  {
+    "name": "FAULT_USB",
+    "pins": [
+      "U_ESP1.6",
+      "U_FAULT_RETURN.4"
+    ]
+  },
+  {
+    "name": "EDU_FAULT_RESET",
+    "pins": [
+      "U_ESP1.30",
+      "J_POWER.7"
+    ]
+  },
+  {
+    "name": "CURRENT_USB",
+    "pins": [
+      "U_ESP1.5",
+      "K_ADC.4"
+    ]
+  },
+  {
+    "name": "DIAG_ADC",
+    "pins": [
+      "U_ESP1.3",
+      "U_DIAG.1",
+      "U_DIAG.2"
+    ]
+  },
+  {
+    "name": "FIX_SDA",
+    "pins": [
+      "U_ESP1.32",
+      "J_FIXTURE.3"
+    ]
+  },
+  {
+    "name": "FIX_SCL",
+    "pins": [
+      "U_ESP1.31",
+      "J_FIXTURE.4"
+    ]
+  },
+  {
+    "name": "FIX_STIM",
+    "pins": [
+      "U_ESP1.9",
+      "J_FIXTURE.5"
+    ]
+  },
+  {
+    "name": "USB_5V",
+    "pins": [
+      "U_ESP1.19",
+      "J_PROTOTYPE.1"
+    ]
+  },
+  {
+    "name": "5V_EDU",
+    "pins": [
+      "J_POWER.1",
+      "U_MT_A.37",
+      "U_MT_B.37"
+    ]
+  },
+  {
+    "name": "3V3_SYS",
+    "pins": [
+      "J_POWER.3",
+      "D_SOURCE.1"
+    ]
+  },
+  {
+    "name": "5V_SYS",
+    "pins": [
+      "J_POWER.4",
+      "R_BUF_OE.1",
+      "U_ADDR.16",
+      "U_ADDR.10",
+      "C_ADDR.1",
+      "U_BUFFER.10",
+      "U_BUFFER.13",
+      "U_BUFFER.14",
+      "C_BUFFER.1",
+      "U_MT_A.36",
+      "U_MT_B.36"
+    ]
+  },
+  {
+    "name": "EDU_FAULT",
+    "pins": [
+      "J_POWER.6",
+      "U_FAULT_RETURN.2"
+    ]
+  },
+  {
+    "name": "CURRENT_SENSE",
+    "pins": [
+      "J_POWER.8",
+      "K_ADC.3"
+    ]
+  },
+  {
+    "name": "ALIVE",
+    "pins": [
+      "J_POWER.9",
+      "U_WATCH.13",
+      "Q_BUF.2",
+      "R_ALIVE_OFF.1",
+      "Q_RESET_ALIVE.2"
+    ]
+  },
+  {
+    "name": "12V_SYS",
+    "pins": [
+      "J_POWER.10",
+      "R_RESET_ON.1",
+      "U_MT_A.40",
+      "C_MT0.1",
+      "C_MT0_BULK.1",
+      "U_MT_B.40",
+      "C_MT1.1",
+      "C_MT1_BULK.1"
+    ]
+  },
+  {
+    "name": "USB_RESET_N",
+    "pins": [
+      "U_WATCH.3",
+      "U_USB_POR.1",
+      "R_USB_POR.2"
+    ]
+  },
+  {
+    "name": "WATCH_CX",
+    "pins": [
+      "U_WATCH.14",
+      "C_WATCH.2"
+    ]
+  },
+  {
+    "name": "WATCH_RX",
+    "pins": [
+      "U_WATCH.15",
+      "R_WATCH.2",
+      "C_WATCH.1"
+    ]
+  },
+  {
+    "name": "XBAR_OE_N",
+    "pins": [
+      "R_BUF_OE.2",
+      "Q_BUF.3",
+      "U_ADDR.13",
+      "U_BUFFER.1",
+      "U_BUFFER.4"
+    ]
+  },
+  {
+    "name": "AX0",
+    "pins": [
+      "U_ADDR.15",
+      "U_MT_A.5",
+      "U_MT_B.5"
+    ]
+  },
+  {
+    "name": "AX1",
+    "pins": [
+      "U_ADDR.1",
+      "U_MT_A.22",
+      "U_MT_B.22"
+    ]
+  },
+  {
+    "name": "AX2",
+    "pins": [
+      "U_ADDR.2",
+      "U_MT_A.23",
+      "U_MT_B.23"
+    ]
+  },
+  {
+    "name": "AX3",
+    "pins": [
+      "U_ADDR.3",
+      "U_MT_A.4",
+      "U_MT_B.4"
+    ]
+  },
+  {
+    "name": "AY0",
+    "pins": [
+      "U_ADDR.4",
+      "U_MT_A.24",
+      "U_MT_B.24"
+    ]
+  },
+  {
+    "name": "AY1",
+    "pins": [
+      "U_ADDR.5",
+      "U_MT_A.25",
+      "U_MT_B.25"
+    ]
+  },
+  {
+    "name": "AY2",
+    "pins": [
+      "U_ADDR.6",
+      "U_MT_A.2",
+      "U_MT_B.2"
+    ]
+  },
+  {
+    "name": "XBAR_DATA",
+    "pins": [
+      "U_ADDR.7",
+      "U_MT_A.38",
+      "U_MT_B.38"
+    ]
+  },
+  {
+    "name": "STROBE_A",
+    "pins": [
+      "U_BUFFER.3",
+      "R_STBA_OFF.1",
+      "U_MT_A.18"
+    ]
+  },
+  {
+    "name": "STROBE_B",
+    "pins": [
+      "U_BUFFER.6",
+      "R_STBB_OFF.1",
+      "U_MT_B.18"
+    ]
+  },
+  {
+    "name": "XBAR_RESET",
+    "pins": [
+      "R_RESET_ON.2",
+      "Q_RESET_RELEASE.3",
+      "U_MT_A.3",
+      "U_MT_B.3"
+    ]
+  },
+  {
+    "name": "RESET_MID",
+    "pins": [
+      "Q_RESET_RELEASE.1",
+      "Q_RESET_ALIVE.3"
+    ]
+  },
+  {
+    "name": "NODE00",
+    "pins": [
+      "U_MT_A.33",
+      "J_A1.1"
+    ]
+  },
+  {
+    "name": "NODE01",
+    "pins": [
+      "U_MT_A.32",
+      "J_A1.3"
+    ]
+  },
+  {
+    "name": "NODE02",
+    "pins": [
+      "U_MT_A.31",
+      "J_A1.5"
+    ]
+  },
+  {
+    "name": "NODE03",
+    "pins": [
+      "U_MT_A.30",
+      "J_A1.7"
+    ]
+  },
+  {
+    "name": "NODE04",
+    "pins": [
+      "U_MT_A.29",
+      "J_A2.1"
+    ]
+  },
+  {
+    "name": "NODE05",
+    "pins": [
+      "U_MT_A.28",
+      "J_A2.3"
+    ]
+  },
+  {
+    "name": "NODE06",
+    "pins": [
+      "U_MT_A.8",
+      "J_A2.5"
+    ]
+  },
+  {
+    "name": "NODE07",
+    "pins": [
+      "U_MT_A.9",
+      "J_A2.7"
+    ]
+  },
+  {
+    "name": "NODE08",
+    "pins": [
+      "U_MT_A.10",
+      "J_A3.1"
+    ]
+  },
+  {
+    "name": "NODE09",
+    "pins": [
+      "U_MT_A.11",
+      "J_A3.3"
+    ]
+  },
+  {
+    "name": "NODE10",
+    "pins": [
+      "U_MT_A.12",
+      "J_A3.5"
+    ]
+  },
+  {
+    "name": "BUS2",
+    "pins": [
+      "U_MT_A.39",
+      "U_MT_B.39"
+    ]
+  },
+  {
+    "name": "BUS3",
+    "pins": [
+      "U_MT_A.1",
+      "U_MT_B.1"
+    ]
+  },
+  {
+    "name": "BUS4",
+    "pins": [
+      "U_MT_A.21",
+      "U_MT_B.21"
+    ]
+  },
+  {
+    "name": "BUS5",
+    "pins": [
+      "U_MT_A.19",
+      "U_MT_B.19"
+    ]
+  },
+  {
+    "name": "BUS6",
+    "pins": [
+      "U_MT_A.17",
+      "U_MT_B.17"
+    ]
+  },
+  {
+    "name": "BUS7",
+    "pins": [
+      "U_MT_A.15",
+      "U_MT_B.15"
+    ]
+  },
+  {
+    "name": "SOURCE_HI",
+    "pins": [
+      "U_MT_A.13",
+      "R_SOURCE_HI.2"
+    ]
+  },
+  {
+    "name": "SOURCE_LO",
+    "pins": [
+      "U_MT_A.27",
+      "R_SOURCE_LO.2"
+    ]
+  },
+  {
+    "name": "DIAG_NODE",
+    "pins": [
+      "U_MT_A.26",
+      "R_DIAG_TOP.1"
+    ]
+  },
+  {
+    "name": "DISCHARGE",
+    "pins": [
+      "U_MT_A.6",
+      "R_DISCHARGE.1"
+    ]
+  },
+  {
+    "name": "CAL_LOAD",
+    "pins": [
+      "U_MT_A.7",
+      "R_CAL.1"
+    ]
+  },
+  {
+    "name": "NODE11",
+    "pins": [
+      "U_MT_B.33",
+      "J_B1.1"
+    ]
+  },
+  {
+    "name": "NODE12",
+    "pins": [
+      "U_MT_B.32",
+      "J_B1.3"
+    ]
+  },
+  {
+    "name": "NODE13",
+    "pins": [
+      "U_MT_B.31",
+      "J_B1.5"
+    ]
+  },
+  {
+    "name": "NODE14",
+    "pins": [
+      "U_MT_B.30",
+      "J_B1.7"
+    ]
+  },
+  {
+    "name": "NODE15",
+    "pins": [
+      "U_MT_B.29",
+      "J_B2.1"
+    ]
+  },
+  {
+    "name": "NODE16",
+    "pins": [
+      "U_MT_B.28",
+      "J_B2.3"
+    ]
+  },
+  {
+    "name": "NODE17",
+    "pins": [
+      "U_MT_B.8",
+      "J_B2.5"
+    ]
+  },
+  {
+    "name": "NODE18",
+    "pins": [
+      "U_MT_B.9",
+      "J_B2.7"
+    ]
+  },
+  {
+    "name": "NODE19",
+    "pins": [
+      "U_MT_B.10",
+      "J_B3.1"
+    ]
+  },
+  {
+    "name": "NODE20",
+    "pins": [
+      "U_MT_B.11",
+      "J_B3.3"
+    ]
+  },
+  {
+    "name": "NODE21",
+    "pins": [
+      "U_MT_B.12",
+      "J_B3.5"
+    ]
+  },
+  {
+    "name": "SOURCE_FEED",
+    "pins": [
+      "D_SOURCE.2",
+      "R_SOURCE_HI.1",
+      "R_SOURCE_LO.1"
+    ]
+  },
+  {
+    "name": "DIAG_DIV",
+    "pins": [
+      "R_DIAG_TOP.2",
+      "R_DIAG_BOTTOM.1",
+      "C_DIAG.1",
+      "U_DIAG.3"
+    ]
+  },
+  {
+    "name": "DIAG_UNUSED",
+    "pins": [
+      "U_DIAG.7",
+      "U_DIAG.6"
+    ]
+  },
+  {
+    "name": "K_ADC_LED",
+    "pins": [
+      "K_ADC.1",
+      "R_KADC_LED.2"
+    ]
+  }
+]

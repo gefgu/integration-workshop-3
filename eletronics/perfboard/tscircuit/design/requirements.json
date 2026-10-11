@@ -1,0 +1,350 @@
+{
+  "source": "collection://3df9670c-116e-80cc-9ba8-000b4d2c2ec4",
+  "readDate": "2026-10-10",
+  "rows": [
+    {
+      "Req. ID": "EFR1",
+      "Requirement": "The system must use a programmable electronic switching matrix, implemented with integrated circuits, to connect workbench nodes to internal buses.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3df9670c116e80d4999cf3c73b667a89"
+    },
+    {
+      "Req. ID": "EFR10",
+      "Requirement": "The power supply system must include reverse-polarity protection.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3df9670c116e802e9f05cafadab84ed9"
+    },
+    {
+      "Req. ID": "EFR11",
+      "Requirement": "The component representing the battery must act only as a visual representation of the power source, while the actual electrical power must be provided internally by the workbench.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3df9670c116e80569ee7fc4d7a4cad6f"
+    },
+    {
+      "Req. ID": "EFR12",
+      "Requirement": "The configurable resistor piece shall allow resistance selection through three independently rotating discs on its top face, each with four detented positions showing a color band from the standard resistor color code; discs 1 and 2 shall select the first and second significant digits, and disc 3 the decimal multiplier, with the system reading each disc position independently.",
+      "Type": "Functional",
+      "Optional (20%)": "__YES__",
+      "Optional if someone withdraws (36%)": "__YES__",
+      "url": "https://app.notion.com/3df9670c116e80769fc8cb036e29fb8b"
+    },
+    {
+      "Req. ID": "EFR13",
+      "Requirement": "The buttons used in the circuits must operate as real electrical switches after the circuit is routed.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3df9670c116e80cda8ade4ca867ffdbd"
+    },
+    {
+      "Req. ID": "EFR14",
+      "Requirement": "The capacitors used in the circuits must exhibit real electrical charging and discharging behavior.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3df9670c116e809694efdd804c112d4c"
+    },
+    {
+      "Req. ID": "EFR16",
+      "Requirement": "Each smart component shall connect to the workbench through exactly three educational-circuit contacts and separate service contacts for power, ground, and a communication bus. The service contacts shall allow the external controller to configure the component, update its OLED screen, and read its measurements without using the educational-circuit contacts for service communication.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3df9670c116e8041a4e4f36e54546b39"
+    },
+    {
+      "Req. ID": "EFR17",
+      "Requirement": "The bench must include an NFC reader that identifies the student from a physical tag issued to them before starting a session.",
+      "Type": "Functional",
+      "Optional (20%)": "__YES__",
+      "Optional if someone withdraws (36%)": "__YES__",
+      "url": "https://app.notion.com/3df9670c116e80078a1cf3d0e19f3536"
+    },
+    {
+      "Req. ID": "EFR18",
+      "Requirement": "When energization is requested, the system shall keep the educational rail disabled unless graph validation, routing feasibility, component recognition, and predicted-current validation all pass, and every smart component on the board has acknowledged its current configuration.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3e09670c116e81d8b6e8f0e006140028"
+    },
+    {
+      "Req. ID": "EFR19",
+      "Requirement": "The educational circuit power supply shall provide a regulated 5 V DC output (5 V ±5%) before it is provided to the switching matrix.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3e19670c116e81b6a812f5b74add6d8d"
+    },
+    {
+      "Req. ID": "EFR21",
+      "Requirement": "The internal connection routing must be executed by a network of CH446Q 16×8 Analog Switch Matrix ICs.",
+      "Type": "Non-Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3e19670c116e81f6aaebf62b327afb74"
+    },
+    {
+      "Req. ID": "EFR22",
+      "Requirement": "The microcontroller must configure the CH446Q matrices using a high-speed serial interface (SPI-compatible, using DAT, CLK, and STB/CS lines) to ensure the entire circuit topology is updated within 50 ms when a new state is validated.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__YES__",
+      "url": "https://app.notion.com/3e19670c116e819eaac1c0d9342c5922"
+    },
+    {
+      "Req. ID": "EFR23",
+      "Requirement": "The educational rail shall include an MF-R050 resettable PTC fuse as backup protection against sustained fault current. The PTC shall not be the primary timed short-circuit shutdown mechanism.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3e19670c116e813ea1f5eb98d9d4fa03"
+    },
+    {
+      "Req. ID": "EFR24",
+      "Requirement": "The system must be powered by an external 12V/2A DC power supply via a 5.5×2.1mm DC barrel jack located on the rear or side panel of the main board unit.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3e19670c116e8166b0d9e630378c6be7"
+    },
+    {
+      "Req. ID": "EFR25",
+      "Requirement": "The internal circuitry must step down the 12V input to logic level (5V) using switching buck converters.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3e19670c116e81eaaa4ad40332c046d3"
+    },
+    {
+      "Req. ID": "EFR27",
+      "Requirement": "The ground contact of the service rail of the smart components shall be the same as the educational workbench ground.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3e49670c116e80e18d99d898b0c0260c"
+    },
+    {
+      "Req. ID": "EFR28",
+      "Requirement": "A smart component's P1–P3 shall be high-impedance (leakage ≤ 10 µA) whenever the educational rail is off, the component has no valid configuration, or it loses service-bus communication.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3e89670c116e80118a99d3a250137cc5"
+    },
+    {
+      "Req. ID": "EFR29",
+      "Requirement": "The service connection at each valid smart component position shall be individually addressable, so the controller can configure the capsule at a given position without knowing which physical capsule it is.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3e89670c116e81c8817cf1d5ba2853c9"
+    },
+    {
+      "Req. ID": "EFR3",
+      "Requirement": "The system must allow multiple nodes to be connected to the same internal bus, forming the same electrical network.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3df9670c116e80319ce2ea8c5b76ecbc"
+    },
+    {
+      "Req. ID": "EFR30",
+      "Requirement": "Every smart component output that can source current into the educational circuit shall be limited in hardware to ≤12 mA into a short to GND or 5 V, independent of firmware.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3e89670c116e81cc8f85fca00516f167"
+    },
+    {
+      "Req. ID": "EFR31",
+      "Requirement": "The system shall provide exactly 3 smart components.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3df9670c116e804b85a6fa50e8e7f494"
+    },
+    {
+      "Req. ID": "EFR31.1",
+      "Requirement": "Each smart component shall have an OLED screen that shows the name of its assigned behavior in pt-BR (e.g., \"Porta E\", \"Voltímetro\") and, in meter modes, the live reading.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3e89670c116e8106b828ceef6ada1ad9"
+    },
+    {
+      "Req. ID": "EFR31.2",
+      "Requirement": "The board shall provide 3 fixed smart component positions on row 1, at columns 1–3, 5–7, and 9–11, each with service power, ground, and communication contacts.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3e89670c116e819e8ee6d8825f5fc3ba"
+    },
+    {
+      "Req. ID": "EFR31.3",
+      "Requirement": "The three smart capsules shall be interchangeable. The system shall identify each placed capsule by its board position, not by which physical capsule it is.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3e89670c116e81a4af9ac138b26a1a6b"
+    },
+    {
+      "Req. ID": "EFR31.4",
+      "Requirement": "When a smart capsule is moved to a position assigned a different behavior, the system shall change the capsule's behavior to the one assigned to its new position.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__YES__",
+      "url": "https://app.notion.com/3e89670c116e81e2a0dcf254f616a4a8"
+    },
+    {
+      "Req. ID": "EFR31.5",
+      "Requirement": "Within 1 s of a smart capsule being detected at a new position, the system shall configure it with that position's behavior, and its OLED shall show the new behavior.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__YES__",
+      "url": "https://app.notion.com/3e89670c116e8158a762c45a50c663b9"
+    },
+    {
+      "Req. ID": "EFR31.6",
+      "Requirement": "If a smart capsule is moved while the educational rail is on, the system shall disable the rail before reconfiguring the capsule.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__YES__",
+      "url": "https://app.notion.com/3e89670c116e81bf8ee0f495603277ec"
+    },
+    {
+      "Req. ID": "EFR32",
+      "Requirement": "In any behavior that drives P3, with a load of up to 2 mA, a smart component's output low shall be at or below 0.5 V and output high at or above 3.5 V, measured at the board node connected to P3.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3e89670c116e81969b40f0207aff05c9"
+    },
+    {
+      "Req. ID": "EFR32.1",
+      "Requirement": "A smart component assigned as AND, OR, NAND, NOR, or XOR shall use P1 and P2 as inputs and P3 as its physical output. It shall recognize an input at or below 1 V as low and at or above 3 V as high; while an input is between 1 V and 3 V, P3 shall keep its last value. Each input shall have an internal pull-down so that an unconnected input reads low. An input counts as stable once it has been unchanged for 20 ms, and P3 shall update within 100 ms after both inputs become stable. Its output voltage levels shall meet EFR32.",
+      "Type": "Functional",
+      "Optional (20%)": "__YES__",
+      "Optional if someone withdraws (36%)": "__YES__",
+      "url": "https://app.notion.com/3df9670c116e802e806bff8a94b6262e"
+    },
+    {
+      "Req. ID": "EFR32.2",
+      "Requirement": "A smart component assigned as a pulse source shall generate a physical repeating signal on P3. The lesson shall be able to set its frequency from 0.5 to 10 Hz and its duty cycle, defined as the percentage of each period that P3 is high, from 25% to 75%. Measured frequency shall be within ±5% of the setting and duty cycle within ±5 percentage points. Its output voltage levels shall meet EFR32.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3e59670c116e8121b480e06dc6383eae"
+    },
+    {
+      "Req. ID": "EFR32.3",
+      "Requirement": "In voltage mode, a smart component shall measure V(P1) − V(P2) while connected across two circuit nodes, without making a conductive connection between those nodes. It shall display a signed reading from −5.25 to +5.25 V, have an input impedance of at least 1 MΩ, and have error no greater than ±(0.10 V + 5% of the absolute reading). P3 shall be unused. The displayed reading shall update at least once every 100 ms while the circuit is energized.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__YES__",
+      "url": "https://app.notion.com/3e59670c116e81999695fe37067892c0"
+    },
+    {
+      "Req. ID": "EFR32.4",
+      "Requirement": "In current mode, a smart component shall connect in series between P1 and P2 and display signed current from −10 to +10 mA, with error no greater than ±(0.20 mA + 5% of the absolute reading). P3 shall be unused. The displayed reading shall update at least once every 100 ms while the circuit is energized. The internal series path between P1 and P2 shall open whenever the educational rail is off (see EFR28).",
+      "Type": "Functional",
+      "Optional (20%)": "__YES__",
+      "Optional if someone withdraws (36%)": "__YES__",
+      "url": "https://app.notion.com/3e89670c116e8144a329d8e01bea4b16"
+    },
+    {
+      "Req. ID": "EFR32.5",
+      "Requirement": "A smart component assigned as a one-bit memory shall use P1 as Set, P2 as Reset, and P3 as its stored-bit output. It shall treat an input at or below 1 V as low and at or above 3 V as high. A high Set input shall store 1; a high Reset input shall store 0; when both inputs are low, the previous value shall be retained. If both inputs are high, Reset shall take priority. The stored bit shall start at 0 when the lesson begins or the capsule is assigned this mode, shall be retained while the educational rail remains on, and shall reset to 0 when the rail turns off. P3 shall meet the output voltage limits in EFR32, and the OLED shall show the stored state.",
+      "Type": "Functional",
+      "Optional (20%)": "__YES__",
+      "Optional if someone withdraws (36%)": "__YES__",
+      "url": "https://app.notion.com/3e89670c116e810eb146fae72a63c48e"
+    },
+    {
+      "Req. ID": "EFR4",
+      "Requirement": "The system must remove the previous programmable connections before configuring a new circuit.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3df9670c116e80c5a7fcc11d7179d9b7"
+    },
+    {
+      "Req. ID": "EFR5",
+      "Requirement": "The system must receive a validated netlist and use it to automatically configure the electrical connections of the circuit.",
+      "Type": "Non-Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3df9670c116e8083bbd5daa374a53b76"
+    },
+    {
+      "Req. ID": "EFR6",
+      "Requirement": "The programmable connections must remain open during system startup or reset.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3df9670c116e8086bc33cf17750d5919"
+    },
+    {
+      "Req. ID": "EFR7",
+      "Requirement": "The system must fully configure all connections before enabling the circuit power supply.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3df9670c116e80b0a7bae34dc4f32c4a"
+    },
+    {
+      "Req. ID": "EFR9",
+      "Requirement": "The educational 5 V rail shall include an independent hardware protection circuit that detects overcurrent or a short circuit and limits or disconnects the rail within 1ms. This protection shall operate while the main controller is reset, unresponsive, or disconnected.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3df9670c116e80b1a8d8f29a7c2f352f"
+    },
+    {
+      "Req. ID": "ENFR1",
+      "Requirement": "The power supply used internally by the switching circuits must remain inaccessible to the student.",
+      "Type": "Non-Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3df9670c116e80408195c7b38e9a4b97"
+    },
+    {
+      "Req. ID": "ENFR2",
+      "Requirement": "All student-accessible electrical contacts shall remain at 0–5.25 V DC relative to circuit ground during normal operation and defined single-fault tests.",
+      "Type": "Non-Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3df9670c116e8026b8c4e986e1304e61"
+    },
+    {
+      "Req. ID": "ENFR4",
+      "Requirement": "During all defined operating states, each power rail shall remain within the voltage range required by every connected component’s datasheet.",
+      "Type": "Non-Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3df9670c116e80c5841eec233ab0c2d3"
+    },
+    {
+      "Req. ID": "ENFR6",
+      "Requirement": "The routing validator shall reject any circuit whose worst-case predicted continuous current exceeds 12 mA through any closed CH446Q switch, 80 mA as the sum of absolute currents through all closed switches in any one CH446Q IC, or a lower limit of any rail or connected component. These operating limits shall remain below the CH446Q datasheet absolute maxima of 15 mA per switch and 100 mA per IC. For this validation, a smart component driving P3 shall be modeled as a 5 V source behind its series current-limiting resistor, and a smart component in current mode shall be modeled as a series element between P1 and P2.",
+      "Type": "Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3df9670c116e803ab2c2eaf2024be7ce"
+    },
+    {
+      "Req. ID": "ENFR8",
+      "Requirement": "The student circuit power supply must always start in the OFF state after workbench power-up, reset, or loss of communication with the controller.",
+      "Type": "Non-Functional",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__",
+      "url": "https://app.notion.com/3df9670c116e80f39cabec3404896f9a"
+    }
+  ]
+}

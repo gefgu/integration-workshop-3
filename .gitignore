@@ -52,3 +52,16 @@ firmware/esp32/test-logs/
 eletronics/perfboard/.render/
 eletronics/perfboard/tscircuit/.tscircuit/
 !eletronics/guidelines.md
+
+# Reviewed perfboard documentation
+!AGENTS.md
+!CLAUDE.md
+!eletronics/guidelines.md
+!eletronics/perfboard/tscircuit/AGENTS.md
+!eletronics/perfboard/tscircuit/CLAUDE.md
+eletronics/perfboard/tscircuit/dist/
+eletronics/perfboard/tscircuit/checks/
+
+# Assembly app: generated frontend and private local build records
+eletronics/perfboard/tscircuit/app/dist/
+eletronics/perfboard/tscircuit/app/data/

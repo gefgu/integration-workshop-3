@@ -1,0 +1,119 @@
+{
+  "revision": "28f53bb4ec73863f",
+  "instances": [
+    {
+      "board": "a1",
+      "quantity": 1
+    },
+    {
+      "board": "a2",
+      "quantity": 1
+    },
+    {
+      "board": "a3",
+      "quantity": 1
+    },
+    {
+      "board": "b1",
+      "quantity": 1
+    },
+    {
+      "board": "b2",
+      "quantity": 1
+    },
+    {
+      "board": "b3",
+      "quantity": 1
+    },
+    {
+      "board": "power",
+      "quantity": 1
+    },
+    {
+      "board": "smart-controller",
+      "quantity": 1
+    },
+    {
+      "board": "smart-channel",
+      "quantity": 6
+    },
+    {
+      "board": "matrix",
+      "quantity": 1
+    },
+    {
+      "board": "integration",
+      "quantity": 1
+    },
+    {
+      "board": "continuity-fixture",
+      "quantity": 1
+    },
+    {
+      "board": "usb-prototype",
+      "quantity": 1
+    }
+  ],
+  "constructionCheckpoints": [
+    "CP00",
+    "CP01",
+    "CP02",
+    "CP03",
+    "CP04",
+    "CP05",
+    "CP06",
+    "CP07",
+    "CP08",
+    "CP09",
+    "CP10",
+    "CP11",
+    "CP12",
+    "CP13",
+    "CP14",
+    "CP15",
+    "CP16",
+    "CP17",
+    "CP18",
+    "CP19",
+    "CP20",
+    "CP21",
+    "CP22",
+    "CP23",
+    "CP24",
+    "CP25",
+    "CP26",
+    "CP27",
+    "CP28",
+    "CP29",
+    "CP30",
+    "CP31",
+    "CP32",
+    "CP33",
+    "CP34",
+    "CP35",
+    "CP36"
+  ],
+  "externalParts": [
+    {
+      "part": "Pololu D24V22F5",
+      "quantity": 1
+    },
+    {
+      "part": "Pololu D24V22F3",
+      "quantity": 1
+    },
+    {
+      "part": "Adafruit PN532 364",
+      "quantity": 1
+    },
+    {
+      "part": "SSD1306 OLED I2C 3.3-V carrier 0x3C",
+      "quantity": 3
+    },
+    {
+      "part": "smart capsule contact/service carrier",
+      "quantity": 3
+    }
+  ],
+  "scope": "External parts and adapters installed at their assigned checkpoint; physical fit and measurements remain pending."
+}

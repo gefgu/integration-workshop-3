@@ -1,0 +1,152 @@
+[
+  {
+    "name": "USB_3V3",
+    "pins": [
+      "J_CONTROL.1",
+      "R_SDA.1",
+      "R_SCL.1",
+      "D_STIM.1",
+      "R_LED.1",
+      "U_BUFFER.8",
+      "C_BUFFER.1",
+      "U_ADC.8",
+      "C_ADC.1"
+    ]
+  },
+  {
+    "name": "GND",
+    "pins": [
+      "J_CONTROL.2",
+      "JP_RETURN.2",
+      "R_OFF.2",
+      "Q_STIM.1",
+      "R_A_BOTTOM.2",
+      "C_A.2",
+      "R_B_BOTTOM.2",
+      "C_B.2",
+      "U_BUFFER.4",
+      "C_BUFFER.2",
+      "U_ADC.1",
+      "U_ADC.3",
+      "U_ADC.6",
+      "U_ADC.7",
+      "C_ADC.2"
+    ]
+  },
+  {
+    "name": "FIX_SDA",
+    "pins": [
+      "J_CONTROL.3",
+      "R_SDA.2",
+      "U_ADC.9"
+    ]
+  },
+  {
+    "name": "FIX_SCL",
+    "pins": [
+      "J_CONTROL.4",
+      "R_SCL.2",
+      "U_ADC.10"
+    ]
+  },
+  {
+    "name": "FIX_STIM",
+    "pins": [
+      "J_CONTROL.5",
+      "R_OFF.1",
+      "Q_STIM.2"
+    ]
+  },
+  {
+    "name": "TEST_A",
+    "pins": [
+      "J_TEST.1",
+      "K_STIM.4",
+      "R_A_TOP.1"
+    ]
+  },
+  {
+    "name": "TEST_B",
+    "pins": [
+      "J_TEST.2",
+      "JP_RETURN.1",
+      "R_B_TOP.1"
+    ]
+  },
+  {
+    "name": "STIM_FEED",
+    "pins": [
+      "D_STIM.2",
+      "R_STIM.1"
+    ]
+  },
+  {
+    "name": "STIM_LIMIT",
+    "pins": [
+      "R_STIM.2",
+      "K_STIM.3"
+    ]
+  },
+  {
+    "name": "STIM_LED_A",
+    "pins": [
+      "K_STIM.1",
+      "R_LED.2"
+    ]
+  },
+  {
+    "name": "STIM_LED_K",
+    "pins": [
+      "K_STIM.2",
+      "Q_STIM.3"
+    ]
+  },
+  {
+    "name": "DIV_A",
+    "pins": [
+      "R_A_TOP.2",
+      "R_A_BOTTOM.1",
+      "C_A.1",
+      "U_BUFFER.3"
+    ]
+  },
+  {
+    "name": "BUF_A",
+    "pins": [
+      "R_ADC_A.1",
+      "U_BUFFER.1",
+      "U_BUFFER.2"
+    ]
+  },
+  {
+    "name": "ADC_A",
+    "pins": [
+      "R_ADC_A.2",
+      "U_ADC.4"
+    ]
+  },
+  {
+    "name": "DIV_B",
+    "pins": [
+      "R_B_TOP.2",
+      "R_B_BOTTOM.1",
+      "C_B.1",
+      "U_BUFFER.5"
+    ]
+  },
+  {
+    "name": "BUF_B",
+    "pins": [
+      "R_ADC_B.1",
+      "U_BUFFER.6",
+      "U_BUFFER.7"
+    ]
+  },
+  {
+    "name": "ADC_B",
+    "pins": [
+      "R_ADC_B.2",
+      "U_ADC.5"
+    ]
+  }
+]
