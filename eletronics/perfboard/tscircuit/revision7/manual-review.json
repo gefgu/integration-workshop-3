@@ -1,0 +1,46 @@
+{
+  "revision": "r7-testable-perfboards",
+  "items": [
+    {
+      "description": "All component/socket/adapter envelopes measured and checked against placement",
+      "status": "pending",
+      "evidence": null
+    },
+    {
+      "description": "Both converter bodies allocated with access to adjustment and terminals",
+      "status": "pending",
+      "evidence": null
+    },
+    {
+      "description": "Contact-frame stiffness and pogo compression verified",
+      "status": "pending",
+      "evidence": null
+    },
+    {
+      "description": "USB connector, all harness plugs and cable exits accessible",
+      "status": "pending",
+      "evidence": null
+    },
+    {
+      "description": "Sockets extractable and every solder endpoint reachable at its checkpoint",
+      "status": "pending",
+      "evidence": null
+    },
+    {
+      "description": "Insulated crossings and bare column straps inspected without ambiguous joints",
+      "status": "pending",
+      "evidence": null
+    },
+    {
+      "description": "Tray removable without desoldering and without transmitting insertion forces",
+      "status": "pending",
+      "evidence": null
+    },
+    {
+      "description": "External smart PCB envelopes and mounting allocated",
+      "status": "pending",
+      "evidence": null
+    }
+  ],
+  "note": "Set pass/fail only after physical review; retain evidence."
+}

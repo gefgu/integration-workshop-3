@@ -1,0 +1,8741 @@
+{
+  "id": "smart-reference",
+  "width": 70,
+  "height": 100,
+  "cols": 26,
+  "rows": 38,
+  "stages": [
+    [
+      "CP04–05",
+      "Display and OFF identity"
+    ],
+    [
+      "CP01–03",
+      "Precision continuity, fixed jumper"
+    ],
+    [
+      "CP06–08",
+      "Voltage calibration and signed voltage"
+    ],
+    [
+      "CP15–23",
+      "Bounded outputs, pulse/gates/memory and current"
+    ]
+  ],
+  "parts": [
+    {
+      "ref": "U_ESP2",
+      "label": "ESP32 DevKitC-38 — smart controller",
+      "kind": "chip",
+      "pins": [
+        {
+          "number": 1,
+          "label": "3V3",
+          "hole": [
+            5,
+            7
+          ]
+        },
+        {
+          "number": 2,
+          "label": "EN",
+          "hole": [
+            5,
+            8
+          ]
+        },
+        {
+          "number": 3,
+          "label": "IO36",
+          "hole": [
+            5,
+            9
+          ]
+        },
+        {
+          "number": 4,
+          "label": "IO39",
+          "hole": [
+            5,
+            10
+          ]
+        },
+        {
+          "number": 5,
+          "label": "IO34",
+          "hole": [
+            5,
+            11
+          ]
+        },
+        {
+          "number": 6,
+          "label": "IO35",
+          "hole": [
+            5,
+            12
+          ]
+        },
+        {
+          "number": 7,
+          "label": "IO32",
+          "hole": [
+            5,
+            13
+          ]
+        },
+        {
+          "number": 8,
+          "label": "IO33",
+          "hole": [
+            5,
+            14
+          ]
+        },
+        {
+          "number": 9,
+          "label": "IO25",
+          "hole": [
+            5,
+            15
+          ]
+        },
+        {
+          "number": 10,
+          "label": "IO26",
+          "hole": [
+            5,
+            16
+          ]
+        },
+        {
+          "number": 11,
+          "label": "IO27",
+          "hole": [
+            5,
+            17
+          ]
+        },
+        {
+          "number": 12,
+          "label": "IO14",
+          "hole": [
+            5,
+            18
+          ]
+        },
+        {
+          "number": 13,
+          "label": "IO12",
+          "hole": [
+            5,
+            19
+          ]
+        },
+        {
+          "number": 14,
+          "label": "GND_L",
+          "hole": [
+            5,
+            20
+          ]
+        },
+        {
+          "number": 15,
+          "label": "IO13",
+          "hole": [
+            5,
+            21
+          ]
+        },
+        {
+          "number": 16,
+          "label": "SD2",
+          "hole": [
+            5,
+            22
+          ]
+        },
+        {
+          "number": 17,
+          "label": "SD3",
+          "hole": [
+            5,
+            23
+          ]
+        },
+        {
+          "number": 18,
+          "label": "CMD",
+          "hole": [
+            5,
+            24
+          ]
+        },
+        {
+          "number": 19,
+          "label": "V5",
+          "hole": [
+            5,
+            25
+          ]
+        },
+        {
+          "number": 20,
+          "label": "GND_R1",
+          "hole": [
+            15,
+            7
+          ]
+        },
+        {
+          "number": 21,
+          "label": "IO23",
+          "hole": [
+            15,
+            8
+          ]
+        },
+        {
+          "number": 22,
+          "label": "IO22",
+          "hole": [
+            15,
+            9
+          ]
+        },
+        {
+          "number": 23,
+          "label": "TX0",
+          "hole": [
+            15,
+            10
+          ]
+        },
+        {
+          "number": 24,
+          "label": "RX0",
+          "hole": [
+            15,
+            11
+          ]
+        },
+        {
+          "number": 25,
+          "label": "IO21",
+          "hole": [
+            15,
+            12
+          ]
+        },
+        {
+          "number": 26,
+          "label": "GND_R2",
+          "hole": [
+            15,
+            13
+          ]
+        },
+        {
+          "number": 27,
+          "label": "IO19",
+          "hole": [
+            15,
+            14
+          ]
+        },
+        {
+          "number": 28,
+          "label": "IO18",
+          "hole": [
+            15,
+            15
+          ]
+        },
+        {
+          "number": 29,
+          "label": "IO5",
+          "hole": [
+            15,
+            16
+          ]
+        },
+        {
+          "number": 30,
+          "label": "IO17",
+          "hole": [
+            15,
+            17
+          ]
+        },
+        {
+          "number": 31,
+          "label": "IO16",
+          "hole": [
+            15,
+            18
+          ]
+        },
+        {
+          "number": 32,
+          "label": "IO4",
+          "hole": [
+            15,
+            19
+          ]
+        },
+        {
+          "number": 33,
+          "label": "IO0",
+          "hole": [
+            15,
+            20
+          ]
+        },
+        {
+          "number": 34,
+          "label": "IO2",
+          "hole": [
+            15,
+            21
+          ]
+        },
+        {
+          "number": 35,
+          "label": "IO15",
+          "hole": [
+            15,
+            22
+          ]
+        },
+        {
+          "number": 36,
+          "label": "SD1",
+          "hole": [
+            15,
+            23
+          ]
+        },
+        {
+          "number": 37,
+          "label": "SD0",
+          "hole": [
+            15,
+            24
+          ]
+        },
+        {
+          "number": 38,
+          "label": "CLK",
+          "hole": [
+            15,
+            25
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "body": "esp",
+      "mpn": "ESP32-DevKitC V4 ESP32-WROOM-32E",
+      "provisional": true,
+      "signals": {
+        "3V3": "USB_SMART_3V3",
+        "GND_L": "GND",
+        "GND_R1": "GND",
+        "GND_R2": "GND",
+        "IO25": "SR_SRCLK",
+        "IO26": "SR_RCLK",
+        "IO27": "SR_SER",
+        "IO13": "SMART_HEARTBEAT",
+        "IO22": "SCL_A",
+        "IO4": "SDA_0",
+        "IO21": "SDA_1",
+        "IO19": "SDA_2",
+        "IO18": "SDA_3",
+        "IO17": "SDA_4",
+        "IO16": "SDA_5",
+        "IO32": "MUX_A_A",
+        "IO33": "MUX_A_B",
+        "IO14": "MUX_B_A",
+        "IO23": "MUX_B_B",
+        "IO36": "JOY_X",
+        "IO39": "JOY_Y",
+        "IO35": "JOY_SW_N"
+      },
+      "phase": 15,
+      "sch": [
+        0,
+        -2.4
+      ],
+      "bounds": {
+        "xmin": 4.4,
+        "xmax": 15.6,
+        "ymin": 4.7,
+        "ymax": 27.3
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "U_ESP2",
+      "function": "Controller",
+      "sourceBoard": "smart-core",
+      "sourceRef": "U_ESP2"
+    },
+    {
+      "ref": "J_POWER",
+      "label": "J_POWER",
+      "kind": "header",
+      "pins": [
+        {
+          "number": 1,
+          "label": "5V_SYS",
+          "hole": [
+            6,
+            33
+          ]
+        },
+        {
+          "number": 2,
+          "label": "GND",
+          "hole": [
+            6,
+            34
+          ]
+        },
+        {
+          "number": 3,
+          "label": "5V_EDU",
+          "hole": [
+            7,
+            33
+          ]
+        },
+        {
+          "number": 4,
+          "label": "GND",
+          "hole": [
+            7,
+            34
+          ]
+        },
+        {
+          "number": 5,
+          "label": "3V3_SYS",
+          "hole": [
+            8,
+            33
+          ]
+        },
+        {
+          "number": 6,
+          "label": "GND",
+          "hole": [
+            8,
+            34
+          ]
+        },
+        {
+          "number": 7,
+          "label": "EDU_ON",
+          "hole": [
+            9,
+            33
+          ]
+        },
+        {
+          "number": 8,
+          "label": "NC8",
+          "hole": [
+            9,
+            34
+          ]
+        },
+        {
+          "number": 9,
+          "label": "NC9",
+          "hole": [
+            10,
+            33
+          ]
+        },
+        {
+          "number": 10,
+          "label": "NC10",
+          "hole": [
+            10,
+            34
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "body": "idc",
+      "mpn": "61201021621",
+      "phase": 15,
+      "sch": [
+        6,
+        -2.4
+      ],
+      "signals": {
+        "1": "5V_SYS",
+        "2": "GND",
+        "3": "5V_EDU",
+        "4": "GND",
+        "5": "3V3_SYS",
+        "6": "GND",
+        "7": "EDU_ON"
+      },
+      "bounds": {
+        "xmin": 3.5,
+        "xmax": 12.5,
+        "ymin": 31.4,
+        "ymax": 35.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "J_POWER",
+      "function": "Controller",
+      "sourceBoard": "smart-core",
+      "sourceRef": "J_POWER"
+    },
+    {
+      "ref": "R_SCL_A",
+      "label": "4.7k",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            19,
+            6
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            23,
+            6
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "4.7k",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-4K7",
+      "phase": 15,
+      "sch": [
+        12,
+        -2.4
+      ],
+      "signals": {
+        "1": "USB_SMART_3V3",
+        "2": "SCL_A"
+      },
+      "bounds": {
+        "xmin": 18.4,
+        "xmax": 23.6,
+        "ymin": 5.4,
+        "ymax": 6.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_SCL_A",
+      "function": "Controller",
+      "sourceBoard": "smart-core",
+      "sourceRef": "R_SCL_A"
+    },
+    {
+      "ref": "R_SDA_0",
+      "label": "4.7k",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            19,
+            9
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            23,
+            9
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "4.7k",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-4K7",
+      "phase": 15,
+      "sch": [
+        0,
+        -5.6000000000000005
+      ],
+      "signals": {
+        "1": "USB_SMART_3V3",
+        "2": "SDA_0"
+      },
+      "bounds": {
+        "xmin": 18.4,
+        "xmax": 23.6,
+        "ymin": 8.4,
+        "ymax": 9.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_SDA_0",
+      "function": "Controller",
+      "sourceBoard": "smart-core",
+      "sourceRef": "R_SDA_0"
+    },
+    {
+      "ref": "R_SDA_1",
+      "label": "4.7k",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            19,
+            13
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            23,
+            13
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "4.7k",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-4K7",
+      "phase": 15,
+      "sch": [
+        6,
+        -5.6000000000000005
+      ],
+      "signals": {
+        "1": "USB_SMART_3V3",
+        "2": "SDA_1"
+      },
+      "bounds": {
+        "xmin": 18.4,
+        "xmax": 23.6,
+        "ymin": 12.4,
+        "ymax": 13.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_SDA_1",
+      "function": "Controller",
+      "sourceBoard": "smart-core",
+      "sourceRef": "R_SDA_1"
+    },
+    {
+      "ref": "R_SDA_2",
+      "label": "4.7k",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            19,
+            16
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            23,
+            16
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "4.7k",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-4K7",
+      "phase": 15,
+      "sch": [
+        12,
+        -5.6000000000000005
+      ],
+      "signals": {
+        "1": "USB_SMART_3V3",
+        "2": "SDA_2"
+      },
+      "bounds": {
+        "xmin": 18.4,
+        "xmax": 23.6,
+        "ymin": 15.4,
+        "ymax": 16.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_SDA_2",
+      "function": "Controller",
+      "sourceBoard": "smart-core",
+      "sourceRef": "R_SDA_2"
+    },
+    {
+      "ref": "R_SDA_3",
+      "label": "4.7k",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            19,
+            20
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            23,
+            20
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "4.7k",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-4K7",
+      "phase": 15,
+      "sch": [
+        0,
+        -7.300000000000001
+      ],
+      "signals": {
+        "1": "USB_SMART_3V3",
+        "2": "SDA_3"
+      },
+      "bounds": {
+        "xmin": 18.4,
+        "xmax": 23.6,
+        "ymin": 19.4,
+        "ymax": 20.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_SDA_3",
+      "function": "Controller",
+      "sourceBoard": "smart-core",
+      "sourceRef": "R_SDA_3"
+    },
+    {
+      "ref": "R_SDA_4",
+      "label": "4.7k",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            19,
+            23
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            23,
+            23
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "4.7k",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-4K7",
+      "phase": 15,
+      "sch": [
+        6,
+        -7.300000000000001
+      ],
+      "signals": {
+        "1": "USB_SMART_3V3",
+        "2": "SDA_4"
+      },
+      "bounds": {
+        "xmin": 18.4,
+        "xmax": 23.6,
+        "ymin": 22.4,
+        "ymax": 23.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_SDA_4",
+      "function": "Controller",
+      "sourceBoard": "smart-core",
+      "sourceRef": "R_SDA_4"
+    },
+    {
+      "ref": "R_SDA_5",
+      "label": "4.7k",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            19,
+            27
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            23,
+            27
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "4.7k",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-4K7",
+      "phase": 15,
+      "sch": [
+        12,
+        -7.300000000000001
+      ],
+      "signals": {
+        "1": "USB_SMART_3V3",
+        "2": "SDA_5"
+      },
+      "bounds": {
+        "xmin": 18.4,
+        "xmax": 23.6,
+        "ymin": 26.4,
+        "ymax": 27.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_SDA_5",
+      "function": "Controller",
+      "sourceBoard": "smart-core",
+      "sourceRef": "R_SDA_5"
+    },
+    {
+      "ref": "J_JOYSTICK",
+      "label": "Joystick powered at 3.3V",
+      "kind": "header",
+      "mpn": "TSW-110-07-G-S",
+      "body": "header",
+      "side": "top",
+      "section": "Circuit",
+      "phase": 32,
+      "signals": {
+        "1": "USB_SMART_3V3",
+        "2": "GND",
+        "3": "JOY_X",
+        "4": "JOY_Y",
+        "5": "JOY_SW_N"
+      },
+      "pins": [
+        {
+          "number": 1,
+          "label": "USB_SMART_3V3",
+          "hole": [
+            19,
+            30
+          ]
+        },
+        {
+          "number": 2,
+          "label": "GND",
+          "hole": [
+            20,
+            30
+          ]
+        },
+        {
+          "number": 3,
+          "label": "JOY_X",
+          "hole": [
+            21,
+            30
+          ]
+        },
+        {
+          "number": 4,
+          "label": "JOY_Y",
+          "hole": [
+            22,
+            30
+          ]
+        },
+        {
+          "number": 5,
+          "label": "JOY_SW_N",
+          "hole": [
+            23,
+            30
+          ]
+        }
+      ],
+      "socket": false,
+      "provisional": true,
+      "function": "Circuit",
+      "locked": false,
+      "bounds": {
+        "xmin": 18.4,
+        "xmax": 23.6,
+        "ymin": 29.4,
+        "ymax": 30.6
+      },
+      "sch": [
+        6,
+        -9
+      ],
+      "origin": "J_JOYSTICK",
+      "sourceBoard": "smart-core",
+      "sourceRef": "J_JOYSTICK"
+    },
+    {
+      "ref": "R_JOY_SW",
+      "label": "R_JOY_SW: 10kΩ",
+      "kind": "resistor",
+      "mpn": "MFR-25FBF52-10k",
+      "body": "passive",
+      "side": "top",
+      "section": "Circuit",
+      "phase": 32,
+      "signals": {
+        "A": "USB_SMART_3V3",
+        "B": "JOY_SW_N"
+      },
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            16,
+            34
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            20,
+            34
+          ]
+        }
+      ],
+      "socket": false,
+      "value": "10k",
+      "function": "Circuit",
+      "locked": false,
+      "bounds": {
+        "xmin": 15.4,
+        "xmax": 20.6,
+        "ymin": 33.4,
+        "ymax": 34.6
+      },
+      "sch": [
+        0,
+        -9
+      ],
+      "origin": "R_JOY_SW",
+      "sourceBoard": "smart-core",
+      "sourceRef": "R_JOY_SW"
+    },
+    {
+      "ref": "U_WATCH",
+      "label": "SN74HC123N",
+      "kind": "chip",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A1_N",
+          "hole": [
+            5,
+            4
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B1",
+          "hole": [
+            5,
+            5
+          ]
+        },
+        {
+          "number": 3,
+          "label": "CLR1_N",
+          "hole": [
+            5,
+            6
+          ]
+        },
+        {
+          "number": 4,
+          "label": "Q1_N",
+          "hole": [
+            5,
+            7
+          ]
+        },
+        {
+          "number": 5,
+          "label": "Q2",
+          "hole": [
+            5,
+            8
+          ]
+        },
+        {
+          "number": 6,
+          "label": "CX2",
+          "hole": [
+            5,
+            9
+          ]
+        },
+        {
+          "number": 7,
+          "label": "RXCX2",
+          "hole": [
+            5,
+            10
+          ]
+        },
+        {
+          "number": 8,
+          "label": "GND",
+          "hole": [
+            5,
+            11
+          ]
+        },
+        {
+          "number": 9,
+          "label": "A2_N",
+          "hole": [
+            8,
+            11
+          ]
+        },
+        {
+          "number": 10,
+          "label": "B2",
+          "hole": [
+            8,
+            10
+          ]
+        },
+        {
+          "number": 11,
+          "label": "CLR2_N",
+          "hole": [
+            8,
+            9
+          ]
+        },
+        {
+          "number": 12,
+          "label": "Q2_N",
+          "hole": [
+            8,
+            8
+          ]
+        },
+        {
+          "number": 13,
+          "label": "Q1",
+          "hole": [
+            8,
+            7
+          ]
+        },
+        {
+          "number": 14,
+          "label": "CX1",
+          "hole": [
+            8,
+            6
+          ]
+        },
+        {
+          "number": 15,
+          "label": "RXCX1",
+          "hole": [
+            8,
+            5
+          ]
+        },
+        {
+          "number": 16,
+          "label": "VCC",
+          "hole": [
+            8,
+            4
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "body": "dip",
+      "mpn": "SN74HC123N",
+      "phase": 15,
+      "sch": [
+        0,
+        -1.3
+      ],
+      "signals": {
+        "A1_N": "GND",
+        "B1": "SMART_HEARTBEAT",
+        "CLR1_N": "SMART_USB_RESET_N",
+        "Q1": "SMART_ALIVE",
+        "CX1": "SMART_WATCH_CX",
+        "RXCX1": "SMART_WATCH_RX",
+        "VCC": "USB_SMART_3V3",
+        "GND": "GND",
+        "A2_N": "GND",
+        "B2": "GND",
+        "CLR2_N": "GND"
+      },
+      "bounds": {
+        "xmin": 4.35,
+        "xmax": 8.65,
+        "ymin": 3.35,
+        "ymax": 11.65
+      },
+      "locked": false,
+      "socket": true,
+      "origin": "U_WATCH",
+      "function": "Watchdog",
+      "sourceBoard": "smart-safety",
+      "sourceRef": "U_WATCH"
+    },
+    {
+      "ref": "R_WATCH",
+      "label": "549kΩ ±1% watchdog timing — qualify before permanent installation",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            11,
+            4
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            15,
+            4
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "549k",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-549K",
+      "phase": 15,
+      "sch": [
+        6,
+        -3.8
+      ],
+      "signals": {
+        "1": "USB_SMART_3V3",
+        "2": "SMART_WATCH_RX"
+      },
+      "bounds": {
+        "xmin": 10.4,
+        "xmax": 15.6,
+        "ymin": 3.4,
+        "ymax": 4.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_WATCH",
+      "tolerance": 0.01,
+      "function": "Watchdog",
+      "sourceBoard": "smart-safety",
+      "sourceRef": "R_WATCH"
+    },
+    {
+      "ref": "C_WATCH",
+      "label": "1µF ±5% film timing capacitor; not unverified inventory electrolytic",
+      "kind": "capacitor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            18,
+            4
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            19,
+            4
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "1uF",
+      "body": "passive",
+      "mpn": "1uF film timing capacitor verified dimensions pending",
+      "pitch": 1,
+      "labels": [
+        "A",
+        "B"
+      ],
+      "phase": 15,
+      "sch": [
+        12,
+        -3.8
+      ],
+      "signals": {
+        "1": "SMART_WATCH_RX",
+        "2": "SMART_WATCH_CX"
+      },
+      "bounds": {
+        "xmin": 17.4,
+        "xmax": 19.6,
+        "ymin": 3.4,
+        "ymax": 4.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "C_WATCH",
+      "tolerance": 0.05,
+      "provisional": true,
+      "function": "Watchdog",
+      "sourceBoard": "smart-safety",
+      "sourceRef": "C_WATCH"
+    },
+    {
+      "ref": "C_WATCH_VCC",
+      "label": "100nF",
+      "kind": "capacitor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            22,
+            5
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            23,
+            5
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "100nF",
+      "body": "passive",
+      "mpn": "C315C104K5R5TA",
+      "pitch": 1,
+      "labels": [
+        "A",
+        "B"
+      ],
+      "phase": 15,
+      "sch": [
+        0,
+        -5.9
+      ],
+      "signals": {
+        "1": "USB_SMART_3V3",
+        "2": "GND"
+      },
+      "bounds": {
+        "xmin": 21.4,
+        "xmax": 23.6,
+        "ymin": 4.4,
+        "ymax": 5.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "C_WATCH_VCC",
+      "function": "Watchdog",
+      "sourceBoard": "smart-safety",
+      "sourceRef": "C_WATCH_VCC"
+    },
+    {
+      "ref": "R_HEART",
+      "label": "100k",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            11,
+            7
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            15,
+            7
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "100k",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-100K",
+      "phase": 15,
+      "sch": [
+        6,
+        -5.9
+      ],
+      "signals": {
+        "1": "SMART_HEARTBEAT",
+        "2": "GND"
+      },
+      "bounds": {
+        "xmin": 10.4,
+        "xmax": 15.6,
+        "ymin": 6.4,
+        "ymax": 7.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_HEART",
+      "function": "Watchdog",
+      "sourceBoard": "smart-safety",
+      "sourceRef": "R_HEART"
+    },
+    {
+      "ref": "U_USB_POR",
+      "label": "MCP130-300DI/TO",
+      "kind": "chip",
+      "pins": [
+        {
+          "number": 1,
+          "label": "RESET_N",
+          "hole": [
+            18,
+            8
+          ]
+        },
+        {
+          "number": 2,
+          "label": "VDD",
+          "hole": [
+            18,
+            9
+          ]
+        },
+        {
+          "number": 3,
+          "label": "GND",
+          "hole": [
+            21,
+            8
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "body": "transistor",
+      "mpn": "MCP130-300DI/TO",
+      "phase": 15,
+      "sch": [
+        12,
+        -13.5
+      ],
+      "signals": {
+        "GND": "GND",
+        "RESET_N": "SMART_USB_RESET_N",
+        "VDD": "USB_SMART_3V3"
+      },
+      "bounds": {
+        "xmin": 17.4,
+        "xmax": 21.6,
+        "ymin": 7.4,
+        "ymax": 9.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "U_USB_POR",
+      "function": "Watchdog",
+      "sourceBoard": "smart-safety",
+      "sourceRef": "U_USB_POR"
+    },
+    {
+      "ref": "R_USB_POR",
+      "label": "10k",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            11,
+            10
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            15,
+            10
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "10k",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-10K",
+      "phase": 15,
+      "sch": [
+        12,
+        -5.9
+      ],
+      "signals": {
+        "1": "USB_SMART_3V3",
+        "2": "SMART_USB_RESET_N"
+      },
+      "bounds": {
+        "xmin": 10.4,
+        "xmax": 15.6,
+        "ymin": 9.4,
+        "ymax": 10.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_USB_POR",
+      "function": "Watchdog",
+      "sourceBoard": "smart-safety",
+      "sourceRef": "R_USB_POR"
+    },
+    {
+      "ref": "R_OE",
+      "label": "10k",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            18,
+            12
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            22,
+            12
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "10k",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-10K",
+      "phase": 15,
+      "sch": [
+        0,
+        -7.6000000000000005
+      ],
+      "signals": {
+        "1": "5V_SYS",
+        "2": "SR_OE_N"
+      },
+      "bounds": {
+        "xmin": 17.4,
+        "xmax": 22.6,
+        "ymin": 11.4,
+        "ymax": 12.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_OE",
+      "function": "Watchdog",
+      "sourceBoard": "smart-safety",
+      "sourceRef": "R_OE"
+    },
+    {
+      "ref": "Q_ALIVE",
+      "label": "2N7000",
+      "kind": "chip",
+      "pins": [
+        {
+          "number": 1,
+          "label": "S",
+          "hole": [
+            11,
+            13
+          ]
+        },
+        {
+          "number": 2,
+          "label": "G",
+          "hole": [
+            12,
+            13
+          ]
+        },
+        {
+          "number": 3,
+          "label": "D",
+          "hole": [
+            13,
+            13
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "body": "transistor",
+      "mpn": "2N7000",
+      "phase": 15,
+      "sch": [
+        6,
+        -7.6000000000000005
+      ],
+      "signals": {
+        "S": "OE_MID",
+        "G": "SMART_ALIVE",
+        "D": "SR_OE_N"
+      },
+      "bounds": {
+        "xmin": 10.4,
+        "xmax": 13.6,
+        "ymin": 12.4,
+        "ymax": 13.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "Q_ALIVE",
+      "function": "Watchdog",
+      "sourceBoard": "smart-safety",
+      "sourceRef": "Q_ALIVE"
+    },
+    {
+      "ref": "Q_RAIL",
+      "label": "2N7000",
+      "kind": "chip",
+      "pins": [
+        {
+          "number": 1,
+          "label": "S",
+          "hole": [
+            4,
+            14
+          ]
+        },
+        {
+          "number": 2,
+          "label": "G",
+          "hole": [
+            5,
+            14
+          ]
+        },
+        {
+          "number": 3,
+          "label": "D",
+          "hole": [
+            6,
+            14
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "body": "transistor",
+      "mpn": "2N7000",
+      "phase": 15,
+      "sch": [
+        12,
+        -7.6000000000000005
+      ],
+      "signals": {
+        "S": "GND",
+        "G": "EDU_ON",
+        "D": "OE_MID"
+      },
+      "bounds": {
+        "xmin": 3.4,
+        "xmax": 6.6,
+        "ymin": 13.4,
+        "ymax": 14.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "Q_RAIL",
+      "function": "Watchdog",
+      "sourceBoard": "smart-safety",
+      "sourceRef": "Q_RAIL"
+    },
+    {
+      "ref": "R_ALIVE_OFF",
+      "label": "100k",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            16,
+            15
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            20,
+            15
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "100k",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-100K",
+      "phase": 15,
+      "sch": [
+        0,
+        -10.100000000000001
+      ],
+      "signals": {
+        "1": "SMART_ALIVE",
+        "2": "GND"
+      },
+      "bounds": {
+        "xmin": 15.4,
+        "xmax": 20.6,
+        "ymin": 14.4,
+        "ymax": 15.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_ALIVE_OFF",
+      "function": "Watchdog",
+      "sourceBoard": "smart-safety",
+      "sourceRef": "R_ALIVE_OFF"
+    },
+    {
+      "ref": "R_RAIL_OFF",
+      "label": "100k",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            9,
+            16
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            13,
+            16
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "100k",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-100K",
+      "phase": 15,
+      "sch": [
+        6,
+        -10.100000000000001
+      ],
+      "signals": {
+        "1": "EDU_ON",
+        "2": "GND"
+      },
+      "bounds": {
+        "xmin": 8.4,
+        "xmax": 13.6,
+        "ymin": 15.4,
+        "ymax": 16.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_RAIL_OFF",
+      "function": "Watchdog",
+      "sourceBoard": "smart-safety",
+      "sourceRef": "R_RAIL_OFF"
+    },
+    {
+      "ref": "U_SR0",
+      "label": "SN74HCT595N",
+      "kind": "chip",
+      "pins": [
+        {
+          "number": 1,
+          "label": "QB",
+          "hole": [
+            16,
+            18
+          ]
+        },
+        {
+          "number": 2,
+          "label": "QC",
+          "hole": [
+            16,
+            19
+          ]
+        },
+        {
+          "number": 3,
+          "label": "QD",
+          "hole": [
+            16,
+            20
+          ]
+        },
+        {
+          "number": 4,
+          "label": "QE",
+          "hole": [
+            16,
+            21
+          ]
+        },
+        {
+          "number": 5,
+          "label": "QF",
+          "hole": [
+            16,
+            22
+          ]
+        },
+        {
+          "number": 6,
+          "label": "QG",
+          "hole": [
+            16,
+            23
+          ]
+        },
+        {
+          "number": 7,
+          "label": "QH",
+          "hole": [
+            16,
+            24
+          ]
+        },
+        {
+          "number": 8,
+          "label": "GND",
+          "hole": [
+            16,
+            25
+          ]
+        },
+        {
+          "number": 9,
+          "label": "QH_SER",
+          "hole": [
+            19,
+            25
+          ]
+        },
+        {
+          "number": 10,
+          "label": "MR_N",
+          "hole": [
+            19,
+            24
+          ]
+        },
+        {
+          "number": 11,
+          "label": "SHCP",
+          "hole": [
+            19,
+            23
+          ]
+        },
+        {
+          "number": 12,
+          "label": "STCP",
+          "hole": [
+            19,
+            22
+          ]
+        },
+        {
+          "number": 13,
+          "label": "OE_N",
+          "hole": [
+            19,
+            21
+          ]
+        },
+        {
+          "number": 14,
+          "label": "DS",
+          "hole": [
+            19,
+            20
+          ]
+        },
+        {
+          "number": 15,
+          "label": "QA",
+          "hole": [
+            19,
+            19
+          ]
+        },
+        {
+          "number": 16,
+          "label": "VCC",
+          "hole": [
+            19,
+            18
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "body": "dip",
+      "mpn": "SN74HCT595N",
+      "phase": 15,
+      "sch": [
+        6,
+        -1.3
+      ],
+      "signals": {
+        "VCC": "5V_SYS",
+        "GND": "GND",
+        "MR_N": "5V_SYS",
+        "OE_N": "SR_OE_N",
+        "SHCP": "SR_SRCLK",
+        "STCP": "SR_RCLK",
+        "DS": "SR_SER",
+        "QH_SER": "SR_CHAIN_1",
+        "QA": "RELAY_0",
+        "QB": "RELAY_1",
+        "QC": "RELAY_2",
+        "QD": "RELAY_3",
+        "QE": "RELAY_4",
+        "QF": "RELAY_5",
+        "QG": "RELAY_6",
+        "QH": "RELAY_7"
+      },
+      "bounds": {
+        "xmin": 15.35,
+        "xmax": 19.65,
+        "ymin": 17.35,
+        "ymax": 25.65
+      },
+      "locked": false,
+      "socket": true,
+      "origin": "U_SR0",
+      "function": "Registers",
+      "sourceBoard": "smart-safety",
+      "sourceRef": "U_SR0"
+    },
+    {
+      "ref": "C_SR0",
+      "label": "100nF",
+      "kind": "capacitor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            4,
+            17
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            5,
+            17
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "100nF",
+      "body": "passive",
+      "mpn": "C315C104K5R5TA",
+      "pitch": 1,
+      "labels": [
+        "A",
+        "B"
+      ],
+      "phase": 15,
+      "sch": [
+        12,
+        -10.100000000000001
+      ],
+      "signals": {
+        "1": "5V_SYS",
+        "2": "GND"
+      },
+      "bounds": {
+        "xmin": 3.4,
+        "xmax": 5.6,
+        "ymin": 16.4,
+        "ymax": 17.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "C_SR0",
+      "function": "Registers",
+      "sourceBoard": "smart-safety",
+      "sourceRef": "C_SR0"
+    },
+    {
+      "ref": "U_SR1",
+      "label": "SN74HCT595N",
+      "kind": "chip",
+      "pins": [
+        {
+          "number": 1,
+          "label": "QB",
+          "hole": [
+            8,
+            19
+          ]
+        },
+        {
+          "number": 2,
+          "label": "QC",
+          "hole": [
+            8,
+            20
+          ]
+        },
+        {
+          "number": 3,
+          "label": "QD",
+          "hole": [
+            8,
+            21
+          ]
+        },
+        {
+          "number": 4,
+          "label": "QE",
+          "hole": [
+            8,
+            22
+          ]
+        },
+        {
+          "number": 5,
+          "label": "QF",
+          "hole": [
+            8,
+            23
+          ]
+        },
+        {
+          "number": 6,
+          "label": "QG",
+          "hole": [
+            8,
+            24
+          ]
+        },
+        {
+          "number": 7,
+          "label": "QH",
+          "hole": [
+            8,
+            25
+          ]
+        },
+        {
+          "number": 8,
+          "label": "GND",
+          "hole": [
+            8,
+            26
+          ]
+        },
+        {
+          "number": 9,
+          "label": "QH_SER",
+          "hole": [
+            11,
+            26
+          ]
+        },
+        {
+          "number": 10,
+          "label": "MR_N",
+          "hole": [
+            11,
+            25
+          ]
+        },
+        {
+          "number": 11,
+          "label": "SHCP",
+          "hole": [
+            11,
+            24
+          ]
+        },
+        {
+          "number": 12,
+          "label": "STCP",
+          "hole": [
+            11,
+            23
+          ]
+        },
+        {
+          "number": 13,
+          "label": "OE_N",
+          "hole": [
+            11,
+            22
+          ]
+        },
+        {
+          "number": 14,
+          "label": "DS",
+          "hole": [
+            11,
+            21
+          ]
+        },
+        {
+          "number": 15,
+          "label": "QA",
+          "hole": [
+            11,
+            20
+          ]
+        },
+        {
+          "number": 16,
+          "label": "VCC",
+          "hole": [
+            11,
+            19
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "body": "dip",
+      "mpn": "SN74HCT595N",
+      "phase": 15,
+      "sch": [
+        12,
+        -1.3
+      ],
+      "signals": {
+        "VCC": "5V_SYS",
+        "GND": "GND",
+        "MR_N": "5V_SYS",
+        "OE_N": "SR_OE_N",
+        "SHCP": "SR_SRCLK",
+        "STCP": "SR_RCLK",
+        "DS": "SR_CHAIN_1",
+        "QH_SER": "SR_CHAIN_2",
+        "QA": "RELAY_8",
+        "QB": "RELAY_9",
+        "QC": "RELAY_10",
+        "QD": "RELAY_11",
+        "QE": "RELAY_12",
+        "QF": "RELAY_13",
+        "QG": "RELAY_14",
+        "QH": "RELAY_15"
+      },
+      "bounds": {
+        "xmin": 7.35,
+        "xmax": 11.65,
+        "ymin": 18.35,
+        "ymax": 26.65
+      },
+      "locked": false,
+      "socket": true,
+      "origin": "U_SR1",
+      "function": "Registers",
+      "sourceBoard": "smart-safety",
+      "sourceRef": "U_SR1"
+    },
+    {
+      "ref": "C_SR1",
+      "label": "100nF",
+      "kind": "capacitor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            22,
+            18
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            23,
+            18
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "100nF",
+      "body": "passive",
+      "mpn": "C315C104K5R5TA",
+      "pitch": 1,
+      "labels": [
+        "A",
+        "B"
+      ],
+      "phase": 15,
+      "sch": [
+        0,
+        -11.8
+      ],
+      "signals": {
+        "1": "5V_SYS",
+        "2": "GND"
+      },
+      "bounds": {
+        "xmin": 21.4,
+        "xmax": 23.6,
+        "ymin": 17.4,
+        "ymax": 18.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "C_SR1",
+      "function": "Registers",
+      "sourceBoard": "smart-safety",
+      "sourceRef": "C_SR1"
+    },
+    {
+      "ref": "U_SR2",
+      "label": "SN74HCT595N",
+      "kind": "chip",
+      "pins": [
+        {
+          "number": 1,
+          "label": "QB",
+          "hole": [
+            14,
+            28
+          ]
+        },
+        {
+          "number": 2,
+          "label": "QC",
+          "hole": [
+            14,
+            29
+          ]
+        },
+        {
+          "number": 3,
+          "label": "QD",
+          "hole": [
+            14,
+            30
+          ]
+        },
+        {
+          "number": 4,
+          "label": "QE",
+          "hole": [
+            14,
+            31
+          ]
+        },
+        {
+          "number": 5,
+          "label": "QF",
+          "hole": [
+            14,
+            32
+          ]
+        },
+        {
+          "number": 6,
+          "label": "QG",
+          "hole": [
+            14,
+            33
+          ]
+        },
+        {
+          "number": 7,
+          "label": "QH",
+          "hole": [
+            14,
+            34
+          ]
+        },
+        {
+          "number": 8,
+          "label": "GND",
+          "hole": [
+            14,
+            35
+          ]
+        },
+        {
+          "number": 9,
+          "label": "QH_SER",
+          "hole": [
+            17,
+            35
+          ]
+        },
+        {
+          "number": 10,
+          "label": "MR_N",
+          "hole": [
+            17,
+            34
+          ]
+        },
+        {
+          "number": 11,
+          "label": "SHCP",
+          "hole": [
+            17,
+            33
+          ]
+        },
+        {
+          "number": 12,
+          "label": "STCP",
+          "hole": [
+            17,
+            32
+          ]
+        },
+        {
+          "number": 13,
+          "label": "OE_N",
+          "hole": [
+            17,
+            31
+          ]
+        },
+        {
+          "number": 14,
+          "label": "DS",
+          "hole": [
+            17,
+            30
+          ]
+        },
+        {
+          "number": 15,
+          "label": "QA",
+          "hole": [
+            17,
+            29
+          ]
+        },
+        {
+          "number": 16,
+          "label": "VCC",
+          "hole": [
+            17,
+            28
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "body": "dip",
+      "mpn": "SN74HCT595N",
+      "phase": 15,
+      "sch": [
+        0,
+        -3.8
+      ],
+      "signals": {
+        "VCC": "5V_SYS",
+        "GND": "GND",
+        "MR_N": "5V_SYS",
+        "OE_N": "SR_OE_N",
+        "SHCP": "SR_SRCLK",
+        "STCP": "SR_RCLK",
+        "DS": "SR_CHAIN_2",
+        "QH_SER": "SR_CHAIN_3",
+        "QA": "RELAY_16",
+        "QB": "RELAY_17"
+      },
+      "bounds": {
+        "xmin": 13.35,
+        "xmax": 17.65,
+        "ymin": 27.35,
+        "ymax": 35.65
+      },
+      "locked": false,
+      "socket": true,
+      "origin": "U_SR2",
+      "function": "Registers",
+      "sourceBoard": "smart-safety",
+      "sourceRef": "U_SR2"
+    },
+    {
+      "ref": "C_SR2",
+      "label": "100nF",
+      "kind": "capacitor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            4,
+            20
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            5,
+            20
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "100nF",
+      "body": "passive",
+      "mpn": "C315C104K5R5TA",
+      "pitch": 1,
+      "labels": [
+        "A",
+        "B"
+      ],
+      "phase": 15,
+      "sch": [
+        6,
+        -11.8
+      ],
+      "signals": {
+        "1": "5V_SYS",
+        "2": "GND"
+      },
+      "bounds": {
+        "xmin": 3.4,
+        "xmax": 5.6,
+        "ymin": 19.4,
+        "ymax": 20.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "C_SR2",
+      "function": "Registers",
+      "sourceBoard": "smart-safety",
+      "sourceRef": "C_SR2"
+    },
+    {
+      "ref": "R_SR_SER_OFF",
+      "label": "100k",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            4,
+            29
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            8,
+            29
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "100k",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-100K",
+      "phase": 15,
+      "sch": [
+        12,
+        -11.8
+      ],
+      "signals": {
+        "1": "SR_SER",
+        "2": "GND"
+      },
+      "bounds": {
+        "xmin": 3.4,
+        "xmax": 8.6,
+        "ymin": 28.4,
+        "ymax": 29.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_SR_SER_OFF",
+      "function": "Registers",
+      "sourceBoard": "smart-safety",
+      "sourceRef": "R_SR_SER_OFF"
+    },
+    {
+      "ref": "R_SR_SRCLK_OFF",
+      "label": "100k",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            4,
+            32
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            8,
+            32
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "100k",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-100K",
+      "phase": 15,
+      "sch": [
+        0,
+        -13.5
+      ],
+      "signals": {
+        "1": "SR_SRCLK",
+        "2": "GND"
+      },
+      "bounds": {
+        "xmin": 3.4,
+        "xmax": 8.6,
+        "ymin": 31.4,
+        "ymax": 32.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_SR_SRCLK_OFF",
+      "function": "Registers",
+      "sourceBoard": "smart-safety",
+      "sourceRef": "R_SR_SRCLK_OFF"
+    },
+    {
+      "ref": "R_SR_RCLK_OFF",
+      "label": "100k",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            4,
+            35
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            8,
+            35
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "100k",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-100K",
+      "phase": 15,
+      "sch": [
+        6,
+        -13.5
+      ],
+      "signals": {
+        "1": "SR_RCLK",
+        "2": "GND"
+      },
+      "bounds": {
+        "xmin": 3.4,
+        "xmax": 8.6,
+        "ymin": 34.4,
+        "ymax": 35.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_SR_RCLK_OFF",
+      "function": "Registers",
+      "sourceBoard": "smart-safety",
+      "sourceRef": "R_SR_RCLK_OFF"
+    },
+    {
+      "ref": "R_P0_1_TOP",
+      "label": "R_P0_1_TOP: 1MΩ",
+      "kind": "resistor",
+      "mpn": "MFR-25FBF52-1M",
+      "body": "passive",
+      "side": "top",
+      "section": "Circuit",
+      "phase": 1,
+      "signals": {
+        "A": "NODE00",
+        "B": "P0_1_DIV"
+      },
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            5,
+            4
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            9,
+            4
+          ]
+        }
+      ],
+      "socket": false,
+      "value": "1M",
+      "tolerance": 0.01,
+      "function": "Circuit",
+      "locked": false,
+      "bounds": {
+        "xmin": 4.4,
+        "xmax": 9.6,
+        "ymin": 3.4,
+        "ymax": 4.6
+      },
+      "sch": [
+        12,
+        -1.3
+      ],
+      "origin": "R_P0_1_TOP",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "R_P0_1_TOP"
+    },
+    {
+      "ref": "R_P0_1_BOTTOM",
+      "label": "R_P0_1_BOTTOM: 1MΩ",
+      "kind": "resistor",
+      "mpn": "MFR-25FBF52-1M",
+      "body": "passive",
+      "side": "top",
+      "section": "Circuit",
+      "phase": 1,
+      "signals": {
+        "A": "P0_1_DIV",
+        "B": "A_PREC_BIAS"
+      },
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            12,
+            4
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            16,
+            4
+          ]
+        }
+      ],
+      "socket": false,
+      "value": "1M",
+      "tolerance": 0.01,
+      "function": "Circuit",
+      "locked": false,
+      "bounds": {
+        "xmin": 11.4,
+        "xmax": 16.6,
+        "ymin": 3.4,
+        "ymax": 4.6
+      },
+      "sch": [
+        0,
+        -3.4
+      ],
+      "origin": "R_P0_1_BOTTOM",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "R_P0_1_BOTTOM"
+    },
+    {
+      "ref": "C_P0_1",
+      "label": "C_P0_1: 1nFΩ",
+      "kind": "capacitor",
+      "mpn": "C315C104K5R5TA",
+      "body": "passive",
+      "side": "top",
+      "section": "Circuit",
+      "phase": 1,
+      "signals": {
+        "A": "P0_1_DIV",
+        "B": "GND"
+      },
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            19,
+            4
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            20,
+            4
+          ]
+        }
+      ],
+      "socket": false,
+      "value": "1nF",
+      "function": "Circuit",
+      "locked": false,
+      "bounds": {
+        "xmin": 18.4,
+        "xmax": 20.6,
+        "ymin": 3.4,
+        "ymax": 4.6
+      },
+      "sch": [
+        6,
+        -3.4
+      ],
+      "origin": "C_P0_1",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "C_P0_1"
+    },
+    {
+      "ref": "R_P0_1_ADC",
+      "label": "R_P0_1_ADC: 1kΩ",
+      "kind": "resistor",
+      "mpn": "MFR-25FBF52-1k",
+      "body": "passive",
+      "side": "top",
+      "section": "Circuit",
+      "phase": 1,
+      "signals": {
+        "A": "P0_1_BUF",
+        "B": "P0_1_MUX"
+      },
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            4,
+            8
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            8,
+            8
+          ]
+        }
+      ],
+      "socket": false,
+      "value": "1k",
+      "function": "Circuit",
+      "locked": false,
+      "bounds": {
+        "xmin": 3.4,
+        "xmax": 8.6,
+        "ymin": 7.4,
+        "ymax": 8.6
+      },
+      "sch": [
+        12,
+        -3.4
+      ],
+      "origin": "R_P0_1_ADC",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "R_P0_1_ADC"
+    },
+    {
+      "ref": "R_P0_2_TOP",
+      "label": "R_P0_2_TOP: 1MΩ",
+      "kind": "resistor",
+      "mpn": "MFR-25FBF52-1M",
+      "body": "passive",
+      "side": "top",
+      "section": "Circuit",
+      "phase": 1,
+      "signals": {
+        "A": "NODE01",
+        "B": "P0_2_DIV"
+      },
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            11,
+            8
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            15,
+            8
+          ]
+        }
+      ],
+      "socket": false,
+      "value": "1M",
+      "tolerance": 0.01,
+      "function": "Circuit",
+      "locked": false,
+      "bounds": {
+        "xmin": 10.4,
+        "xmax": 15.6,
+        "ymin": 7.4,
+        "ymax": 8.6
+      },
+      "sch": [
+        0,
+        -5.1
+      ],
+      "origin": "R_P0_2_TOP",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "R_P0_2_TOP"
+    },
+    {
+      "ref": "R_P0_2_BOTTOM",
+      "label": "R_P0_2_BOTTOM: 1MΩ",
+      "kind": "resistor",
+      "mpn": "MFR-25FBF52-1M",
+      "body": "passive",
+      "side": "top",
+      "section": "Circuit",
+      "phase": 1,
+      "signals": {
+        "A": "P0_2_DIV",
+        "B": "A_PREC_BIAS"
+      },
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            18,
+            8
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            22,
+            8
+          ]
+        }
+      ],
+      "socket": false,
+      "value": "1M",
+      "tolerance": 0.01,
+      "function": "Circuit",
+      "locked": false,
+      "bounds": {
+        "xmin": 17.4,
+        "xmax": 22.6,
+        "ymin": 7.4,
+        "ymax": 8.6
+      },
+      "sch": [
+        6,
+        -5.1
+      ],
+      "origin": "R_P0_2_BOTTOM",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "R_P0_2_BOTTOM"
+    },
+    {
+      "ref": "C_P0_2",
+      "label": "C_P0_2: 1nFΩ",
+      "kind": "capacitor",
+      "mpn": "C315C104K5R5TA",
+      "body": "passive",
+      "side": "top",
+      "section": "Circuit",
+      "phase": 1,
+      "signals": {
+        "A": "P0_2_DIV",
+        "B": "GND"
+      },
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            4,
+            11
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            5,
+            11
+          ]
+        }
+      ],
+      "socket": false,
+      "value": "1nF",
+      "function": "Circuit",
+      "locked": false,
+      "bounds": {
+        "xmin": 3.4,
+        "xmax": 5.6,
+        "ymin": 10.4,
+        "ymax": 11.6
+      },
+      "sch": [
+        12,
+        -5.1
+      ],
+      "origin": "C_P0_2",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "C_P0_2"
+    },
+    {
+      "ref": "R_P0_2_ADC",
+      "label": "R_P0_2_ADC: 1kΩ",
+      "kind": "resistor",
+      "mpn": "MFR-25FBF52-1k",
+      "body": "passive",
+      "side": "top",
+      "section": "Circuit",
+      "phase": 1,
+      "signals": {
+        "A": "P0_2_BUF",
+        "B": "P0_2_MUX"
+      },
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            8,
+            11
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            12,
+            11
+          ]
+        }
+      ],
+      "socket": false,
+      "value": "1k",
+      "function": "Circuit",
+      "locked": false,
+      "bounds": {
+        "xmin": 7.4,
+        "xmax": 12.6,
+        "ymin": 10.4,
+        "ymax": 11.6
+      },
+      "sch": [
+        0,
+        -6.8
+      ],
+      "origin": "R_P0_2_ADC",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "R_P0_2_ADC"
+    },
+    {
+      "ref": "R_A_PREC_BIAS_TOP",
+      "label": "R_A_PREC_BIAS_TOP: 5.62kΩ",
+      "kind": "resistor",
+      "mpn": "MFR-25FBF52-5.62k",
+      "body": "passive",
+      "side": "top",
+      "section": "Circuit",
+      "phase": 1,
+      "signals": {
+        "A": "3V3_SYS",
+        "B": "A_PREC_BIAS"
+      },
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            15,
+            11
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            19,
+            11
+          ]
+        }
+      ],
+      "socket": false,
+      "value": "5.62k",
+      "tolerance": 0.01,
+      "biasGroup": "precision",
+      "function": "Circuit",
+      "locked": false,
+      "bounds": {
+        "xmin": 14.4,
+        "xmax": 19.6,
+        "ymin": 10.4,
+        "ymax": 11.6
+      },
+      "sch": [
+        6,
+        -6.8
+      ],
+      "origin": "R_A_PREC_BIAS_TOP",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "R_A_PREC_BIAS_TOP"
+    },
+    {
+      "ref": "R_A_PREC_BIAS_BOTTOM",
+      "label": "R_A_PREC_BIAS_BOTTOM: 1kΩ",
+      "kind": "resistor",
+      "mpn": "MFR-25FBF52-1k",
+      "body": "passive",
+      "side": "top",
+      "section": "Circuit",
+      "phase": 1,
+      "signals": {
+        "A": "A_PREC_BIAS",
+        "B": "GND"
+      },
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            4,
+            14
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            8,
+            14
+          ]
+        }
+      ],
+      "socket": false,
+      "value": "1k",
+      "tolerance": 0.01,
+      "biasGroup": "precision",
+      "function": "Circuit",
+      "locked": false,
+      "bounds": {
+        "xmin": 3.4,
+        "xmax": 8.6,
+        "ymin": 13.4,
+        "ymax": 14.6
+      },
+      "sch": [
+        12,
+        -6.8
+      ],
+      "origin": "R_A_PREC_BIAS_BOTTOM",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "R_A_PREC_BIAS_BOTTOM"
+    },
+    {
+      "ref": "C_A_PREC_BIAS",
+      "label": "C_A_PREC_BIAS: 100nFΩ",
+      "kind": "capacitor",
+      "mpn": "C315C104K5R5TA",
+      "body": "passive",
+      "side": "top",
+      "section": "Circuit",
+      "phase": 1,
+      "signals": {
+        "A": "A_PREC_BIAS",
+        "B": "GND"
+      },
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            22,
+            11
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            23,
+            11
+          ]
+        }
+      ],
+      "socket": false,
+      "value": "100nF",
+      "biasGroup": "precision",
+      "function": "Circuit",
+      "locked": false,
+      "bounds": {
+        "xmin": 21.4,
+        "xmax": 23.6,
+        "ymin": 10.4,
+        "ymax": 11.6
+      },
+      "sch": [
+        0,
+        -8.5
+      ],
+      "origin": "C_A_PREC_BIAS",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "C_A_PREC_BIAS"
+    },
+    {
+      "ref": "U_A_PRECISION",
+      "label": "OPA2333AID precision diagnostic/voltage buffer",
+      "kind": "chip",
+      "mpn": "OPA2333AID",
+      "body": "dip",
+      "side": "top",
+      "section": "Circuit",
+      "phase": 1,
+      "signals": {
+        "OUTA": "P0_1_BUF",
+        "INA_N": "P0_1_BUF",
+        "INA_P": "P0_1_DIV",
+        "VSS": "GND",
+        "INB_P": "P0_2_DIV",
+        "INB_N": "P0_2_BUF",
+        "OUTB": "P0_2_BUF",
+        "VDD": "3V3_SYS"
+      },
+      "pins": [
+        {
+          "number": 1,
+          "label": "OUTA",
+          "hole": [
+            11,
+            15
+          ]
+        },
+        {
+          "number": 2,
+          "label": "INA_N",
+          "hole": [
+            11,
+            16
+          ]
+        },
+        {
+          "number": 3,
+          "label": "INA_P",
+          "hole": [
+            11,
+            17
+          ]
+        },
+        {
+          "number": 4,
+          "label": "VSS",
+          "hole": [
+            11,
+            18
+          ]
+        },
+        {
+          "number": 5,
+          "label": "INB_P",
+          "hole": [
+            14,
+            18
+          ]
+        },
+        {
+          "number": 6,
+          "label": "INB_N",
+          "hole": [
+            14,
+            17
+          ]
+        },
+        {
+          "number": 7,
+          "label": "OUTB",
+          "hole": [
+            14,
+            16
+          ]
+        },
+        {
+          "number": 8,
+          "label": "VDD",
+          "hole": [
+            14,
+            15
+          ]
+        }
+      ],
+      "socket": false,
+      "adapter": "SOIC8 to numbered DIP8",
+      "function": "Circuit",
+      "locked": false,
+      "bounds": {
+        "xmin": 10.35,
+        "xmax": 14.65,
+        "ymin": 14.35,
+        "ymax": 18.65
+      },
+      "sch": [
+        6,
+        -8.5
+      ],
+      "origin": "U_A_PRECISION",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "U_A_PRECISION"
+    },
+    {
+      "ref": "C_A_PRECISION",
+      "label": "C_A_PRECISION: 100nFΩ",
+      "kind": "capacitor",
+      "mpn": "C315C104K5R5TA",
+      "body": "passive",
+      "side": "top",
+      "section": "Circuit",
+      "phase": 1,
+      "signals": {
+        "A": "3V3_SYS",
+        "B": "GND"
+      },
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            17,
+            14
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            18,
+            14
+          ]
+        }
+      ],
+      "socket": false,
+      "value": "100nF",
+      "function": "Circuit",
+      "locked": false,
+      "bounds": {
+        "xmin": 16.4,
+        "xmax": 18.6,
+        "ymin": 13.4,
+        "ymax": 14.6
+      },
+      "sch": [
+        12,
+        -8.5
+      ],
+      "origin": "C_A_PRECISION",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "C_A_PRECISION"
+    },
+    {
+      "ref": "U_A_MUX",
+      "label": "CD4052BE buffered voltage selector",
+      "kind": "chip",
+      "mpn": "CD4052BE",
+      "body": "dip",
+      "side": "top",
+      "section": "Circuit",
+      "phase": 1,
+      "signals": {
+        "Y_COM": "ADC_A_P2",
+        "X_COM": "ADC_A_P1",
+        "INHIBIT": "GND",
+        "VEE": "GND",
+        "VSS": "GND",
+        "VDD": "3V3_SYS",
+        "SEL_A": "MUX_A_A",
+        "SEL_B": "MUX_A_B",
+        "X3": "GND",
+        "Y3": "GND",
+        "X0": "P0_1_MUX",
+        "Y0": "P0_2_MUX",
+        "X1": "P1_1_MUX",
+        "Y1": "P1_2_MUX",
+        "X2": "P2_1_MUX",
+        "Y2": "P2_2_MUX"
+      },
+      "pins": [
+        {
+          "number": 1,
+          "label": "Y0",
+          "hole": [
+            4,
+            18
+          ]
+        },
+        {
+          "number": 2,
+          "label": "Y2",
+          "hole": [
+            4,
+            19
+          ]
+        },
+        {
+          "number": 3,
+          "label": "Y_COM",
+          "hole": [
+            4,
+            20
+          ]
+        },
+        {
+          "number": 4,
+          "label": "Y3",
+          "hole": [
+            4,
+            21
+          ]
+        },
+        {
+          "number": 5,
+          "label": "Y1",
+          "hole": [
+            4,
+            22
+          ]
+        },
+        {
+          "number": 6,
+          "label": "INHIBIT",
+          "hole": [
+            4,
+            23
+          ]
+        },
+        {
+          "number": 7,
+          "label": "VEE",
+          "hole": [
+            4,
+            24
+          ]
+        },
+        {
+          "number": 8,
+          "label": "VSS",
+          "hole": [
+            4,
+            25
+          ]
+        },
+        {
+          "number": 9,
+          "label": "SEL_B",
+          "hole": [
+            7,
+            25
+          ]
+        },
+        {
+          "number": 10,
+          "label": "SEL_A",
+          "hole": [
+            7,
+            24
+          ]
+        },
+        {
+          "number": 11,
+          "label": "X3",
+          "hole": [
+            7,
+            23
+          ]
+        },
+        {
+          "number": 12,
+          "label": "X0",
+          "hole": [
+            7,
+            22
+          ]
+        },
+        {
+          "number": 13,
+          "label": "X_COM",
+          "hole": [
+            7,
+            21
+          ]
+        },
+        {
+          "number": 14,
+          "label": "X1",
+          "hole": [
+            7,
+            20
+          ]
+        },
+        {
+          "number": 15,
+          "label": "X2",
+          "hole": [
+            7,
+            19
+          ]
+        },
+        {
+          "number": 16,
+          "label": "VDD",
+          "hole": [
+            7,
+            18
+          ]
+        }
+      ],
+      "socket": true,
+      "function": "Circuit",
+      "locked": false,
+      "bounds": {
+        "xmin": 3.35,
+        "xmax": 7.65,
+        "ymin": 17.35,
+        "ymax": 25.65
+      },
+      "sch": [
+        0,
+        -1.3
+      ],
+      "origin": "U_A_MUX",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "U_A_MUX"
+    },
+    {
+      "ref": "C_A_MUX",
+      "label": "C_A_MUX: 100nFΩ",
+      "kind": "capacitor",
+      "mpn": "C315C104K5R5TA",
+      "body": "passive",
+      "side": "top",
+      "section": "Circuit",
+      "phase": 1,
+      "signals": {
+        "A": "3V3_SYS",
+        "B": "GND"
+      },
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            21,
+            14
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            22,
+            14
+          ]
+        }
+      ],
+      "socket": false,
+      "value": "100nF",
+      "function": "Circuit",
+      "locked": false,
+      "bounds": {
+        "xmin": 20.4,
+        "xmax": 22.6,
+        "ymin": 13.4,
+        "ymax": 14.6
+      },
+      "sch": [
+        0,
+        -10.2
+      ],
+      "origin": "C_A_MUX",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "C_A_MUX"
+    },
+    {
+      "ref": "R_A_SEL_A",
+      "label": "R_A_SEL_A: 100kΩ",
+      "kind": "resistor",
+      "mpn": "MFR-25FBF52-100k",
+      "body": "passive",
+      "side": "top",
+      "section": "Circuit",
+      "phase": 1,
+      "signals": {
+        "A": "MUX_A_A",
+        "B": "GND"
+      },
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            17,
+            18
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            21,
+            18
+          ]
+        }
+      ],
+      "socket": false,
+      "value": "100k",
+      "function": "Circuit",
+      "locked": false,
+      "bounds": {
+        "xmin": 16.4,
+        "xmax": 21.6,
+        "ymin": 17.4,
+        "ymax": 18.6
+      },
+      "sch": [
+        6,
+        -10.2
+      ],
+      "origin": "R_A_SEL_A",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "R_A_SEL_A"
+    },
+    {
+      "ref": "R_A_SEL_B",
+      "label": "R_A_SEL_B: 100kΩ",
+      "kind": "resistor",
+      "mpn": "MFR-25FBF52-100k",
+      "body": "passive",
+      "side": "top",
+      "section": "Circuit",
+      "phase": 1,
+      "signals": {
+        "A": "MUX_A_B",
+        "B": "GND"
+      },
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            10,
+            21
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            14,
+            21
+          ]
+        }
+      ],
+      "socket": false,
+      "value": "100k",
+      "function": "Circuit",
+      "locked": false,
+      "bounds": {
+        "xmin": 9.4,
+        "xmax": 14.6,
+        "ymin": 20.4,
+        "ymax": 21.6
+      },
+      "sch": [
+        12,
+        -10.2
+      ],
+      "origin": "R_A_SEL_B",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "R_A_SEL_B"
+    },
+    {
+      "ref": "J_A_ADC_MODULE",
+      "label": "ADS1115 carrier interface — verify labelled module pads",
+      "kind": "header",
+      "mpn": "ADS1115 verified breakout carrier pending",
+      "body": "header",
+      "side": "top",
+      "section": "Circuit",
+      "phase": 1,
+      "signals": {
+        "VDD": "3V3_SYS",
+        "GND": "GND",
+        "SCL": "SCL_POSITION_0",
+        "SDA": "SDA_POSITION_0",
+        "ADDR": "GND",
+        "AIN0": "ADC_A_P1",
+        "AIN1": "ADC_A_P2",
+        "AIN2": "GND",
+        "AIN3": "GND"
+      },
+      "pins": [
+        {
+          "number": 1,
+          "label": "VDD",
+          "hole": [
+            10,
+            25
+          ]
+        },
+        {
+          "number": 2,
+          "label": "GND",
+          "hole": [
+            11,
+            25
+          ]
+        },
+        {
+          "number": 3,
+          "label": "SCL",
+          "hole": [
+            12,
+            25
+          ]
+        },
+        {
+          "number": 4,
+          "label": "SDA",
+          "hole": [
+            13,
+            25
+          ]
+        },
+        {
+          "number": 5,
+          "label": "ADDR",
+          "hole": [
+            14,
+            25
+          ]
+        },
+        {
+          "number": 6,
+          "label": "ALERT_N",
+          "hole": [
+            15,
+            25
+          ]
+        },
+        {
+          "number": 7,
+          "label": "AIN0",
+          "hole": [
+            16,
+            25
+          ]
+        },
+        {
+          "number": 8,
+          "label": "AIN1",
+          "hole": [
+            17,
+            25
+          ]
+        },
+        {
+          "number": 9,
+          "label": "AIN2",
+          "hole": [
+            18,
+            25
+          ]
+        },
+        {
+          "number": 10,
+          "label": "AIN3",
+          "hole": [
+            19,
+            25
+          ]
+        }
+      ],
+      "socket": false,
+      "externalPart": "ADS1115 carrier",
+      "provisional": true,
+      "stageOpenPins": [
+        6
+      ],
+      "function": "Circuit",
+      "locked": false,
+      "bounds": {
+        "xmin": 9.4,
+        "xmax": 19.6,
+        "ymin": 24.4,
+        "ymax": 25.6
+      },
+      "sch": [
+        6,
+        -1.3
+      ],
+      "origin": "J_A_ADC_MODULE",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "J_A_ADC_MODULE"
+    },
+    {
+      "ref": "D_STIM",
+      "label": "BAT85",
+      "kind": "diode",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            17,
+            21
+          ]
+        },
+        {
+          "number": 2,
+          "label": "K",
+          "hole": [
+            21,
+            21
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "BAT85",
+      "body": "passive",
+      "mpn": "BAT85",
+      "labels": [
+        "A",
+        "K"
+      ],
+      "phase": 1,
+      "sch": [
+        0,
+        -11.899999999999999
+      ],
+      "signals": {
+        "1": "3V3_SYS",
+        "2": "STIM_FEED"
+      },
+      "bounds": {
+        "xmin": 16.4,
+        "xmax": 21.6,
+        "ymin": 20.4,
+        "ymax": 21.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "D_STIM",
+      "function": "Stimulus",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "D_STIM"
+    },
+    {
+      "ref": "R_STIM",
+      "label": "11kΩ ±1% independently bounds diagnostic stimulus below0.34mA",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            10,
+            28
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            14,
+            28
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "11k",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-11K",
+      "phase": 1,
+      "sch": [
+        6,
+        -11.899999999999999
+      ],
+      "signals": {
+        "1": "STIM_FEED",
+        "2": "STIM_LIMIT"
+      },
+      "bounds": {
+        "xmin": 9.4,
+        "xmax": 14.6,
+        "ymin": 27.4,
+        "ymax": 28.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_STIM",
+      "tolerance": 0.01,
+      "function": "Stimulus",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "R_STIM"
+    },
+    {
+      "ref": "K_STIM",
+      "label": "AQY212EH",
+      "kind": "chip",
+      "pins": [
+        {
+          "number": 1,
+          "label": "LED_A",
+          "hole": [
+            17,
+            28
+          ]
+        },
+        {
+          "number": 2,
+          "label": "LED_K",
+          "hole": [
+            17,
+            29
+          ]
+        },
+        {
+          "number": 3,
+          "label": "SW1",
+          "hole": [
+            20,
+            29
+          ]
+        },
+        {
+          "number": 4,
+          "label": "SW2",
+          "hole": [
+            20,
+            28
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "body": "dip",
+      "mpn": "AQY212EH",
+      "phase": 1,
+      "sch": [
+        12,
+        -13.599999999999998
+      ],
+      "signals": {
+        "LED_A": "STIM_LED_A",
+        "LED_K": "STIM_LED_K",
+        "SW1": "STIM_LIMIT",
+        "SW2": "TEST_A"
+      },
+      "bounds": {
+        "xmin": 16.35,
+        "xmax": 20.65,
+        "ymin": 27.35,
+        "ymax": 29.65
+      },
+      "locked": false,
+      "socket": true,
+      "origin": "K_STIM",
+      "function": "Stimulus",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "K_STIM"
+    },
+    {
+      "ref": "R_LED",
+      "label": "270Ω ±1% diagnostic PhotoMOS LED drive",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            4,
+            31
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            8,
+            31
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "270",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-270R",
+      "phase": 1,
+      "sch": [
+        12,
+        -11.899999999999999
+      ],
+      "signals": {
+        "1": "3V3_SYS",
+        "2": "STIM_LED_A"
+      },
+      "bounds": {
+        "xmin": 3.4,
+        "xmax": 8.6,
+        "ymin": 30.4,
+        "ymax": 31.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_LED",
+      "tolerance": 0.01,
+      "function": "Stimulus",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "R_LED"
+    },
+    {
+      "ref": "R_OFF",
+      "label": "100k",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            11,
+            33
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            15,
+            33
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "100k",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-100K",
+      "phase": 1,
+      "sch": [
+        0,
+        -13.599999999999998
+      ],
+      "signals": {
+        "1": "FIX_STIM",
+        "2": "GND"
+      },
+      "bounds": {
+        "xmin": 10.4,
+        "xmax": 15.6,
+        "ymin": 32.4,
+        "ymax": 33.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_OFF",
+      "function": "Stimulus",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "R_OFF"
+    },
+    {
+      "ref": "Q_STIM",
+      "label": "2N7000",
+      "kind": "chip",
+      "pins": [
+        {
+          "number": 1,
+          "label": "S",
+          "hole": [
+            18,
+            33
+          ]
+        },
+        {
+          "number": 2,
+          "label": "G",
+          "hole": [
+            19,
+            33
+          ]
+        },
+        {
+          "number": 3,
+          "label": "D",
+          "hole": [
+            20,
+            33
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "body": "transistor",
+      "mpn": "2N7000",
+      "phase": 1,
+      "sch": [
+        6,
+        -13.599999999999998
+      ],
+      "signals": {
+        "S": "GND",
+        "G": "FIX_STIM",
+        "D": "STIM_LED_K"
+      },
+      "bounds": {
+        "xmin": 17.4,
+        "xmax": 20.6,
+        "ymin": 32.4,
+        "ymax": 33.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "Q_STIM",
+      "function": "Stimulus",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "Q_STIM"
+    },
+    {
+      "ref": "J_DIAGNOSTIC",
+      "label": "Removable diagnostic stimulus / return",
+      "kind": "header",
+      "mpn": "TSW-110-07-G-S",
+      "body": "header",
+      "side": "top",
+      "section": "Circuit",
+      "phase": 1,
+      "signals": {
+        "1": "TEST_A",
+        "2": "TEST_B"
+      },
+      "pins": [
+        {
+          "number": 1,
+          "label": "TEST_A",
+          "hole": [
+            22,
+            25
+          ]
+        },
+        {
+          "number": 2,
+          "label": "TEST_B",
+          "hole": [
+            23,
+            25
+          ]
+        }
+      ],
+      "socket": false,
+      "provisional": true,
+      "function": "Circuit",
+      "locked": false,
+      "bounds": {
+        "xmin": 21.4,
+        "xmax": 23.6,
+        "ymin": 24.4,
+        "ymax": 25.6
+      },
+      "sch": [
+        0,
+        -15.899999999999999
+      ],
+      "origin": "J_DIAGNOSTIC",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "J_DIAGNOSTIC"
+    },
+    {
+      "ref": "JP_RETURN",
+      "label": "Fit only for unpowered continuity test",
+      "kind": "header",
+      "mpn": "TSW-110-07-G-S",
+      "body": "header",
+      "side": "top",
+      "section": "Circuit",
+      "phase": 1,
+      "signals": {
+        "1": "TEST_B",
+        "2": "GND"
+      },
+      "pins": [
+        {
+          "number": 1,
+          "label": "TEST_B",
+          "hole": [
+            4,
+            35
+          ]
+        },
+        {
+          "number": 2,
+          "label": "GND",
+          "hole": [
+            5,
+            35
+          ]
+        }
+      ],
+      "socket": false,
+      "provisional": true,
+      "function": "Circuit",
+      "locked": false,
+      "bounds": {
+        "xmin": 3.4,
+        "xmax": 5.6,
+        "ymin": 34.4,
+        "ymax": 35.6
+      },
+      "sch": [
+        8.5,
+        -15.899999999999999
+      ],
+      "origin": "JP_RETURN",
+      "sourceBoard": "measurement-a-precision",
+      "sourceRef": "JP_RETURN"
+    },
+    {
+      "ref": "R_P0_SHUNT",
+      "label": "1Ω ±1% external current shunt",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            5,
+            4
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            9,
+            4
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "1",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-1R",
+      "tolerance": 0.01,
+      "watts": 0.25,
+      "phase": 22,
+      "sch": [
+        0,
+        -0.9
+      ],
+      "signals": {
+        "1": "P0_SHUNT_P",
+        "2": "P0_SHUNT_N"
+      },
+      "bounds": {
+        "xmin": 4.4,
+        "xmax": 9.6,
+        "ymin": 3.4,
+        "ymax": 4.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_SHUNT",
+      "function": "Current",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "R_P0_SHUNT"
+    },
+    {
+      "ref": "J_P0_CURRENT_MODULE",
+      "label": "INA226 carrier: remove onboard shunt; external 1Ω",
+      "kind": "header",
+      "pins": [
+        {
+          "number": 1,
+          "label": "VDD",
+          "hole": [
+            13,
+            4
+          ]
+        },
+        {
+          "number": 2,
+          "label": "GND",
+          "hole": [
+            14,
+            4
+          ]
+        },
+        {
+          "number": 3,
+          "label": "SCL",
+          "hole": [
+            15,
+            4
+          ]
+        },
+        {
+          "number": 4,
+          "label": "SDA",
+          "hole": [
+            16,
+            4
+          ]
+        },
+        {
+          "number": 5,
+          "label": "IN_P",
+          "hole": [
+            17,
+            4
+          ]
+        },
+        {
+          "number": 6,
+          "label": "IN_N",
+          "hole": [
+            18,
+            4
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "body": "header",
+      "mpn": "TSW-110-07-G-S",
+      "phase": 22,
+      "sch": [
+        0,
+        -13.499999999999998
+      ],
+      "signals": {
+        "VDD": "3V3_SYS",
+        "GND": "GND",
+        "SCL": "SCL_POSITION_0",
+        "SDA": "SDA_POSITION_0",
+        "IN_P": "P0_SHUNT_P",
+        "IN_N": "P0_SHUNT_N"
+      },
+      "bounds": {
+        "xmin": 12.4,
+        "xmax": 18.6,
+        "ymin": 3.4,
+        "ymax": 4.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "U_CURRENT",
+      "provisional": true,
+      "externalPart": "INA226 carrier",
+      "address": "0x40",
+      "rework": "Remove onboard shunt completely; connect external 1Ω ±1% Kelvin sense to IN+/IN−. Verify address 0x40, 3V3 pull-ups and factory VBUS routing. Never ground VBUS on a carrier that ties it to an input. Include module loading in measured error.",
+      "function": "Circuit",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "J_P0_CURRENT_MODULE"
+    },
+    {
+      "ref": "C_P0_CURRENT",
+      "label": "100nF",
+      "kind": "capacitor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            21,
+            4
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            22,
+            4
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "100nF",
+      "body": "passive",
+      "mpn": "C315C104K5R5TA",
+      "pitch": 1,
+      "labels": [
+        "A",
+        "B"
+      ],
+      "phase": 22,
+      "sch": [
+        6,
+        -0.9
+      ],
+      "signals": {
+        "1": "3V3_SYS",
+        "2": "GND"
+      },
+      "bounds": {
+        "xmin": 20.4,
+        "xmax": 22.6,
+        "ymin": 3.4,
+        "ymax": 4.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "C_CURRENT",
+      "function": "Current",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "C_P0_CURRENT"
+    },
+    {
+      "ref": "K_P0_AMM_P",
+      "label": "AQY212EH",
+      "kind": "chip",
+      "pins": [
+        {
+          "number": 1,
+          "label": "LED_A",
+          "hole": [
+            4,
+            8
+          ]
+        },
+        {
+          "number": 2,
+          "label": "LED_K",
+          "hole": [
+            4,
+            9
+          ]
+        },
+        {
+          "number": 3,
+          "label": "SW1",
+          "hole": [
+            7,
+            9
+          ]
+        },
+        {
+          "number": 4,
+          "label": "SW2",
+          "hole": [
+            7,
+            8
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "body": "dip",
+      "mpn": "AQY212EH",
+      "phase": 22,
+      "sch": [
+        6,
+        -13.499999999999998
+      ],
+      "signals": {
+        "LED_A": "P0_K_AMM_P_LED",
+        "LED_K": "P0_AMM_CATHODE",
+        "SW1": "NODE00",
+        "SW2": "P0_SHUNT_P"
+      },
+      "bounds": {
+        "xmin": 3.35,
+        "xmax": 7.65,
+        "ymin": 7.35,
+        "ymax": 9.65
+      },
+      "locked": false,
+      "socket": true,
+      "origin": "K_AMM_P",
+      "function": "Current",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "K_P0_AMM_P"
+    },
+    {
+      "ref": "R_P0_K_AMM_P_LED",
+      "label": "390Ω ±1% PhotoMOS LED drive with ULN2003 saturation allowance",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            10,
+            8
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            14,
+            8
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "390",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-390R",
+      "phase": 22,
+      "sch": [
+        12,
+        -0.9
+      ],
+      "signals": {
+        "1": "5V_SYS",
+        "2": "P0_K_AMM_P_LED"
+      },
+      "bounds": {
+        "xmin": 9.4,
+        "xmax": 14.6,
+        "ymin": 7.4,
+        "ymax": 8.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_K_AMM_P_LED",
+      "tolerance": 0.01,
+      "function": "Current",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "R_P0_K_AMM_P_LED"
+    },
+    {
+      "ref": "K_P0_AMM_N",
+      "label": "AQY212EH",
+      "kind": "chip",
+      "pins": [
+        {
+          "number": 1,
+          "label": "LED_A",
+          "hole": [
+            18,
+            8
+          ]
+        },
+        {
+          "number": 2,
+          "label": "LED_K",
+          "hole": [
+            18,
+            9
+          ]
+        },
+        {
+          "number": 3,
+          "label": "SW1",
+          "hole": [
+            21,
+            9
+          ]
+        },
+        {
+          "number": 4,
+          "label": "SW2",
+          "hole": [
+            21,
+            8
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "body": "dip",
+      "mpn": "AQY212EH",
+      "phase": 22,
+      "sch": [
+        12,
+        -13.499999999999998
+      ],
+      "signals": {
+        "LED_A": "P0_K_AMM_N_LED",
+        "LED_K": "P0_AMM_CATHODE",
+        "SW1": "P0_SHUNT_N",
+        "SW2": "NODE01"
+      },
+      "bounds": {
+        "xmin": 17.35,
+        "xmax": 21.65,
+        "ymin": 7.35,
+        "ymax": 9.65
+      },
+      "locked": false,
+      "socket": true,
+      "origin": "K_AMM_N",
+      "function": "Current",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "K_P0_AMM_N"
+    },
+    {
+      "ref": "R_P0_K_AMM_N_LED",
+      "label": "390Ω ±1% PhotoMOS LED drive with ULN2003 saturation allowance",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            10,
+            11
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            14,
+            11
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "390",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-390R",
+      "phase": 22,
+      "sch": [
+        0,
+        -2.6
+      ],
+      "signals": {
+        "1": "5V_SYS",
+        "2": "P0_K_AMM_N_LED"
+      },
+      "bounds": {
+        "xmin": 9.4,
+        "xmax": 14.6,
+        "ymin": 10.4,
+        "ymax": 11.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_K_AMM_N_LED",
+      "tolerance": 0.01,
+      "function": "Current",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "R_P0_K_AMM_N_LED"
+    },
+    {
+      "ref": "R_P0_SOURCE_SENSE",
+      "label": "10",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            18,
+            12
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            22,
+            12
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "10",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-10R",
+      "phase": 15,
+      "sch": [
+        6,
+        -2.6
+      ],
+      "signals": {
+        "1": "5V_EDU",
+        "2": "P0_SOURCE_SENSE"
+      },
+      "bounds": {
+        "xmin": 17.4,
+        "xmax": 22.6,
+        "ymin": 11.4,
+        "ymax": 12.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_SOURCE_SENSE",
+      "function": "Limits",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "R_P0_SOURCE_SENSE"
+    },
+    {
+      "ref": "R_P0_SINK_SENSE",
+      "label": "10",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            4,
+            15
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            8,
+            15
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "10",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-10R",
+      "phase": 15,
+      "sch": [
+        12,
+        -2.6
+      ],
+      "signals": {
+        "1": "P0_SINK_SENSE",
+        "2": "GND"
+      },
+      "bounds": {
+        "xmin": 3.4,
+        "xmax": 8.6,
+        "ymin": 14.4,
+        "ymax": 15.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_SINK_SENSE",
+      "function": "Limits",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "R_P0_SINK_SENSE"
+    },
+    {
+      "ref": "U_P0_LIMIT",
+      "label": "MCP6002 dual source/sink clamp",
+      "kind": "chip",
+      "pins": [
+        {
+          "number": 1,
+          "label": "OUTA",
+          "hole": [
+            12,
+            15
+          ]
+        },
+        {
+          "number": 2,
+          "label": "INA_N",
+          "hole": [
+            12,
+            16
+          ]
+        },
+        {
+          "number": 3,
+          "label": "INA_P",
+          "hole": [
+            12,
+            17
+          ]
+        },
+        {
+          "number": 4,
+          "label": "VSS",
+          "hole": [
+            12,
+            18
+          ]
+        },
+        {
+          "number": 5,
+          "label": "INB_P",
+          "hole": [
+            15,
+            18
+          ]
+        },
+        {
+          "number": 6,
+          "label": "INB_N",
+          "hole": [
+            15,
+            17
+          ]
+        },
+        {
+          "number": 7,
+          "label": "OUTB",
+          "hole": [
+            15,
+            16
+          ]
+        },
+        {
+          "number": 8,
+          "label": "VDD",
+          "hole": [
+            15,
+            15
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "body": "dip",
+      "mpn": "MCP6002-I/P",
+      "phase": 15,
+      "sch": [
+        0,
+        -4.3
+      ],
+      "signals": {
+        "OUTA": "P0_HI_GATE_DRIVE",
+        "INA_N": "P0_SOURCE_SENSE",
+        "INA_P": "A_REF_HI",
+        "VSS": "GND",
+        "INB_P": "A_REF_LO",
+        "INB_N": "P0_SINK_SENSE",
+        "OUTB": "P0_LO_GATE_DRIVE",
+        "VDD": "5V_SYS"
+      },
+      "bounds": {
+        "xmin": 11.35,
+        "xmax": 15.65,
+        "ymin": 14.35,
+        "ymax": 18.65
+      },
+      "locked": false,
+      "socket": true,
+      "origin": "U_LIMIT",
+      "function": "Limits",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "U_P0_LIMIT"
+    },
+    {
+      "ref": "C_P0_LIMIT",
+      "label": "100nF",
+      "kind": "capacitor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            18,
+            16
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            19,
+            16
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "100nF",
+      "body": "passive",
+      "mpn": "C315C104K5R5TA",
+      "pitch": 1,
+      "labels": [
+        "A",
+        "B"
+      ],
+      "phase": 15,
+      "sch": [
+        6,
+        -4.3
+      ],
+      "signals": {
+        "1": "5V_SYS",
+        "2": "GND"
+      },
+      "bounds": {
+        "xmin": 17.4,
+        "xmax": 19.6,
+        "ymin": 15.4,
+        "ymax": 16.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "C_LIMIT",
+      "function": "Limits",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "C_P0_LIMIT"
+    },
+    {
+      "ref": "R_P0_HI_GATE",
+      "label": "1k",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            4,
+            18
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            8,
+            18
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "1k",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-1K",
+      "phase": 15,
+      "sch": [
+        12,
+        -4.3
+      ],
+      "signals": {
+        "1": "P0_HI_GATE_DRIVE",
+        "2": "P0_HI_GATE"
+      },
+      "bounds": {
+        "xmin": 3.4,
+        "xmax": 8.6,
+        "ymin": 17.4,
+        "ymax": 18.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_HI_GATE",
+      "function": "Limits",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "R_P0_HI_GATE"
+    },
+    {
+      "ref": "R_P0_LO_GATE",
+      "label": "1k",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            18,
+            20
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            22,
+            20
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "1k",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-1K",
+      "phase": 15,
+      "sch": [
+        0,
+        -6
+      ],
+      "signals": {
+        "1": "P0_LO_GATE_DRIVE",
+        "2": "P0_LO_GATE"
+      },
+      "bounds": {
+        "xmin": 17.4,
+        "xmax": 22.6,
+        "ymin": 19.4,
+        "ymax": 20.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_LO_GATE",
+      "function": "Limits",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "R_P0_LO_GATE"
+    },
+    {
+      "ref": "C_P0_HI_COMP",
+      "label": "1nF",
+      "kind": "capacitor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            22,
+            16
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            23,
+            16
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "1nF",
+      "body": "passive",
+      "mpn": "C315C102J5G5TA",
+      "pitch": 1,
+      "labels": [
+        "A",
+        "B"
+      ],
+      "phase": 15,
+      "sch": [
+        6,
+        -6
+      ],
+      "signals": {
+        "1": "P0_HI_GATE_DRIVE",
+        "2": "P0_SOURCE_SENSE"
+      },
+      "bounds": {
+        "xmin": 21.4,
+        "xmax": 23.6,
+        "ymin": 15.4,
+        "ymax": 16.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "C_HI_COMP",
+      "function": "Limits",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "C_P0_HI_COMP"
+    },
+    {
+      "ref": "C_P0_LO_COMP",
+      "label": "1nF",
+      "kind": "capacitor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            4,
+            22
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            5,
+            22
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "1nF",
+      "body": "passive",
+      "mpn": "C315C102J5G5TA",
+      "pitch": 1,
+      "labels": [
+        "A",
+        "B"
+      ],
+      "phase": 15,
+      "sch": [
+        12,
+        -6
+      ],
+      "signals": {
+        "1": "P0_LO_GATE_DRIVE",
+        "2": "P0_SINK_SENSE"
+      },
+      "bounds": {
+        "xmin": 3.4,
+        "xmax": 5.6,
+        "ymin": 21.4,
+        "ymax": 22.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "C_LO_COMP",
+      "function": "Limits",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "C_P0_LO_COMP"
+    },
+    {
+      "ref": "Q_P0_HIGH",
+      "label": "BSS84",
+      "kind": "chip",
+      "pins": [
+        {
+          "number": 1,
+          "label": "G",
+          "hole": [
+            8,
+            22
+          ]
+        },
+        {
+          "number": 2,
+          "label": "S",
+          "hole": [
+            9,
+            22
+          ]
+        },
+        {
+          "number": 3,
+          "label": "D",
+          "hole": [
+            10,
+            22
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "body": "transistor",
+      "mpn": "BSS84",
+      "phase": 15,
+      "sch": [
+        0,
+        -7.7
+      ],
+      "signals": {
+        "G": "P0_HI_GATE",
+        "S": "P0_SOURCE_SENSE",
+        "D": "P0_SOURCE_OUT"
+      },
+      "adapter": "SOT23 to numbered 3-pin adapter",
+      "bounds": {
+        "xmin": 7.4,
+        "xmax": 10.6,
+        "ymin": 21.4,
+        "ymax": 22.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "Q_HIGH",
+      "function": "Limits",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "Q_P0_HIGH"
+    },
+    {
+      "ref": "Q_P0_LOW",
+      "label": "2N7000",
+      "kind": "chip",
+      "pins": [
+        {
+          "number": 1,
+          "label": "S",
+          "hole": [
+            14,
+            23
+          ]
+        },
+        {
+          "number": 2,
+          "label": "G",
+          "hole": [
+            15,
+            23
+          ]
+        },
+        {
+          "number": 3,
+          "label": "D",
+          "hole": [
+            16,
+            23
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "body": "transistor",
+      "mpn": "2N7000",
+      "phase": 15,
+      "sch": [
+        6,
+        -7.7
+      ],
+      "signals": {
+        "S": "P0_SINK_SENSE",
+        "G": "P0_LO_GATE",
+        "D": "P0_SINK_IN"
+      },
+      "bounds": {
+        "xmin": 13.4,
+        "xmax": 16.6,
+        "ymin": 22.4,
+        "ymax": 23.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "Q_LOW",
+      "function": "Limits",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "Q_P0_LOW"
+    },
+    {
+      "ref": "K_P0_HIGH",
+      "label": "AQY212EH",
+      "kind": "chip",
+      "pins": [
+        {
+          "number": 1,
+          "label": "LED_A",
+          "hole": [
+            19,
+            23
+          ]
+        },
+        {
+          "number": 2,
+          "label": "LED_K",
+          "hole": [
+            19,
+            24
+          ]
+        },
+        {
+          "number": 3,
+          "label": "SW1",
+          "hole": [
+            22,
+            24
+          ]
+        },
+        {
+          "number": 4,
+          "label": "SW2",
+          "hole": [
+            22,
+            23
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "body": "dip",
+      "mpn": "AQY212EH",
+      "phase": 15,
+      "sch": [
+        0,
+        -14.899999999999999
+      ],
+      "signals": {
+        "LED_A": "P0_K_HIGH_LED",
+        "LED_K": "P0_K_HIGH_CATHODE",
+        "SW1": "P0_SOURCE_OUT",
+        "SW2": "NODE02"
+      },
+      "bounds": {
+        "xmin": 18.35,
+        "xmax": 22.65,
+        "ymin": 22.35,
+        "ymax": 24.65
+      },
+      "locked": false,
+      "socket": true,
+      "origin": "K_HIGH",
+      "function": "Output",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "K_P0_HIGH"
+    },
+    {
+      "ref": "R_P0_K_HIGH_LED",
+      "label": "390Ω ±1% PhotoMOS LED drive with ULN2003 saturation allowance",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            4,
+            25
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            8,
+            25
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "390",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-390R",
+      "phase": 15,
+      "sch": [
+        12,
+        -7.7
+      ],
+      "signals": {
+        "1": "5V_SYS",
+        "2": "P0_K_HIGH_LED"
+      },
+      "bounds": {
+        "xmin": 3.4,
+        "xmax": 8.6,
+        "ymin": 24.4,
+        "ymax": 25.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_K_HIGH_LED",
+      "tolerance": 0.01,
+      "function": "Output",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "R_P0_K_HIGH_LED"
+    },
+    {
+      "ref": "K_P0_LOW",
+      "label": "AQY212EH",
+      "kind": "chip",
+      "pins": [
+        {
+          "number": 1,
+          "label": "LED_A",
+          "hole": [
+            12,
+            27
+          ]
+        },
+        {
+          "number": 2,
+          "label": "LED_K",
+          "hole": [
+            12,
+            28
+          ]
+        },
+        {
+          "number": 3,
+          "label": "SW1",
+          "hole": [
+            15,
+            28
+          ]
+        },
+        {
+          "number": 4,
+          "label": "SW2",
+          "hole": [
+            15,
+            27
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "body": "dip",
+      "mpn": "AQY212EH",
+      "phase": 15,
+      "sch": [
+        6,
+        -14.899999999999999
+      ],
+      "signals": {
+        "LED_A": "P0_K_LOW_LED",
+        "LED_K": "P0_K_LOW_CATHODE",
+        "SW1": "NODE02",
+        "SW2": "P0_SINK_IN"
+      },
+      "bounds": {
+        "xmin": 11.35,
+        "xmax": 15.65,
+        "ymin": 26.35,
+        "ymax": 28.65
+      },
+      "locked": false,
+      "socket": true,
+      "origin": "K_LOW",
+      "function": "Output",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "K_P0_LOW"
+    },
+    {
+      "ref": "R_P0_K_LOW_LED",
+      "label": "390Ω ±1% PhotoMOS LED drive with ULN2003 saturation allowance",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            18,
+            28
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            22,
+            28
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "390",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-390R",
+      "phase": 15,
+      "sch": [
+        0,
+        -10.2
+      ],
+      "signals": {
+        "1": "5V_SYS",
+        "2": "P0_K_LOW_LED"
+      },
+      "bounds": {
+        "xmin": 17.4,
+        "xmax": 22.6,
+        "ymin": 27.4,
+        "ymax": 28.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_K_LOW_LED",
+      "tolerance": 0.01,
+      "function": "Output",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "R_P0_K_LOW_LED"
+    },
+    {
+      "ref": "U_P0_BUS",
+      "label": "TCA9517D",
+      "kind": "chip",
+      "pins": [
+        {
+          "number": 1,
+          "label": "VCCA",
+          "hole": [
+            4,
+            29
+          ]
+        },
+        {
+          "number": 2,
+          "label": "SCLA",
+          "hole": [
+            4,
+            30
+          ]
+        },
+        {
+          "number": 3,
+          "label": "SDAA",
+          "hole": [
+            4,
+            31
+          ]
+        },
+        {
+          "number": 4,
+          "label": "GND",
+          "hole": [
+            4,
+            32
+          ]
+        },
+        {
+          "number": 5,
+          "label": "EN",
+          "hole": [
+            7,
+            32
+          ]
+        },
+        {
+          "number": 6,
+          "label": "SDAB",
+          "hole": [
+            7,
+            31
+          ]
+        },
+        {
+          "number": 7,
+          "label": "SCLB",
+          "hole": [
+            7,
+            30
+          ]
+        },
+        {
+          "number": 8,
+          "label": "VCCB",
+          "hole": [
+            7,
+            29
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "body": "dip",
+      "mpn": "TCA9517D",
+      "adapter": "SOIC8 to DIP8",
+      "phase": 6,
+      "sch": [
+        6,
+        -10.2
+      ],
+      "signals": {
+        "VCCA": "USB_SMART_3V3",
+        "SCLA": "SCL_A",
+        "SDAA": "SDA_0",
+        "GND": "GND",
+        "EN": "USB_SMART_3V3",
+        "SDAB": "SDA_POSITION_0",
+        "SCLB": "SCL_POSITION_0",
+        "VCCB": "3V3_SYS"
+      },
+      "bounds": {
+        "xmin": 3.35,
+        "xmax": 7.65,
+        "ymin": 28.35,
+        "ymax": 32.65
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "U_BUS",
+      "function": "Interface",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "U_P0_BUS"
+    },
+    {
+      "ref": "C_P0_BUS_A",
+      "label": "100nF",
+      "kind": "capacitor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            10,
+            31
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            11,
+            31
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "100nF",
+      "body": "passive",
+      "mpn": "C315C104K5R5TA",
+      "pitch": 1,
+      "labels": [
+        "A",
+        "B"
+      ],
+      "phase": 6,
+      "sch": [
+        12,
+        -10.2
+      ],
+      "signals": {
+        "1": "USB_SMART_3V3",
+        "2": "GND"
+      },
+      "bounds": {
+        "xmin": 9.4,
+        "xmax": 11.6,
+        "ymin": 30.4,
+        "ymax": 31.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "C_BUS_A",
+      "function": "Interface",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "C_P0_BUS_A"
+    },
+    {
+      "ref": "C_P0_BUS_B",
+      "label": "100nF",
+      "kind": "capacitor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            15,
+            31
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            16,
+            31
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "100nF",
+      "body": "passive",
+      "mpn": "C315C104K5R5TA",
+      "pitch": 1,
+      "labels": [
+        "A",
+        "B"
+      ],
+      "phase": 6,
+      "sch": [
+        0,
+        -11.899999999999999
+      ],
+      "signals": {
+        "1": "3V3_SYS",
+        "2": "GND"
+      },
+      "bounds": {
+        "xmin": 14.4,
+        "xmax": 16.6,
+        "ymin": 30.4,
+        "ymax": 31.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "C_BUS_B",
+      "function": "Interface",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "C_P0_BUS_B"
+    },
+    {
+      "ref": "R_P0_SDA",
+      "label": "4.7k",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            19,
+            31
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            23,
+            31
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "4.7k",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-4K7",
+      "phase": 6,
+      "sch": [
+        6,
+        -11.899999999999999
+      ],
+      "signals": {
+        "1": "SDA_POSITION_0",
+        "2": "3V3_SYS"
+      },
+      "bounds": {
+        "xmin": 18.4,
+        "xmax": 23.6,
+        "ymin": 30.4,
+        "ymax": 31.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_SDA",
+      "function": "Interface",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "R_P0_SDA"
+    },
+    {
+      "ref": "R_P0_SCL",
+      "label": "4.7k",
+      "kind": "resistor",
+      "pins": [
+        {
+          "number": 1,
+          "label": "A",
+          "hole": [
+            10,
+            35
+          ]
+        },
+        {
+          "number": 2,
+          "label": "B",
+          "hole": [
+            14,
+            35
+          ]
+        }
+      ],
+      "side": "top",
+      "section": "Circuit",
+      "value": "4.7k",
+      "body": "passive",
+      "mpn": "MFR-25FBF52-4K7",
+      "phase": 6,
+      "sch": [
+        12,
+        -11.899999999999999
+      ],
+      "signals": {
+        "1": "SCL_POSITION_0",
+        "2": "3V3_SYS"
+      },
+      "bounds": {
+        "xmin": 9.4,
+        "xmax": 14.6,
+        "ymin": 34.4,
+        "ymax": 35.6
+      },
+      "locked": false,
+      "socket": false,
+      "origin": "R_SCL",
+      "function": "Interface",
+      "sourceBoard": "bank-a-position-0",
+      "sourceRef": "R_P0_SCL"
+    },
+    {
+      "ref": "U_A_LED_DRIVER_0",
+      "label": "ULN2003AN PhotoMOS LED driver array",
+      "kind": "chip",
+      "mpn": "ULN2003AN",
+      "body": "dip",
+      "side": "top",
+      "section": "Circuit",
+      "phase": 15,
+      "signals": {
+        "GND": "GND",
+        "COM": "5V_SYS",
+        "IN1": "RELAY_0",
+        "OUT1": "P0_K_HIGH_CATHODE",
+        "IN2": "RELAY_1",
+        "OUT2": "P0_K_LOW_CATHODE",
+        "IN3": "RELAY_2",
+        "OUT3": "P0_AMM_CATHODE",
+        "IN4": "RELAY_3",
+        "OUT4": "P1_K_HIGH_CATHODE",
+        "IN5": "RELAY_4",
+        "OUT5": "P1_K_LOW_CATHODE",
+        "IN6": "RELAY_5",
+        "OUT6": "P1_AMM_CATHODE",
+        "IN7": "RELAY_6",
+        "OUT7": "P2_K_HIGH_CATHODE"
+      },
+      "pins": [
+        {
+          "number": 1,
+          "label": "IN1",
+          "hole": [
+            5,
+            4
+          ]
+        },
+        {
+          "number": 2,
+          "label": "IN2",
+          "hole": [
+            5,
+            5
+          ]
+        },
+        {
+          "number": 3,
+          "label": "IN3",
+          "hole": [
+            5,
+            6
+          ]
+        },
+        {
+          "number": 4,
+          "label": "IN4",
+          "hole": [
+            5,
+            7
+          ]
+        },
+        {
+          "number": 5,
+          "label": "IN5",
+          "hole": [
+            5,
+            8
+          ]
+        },
+        {
+          "number": 6,
+          "label": "IN6",
+          "hole": [
+            5,
+            9
+          ]
+        },
+        {
+          "number": 7,
+          "label": "IN7",
+          "hole": [
+            5,
+            10
+          ]
+        },
+        {
+          "number": 8,
+          "label": "GND",
+          "hole": [
+            5,
+            11
+          ]
+        },
+        {
+          "number": 9,
+          "label": "COM",
+          "hole": [
+            8,
+            11
+          ]
+        },
+        {
+          "number": 10,
+          "label": "OUT7",
+          "hole": [
+            8,
+            10
+          ]
+        },
+        {
+          "number": 11,
+          "label": "OUT6",
+          "hole": [
+            8,
+            9
+          ]
+        },
+        {
+          "number": 12,
+          "label": "OUT5",
+          "hole": [
+            8,
+            8
+          ]
+        },
+        {
+          "number": 13,
+          "label": "OUT4",
+          "hole": [
+            8,
+            7
+          ]
+        },
+        {
+          "number": 14,
+          "label": "OUT3",
+          "hole": [
+            8,
+            6
+          ]
+        },
+        {
+          "number": 15,
+          "label": "OUT2",
+          "hole": [
+            8,
+            5
+          ]
+        },
+        {
+          "number": 16,
+          "label": "OUT1",
+          "hole": [
+            8,
+            4
+          ]
+        }
+      ],
+      "socket": true,
+      "function": "Circuit",
+      "locked": false,
+      "bounds": {
+        "xmin": 4.35,
+        "xmax": 8.65,
+        "ymin": 3.35,
+        "ymax": 11.65
+      },
+      "sch": [
+        0,
+        -1.3
+      ],
+      "origin": "U_A_LED_DRIVER_0",
+      "sourceBoard": "measurement-a-buffers",
+      "sourceRef": "U_A_LED_DRIVER_0"
+    },
+    {
+      "ref": "U_A_LED_DRIVER_1",
+      "label": "ULN2003AN PhotoMOS LED driver array",
+      "kind": "chip",
+      "mpn": "ULN2003AN",
+      "body": "dip",
+      "side": "top",
+      "section": "Circuit",
+      "phase": 15,
+      "signals": {
+        "GND": "GND",
+        "COM": "5V_SYS",
+        "IN1": "RELAY_7",
+        "OUT1": "P2_K_LOW_CATHODE",
+        "IN2": "RELAY_8",
+        "OUT2": "P2_AMM_CATHODE",
+        "IN3": "GND",
+        "IN4": "GND",
+        "IN5": "GND",
+        "IN6": "GND",
+        "IN7": "GND"
+      },
+      "pins": [
+        {
+          "number": 1,
+          "label": "IN1",
+          "hole": [
+            11,
+            4
+          ]
+        },
+        {
+          "number": 2,
+          "label": "IN2",
+          "hole": [
+            11,
+            5
+          ]
+        },
+        {
+          "number": 3,
+          "label": "IN3",
+          "hole": [
+            11,
+            6
+          ]
+        },
+        {
+          "number": 4,
+          "label": "IN4",
+          "hole": [
+            11,
+            7
+          ]
+        },
+        {
+          "number": 5,
+          "label": "IN5",
+          "hole": [
+            11,
+            8
+          ]
+        },
+        {
+          "number": 6,
+          "label": "IN6",
+          "hole": [
+            11,
+            9
+          ]
+        },
+        {
+          "number": 7,
+          "label": "IN7",
+          "hole": [
+            11,
+            10
+          ]
+        },
+        {
+          "number": 8,
+          "label": "GND",
+          "hole": [
+            11,
+            11
+          ]
+        },
+        {
+          "number": 9,
+          "label": "COM",
+          "hole": [
+            14,
+            11
+          ]
+        },
+        {
+          "number": 10,
+          "label": "OUT7",
+          "hole": [
+            14,
+            10
+          ]
+        },
+        {
+          "number": 11,
+          "label": "OUT6",
+          "hole": [
+            14,
+            9
+          ]
+        },
+        {
+          "number": 12,
+          "label": "OUT5",
+          "hole": [
+            14,
+            8
+          ]
+        },
+        {
+          "number": 13,
+          "label": "OUT4",
+          "hole": [
+            14,
+            7
+          ]
+        },
+        {
+          "number": 14,
+          "label": "OUT3",
+          "hole": [
+            14,
+            6
+          ]
+        },
+        {
+          "number": 15,
+          "label": "OUT2",
+          "hole": [
+            14,
+            5
+          ]
+        },
+        {
+          "number": 16,
+          "label": "OUT1",
+          "hole": [
+            14,
+            4
+          ]
+        }
+      ],
+      "socket": true,
+      "function": "Circuit",
+      "locked": false,
+      "bounds": {
+        "xmin": 10.35,
+        "xmax": 14.65,
+        "ymin": 3.35,
+        "ymax": 11.65
+      },
+      "sch": [
+        6,
+        -1.3
+      ],
+      "origin": "U_A_LED_DRIVER_1",
+      "sourceBoard": "measurement-a-buffers",
+      "sourceRef": "U_A_LED_DRIVER_1"
+    }
+  ],
+  "status": "full-7x10-layout-failed",
+  "firmware": "Standalone test ownership must use an explicit jumper profile; final ESP1/ESP2 ownership remains unchanged.",
+  "evidence": "Repeat tests on final smart PCB; no automatic transfer of acceptance",
+  "fitFinding": "smart-reference: U_SMART_SAFETY_USB_POR does not fit 26x38",
+  "placement": null,
+  "earlyPlacement": {
+    "width": 70,
+    "height": 100,
+    "cols": 26,
+    "rows": 38,
+    "pitch": 2.54,
+    "verified": false,
+    "description": "10×20 cm isolated-pad perfboard; substrate, grid, thickness and plating must be measured",
+    "id": "smart-early",
+    "title": "Temporary smart reference — display / precision diagnostics / voltage",
+    "kind": "temporary",
+    "parts": [
+      {
+        "ref": "U_ESP2",
+        "label": "ESP32 DevKitC-38 — smart controller",
+        "kind": "chip",
+        "pins": [
+          {
+            "number": 1,
+            "label": "3V3",
+            "hole": [
+              4,
+              5
+            ]
+          },
+          {
+            "number": 2,
+            "label": "EN",
+            "hole": [
+              4,
+              6
+            ]
+          },
+          {
+            "number": 3,
+            "label": "IO36",
+            "hole": [
+              4,
+              7
+            ]
+          },
+          {
+            "number": 4,
+            "label": "IO39",
+            "hole": [
+              4,
+              8
+            ]
+          },
+          {
+            "number": 5,
+            "label": "IO34",
+            "hole": [
+              4,
+              9
+            ]
+          },
+          {
+            "number": 6,
+            "label": "IO35",
+            "hole": [
+              4,
+              10
+            ]
+          },
+          {
+            "number": 7,
+            "label": "IO32",
+            "hole": [
+              4,
+              11
+            ]
+          },
+          {
+            "number": 8,
+            "label": "IO33",
+            "hole": [
+              4,
+              12
+            ]
+          },
+          {
+            "number": 9,
+            "label": "IO25",
+            "hole": [
+              4,
+              13
+            ]
+          },
+          {
+            "number": 10,
+            "label": "IO26",
+            "hole": [
+              4,
+              14
+            ]
+          },
+          {
+            "number": 11,
+            "label": "IO27",
+            "hole": [
+              4,
+              15
+            ]
+          },
+          {
+            "number": 12,
+            "label": "IO14",
+            "hole": [
+              4,
+              16
+            ]
+          },
+          {
+            "number": 13,
+            "label": "IO12",
+            "hole": [
+              4,
+              17
+            ]
+          },
+          {
+            "number": 14,
+            "label": "GND_L",
+            "hole": [
+              4,
+              18
+            ]
+          },
+          {
+            "number": 15,
+            "label": "IO13",
+            "hole": [
+              4,
+              19
+            ]
+          },
+          {
+            "number": 16,
+            "label": "SD2",
+            "hole": [
+              4,
+              20
+            ]
+          },
+          {
+            "number": 17,
+            "label": "SD3",
+            "hole": [
+              4,
+              21
+            ]
+          },
+          {
+            "number": 18,
+            "label": "CMD",
+            "hole": [
+              4,
+              22
+            ]
+          },
+          {
+            "number": 19,
+            "label": "V5",
+            "hole": [
+              4,
+              23
+            ]
+          },
+          {
+            "number": 20,
+            "label": "GND_R1",
+            "hole": [
+              14,
+              5
+            ]
+          },
+          {
+            "number": 21,
+            "label": "IO23",
+            "hole": [
+              14,
+              6
+            ]
+          },
+          {
+            "number": 22,
+            "label": "IO22",
+            "hole": [
+              14,
+              7
+            ]
+          },
+          {
+            "number": 23,
+            "label": "TX0",
+            "hole": [
+              14,
+              8
+            ]
+          },
+          {
+            "number": 24,
+            "label": "RX0",
+            "hole": [
+              14,
+              9
+            ]
+          },
+          {
+            "number": 25,
+            "label": "IO21",
+            "hole": [
+              14,
+              10
+            ]
+          },
+          {
+            "number": 26,
+            "label": "GND_R2",
+            "hole": [
+              14,
+              11
+            ]
+          },
+          {
+            "number": 27,
+            "label": "IO19",
+            "hole": [
+              14,
+              12
+            ]
+          },
+          {
+            "number": 28,
+            "label": "IO18",
+            "hole": [
+              14,
+              13
+            ]
+          },
+          {
+            "number": 29,
+            "label": "IO5",
+            "hole": [
+              14,
+              14
+            ]
+          },
+          {
+            "number": 30,
+            "label": "IO17",
+            "hole": [
+              14,
+              15
+            ]
+          },
+          {
+            "number": 31,
+            "label": "IO16",
+            "hole": [
+              14,
+              16
+            ]
+          },
+          {
+            "number": 32,
+            "label": "IO4",
+            "hole": [
+              14,
+              17
+            ]
+          },
+          {
+            "number": 33,
+            "label": "IO0",
+            "hole": [
+              14,
+              18
+            ]
+          },
+          {
+            "number": 34,
+            "label": "IO2",
+            "hole": [
+              14,
+              19
+            ]
+          },
+          {
+            "number": 35,
+            "label": "IO15",
+            "hole": [
+              14,
+              20
+            ]
+          },
+          {
+            "number": 36,
+            "label": "SD1",
+            "hole": [
+              14,
+              21
+            ]
+          },
+          {
+            "number": 37,
+            "label": "SD0",
+            "hole": [
+              14,
+              22
+            ]
+          },
+          {
+            "number": 38,
+            "label": "CLK",
+            "hole": [
+              14,
+              23
+            ]
+          }
+        ],
+        "side": "top",
+        "section": "Early prototype",
+        "body": "esp",
+        "mpn": "ESP32-DevKitC V4 ESP32-WROOM-32E",
+        "provisional": true,
+        "signals": {
+          "3V3": "USB_SMART_3V3",
+          "GND_L": "GND",
+          "GND_R1": "GND",
+          "GND_R2": "GND",
+          "IO25": "SR_SRCLK",
+          "IO26": "FIX_STIM",
+          "IO27": "SR_SER",
+          "IO13": "SMART_HEARTBEAT",
+          "IO22": "SCL_POSITION_0",
+          "IO4": "SDA_POSITION_0",
+          "IO21": "SDA_1",
+          "IO19": "SDA_2",
+          "IO18": "SDA_3",
+          "IO17": "SDA_4",
+          "IO16": "SDA_5",
+          "IO32": "MUX_A_A",
+          "IO33": "MUX_A_B",
+          "IO14": "MUX_B_A",
+          "IO23": "MUX_B_B",
+          "IO36": "JOY_X",
+          "IO39": "JOY_Y",
+          "IO35": "JOY_SW_N"
+        },
+        "phase": 0,
+        "sch": [
+          0,
+          -2.4
+        ],
+        "bounds": {
+          "xmin": 3.4,
+          "xmax": 14.6,
+          "ymin": 2.7,
+          "ymax": 25.3
+        },
+        "locked": false,
+        "socket": false,
+        "origin": "U_ESP2",
+        "function": "Controller"
+      },
+      {
+        "ref": "U_A_PRECISION",
+        "label": "OPA2333AID precision diagnostic/voltage buffer",
+        "kind": "chip",
+        "mpn": "OPA2333AID",
+        "body": "dip",
+        "side": "top",
+        "section": "Early prototype",
+        "phase": 1,
+        "signals": {
+          "OUTA": "P0_1_BUF",
+          "INA_N": "P0_1_BUF",
+          "INA_P": "P0_1_DIV",
+          "VSS": "GND",
+          "INB_P": "P0_2_DIV",
+          "INB_N": "P0_2_BUF",
+          "OUTB": "P0_2_BUF",
+          "VDD": "3V3_SYS"
+        },
+        "pins": [
+          {
+            "number": 1,
+            "label": "OUTA",
+            "hole": [
+              18,
+              5
+            ]
+          },
+          {
+            "number": 2,
+            "label": "INA_N",
+            "hole": [
+              18,
+              6
+            ]
+          },
+          {
+            "number": 3,
+            "label": "INA_P",
+            "hole": [
+              18,
+              7
+            ]
+          },
+          {
+            "number": 4,
+            "label": "VSS",
+            "hole": [
+              18,
+              8
+            ]
+          },
+          {
+            "number": 5,
+            "label": "INB_P",
+            "hole": [
+              21,
+              8
+            ]
+          },
+          {
+            "number": 6,
+            "label": "INB_N",
+            "hole": [
+              21,
+              7
+            ]
+          },
+          {
+            "number": 7,
+            "label": "OUTB",
+            "hole": [
+              21,
+              6
+            ]
+          },
+          {
+            "number": 8,
+            "label": "VDD",
+            "hole": [
+              21,
+              5
+            ]
+          }
+        ],
+        "socket": false,
+        "adapter": "SOIC8 to numbered DIP8",
+        "function": "Circuit",
+        "locked": false,
+        "bounds": {
+          "xmin": 17.35,
+          "xmax": 21.65,
+          "ymin": 4.35,
+          "ymax": 8.65
+        },
+        "sch": [
+          12,
+          -2.4
+        ],
+        "origin": "U_A_PRECISION"
+      },
+      {
+        "ref": "J_A_ADC_MODULE",
+        "label": "ADS1115 carrier interface — verify labelled module pads",
+        "kind": "header",
+        "mpn": "ADS1115 verified breakout carrier pending",
+        "body": "header",
+        "side": "top",
+        "section": "Early prototype",
+        "phase": 1,
+        "signals": {
+          "VDD": "3V3_SYS",
+          "GND": "GND",
+          "SCL": "SCL_POSITION_0",
+          "SDA": "SDA_POSITION_0",
+          "ADDR": "GND",
+          "AIN0": "P0_1_MUX",
+          "AIN1": "P0_2_MUX",
+          "AIN2": "GND",
+          "AIN3": "GND"
+        },
+        "pins": [
+          {
+            "number": 1,
+            "label": "VDD",
+            "hole": [
+              4,
+              27
+            ]
+          },
+          {
+            "number": 2,
+            "label": "GND",
+            "hole": [
+              5,
+              27
+            ]
+          },
+          {
+            "number": 3,
+            "label": "SCL",
+            "hole": [
+              6,
+              27
+            ]
+          },
+          {
+            "number": 4,
+            "label": "SDA",
+            "hole": [
+              7,
+              27
+            ]
+          },
+          {
+            "number": 5,
+            "label": "ADDR",
+            "hole": [
+              8,
+              27
+            ]
+          },
+          {
+            "number": 6,
+            "label": "ALERT_N",
+            "hole": [
+              9,
+              27
+            ]
+          },
+          {
+            "number": 7,
+            "label": "AIN0",
+            "hole": [
+              10,
+              27
+            ]
+          },
+          {
+            "number": 8,
+            "label": "AIN1",
+            "hole": [
+              11,
+              27
+            ]
+          },
+          {
+            "number": 9,
+            "label": "AIN2",
+            "hole": [
+              12,
+              27
+            ]
+          },
+          {
+            "number": 10,
+            "label": "AIN3",
+            "hole": [
+              13,
+              27
+            ]
+          }
+        ],
+        "socket": false,
+        "externalPart": "ADS1115 carrier",
+        "provisional": true,
+        "stageOpenPins": [
+          6
+        ],
+        "function": "Circuit",
+        "locked": false,
+        "bounds": {
+          "xmin": 3.4,
+          "xmax": 13.6,
+          "ymin": 26.4,
+          "ymax": 27.6
+        },
+        "sch": [
+          6,
+          -2.4
+        ],
+        "origin": "J_A_ADC_MODULE"
+      },
+      {
+        "ref": "R_P0_1_BOTTOM",
+        "label": "R_P0_1_BOTTOM: 1MΩ",
+        "kind": "resistor",
+        "mpn": "MFR-25FBF52-1M",
+        "body": "passive",
+        "side": "top",
+        "section": "Early prototype",
+        "phase": 1,
+        "signals": {
+          "A": "P0_1_DIV",
+          "B": "A_PREC_BIAS"
+        },
+        "pins": [
+          {
+            "number": 1,
+            "label": "A",
+            "hole": [
+              18,
+              11
+            ]
+          },
+          {
+            "number": 2,
+            "label": "B",
+            "hole": [
+              22,
+              11
+            ]
+          }
+        ],
+        "socket": false,
+        "value": "1M",
+        "tolerance": 0.01,
+        "function": "Circuit",
+        "locked": false,
+        "bounds": {
+          "xmin": 17.4,
+          "xmax": 22.6,
+          "ymin": 10.4,
+          "ymax": 11.6
+        },
+        "sch": [
+          0,
+          -5.6000000000000005
+        ],
+        "origin": "R_P0_1_BOTTOM"
+      },
+      {
+        "ref": "R_SCL_A",
+        "label": "4.7k",
+        "kind": "resistor",
+        "pins": [
+          {
+            "number": 1,
+            "label": "A",
+            "hole": [
+              18,
+              14
+            ]
+          },
+          {
+            "number": 2,
+            "label": "B",
+            "hole": [
+              22,
+              14
+            ]
+          }
+        ],
+        "side": "top",
+        "section": "Early prototype",
+        "value": "4.7k",
+        "body": "passive",
+        "mpn": "MFR-25FBF52-4K7",
+        "phase": 0,
+        "sch": [
+          6,
+          -5.6000000000000005
+        ],
+        "signals": {
+          "1": "USB_SMART_3V3",
+          "2": "SCL_POSITION_0"
+        },
+        "bounds": {
+          "xmin": 17.4,
+          "xmax": 22.6,
+          "ymin": 13.4,
+          "ymax": 14.6
+        },
+        "locked": false,
+        "socket": false,
+        "origin": "R_SCL_A",
+        "function": "Controller"
+      },
+      {
+        "ref": "R_SDA_0",
+        "label": "4.7k",
+        "kind": "resistor",
+        "pins": [
+          {
+            "number": 1,
+            "label": "A",
+            "hole": [
+              18,
+              17
+            ]
+          },
+          {
+            "number": 2,
+            "label": "B",
+            "hole": [
+              22,
+              17
+            ]
+          }
+        ],
+        "side": "top",
+        "section": "Early prototype",
+        "value": "4.7k",
+        "body": "passive",
+        "mpn": "MFR-25FBF52-4K7",
+        "phase": 0,
+        "sch": [
+          12,
+          -5.6000000000000005
+        ],
+        "signals": {
+          "1": "USB_SMART_3V3",
+          "2": "SDA_POSITION_0"
+        },
+        "bounds": {
+          "xmin": 17.4,
+          "xmax": 22.6,
+          "ymin": 16.4,
+          "ymax": 17.6
+        },
+        "locked": false,
+        "socket": false,
+        "origin": "R_SDA_0",
+        "function": "Controller"
+      },
+      {
+        "ref": "R_P0_2_BOTTOM",
+        "label": "R_P0_2_BOTTOM: 1MΩ",
+        "kind": "resistor",
+        "mpn": "MFR-25FBF52-1M",
+        "body": "passive",
+        "side": "top",
+        "section": "Early prototype",
+        "phase": 1,
+        "signals": {
+          "A": "P0_2_DIV",
+          "B": "A_PREC_BIAS"
+        },
+        "pins": [
+          {
+            "number": 1,
+            "label": "A",
+            "hole": [
+              18,
+              20
+            ]
+          },
+          {
+            "number": 2,
+            "label": "B",
+            "hole": [
+              22,
+              20
+            ]
+          }
+        ],
+        "socket": false,
+        "value": "1M",
+        "tolerance": 0.01,
+        "function": "Circuit",
+        "locked": false,
+        "bounds": {
+          "xmin": 17.4,
+          "xmax": 22.6,
+          "ymin": 19.4,
+          "ymax": 20.6
+        },
+        "sch": [
+          0,
+          -7.300000000000001
+        ],
+        "origin": "R_P0_2_BOTTOM"
+      },
+      {
+        "ref": "R_P0_1_TOP",
+        "label": "R_P0_1_TOP: 1MΩ",
+        "kind": "resistor",
+        "mpn": "MFR-25FBF52-1M",
+        "body": "passive",
+        "side": "top",
+        "section": "Early prototype",
+        "phase": 1,
+        "signals": {
+          "A": "NODE00",
+          "B": "P0_1_DIV"
+        },
+        "pins": [
+          {
+            "number": 1,
+            "label": "A",
+            "hole": [
+              18,
+              23
+            ]
+          },
+          {
+            "number": 2,
+            "label": "B",
+            "hole": [
+              22,
+              23
+            ]
+          }
+        ],
+        "socket": false,
+        "value": "1M",
+        "tolerance": 0.01,
+        "function": "Circuit",
+        "locked": false,
+        "bounds": {
+          "xmin": 17.4,
+          "xmax": 22.6,
+          "ymin": 22.4,
+          "ymax": 23.6
+        },
+        "sch": [
+          6,
+          -7.300000000000001
+        ],
+        "origin": "R_P0_1_TOP"
+      },
+      {
+        "ref": "R_A_PREC_BIAS_TOP",
+        "label": "R_A_PREC_BIAS_TOP: 5.62kΩ",
+        "kind": "resistor",
+        "mpn": "MFR-25FBF52-5.62k",
+        "body": "passive",
+        "side": "top",
+        "section": "Early prototype",
+        "phase": 1,
+        "signals": {
+          "A": "3V3_SYS",
+          "B": "A_PREC_BIAS"
+        },
+        "pins": [
+          {
+            "number": 1,
+            "label": "A",
+            "hole": [
+              18,
+              26
+            ]
+          },
+          {
+            "number": 2,
+            "label": "B",
+            "hole": [
+              22,
+              26
+            ]
+          }
+        ],
+        "socket": false,
+        "value": "5.62k",
+        "tolerance": 0.01,
+        "biasGroup": "precision",
+        "function": "Circuit",
+        "locked": false,
+        "bounds": {
+          "xmin": 17.4,
+          "xmax": 22.6,
+          "ymin": 25.4,
+          "ymax": 26.6
+        },
+        "sch": [
+          12,
+          -7.300000000000001
+        ],
+        "origin": "R_A_PREC_BIAS_TOP"
+      },
+      {
+        "ref": "R_P0_1_ADC",
+        "label": "R_P0_1_ADC: 1kΩ",
+        "kind": "resistor",
+        "mpn": "MFR-25FBF52-1k",
+        "body": "passive",
+        "side": "top",
+        "section": "Early prototype",
+        "phase": 1,
+        "signals": {
+          "A": "P0_1_BUF",
+          "B": "P0_1_MUX"
+        },
+        "pins": [
+          {
+            "number": 1,
+            "label": "A",
+            "hole": [
+              17,
+              29
+            ]
+          },
+          {
+            "number": 2,
+            "label": "B",
+            "hole": [
+              21,
+              29
+            ]
+          }
+        ],
+        "socket": false,
+        "value": "1k",
+        "function": "Circuit",
+        "locked": false,
+        "bounds": {
+          "xmin": 16.4,
+          "xmax": 21.6,
+          "ymin": 28.4,
+          "ymax": 29.6
+        },
+        "sch": [
+          0,
+          -9
+        ],
+        "origin": "R_P0_1_ADC"
+      },
+      {
+        "ref": "R_P0_2_TOP",
+        "label": "R_P0_2_TOP: 1MΩ",
+        "kind": "resistor",
+        "mpn": "MFR-25FBF52-1M",
+        "body": "passive",
+        "side": "top",
+        "section": "Early prototype",
+        "phase": 1,
+        "signals": {
+          "A": "NODE01",
+          "B": "P0_2_DIV"
+        },
+        "pins": [
+          {
+            "number": 1,
+            "label": "A",
+            "hole": [
+              4,
+              30
+            ]
+          },
+          {
+            "number": 2,
+            "label": "B",
+            "hole": [
+              8,
+              30
+            ]
+          }
+        ],
+        "socket": false,
+        "value": "1M",
+        "tolerance": 0.01,
+        "function": "Circuit",
+        "locked": false,
+        "bounds": {
+          "xmin": 3.4,
+          "xmax": 8.6,
+          "ymin": 29.4,
+          "ymax": 30.6
+        },
+        "sch": [
+          6,
+          -9
+        ],
+        "origin": "R_P0_2_TOP"
+      },
+      {
+        "ref": "R_P0_2_ADC",
+        "label": "R_P0_2_ADC: 1kΩ",
+        "kind": "resistor",
+        "mpn": "MFR-25FBF52-1k",
+        "body": "passive",
+        "side": "top",
+        "section": "Early prototype",
+        "phase": 1,
+        "signals": {
+          "A": "P0_2_BUF",
+          "B": "P0_2_MUX"
+        },
+        "pins": [
+          {
+            "number": 1,
+            "label": "A",
+            "hole": [
+              12,
+              32
+            ]
+          },
+          {
+            "number": 2,
+            "label": "B",
+            "hole": [
+              16,
+              32
+            ]
+          }
+        ],
+        "socket": false,
+        "value": "1k",
+        "function": "Circuit",
+        "locked": false,
+        "bounds": {
+          "xmin": 11.4,
+          "xmax": 16.6,
+          "ymin": 31.4,
+          "ymax": 32.6
+        },
+        "sch": [
+          12,
+          -9
+        ],
+        "origin": "R_P0_2_ADC"
+      },
+      {
+        "ref": "R_A_PREC_BIAS_BOTTOM",
+        "label": "R_A_PREC_BIAS_BOTTOM: 1kΩ",
+        "kind": "resistor",
+        "mpn": "MFR-25FBF52-1k",
+        "body": "passive",
+        "side": "top",
+        "section": "Early prototype",
+        "phase": 1,
+        "signals": {
+          "A": "A_PREC_BIAS",
+          "B": "GND"
+        },
+        "pins": [
+          {
+            "number": 1,
+            "label": "A",
+            "hole": [
+              19,
+              32
+            ]
+          },
+          {
+            "number": 2,
+            "label": "B",
+            "hole": [
+              23,
+              32
+            ]
+          }
+        ],
+        "socket": false,
+        "value": "1k",
+        "tolerance": 0.01,
+        "biasGroup": "precision",
+        "function": "Circuit",
+        "locked": false,
+        "bounds": {
+          "xmin": 18.4,
+          "xmax": 23.6,
+          "ymin": 31.4,
+          "ymax": 32.6
+        },
+        "sch": [
+          0,
+          -10.7
+        ],
+        "origin": "R_A_PREC_BIAS_BOTTOM"
+      },
+      {
+        "ref": "C_P0_1",
+        "label": "C_P0_1: 1nFΩ",
+        "kind": "capacitor",
+        "mpn": "C315C104K5R5TA",
+        "body": "passive",
+        "side": "top",
+        "section": "Early prototype",
+        "phase": 1,
+        "signals": {
+          "A": "P0_1_DIV",
+          "B": "GND"
+        },
+        "pins": [
+          {
+            "number": 1,
+            "label": "A",
+            "hole": [
+              4,
+              33
+            ]
+          },
+          {
+            "number": 2,
+            "label": "B",
+            "hole": [
+              5,
+              33
+            ]
+          }
+        ],
+        "socket": false,
+        "value": "1nF",
+        "function": "Circuit",
+        "locked": false,
+        "bounds": {
+          "xmin": 3.4,
+          "xmax": 5.6,
+          "ymin": 32.4,
+          "ymax": 33.6
+        },
+        "sch": [
+          6,
+          -10.7
+        ],
+        "origin": "C_P0_1"
+      },
+      {
+        "ref": "C_A_PREC_BIAS",
+        "label": "C_A_PREC_BIAS: 100nFΩ",
+        "kind": "capacitor",
+        "mpn": "C315C104K5R5TA",
+        "body": "passive",
+        "side": "top",
+        "section": "Early prototype",
+        "phase": 1,
+        "signals": {
+          "A": "A_PREC_BIAS",
+          "B": "GND"
+        },
+        "pins": [
+          {
+            "number": 1,
+            "label": "A",
+            "hole": [
+              8,
+              35
+            ]
+          },
+          {
+            "number": 2,
+            "label": "B",
+            "hole": [
+              9,
+              35
+            ]
+          }
+        ],
+        "socket": false,
+        "value": "100nF",
+        "biasGroup": "precision",
+        "function": "Circuit",
+        "locked": false,
+        "bounds": {
+          "xmin": 7.4,
+          "xmax": 9.6,
+          "ymin": 34.4,
+          "ymax": 35.6
+        },
+        "sch": [
+          12,
+          -10.7
+        ],
+        "origin": "C_A_PREC_BIAS"
+      },
+      {
+        "ref": "C_A_PRECISION",
+        "label": "C_A_PRECISION: 100nFΩ",
+        "kind": "capacitor",
+        "mpn": "C315C104K5R5TA",
+        "body": "passive",
+        "side": "top",
+        "section": "Early prototype",
+        "phase": 1,
+        "signals": {
+          "A": "3V3_SYS",
+          "B": "GND"
+        },
+        "pins": [
+          {
+            "number": 1,
+            "label": "A",
+            "hole": [
+              12,
+              35
+            ]
+          },
+          {
+            "number": 2,
+            "label": "B",
+            "hole": [
+              13,
+              35
+            ]
+          }
+        ],
+        "socket": false,
+        "value": "100nF",
+        "function": "Circuit",
+        "locked": false,
+        "bounds": {
+          "xmin": 11.4,
+          "xmax": 13.6,
+          "ymin": 34.4,
+          "ymax": 35.6
+        },
+        "sch": [
+          0,
+          -12.399999999999999
+        ],
+        "origin": "C_A_PRECISION"
+      },
+      {
+        "ref": "C_P0_2",
+        "label": "C_P0_2: 1nFΩ",
+        "kind": "capacitor",
+        "mpn": "C315C104K5R5TA",
+        "body": "passive",
+        "side": "top",
+        "section": "Early prototype",
+        "phase": 1,
+        "signals": {
+          "A": "P0_2_DIV",
+          "B": "GND"
+        },
+        "pins": [
+          {
+            "number": 1,
+            "label": "A",
+            "hole": [
+              17,
+              35
+            ]
+          },
+          {
+            "number": 2,
+            "label": "B",
+            "hole": [
+              18,
+              35
+            ]
+          }
+        ],
+        "socket": false,
+        "value": "1nF",
+        "function": "Circuit",
+        "locked": false,
+        "bounds": {
+          "xmin": 16.4,
+          "xmax": 18.6,
+          "ymin": 34.4,
+          "ymax": 35.6
+        },
+        "sch": [
+          6,
+          -12.399999999999999
+        ],
+        "origin": "C_P0_2"
+      }
+    ],
+    "sections": [
+      {
+        "name": "Early prototype",
+        "label": "Early prototype"
+      }
+    ],
+    "mounts": [],
+    "nets": [
+      {
+        "name": "USB_SMART_3V3",
+        "pins": [
+          "U_ESP2.1",
+          "R_SCL_A.1",
+          "R_SDA_0.1"
+        ]
+      },
+      {
+        "name": "GND",
+        "pins": [
+          "U_ESP2.14",
+          "U_ESP2.20",
+          "U_ESP2.26",
+          "U_A_PRECISION.4",
+          "J_A_ADC_MODULE.2",
+          "J_A_ADC_MODULE.5",
+          "J_A_ADC_MODULE.9",
+          "J_A_ADC_MODULE.10",
+          "R_A_PREC_BIAS_BOTTOM.2",
+          "C_P0_1.2",
+          "C_A_PREC_BIAS.2",
+          "C_A_PRECISION.2",
+          "C_P0_2.2"
+        ]
+      },
+      {
+        "name": "SR_SRCLK",
+        "pins": [
+          "U_ESP2.9"
+        ]
+      },
+      {
+        "name": "FIX_STIM",
+        "pins": [
+          "U_ESP2.10"
+        ]
+      },
+      {
+        "name": "SR_SER",
+        "pins": [
+          "U_ESP2.11"
+        ]
+      },
+      {
+        "name": "SMART_HEARTBEAT",
+        "pins": [
+          "U_ESP2.15"
+        ]
+      },
+      {
+        "name": "SCL_POSITION_0",
+        "pins": [
+          "U_ESP2.22",
+          "J_A_ADC_MODULE.3",
+          "R_SCL_A.2"
+        ]
+      },
+      {
+        "name": "SDA_POSITION_0",
+        "pins": [
+          "U_ESP2.32",
+          "J_A_ADC_MODULE.4",
+          "R_SDA_0.2"
+        ]
+      },
+      {
+        "name": "SDA_1",
+        "pins": [
+          "U_ESP2.25"
+        ]
+      },
+      {
+        "name": "SDA_2",
+        "pins": [
+          "U_ESP2.27"
+        ]
+      },
+      {
+        "name": "SDA_3",
+        "pins": [
+          "U_ESP2.28"
+        ]
+      },
+      {
+        "name": "SDA_4",
+        "pins": [
+          "U_ESP2.30"
+        ]
+      },
+      {
+        "name": "SDA_5",
+        "pins": [
+          "U_ESP2.31"
+        ]
+      },
+      {
+        "name": "MUX_A_A",
+        "pins": [
+          "U_ESP2.7"
+        ]
+      },
+      {
+        "name": "MUX_A_B",
+        "pins": [
+          "U_ESP2.8"
+        ]
+      },
+      {
+        "name": "MUX_B_A",
+        "pins": [
+          "U_ESP2.12"
+        ]
+      },
+      {
+        "name": "MUX_B_B",
+        "pins": [
+          "U_ESP2.21"
+        ]
+      },
+      {
+        "name": "JOY_X",
+        "pins": [
+          "U_ESP2.3"
+        ]
+      },
+      {
+        "name": "JOY_Y",
+        "pins": [
+          "U_ESP2.4"
+        ]
+      },
+      {
+        "name": "JOY_SW_N",
+        "pins": [
+          "U_ESP2.6"
+        ]
+      },
+      {
+        "name": "P0_1_BUF",
+        "pins": [
+          "U_A_PRECISION.1",
+          "U_A_PRECISION.2",
+          "R_P0_1_ADC.1"
+        ]
+      },
+      {
+        "name": "P0_1_DIV",
+        "pins": [
+          "U_A_PRECISION.3",
+          "R_P0_1_BOTTOM.1",
+          "R_P0_1_TOP.2",
+          "C_P0_1.1"
+        ]
+      },
+      {
+        "name": "P0_2_DIV",
+        "pins": [
+          "U_A_PRECISION.5",
+          "R_P0_2_BOTTOM.1",
+          "R_P0_2_TOP.2",
+          "C_P0_2.1"
+        ]
+      },
+      {
+        "name": "P0_2_BUF",
+        "pins": [
+          "U_A_PRECISION.6",
+          "U_A_PRECISION.7",
+          "R_P0_2_ADC.1"
+        ]
+      },
+      {
+        "name": "3V3_SYS",
+        "pins": [
+          "U_A_PRECISION.8",
+          "J_A_ADC_MODULE.1",
+          "R_A_PREC_BIAS_TOP.1",
+          "C_A_PRECISION.1"
+        ]
+      },
+      {
+        "name": "P0_1_MUX",
+        "pins": [
+          "J_A_ADC_MODULE.7",
+          "R_P0_1_ADC.2"
+        ]
+      },
+      {
+        "name": "P0_2_MUX",
+        "pins": [
+          "J_A_ADC_MODULE.8",
+          "R_P0_2_ADC.2"
+        ]
+      },
+      {
+        "name": "A_PREC_BIAS",
+        "pins": [
+          "R_P0_1_BOTTOM.2",
+          "R_P0_2_BOTTOM.2",
+          "R_A_PREC_BIAS_TOP.2",
+          "R_A_PREC_BIAS_BOTTOM.1",
+          "C_A_PREC_BIAS.1"
+        ]
+      },
+      {
+        "name": "NODE00",
+        "pins": [
+          "R_P0_1_TOP.1"
+        ]
+      },
+      {
+        "name": "NODE01",
+        "pins": [
+          "R_P0_2_TOP.1"
+        ]
+      }
+    ],
+    "wires": [
+      {
+        "id": "W1",
+        "uid": "wire:USB_SMART_3V3:R_SCL_A.1~R_SDA_0.1",
+        "net": "USB_SMART_3V3",
+        "from": "R_SCL_A.1",
+        "to": "R_SDA_0.1",
+        "path": [
+          [
+            18,
+            14
+          ],
+          [
+            18,
+            13.5
+          ],
+          [
+            17.5,
+            13.5
+          ],
+          [
+            17.5,
+            17.5
+          ],
+          [
+            18,
+            17.5
+          ],
+          [
+            18,
+            17
+          ]
+        ],
+        "color": "#ef8500",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 0
+      },
+      {
+        "id": "W2",
+        "uid": "wire:USB_SMART_3V3:R_SCL_A.1~U_ESP2.1",
+        "net": "USB_SMART_3V3",
+        "from": "R_SCL_A.1",
+        "to": "U_ESP2.1",
+        "path": [
+          [
+            18,
+            14
+          ],
+          [
+            18,
+            13.5
+          ],
+          [
+            10.5,
+            13.5
+          ],
+          [
+            10.5,
+            5.5
+          ],
+          [
+            4,
+            5.5
+          ],
+          [
+            4,
+            5
+          ]
+        ],
+        "color": "#ef8500",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 0
+      },
+      {
+        "id": "W3",
+        "uid": "wire:GND:U_ESP2.14~U_ESP2.26",
+        "net": "GND",
+        "from": "U_ESP2.14",
+        "to": "U_ESP2.26",
+        "path": [
+          [
+            4,
+            18
+          ],
+          [
+            4,
+            17.5
+          ],
+          [
+            9,
+            17.5
+          ],
+          [
+            9,
+            11.5
+          ],
+          [
+            14,
+            11.5
+          ],
+          [
+            14,
+            11
+          ]
+        ],
+        "color": "#222222",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 0
+      },
+      {
+        "id": "W4",
+        "uid": "wire:GND:U_ESP2.20~U_ESP2.26",
+        "net": "GND",
+        "from": "U_ESP2.26",
+        "to": "U_ESP2.20",
+        "path": [
+          [
+            14,
+            11
+          ],
+          [
+            14,
+            10.5
+          ],
+          [
+            14,
+            5.5
+          ],
+          [
+            14,
+            5
+          ]
+        ],
+        "color": "#222222",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 0
+      },
+      {
+        "id": "W5",
+        "uid": "wire:GND:U_A_PRECISION.4~U_ESP2.20",
+        "net": "GND",
+        "from": "U_ESP2.20",
+        "to": "U_A_PRECISION.4",
+        "path": [
+          [
+            14,
+            5
+          ],
+          [
+            14,
+            4.5
+          ],
+          [
+            16,
+            4.5
+          ],
+          [
+            16,
+            8.5
+          ],
+          [
+            18,
+            8.5
+          ],
+          [
+            18,
+            8
+          ]
+        ],
+        "color": "#222222",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W6",
+        "uid": "wire:GND:J_A_ADC_MODULE.2~U_ESP2.14",
+        "net": "GND",
+        "from": "U_ESP2.14",
+        "to": "J_A_ADC_MODULE.2",
+        "path": [
+          [
+            4,
+            18
+          ],
+          [
+            4,
+            17.5
+          ],
+          [
+            5,
+            17.5
+          ],
+          [
+            5,
+            27.5
+          ],
+          [
+            5,
+            27
+          ]
+        ],
+        "color": "#222222",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W7",
+        "uid": "wire:GND:J_A_ADC_MODULE.2~J_A_ADC_MODULE.5",
+        "net": "GND",
+        "from": "J_A_ADC_MODULE.2",
+        "to": "J_A_ADC_MODULE.5",
+        "path": [
+          [
+            5,
+            27
+          ],
+          [
+            5,
+            26.5
+          ],
+          [
+            7,
+            26.5
+          ],
+          [
+            7,
+            27.5
+          ],
+          [
+            8,
+            27.5
+          ],
+          [
+            8,
+            27
+          ]
+        ],
+        "color": "#222222",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W8",
+        "uid": "wire:GND:J_A_ADC_MODULE.5~J_A_ADC_MODULE.9",
+        "net": "GND",
+        "from": "J_A_ADC_MODULE.5",
+        "to": "J_A_ADC_MODULE.9",
+        "path": [
+          [
+            8,
+            27
+          ],
+          [
+            8,
+            26.5
+          ],
+          [
+            10,
+            26.5
+          ],
+          [
+            10,
+            27.5
+          ],
+          [
+            12,
+            27.5
+          ],
+          [
+            12,
+            27
+          ]
+        ],
+        "color": "#222222",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W9",
+        "uid": "wire:GND:J_A_ADC_MODULE.10~J_A_ADC_MODULE.9",
+        "net": "GND",
+        "from": "J_A_ADC_MODULE.9",
+        "to": "J_A_ADC_MODULE.10",
+        "path": [
+          [
+            12,
+            27
+          ],
+          [
+            12,
+            26.5
+          ],
+          [
+            13,
+            26.5
+          ],
+          [
+            13,
+            27.5
+          ],
+          [
+            13,
+            27
+          ]
+        ],
+        "color": "#222222",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W10",
+        "uid": "wire:GND:C_A_PRECISION.2~J_A_ADC_MODULE.10",
+        "net": "GND",
+        "from": "J_A_ADC_MODULE.10",
+        "to": "C_A_PRECISION.2",
+        "path": [
+          [
+            13,
+            27
+          ],
+          [
+            13,
+            26.5
+          ],
+          [
+            13,
+            35.5
+          ],
+          [
+            13,
+            35
+          ]
+        ],
+        "color": "#222222",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W11",
+        "uid": "wire:GND:C_A_PRECISION.2~C_A_PREC_BIAS.2",
+        "net": "GND",
+        "from": "C_A_PRECISION.2",
+        "to": "C_A_PREC_BIAS.2",
+        "path": [
+          [
+            13,
+            35
+          ],
+          [
+            13,
+            34.5
+          ],
+          [
+            11,
+            34.5
+          ],
+          [
+            11,
+            35.5
+          ],
+          [
+            9,
+            35.5
+          ],
+          [
+            9,
+            35
+          ]
+        ],
+        "color": "#222222",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W12",
+        "uid": "wire:GND:C_A_PREC_BIAS.2~C_P0_1.2",
+        "net": "GND",
+        "from": "C_A_PREC_BIAS.2",
+        "to": "C_P0_1.2",
+        "path": [
+          [
+            9,
+            35
+          ],
+          [
+            9,
+            34.5
+          ],
+          [
+            7,
+            34.5
+          ],
+          [
+            7,
+            33.5
+          ],
+          [
+            5,
+            33.5
+          ],
+          [
+            5,
+            33
+          ]
+        ],
+        "color": "#222222",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W13",
+        "uid": "wire:GND:C_P0_1.2~C_P0_2.2",
+        "net": "GND",
+        "from": "C_P0_1.2",
+        "to": "C_P0_2.2",
+        "path": [
+          [
+            5,
+            33
+          ],
+          [
+            5,
+            32.5
+          ],
+          [
+            12,
+            32.5
+          ],
+          [
+            12,
+            35.5
+          ],
+          [
+            18,
+            35.5
+          ],
+          [
+            18,
+            35
+          ]
+        ],
+        "color": "#222222",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W14",
+        "uid": "wire:GND:C_P0_2.2~R_A_PREC_BIAS_BOTTOM.2",
+        "net": "GND",
+        "from": "C_P0_2.2",
+        "to": "R_A_PREC_BIAS_BOTTOM.2",
+        "path": [
+          [
+            18,
+            35
+          ],
+          [
+            18,
+            34.5
+          ],
+          [
+            21,
+            34.5
+          ],
+          [
+            21,
+            32.5
+          ],
+          [
+            23,
+            32.5
+          ],
+          [
+            23,
+            32
+          ]
+        ],
+        "color": "#222222",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W15",
+        "uid": "wire:SCL_POSITION_0:R_SCL_A.2~U_ESP2.22",
+        "net": "SCL_POSITION_0",
+        "from": "R_SCL_A.2",
+        "to": "U_ESP2.22",
+        "path": [
+          [
+            22,
+            14
+          ],
+          [
+            22,
+            13.5
+          ],
+          [
+            17.5,
+            13.5
+          ],
+          [
+            17.5,
+            7.5
+          ],
+          [
+            14,
+            7.5
+          ],
+          [
+            14,
+            7
+          ]
+        ],
+        "color": "#888888",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 0
+      },
+      {
+        "id": "W16",
+        "uid": "wire:SCL_POSITION_0:J_A_ADC_MODULE.3~U_ESP2.22",
+        "net": "SCL_POSITION_0",
+        "from": "U_ESP2.22",
+        "to": "J_A_ADC_MODULE.3",
+        "path": [
+          [
+            14,
+            7
+          ],
+          [
+            14,
+            6.5
+          ],
+          [
+            9.5,
+            6.5
+          ],
+          [
+            9.5,
+            27.5
+          ],
+          [
+            6,
+            27.5
+          ],
+          [
+            6,
+            27
+          ]
+        ],
+        "color": "#888888",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W17",
+        "uid": "wire:SDA_POSITION_0:R_SDA_0.2~U_ESP2.32",
+        "net": "SDA_POSITION_0",
+        "from": "R_SDA_0.2",
+        "to": "U_ESP2.32",
+        "path": [
+          [
+            22,
+            17
+          ],
+          [
+            22,
+            16.5
+          ],
+          [
+            18,
+            16.5
+          ],
+          [
+            18,
+            17.5
+          ],
+          [
+            14,
+            17.5
+          ],
+          [
+            14,
+            17
+          ]
+        ],
+        "color": "#888888",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 0
+      },
+      {
+        "id": "W18",
+        "uid": "wire:SDA_POSITION_0:J_A_ADC_MODULE.4~U_ESP2.32",
+        "net": "SDA_POSITION_0",
+        "from": "U_ESP2.32",
+        "to": "J_A_ADC_MODULE.4",
+        "path": [
+          [
+            14,
+            17
+          ],
+          [
+            14,
+            16.5
+          ],
+          [
+            11,
+            16.5
+          ],
+          [
+            11,
+            27.5
+          ],
+          [
+            7,
+            27.5
+          ],
+          [
+            7,
+            27
+          ]
+        ],
+        "color": "#888888",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W19",
+        "uid": "wire:P0_1_BUF:R_P0_1_ADC.1~U_A_PRECISION.2",
+        "net": "P0_1_BUF",
+        "from": "R_P0_1_ADC.1",
+        "to": "U_A_PRECISION.2",
+        "path": [
+          [
+            17,
+            29
+          ],
+          [
+            17,
+            6
+          ],
+          [
+            18,
+            6
+          ]
+        ],
+        "color": "#c79500",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W20",
+        "uid": "wire:P0_1_BUF:U_A_PRECISION.1~U_A_PRECISION.2",
+        "net": "P0_1_BUF",
+        "from": "U_A_PRECISION.2",
+        "to": "U_A_PRECISION.1",
+        "path": [
+          [
+            18,
+            6
+          ],
+          [
+            18,
+            5
+          ]
+        ],
+        "color": "#c79500",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W21",
+        "uid": "wire:P0_1_DIV:C_P0_1.1~R_P0_1_TOP.2",
+        "net": "P0_1_DIV",
+        "from": "C_P0_1.1",
+        "to": "R_P0_1_TOP.2",
+        "path": [
+          [
+            4,
+            33
+          ],
+          [
+            4,
+            23
+          ],
+          [
+            22,
+            23
+          ]
+        ],
+        "color": "#26873c",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W22",
+        "uid": "wire:P0_1_DIV:R_P0_1_BOTTOM.1~R_P0_1_TOP.2",
+        "net": "P0_1_DIV",
+        "from": "R_P0_1_TOP.2",
+        "to": "R_P0_1_BOTTOM.1",
+        "path": [
+          [
+            22,
+            23
+          ],
+          [
+            22,
+            11
+          ],
+          [
+            18,
+            11
+          ]
+        ],
+        "color": "#26873c",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W23",
+        "uid": "wire:P0_1_DIV:R_P0_1_BOTTOM.1~U_A_PRECISION.3",
+        "net": "P0_1_DIV",
+        "from": "R_P0_1_BOTTOM.1",
+        "to": "U_A_PRECISION.3",
+        "path": [
+          [
+            18,
+            11
+          ],
+          [
+            18,
+            7
+          ]
+        ],
+        "color": "#26873c",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W24",
+        "uid": "wire:P0_2_DIV:C_P0_2.1~R_P0_2_TOP.2",
+        "net": "P0_2_DIV",
+        "from": "C_P0_2.1",
+        "to": "R_P0_2_TOP.2",
+        "path": [
+          [
+            17,
+            35
+          ],
+          [
+            17,
+            30
+          ],
+          [
+            8,
+            30
+          ]
+        ],
+        "color": "#26873c",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W25",
+        "uid": "wire:P0_2_DIV:C_P0_2.1~R_P0_2_BOTTOM.1",
+        "net": "P0_2_DIV",
+        "from": "C_P0_2.1",
+        "to": "R_P0_2_BOTTOM.1",
+        "path": [
+          [
+            17,
+            35
+          ],
+          [
+            17,
+            20
+          ],
+          [
+            18,
+            20
+          ]
+        ],
+        "color": "#26873c",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W26",
+        "uid": "wire:P0_2_DIV:R_P0_2_BOTTOM.1~U_A_PRECISION.5",
+        "net": "P0_2_DIV",
+        "from": "R_P0_2_BOTTOM.1",
+        "to": "U_A_PRECISION.5",
+        "path": [
+          [
+            18,
+            20
+          ],
+          [
+            18,
+            8
+          ],
+          [
+            21,
+            8
+          ]
+        ],
+        "color": "#26873c",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W27",
+        "uid": "wire:P0_2_BUF:R_P0_2_ADC.1~U_A_PRECISION.6",
+        "net": "P0_2_BUF",
+        "from": "R_P0_2_ADC.1",
+        "to": "U_A_PRECISION.6",
+        "path": [
+          [
+            12,
+            32
+          ],
+          [
+            12,
+            7
+          ],
+          [
+            21,
+            7
+          ]
+        ],
+        "color": "#c79500",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W28",
+        "uid": "wire:P0_2_BUF:U_A_PRECISION.6~U_A_PRECISION.7",
+        "net": "P0_2_BUF",
+        "from": "U_A_PRECISION.6",
+        "to": "U_A_PRECISION.7",
+        "path": [
+          [
+            21,
+            7
+          ],
+          [
+            21,
+            6
+          ]
+        ],
+        "color": "#c79500",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W29",
+        "uid": "wire:3V3_SYS:C_A_PRECISION.1~R_A_PREC_BIAS_TOP.1",
+        "net": "3V3_SYS",
+        "from": "C_A_PRECISION.1",
+        "to": "R_A_PREC_BIAS_TOP.1",
+        "path": [
+          [
+            12,
+            35
+          ],
+          [
+            12,
+            34.5
+          ],
+          [
+            14.5,
+            34.5
+          ],
+          [
+            14.5,
+            26.5
+          ],
+          [
+            18,
+            26.5
+          ],
+          [
+            18,
+            26
+          ]
+        ],
+        "color": "#ef8500",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W30",
+        "uid": "wire:3V3_SYS:J_A_ADC_MODULE.1~R_A_PREC_BIAS_TOP.1",
+        "net": "3V3_SYS",
+        "from": "R_A_PREC_BIAS_TOP.1",
+        "to": "J_A_ADC_MODULE.1",
+        "path": [
+          [
+            18,
+            26
+          ],
+          [
+            18,
+            25.5
+          ],
+          [
+            10.5,
+            25.5
+          ],
+          [
+            10.5,
+            27.5
+          ],
+          [
+            4,
+            27.5
+          ],
+          [
+            4,
+            27
+          ]
+        ],
+        "color": "#ef8500",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W31",
+        "uid": "wire:3V3_SYS:C_A_PRECISION.1~U_A_PRECISION.8",
+        "net": "3V3_SYS",
+        "from": "C_A_PRECISION.1",
+        "to": "U_A_PRECISION.8",
+        "path": [
+          [
+            12,
+            35
+          ],
+          [
+            12,
+            34.5
+          ],
+          [
+            16.5,
+            34.5
+          ],
+          [
+            16.5,
+            5.5
+          ],
+          [
+            21,
+            5.5
+          ],
+          [
+            21,
+            5
+          ]
+        ],
+        "color": "#ef8500",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W32",
+        "uid": "wire:P0_1_MUX:J_A_ADC_MODULE.7~R_P0_1_ADC.2",
+        "net": "P0_1_MUX",
+        "from": "J_A_ADC_MODULE.7",
+        "to": "R_P0_1_ADC.2",
+        "path": [
+          [
+            10,
+            27
+          ],
+          [
+            10,
+            26.5
+          ],
+          [
+            16,
+            26.5
+          ],
+          [
+            16,
+            29.5
+          ],
+          [
+            21,
+            29.5
+          ],
+          [
+            21,
+            29
+          ]
+        ],
+        "color": "#26873c",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W33",
+        "uid": "wire:P0_2_MUX:J_A_ADC_MODULE.8~R_P0_2_ADC.2",
+        "net": "P0_2_MUX",
+        "from": "J_A_ADC_MODULE.8",
+        "to": "R_P0_2_ADC.2",
+        "path": [
+          [
+            11,
+            27
+          ],
+          [
+            11,
+            26.5
+          ],
+          [
+            14.5,
+            26.5
+          ],
+          [
+            14.5,
+            32.5
+          ],
+          [
+            16,
+            32.5
+          ],
+          [
+            16,
+            32
+          ]
+        ],
+        "color": "#26873c",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W34",
+        "uid": "wire:A_PREC_BIAS:C_A_PREC_BIAS.1~R_A_PREC_BIAS_BOTTOM.1",
+        "net": "A_PREC_BIAS",
+        "from": "C_A_PREC_BIAS.1",
+        "to": "R_A_PREC_BIAS_BOTTOM.1",
+        "path": [
+          [
+            8,
+            35
+          ],
+          [
+            8,
+            34.5
+          ],
+          [
+            13.5,
+            34.5
+          ],
+          [
+            13.5,
+            32.5
+          ],
+          [
+            19,
+            32.5
+          ],
+          [
+            19,
+            32
+          ]
+        ],
+        "color": "#c79500",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W35",
+        "uid": "wire:A_PREC_BIAS:R_A_PREC_BIAS_BOTTOM.1~R_A_PREC_BIAS_TOP.2",
+        "net": "A_PREC_BIAS",
+        "from": "R_A_PREC_BIAS_BOTTOM.1",
+        "to": "R_A_PREC_BIAS_TOP.2",
+        "path": [
+          [
+            19,
+            32
+          ],
+          [
+            19,
+            31.5
+          ],
+          [
+            20.5,
+            31.5
+          ],
+          [
+            20.5,
+            26.5
+          ],
+          [
+            22,
+            26.5
+          ],
+          [
+            22,
+            26
+          ]
+        ],
+        "color": "#c79500",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W36",
+        "uid": "wire:A_PREC_BIAS:R_A_PREC_BIAS_TOP.2~R_P0_2_BOTTOM.2",
+        "net": "A_PREC_BIAS",
+        "from": "R_A_PREC_BIAS_TOP.2",
+        "to": "R_P0_2_BOTTOM.2",
+        "path": [
+          [
+            22,
+            26
+          ],
+          [
+            22,
+            25.5
+          ],
+          [
+            21.5,
+            25.5
+          ],
+          [
+            21.5,
+            20.5
+          ],
+          [
+            22,
+            20.5
+          ],
+          [
+            22,
+            20
+          ]
+        ],
+        "color": "#c79500",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      },
+      {
+        "id": "W37",
+        "uid": "wire:A_PREC_BIAS:R_P0_1_BOTTOM.2~R_P0_2_BOTTOM.2",
+        "net": "A_PREC_BIAS",
+        "from": "R_P0_2_BOTTOM.2",
+        "to": "R_P0_1_BOTTOM.2",
+        "path": [
+          [
+            22,
+            20
+          ],
+          [
+            22,
+            19.5
+          ],
+          [
+            21.5,
+            19.5
+          ],
+          [
+            21.5,
+            11.5
+          ],
+          [
+            22,
+            11.5
+          ],
+          [
+            22,
+            11
+          ]
+        ],
+        "color": "#c79500",
+        "side": "bottom",
+        "insulated": true,
+        "bar": false,
+        "phase": 1
+      }
+    ],
+    "notes": [
+      "Standalone GPIO4 SDA, GPIO22 SCL, GPIO26 stimulus. No matrix, no multi-position mux and no isolated service buffer.",
+      "One removable USB_SMART_3V3 to 3V3_SYS link; disconnect before external supply. Power external OLED/ADC only from verified 3.3V.",
+      "Pull-ups terminate in the same linked 3.3V domain. No final-bank timing, presence-isolation or partial-power qualification claimed.",
+      "Keep student source OFF for diagnostics. Remove JP_RETURN/test probes before voltage operation.",
+      "Late output/current circuits require an external temporary fixture or final smart PCB; full 7×10 packing failed."
+    ]
+  },
+  "earlyStatus": "provisional-pad-fit"
+}

@@ -1,0 +1,5 @@
+"board","wire segments","proper segment crossings","prescribed length mm","max sensitive path mm","bare bar segments","wires needing a sleeve"
+"contact-a","97","28","2761.0","0.0","0","2"
+"contact-b","97","32","2750.8","0.0","0","0"
+"power","203","608","7747.0","83.8","47","54"
+"router-matrix","248","1623","12095.5","73.7","51","65"

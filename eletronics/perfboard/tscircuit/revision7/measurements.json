@@ -1,0 +1,81 @@
+{
+  "revision": "r7-testable-perfboards",
+  "verified": false,
+  "enclosure": {
+    "usableWidthMm": null,
+    "usableDepthMm": null,
+    "usableHeightBelowContactsMm": null,
+    "trayExtractionDemonstrated": false
+  },
+  "boardPlacement": [
+    {
+      "board": "contact-a",
+      "xMm": null,
+      "yMm": null,
+      "rotationDeg": 0,
+      "layer": "contact"
+    },
+    {
+      "board": "contact-b",
+      "xMm": null,
+      "yMm": null,
+      "rotationDeg": 0,
+      "layer": "contact"
+    },
+    {
+      "board": "power",
+      "xMm": null,
+      "yMm": null,
+      "rotationDeg": 0,
+      "layer": "lower"
+    },
+    {
+      "board": "router-matrix",
+      "xMm": null,
+      "yMm": null,
+      "rotationDeg": 0,
+      "layer": "lower"
+    }
+  ],
+  "stock": {
+    "pitchMm": null,
+    "usableColumns": null,
+    "usableRows": null,
+    "thicknessMm": null,
+    "isolatedPads": null,
+    "substrate": null
+  },
+  "stack": {
+    "contactUndersideProtrusionMm": null,
+    "lowerTopHeightMm": null,
+    "lowerBoardThicknessMm": null,
+    "lowerUndersideProtrusionMm": null,
+    "insulationAndAssemblyAllowanceMm": null,
+    "cableBendEnvelopeMm": null
+  },
+  "externalModules": [
+    {
+      "role": "LM2596 5V",
+      "widthMm": null,
+      "depthMm": null,
+      "heightMm": null,
+      "allocated": false
+    },
+    {
+      "role": "XL4015 3.3V",
+      "widthMm": null,
+      "depthMm": null,
+      "heightMm": null,
+      "allocated": false
+    },
+    {
+      "role": "smart PCBs",
+      "widthMm": null,
+      "depthMm": null,
+      "heightMm": null,
+      "allocated": false
+    }
+  ],
+  "evidence": [],
+  "note": "Fill from actual measurements and mock-up. No inferred dimensions or simulated bench acceptance."
+}

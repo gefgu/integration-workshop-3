@@ -18,7 +18,8 @@
     "verify:partial": "bun scripts/check-partial.tsx",
     "build:local": "bun scripts/build-local.tsx",
     "build:revision5": "bun scripts/build-revision5.tsx && node scripts/check-revision5-copper.mjs && node scripts/pdf-revision5.mjs",
-    "build:revision6": "bun scripts/build-revision6.tsx && node scripts/check-revision6-copper.mjs && node scripts/assess-revision6.mjs && node scripts/pdf-revision6.mjs"
+    "build:revision6": "bun scripts/build-revision6.tsx && node scripts/check-revision6-copper.mjs && node scripts/assess-revision6.mjs && node scripts/pdf-revision6.mjs",
+    "build:revision7": "bun scripts/build-revision7.tsx && node scripts/check-revision7-copper.mjs && node scripts/assess-revision7.mjs && node scripts/pdf-revision7.mjs"
   },
   "dependencies": {
     "@jscad/modeling": "2.13.0",

@@ -2,6 +2,15 @@
 
 These rules govern the electronics sources, exports, assembly instructions and checkpoint contracts. Read [AUDIT.md](AUDIT.md), [firmware-contract.md](firmware-contract.md) and [assembly/index.html](assembly/index.html) together.
 
+## Revision 7 — testable perfboards
+
+- Revision 7 keeps revision 6's four boards, functional parts, nets and install phases. It changes wiring and adds test aids only. Read [revision7/README.md](revision7/README.md) and [revision7/selftest.md](revision7/selftest.md). `npm run build:revision7` regenerates it; revision 5 and 6 and the shared `design/model.mjs` / `design/boards.mjs` must stay byte-identical (revision 7 forks them as `model7.mjs` and `place7.mjs`).
+- **Bare bus bars are allowed on the underside of the two lower boards for ground only** (this relaxes the earlier rule that only node-column straps are bare). A bar runs along a free row, touches only its own pads, keeps one hole clear of any bar of another net, and every insulated wire that crosses it gets a sleeve. Student rail, buck outputs and the separate Pi supply never use bars.
+- Every lower board carries the standard 1×8 probe header `J_PROBE` (GND, 5V, 3V3, 12V, SIG1, SIG2, TRIG, FAULT) and rail/status LEDs. Test points are designated existing pads; do not bring a sensitive analogue net (divider, buffer, ADC, sense, reference, gate-drive, shunt, watchdog RC) out to an edge pad or a link.
+- A removable link may only split a net whose loaded side is held OFF when the link is open (an existing or added pull-down). The build fails a link without a fail-safe, on a sensitive net, or whose pull-down is missing.
+- The student-rail current trip stays at the CP12 bound (above about 10.6 mA, at most 12 mA); it is set by the MT8816 analog-pin rating and the clamps. Do not replace it with an eFuse module without redesigning the matrix and the clamps.
+- Generated tables, drawings and self-test logs are not measured evidence. Release gates are unchanged.
+
 ## Revision 6 — four-perfboard hybrid evaluation
 
 - The latest accepted architecture targets **four permanent 10×20 cm isolated-pad perfboards**: two continuous contact banks, one power/protection board and one router/matrix/peripheral board. This supersedes the 7×10-only preference for this candidate; revision5 stays intact as the electrical baseline. Read [revision6/README.md](revision6/README.md) and [revision6/firmware.md](revision6/firmware.md).

@@ -1,0 +1,228 @@
+{
+  "revision": "r7-testable-perfboards",
+  "checks": [
+    {
+      "checkpoint": "CP00",
+      "netGroupsChecked": 17,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP01",
+      "netGroupsChecked": 43,
+      "temporaryDiagnosticPartition": true,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP02",
+      "netGroupsChecked": 43,
+      "temporaryDiagnosticPartition": true,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP03",
+      "netGroupsChecked": 43,
+      "temporaryDiagnosticPartition": true,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP04",
+      "netGroupsChecked": 43,
+      "temporaryDiagnosticPartition": true,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP05",
+      "netGroupsChecked": 43,
+      "temporaryDiagnosticPartition": true,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP06",
+      "netGroupsChecked": 44,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP07",
+      "netGroupsChecked": 44,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP08",
+      "netGroupsChecked": 44,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP09",
+      "netGroupsChecked": 61,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP10",
+      "netGroupsChecked": 71,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP11",
+      "netGroupsChecked": 92,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP12",
+      "netGroupsChecked": 92,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP13",
+      "netGroupsChecked": 96,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP14",
+      "netGroupsChecked": 96,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP15",
+      "netGroupsChecked": 154,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP16",
+      "netGroupsChecked": 154,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP17",
+      "netGroupsChecked": 154,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP18",
+      "netGroupsChecked": 154,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP19",
+      "netGroupsChecked": 154,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP20",
+      "netGroupsChecked": 154,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP21",
+      "netGroupsChecked": 154,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP22",
+      "netGroupsChecked": 158,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP23",
+      "netGroupsChecked": 158,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP24",
+      "netGroupsChecked": 210,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP25",
+      "netGroupsChecked": 210,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP26",
+      "netGroupsChecked": 210,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP27",
+      "netGroupsChecked": 233,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP28",
+      "netGroupsChecked": 251,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP29",
+      "netGroupsChecked": 291,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP30",
+      "netGroupsChecked": 314,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP31",
+      "netGroupsChecked": 332,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP32",
+      "netGroupsChecked": 338,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP33",
+      "netGroupsChecked": 338,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP34",
+      "netGroupsChecked": 343,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP35",
+      "netGroupsChecked": 343,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    },
+    {
+      "checkpoint": "CP36",
+      "netGroupsChecked": 343,
+      "temporaryDiagnosticPartition": false,
+      "scope": "Permanent wiring/harness connectivity; temporary supplies/probes and powered behavior require their explicit transition/bench records."
+    }
+  ],
+  "issues": []
+}
