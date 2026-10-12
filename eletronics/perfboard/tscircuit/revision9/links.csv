@@ -1,0 +1,4 @@
+"id","net","from","to","reason"
+"L1","GND","row 1, col 6","row 10, col 6","joins the two ground strips"
+"L2","GND","row 13, col 4","row 10, col 4","joins the input ground strip"
+"L3","12V_SYS","row 15, col 20","row 3, col 20","diode cathode to the 12 V system strip"
