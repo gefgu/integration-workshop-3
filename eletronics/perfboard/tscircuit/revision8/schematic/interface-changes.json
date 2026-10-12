@@ -1,0 +1,556 @@
+[
+  {
+    "action": "replace",
+    "id": "H3",
+    "net": "NODE00",
+    "reason": "NODE cable goes directly from grouped contact header to matrix receiver"
+  },
+  {
+    "action": "replace",
+    "id": "H6",
+    "net": "NODE01",
+    "reason": "NODE cable goes directly from grouped contact header to matrix receiver"
+  },
+  {
+    "action": "replace",
+    "id": "H8",
+    "net": "NODE02",
+    "reason": "NODE cable goes directly from grouped contact header to matrix receiver"
+  },
+  {
+    "action": "replace",
+    "id": "H9",
+    "net": "NODE03",
+    "reason": "NODE cable goes directly from grouped contact header to matrix receiver"
+  },
+  {
+    "action": "replace",
+    "id": "H16",
+    "net": "GND",
+    "reason": "Explicit shared contact power branches replace inherited daisy-chain hops"
+  },
+  {
+    "action": "replace",
+    "id": "H24",
+    "net": "GND",
+    "reason": "Explicit shared contact power branches replace inherited daisy-chain hops"
+  },
+  {
+    "action": "replace",
+    "id": "H25",
+    "net": "GND",
+    "reason": "Explicit shared contact power branches replace inherited daisy-chain hops"
+  },
+  {
+    "action": "replace",
+    "id": "H30",
+    "net": "3V3_SYS",
+    "reason": "Explicit shared contact power branches replace inherited daisy-chain hops"
+  },
+  {
+    "action": "replace",
+    "id": "H31",
+    "net": "3V3_SYS",
+    "reason": "Explicit shared contact power branches replace inherited daisy-chain hops"
+  },
+  {
+    "action": "replace",
+    "id": "H38",
+    "net": "3V3_SYS",
+    "reason": "Explicit shared contact power branches replace inherited daisy-chain hops"
+  },
+  {
+    "action": "replace",
+    "id": "H39",
+    "net": "3V3_SYS",
+    "reason": "Explicit shared contact power branches replace inherited daisy-chain hops"
+  },
+  {
+    "action": "replace",
+    "id": "H43",
+    "net": "NODE04",
+    "reason": "NODE cable goes directly from grouped contact header to matrix receiver"
+  },
+  {
+    "action": "replace",
+    "id": "H46",
+    "net": "NODE05",
+    "reason": "NODE cable goes directly from grouped contact header to matrix receiver"
+  },
+  {
+    "action": "replace",
+    "id": "H49",
+    "net": "NODE06",
+    "reason": "NODE cable goes directly from grouped contact header to matrix receiver"
+  },
+  {
+    "action": "replace",
+    "id": "H51",
+    "net": "NODE07",
+    "reason": "NODE cable goes directly from grouped contact header to matrix receiver"
+  },
+  {
+    "action": "replace",
+    "id": "H54",
+    "net": "NODE08",
+    "reason": "NODE cable goes directly from grouped contact header to matrix receiver"
+  },
+  {
+    "action": "replace",
+    "id": "H57",
+    "net": "NODE09",
+    "reason": "NODE cable goes directly from grouped contact header to matrix receiver"
+  },
+  {
+    "action": "replace",
+    "id": "H60",
+    "net": "NODE10",
+    "reason": "NODE cable goes directly from grouped contact header to matrix receiver"
+  },
+  {
+    "action": "replace",
+    "id": "H64",
+    "net": "NODE11",
+    "reason": "NODE cable goes directly from grouped contact header to matrix receiver"
+  },
+  {
+    "action": "replace",
+    "id": "H67",
+    "net": "NODE12",
+    "reason": "NODE cable goes directly from grouped contact header to matrix receiver"
+  },
+  {
+    "action": "replace",
+    "id": "H70",
+    "net": "NODE13",
+    "reason": "NODE cable goes directly from grouped contact header to matrix receiver"
+  },
+  {
+    "action": "replace",
+    "id": "H72",
+    "net": "NODE14",
+    "reason": "NODE cable goes directly from grouped contact header to matrix receiver"
+  },
+  {
+    "action": "replace",
+    "id": "H77",
+    "net": "NODE15",
+    "reason": "NODE cable goes directly from grouped contact header to matrix receiver"
+  },
+  {
+    "action": "replace",
+    "id": "H80",
+    "net": "NODE16",
+    "reason": "NODE cable goes directly from grouped contact header to matrix receiver"
+  },
+  {
+    "action": "replace",
+    "id": "H83",
+    "net": "NODE17",
+    "reason": "NODE cable goes directly from grouped contact header to matrix receiver"
+  },
+  {
+    "action": "replace",
+    "id": "H85",
+    "net": "NODE18",
+    "reason": "NODE cable goes directly from grouped contact header to matrix receiver"
+  },
+  {
+    "action": "replace",
+    "id": "H88",
+    "net": "NODE19",
+    "reason": "NODE cable goes directly from grouped contact header to matrix receiver"
+  },
+  {
+    "action": "replace",
+    "id": "H91",
+    "net": "NODE20",
+    "reason": "NODE cable goes directly from grouped contact header to matrix receiver"
+  },
+  {
+    "action": "replace",
+    "id": "H94",
+    "net": "NODE21",
+    "reason": "NODE cable goes directly from grouped contact header to matrix receiver"
+  },
+  {
+    "action": "add",
+    "id": "NODE_a_1_1",
+    "net": "NODE00",
+    "from": "contact-a",
+    "fromPin": "J_A_NODE_BUNDLE_1.1",
+    "to": "router-matrix",
+    "toPin": "J_MATRIX_NODE_A_1.1",
+    "description": "Direct grouped NODE cable; SMART taps branch independently from the contact bus."
+  },
+  {
+    "action": "add",
+    "id": "NODE_a_1_2",
+    "net": "NODE01",
+    "from": "contact-a",
+    "fromPin": "J_A_NODE_BUNDLE_1.2",
+    "to": "router-matrix",
+    "toPin": "J_MATRIX_NODE_A_1.2",
+    "description": "Direct grouped NODE cable; SMART taps branch independently from the contact bus."
+  },
+  {
+    "action": "add",
+    "id": "NODE_a_1_3",
+    "net": "NODE02",
+    "from": "contact-a",
+    "fromPin": "J_A_NODE_BUNDLE_1.3",
+    "to": "router-matrix",
+    "toPin": "J_MATRIX_NODE_A_1.3",
+    "description": "Direct grouped NODE cable; SMART taps branch independently from the contact bus."
+  },
+  {
+    "action": "add",
+    "id": "NODE_a_1_4",
+    "net": "NODE03",
+    "from": "contact-a",
+    "fromPin": "J_A_NODE_BUNDLE_1.4",
+    "to": "router-matrix",
+    "toPin": "J_MATRIX_NODE_A_1.4",
+    "description": "Direct grouped NODE cable; SMART taps branch independently from the contact bus."
+  },
+  {
+    "action": "add",
+    "id": "NODE_a_2_1",
+    "net": "NODE04",
+    "from": "contact-a",
+    "fromPin": "J_A_NODE_BUNDLE_2.1",
+    "to": "router-matrix",
+    "toPin": "J_MATRIX_NODE_A_2.1",
+    "description": "Direct grouped NODE cable; SMART taps branch independently from the contact bus."
+  },
+  {
+    "action": "add",
+    "id": "NODE_a_2_2",
+    "net": "NODE05",
+    "from": "contact-a",
+    "fromPin": "J_A_NODE_BUNDLE_2.2",
+    "to": "router-matrix",
+    "toPin": "J_MATRIX_NODE_A_2.2",
+    "description": "Direct grouped NODE cable; SMART taps branch independently from the contact bus."
+  },
+  {
+    "action": "add",
+    "id": "NODE_a_2_3",
+    "net": "NODE06",
+    "from": "contact-a",
+    "fromPin": "J_A_NODE_BUNDLE_2.3",
+    "to": "router-matrix",
+    "toPin": "J_MATRIX_NODE_A_2.3",
+    "description": "Direct grouped NODE cable; SMART taps branch independently from the contact bus."
+  },
+  {
+    "action": "add",
+    "id": "NODE_a_2_4",
+    "net": "NODE07",
+    "from": "contact-a",
+    "fromPin": "J_A_NODE_BUNDLE_2.4",
+    "to": "router-matrix",
+    "toPin": "J_MATRIX_NODE_A_2.4",
+    "description": "Direct grouped NODE cable; SMART taps branch independently from the contact bus."
+  },
+  {
+    "action": "add",
+    "id": "NODE_a_3_1",
+    "net": "NODE08",
+    "from": "contact-a",
+    "fromPin": "J_A_NODE_BUNDLE_3.1",
+    "to": "router-matrix",
+    "toPin": "J_MATRIX_NODE_A_3.1",
+    "description": "Direct grouped NODE cable; SMART taps branch independently from the contact bus."
+  },
+  {
+    "action": "add",
+    "id": "NODE_a_3_2",
+    "net": "NODE09",
+    "from": "contact-a",
+    "fromPin": "J_A_NODE_BUNDLE_3.2",
+    "to": "router-matrix",
+    "toPin": "J_MATRIX_NODE_A_3.2",
+    "description": "Direct grouped NODE cable; SMART taps branch independently from the contact bus."
+  },
+  {
+    "action": "add",
+    "id": "NODE_a_3_3",
+    "net": "NODE10",
+    "from": "contact-a",
+    "fromPin": "J_A_NODE_BUNDLE_3.3",
+    "to": "router-matrix",
+    "toPin": "J_MATRIX_NODE_A_3.3",
+    "description": "Direct grouped NODE cable; SMART taps branch independently from the contact bus."
+  },
+  {
+    "action": "add",
+    "id": "CONTACT_POWER_a_1",
+    "net": "GND",
+    "from": "power",
+    "fromPin": "J_POWER_INTERLOCK_SMART.2",
+    "to": "contact-a",
+    "toPin": "J_A_SMART_POWER.1",
+    "description": "Shared power harness branch to the contact bank."
+  },
+  {
+    "action": "add",
+    "id": "CONTACT_POWER_a_2",
+    "net": "3V3_SYS",
+    "from": "power",
+    "fromPin": "J_POWER_INTERLOCK_SMART.5",
+    "to": "contact-a",
+    "toPin": "J_A_SMART_POWER.2",
+    "description": "Shared power harness branch to the contact bank."
+  },
+  {
+    "action": "add",
+    "id": "NODE_b_1_1",
+    "net": "NODE11",
+    "from": "contact-b",
+    "fromPin": "J_B_NODE_BUNDLE_1.1",
+    "to": "router-matrix",
+    "toPin": "J_MATRIX_NODE_B_1.1",
+    "description": "Direct grouped NODE cable; SMART taps branch independently from the contact bus."
+  },
+  {
+    "action": "add",
+    "id": "NODE_b_1_2",
+    "net": "NODE12",
+    "from": "contact-b",
+    "fromPin": "J_B_NODE_BUNDLE_1.2",
+    "to": "router-matrix",
+    "toPin": "J_MATRIX_NODE_B_1.2",
+    "description": "Direct grouped NODE cable; SMART taps branch independently from the contact bus."
+  },
+  {
+    "action": "add",
+    "id": "NODE_b_1_3",
+    "net": "NODE13",
+    "from": "contact-b",
+    "fromPin": "J_B_NODE_BUNDLE_1.3",
+    "to": "router-matrix",
+    "toPin": "J_MATRIX_NODE_B_1.3",
+    "description": "Direct grouped NODE cable; SMART taps branch independently from the contact bus."
+  },
+  {
+    "action": "add",
+    "id": "NODE_b_1_4",
+    "net": "NODE14",
+    "from": "contact-b",
+    "fromPin": "J_B_NODE_BUNDLE_1.4",
+    "to": "router-matrix",
+    "toPin": "J_MATRIX_NODE_B_1.4",
+    "description": "Direct grouped NODE cable; SMART taps branch independently from the contact bus."
+  },
+  {
+    "action": "add",
+    "id": "NODE_b_2_1",
+    "net": "NODE15",
+    "from": "contact-b",
+    "fromPin": "J_B_NODE_BUNDLE_2.1",
+    "to": "router-matrix",
+    "toPin": "J_MATRIX_NODE_B_2.1",
+    "description": "Direct grouped NODE cable; SMART taps branch independently from the contact bus."
+  },
+  {
+    "action": "add",
+    "id": "NODE_b_2_2",
+    "net": "NODE16",
+    "from": "contact-b",
+    "fromPin": "J_B_NODE_BUNDLE_2.2",
+    "to": "router-matrix",
+    "toPin": "J_MATRIX_NODE_B_2.2",
+    "description": "Direct grouped NODE cable; SMART taps branch independently from the contact bus."
+  },
+  {
+    "action": "add",
+    "id": "NODE_b_2_3",
+    "net": "NODE17",
+    "from": "contact-b",
+    "fromPin": "J_B_NODE_BUNDLE_2.3",
+    "to": "router-matrix",
+    "toPin": "J_MATRIX_NODE_B_2.3",
+    "description": "Direct grouped NODE cable; SMART taps branch independently from the contact bus."
+  },
+  {
+    "action": "add",
+    "id": "NODE_b_2_4",
+    "net": "NODE18",
+    "from": "contact-b",
+    "fromPin": "J_B_NODE_BUNDLE_2.4",
+    "to": "router-matrix",
+    "toPin": "J_MATRIX_NODE_B_2.4",
+    "description": "Direct grouped NODE cable; SMART taps branch independently from the contact bus."
+  },
+  {
+    "action": "add",
+    "id": "NODE_b_3_1",
+    "net": "NODE19",
+    "from": "contact-b",
+    "fromPin": "J_B_NODE_BUNDLE_3.1",
+    "to": "router-matrix",
+    "toPin": "J_MATRIX_NODE_B_3.1",
+    "description": "Direct grouped NODE cable; SMART taps branch independently from the contact bus."
+  },
+  {
+    "action": "add",
+    "id": "NODE_b_3_2",
+    "net": "NODE20",
+    "from": "contact-b",
+    "fromPin": "J_B_NODE_BUNDLE_3.2",
+    "to": "router-matrix",
+    "toPin": "J_MATRIX_NODE_B_3.2",
+    "description": "Direct grouped NODE cable; SMART taps branch independently from the contact bus."
+  },
+  {
+    "action": "add",
+    "id": "NODE_b_3_3",
+    "net": "NODE21",
+    "from": "contact-b",
+    "fromPin": "J_B_NODE_BUNDLE_3.3",
+    "to": "router-matrix",
+    "toPin": "J_MATRIX_NODE_B_3.3",
+    "description": "Direct grouped NODE cable; SMART taps branch independently from the contact bus."
+  },
+  {
+    "action": "add",
+    "id": "CONTACT_POWER_b_1",
+    "net": "GND",
+    "from": "power",
+    "fromPin": "J_POWER_INTERLOCK_SMART.2",
+    "to": "contact-b",
+    "toPin": "J_B_SMART_POWER.1",
+    "description": "Shared power harness branch to the contact bank."
+  },
+  {
+    "action": "add",
+    "id": "CONTACT_POWER_b_2",
+    "net": "3V3_SYS",
+    "from": "power",
+    "fromPin": "J_POWER_INTERLOCK_SMART.5",
+    "to": "contact-b",
+    "toPin": "J_B_SMART_POWER.2",
+    "description": "Shared power harness branch to the contact bank."
+  },
+  {
+    "action": "add",
+    "id": "SMART_POWER_1",
+    "net": "5V_SYS",
+    "from": "power",
+    "fromPin": "J_POWER_INTERLOCK_SMART.1",
+    "to": "smart-core",
+    "toPin": "J_POWER.1",
+    "description": "Explicit power-board to smart-controller supply/control harness."
+  },
+  {
+    "action": "add",
+    "id": "SMART_POWER_2",
+    "net": "GND",
+    "from": "power",
+    "fromPin": "J_POWER_INTERLOCK_SMART.2",
+    "to": "smart-core",
+    "toPin": "J_POWER.2",
+    "description": "Explicit power-board to smart-controller supply/control harness."
+  },
+  {
+    "action": "add",
+    "id": "SMART_POWER_3",
+    "net": "5V_EDU",
+    "from": "power",
+    "fromPin": "J_POWER_INTERLOCK_SMART.3",
+    "to": "smart-core",
+    "toPin": "J_POWER.3",
+    "description": "Explicit power-board to smart-controller supply/control harness."
+  },
+  {
+    "action": "add",
+    "id": "SMART_POWER_4",
+    "net": "GND",
+    "from": "power",
+    "fromPin": "J_POWER_INTERLOCK_SMART.4",
+    "to": "smart-core",
+    "toPin": "J_POWER.4",
+    "description": "Explicit power-board to smart-controller supply/control harness."
+  },
+  {
+    "action": "add",
+    "id": "SMART_POWER_5",
+    "net": "3V3_SYS",
+    "from": "power",
+    "fromPin": "J_POWER_INTERLOCK_SMART.5",
+    "to": "smart-core",
+    "toPin": "J_POWER.5",
+    "description": "Explicit power-board to smart-controller supply/control harness."
+  },
+  {
+    "action": "add",
+    "id": "SMART_POWER_6",
+    "net": "GND",
+    "from": "power",
+    "fromPin": "J_POWER_INTERLOCK_SMART.6",
+    "to": "smart-core",
+    "toPin": "J_POWER.6",
+    "description": "Explicit power-board to smart-controller supply/control harness."
+  },
+  {
+    "action": "add",
+    "id": "SMART_BRANCH_H16",
+    "net": "GND",
+    "from": "power",
+    "fromPin": "J_POWER_INTERLOCK_SMART.2",
+    "to": "bank-a-position-0",
+    "toPin": "J_BOUNDARY_6.1",
+    "description": "Explicit smart supply branch replaces a contact-board power pass-through; inherited smart boundary is a logical interface."
+  },
+  {
+    "action": "add",
+    "id": "SMART_BRANCH_H24",
+    "net": "GND",
+    "from": "power",
+    "fromPin": "J_POWER_INTERLOCK_SMART.2",
+    "to": "bank-b-position-3",
+    "toPin": "J_BOUNDARY_1.1",
+    "description": "Explicit smart supply branch replaces a contact-board power pass-through; inherited smart boundary is a logical interface."
+  },
+  {
+    "action": "add",
+    "id": "SMART_BRANCH_H25",
+    "net": "GND",
+    "from": "power",
+    "fromPin": "J_POWER_INTERLOCK_SMART.2",
+    "to": "measurement-b-buffers",
+    "toPin": "J_BOUNDARY_1.1",
+    "description": "Explicit smart supply branch replaces a contact-board power pass-through; inherited smart boundary is a logical interface."
+  },
+  {
+    "action": "add",
+    "id": "SMART_BRANCH_H30",
+    "net": "3V3_SYS",
+    "from": "power",
+    "fromPin": "J_POWER_INTERLOCK_SMART.5",
+    "to": "bank-a-position-0",
+    "toPin": "J_BOUNDARY_7.1",
+    "description": "Explicit smart supply branch replaces a contact-board power pass-through; inherited smart boundary is a logical interface."
+  },
+  {
+    "action": "add",
+    "id": "SMART_BRANCH_H38",
+    "net": "3V3_SYS",
+    "from": "power",
+    "fromPin": "J_POWER_INTERLOCK_SMART.5",
+    "to": "bank-b-position-3",
+    "toPin": "J_BOUNDARY_2.1",
+    "description": "Explicit smart supply branch replaces a contact-board power pass-through; inherited smart boundary is a logical interface."
+  },
+  {
+    "action": "add",
+    "id": "SMART_BRANCH_H39",
+    "net": "3V3_SYS",
+    "from": "power",
+    "fromPin": "J_POWER_INTERLOCK_SMART.5",
+    "to": "measurement-b-precision",
+    "toPin": "J_BOUNDARY_2.1",
+    "description": "Explicit smart supply branch replaces a contact-board power pass-through; inherited smart boundary is a logical interface."
+  }
+]

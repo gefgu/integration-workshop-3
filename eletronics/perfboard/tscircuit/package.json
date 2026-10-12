@@ -20,7 +20,8 @@
     "build:revision5": "bun scripts/build-revision5.tsx && node scripts/check-revision5-copper.mjs && node scripts/pdf-revision5.mjs",
     "build:revision6": "bun scripts/build-revision6.tsx && node scripts/check-revision6-copper.mjs && node scripts/assess-revision6.mjs && node scripts/pdf-revision6.mjs",
     "build:revision7": "bun scripts/build-revision7.tsx && node scripts/check-revision7-copper.mjs && node scripts/assess-revision7.mjs && node scripts/pdf-revision7.mjs",
-    "build:revision8": "bun revision8/build-contact-boards.tsx && bun revision8/build-lower-boards.tsx && node revision8/check-lower-copper.mjs && node revision8/check-lower-boards.mjs && bun revision8/build-power-matrix.ts"
+    "build:revision8": "bun revision8/build-contact-boards.tsx && bun revision8/build-lower-boards.tsx && node revision8/check-lower-copper.mjs && node revision8/check-lower-boards.mjs && bun revision8/build-power-matrix.ts",
+    "build:revision8:schematic": "bun revision8/build-overall-schematic.tsx"
   },
   "dependencies": {
     "@jscad/modeling": "2.13.0",

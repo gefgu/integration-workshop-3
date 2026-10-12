@@ -1,0 +1,717 @@
+[
+  {
+    "type": "source_project_metadata",
+    "source_project_metadata_id": "source_project_metadata_0",
+    "software_used_string": "@tscircuit/core@0.0.2121"
+  },
+  {
+    "type": "schematic_sheet",
+    "schematic_sheet_id": "schematic_sheet_0",
+    "name": "Overview",
+    "display_name": "Overall system",
+    "sheet_index": 0,
+    "sheet_size": "a4",
+    "sheet_width": 1800,
+    "sheet_height": 1200
+  },
+  {
+    "type": "schematic_sheet_styling_warning",
+    "schematic_sheet_styling_warning_id": "schematic_sheet_styling_warning_0",
+    "warning_type": "schematic_sheet_styling_warning",
+    "styling_issue_type": "non_default_sheet_size",
+    "schematic_sheet_id": "schematic_sheet_0",
+    "message": "Schematic sheet \"Overall system\" uses a non-default size (1800 × 1200 mm). Prefer the default A4 sheet size (297 × 210 mm) for consistent schematic styling."
+  },
+  {
+    "type": "source_group",
+    "source_group_id": "source_group_0",
+    "is_subcircuit": true,
+    "was_automatically_named": true,
+    "subcircuit_id": "subcircuit_source_group_0"
+  },
+  {
+    "type": "source_board",
+    "source_board_id": "source_board_0",
+    "source_group_id": "source_group_0"
+  },
+  {
+    "type": "schematic_group",
+    "schematic_group_id": "schematic_group_0",
+    "is_subcircuit": true,
+    "subcircuit_id": "subcircuit_source_group_0",
+    "name": "unnamed_board1",
+    "center": {
+      "x": 0,
+      "y": 0
+    },
+    "width": 0,
+    "height": 0,
+    "schematic_component_ids": [],
+    "source_group_id": "source_group_0",
+    "show_as_schematic_box": false
+  },
+  {
+    "type": "schematic_box",
+    "schematic_box_id": "schematic_box_0",
+    "height": 16,
+    "width": 30,
+    "x": -15,
+    "y": 4,
+    "is_dashed": false,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_0",
+    "anchor": "left",
+    "text": "Terminal contacts",
+    "font_size": 1.1,
+    "color": "#000000",
+    "position": {
+      "x": -14,
+      "y": 19
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_1",
+    "anchor": "center",
+    "text": "Contact A + contact B",
+    "font_size": 0.75,
+    "color": "#000000",
+    "position": {
+      "x": 0,
+      "y": 17
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_2",
+    "anchor": "center",
+    "text": "22 independent NODE nets",
+    "font_size": 0.75,
+    "color": "#000000",
+    "position": {
+      "x": 0,
+      "y": 15
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_3",
+    "anchor": "center",
+    "text": "Six OLED service interfaces",
+    "font_size": 0.75,
+    "color": "#000000",
+    "position": {
+      "x": 0,
+      "y": 13
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_4",
+    "anchor": "center",
+    "text": "Grouped NODE + SMART cables",
+    "font_size": 0.75,
+    "color": "#000000",
+    "position": {
+      "x": 0,
+      "y": 11
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_5",
+    "anchor": "center",
+    "text": "Detail: sheet 2",
+    "font_size": 0.75,
+    "color": "#000000",
+    "position": {
+      "x": 0,
+      "y": 9
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_box",
+    "schematic_box_id": "schematic_box_1",
+    "height": 16,
+    "width": 30,
+    "x": -15,
+    "y": -18,
+    "is_dashed": false,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_6",
+    "anchor": "left",
+    "text": "Power board",
+    "font_size": 1.1,
+    "color": "#000000",
+    "position": {
+      "x": -14,
+      "y": -3
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_7",
+    "anchor": "center",
+    "text": "12 V input and buck modules",
+    "font_size": 0.75,
+    "color": "#000000",
+    "position": {
+      "x": 0,
+      "y": -5
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_8",
+    "anchor": "center",
+    "text": "Independent 5 V / 3V3 guards",
+    "font_size": 0.75,
+    "color": "#000000",
+    "position": {
+      "x": 0,
+      "y": -7
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_9",
+    "anchor": "center",
+    "text": "Current trip and fault latch",
+    "font_size": 0.75,
+    "color": "#000000",
+    "position": {
+      "x": 0,
+      "y": -9
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_10",
+    "anchor": "center",
+    "text": "Protected student supply",
+    "font_size": 0.75,
+    "color": "#000000",
+    "position": {
+      "x": 0,
+      "y": -11
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_11",
+    "anchor": "center",
+    "text": "Detail: sheet 3",
+    "font_size": 0.75,
+    "color": "#000000",
+    "position": {
+      "x": 0,
+      "y": -13
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_box",
+    "schematic_box_id": "schematic_box_2",
+    "height": 16,
+    "width": 32,
+    "x": 23,
+    "y": -18,
+    "is_dashed": false,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_12",
+    "anchor": "left",
+    "text": "Routing matrix",
+    "font_size": 1.1,
+    "color": "#000000",
+    "position": {
+      "x": 24,
+      "y": -3
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_13",
+    "anchor": "center",
+    "text": "ESP1 and watchdog",
+    "font_size": 0.75,
+    "color": "#000000",
+    "position": {
+      "x": 39,
+      "y": -5
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_14",
+    "anchor": "center",
+    "text": "Two MT8816 analog matrices",
+    "font_size": 0.75,
+    "color": "#000000",
+    "position": {
+      "x": 39,
+      "y": -7
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_15",
+    "anchor": "center",
+    "text": "Diagnostic and peripheral I/O",
+    "font_size": 0.75,
+    "color": "#000000",
+    "position": {
+      "x": 39,
+      "y": -9
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_16",
+    "anchor": "center",
+    "text": "Pi separately powered",
+    "font_size": 0.75,
+    "color": "#000000",
+    "position": {
+      "x": 39,
+      "y": -11
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_17",
+    "anchor": "center",
+    "text": "Detail: sheet 4",
+    "font_size": 0.75,
+    "color": "#000000",
+    "position": {
+      "x": 39,
+      "y": -13
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_box",
+    "schematic_box_id": "schematic_box_3",
+    "height": 22,
+    "width": 34,
+    "x": 61,
+    "y": -2,
+    "is_dashed": false,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_18",
+    "anchor": "left",
+    "text": "Smart components",
+    "font_size": 1.1,
+    "color": "#000000",
+    "position": {
+      "x": 62,
+      "y": 19
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_19",
+    "anchor": "center",
+    "text": "ESP2 + independent watchdog",
+    "font_size": 0.75,
+    "color": "#000000",
+    "position": {
+      "x": 78,
+      "y": 17
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_20",
+    "anchor": "center",
+    "text": "Voltage sensing in both banks",
+    "font_size": 0.75,
+    "color": "#000000",
+    "position": {
+      "x": 78,
+      "y": 15
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_21",
+    "anchor": "center",
+    "text": "Six protected P3 / current paths",
+    "font_size": 0.75,
+    "color": "#000000",
+    "position": {
+      "x": 78,
+      "y": 13
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_22",
+    "anchor": "center",
+    "text": "Six isolated B-side service buses",
+    "font_size": 0.75,
+    "color": "#000000",
+    "position": {
+      "x": 78,
+      "y": 11
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_23",
+    "anchor": "center",
+    "text": "At most three active capsules",
+    "font_size": 0.75,
+    "color": "#000000",
+    "position": {
+      "x": 78,
+      "y": 9
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_24",
+    "anchor": "center",
+    "text": "Details: sheets 5–16",
+    "font_size": 0.75,
+    "color": "#000000",
+    "position": {
+      "x": 78,
+      "y": 7
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_path",
+    "schematic_path_id": "schematic_path_0",
+    "points": [
+      {
+        "x": 15,
+        "y": 16
+      },
+      {
+        "x": 20,
+        "y": 16
+      },
+      {
+        "x": 20,
+        "y": -3
+      },
+      {
+        "x": 23,
+        "y": -3
+      }
+    ],
+    "is_filled": false,
+    "is_dashed": false,
+    "stroke_color": "#1976b4",
+    "stroke_width": 0.12,
+    "subcircuit_id": "subcircuit_source_group_0",
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_25",
+    "anchor": "center",
+    "text": "22 NODEs · six 4-pin cables",
+    "font_size": 0.65,
+    "color": "#000000",
+    "position": {
+      "x": 34,
+      "y": 3
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_path",
+    "schematic_path_id": "schematic_path_1",
+    "points": [
+      {
+        "x": 15,
+        "y": 6
+      },
+      {
+        "x": 18,
+        "y": 6
+      },
+      {
+        "x": 18,
+        "y": 27
+      },
+      {
+        "x": 78,
+        "y": 27
+      },
+      {
+        "x": 78,
+        "y": 20
+      }
+    ],
+    "is_filled": false,
+    "is_dashed": false,
+    "stroke_color": "#1976b4",
+    "stroke_width": 0.12,
+    "subcircuit_id": "subcircuit_source_group_0",
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_26",
+    "anchor": "center",
+    "text": "P1/P2/P3 + six independent service buses",
+    "font_size": 0.65,
+    "color": "#000000",
+    "position": {
+      "x": 52,
+      "y": 29
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_path",
+    "schematic_path_id": "schematic_path_2",
+    "points": [
+      {
+        "x": 15,
+        "y": -10
+      },
+      {
+        "x": 23,
+        "y": -10
+      }
+    ],
+    "is_filled": false,
+    "is_dashed": false,
+    "stroke_color": "#c62d32",
+    "stroke_width": 0.12,
+    "subcircuit_id": "subcircuit_source_group_0",
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_27",
+    "anchor": "center",
+    "text": "10-pin power/control",
+    "font_size": 0.65,
+    "color": "#000000",
+    "position": {
+      "x": 20,
+      "y": -7
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_path",
+    "schematic_path_id": "schematic_path_3",
+    "points": [
+      {
+        "x": -10,
+        "y": -2
+      },
+      {
+        "x": -10,
+        "y": 4
+      }
+    ],
+    "is_filled": false,
+    "is_dashed": false,
+    "stroke_color": "#c62d32",
+    "stroke_width": 0.12,
+    "subcircuit_id": "subcircuit_source_group_0",
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_28",
+    "anchor": "center",
+    "text": "GND / 3V3",
+    "font_size": 0.65,
+    "color": "#000000",
+    "position": {
+      "x": -7,
+      "y": 1
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_path",
+    "schematic_path_id": "schematic_path_4",
+    "points": [
+      {
+        "x": 10,
+        "y": -18
+      },
+      {
+        "x": 10,
+        "y": -24
+      },
+      {
+        "x": 90,
+        "y": -24
+      },
+      {
+        "x": 90,
+        "y": -2
+      }
+    ],
+    "is_filled": false,
+    "is_dashed": false,
+    "stroke_color": "#c62d32",
+    "stroke_width": 0.12,
+    "subcircuit_id": "subcircuit_source_group_0",
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_29",
+    "anchor": "center",
+    "text": "5V_SYS · 3V3_SYS · GND · EDU_ON → smart power",
+    "font_size": 0.65,
+    "color": "#000000",
+    "position": {
+      "x": 50,
+      "y": -27
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_path",
+    "schematic_path_id": "schematic_path_5",
+    "points": [
+      {
+        "x": 55,
+        "y": -10
+      },
+      {
+        "x": 61,
+        "y": -10
+      },
+      {
+        "x": 61,
+        "y": 0
+      }
+    ],
+    "is_filled": false,
+    "is_dashed": false,
+    "stroke_color": "#1976b4",
+    "stroke_width": 0.12,
+    "subcircuit_id": "subcircuit_source_group_0",
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_30",
+    "anchor": "center",
+    "text": "NODE taps / diagnostic fixture",
+    "font_size": 0.65,
+    "color": "#000000",
+    "position": {
+      "x": 67,
+      "y": -14
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_31",
+    "anchor": "center",
+    "text": "Bundle lines contain separate conductors. Exact pins and nets are shown on detailed sheets.",
+    "font_size": 0.65,
+    "color": "#000000",
+    "position": {
+      "x": 40,
+      "y": -33
+    },
+    "rotation": 0,
+    "schematic_sheet_id": "schematic_sheet_0"
+  },
+  {
+    "type": "pcb_board",
+    "pcb_board_id": "pcb_board_0",
+    "source_board_id": "source_board_0",
+    "subcircuit_id": "subcircuit_source_group_0",
+    "center": {
+      "x": 0,
+      "y": 0
+    },
+    "thickness": 1.4,
+    "num_layers": 2,
+    "width": 0,
+    "height": 0,
+    "material": "fr4",
+    "min_trace_width": 0.1,
+    "min_via_hole_diameter": 0.2,
+    "min_via_pad_diameter": 0.3,
+    "min_via_hole_edge_to_via_hole_edge_clearance": 0.1,
+    "min_trace_to_hole_edge_clearance": 0.2,
+    "min_trace_to_pad_edge_clearance": 0.1,
+    "min_pad_edge_to_pad_edge_clearance": 0.1,
+    "min_plated_hole_drill_edge_to_drill_edge_clearance": 0.15,
+    "min_board_edge_clearance": 0.2
+  }
+]
