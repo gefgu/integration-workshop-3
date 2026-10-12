@@ -257,82 +257,62 @@ function drawing(board: any, underside = false) {
   return svg;
 }
 
-const escapeHtml = (value: unknown) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
-  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+const xml = (value: unknown) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;',
 }[char]!));
-const colorName = (color: string) => ({
-  '#e53935': 'Red · power', '#202124': 'Black · ground', '#1976d2': 'Blue · signal',
-  '#ffffff': 'White · signal', '#fbc02d': 'Yellow · signal', '#388e3c': 'Green · signal',
-  '#bf8747': 'Gold · contact strap',
-} as Record<string, string>)[color] ?? color;
 
-function explanationView(board: any) {
-  const netByEndpoint = new Map<string, string>();
-  for (const net of board.nets) for (const endpoint of net.pins) netByEndpoint.set(endpoint, net.name);
-  const coordinates = (part: any) => {
+function componentGuideSvg(board: any) {
+  const scale = 6, x0 = 52, y0 = 40;
+  const pos = ([x, y]: number[]) => [x0 + x * scale, y0 + y * scale];
+  const role = (part: any) => part.body === 'pogo' ? 'Contact' : ({
+    J_NODE_BUNDLE: 'NODE Out', J_SMART: 'SMART I/O',
+    J_SMART_POWER: 'Power In', J_SERVICE: 'Service',
+  } as Record<string, string>)[part.origin] ?? 'Connector';
+  let svg = drawing(board);
+  for (const part of board.parts) {
     const xs = part.pins.map((pin: any) => pin.hole[0]);
     const ys = part.pins.map((pin: any) => pin.hole[1]);
-    return `C${Math.min(...xs)}–${Math.max(...xs)}, R${Math.min(...ys)}–${Math.max(...ys)}`;
-  };
-  const pinMap = (part: any) => {
-    if (part.body === 'pogo') {
-      const net = netByEndpoint.get(`${part.ref}.${part.pins[0].number}`);
-      return `Six pogo pads on ${net} contact column`;
-    }
-    return part.pins.map((pin: any) => {
-      const net = part.signals?.[String(pin.number)] ?? netByEndpoint.get(`${part.ref}.${pin.number}`) ?? pin.label;
-      return `${pin.number}:${net}`;
-    }).join(' · ');
-  };
-  const role = (part: any) => {
-    if (part.origin === 'J_NODE_BUNDLE') return 'Four-pin NODE cable to router/matrix';
-    if (part.origin === 'J_SMART') return 'Five-pin smart-component signal connector';
-    if (part.origin === 'J_SMART_POWER') return 'Shared GND/3V3 input; power fans out off-board';
-    if (part.origin === 'J_SERVICE') return 'Position service connector';
-    if (part.body === 'pogo') return 'Capsule contact column';
-    return part.function ?? part.label ?? part.origin;
-  };
-  const endpointDescription = (endpoint: string) => {
-    const [ref, number] = endpoint.split('.');
-    const part = board.parts.find((item: any) => item.ref === ref);
-    const pin = part?.pins.find((item: any) => item.number === Number(number));
-    const net = netByEndpoint.get(endpoint);
-    return `${part?.ref ?? ref} pin ${number}${pin?.label ? ` (${pin.label})` : ''}${net ? ` · ${net}` : ''}`;
-  };
-  const componentRows = board.parts.map((part: any) => `<tr><td>${escapeHtml(part.ref)}</td><td>${escapeHtml(role(part))}</td><td>${escapeHtml(coordinates(part))}</td><td>${escapeHtml(pinMap(part))}</td></tr>`).join('');
-  const physicalRuns = new Map<string, any[]>();
-  for (const wire of board.wires) if (wire.physicalRunId) {
-    if (!physicalRuns.has(wire.physicalRunId)) physicalRuns.set(wire.physicalRunId, []);
-    physicalRuns.get(wire.physicalRunId)!.push(wire);
+    const cx = (Math.min(...xs) + Math.max(...xs)) / 2;
+    let cy = Math.min(...ys) - 1.2;
+    if (part.body === 'pogo') cy = Math.max(...ys) + 2.5;
+    if (part.origin === 'J_SMART_POWER') cy = 1.2;
+    const [px, py] = pos([cx, cy]);
+    svg = svg.replace('</svg>', `<text x="${px}" y="${py}" text-anchor="middle" font-size="5.3" font-weight="bold" style="paint-order:stroke;stroke:white;stroke-width:2.4px;stroke-linejoin:round">${xml(role(part))}</text></svg>`);
   }
-  const seenPhysicalRuns = new Set<string>();
-  const wireRows = board.wires.flatMap((wire: any) => {
-    if (wire.physicalRunId) {
-      if (seenPhysicalRuns.has(wire.physicalRunId)) return [];
-      seenPhysicalRuns.add(wire.physicalRunId);
-      const group = physicalRuns.get(wire.physicalRunId)!;
-      const net = wire.net;
-      return [`<tr><td>${group.map((item: any) => escapeHtml(item.id)).join(', ')}</td><td>Gold · continuous contact strap</td><td>${escapeHtml(net)}</td><td>Six pogo pads in one contact column</td><td>One continuous strap; ${group.length} modeled links</td></tr>`];
-    }
-    const fromPart = board.parts.find((part: any) => part.ref === wire.from.split('.')[0]);
-    const toPart = board.parts.find((part: any) => part.ref === wire.to.split('.')[0]);
-    let purpose = 'Connects the listed pins on the same net';
-    if (/^NODE\d+$/.test(wire.net) && toPart?.origin === 'J_NODE_BUNDLE') purpose = 'Contact-column lead to router/matrix connector';
-    else if (/^NODE\d+$/.test(wire.net) && toPart?.origin === 'J_SMART') purpose = 'Top contact-column branch to smart signal connector';
-    else if (/^SCL_|^SDA_/.test(wire.net)) purpose = 'Position-specific service signal to smart signal connector';
-    else if (wire.net === 'GND' || wire.net === '3V3_SYS') purpose = fromPart?.origin === 'J_SMART_POWER' ? 'Shared power input to the service rail' : 'Link in the shared service power rail';
-    const color = wire.physicalRunId ? '#bf8747' : wire.color ?? '#1976d2';
-    return [`<tr><td>${escapeHtml(wire.id)}</td><td><span class="swatch" style="background:${color}"></span> ${escapeHtml(colorName(color))}</td><td>${escapeHtml(wire.net)}</td><td>${escapeHtml(endpointDescription(wire.from))} → ${escapeHtml(endpointDescription(wire.to))}</td><td>${escapeHtml(purpose)}</td></tr>`];
-  }).join('');
-  return `<article class="explanation"><h3>Wire and component guide</h3><p>Coordinates use top-side column and row numbers, including for the mirrored underside. Each contact-column gold strap is listed once as a continuous physical run; its individual pad links are summarized.</p><h4>Components</h4><div class="table-wrap"><table><thead><tr><th>Reference</th><th>Purpose</th><th>Grid location</th><th>Pins / net assignment</th></tr></thead><tbody>${componentRows}</tbody></table></div><h4>Wire runs</h4><div class="table-wrap"><table><thead><tr><th>Wire ID</th><th>Color</th><th>Net</th><th>Endpoints</th><th>Purpose</th></tr></thead><tbody>${wireRows}</tbody></table></div></article>`;
+  return svg;
 }
 
-let page = `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Revision 8 contact boards</title><style>body{font:15px system-ui;max-width:1450px;margin:1.5rem auto;padding:0 1rem;color:#203545;background:#f4f7f5}article{background:white;padding:1rem;margin:1rem 0;border:1px solid #cbd5d0;border-radius:8px}.explanation{margin-top:1.2rem;background:#f9fbfa}object{display:block;width:100%;max-height:80vh;object-fit:contain;margin:.5rem 0}.open-svg{display:inline-block;margin:.1rem 0 .8rem;padding:.4rem .7rem;border:1px solid #82938b;border-radius:5px;color:#203545;text-decoration:none;background:#f4f7f5}.open-svg:hover{background:#e6f0e5}section{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}.legend{display:flex;flex-wrap:wrap;gap:.7rem 1.1rem;margin:.7rem 0}.key{display:inline-flex;align-items:center;gap:.35rem}.swatch{display:inline-block;width:1.2rem;height:.35rem;border:1px solid #53636c;border-radius:2px;vertical-align:middle}.table-wrap{overflow-x:auto;margin:.5rem 0 1.2rem}table{width:100%;border-collapse:collapse;font-size:.86rem}th,td{text-align:left;vertical-align:top;padding:.42rem .5rem;border-bottom:1px solid #dce4df}th{background:#edf2ef;position:sticky;top:0}h4{margin:.8rem 0 .3rem}@media(max-width:850px){section{grid-template-columns:1fr}}</style><h1>Revision 8 contact boards</h1><p>Gold: contact solder runs. Colored: underside wires snapped to free holes. Underside view is mirrored. Bridge marks: insulated crossovers, no electrical connection; only GND/3V3 may cross other nets. Red is power; black is ground; blue, white, yellow and green are signals. SMART branches leave the top of each NODE contact bus; NODE cable leads leave the bottom.</p><div class="legend"><span class="key"><i class="swatch" style="background:#e53935"></i>Red</span><span class="key"><i class="swatch" style="background:#202124"></i>Black</span><span class="key"><i class="swatch" style="background:#1976d2"></i>Blue</span><span class="key"><i class="swatch" style="background:white"></i>White</span><span class="key"><i class="swatch" style="background:#fbc02d"></i>Yellow</span><span class="key"><i class="swatch" style="background:#388e3c"></i>Green</span></div>`;
+function wireGuideSvg(board: any) {
+  const scale = 6, x0 = 52, y0 = 40;
+  const width = x0 * 2 + (board.cols + 1) * scale;
+  const height = y0 * 2 + (board.rows + 1) * scale;
+  const legendX = width + 18, newWidth = width + 175;
+  const labels = (net: string) => net === '3V3_SYS' ? '3V3' : net === 'GND' ? 'GND' :
+    net.replace(/^SCL_POSITION_/, 'SCL ').replace(/^SDA_POSITION_/, 'SDA ');
+  const nets = [...new Set(board.nets.map((net: any) => net.name))].sort((a: string, b: string) => {
+    const rank = (name: string) => /^NODE\d+$/.test(name) ? 0 : name === 'GND' ? 1 : name === '3V3_SYS' ? 2 : name.startsWith('SCL_') ? 3 : 4;
+    return rank(a) - rank(b) || a.localeCompare(b, undefined, { numeric: true });
+  });
+  const entries = nets.map((net: string, index: number) => {
+    const wire = board.wires.find((item: any) => item.net === net && !item.physicalRunId);
+    const color = wire?.color ?? (net === 'GND' ? '#202124' : net === '3V3_SYS' ? '#e53935' : '#1976d2');
+    const y = 58 + index * 13;
+    const outline = color === '#ffffff' ? `<line x1="${legendX}" y1="${y - 2}" x2="${legendX + 17}" y2="${y - 2}" stroke="#53636c" stroke-width="4.5" stroke-linecap="round"/>` : '';
+    return `${outline}<line x1="${legendX}" y1="${y - 2}" x2="${legendX + 17}" y2="${y - 2}" stroke="${color}" stroke-width="3" stroke-linecap="round"/><text x="${legendX + 23}" y="${y}" font-size="8" font-weight="bold">${xml(labels(net))}</text>`;
+  }).join('');
+  let svg = drawing(board, true).replace(`viewBox="0 0 ${width} ${height}"`, `viewBox="0 0 ${newWidth} ${height}"`);
+  svg = svg.replace('</svg>', `<rect x="${width + 7}" y="40" width="1" height="${height - 80}" fill="#d4ddd8"/><text x="${legendX}" y="31" font-size="9" font-weight="bold">WIRE NETS</text>${entries}<line x1="${legendX}" y1="${height - 32}" x2="${legendX + 17}" y2="${height - 32}" stroke="#bf8747" stroke-width="3" stroke-linecap="round"/><text x="${legendX + 23}" y="${height - 29}" font-size="8" font-weight="bold">Contact strap</text></svg>`);
+  return svg;
+}
+
+let page = `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Revision 8 contact boards</title><style>body{font:15px system-ui;max-width:1450px;margin:1.5rem auto;padding:0 1rem;color:#203545;background:#f4f7f5}article{background:white;padding:1rem;margin:1rem 0;border:1px solid #cbd5d0;border-radius:8px}object{display:block;width:100%;max-height:80vh;object-fit:contain;margin:.5rem 0}.open-svg{display:inline-block;margin:.1rem 0 .8rem;padding:.4rem .7rem;border:1px solid #82938b;border-radius:5px;color:#203545;text-decoration:none;background:#f4f7f5}.open-svg:hover{background:#e6f0e5}section{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}.legend{display:flex;flex-wrap:wrap;gap:.7rem 1.1rem;margin:.7rem 0}.key{display:inline-flex;align-items:center;gap:.35rem}.swatch{display:inline-block;width:1.2rem;height:.35rem;border:1px solid #53636c;border-radius:2px;vertical-align:middle}h3{margin:.9rem 0 .2rem}@media(max-width:850px){section{grid-template-columns:1fr}}</style><h1>Revision 8 contact boards</h1><p>Gold: contact solder runs. Colored: underside wires snapped to free holes. Underside view is mirrored. Bridge marks: insulated crossovers, no electrical connection; only GND/3V3 may cross other nets. Red is power; black is ground; blue, white, yellow and green are signals. SMART branches leave the top of each NODE contact bus; NODE cable leads leave the bottom.</p><div class="legend"><span class="key"><i class="swatch" style="background:#e53935"></i>Red</span><span class="key"><i class="swatch" style="background:#202124"></i>Black</span><span class="key"><i class="swatch" style="background:#1976d2"></i>Blue</span><span class="key"><i class="swatch" style="background:white"></i>White</span><span class="key"><i class="swatch" style="background:#fbc02d"></i>Yellow</span><span class="key"><i class="swatch" style="background:#388e3c"></i>Green</span></div>`;
 
 for (const board of boards) {
   save(`${board.id}-top.svg`, drawing(board));
   save(`${board.id}-underside.svg`, drawing(board, true));
-  page += `<article><h2>${board.id.toUpperCase()}</h2><section><div><object aria-label="${board.id} top view" data="assets/${board.id}-top.svg" type="image/svg+xml"></object><a class="open-svg" href="assets/${board.id}-top.svg" target="_blank" rel="noopener">Open top SVG ↗</a></div><div><object aria-label="${board.id} mirrored underside" data="assets/${board.id}-underside.svg" type="image/svg+xml"></object><a class="open-svg" href="assets/${board.id}-underside.svg" target="_blank" rel="noopener">Open underside SVG ↗</a></div></section>${explanationView(board)}</article>`;
+  save(`${board.id}-components.svg`, componentGuideSvg(board));
+  save(`${board.id}-wire-guide.svg`, wireGuideSvg(board));
+  page += `<article><h2>${board.id.toUpperCase()}</h2><section><div><object aria-label="${board.id} top view" data="assets/${board.id}-top.svg" type="image/svg+xml"></object><a class="open-svg" href="assets/${board.id}-top.svg" target="_blank" rel="noopener">Open top SVG ↗</a></div><div><object aria-label="${board.id} mirrored underside" data="assets/${board.id}-underside.svg" type="image/svg+xml"></object><a class="open-svg" href="assets/${board.id}-underside.svg" target="_blank" rel="noopener">Open underside SVG ↗</a></div></section><h3>Component labels</h3><section><div><object aria-label="${board.id} component labels" data="assets/${board.id}-components.svg" type="image/svg+xml"></object><a class="open-svg" href="assets/${board.id}-components.svg" target="_blank" rel="noopener">Open component SVG ↗</a></div><div><h3>Wire labels</h3><object aria-label="${board.id} wire net labels" data="assets/${board.id}-wire-guide.svg" type="image/svg+xml"></object><a class="open-svg" href="assets/${board.id}-wire-guide.svg" target="_blank" rel="noopener">Open wire SVG ↗</a></div></section></article>`;
 }
 page += '</html>';
 writeFileSync(new URL('./contact-boards.html', import.meta.url), page);
