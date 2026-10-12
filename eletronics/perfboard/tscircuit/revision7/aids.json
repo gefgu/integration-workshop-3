@@ -1,0 +1,870 @@
+{
+  "boards": [
+    {
+      "id": "power",
+      "title": "Power — input, guards, student cutoff and interlock",
+      "probe": [
+        {
+          "pin": 1,
+          "label": "GND",
+          "net": "GND",
+          "hole": [
+            6,
+            1
+          ],
+          "phase": 9
+        },
+        {
+          "pin": 2,
+          "label": "5V",
+          "net": "5V_SYS",
+          "hole": [
+            7,
+            1
+          ],
+          "phase": 9
+        },
+        {
+          "pin": 3,
+          "label": "3V3",
+          "net": "3V3_SYS",
+          "hole": [
+            8,
+            1
+          ],
+          "phase": 9
+        },
+        {
+          "pin": 4,
+          "label": "12V",
+          "net": "12V_SYS",
+          "hole": [
+            9,
+            1
+          ],
+          "phase": 9
+        },
+        {
+          "pin": 5,
+          "label": "SIG1",
+          "net": "BUCK_5V",
+          "hole": [
+            10,
+            1
+          ],
+          "phase": 9
+        },
+        {
+          "pin": 6,
+          "label": "SIG2",
+          "net": "BUCK_3V3",
+          "hole": [
+            11,
+            1
+          ],
+          "phase": 9
+        },
+        {
+          "pin": 7,
+          "label": "TRIG",
+          "net": "EDU_PWR_EN",
+          "hole": [
+            12,
+            1
+          ],
+          "phase": 9
+        },
+        {
+          "pin": 8,
+          "label": "FAULT",
+          "net": "PRESET_N",
+          "hole": [
+            13,
+            1
+          ],
+          "phase": 9
+        }
+      ],
+      "testPoints": [
+        {
+          "ref": "TP_GND_1",
+          "net": "GND",
+          "endpoint": "J_PROBE.1",
+          "hole": [
+            6,
+            1
+          ],
+          "phase": 9,
+          "expected": "0 V reference (left side)",
+          "tool": "DMM"
+        },
+        {
+          "ref": "TP_GND_2",
+          "net": "GND",
+          "endpoint": "U_POWER_INTERLOCK_ALLOW.13",
+          "hole": [
+            73,
+            6
+          ],
+          "phase": 9,
+          "expected": "0 V reference (right side)",
+          "tool": "DMM"
+        },
+        {
+          "ref": "TP_12V_FUSED",
+          "net": "12V_FUSED",
+          "endpoint": "J_POWER_INPUT_SW_MAIN.1",
+          "hole": [
+            30,
+            35
+          ],
+          "phase": 9,
+          "expected": "12.0 V (after fuse and reverse diode)",
+          "tool": "DMM"
+        },
+        {
+          "ref": "TP_BUCK_5V",
+          "net": "BUCK_5V",
+          "endpoint": "J_PROBE.5",
+          "hole": [
+            10,
+            1
+          ],
+          "phase": 9,
+          "expected": "5.00 V, below the guard trip (about 5.05 V)",
+          "tool": "DMM"
+        },
+        {
+          "ref": "TP_BUCK_3V3",
+          "net": "BUCK_3V3",
+          "endpoint": "J_PROBE.6",
+          "hole": [
+            11,
+            1
+          ],
+          "phase": 9,
+          "expected": "3.30 V",
+          "tool": "DMM"
+        },
+        {
+          "ref": "TP_12V_SYS",
+          "net": "12V_SYS",
+          "endpoint": "J_PROBE.4",
+          "hole": [
+            9,
+            1
+          ],
+          "phase": 9,
+          "expected": "12.0 V once the consumer link is fitted",
+          "tool": "DMM"
+        },
+        {
+          "ref": "TP_5V_SYS",
+          "net": "5V_SYS",
+          "endpoint": "J_PROBE.2",
+          "hole": [
+            7,
+            1
+          ],
+          "phase": 9,
+          "expected": "5.00 V once JP_LOGIC is fitted",
+          "tool": "DMM"
+        },
+        {
+          "ref": "TP_3V3_SYS",
+          "net": "3V3_SYS",
+          "endpoint": "J_PROBE.3",
+          "hole": [
+            8,
+            1
+          ],
+          "phase": 9,
+          "expected": "3.30 V once JP_3V3 is fitted",
+          "tool": "DMM"
+        },
+        {
+          "ref": "TP_5V_EDU",
+          "net": "5V_EDU",
+          "endpoint": "J_POWER_INTERLOCK_MATRIX.1",
+          "hole": [
+            45,
+            5
+          ],
+          "phase": 9,
+          "expected": "0 V while OFF; at most 5.25 V when ON",
+          "tool": "DMM + scope"
+        },
+        {
+          "ref": "TP_EDU_PWR_EN",
+          "net": "EDU_PWR_EN",
+          "endpoint": "J_PROBE.7",
+          "hole": [
+            12,
+            1
+          ],
+          "phase": 9,
+          "expected": "0 V at boot and reset; 3.3 V only while enabled",
+          "tool": "DMM"
+        },
+        {
+          "ref": "TP_ALLOW_RAIL",
+          "net": "ALLOW_RAIL",
+          "endpoint": "JP_R7_PASS.1",
+          "hole": [
+            68,
+            34
+          ],
+          "phase": 11,
+          "expected": "0 V while OFF (enable AND no fault AND alive)",
+          "tool": "DMM"
+        },
+        {
+          "ref": "TP_NOT_FAULT",
+          "net": "NOT_FAULT",
+          "endpoint": "U_POWER_INTERLOCK_ALLOW.2",
+          "hole": [
+            70,
+            6
+          ],
+          "phase": 11,
+          "expected": "high when no fault latched (verify polarity on the schematic)",
+          "tool": "DMM"
+        },
+        {
+          "ref": "TP_PRESET_N",
+          "net": "PRESET_N",
+          "endpoint": "J_PROBE.8",
+          "hole": [
+            13,
+            1
+          ],
+          "phase": 9,
+          "expected": "high when idle, pulled low by a trip (verify on the schematic)",
+          "tool": "Scope"
+        },
+        {
+          "ref": "TP_ROUTER_ALIVE",
+          "net": "ROUTER_ALIVE",
+          "endpoint": "J_POWER_INTERLOCK_MATRIX.9",
+          "hole": [
+            49,
+            5
+          ],
+          "phase": 9,
+          "expected": "high while the heartbeat is fresh; low within 350 ms of HB OFF",
+          "tool": "Scope"
+        }
+      ],
+      "leds": [
+        {
+          "ref": "LED_12VFUSED",
+          "meaning": "12 V fused input present",
+          "phase": 9,
+          "hole": [
+            11,
+            38
+          ],
+          "resistor": "4.7k"
+        },
+        {
+          "ref": "LED_BUCK5V",
+          "meaning": "5 V buck output present",
+          "phase": 9,
+          "hole": [
+            22,
+            38
+          ],
+          "resistor": "2.2k"
+        },
+        {
+          "ref": "LED_BUCK3V3",
+          "meaning": "3.3 V buck output present",
+          "phase": 9,
+          "hole": [
+            33,
+            38
+          ],
+          "resistor": "1k"
+        },
+        {
+          "ref": "LED_5VSYS",
+          "meaning": "5 V system rail present",
+          "phase": 9,
+          "hole": [
+            44,
+            38
+          ],
+          "resistor": "2.2k"
+        },
+        {
+          "ref": "LED_3V3SYS",
+          "meaning": "3.3 V system rail present",
+          "phase": 9,
+          "hole": [
+            55,
+            38
+          ],
+          "resistor": "1k"
+        },
+        {
+          "ref": "LED_NOTFAULT",
+          "meaning": "no fault latched",
+          "phase": 11,
+          "hole": [
+            66,
+            38
+          ],
+          "resistor": "1k"
+        }
+      ],
+      "links": [
+        {
+          "ref": "JP_R7_PASS",
+          "net": "ALLOW_RAIL",
+          "farNet": "ALLOW_RAIL__B",
+          "purpose": "Open: the interlock logic is cut off from the student-rail switch; measure ALLOW_RAIL with the rail provably OFF.",
+          "failSafe": "Added 100 kΩ holds the enable gate low, so the pass FET stays OFF.",
+          "loadSide": "far",
+          "pulldown": "R_R7_PASS_PD",
+          "phase": 11,
+          "hole": [
+            68,
+            34
+          ]
+        },
+        {
+          "ref": "JP_R7_ENABLE",
+          "net": "EDU_PWR_EN",
+          "farNet": "EDU_PWR_EN__B",
+          "purpose": "Open: the interlock AND gate ignores the router enable; drive its input by hand to test the gate.",
+          "failSafe": "Enable input is pulled low by the existing OFF resistor.",
+          "loadSide": "far",
+          "pulldown": "R_POWER_INTERLOCK_EDU_PWR_EN_OFF",
+          "phase": 11,
+          "hole": [
+            72,
+            34
+          ]
+        },
+        {
+          "ref": "JP_R7_ALIVE",
+          "net": "ROUTER_ALIVE",
+          "farNet": "ROUTER_ALIVE__B",
+          "purpose": "Open: the interlock sees the watchdog as stopped; apply 3.3 V to the far pad to simulate a live heartbeat.",
+          "failSafe": "Alive input is pulled low by the existing OFF resistor.",
+          "loadSide": "far",
+          "pulldown": "R_POWER_INTERLOCK_ROUTER_ALIVE_OFF",
+          "phase": 11,
+          "hole": [
+            49,
+            35
+          ]
+        }
+      ],
+      "bars": [
+        {
+          "ref": "BAR_GND_1",
+          "net": "GND",
+          "row": 18,
+          "x0": 15,
+          "x1": 68,
+          "pads": 14,
+          "phase": 9
+        },
+        {
+          "ref": "BAR_GND_2",
+          "net": "GND",
+          "row": 36,
+          "x0": 11,
+          "x1": 68,
+          "pads": 12,
+          "phase": 9
+        },
+        {
+          "ref": "BAR_GND_3",
+          "net": "GND",
+          "row": 3,
+          "x0": 4,
+          "x1": 73,
+          "pads": 14,
+          "phase": 9
+        },
+        {
+          "ref": "BAR_GND_4",
+          "net": "GND",
+          "row": 28,
+          "x0": 5,
+          "x1": 76,
+          "pads": 11,
+          "phase": 9
+        }
+      ]
+    },
+    {
+      "id": "router-matrix",
+      "title": "Router — ESP1, watchdog, matrices and Pi interfaces",
+      "probe": [
+        {
+          "pin": 1,
+          "label": "GND",
+          "net": "GND",
+          "hole": [
+            6,
+            1
+          ],
+          "phase": 0
+        },
+        {
+          "pin": 2,
+          "label": "5V",
+          "net": "5V_SYS",
+          "hole": [
+            7,
+            1
+          ],
+          "phase": 0
+        },
+        {
+          "pin": 3,
+          "label": "3V3",
+          "net": "USB_ROUTER_3V3",
+          "hole": [
+            8,
+            1
+          ],
+          "phase": 0
+        },
+        {
+          "pin": 4,
+          "label": "12V",
+          "net": "12V_SYS",
+          "hole": [
+            9,
+            1
+          ],
+          "phase": 0
+        },
+        {
+          "pin": 5,
+          "label": "SIG1",
+          "net": "ROUTER_ALIVE",
+          "hole": [
+            10,
+            1
+          ],
+          "phase": 0
+        },
+        {
+          "pin": 6,
+          "label": "SIG2",
+          "net": "HEARTBEAT",
+          "hole": [
+            11,
+            1
+          ],
+          "phase": 0
+        },
+        {
+          "pin": 7,
+          "label": "TRIG",
+          "net": "XBAR_LATCH",
+          "hole": [
+            12,
+            1
+          ],
+          "phase": 0
+        },
+        {
+          "pin": 8,
+          "label": "FAULT",
+          "net": "EDU_FAULT",
+          "hole": [
+            13,
+            1
+          ],
+          "phase": 0
+        }
+      ],
+      "testPoints": [
+        {
+          "ref": "TP_GND_1",
+          "net": "GND",
+          "endpoint": "J_PROBE.1",
+          "hole": [
+            6,
+            1
+          ],
+          "phase": 0,
+          "expected": "0 V reference (left side)",
+          "tool": "DMM"
+        },
+        {
+          "ref": "TP_GND_2",
+          "net": "GND",
+          "endpoint": "U_MATRIX_CONTROL_DIAG.5",
+          "hole": [
+            75,
+            7
+          ],
+          "phase": 0,
+          "expected": "0 V reference (right side)",
+          "tool": "DMM"
+        },
+        {
+          "ref": "TP_USB_ROUTER_3V3",
+          "net": "USB_ROUTER_3V3",
+          "endpoint": "J_PROBE.3",
+          "hole": [
+            8,
+            1
+          ],
+          "phase": 0,
+          "expected": "3.3 V from the router USB",
+          "tool": "DMM"
+        },
+        {
+          "ref": "TP_5V_SYS",
+          "net": "5V_SYS",
+          "endpoint": "J_PROBE.2",
+          "hole": [
+            7,
+            1
+          ],
+          "phase": 0,
+          "expected": "5.00 V",
+          "tool": "DMM"
+        },
+        {
+          "ref": "TP_12V_SYS",
+          "net": "12V_SYS",
+          "endpoint": "J_PROBE.4",
+          "hole": [
+            9,
+            1
+          ],
+          "phase": 0,
+          "expected": "12.0 V",
+          "tool": "DMM"
+        },
+        {
+          "ref": "TP_EDU_PWR_EN",
+          "net": "EDU_PWR_EN",
+          "endpoint": "J_ROUTER_CORE_PROTOTYPE.4",
+          "hole": [
+            20,
+            20
+          ],
+          "phase": 0,
+          "expected": "0 V at boot and reset",
+          "tool": "DMM"
+        },
+        {
+          "ref": "TP_HEARTBEAT",
+          "net": "HEARTBEAT",
+          "endpoint": "J_PROBE.6",
+          "hole": [
+            11,
+            1
+          ],
+          "phase": 0,
+          "expected": "50 ms edges only while the session is fresh",
+          "tool": "Scope"
+        },
+        {
+          "ref": "TP_ROUTER_ALIVE",
+          "net": "ROUTER_ALIVE",
+          "endpoint": "J_PROBE.5",
+          "hole": [
+            10,
+            1
+          ],
+          "phase": 0,
+          "expected": "high while the heartbeat is fresh",
+          "tool": "Scope"
+        },
+        {
+          "ref": "TP_EDU_FAULT",
+          "net": "EDU_FAULT",
+          "endpoint": "J_PROBE.8",
+          "hole": [
+            13,
+            1
+          ],
+          "phase": 0,
+          "expected": "low when clear (verify polarity)",
+          "tool": "DMM"
+        },
+        {
+          "ref": "TP_XBAR_DAT",
+          "net": "XBAR_DAT",
+          "endpoint": "U_ROUTER_CORE_ESP1.21",
+          "hole": [
+            14,
+            6
+          ],
+          "phase": 0,
+          "expected": "0 V idle, shift data when configuring",
+          "tool": "Scope"
+        },
+        {
+          "ref": "TP_XBAR_CLK",
+          "net": "XBAR_CLK",
+          "endpoint": "U_ROUTER_CORE_ESP1.28",
+          "hole": [
+            14,
+            13
+          ],
+          "phase": 0,
+          "expected": "0 V idle, shift clock when configuring",
+          "tool": "Scope"
+        },
+        {
+          "ref": "TP_XBAR_LATCH",
+          "net": "XBAR_LATCH",
+          "endpoint": "J_PROBE.7",
+          "hole": [
+            12,
+            1
+          ],
+          "phase": 0,
+          "expected": "0 V idle, latch pulse after a shift",
+          "tool": "Scope"
+        },
+        {
+          "ref": "TP_STB_A_IN",
+          "net": "STB_A_IN",
+          "endpoint": "U_ROUTER_CORE_ESP1.27",
+          "hole": [
+            14,
+            12
+          ],
+          "phase": 0,
+          "expected": "0 V idle",
+          "tool": "Scope"
+        },
+        {
+          "ref": "TP_STB_B_IN",
+          "net": "STB_B_IN",
+          "endpoint": "U_ROUTER_CORE_ESP1.25",
+          "hole": [
+            14,
+            10
+          ],
+          "phase": 0,
+          "expected": "0 V idle",
+          "tool": "Scope"
+        },
+        {
+          "ref": "TP_STROBE_A",
+          "net": "STROBE_A",
+          "endpoint": "JP_R7_STBA.1",
+          "hole": [
+            46,
+            33
+          ],
+          "phase": 24,
+          "expected": "0 V idle, strobe pulse on a write (50 ms or less)",
+          "tool": "Scope"
+        },
+        {
+          "ref": "TP_STROBE_B",
+          "net": "STROBE_B",
+          "endpoint": "JP_R7_STBB.1",
+          "hole": [
+            50,
+            33
+          ],
+          "phase": 24,
+          "expected": "0 V idle, strobe pulse on a write (50 ms or less)",
+          "tool": "Scope"
+        },
+        {
+          "ref": "TP_XBAR_RESET",
+          "net": "XBAR_RESET",
+          "endpoint": "U_MATRIX_SWITCHES_MT_A.3",
+          "hole": [
+            38,
+            6
+          ],
+          "phase": 24,
+          "expected": "held in reset until RESET_RELEASE and ALIVE",
+          "tool": "Scope"
+        },
+        {
+          "ref": "TP_RST_RELEASE",
+          "net": "RST_RELEASE",
+          "endpoint": "JP_R7_RST.1",
+          "hole": [
+            8,
+            35
+          ],
+          "phase": 0,
+          "expected": "0 V at boot",
+          "tool": "DMM"
+        },
+        {
+          "ref": "TP_FIX_SDA",
+          "net": "FIX_SDA",
+          "endpoint": "J_ROUTER_CORE_FIXTURE.3",
+          "hole": [
+            6,
+            27
+          ],
+          "phase": 0,
+          "expected": "3.3 V idle (pull-up)",
+          "tool": "Scope"
+        },
+        {
+          "ref": "TP_FIX_SCL",
+          "net": "FIX_SCL",
+          "endpoint": "J_ROUTER_CORE_FIXTURE.4",
+          "hole": [
+            7,
+            27
+          ],
+          "phase": 0,
+          "expected": "3.3 V idle (pull-up)",
+          "tool": "Scope"
+        }
+      ],
+      "leds": [
+        {
+          "ref": "LED_USBROUTER3V3",
+          "meaning": "router 3.3 V present",
+          "phase": 0,
+          "hole": [
+            11,
+            38
+          ],
+          "resistor": "1k"
+        },
+        {
+          "ref": "LED_5VSYS",
+          "meaning": "5 V system rail present",
+          "phase": 11,
+          "hole": [
+            22,
+            38
+          ],
+          "resistor": "2.2k"
+        },
+        {
+          "ref": "LED_12VSYS",
+          "meaning": "12 V system rail present",
+          "phase": 11,
+          "hole": [
+            33,
+            38
+          ],
+          "resistor": "4.7k"
+        },
+        {
+          "ref": "LED_ROUTERALIVE",
+          "meaning": "watchdog output high (heartbeat fresh)",
+          "phase": 11,
+          "hole": [
+            44,
+            38
+          ],
+          "resistor": "1k"
+        }
+      ],
+      "links": [
+        {
+          "ref": "JP_R7_STBA",
+          "net": "STROBE_A",
+          "farNet": "STROBE_A__B",
+          "purpose": "Open: matrix A strobe is cut off from the control buffer; test the buffer and the MT8816 separately.",
+          "failSafe": "MT_A STROBE is pulled low by its OFF resistor.",
+          "loadSide": "near",
+          "pulldown": "R_MATRIX_SWITCHES_STBA_OFF",
+          "phase": 24,
+          "hole": [
+            46,
+            33
+          ]
+        },
+        {
+          "ref": "JP_R7_STBB",
+          "net": "STROBE_B",
+          "farNet": "STROBE_B__B",
+          "purpose": "Open: matrix B strobe is cut off from the control buffer.",
+          "failSafe": "MT_B STROBE is pulled low by its OFF resistor.",
+          "loadSide": "near",
+          "pulldown": "R_MATRIX_SWITCHES_STBB_OFF",
+          "phase": 24,
+          "hole": [
+            50,
+            33
+          ]
+        },
+        {
+          "ref": "JP_R7_EN",
+          "net": "EDU_PWR_EN",
+          "farNet": "EDU_PWR_EN__B",
+          "purpose": "Open: ESP1 cannot enable the student rail whatever the firmware does; use for the first power-up and for bring-up of the ESP.",
+          "failSafe": "The power board pulls EDU_PWR_EN low through its own OFF resistor.",
+          "loadSide": "near",
+          "pulldown": "external",
+          "phase": 0,
+          "hole": [
+            4,
+            33
+          ]
+        },
+        {
+          "ref": "JP_R7_RST",
+          "net": "RST_RELEASE",
+          "farNet": "RST_RELEASE__B",
+          "purpose": "Open: the matrix reset can never be released by ESP1; use to test the reset chain with the matrix held in reset.",
+          "failSafe": "The reset-release gate is pulled low by its OFF resistor, so the matrix stays in reset.",
+          "loadSide": "near",
+          "pulldown": "R_MATRIX_SWITCHES_RST_RELEASE_OFF",
+          "phase": 0,
+          "hole": [
+            8,
+            35
+          ]
+        }
+      ],
+      "bars": [
+        {
+          "ref": "BAR_GND_1",
+          "net": "GND",
+          "row": 24,
+          "x0": 4,
+          "x1": 75,
+          "pads": 12,
+          "phase": 0
+        },
+        {
+          "ref": "BAR_GND_2",
+          "net": "GND",
+          "row": 3,
+          "x0": 6,
+          "x1": 75,
+          "pads": 15,
+          "phase": 0
+        },
+        {
+          "ref": "BAR_GND_3",
+          "net": "GND",
+          "row": 31,
+          "x0": 5,
+          "x1": 74,
+          "pads": 22,
+          "phase": 0
+        },
+        {
+          "ref": "BAR_GND_4",
+          "net": "GND",
+          "row": 18,
+          "x0": 17,
+          "x1": 37,
+          "pads": 6,
+          "phase": 0
+        }
+      ]
+    }
+  ]
+}

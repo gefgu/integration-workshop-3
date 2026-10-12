@@ -1,0 +1,1777 @@
+{
+  "revision": "r7-testable-perfboards",
+  "sourceDigest": "cc6746a128fc84e16758fabd56bd16ac4f2f8fce55b9eb094fed5f22d384f031",
+  "softwareStatus": "pass",
+  "hardwareStatus": "EVALUATION CANDIDATE — NOT RELEASED FOR SOLDERING",
+  "assemblyIssues": [],
+  "native": [
+    {
+      "board": "contact-a",
+      "section": "Complete board",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "contact-a",
+      "section": "a1: Nodes",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "contact-a",
+      "section": "a1: Service",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "contact-a",
+      "section": "a2: Nodes",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "contact-a",
+      "section": "a2: Service",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "contact-a",
+      "section": "a3: Nodes",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "contact-a",
+      "section": "a3: Service",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "contact-b",
+      "section": "Complete board",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "contact-b",
+      "section": "b1: Nodes",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "contact-b",
+      "section": "b1: Service",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "contact-b",
+      "section": "b2: Nodes",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "contact-b",
+      "section": "b2: Service",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "contact-b",
+      "section": "b3: Nodes",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "contact-b",
+      "section": "b3: Service",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "power",
+      "section": "Complete board",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "power",
+      "section": "power-interlock: Outputs",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "power",
+      "section": "power-interlock: Latch",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "power",
+      "section": "power-guards: VoltageGuard 1",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "power",
+      "section": "power-guards: VoltageGuard 2",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "power",
+      "section": "power-analog: Reference",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "power",
+      "section": "power-analog: Student",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "power",
+      "section": "power-input: Input",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "power",
+      "section": "power-interlock: Indicator",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "power",
+      "section": "power-input: Circuit",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "power",
+      "section": "Test aids 1",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "power",
+      "section": "Test aids 2",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "Complete board",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "router-core: Controller",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "matrix-switches: Matrix",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "integration: Pi",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "matrix-control: Control",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "router-safety: Watchdog",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "matrix-control: Tools",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "router-safety: Return",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "integration: Circuit",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "matrix-switches: Control",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "integration: Buttons",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "router-core: Circuit",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "Test aids",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "smart-core",
+      "section": "Complete board",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "smart-core",
+      "section": "Controller",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "smart-core",
+      "section": "Circuit",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "smart-safety",
+      "section": "Complete board",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "smart-safety",
+      "section": "Watchdog",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "smart-safety",
+      "section": "Registers",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "measurement-a-precision",
+      "section": "Complete board",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "measurement-a-precision",
+      "section": "Voltage inputs",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "measurement-a-precision",
+      "section": "Support",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "measurement-a-precision",
+      "section": "Buffered selector and ADC",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "measurement-a-precision",
+      "section": "Stimulus",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "measurement-a-buffers",
+      "section": "Complete board",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "measurement-a-buffers",
+      "section": "Support",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "measurement-a-buffers",
+      "section": "Voltage buffers",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "measurement-a-buffers",
+      "section": "Limits",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "measurement-a-buffers",
+      "section": "Voltage inputs 1",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "measurement-a-buffers",
+      "section": "Voltage inputs 2",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-a-position-0",
+      "section": "Complete board",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-a-position-0",
+      "section": "Current",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-a-position-0",
+      "section": "Circuit",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-a-position-0",
+      "section": "Limits",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-a-position-0",
+      "section": "Output",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-a-position-0",
+      "section": "Interface",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-a-position-1",
+      "section": "Complete board",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-a-position-1",
+      "section": "Current",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-a-position-1",
+      "section": "Circuit",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-a-position-1",
+      "section": "Limits",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-a-position-1",
+      "section": "Output",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-a-position-1",
+      "section": "Interface",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-a-position-2",
+      "section": "Complete board",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-a-position-2",
+      "section": "Current",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-a-position-2",
+      "section": "Circuit",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-a-position-2",
+      "section": "Limits",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-a-position-2",
+      "section": "Output",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-a-position-2",
+      "section": "Interface",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "measurement-b-precision",
+      "section": "Complete board",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "measurement-b-precision",
+      "section": "Voltage inputs",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "measurement-b-precision",
+      "section": "Support",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "measurement-b-precision",
+      "section": "Buffered selector and ADC",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "measurement-b-buffers",
+      "section": "Complete board",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "measurement-b-buffers",
+      "section": "Support",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "measurement-b-buffers",
+      "section": "Voltage buffers",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "measurement-b-buffers",
+      "section": "Limits",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "measurement-b-buffers",
+      "section": "Voltage inputs 1",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "measurement-b-buffers",
+      "section": "Voltage inputs 2",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-b-position-3",
+      "section": "Complete board",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-b-position-3",
+      "section": "Current",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-b-position-3",
+      "section": "Circuit",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-b-position-3",
+      "section": "Limits",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-b-position-3",
+      "section": "Output",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-b-position-3",
+      "section": "Interface",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-b-position-4",
+      "section": "Complete board",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-b-position-4",
+      "section": "Current",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-b-position-4",
+      "section": "Circuit",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-b-position-4",
+      "section": "Limits",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-b-position-4",
+      "section": "Output",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-b-position-4",
+      "section": "Interface",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-b-position-5",
+      "section": "Complete board",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-b-position-5",
+      "section": "Current",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-b-position-5",
+      "section": "Circuit",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-b-position-5",
+      "section": "Limits",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-b-position-5",
+      "section": "Output",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "bank-b-position-5",
+      "section": "Interface",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "measurement-a-precision",
+      "section": "External continuity stimulus",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "smart-early",
+      "section": "Complete board",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "smart-early",
+      "section": "Early reference 1",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "smart-early",
+      "section": "Early reference 2",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "smart-early",
+      "section": "Early reference 3",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "usb-prototype",
+      "section": "Temporary USB source",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    }
+  ],
+  "metrics": {
+    "revision5": {
+      "boards": 27,
+      "parts": 798,
+      "functionalParts": 457,
+      "busBars": 0,
+      "removableLinks": 0,
+      "testPoints": 0,
+      "statusLeds": 0,
+      "busBarPads": 0,
+      "busBarSegments": 0,
+      "sleevesRequired": 0,
+      "terminalPosts": 341,
+      "pins": 2162,
+      "wires": 1392,
+      "adapters": 23,
+      "estimatedBoardSolderOperations": 4946,
+      "maxLocalWireAttachments": 2
+    },
+    "permanent": {
+      "boards": 4,
+      "parts": 222,
+      "functionalParts": 175,
+      "busBars": 8,
+      "removableLinks": 7,
+      "testPoints": 34,
+      "statusLeds": 10,
+      "busBarPads": 106,
+      "busBarSegments": 98,
+      "sleevesRequired": 121,
+      "terminalPosts": 25,
+      "pins": 937,
+      "wires": 645,
+      "adapters": 9,
+      "estimatedBoardSolderOperations": 2333,
+      "maxLocalWireAttachments": 3
+    },
+    "smartReference": {
+      "boards": 12,
+      "parts": 522,
+      "functionalParts": 290,
+      "busBars": 0,
+      "removableLinks": 0,
+      "testPoints": 0,
+      "statusLeds": 0,
+      "busBarPads": 0,
+      "busBarSegments": 0,
+      "sleevesRequired": 0,
+      "terminalPosts": 232,
+      "pins": 1213,
+      "wires": 795,
+      "adapters": 14,
+      "estimatedBoardSolderOperations": 2803,
+      "maxLocalWireAttachments": 2
+    },
+    "harnessConductors": 212,
+    "harnessEndTerminations": 424,
+    "caveat": "Permanent totals count four perfboards only. SmartReference totals describe inherited electrical contracts, not PCB dimensions or fabrication files. Module internals, sockets and adapters are excluded from solder estimates."
+  },
+  "engineering": {
+    "voltage": {
+      "dividerNominalInputOhm": 2000000,
+      "dividerMinOhm": 1980000,
+      "dividerMaxGain": 0.505,
+      "maxBufferInputV": 2.9185484712038696,
+      "minBufferInputV": 0.23029046683267831,
+      "biasNominalV": 0.49848942598187307,
+      "biasLoadAllowanceV": 0.01,
+      "generalBufferOffsetMaxV": 0.0045,
+      "precisionBufferOffsetMaxV": 0.00001,
+      "generalPairInputReferredOffsetContributionV": 0.018,
+      "dividerWorstDifferentialErrorV": 0.0525,
+      "staticAllowanceV": 0.36250000000000004,
+      "scan": {
+        "adcRateSps": 860,
+        "conversionWaitUs": 1500,
+        "settlingWaitUs": 1000,
+        "discardConversions": 1,
+        "sampleConversions": 1,
+        "positionsPerBank": 3,
+        "worstBankScanMs": 16.5,
+        "targetBankScanMs": 20,
+        "status": "Firmware/scope pending; poll conversion-ready, discard after switch, retain timestamp per position. No sample is valid before settling."
+      }
+    },
+    "continuity": {
+      "stimulusResistorOhm": 11000,
+      "stimulusMaxMa": 0.310376492194674,
+      "passMaxOhm": 20,
+      "rejectMinOhm": 100,
+      "precisionPairMaxInputReferredOffsetV": 0.00004,
+      "status": "Requires short/open/1k calibration, known stimulus voltage, actual error bound and inconclusive band. MCP6004 is excluded from the first diagnostic pair."
+    },
+    "relayDrive": {
+      "bankResistorOhm": 390,
+      "stimulusResistorOhm": 270,
+      "minBankLedMa": 5.458238131505459,
+      "minStimulusLedMa": 5.8672533920058685,
+      "maxBankLedMa": 13.597513597513597,
+      "maxStimulusLedMa": 12.644968200523754,
+      "recommendedMinMa": 5,
+      "recommendedMaxMa": 30,
+      "status": "Conservative static driver-drop budget; verify measured LED current and PhotoMOS timing over supply extremes."
+    },
+    "outputClamp": {
+      "referenceTopOhm": 1000,
+      "referenceBottomOhm": 49900,
+      "senseOhm": 10,
+      "resistorTolerance": 0.01,
+      "opampOffsetV": 0.0045,
+      "worstSourceSinkMa": 11.079330930057955,
+      "minStaticClampMa": 8.614644579521485,
+      "status": "Static current bound only. Saturation, MOSFET compliance, PhotoMOS response, stability and transient shorts require bench qualification."
+    },
+    "current": {
+      "shuntOhm": 1,
+      "tolerance": 0.01,
+      "maxOffsetUv": 10,
+      "offsetErrorMa": 0.01,
+      "lsbMa": 0.0025,
+      "shuntBurdenAt10MaV": 0.01,
+      "status": "INA226 carrier shunt bypass must be removed; Kelvin routing and actual carrier address/pull-ups inspected. Include PhotoMOS resistance in total burden."
+    },
+    "power": {
+      "benchInputV": 12,
+      "availableInputW": 24,
+      "piSupplySeparate": true,
+      "educationalContactMaxV": 5.25,
+      "tripMaxMs": 1,
+      "guard5V": {
+        "minimumStaticTripV": 5.052839403668332,
+        "maximumStaticTripV": 5.227457556628628,
+        "thresholdTolerance": 0.015,
+        "dividerTolerance": 0.001,
+        "inputLeakageA": 1e-8
+      },
+      "guard3V3": {
+        "minimumStaticTripV": 3.3918537156943063,
+        "maximumStaticTripV": 3.5083350844944934
+      },
+      "status": "Actual buck losses, fan/light load, display interface and fault transients pending. Existing LTC4365 guards retained until proven substitute exists."
+    },
+    "watchdog": {
+      "targetExpiryMs": [
+        200,
+        350
+      ],
+      "heartbeatPeriodMs": 50,
+      "status": "HC123 actual capacitor type/tolerance and scope expiry pending; fixed levels do not constitute heartbeat."
+    },
+    "sources": [
+      [
+        "OPA2333",
+        "https://www.ti.com/lit/ds/symlink/opa333.pdf"
+      ],
+      [
+        "AQY212EH",
+        "https://industry.panasonic.com/ap/en/products/control/relay/photomos/number/aqy212eh"
+      ],
+      [
+        "LTC4365",
+        "https://www.analog.com/media/en/technical-documentation/data-sheets/4365fa.pdf"
+      ],
+      [
+        "MCP6001/2/4",
+        "https://ww1.microchip.com/downloads/en/DeviceDoc/MCP6001-1R-1U-2-4-1-MHz-Low-Power-Op-Amp-DS20001733L.pdf"
+      ],
+      [
+        "INA226",
+        "https://www.ti.com/lit/ds/symlink/ina226.pdf"
+      ],
+      [
+        "ADS1115",
+        "https://www.ti.com/lit/ds/symlink/ads1115.pdf"
+      ],
+      [
+        "CD4052",
+        "https://www.ti.com/lit/ds/symlink/cd4053b.pdf"
+      ],
+      [
+        "ULN2003",
+        "https://www.ti.com/lit/ds/symlink/uln2003a.pdf"
+      ],
+      [
+        "MT8816",
+        "https://www.mouser.com/datasheet/2/268/Microchip_06182024_MT8816AE1-3459976.pdf"
+      ],
+      [
+        "RC522",
+        "https://www.nxp.com/docs/en/data-sheet/MFRC522.pdf"
+      ]
+    ]
+  },
+  "releaseGates": [
+    "Exact 10×20 cm usable grid, isolated pads, thickness and contact fit",
+    "Measured component, socket, adapter, converter and connector envelopes",
+    "Enclosure and removable-tray clearance, extraction and wiring access",
+    "Smart PCB placement, routing, manufacturing review and component availability",
+    "Supply guard transients, output limits, watchdog, partial-power leakage and measurement qualification",
+    "Checkpoint-compatible firmware and measured acceptance on final hardware"
+  ],
+  "stock": {
+    "width": 200,
+    "height": 100,
+    "cols": 78,
+    "rows": 38,
+    "pitch": 2.54,
+    "verified": false,
+    "description": "10×20 cm isolated-pad perfboard; substrate, grid, thickness and plating must be measured"
+  },
+  "scope": "Native software and descriptor consistency checks, not measured hardware verification. No routed copper; copper-short and style checks cannot validate insulated hand wires.",
+  "copper": {
+    "status": "pass",
+    "scope": "Native pad/copper geometry only. No routed copper: hand-wire connectivity is checked separately.",
+    "results": [
+      {
+        "board": "contact-a",
+        "results": [
+          {
+            "stage": "shorts",
+            "ok": true,
+            "exitCode": 0
+          },
+          {
+            "stage": "pcb-style",
+            "ok": true,
+            "exitCode": 0
+          }
+        ]
+      },
+      {
+        "board": "contact-b",
+        "results": [
+          {
+            "stage": "shorts",
+            "ok": true,
+            "exitCode": 0
+          },
+          {
+            "stage": "pcb-style",
+            "ok": true,
+            "exitCode": 0
+          }
+        ]
+      },
+      {
+        "board": "power",
+        "results": [
+          {
+            "stage": "shorts",
+            "ok": true,
+            "exitCode": 0
+          },
+          {
+            "stage": "pcb-style",
+            "ok": true,
+            "exitCode": 0
+          }
+        ]
+      },
+      {
+        "board": "router-matrix",
+        "results": [
+          {
+            "stage": "shorts",
+            "ok": true,
+            "exitCode": 0
+          },
+          {
+            "stage": "pcb-style",
+            "ok": true,
+            "exitCode": 0
+          }
+        ]
+      },
+      {
+        "board": "smart-core",
+        "results": [
+          {
+            "stage": "shorts",
+            "ok": true,
+            "exitCode": 0
+          },
+          {
+            "stage": "pcb-style",
+            "ok": true,
+            "exitCode": 0
+          }
+        ]
+      },
+      {
+        "board": "smart-safety",
+        "results": [
+          {
+            "stage": "shorts",
+            "ok": true,
+            "exitCode": 0
+          },
+          {
+            "stage": "pcb-style",
+            "ok": true,
+            "exitCode": 0
+          }
+        ]
+      },
+      {
+        "board": "measurement-a-precision",
+        "results": [
+          {
+            "stage": "shorts",
+            "ok": true,
+            "exitCode": 0
+          },
+          {
+            "stage": "pcb-style",
+            "ok": true,
+            "exitCode": 0
+          }
+        ]
+      },
+      {
+        "board": "measurement-a-buffers",
+        "results": [
+          {
+            "stage": "shorts",
+            "ok": true,
+            "exitCode": 0
+          },
+          {
+            "stage": "pcb-style",
+            "ok": true,
+            "exitCode": 0
+          }
+        ]
+      },
+      {
+        "board": "bank-a-position-0",
+        "results": [
+          {
+            "stage": "shorts",
+            "ok": true,
+            "exitCode": 0
+          },
+          {
+            "stage": "pcb-style",
+            "ok": true,
+            "exitCode": 0
+          }
+        ]
+      },
+      {
+        "board": "bank-a-position-1",
+        "results": [
+          {
+            "stage": "shorts",
+            "ok": true,
+            "exitCode": 0
+          },
+          {
+            "stage": "pcb-style",
+            "ok": true,
+            "exitCode": 0
+          }
+        ]
+      },
+      {
+        "board": "bank-a-position-2",
+        "results": [
+          {
+            "stage": "shorts",
+            "ok": true,
+            "exitCode": 0
+          },
+          {
+            "stage": "pcb-style",
+            "ok": true,
+            "exitCode": 0
+          }
+        ]
+      },
+      {
+        "board": "measurement-b-precision",
+        "results": [
+          {
+            "stage": "shorts",
+            "ok": true,
+            "exitCode": 0
+          },
+          {
+            "stage": "pcb-style",
+            "ok": true,
+            "exitCode": 0
+          }
+        ]
+      },
+      {
+        "board": "measurement-b-buffers",
+        "results": [
+          {
+            "stage": "shorts",
+            "ok": true,
+            "exitCode": 0
+          },
+          {
+            "stage": "pcb-style",
+            "ok": true,
+            "exitCode": 0
+          }
+        ]
+      },
+      {
+        "board": "bank-b-position-3",
+        "results": [
+          {
+            "stage": "shorts",
+            "ok": true,
+            "exitCode": 0
+          },
+          {
+            "stage": "pcb-style",
+            "ok": true,
+            "exitCode": 0
+          }
+        ]
+      },
+      {
+        "board": "bank-b-position-4",
+        "results": [
+          {
+            "stage": "shorts",
+            "ok": true,
+            "exitCode": 0
+          },
+          {
+            "stage": "pcb-style",
+            "ok": true,
+            "exitCode": 0
+          }
+        ]
+      },
+      {
+        "board": "bank-b-position-5",
+        "results": [
+          {
+            "stage": "shorts",
+            "ok": true,
+            "exitCode": 0
+          },
+          {
+            "stage": "pcb-style",
+            "ok": true,
+            "exitCode": 0
+          }
+        ]
+      },
+      {
+        "board": "smart-early",
+        "results": [
+          {
+            "stage": "shorts",
+            "ok": true,
+            "exitCode": 0
+          },
+          {
+            "stage": "pcb-style",
+            "ok": true,
+            "exitCode": 0
+          }
+        ]
+      }
+    ]
+  }
+}
