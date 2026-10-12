@@ -1,0 +1,440 @@
+{
+  "revision": "r8-simplified-lower-boards",
+  "changes": [
+    {
+      "board": "power",
+      "ref": "R_LED_12VFUSED",
+      "action": "remove",
+      "reason": "Optional indicator replaced by existing test pad",
+      "phase": 9
+    },
+    {
+      "board": "power",
+      "ref": "LED_12VFUSED",
+      "action": "remove",
+      "reason": "Optional indicator replaced by existing test pad",
+      "phase": 9
+    },
+    {
+      "board": "power",
+      "ref": "R_LED_BUCK5V",
+      "action": "remove",
+      "reason": "Optional indicator replaced by existing test pad",
+      "phase": 9
+    },
+    {
+      "board": "power",
+      "ref": "LED_BUCK5V",
+      "action": "remove",
+      "reason": "Optional indicator replaced by existing test pad",
+      "phase": 9
+    },
+    {
+      "board": "power",
+      "ref": "R_LED_BUCK3V3",
+      "action": "remove",
+      "reason": "Optional indicator replaced by existing test pad",
+      "phase": 9
+    },
+    {
+      "board": "power",
+      "ref": "LED_BUCK3V3",
+      "action": "remove",
+      "reason": "Optional indicator replaced by existing test pad",
+      "phase": 9
+    },
+    {
+      "board": "router-matrix",
+      "ref": "R_LED_5VSYS",
+      "action": "remove",
+      "reason": "Optional indicator replaced by existing test pad",
+      "phase": 11
+    },
+    {
+      "board": "router-matrix",
+      "ref": "LED_5VSYS",
+      "action": "remove",
+      "reason": "Optional indicator replaced by existing test pad",
+      "phase": 11
+    },
+    {
+      "board": "router-matrix",
+      "ref": "R_LED_12VSYS",
+      "action": "remove",
+      "reason": "Optional indicator replaced by existing test pad",
+      "phase": 11
+    },
+    {
+      "board": "router-matrix",
+      "ref": "LED_12VSYS",
+      "action": "remove",
+      "reason": "Optional indicator replaced by existing test pad",
+      "phase": 11
+    },
+    {
+      "board": "power",
+      "ref": "J_POWER_INTERLOCK_FIXED_BATTERY",
+      "action": "remove",
+      "reason": "Staged fixed-battery patch interface is a temporary test fixture, not part of the complete matrix-controlled board",
+      "phase": 9
+    },
+    {
+      "board": "power",
+      "ref": "J_PROBE",
+      "action": "remove",
+      "reason": "Removed from the power board at the user choice: duplicate buck-output access is available at the converters, and enable/fault control signals have no dedicated indicators.",
+      "phase": 9
+    },
+    {
+      "board": "router-matrix",
+      "ref": "JP_R7_STBA",
+      "action": "remove",
+      "reason": "Replace bring-up isolation jumper with a permanent wire path required for normal enable, reset and matrix strobe operation",
+      "phase": 24
+    },
+    {
+      "board": "router-matrix",
+      "ref": "JP_R7_STBB",
+      "action": "remove",
+      "reason": "Replace bring-up isolation jumper with a permanent wire path required for normal enable, reset and matrix strobe operation",
+      "phase": 24
+    },
+    {
+      "board": "router-matrix",
+      "ref": "JP_R7_EN",
+      "action": "remove",
+      "reason": "Replace bring-up isolation jumper with a permanent wire path required for normal enable, reset and matrix strobe operation",
+      "phase": 0
+    },
+    {
+      "board": "router-matrix",
+      "ref": "JP_R7_RST",
+      "action": "remove",
+      "reason": "Replace bring-up isolation jumper with a permanent wire path required for normal enable, reset and matrix strobe operation",
+      "phase": 0
+    },
+    {
+      "board": "power",
+      "ref": "JP_POWER_INPUT_LOGIC",
+      "action": "remove",
+      "reason": "Replace removable consumer-rail jumper with permanent wire connection",
+      "phase": 9
+    },
+    {
+      "board": "power",
+      "ref": "JP_POWER_INPUT_3V3",
+      "action": "remove",
+      "reason": "Replace removable consumer-rail jumper with permanent wire connection",
+      "phase": 9
+    },
+    {
+      "board": "power",
+      "ref": "JP_R7_PASS",
+      "action": "remove",
+      "reason": "Replace safety bring-up jumper with permanent wire connection for normal operation",
+      "phase": 11
+    },
+    {
+      "board": "power",
+      "ref": "JP_R7_ENABLE",
+      "action": "remove",
+      "reason": "Replace safety bring-up jumper with permanent wire connection for normal operation",
+      "phase": 11
+    },
+    {
+      "board": "power",
+      "ref": "JP_R7_ALIVE",
+      "action": "remove",
+      "reason": "Replace safety bring-up jumper with permanent wire connection for normal operation",
+      "phase": 11
+    },
+    {
+      "board": "router-matrix",
+      "ref": "C_INTEGRATION_ENERGIZE",
+      "action": "remove",
+      "reason": "Firmware must debounce for 20ms, release before rearming, and suppress held-at-boot presses",
+      "phase": 32
+    },
+    {
+      "board": "router-matrix",
+      "ref": "C_INTEGRATION_BACK",
+      "action": "remove",
+      "reason": "Firmware must debounce for 20ms, release before rearming, and suppress held-at-boot presses",
+      "phase": 32
+    },
+    {
+      "board": "power",
+      "ref": "U_POWER_INTERLOCK_POR",
+      "action": "replace",
+      "phase": 11,
+      "reason": "MCP120 removes internal pull-up from shared FAULT line; external 10k keeps sink demand below LTC4365 500uA specification"
+    },
+    {
+      "board": "power",
+      "ref": "U_POWER_INTERLOCK_RESET",
+      "action": "remove",
+      "reason": "HC10 combines reset NAND and three-input rail enable",
+      "phase": 11
+    },
+    {
+      "board": "power",
+      "ref": "C_POWER_INTERLOCK_RESET",
+      "action": "remove",
+      "reason": "HC10 combines reset NAND and three-input rail enable",
+      "phase": 11
+    },
+    {
+      "board": "power",
+      "ref": "U_POWER_INTERLOCK_LOGIC",
+      "action": "replace",
+      "reason": "One SN74HC10N replaces HC08 and HC00; HC74 latch retained",
+      "phase": 11
+    },
+    {
+      "board": "power",
+      "ref": "R_POWER_GUARDS_OV_5V_BOTTOM",
+      "action": "remove",
+      "reason": "Replace four divider resistors with three-resistor UV/OV ladder",
+      "phase": 10
+    },
+    {
+      "board": "power",
+      "ref": "R_POWER_GUARDS_OV_5V_TOP",
+      "action": "remove",
+      "reason": "Replace four divider resistors with three-resistor UV/OV ladder",
+      "phase": 10
+    },
+    {
+      "board": "power",
+      "ref": "R_POWER_GUARDS_UV_5V_BOTTOM",
+      "action": "remove",
+      "reason": "Replace four divider resistors with three-resistor UV/OV ladder",
+      "phase": 10
+    },
+    {
+      "board": "power",
+      "ref": "R_POWER_GUARDS_UV_5V_TOP",
+      "action": "remove",
+      "reason": "Replace four divider resistors with three-resistor UV/OV ladder",
+      "phase": 10
+    },
+    {
+      "board": "power",
+      "ref": "R_POWER_GUARDS_OV_3V3_BOTTOM",
+      "action": "remove",
+      "reason": "Replace four divider resistors with three-resistor UV/OV ladder",
+      "phase": 10
+    },
+    {
+      "board": "power",
+      "ref": "R_POWER_GUARDS_UV_3V3_BOTTOM",
+      "action": "remove",
+      "reason": "Replace four divider resistors with three-resistor UV/OV ladder",
+      "phase": 10
+    },
+    {
+      "board": "power",
+      "ref": "R_POWER_GUARDS_OV_3V3_TOP",
+      "action": "remove",
+      "reason": "Replace four divider resistors with three-resistor UV/OV ladder",
+      "phase": 10
+    },
+    {
+      "board": "power",
+      "ref": "R_POWER_GUARDS_UV_3V3_TOP",
+      "action": "remove",
+      "reason": "Replace four divider resistors with three-resistor UV/OV ladder",
+      "phase": 10
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_ROUTER_CORE_POWER",
+      "action": "remove",
+      "reason": "Replace with permanent CP00 power/control receiving header",
+      "phase": 11
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_ROUTER_POWER_CONTROL",
+      "action": "add",
+      "phase": 0,
+      "reason": "Passive 10-pin interface installed at CP00; final external supplies connect only after qualification"
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_BOUNDARY_1",
+      "action": "remove",
+      "reason": "NODE receiver J_MATRIX_NODE_A_1.1",
+      "phase": 24
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_BOUNDARY_2",
+      "action": "remove",
+      "reason": "NODE receiver J_MATRIX_NODE_A_1.2",
+      "phase": 24
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_BOUNDARY_3",
+      "action": "remove",
+      "reason": "NODE receiver J_MATRIX_NODE_A_1.3",
+      "phase": 24
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_BOUNDARY_4",
+      "action": "remove",
+      "reason": "NODE receiver J_MATRIX_NODE_A_1.4",
+      "phase": 24
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_BOUNDARY_5",
+      "action": "remove",
+      "reason": "NODE receiver J_MATRIX_NODE_A_2.1",
+      "phase": 24
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_BOUNDARY_6",
+      "action": "remove",
+      "reason": "NODE receiver J_MATRIX_NODE_A_2.2",
+      "phase": 24
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_BOUNDARY_7",
+      "action": "remove",
+      "reason": "NODE receiver J_MATRIX_NODE_A_2.3",
+      "phase": 24
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_BOUNDARY_8",
+      "action": "remove",
+      "reason": "NODE receiver J_MATRIX_NODE_A_2.4",
+      "phase": 24
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_BOUNDARY_9",
+      "action": "remove",
+      "reason": "NODE receiver J_MATRIX_NODE_A_3.1",
+      "phase": 24
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_BOUNDARY_10",
+      "action": "remove",
+      "reason": "NODE receiver J_MATRIX_NODE_A_3.2",
+      "phase": 24
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_BOUNDARY_11",
+      "action": "remove",
+      "reason": "NODE receiver J_MATRIX_NODE_A_3.3",
+      "phase": 24
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_BOUNDARY_12",
+      "action": "remove",
+      "reason": "NODE receiver J_MATRIX_NODE_B_1.1",
+      "phase": 24
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_BOUNDARY_13",
+      "action": "remove",
+      "reason": "NODE receiver J_MATRIX_NODE_B_1.2",
+      "phase": 24
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_BOUNDARY_14",
+      "action": "remove",
+      "reason": "NODE receiver J_MATRIX_NODE_B_1.3",
+      "phase": 24
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_BOUNDARY_15",
+      "action": "remove",
+      "reason": "NODE receiver J_MATRIX_NODE_B_1.4",
+      "phase": 24
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_BOUNDARY_16",
+      "action": "remove",
+      "reason": "NODE receiver J_MATRIX_NODE_B_2.1",
+      "phase": 24
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_BOUNDARY_17",
+      "action": "remove",
+      "reason": "NODE receiver J_MATRIX_NODE_B_2.2",
+      "phase": 24
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_BOUNDARY_18",
+      "action": "remove",
+      "reason": "NODE receiver J_MATRIX_NODE_B_2.3",
+      "phase": 24
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_BOUNDARY_19",
+      "action": "remove",
+      "reason": "NODE receiver J_MATRIX_NODE_B_2.4",
+      "phase": 24
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_BOUNDARY_20",
+      "action": "remove",
+      "reason": "NODE receiver J_MATRIX_NODE_B_3.1",
+      "phase": 24
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_BOUNDARY_21",
+      "action": "remove",
+      "reason": "NODE receiver J_MATRIX_NODE_B_3.2",
+      "phase": 24
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_BOUNDARY_22",
+      "action": "remove",
+      "reason": "NODE receiver J_MATRIX_NODE_B_3.3",
+      "phase": 24
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_ROUTER_CORE_5V",
+      "action": "remove",
+      "reason": "Supply already carried by primary 10-pin power/control cable",
+      "phase": 32
+    },
+    {
+      "board": "router-matrix",
+      "ref": "J_ROUTER_CORE_12V",
+      "action": "remove",
+      "reason": "Supply already carried by primary 10-pin power/control cable",
+      "phase": 32
+    }
+  ],
+  "pullupReview": {
+    "decision": "retain",
+    "parts": [
+      "R_POWER_ANALOG_PRESET",
+      "R_ROUTER_SAFETY_USB_POR"
+    ],
+    "reason": "Power supervisor changed to MCP120: external pull-up required. Router MCP130 internal 5k is typical only; retain external pull-up pending rise-time measurement."
+  }
+}

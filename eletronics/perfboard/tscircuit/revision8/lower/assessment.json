@@ -1,0 +1,188 @@
+{
+  "revision": "r8-simplified-lower-boards",
+  "softwareStatus": "pass",
+  "checks": 6660,
+  "issues": [],
+  "comparison": [
+    {
+      "board": "power",
+      "before": {
+        "resistors": 29,
+        "capacitors": 12,
+        "logicPackages": 6,
+        "physicalWireRuns": 207,
+        "insulatedWireRuns": 203,
+        "continuousGroundBars": 4,
+        "connectionSegments": 250,
+        "wireEndpointSolderJoints": 457,
+        "componentPinJoints": 257,
+        "crossings": 608,
+        "lengthMm": 7746.999999999993
+      },
+      "after": {
+        "resistors": 24,
+        "capacitors": 11,
+        "logicPackages": 5,
+        "physicalWireRuns": 167,
+        "insulatedWireRuns": 163,
+        "continuousGroundBars": 4,
+        "connectionSegments": 197,
+        "wireEndpointSolderJoints": 364,
+        "componentPinJoints": 204,
+        "crossings": 218,
+        "lengthMm": 4185.9199999999955
+      }
+    },
+    {
+      "board": "router-matrix",
+      "before": {
+        "resistors": 27,
+        "capacitors": 13,
+        "logicPackages": 7,
+        "physicalWireRuns": 252,
+        "insulatedWireRuns": 248,
+        "continuousGroundBars": 4,
+        "connectionSegments": 299,
+        "wireEndpointSolderJoints": 551,
+        "componentPinJoints": 404,
+        "crossings": 1623,
+        "lengthMm": 12095.479999999983
+      },
+      "after": {
+        "resistors": 25,
+        "capacitors": 11,
+        "logicPackages": 7,
+        "physicalWireRuns": 233,
+        "insulatedWireRuns": 229,
+        "continuousGroundBars": 4,
+        "connectionSegments": 272,
+        "wireEndpointSolderJoints": 505,
+        "componentPinJoints": 381,
+        "crossings": 738,
+        "lengthMm": 8026.399999999998
+      }
+    }
+  ],
+  "protection": {
+    "presetSink": {
+      "maximumMa": 0.34641414141414145,
+      "guaranteedLTC4365SinkMa": 0.5,
+      "supervisor": "MCP120-300DI/TO",
+      "externalPullupOhm": 10000,
+      "allowanceInputLeakageUa": 5
+    },
+    "voltageLadders": [
+      {
+        "rail": "5V",
+        "refs": [
+          "R_POWER_GUARDS_LADDER_5V_TOP",
+          "R_POWER_GUARDS_LADDER_5V_MID",
+          "R_POWER_GUARDS_LADDER_5V_BOTTOM"
+        ],
+        "valuesOhm": [
+          91400,
+          1350,
+          10000
+        ],
+        "nominal": {
+          "uv": 4.526431718061674,
+          "ov": 5.1375
+        },
+        "uv": [
+          4.44889352889524,
+          4.60423103768844
+        ],
+        "ov": [
+          5.049471093248249,
+          5.225829390048549
+        ],
+        "uvRecover": [
+          4.629629004873006,
+          4.8944385668034585
+        ],
+        "ovRecover": [
+          4.721264100241256,
+          5.019958018677177
+        ],
+        "cornerCount": 128,
+        "tolerance": 0.001,
+        "inputLeakageA": 1e-8,
+        "hysteresisV": [
+          0.02,
+          0.032
+        ],
+        "thresholdV": [
+          0.4925,
+          0.5075
+        ]
+      },
+      {
+        "rail": "3V3",
+        "refs": [
+          "R_POWER_GUARDS_LADDER_3V3_TOP",
+          "R_POWER_GUARDS_LADDER_3V3_MID",
+          "R_POWER_GUARDS_LADDER_3V3_BOTTOM"
+        ],
+        "valuesOhm": [
+          57600,
+          2020,
+          10100
+        ],
+        "nominal": {
+          "uv": 2.876237623762376,
+          "ov": 3.4514851485148514
+        },
+        "uv": [
+          2.8273626037987403,
+          2.9252668350860143
+        ],
+        "ov": [
+          3.3927332263616794,
+          3.5104283103064247
+        ],
+        "uvRecover": [
+          2.942222199648435,
+          3.109650505885527
+        ],
+        "ovRecover": [
+          3.1722155895430526,
+          3.3721325491987817
+        ],
+        "cornerCount": 128,
+        "tolerance": 0.001,
+        "inputLeakageA": 1e-8,
+        "hysteresisV": [
+          0.02,
+          0.032
+        ],
+        "thresholdV": [
+          0.4925,
+          0.5075
+        ]
+      }
+    ],
+    "pullupReview": {
+      "decision": "retain",
+      "parts": [
+        "R_POWER_ANALOG_PRESET",
+        "R_ROUTER_SAFETY_USB_POR"
+      ],
+      "reason": "Power supervisor changed to MCP120: external pull-up required. Router MCP130 internal 5k is typical only; retain external pull-up pending rise-time measurement."
+    },
+    "interlock": {
+      "truthTableCases": 32,
+      "propagationAndPowerRamps": "pending scope qualification",
+      "faultPriority": "Boolean equivalence only; PRESET_N low forces CLEAR_N high after propagation. Simultaneous pin transitions still require scope tests."
+    },
+    "trip": "Original INA180/LM393/TL431/shunt network retained; actual >10.6 to <=12mA trip and <=1ms cutoff pending",
+    "watchdog": "Original 549k/1uF timing retained; expiry 200–350ms pending"
+  },
+  "sources": {
+    "LTC4365": "https://www.analog.com/media/en/technical-documentation/data-sheets/ltc4365.pdf",
+    "HC10": "https://www.ti.com/lit/ds/symlink/sn74hc10.pdf",
+    "MCP130": "https://ww1.microchip.com/downloads/en/DeviceDoc/11184d.pdf"
+  },
+  "hardwareStatus": "pending",
+  "firmwareStatus": "contract only",
+  "counting": "Physical wire runs = insulated leads plus continuous bars; connection segments, endpoint solder joints and component pin joints reported separately. Length is calculated geometry, not measured stock."
+}

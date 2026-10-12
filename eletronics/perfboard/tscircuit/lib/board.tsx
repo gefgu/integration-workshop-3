@@ -46,7 +46,7 @@ export function Component({board,p}:{board:any,p:any}) {
  if(p.kind==='resistor')return <resistor {...common} resistance={p.value} />;
  if(p.kind==='capacitor')return <capacitor {...common} capacitance={p.value} polarized={['470uF','10uF'].includes(p.value)} />;
  if(p.kind==='diode')return <diode {...common} />;
- if(p.kind==='led')return <led {...common} color="red" />;
+  if(p.kind==='led')return <led {...common} color={p.ledColor??'red'} />;
  if(p.ref.startsWith('F_'))return <fuse {...common} currentRating={p.ref==='F_INPUT'?'2A':'500mA'} voltageRating="30V" />;
  if(isMos)return <mosfet {...common} pinAttributes={{pin1:{isPassive:true},pin2:{isPassive:true},pin3:{isInput:true}}} channelType={["BSS84","NDP6020P"].includes(p.mpn)?"p":"n"} mosfetMode="enhancement" />;
  if(p.body==='pogo')return <connector {...common} pinLabels={labels} schWidth={1.45} schHeight={Math.max(1,p.pins.length*.3+.3)} schPinArrangement={{rightSide:{direction:'top-to-bottom',pins:p.pins.map((pin:any)=>pin.number)}}} />;
@@ -54,7 +54,7 @@ export function Component({board,p}:{board:any,p:any}) {
  const longest=(pins:any[])=>Math.max(0,...pins.map(pin=>pin.label.length));
  const symbolWidth=.095*(longest(p.pins.slice(0,half))+longest(p.pins.slice(half)))+.8;
  const Tag=p.kind==="header"||p.body==="pogo"?"connector":"chip";
- return <Tag {...common} pinLabels={labels} schWidth={symbolWidth} schHeight={Math.max(.6,half*.2+.2)} schPinArrangement={{leftSide:{direction:'top-to-bottom',pins:p.pins.slice(0,half).map((x:any)=>x.number)},rightSide:{direction:'bottom-to-top',pins:p.pins.slice(half).map((x:any)=>x.number)}}} />;
+ return <Tag {...common} pinLabels={labels} schWidth={symbolWidth} schHeight={Math.max(.6,half*.2+.2)} schPinArrangement={p.schPinArrangement??{leftSide:{direction:'top-to-bottom',pins:p.pins.slice(0,half).map((x:any)=>x.number)},rightSide:{direction:'bottom-to-top',pins:p.pins.slice(half).map((x:any)=>x.number)}}} />;
 }
 // Native section assignment in core 0.0.2121 repacks manual coordinates and
 // replaces cross-section wires with labels. Draw functional boundaries explicitly

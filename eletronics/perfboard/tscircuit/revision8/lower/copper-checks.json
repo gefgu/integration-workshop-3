@@ -1,0 +1,30 @@
+{
+  "status": "pass",
+  "scope": "Pad/copper geometry only; no routed copper. Hand-wire endpoints, connectivity and sleeves checked independently.",
+  "results": [
+    {
+      "board": "power",
+      "stage": "shorts",
+      "exitCode": 0,
+      "ok": true
+    },
+    {
+      "board": "power",
+      "stage": "pcb-style",
+      "exitCode": 0,
+      "ok": true
+    },
+    {
+      "board": "router-matrix",
+      "stage": "shorts",
+      "exitCode": 0,
+      "ok": true
+    },
+    {
+      "board": "router-matrix",
+      "stage": "pcb-style",
+      "exitCode": 0,
+      "ok": true
+    }
+  ]
+}
