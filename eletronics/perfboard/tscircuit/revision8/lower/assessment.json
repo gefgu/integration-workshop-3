@@ -26,11 +26,11 @@
         "physicalWireRuns": 167,
         "insulatedWireRuns": 163,
         "continuousGroundBars": 4,
-        "connectionSegments": 197,
-        "wireEndpointSolderJoints": 364,
+        "connectionSegments": 196,
+        "wireEndpointSolderJoints": 363,
         "componentPinJoints": 204,
-        "crossings": 218,
-        "lengthMm": 4185.9199999999955
+        "crossings": 250,
+        "lengthMm": 4264.659999999995
       }
     },
     {
