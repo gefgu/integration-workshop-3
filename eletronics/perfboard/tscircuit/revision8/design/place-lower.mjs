@@ -4,7 +4,7 @@ const collide=(a,b)=>a.xmin<b.xmax+gap&&a.xmax>b.xmin-gap&&a.ymin<b.ymax+gap&&a.
 const move=(p,x,y)=>{const dx=x-p.pins[0].hole[0],dy=y-p.pins[0].hole[1];p.pins=p.pins.map(q=>({...q,hole:[q.hole[0]+dx,q.hole[1]+dy]}));p.bounds={xmin:p.bounds.xmin+dx,xmax:p.bounds.xmax+dx,ymin:p.bounds.ymin+dy,ymax:p.bounds.ymax+dy};};
 export function placeLowerBoard(b){
  const fixed=b.id==='power'?{
-  J_POWER_INPUT_INPUT:[4,5],U_POWER_GUARDS_OV_5V:[20,8],U_POWER_GUARDS_OV_3V3:[20,23],U_POWER_ANALOG_TRIP:[41,9],U_POWER_INTERLOCK_FAULT:[57,9],U_POWER_INTERLOCK_LOGIC:[65,9],J_POWER_INTERLOCK_MATRIX:[64,26],J_POWER_INTERLOCK_SMART:[64,32],
+  J_POWER_INPUT_INPUT:[4,5],J_POWER_INTERLOCK_TEST:[49,36],U_POWER_GUARDS_OV_5V:[20,8],U_POWER_GUARDS_OV_3V3:[20,23],U_POWER_ANALOG_TRIP:[41,13],U_POWER_ANALOG_SENSE:[43,27],U_POWER_INTERLOCK_FAULT:[57,9],U_POWER_INTERLOCK_LOGIC:[65,9],J_POWER_INTERLOCK_MATRIX:[64,26],J_POWER_INTERLOCK_SMART:[64,32],
  }:{
   J_PROBE:[4,1],U_ROUTER_CORE_ESP1:[5,5],U_ROUTER_SAFETY_WATCH:[21,5],U_MATRIX_CONTROL_ADDR:[34,5],U_MATRIX_CONTROL_BUFFER:[34,18],U_MATRIX_SWITCHES_MT_A:[47,5],U_MATRIX_SWITCHES_MT_B:[62,5],J_INTEGRATION_PI:[75,5],U_MATRIX_CONTROL_DIAG:[20,26],J_ROUTER_POWER_CONTROL:[5,31],
  };
@@ -16,7 +16,19 @@ export function placeLowerBoard(b){
    if(p.ref.includes('OV_5V')||p.ref.includes('LADDER_5V'))return [23,11];
    if(p.ref.includes('OV_3V3')||p.ref.includes('LADDER_3V3'))return [23,26];
    if(p.ref.includes('INPUT')||p.ref.includes('BUCK'))return [8,18];
-   if(p.ref.includes('ANALOG'))return [43,19];
+   if(p.ref==='R_POWER_ANALOG_SHUNT')return [40,32];
+   if(p.ref==='Q_POWER_ANALOG_PASS')return [37,30];
+   if(p.ref==='Q_POWER_ANALOG_ENABLE')return [42,29];
+   if(p.ref==='F_POWER_ANALOG_EDU')return [34,29];
+   if(p.ref==='R_POWER_ANALOG_GATE_OFF')return [46,30];
+   if(p.ref==='R_POWER_ANALOG_EDU_TOP')return [35,23];
+   if(p.ref==='R_POWER_ANALOG_EDU_BOTTOM')return [39,22];
+   if(p.ref==='R_POWER_ANALOG_EDU_ON')return [39,28];
+   if(p.ref==='R_POWER_ANALOG_TRIP_TOP')return [49,20];
+   if(p.ref==='R_POWER_ANALOG_TRIP_BOTTOM')return [51,23];
+   if(p.ref==='R_POWER_ANALOG_REF_FEED')return [43,15];
+   if(p.ref==='R_POWER_ANALOG_PRESET')return [50,12];
+   if(p.ref.includes('ANALOG'))return [44,27];
    return [62,18];
   }
   if(p.ref.includes('NODE_A'))return [47,28];if(p.ref.includes('NODE_B'))return [62,28];

@@ -8,7 +8,7 @@ import {boards as allBoards,lowerBoards as boards,cables,checkpoints,revision,st
 import {pinAt} from '../design/model7.mjs';
 import {MAX_ATTACH} from '../design/model7.mjs';
 import {netDescription,partDescription} from '../design/descriptions.mjs';
-import {mkdirSync,writeFileSync,existsSync,unlinkSync} from 'node:fs';
+import {mkdirSync,writeFileSync,existsSync,unlinkSync,readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 
 await import('../scripts/use-canvas-renderer.mjs');
@@ -18,6 +18,10 @@ const xml=(s:any)=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').repl
 const csv=(rows:any[])=>rows.map(r=>r.map((v:any)=>`"${String(v??'').replaceAll('"','""')}"`).join(',')).join('\n')+'\n';
 const save=(name:string,text:string)=>writeFileSync(`${out}/${name}`,text);
 const sourceDigest=createHash('sha256').update(JSON.stringify({boards,cables,checkpoints})).digest('hex');
+const manualSchematicLayoutPath='revision8/power-schematic-layout.json';
+const manualSchematicLayout:Record<string,[number,number]>=existsSync(manualSchematicLayoutPath)
+ ? JSON.parse(readFileSync(manualSchematicLayoutPath,'utf8'))
+ : {};
 
 const issues:any[]=[];const assert=(ok:any,code:string,context:any)=>{if(!ok)issues.push({code,...context});};
 const endpoints=new Map<string,string>();
@@ -111,6 +115,12 @@ const compact=(parts:any[])=>{let y=.5;return [...parts].sort((a,b)=>labelHeight
  return {...p,schematicLabel:shortSchematicRef(p),sch:[(i%2)*8.5,-y-labelHeight(p)/2]};
 });};
 const fullSchematicLayout=(b:any,parts:any[])=>{
+ if(b.id==='router-matrix'){
+  const order=['router-core: Controller','router-core: Circuit','router-safety: Watchdog','router-safety: Return','integration: Buttons','integration: Pi','integration: Circuit','matrix-control: Control','matrix-control: Tools','matrix-switches: Control','matrix-switches: Matrix','Test aids','Boundary'];
+  const sorted=[...parts].sort((a,b)=>{const ai=order.indexOf(a.function??a.section),bi=order.indexOf(b.function??b.section);return (ai<0?order.length:ai)-(bi<0?order.length:bi)||a.ref.localeCompare(b.ref);});
+  const groups=new Map<string,number>();
+  return sorted.map((p,i)=>{const col=i%7,row=Math.floor(i/7),name=p.function??p.section,first=!groups.has(name);groups.set(name,i);p.schematicLabel=shortSchematicRef(p);p.sch=[col*13,-7-row*9];if(first)(p as any).schematicGroupLabel=name;return p;});
+ }
  const order=['power-input: Input','power-input: Circuit','power-guards: VoltageGuard','power-analog: Student','power-analog: Reference','power-interlock: Outputs','power-interlock: Latch','power-interlock: Indicator','Test aids'];
  const rank=(p:any)=>{const i=order.indexOf(p.function??p.section);return i<0?order.length:i;};
  const isInline=(p:any)=>['resistor','capacitor','led'].includes(p.kind)&&p.pins.length===2;
@@ -258,7 +268,7 @@ const fullSchematicLayout=(b:any,parts:any[])=>{
   for(const [netName,rowY] of [['5V_SYS',1.5],['3V3_SYS',-6.5]] as const){
    const rail=b.nets.find((n:any)=>n.name===netName);
    const refs=[...new Set((rail?.pins??[]).map((ep:string)=>ep.split('.')[0]))]
-    .filter((ref:string)=>byRef.has(ref)&&!outputRefs.has(ref)&&!multiRailFeedRefs.has(ref))
+    .filter((ref:string)=>parts.some((part:any)=>part.ref===ref)&&!outputRefs.has(ref)&&!multiRailFeedRefs.has(ref))
     .sort((a:string,c:string)=>a.localeCompare(c));
    refs.forEach((ref:string,index:number)=>{
     const p=byRef.get(ref)??orderedInline.find((part:any)=>part.ref===ref);
@@ -271,8 +281,53 @@ const fullSchematicLayout=(b:any,parts:any[])=>{
    for(const ref of multiRailFeedRefs){const p=byRef.get(ref);if(p)p.sch=[60,-2.5];}
   }
  }
+ if(b.id==='power'){
+  const fixedRefs=new Set<string>([
+   ...Object.keys(inputLayout),...Object.keys(protectionPositions),
+   'C_POWER_INPUT_INPUT','C_POWER_INPUT_INPUT_HF',
+  ]);
+  for(const netName of ['5V_SYS','3V3_SYS']){
+   const rail=b.nets.find((n:any)=>n.name===netName);
+   for(const ep of rail?.pins??[])fixedRefs.add(ep.split('.')[0]);
+  }
+  const laneFor=(p:any):number=>{
+   const section=p.function??p.section;
+   if(section==='power-analog: Student')return 0;
+   if(section==='power-analog: Reference')return 1;
+   if(section==='power-interlock: Latch')return 2;
+   if(['power-interlock: Outputs','power-interlock: Indicator','Test aids'].includes(section))return 3;
+   return 2;
+  };
+  const lanes=[0.7,-1.1,-3,-4.9],laneParts:any[][]=[[],[],[],[]];
+  const originalOrder=[...ordered,...orderedInline];
+  for(const p of originalOrder)if(!fixedRefs.has(p.ref))laneParts[laneFor(p)].push(p);
+  for(let lane=0;lane<laneParts.length;lane++){
+   laneParts[lane].forEach((p:any,index:number)=>{
+    p.sch=[22+index*6.2,lanes[lane]];
+    p.schematicLabel=shortSchematicRef(p);
+   });
+  }
+ }
  ordered.push(...orderedInline);
  return ordered;
+};
+// In schematic views, place each LED directly against the series resistor
+// connected to LED pin 1. With these horizontal symbols the resistor pin 2
+// sits 0.30 mm right of its center and LED pin 1 sits 0.54 mm left of its
+// center, so a 0.84 mm center spacing makes the electrical pins coincide.
+const joinLedResistorPairs=(b:any,parts:any[])=>{
+ const visible=new Map(parts.map((p:any)=>[p.ref,p]));
+ const netByPin=new Map<string,string>();
+ for(const net of b.nets)for(const ep of net.pins)netByPin.set(ep,net.name);
+ for(const led of parts.filter((p:any)=>p.kind==='led'&&p.pins.length===2)){
+  const seriesNet=netByPin.get(`${led.ref}.${led.pins[0].number}`);
+  const resistor=b.parts.find((p:any)=>p.kind==='resistor'&&p.pins.some((pin:any)=>netByPin.get(`${p.ref}.${pin.number}`)===seriesNet)&&visible.has(p.ref));
+  if(!resistor)continue;
+  const ledPosition=visible.get(led.ref),resistorPosition=visible.get(resistor.ref);
+  ledPosition.sch=[resistorPosition.sch[0]+0.84,resistorPosition.sch[1]];
+  ledPosition.schRotation=undefined;
+  resistorPosition.schRotation=undefined;
+ };
 };
 const selector=(b:any,ep:string)=>{const {part:p,pin}=pinAt(b,ep);return `.${p.ref} > .${p.ref.startsWith('Q_')?({S:'source',G:'gate',D:'drain'} as any)[pin.label]:`pin${pin.number}`}`;};
 function strip(svg:string,parts:any[]){
@@ -321,6 +376,8 @@ async function render(b:any,parts:any[],key:string,publish=true){
  if(key==='Complete schematic'){
   positioned=fullSchematicLayout(b,parts);
  }else for(const p of positioned)p.schRotation=undefined;
+ joinLedResistorPairs(b,positioned);
+ if(key==='Complete schematic'&&b.id==='power')for(const p of positioned){const placement=manualSchematicLayout[p.ref];if(placement)p.sch=[...placement];}
  if(publish&&key==='Limits'&&parts.some(p=>p.origin==='U_LIMIT')){
   const layout:any={U_LIMIT:[0,0],R_SOURCE_SENSE:[-4.5,2.8],R_SINK_SENSE:[4.5,-2.8],
    R_HI_GATE:[-3,.4],R_LO_GATE:[3,-.8],C_HI_COMP:[-3,1.8],C_LO_COMP:[3,1.8],
@@ -331,11 +388,19 @@ async function render(b:any,parts:any[],key:string,publish=true){
  const power=(name:string)=>name==='GND'||/^(USB_|SAFE_|BUCK_|[35]V|12V|PI_3V3)/.test(name);
  const netName=(name:string)=>/^\d/.test(name)?`V_${name}`:name;
  const circuit=new Circuit();
- const children=[...positioned.map(p=><Component board={b} p={p}/>),...nets.map(n=><net name={netName(n.name)} isGroundNet={n.name==='GND'} isPowerNet={power(n.name)&&n.name!=='GND'}/>),
+ const ledGroundEndpoints=new Set((b.nets.find((n:any)=>n.name==='GND')?.pins??[]).filter((ep:string)=>{
+  const {part}=pinAt(b,ep);return part.kind==='led'&&refs.has(part.ref);
+ }));
+ const ledGroundSymbols=[...ledGroundEndpoints].map(ep=>{
+  const {part,pin}=pinAt(b,ep),p=positioned.find((item:any)=>item.ref===part.ref)!;
+  const pinX=p.sch[0]+(pin.number===2?.54:-.54);
+  return <netlabel net="GND" connection={selector(b,ep)} schX={pinX} schY={p.sch[1]} anchorSide="left"/>;
+ });
+ const children=[...positioned.map(p=><Component board={b} p={p}/>),...nets.map(n=><net name={netName(n.name)} isGroundNet={n.name==='GND'} isPowerNet={power(n.name)&&n.name!=='GND'}/>),...ledGroundSymbols,
  ...nets.flatMap(n=>{
   const lines:any[]=[];
   if(key==='Complete schematic'){
-   if(n.name==='GND')return n.local.map(ep=><trace name={n.name} from={selector(b,ep)} to={`net.${netName(n.name)}`}/>);
+   if(n.name==='GND')return n.local.filter(ep=>!ledGroundEndpoints.has(ep)).map(ep=><trace name={n.name} from={selector(b,ep)} to={`net.${netName(n.name)}`}/>);
    const connected=[n.local[0]],remaining=n.local.slice(1);
    while(remaining.length){
     let best={from:connected[0],index:0,distance:Infinity};
@@ -353,7 +418,7 @@ async function render(b:any,parts:any[],key:string,publish=true){
    return lines;
   }
   const labelPower=power(n.name);
-  if(labelPower||!publish)return n.local.map(ep=><trace name={n.name} from={selector(b,ep)} to={`net.${netName(n.name)}`}/>);
+  if(labelPower||!publish)return n.local.filter(ep=>n.name!=='GND'||!ledGroundEndpoints.has(ep)).map(ep=><trace name={n.name} from={selector(b,ep)} to={`net.${netName(n.name)}`}/>);
   // Continuous lines inside the functional block; one named boundary per net.
   for(let k=1;k<n.local.length;k++)lines.push(<trace name={n.name} from={selector(b,n.local[k-1])} to={selector(b,n.local[k])}/>);
   if(b.kind==='temporary'||n.external.length||cables.some(c=>c.net===n.name&&(c.from===b.id||c.to===b.id))){
@@ -373,7 +438,7 @@ async function render(b:any,parts:any[],key:string,publish=true){
  save(`circuits/${name}.circuit.json`,JSON.stringify(j,null,2)+'\n');
  const stale=`${out}/circuits/${name}.json`;if(existsSync(stale))unlinkSync(stale);
  if(!publish){console.log(`${b.id}/${key}: ${status}`);return;}
- let svg=strip(convertCircuitJsonToSchematicSvg(j.filter((e:any)=>e.type!=='schematic_sheet'),{width:key==='Complete schematic'?3600:1400,height:key==='Complete schematic'?2200:950}).replace(/V_([35]V[^<\s]*|12V[^<\s]*)/g,'$1'),parts);
+ let svg=strip(convertCircuitJsonToSchematicSvg(j.filter((e:any)=>e.type!=='schematic_sheet'),{width:key==='Complete schematic'?4600:1400,height:key==='Complete schematic'?480:950}).replace(/V_([35]V[^<\s]*|12V[^<\s]*)/g,'$1'),parts);
  if(key==='Complete schematic'){
   const traces=new Map(j.filter(e=>e.type==='source_trace').map(e=>[e.source_trace_id,e.name]));
   const colors=new Map(j.filter(e=>e.type==='schematic_trace').map(e=>[e.schematic_trace_id,traces.get(e.source_trace_id)]));
@@ -387,7 +452,7 @@ async function render(b:any,parts:any[],key:string,publish=true){
 }
 for(const b of boards){
  await render(b,b.parts.filter(p=>!p.virtual),'Complete board',false);
- if(b.id==='power')await render(b,b.parts.filter(p=>!p.virtual),'Complete schematic',true);
+ await render(b,b.parts.filter(p=>!p.virtual),'Complete schematic',true);
  const groups=new Map<string,any[]>();
  for(const p of b.parts){
   if(p.body==='terminal'||p.virtual)continue;
@@ -404,27 +469,27 @@ for(const b of boards){
  }
 }
 
-function drawing(b:any,bottom=false,wires:any[]=[]){
- const scale=6,x0=40,y0=28,w=b.cols*scale+95,h=b.rows*scale+90;
+function drawing(b:any,bottom=false,wires:any[]=[],scale=6){
+ const x0=40,y0=60,w=b.cols*scale+110,h=b.rows*scale+140;
  const pos=([x,y]:number[])=>[x0+(bottom?b.cols+1-x:x)*scale,y0+y*scale];
- let s=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}"><rect width="100%" height="100%" fill="white"/><style>text{font-family:DejaVu Sans,sans-serif;font-size:8px;fill:#243746}.coordinate{font-size:5px}.wire{fill:none;stroke-width:1.2}.body{fill:#e9eef3;stroke:#8796a5;stroke-width:.7}</style><text x="12" y="10" style="font-size:9px;font-weight:bold">${xml(b.id)} — ${bottom?'MIRRORED UNDERSIDE':'TOP'}</text><rect x="${x0}" y="${y0}" width="${(b.cols+1)*scale}" height="${(b.rows+1)*scale}" rx="3" fill="#e2f1e5" stroke="#5c896a"/>`;
- for(let y=1;y<=b.rows;y++)for(let x=1;x<=b.cols;x++){const [px,py]=pos([x,y]);s+=`<circle cx="${px}" cy="${py}" r="1.05" fill="#b8c2ac"/>`;}
- for(let x=1;x<=b.cols;x++){const [px]=pos([x,1]);s+=`<text class="coordinate" x="${px}" y="${x%2?y0-9:y0-2}" text-anchor="middle">${x}</text>`;}
+ let s=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}"><rect width="100%" height="100%" fill="white"/><style>text{font-family:DejaVu Sans,sans-serif;font-size:${scale*1.05}px;fill:#243746}.coordinate{font-size:${scale*.75}px}.wire{fill:none}.body{fill:#e9eef3;stroke:#8796a5;stroke-width:${scale*.12}px}</style><text x="12" y="32" style="font-size:${scale*1.35}px;font-weight:bold">${xml(b.id)} — ${bottom?'MIRRORED UNDERSIDE':'TOP'}</text><rect x="${x0}" y="${y0}" width="${(b.cols+1)*scale}" height="${(b.rows+1)*scale}" rx="3" fill="#e2f1e5" stroke="#5c896a"/>`;
+ for(let y=1;y<=b.rows;y++)for(let x=1;x<=b.cols;x++){const [px,py]=pos([x,y]);s+=`<circle cx="${px}" cy="${py}" r="${scale*.18}" fill="#b8c2ac"/>`;}
+ for(let x=1;x<=b.cols;x++){const [px]=pos([x,1]);s+=`<text class="coordinate" x="${px}" y="${x%2?y0-12:y0-4}" text-anchor="middle">${x}</text>`;}
  for(let y=1;y<=b.rows;y++){const [,py]=pos([1,y]);s+=`<text class="coordinate" x="${x0-5}" y="${py+2}" text-anchor="end">${y}</text>`;}
- for(const mount of b.mounts){const [x,y]=pos(mount);s+=`<circle cx="${x}" cy="${y}" r="4" fill="white" stroke="#697b65"/>`;}
+ for(const mount of b.mounts){const [x,y]=pos(mount);s+=`<circle cx="${x}" cy="${y}" r="${scale*.66}" fill="white" stroke="#697b65" stroke-width="${scale*.16}"/>`;}
 
  for(const p of b.parts){
   if(p.body==='terminal'||p.virtual)continue;
   const points=p.pins.map(pin=>pos(pin.hole)),xs=points.map(p=>p[0]),ys=points.map(p=>p[1]);
   const fill=p.kind==='led'?'#ed5b35':p.kind==='chip'?'#74a9d8':p.kind==='header'?'#55b8a8':p.kind==='resistor'?'#f2c477':p.kind==='capacitor'?'#b9a8e8':'#e9eef3';
-  if(p.body!=='pogo')s+=`<rect class="body" style="fill:${fill}" x="${Math.min(...xs)-3}" y="${Math.min(...ys)-3}" width="${Math.max(...xs)-Math.min(...xs)+6}" height="${Math.max(...ys)-Math.min(...ys)+6}" rx="2"/>`;
+  if(p.body!=='pogo')s+=`<rect class="body" style="fill:${fill}" x="${Math.min(...xs)-scale*.5}" y="${Math.min(...ys)-scale*.5}" width="${Math.max(...xs)-Math.min(...xs)+scale}" height="${Math.max(...ys)-Math.min(...ys)+scale}" rx="2"/>`;
  }
  const segments:any[]=[];
  for(const wire of wires){
   const points=wire.path.map(pos).map(p=>p.join(',')).join(' ');
   const title=xml(`${wire.net}: ${wire.from} → ${wire.to}`);
-  if(wire.color==='#ffffff')s+=`<polyline points="${points}" fill="none" stroke="#53636c" stroke-width="2"/>`;
-  s+=`<polyline class="wire" data-net="${xml(wire.net)}" points="${points}" stroke="${wire.color}" style="stroke-width:${wire.insulated?1.2:2.6}"><title>${title}</title></polyline>`;
+  if(wire.color==='#ffffff')s+=`<polyline points="${points}" fill="none" stroke="#53636c" stroke-width="${scale*.34}"/>`;
+  s+=`<polyline class="wire" data-net="${xml(wire.net)}" points="${points}" stroke="${wire.color}" style="stroke-width:${wire.insulated?scale*.2:scale*.44}"><title>${title}</title></polyline>`;
   const bridges=new Set<string>();
   for(let i=1;i<wire.path.length;i++){
    const a=wire.path[i-1],c=wire.path[i];
@@ -432,40 +497,41 @@ function drawing(b:any,bottom=false,wires:any[]=[]){
     const cross=(p:any,q:any,r:any)=>(q[0]-p[0])*(r[1]-p[1])-(q[1]-p[1])*(r[0]-p[0]);
     if(cross(a,c,prev.a)*cross(a,c,prev.c)>=0||cross(prev.a,prev.c,a)*cross(prev.a,prev.c,c)>=0)continue;
     const xy=a[1]===c[1]?[prev.a[0],a[1]]:[a[0],prev.a[1]],key=xy.join(',');if(bridges.has(key))continue;bridges.add(key);
-    const [x,y]=pos(xy),r=1.2;
+    const [x,y]=pos(xy),r=scale*.2;
     const d=a[1]===c[1]?`M${x-r},${y}C${x-r},${y-r*1.6} ${x+r},${y-r*1.6} ${x+r},${y}`:`M${x},${y-r}C${x+r*1.6},${y-r} ${x+r*1.6},${y+r} ${x},${y+r}`;
-    s+=`<path d="${d}" fill="none" stroke="white" stroke-width="2.5"/><path data-net="${xml(wire.net)}" d="${d}" fill="none" stroke="${wire.color}" stroke-width="1.2"><title>Insulated crossing; no junction</title></path>`;
+    s+=`<path d="${d}" fill="none" stroke="white" stroke-width="${scale*.42}"/><path data-net="${xml(wire.net)}" d="${d}" fill="none" stroke="${wire.color}" stroke-width="${scale*.2}"><title>Insulated crossing; no junction</title></path>`;
    }
    segments.push({a,c,net:wire.net});
   }
  }
 
  const active=new Set(wires.length<=10?wires.flatMap(w=>[w.from,w.to]):[]);
- for(const p of b.parts)for(const pin of p.pins){const [x,y]=pos(pin.hole);s+=`<circle cx="${x}" cy="${y}" r="${active.has(`${p.ref}.${pin.number}`)?2.8:2}" fill="${active.has(`${p.ref}.${pin.number}`)?'#f4a340':pin.number===1?'#bf3943':'#33495b'}"/>`;}
+ for(const p of b.parts)for(const pin of p.pins){const [x,y]=pos(pin.hole);s+=`<circle cx="${x}" cy="${y}" r="${active.has(`${p.ref}.${pin.number}`)?scale*.46:scale*.34}" fill="${active.has(`${p.ref}.${pin.number}`)?'#f4a340':pin.number===1?'#bf3943':'#33495b'}"/>`;}
  // Reference badges sit above wires, with evenly spaced legend rows. No text is
  // written on tiny bodies or on every wire crossing.
  const badges:any[]=[];let badgeLeaders="",badgeText="";
  b.parts.forEach((p,i)=>{
   if(p.virtual||p.testpoint)return;
-  const [x,y]=pos(p.pins[0].hole),n=i+1,bw=n>9?12:8;
-  const candidates=p.body==='terminal'?[[x>x0+(b.cols+1)/2*scale?x+5:x0-30,y-5]]:
-    [[x+2,y-8],[x+2,y+2],[x-bw-2,y-8],[x-bw-2,y+2],[x+8,y-12],[x-bw-8,y+6]];
+  const [x,y]=pos(p.pins[0].hole),n=i+1,bw=scale*(n>9?1.9:1.4),bh=scale*1.35;
+  const candidates=p.body==='terminal'?[[x>x0+(b.cols+1)/2*scale?x+scale*.8:x0-scale*4,y-scale*.8]]:
+    [[x+scale*.35,y-scale*1.45],[x+scale*.35,y+scale*.35],[x-bw-scale*.35,y-scale*1.45],[x-bw-scale*.35,y+scale*.35],[x+scale*1.35,y-scale*2],[x-bw-scale*1.35,y+scale]];
   const overlap=(r:any)=>badges.some(o=>r.x<o.x+o.w+1&&r.x+r.w+1>o.x&&r.y<o.y+o.h+1&&r.y+r.h+1>o.y);
-  let r=candidates.map(([bx,by])=>({x:bx,y:by,w:bw,h:8})).find(r=>r.x>=8&&r.x+r.w<w-8&&r.y>=y0+3&&r.y+r.h<h-45&&!overlap(r));
+  let r=candidates.map(([bx,by])=>({x:bx,y:by,w:bw,h:bh})).find(r=>r.x>=8&&r.x+r.w<w-8&&r.y>=y0+3&&r.y+r.h<h-45&&!overlap(r));
   if(!r){
-   for(let by=y0+3;by<h-45&&!r;by+=10){const t={x:w-25,y:by,w:bw,h:8};if(!overlap(t))r=t;}
+   for(let by=y0+3;by<h-55&&!r;by+=bh+3){const t={x:w-25,y:by,w:bw,h:bh};if(!overlap(t))r=t;}
   }
   assert(Boolean(r),'badge-layout-full',{board:b.id,ref:p.ref});if(!r)return;
   badges.push(r);
-  if(Math.hypot(r.x-x,r.y-y)>20)badgeLeaders+=`<path d="M${x},${y}L${r.x},${r.y+4}" stroke="#a1acb2" stroke-width=".5"/>`;
-  badgeText+=`<rect x="${r.x}" y="${r.y}" width="${bw}" height="8" fill="white"/><text x="${r.x+1}" y="${r.y+7}" style="font-size:7px;font-weight:bold">${n}</text>`;
+  if(Math.hypot(r.x-x,r.y-y)>scale*3)badgeLeaders+=`<path d="M${x},${y}L${r.x},${r.y+bh/2}" stroke="#a1acb2" stroke-width=".5"/>`;
+  badgeText+=`<rect x="${r.x}" y="${r.y}" width="${bw}" height="${bh}" fill="white"/><text x="${r.x+scale*.15}" y="${r.y+bh*.82}" style="font-size:${scale*1.1}px;font-weight:bold">${n}</text>`;
  });
- for(const tp of (b.testPoints??[]).filter((t:any)=>!t.endpoint.startsWith('J_PROBE.'))){const [x,y]=pos(tp.hole);s+=`<circle cx="${x}" cy="${y}" r="4.4" fill="none" stroke="#c2185b" stroke-width="1"><title>${xml(tp.net)} test pad: ${xml(tp.endpoint)}</title></circle>`;}
+ for(const tp of (b.testPoints??[]).filter((t:any)=>!t.endpoint.startsWith('J_PROBE.'))){const [x,y]=pos(tp.hole);s+=`<circle cx="${x}" cy="${y}" r="${scale*.73}" fill="none" stroke="#c2185b" stroke-width="${scale*.17}"><title>${xml(tp.net)} test pad: ${xml(tp.endpoint)}</title></circle>`;}
  s+=badgeLeaders+badgeText;
  s+=`<text x="12" y="${h-40}">${b.width}×${b.height} mm · 2.54 mm pitch · isolated pads · pin 1 red</text><text x="12" y="${h-25}">TOP coordinates. Crossings are not joints. Match component guide numbers.</text><text x="12" y="${h-10}">PROTOTYPE: physical fit and hardware tests pending.</text></svg>`;
  return s;
 }
 
+if(existsSync(`${out}/assets/power-perfboard.svg`))unlinkSync(`${out}/assets/power-perfboard.svg`);
 for(const b of boards){
  save(`assets/${b.id}-top.svg`,drawing(b));save(`assets/${b.id}-underside.svg`,drawing(b,true,b.wires));
  for(const n of b.nets){const ws=b.wires.filter(w=>w.net===n.name);if(ws.length)save(`assets/${b.id}-net-${n.name.replace(/[^a-zA-Z0-9]+/g,'-')}.svg`,drawing(b,true,ws));}

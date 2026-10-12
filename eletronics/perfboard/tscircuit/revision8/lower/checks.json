@@ -1,6 +1,6 @@
 {
   "revision": "r8-simplified-lower-boards",
-  "sourceDigest": "8d6f6754224e862b996fd547e8dbebeac7a0ddaf95d3df7b593dbd93ef998c52",
+  "sourceDigest": "d4a7bbfe2131c89eb48a7376728e55f90cc37ee3c0db15ba8a02b463cec13dcd",
   "softwareStatus": "pass",
   "assemblyIssues": [],
   "native": [
@@ -151,6 +151,18 @@
     {
       "board": "router-matrix",
       "section": "Complete board",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "Complete schematic",
       "status": "pass",
       "checks": {
         "source": [],

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Power schematic layout editor</title>
+  <style>
+    :root{font:15px system-ui,sans-serif;color:#203545;background:#f4f7f5}body{margin:0}header{position:sticky;top:0;z-index:2;padding:.75rem 1rem;background:#fff;border-bottom:1px solid #cbd5d0;display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}h1{font-size:1.1rem;margin:0 auto 0 0}button,a{font:inherit;color:inherit}button{padding:.45rem .8rem;border:1px solid #82968a;border-radius:5px;background:#fff;cursor:pointer}button.primary{background:#176b52;color:#fff;border-color:#176b52}#status{min-width:17rem;color:#496052}.help{margin:.7rem 1rem;color:#496052}.viewport{height:calc(100vh - 118px);min-height:360px;overflow:auto;background:#e9eeeb;border-top:1px solid #d5ded9}#sheet{display:block;width:4600px;height:480px;background:#f5f1ed;transform-origin:top left}#sheet .sch-component{cursor:grab}#sheet .sch-component:hover{filter:drop-shadow(0 0 2px #16836b)}#sheet .sch-component.dragging{cursor:grabbing;filter:drop-shadow(0 0 3px #14745f)}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Power schematic · manual layout</h1>
+    <button id="zoom-out" aria-label="Zoom out">−</button><span id="zoom-value">100%</span><button id="zoom-in" aria-label="Zoom in">+</button>
+    <button id="reset">Discard unsaved moves</button>
+    <button id="save" class="primary">Save and rebuild</button>
+    <a href="power-schematic.html">Back to schematic</a>
+    <span id="status" role="status">Loading schematic…</span>
+  </header>
+  <p class="help">Drag a component to reposition it. Its connected wires are recalculated by tscircuit when you save. This edits schematic placement only; it does not change the circuit or PCB.</p>
+  <main class="viewport" id="viewport"><div id="stage"></div></main>
+  <script>
+    const svgUrl='lower/assets/power-Complete-schematic-schematic.svg';
+    const circuitUrl='lower/circuits/power-Complete-schematic.circuit.json';
+    const status=document.getElementById('status'),stage=document.getElementById('stage'),viewport=document.getElementById('viewport');
+    let svgRoot,componentMap=new Map(),positions={},savedPositions={},offsets={},scale=1,drag=null;
+    const say=(message)=>status.textContent=message;
+    const setZoom=(next)=>{scale=Math.min(2.5,Math.max(.35,next));stage.style.width=(4600*scale)+'px';stage.style.height=(480*scale)+'px';svgRoot.style.width=(4600*scale)+'px';svgRoot.style.height=(480*scale)+'px';document.getElementById('zoom-value').textContent=Math.round(scale*100)+'%';};
+    Promise.all([fetch(svgUrl).then(r=>{if(!r.ok)throw Error('SVG failed to load');return r.text()}),fetch(circuitUrl).then(r=>{if(!r.ok)throw Error('circuit data failed to load');return r.json()}),fetch('power-schematic-layout.json').then(r=>r.ok?r.json():{})]).then(([markup,circuit,saved])=>{
+      stage.innerHTML=markup;svgRoot=stage.querySelector('svg');svgRoot.id='sheet';savedPositions={...saved};positions={...saved};
+      const sourceById=new Map(circuit.filter(e=>e.type==='source_component').map(e=>[e.source_component_id,e.name]));
+      const centerByRef=new Map(circuit.filter(e=>e.type==='schematic_component').map(e=>[sourceById.get(e.source_component_id),[e.center.x,e.center.y]]));
+      const matrix=svgRoot.getAttribute('data-real-to-screen-transform')||'';
+      const values=(matrix.match(/matrix\(([^)]+)\)/)||[])[1]?.split(',').map(Number)||[];
+      const sx=values[0]||1,sy=values[3]||-1;
+      for(const group of svgRoot.querySelectorAll('.sch-component[data-schematic-component-id]')){
+        const id=group.getAttribute('data-schematic-component-id');
+        const entry=circuit.find(e=>e.type==='schematic_component'&&e.schematic_component_id===id);
+        const ref=entry&&sourceById.get(entry.source_component_id),center=ref&&centerByRef.get(ref);
+        if(!ref||!center)continue;
+        group.dataset.ref=ref;group.dataset.baseX=center[0];group.dataset.baseY=center[1];
+        const named=group.querySelector('.sch-component-name')?.textContent||group.querySelector('.sch-text')?.textContent||ref;
+        group.setAttribute('aria-label',ref+' · '+named);group.setAttribute('tabindex','0');
+        componentMap.set(ref,{group,center:[...center],sx,sy,baseTransform:group.getAttribute('transform')||''});
+      }
+      svgRoot.addEventListener('pointerdown',startDrag);svgRoot.addEventListener('pointermove',moveDrag);svgRoot.addEventListener('pointerup',endDrag);svgRoot.addEventListener('pointercancel',endDrag);
+      document.getElementById('reset').onclick=()=>{for(const [ref,item] of componentMap){item.group.removeAttribute('transform');if(item.baseTransform)item.group.setAttribute('transform',item.baseTransform);item.group.classList.remove('dragging')}offsets={};positions={...savedPositions};say('Unsaved moves discarded.');};
+      document.getElementById('save').onclick=saveLayout;
+      document.getElementById('zoom-in').onclick=()=>setZoom(scale*1.2);document.getElementById('zoom-out').onclick=()=>setZoom(scale/1.2);setZoom(.75);
+      say('Ready. Drag components, then save.');
+      function svgPoint(event){const point=svgRoot.createSVGPoint();point.x=event.clientX;point.y=event.clientY;return point.matrixTransform(svgRoot.getScreenCTM().inverse())}
+      function startDrag(event){const group=event.target.closest?.('.sch-component[data-ref]');if(!group||event.button!==0)return;const item=componentMap.get(group.dataset.ref),point=svgPoint(event);drag={item,ref:group.dataset.ref,start:point,dx:0,dy:0,prior:offsets[group.dataset.ref]||[0,0]};group.classList.add('dragging');svgRoot.setPointerCapture(event.pointerId);event.preventDefault();}
+      function moveDrag(event){if(!drag)return;const point=svgPoint(event);drag.dx=point.x-drag.start.x;drag.dy=point.y-drag.start.y;const totalX=drag.prior[0]+drag.dx,totalY=drag.prior[1]+drag.dy,prefix=`translate(${totalX} ${totalY})`;drag.item.group.setAttribute('transform',drag.item.baseTransform?`${prefix} ${drag.item.baseTransform}`:prefix);}
+      function endDrag(){if(!drag)return;const {item,ref,dx,dy,prior}=drag;item.group.classList.remove('dragging');if(Math.abs(dx)+Math.abs(dy)>.5){offsets[ref]=[prior[0]+dx,prior[1]+dy];positions[ref]=[item.center[0]+offsets[ref][0]/item.sx,item.center[1]+offsets[ref][1]/item.sy];say(Object.keys(positions).length+' component position(s) ready to save.')}drag=null;}
+      async function saveLayout(){const button=document.getElementById('save');button.disabled=true;say('Saving layout and rebuilding schematic…');try{const endpoint=location.port==='5501'?'/api/save-layout':'http://127.0.0.1:5501/api/save-layout';const response=await fetch(endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(positions)});const raw=await response.text();let result;try{result=JSON.parse(raw)}catch{throw Error(`Editor server returned ${response.status}: ${raw.slice(0,180)}`)}if(!response.ok)throw Error(result.error||`Save failed (${response.status})`);say('Rebuild complete. Reloading the updated schematic…');location.reload()}catch(error){say(`${String(error.message||error)}. Confirm npm run schematic:editor is running on port 5501.`);button.disabled=false}}
+    }).catch(error=>say(error.message+' — start the editor with npm run schematic:editor.'));
+  </script>
+</body>
+</html>
