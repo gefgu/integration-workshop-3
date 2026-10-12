@@ -2,6 +2,18 @@
 
 **Independent engineering candidate; not released for soldering.** Revision8 now contains the contact-board simplifications and the software-checked power/router-matrix redesign. Revision7 remains the historical baseline. Generated checks do not establish purchased-part fit or powered behavior.
 
+## Complete system electrical schematic
+
+Open [overall-schematic.html](overall-schematic.html) or [overall-schematic.pdf](overall-schematic.pdf). The 16-sheet A2 landscape package covers the four-section system overview, both contact banks, the complete power and router/matrix circuits, smart controller/safety, both measurement banks and all six smart positions. This is an electrical drawing package; it does not regenerate perfboard placement.
+
+Run `npm run build:revision8:schematic` from the tscircuit directory. The build reads the saved revision8 electrical model and the latest earlier EasyEDA smart export, renders native tscircuit circuitry, runs source/pin/netlist/schematic checks and compiles vector sheets with Typst. Bun and Typst must be installed.
+
+The viewer also links the [net and sheet index](schematic/net-index.csv) and [physical pin/reference crosswalk](schematic/reference-crosswalk.json). SCL1–SCL6 and SDA1–SDA6 are drawing aliases for the six position-specific service buses; the controller-side SCL remains shared.
+
+Read [schematic/reconciliation.md](schematic/reconciliation.md), [schematic/interface-changes.json](schematic/interface-changes.json) and [schematic/checks.json](schematic/checks.json). Grouped NODE cables are drawn directly from contacts to matrix receivers; shared contact power and smart-controller power have explicit branches. These documentation corrections preserve the complete source electrical partition. The schematic reference crosswalk retains original board references and physical pin functions. The older EasyEDA output/measurement circuitry is reconciled to the later protected smart circuit, rather than reintroducing its earlier limitations.
+
+Generated checks establish circuit consistency; hardware qualification remains pending.
+
 ## Proposed changes
 
 ### 1. Right-size the NODE-to-matrix connectors

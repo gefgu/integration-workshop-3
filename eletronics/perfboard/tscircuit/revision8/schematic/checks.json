@@ -1,0 +1,1480 @@
+{
+  "status": "pass",
+  "errors": [],
+  "native": [
+    {
+      "sheet": "02-contacts",
+      "parts": 42,
+      "traces": 176,
+      "bounds": {
+        "width": 127.5,
+        "height": 85.10000000000001
+      },
+      "minTextPt": 8.068110236220473,
+      "checks": {
+        "drawing": [],
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": []
+      }
+    },
+    {
+      "sheet": "03-power",
+      "parts": 64,
+      "traces": 144,
+      "bounds": {
+        "width": 127.5,
+        "height": 85.69999999999999
+      },
+      "minTextPt": 8.068110236220473,
+      "checks": {
+        "drawing": [],
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": []
+      }
+    },
+    {
+      "sheet": "04-router-matrix",
+      "parts": 70,
+      "traces": 225,
+      "bounds": {
+        "width": 192.5,
+        "height": 113.9
+      },
+      "minTextPt": 8.068110236220473,
+      "checks": {
+        "drawing": [],
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": []
+      }
+    },
+    {
+      "sheet": "05-smart-controller",
+      "parts": 11,
+      "traces": 45,
+      "bounds": {
+        "width": 95,
+        "height": 44.7
+      },
+      "minTextPt": 8.068110236220473,
+      "checks": {
+        "drawing": [],
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": []
+      }
+    },
+    {
+      "sheet": "06-smart-safety",
+      "parts": 21,
+      "traces": 74,
+      "bounds": {
+        "width": 95,
+        "height": 45.5
+      },
+      "minTextPt": 8.068110236220473,
+      "checks": {
+        "drawing": [],
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": []
+      }
+    },
+    {
+      "sheet": "07-measurement-a-precision",
+      "parts": 26,
+      "traces": 68,
+      "bounds": {
+        "width": 95,
+        "height": 54.5
+      },
+      "minTextPt": 8.068110236220473,
+      "checks": {
+        "drawing": [],
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": []
+      }
+    },
+    {
+      "sheet": "08-measurement-a-buffers",
+      "parts": 29,
+      "traces": 77,
+      "bounds": {
+        "width": 62.5,
+        "height": 74.10000000000001
+      },
+      "minTextPt": 8.068110236220473,
+      "checks": {
+        "drawing": [],
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": []
+      }
+    },
+    {
+      "sheet": "09-measurement-b-precision",
+      "parts": 18,
+      "traces": 52,
+      "bounds": {
+        "width": 62.5,
+        "height": 37.1
+      },
+      "minTextPt": 8.068110236220473,
+      "checks": {
+        "drawing": [],
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": []
+      }
+    },
+    {
+      "sheet": "10-measurement-b-buffers",
+      "parts": 29,
+      "traces": 77,
+      "bounds": {
+        "width": 62.5,
+        "height": 74.10000000000001
+      },
+      "minTextPt": 8.068110236220473,
+      "checks": {
+        "drawing": [],
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": []
+      }
+    },
+    {
+      "sheet": "11-smart-position-1",
+      "parts": 26,
+      "traces": 57,
+      "bounds": {
+        "width": 95,
+        "height": 51.49999999999999
+      },
+      "minTextPt": 8.068110236220473,
+      "checks": {
+        "drawing": [],
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": []
+      }
+    },
+    {
+      "sheet": "12-smart-position-2",
+      "parts": 26,
+      "traces": 57,
+      "bounds": {
+        "width": 95,
+        "height": 51.49999999999999
+      },
+      "minTextPt": 8.068110236220473,
+      "checks": {
+        "drawing": [],
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": []
+      }
+    },
+    {
+      "sheet": "13-smart-position-3",
+      "parts": 26,
+      "traces": 57,
+      "bounds": {
+        "width": 95,
+        "height": 51.49999999999999
+      },
+      "minTextPt": 8.068110236220473,
+      "checks": {
+        "drawing": [],
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": []
+      }
+    },
+    {
+      "sheet": "14-smart-position-4",
+      "parts": 26,
+      "traces": 57,
+      "bounds": {
+        "width": 95,
+        "height": 51.49999999999999
+      },
+      "minTextPt": 8.068110236220473,
+      "checks": {
+        "drawing": [],
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": []
+      }
+    },
+    {
+      "sheet": "15-smart-position-5",
+      "parts": 26,
+      "traces": 57,
+      "bounds": {
+        "width": 95,
+        "height": 51.49999999999999
+      },
+      "minTextPt": 8.068110236220473,
+      "checks": {
+        "drawing": [],
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": []
+      }
+    },
+    {
+      "sheet": "16-smart-position-6",
+      "parts": 26,
+      "traces": 57,
+      "bounds": {
+        "width": 95,
+        "height": 51.49999999999999
+      },
+      "minTextPt": 8.068110236220473,
+      "checks": {
+        "drawing": [],
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": []
+      }
+    }
+  ],
+  "coverage": {
+    "expected": 466,
+    "represented": 466,
+    "excluded": [
+      {
+        "board": "power",
+        "ref": "BAR_GND_1",
+        "reason": "Perfboard ground-bar geometry"
+      },
+      {
+        "board": "power",
+        "ref": "BAR_GND_2",
+        "reason": "Perfboard ground-bar geometry"
+      },
+      {
+        "board": "power",
+        "ref": "BAR_GND_3",
+        "reason": "Perfboard ground-bar geometry"
+      },
+      {
+        "board": "power",
+        "ref": "BAR_GND_4",
+        "reason": "Perfboard ground-bar geometry"
+      },
+      {
+        "board": "router-matrix",
+        "ref": "J_BOUNDARY_23",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "router-matrix",
+        "ref": "BAR_GND_1",
+        "reason": "Perfboard ground-bar geometry"
+      },
+      {
+        "board": "router-matrix",
+        "ref": "BAR_GND_2",
+        "reason": "Perfboard ground-bar geometry"
+      },
+      {
+        "board": "router-matrix",
+        "ref": "BAR_GND_3",
+        "reason": "Perfboard ground-bar geometry"
+      },
+      {
+        "board": "router-matrix",
+        "ref": "BAR_GND_4",
+        "reason": "Perfboard ground-bar geometry"
+      },
+      {
+        "board": "smart-core",
+        "ref": "J_BOUNDARY_1",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-core",
+        "ref": "J_BOUNDARY_2",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-core",
+        "ref": "J_BOUNDARY_3",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-core",
+        "ref": "J_BOUNDARY_4",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-core",
+        "ref": "J_BOUNDARY_5",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-core",
+        "ref": "J_BOUNDARY_6",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-core",
+        "ref": "J_BOUNDARY_7",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-core",
+        "ref": "J_BOUNDARY_8",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-core",
+        "ref": "J_BOUNDARY_9",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-core",
+        "ref": "J_BOUNDARY_10",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-core",
+        "ref": "J_BOUNDARY_11",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-core",
+        "ref": "J_BOUNDARY_12",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-core",
+        "ref": "J_BOUNDARY_13",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-core",
+        "ref": "J_BOUNDARY_14",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-core",
+        "ref": "J_BOUNDARY_15",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-core",
+        "ref": "J_BOUNDARY_16",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_1",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_2",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_3",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_4",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_5",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_6",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_7",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_8",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_9",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_10",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_11",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_12",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_13",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_14",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_15",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_16",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_17",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_18",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_19",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_20",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_21",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_22",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_23",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_24",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_25",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "smart-safety",
+        "ref": "J_BOUNDARY_26",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-precision",
+        "ref": "J_BOUNDARY_1",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-precision",
+        "ref": "J_BOUNDARY_2",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-precision",
+        "ref": "J_BOUNDARY_3",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-precision",
+        "ref": "J_BOUNDARY_4",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-precision",
+        "ref": "J_BOUNDARY_5",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-precision",
+        "ref": "J_BOUNDARY_6",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-precision",
+        "ref": "J_BOUNDARY_7",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-precision",
+        "ref": "J_BOUNDARY_8",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-precision",
+        "ref": "J_BOUNDARY_9",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-precision",
+        "ref": "J_BOUNDARY_10",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-precision",
+        "ref": "J_BOUNDARY_11",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-precision",
+        "ref": "J_BOUNDARY_12",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_1",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_2",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_3",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_4",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_5",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_6",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_7",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_8",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_9",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_10",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_11",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_12",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_13",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_14",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_15",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_16",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_17",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_18",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_19",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_20",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_21",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_22",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_23",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_24",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_25",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_26",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_27",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_28",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_29",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_30",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_31",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-a-buffers",
+        "ref": "J_BOUNDARY_32",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-0",
+        "ref": "J_BOUNDARY_1",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-0",
+        "ref": "J_BOUNDARY_2",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-0",
+        "ref": "J_BOUNDARY_3",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-0",
+        "ref": "J_BOUNDARY_4",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-0",
+        "ref": "J_BOUNDARY_5",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-0",
+        "ref": "J_BOUNDARY_6",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-0",
+        "ref": "J_BOUNDARY_7",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-0",
+        "ref": "J_BOUNDARY_8",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-0",
+        "ref": "J_BOUNDARY_9",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-0",
+        "ref": "J_BOUNDARY_10",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-0",
+        "ref": "J_BOUNDARY_11",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-0",
+        "ref": "J_BOUNDARY_12",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-0",
+        "ref": "J_BOUNDARY_13",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-0",
+        "ref": "J_BOUNDARY_14",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-0",
+        "ref": "J_BOUNDARY_15",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-0",
+        "ref": "J_BOUNDARY_16",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-0",
+        "ref": "J_BOUNDARY_17",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-1",
+        "ref": "J_BOUNDARY_1",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-1",
+        "ref": "J_BOUNDARY_2",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-1",
+        "ref": "J_BOUNDARY_3",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-1",
+        "ref": "J_BOUNDARY_4",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-1",
+        "ref": "J_BOUNDARY_5",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-1",
+        "ref": "J_BOUNDARY_6",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-1",
+        "ref": "J_BOUNDARY_7",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-1",
+        "ref": "J_BOUNDARY_8",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-1",
+        "ref": "J_BOUNDARY_9",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-1",
+        "ref": "J_BOUNDARY_10",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-1",
+        "ref": "J_BOUNDARY_11",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-1",
+        "ref": "J_BOUNDARY_12",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-1",
+        "ref": "J_BOUNDARY_13",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-1",
+        "ref": "J_BOUNDARY_14",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-1",
+        "ref": "J_BOUNDARY_15",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-1",
+        "ref": "J_BOUNDARY_16",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-1",
+        "ref": "J_BOUNDARY_17",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-2",
+        "ref": "J_BOUNDARY_1",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-2",
+        "ref": "J_BOUNDARY_2",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-2",
+        "ref": "J_BOUNDARY_3",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-2",
+        "ref": "J_BOUNDARY_4",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-2",
+        "ref": "J_BOUNDARY_5",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-2",
+        "ref": "J_BOUNDARY_6",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-2",
+        "ref": "J_BOUNDARY_7",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-2",
+        "ref": "J_BOUNDARY_8",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-2",
+        "ref": "J_BOUNDARY_9",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-2",
+        "ref": "J_BOUNDARY_10",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-2",
+        "ref": "J_BOUNDARY_11",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-2",
+        "ref": "J_BOUNDARY_12",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-2",
+        "ref": "J_BOUNDARY_13",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-2",
+        "ref": "J_BOUNDARY_14",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-2",
+        "ref": "J_BOUNDARY_15",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-2",
+        "ref": "J_BOUNDARY_16",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-a-position-2",
+        "ref": "J_BOUNDARY_17",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-precision",
+        "ref": "J_BOUNDARY_1",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-precision",
+        "ref": "J_BOUNDARY_2",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-precision",
+        "ref": "J_BOUNDARY_3",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-precision",
+        "ref": "J_BOUNDARY_4",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-precision",
+        "ref": "J_BOUNDARY_5",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-precision",
+        "ref": "J_BOUNDARY_6",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-precision",
+        "ref": "J_BOUNDARY_7",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-precision",
+        "ref": "J_BOUNDARY_8",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-precision",
+        "ref": "J_BOUNDARY_9",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-precision",
+        "ref": "J_BOUNDARY_10",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-precision",
+        "ref": "J_BOUNDARY_11",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-precision",
+        "ref": "J_BOUNDARY_12",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_1",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_2",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_3",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_4",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_5",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_6",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_7",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_8",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_9",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_10",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_11",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_12",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_13",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_14",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_15",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_16",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_17",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_18",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_19",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_20",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_21",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_22",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_23",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_24",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_25",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_26",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_27",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_28",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_29",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_30",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_31",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "measurement-b-buffers",
+        "ref": "J_BOUNDARY_32",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-3",
+        "ref": "J_BOUNDARY_1",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-3",
+        "ref": "J_BOUNDARY_2",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-3",
+        "ref": "J_BOUNDARY_3",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-3",
+        "ref": "J_BOUNDARY_4",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-3",
+        "ref": "J_BOUNDARY_5",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-3",
+        "ref": "J_BOUNDARY_6",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-3",
+        "ref": "J_BOUNDARY_7",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-3",
+        "ref": "J_BOUNDARY_8",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-3",
+        "ref": "J_BOUNDARY_9",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-3",
+        "ref": "J_BOUNDARY_10",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-3",
+        "ref": "J_BOUNDARY_11",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-3",
+        "ref": "J_BOUNDARY_12",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-3",
+        "ref": "J_BOUNDARY_13",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-3",
+        "ref": "J_BOUNDARY_14",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-3",
+        "ref": "J_BOUNDARY_15",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-3",
+        "ref": "J_BOUNDARY_16",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-3",
+        "ref": "J_BOUNDARY_17",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-4",
+        "ref": "J_BOUNDARY_1",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-4",
+        "ref": "J_BOUNDARY_2",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-4",
+        "ref": "J_BOUNDARY_3",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-4",
+        "ref": "J_BOUNDARY_4",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-4",
+        "ref": "J_BOUNDARY_5",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-4",
+        "ref": "J_BOUNDARY_6",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-4",
+        "ref": "J_BOUNDARY_7",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-4",
+        "ref": "J_BOUNDARY_8",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-4",
+        "ref": "J_BOUNDARY_9",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-4",
+        "ref": "J_BOUNDARY_10",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-4",
+        "ref": "J_BOUNDARY_11",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-4",
+        "ref": "J_BOUNDARY_12",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-4",
+        "ref": "J_BOUNDARY_13",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-4",
+        "ref": "J_BOUNDARY_14",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-4",
+        "ref": "J_BOUNDARY_15",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-4",
+        "ref": "J_BOUNDARY_16",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-4",
+        "ref": "J_BOUNDARY_17",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-5",
+        "ref": "J_BOUNDARY_1",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-5",
+        "ref": "J_BOUNDARY_2",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-5",
+        "ref": "J_BOUNDARY_3",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-5",
+        "ref": "J_BOUNDARY_4",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-5",
+        "ref": "J_BOUNDARY_5",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-5",
+        "ref": "J_BOUNDARY_6",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-5",
+        "ref": "J_BOUNDARY_7",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-5",
+        "ref": "J_BOUNDARY_8",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-5",
+        "ref": "J_BOUNDARY_9",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-5",
+        "ref": "J_BOUNDARY_10",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-5",
+        "ref": "J_BOUNDARY_11",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-5",
+        "ref": "J_BOUNDARY_12",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-5",
+        "ref": "J_BOUNDARY_13",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-5",
+        "ref": "J_BOUNDARY_14",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-5",
+        "ref": "J_BOUNDARY_15",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-5",
+        "ref": "J_BOUNDARY_16",
+        "reason": "Synthetic board-boundary post"
+      },
+      {
+        "board": "bank-b-position-5",
+        "ref": "J_BOUNDARY_17",
+        "reason": "Synthetic board-boundary post"
+      }
+    ]
+  },
+  "waivers": [
+    {
+      "type": "schematic_sheet_styling_warning",
+      "reason": "A2 vector export is explicitly requested; native sheet extents are normalized to the custom A2 frame, rather than using the suggested A4 styling."
+    }
+  ],
+  "hardwareStatus": "pending",
+  "scope": "Schematic-only connectivity and placement; PCB checks do not apply."
+}

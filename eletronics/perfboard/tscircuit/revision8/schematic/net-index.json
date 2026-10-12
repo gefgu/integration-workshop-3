@@ -1,0 +1,4860 @@
+[
+  {
+    "net": "NODE00",
+    "drawingLabel": "NODE00",
+    "sheets": [
+      "02-contacts",
+      "04-router-matrix",
+      "07-measurement-a-precision",
+      "11-smart-position-1"
+    ],
+    "pins": [
+      "contact-a/J_A1_NODE00.1",
+      "contact-a/J_A1_NODE00.2",
+      "contact-a/J_A1_NODE00.3",
+      "contact-a/J_A1_NODE00.4",
+      "contact-a/J_A1_NODE00.5",
+      "contact-a/J_A1_NODE00.6",
+      "contact-a/J_A_NODE_BUNDLE_1.1",
+      "contact-a/J_A1_SMART.1",
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.33",
+      "router-matrix/J_MATRIX_NODE_A_1.1",
+      "measurement-a-precision/R_P0_1_TOP.1",
+      "bank-a-position-0/K_P0_AMM_P.3"
+    ]
+  },
+  {
+    "net": "NODE01",
+    "drawingLabel": "NODE01",
+    "sheets": [
+      "02-contacts",
+      "04-router-matrix",
+      "07-measurement-a-precision",
+      "11-smart-position-1"
+    ],
+    "pins": [
+      "contact-a/J_A1_NODE01.1",
+      "contact-a/J_A1_NODE01.2",
+      "contact-a/J_A1_NODE01.3",
+      "contact-a/J_A1_NODE01.4",
+      "contact-a/J_A1_NODE01.5",
+      "contact-a/J_A1_NODE01.6",
+      "contact-a/J_A_NODE_BUNDLE_1.2",
+      "contact-a/J_A1_SMART.3",
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.32",
+      "router-matrix/J_MATRIX_NODE_A_1.2",
+      "measurement-a-precision/R_P0_2_TOP.1",
+      "bank-a-position-0/K_P0_AMM_N.4"
+    ]
+  },
+  {
+    "net": "NODE02",
+    "drawingLabel": "NODE02",
+    "sheets": [
+      "02-contacts",
+      "04-router-matrix",
+      "11-smart-position-1"
+    ],
+    "pins": [
+      "contact-a/J_A1_NODE02.1",
+      "contact-a/J_A1_NODE02.2",
+      "contact-a/J_A1_NODE02.3",
+      "contact-a/J_A1_NODE02.4",
+      "contact-a/J_A1_NODE02.5",
+      "contact-a/J_A1_NODE02.6",
+      "contact-a/J_A_NODE_BUNDLE_1.3",
+      "contact-a/J_A1_SMART.5",
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.31",
+      "router-matrix/J_MATRIX_NODE_A_1.3",
+      "bank-a-position-0/K_P0_HIGH.4",
+      "bank-a-position-0/K_P0_LOW.3"
+    ]
+  },
+  {
+    "net": "NODE03",
+    "drawingLabel": "NODE03",
+    "sheets": [
+      "02-contacts",
+      "04-router-matrix"
+    ],
+    "pins": [
+      "contact-a/J_A1_NODE03.1",
+      "contact-a/J_A1_NODE03.2",
+      "contact-a/J_A1_NODE03.3",
+      "contact-a/J_A1_NODE03.4",
+      "contact-a/J_A1_NODE03.5",
+      "contact-a/J_A1_NODE03.6",
+      "contact-a/J_A_NODE_BUNDLE_1.4",
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.30",
+      "router-matrix/J_MATRIX_NODE_A_1.4"
+    ]
+  },
+  {
+    "net": "SCL_POSITION_0",
+    "drawingLabel": "SCL1",
+    "sheets": [
+      "02-contacts",
+      "07-measurement-a-precision",
+      "11-smart-position-1"
+    ],
+    "pins": [
+      "contact-a/J_A1_SERVICE.1",
+      "contact-a/J_A1_SMART.2",
+      "measurement-a-precision/J_A_ADC_MODULE.3",
+      "bank-a-position-0/J_P0_CURRENT_MODULE.3",
+      "bank-a-position-0/U_P0_BUS.7",
+      "bank-a-position-0/R_P0_SCL.1"
+    ]
+  },
+  {
+    "net": "SDA_POSITION_0",
+    "drawingLabel": "SDA1",
+    "sheets": [
+      "02-contacts",
+      "07-measurement-a-precision",
+      "11-smart-position-1"
+    ],
+    "pins": [
+      "contact-a/J_A1_SERVICE.2",
+      "contact-a/J_A1_SMART.4",
+      "measurement-a-precision/J_A_ADC_MODULE.4",
+      "bank-a-position-0/J_P0_CURRENT_MODULE.4",
+      "bank-a-position-0/U_P0_BUS.6",
+      "bank-a-position-0/R_P0_SDA.1"
+    ]
+  },
+  {
+    "net": "GND",
+    "drawingLabel": "GND",
+    "sheets": [
+      "02-contacts",
+      "03-power",
+      "04-router-matrix",
+      "05-smart-controller",
+      "06-smart-safety",
+      "07-measurement-a-precision",
+      "08-measurement-a-buffers",
+      "11-smart-position-1",
+      "12-smart-position-2",
+      "13-smart-position-3",
+      "09-measurement-b-precision",
+      "10-measurement-b-buffers",
+      "14-smart-position-4",
+      "15-smart-position-5",
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "contact-a/J_A1_SERVICE.3",
+      "contact-a/J_A_SMART_POWER.1",
+      "contact-a/J_A2_SERVICE.3",
+      "contact-a/J_A3_SERVICE.3",
+      "contact-b/J_B1_SERVICE.3",
+      "contact-b/J_B_SMART_POWER.1",
+      "contact-b/J_B2_SERVICE.3",
+      "contact-b/J_B3_SERVICE.3",
+      "power/J_POWER_INTERLOCK_MATRIX.2",
+      "power/J_POWER_INTERLOCK_SMART.2",
+      "power/J_POWER_INTERLOCK_SMART.4",
+      "power/J_POWER_INTERLOCK_SMART.6",
+      "power/U_POWER_INTERLOCK_FAULT.2",
+      "power/U_POWER_INTERLOCK_FAULT.3",
+      "power/U_POWER_INTERLOCK_FAULT.7",
+      "power/U_POWER_INTERLOCK_FAULT.11",
+      "power/U_POWER_INTERLOCK_FAULT.12",
+      "power/U_POWER_INTERLOCK_LOGIC.7",
+      "power/U_POWER_GUARDS_OV_5V.4",
+      "power/U_POWER_ANALOG_TRIP.4",
+      "power/U_POWER_GUARDS_OV_3V3.4",
+      "power/U_POWER_ANALOG_SENSE.2",
+      "power/U_POWER_INTERLOCK_POR.3",
+      "power/J_POWER_INTERLOCK_TEST.2",
+      "power/R_POWER_INTERLOCK_EDU_FAULT_RESET_OFF.2",
+      "power/R_POWER_ANALOG_TRIP_BOTTOM.2",
+      "power/R_POWER_ANALOG_EDU_BOTTOM.2",
+      "power/R_POWER_INTERLOCK_EDU_PWR_EN_OFF.2",
+      "power/R_POWER_INTERLOCK_ROUTER_ALIVE_OFF.2",
+      "power/R_POWER_INTERLOCK_LED_GATE_OFF.2",
+      "power/R_R7_PASS_PD.2",
+      "power/C_POWER_GUARDS_OV_3V3_OUT.2",
+      "power/J_POWER_INPUT_BUCK_3V3.2",
+      "power/J_POWER_INPUT_BUCK_5V.2",
+      "power/Q_POWER_INTERLOCK_BATTERY_LED.1",
+      "power/C_POWER_GUARDS_OV_5V_OUT.2",
+      "power/U_POWER_ANALOG_REF.2",
+      "power/C_POWER_INPUT_INPUT.2",
+      "power/Q_POWER_ANALOG_ENABLE.1",
+      "power/C_POWER_ANALOG_TRIP.2",
+      "power/C_POWER_GUARDS_OV_3V3_IN.2",
+      "power/C_POWER_INPUT_INPUT_HF.2",
+      "power/C_POWER_GUARDS_OV_5V_IN.2",
+      "power/C_POWER_INTERLOCK_FAULT.2",
+      "power/C_POWER_ANALOG_SENSE.2",
+      "power/C_POWER_INTERLOCK_LOGIC.2",
+      "power/C_POWER_ANALOG_EDU.2",
+      "power/J_POWER_INPUT_INPUT.2",
+      "power/LED_5VSYS.2",
+      "power/LED_3V3SYS.2",
+      "power/LED_NOTFAULT.2",
+      "power/R_POWER_GUARDS_LADDER_5V_BOTTOM.2",
+      "power/R_POWER_GUARDS_LADDER_3V3_BOTTOM.2",
+      "router-matrix/U_ROUTER_CORE_ESP1.14",
+      "router-matrix/U_ROUTER_CORE_ESP1.20",
+      "router-matrix/U_ROUTER_CORE_ESP1.26",
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.16",
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.20",
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.35",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.16",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.20",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.35",
+      "router-matrix/J_INTEGRATION_PI.6",
+      "router-matrix/U_MATRIX_CONTROL_ADDR.8",
+      "router-matrix/U_ROUTER_SAFETY_WATCH.1",
+      "router-matrix/U_ROUTER_SAFETY_WATCH.8",
+      "router-matrix/U_ROUTER_SAFETY_WATCH.9",
+      "router-matrix/U_ROUTER_SAFETY_WATCH.10",
+      "router-matrix/U_ROUTER_SAFETY_WATCH.11",
+      "router-matrix/U_MATRIX_CONTROL_BUFFER.7",
+      "router-matrix/U_MATRIX_CONTROL_BUFFER.9",
+      "router-matrix/U_MATRIX_CONTROL_BUFFER.12",
+      "router-matrix/U_MATRIX_CONTROL_DIAG.4",
+      "router-matrix/U_MATRIX_CONTROL_DIAG.5",
+      "router-matrix/U_ROUTER_SAFETY_FAULT_RETURN.1",
+      "router-matrix/U_ROUTER_SAFETY_FAULT_RETURN.3",
+      "router-matrix/K_ROUTER_SAFETY_ADC.2",
+      "router-matrix/U_ROUTER_SAFETY_USB_POR.3",
+      "router-matrix/J_INTEGRATION_RFID.2",
+      "router-matrix/R_MATRIX_CONTROL_STB_B_IN_OFF.2",
+      "router-matrix/R_MATRIX_CONTROL_STB_A_IN_OFF.2",
+      "router-matrix/R_MATRIX_CONTROL_CAL.2",
+      "router-matrix/R_MATRIX_CONTROL_XBAR_LATCH_OFF.2",
+      "router-matrix/R_MATRIX_CONTROL_DISCHARGE.2",
+      "router-matrix/R_MATRIX_CONTROL_DIAG_BOTTOM.2",
+      "router-matrix/R_ROUTER_SAFETY_ALIVE_OFF.2",
+      "router-matrix/R_MATRIX_CONTROL_XBAR_CLK_OFF.2",
+      "router-matrix/R_MATRIX_CONTROL_XBAR_DAT_OFF.2",
+      "router-matrix/R_MATRIX_SWITCHES_RST_RELEASE_OFF.2",
+      "router-matrix/J_ROUTER_CORE_FIXTURE.2",
+      "router-matrix/R_MATRIX_SWITCHES_STBB_OFF.2",
+      "router-matrix/R_MATRIX_SWITCHES_STBA_OFF.2",
+      "router-matrix/R_ROUTER_SAFETY_HEART.2",
+      "router-matrix/J_ROUTER_CORE_PROTOTYPE.3",
+      "router-matrix/Q_ROUTER_SAFETY_BUF.1",
+      "router-matrix/Q_MATRIX_SWITCHES_RESET_ALIVE.1",
+      "router-matrix/J_ROUTER_CORE_LIGHT.2",
+      "router-matrix/C_ROUTER_SAFETY_RETURN.2",
+      "router-matrix/J_ROUTER_CORE_FAN1.2",
+      "router-matrix/J_ROUTER_CORE_FAN2.2",
+      "router-matrix/J_INTEGRATION_SW_ENERGIZE.2",
+      "router-matrix/C_MATRIX_CONTROL_BUFFER.2",
+      "router-matrix/J_INTEGRATION_SW_BACK.2",
+      "router-matrix/C_MATRIX_CONTROL_DIAG_VCC.2",
+      "router-matrix/C_MATRIX_SWITCHES_MT0_BULK.2",
+      "router-matrix/C_MATRIX_SWITCHES_MT1.2",
+      "router-matrix/C_MATRIX_SWITCHES_MT1_BULK.2",
+      "router-matrix/C_ROUTER_SAFETY_WATCH_VCC.2",
+      "router-matrix/C_MATRIX_CONTROL_ADDR.2",
+      "router-matrix/C_MATRIX_CONTROL_DIAG.2",
+      "router-matrix/C_MATRIX_SWITCHES_MT0.2",
+      "router-matrix/J_INTEGRATION_GROUND.1",
+      "router-matrix/J_PROBE.1",
+      "router-matrix/LED_USBROUTER3V3.2",
+      "router-matrix/LED_ROUTERALIVE.2",
+      "router-matrix/J_ROUTER_POWER_CONTROL.2",
+      "smart-core/U_ESP2.14",
+      "smart-core/U_ESP2.20",
+      "smart-core/U_ESP2.26",
+      "smart-core/J_POWER.2",
+      "smart-core/J_POWER.4",
+      "smart-core/J_POWER.6",
+      "smart-core/J_JOYSTICK.2",
+      "smart-safety/U_WATCH.1",
+      "smart-safety/U_WATCH.8",
+      "smart-safety/U_WATCH.9",
+      "smart-safety/U_WATCH.10",
+      "smart-safety/U_WATCH.11",
+      "smart-safety/C_WATCH_VCC.2",
+      "smart-safety/R_HEART.2",
+      "smart-safety/U_USB_POR.3",
+      "smart-safety/Q_RAIL.1",
+      "smart-safety/R_ALIVE_OFF.2",
+      "smart-safety/R_RAIL_OFF.2",
+      "smart-safety/U_SR0.8",
+      "smart-safety/C_SR0.2",
+      "smart-safety/U_SR1.8",
+      "smart-safety/C_SR1.2",
+      "smart-safety/U_SR2.8",
+      "smart-safety/C_SR2.2",
+      "smart-safety/R_SR_SER_OFF.2",
+      "smart-safety/R_SR_SRCLK_OFF.2",
+      "smart-safety/R_SR_RCLK_OFF.2",
+      "measurement-a-precision/C_P0_1.2",
+      "measurement-a-precision/C_P0_2.2",
+      "measurement-a-precision/R_A_PREC_BIAS_BOTTOM.2",
+      "measurement-a-precision/C_A_PREC_BIAS.2",
+      "measurement-a-precision/U_A_PRECISION.4",
+      "measurement-a-precision/C_A_PRECISION.2",
+      "measurement-a-precision/U_A_MUX.6",
+      "measurement-a-precision/U_A_MUX.7",
+      "measurement-a-precision/U_A_MUX.8",
+      "measurement-a-precision/U_A_MUX.11",
+      "measurement-a-precision/U_A_MUX.4",
+      "measurement-a-precision/C_A_MUX.2",
+      "measurement-a-precision/R_A_SEL_A.2",
+      "measurement-a-precision/R_A_SEL_B.2",
+      "measurement-a-precision/J_A_ADC_MODULE.2",
+      "measurement-a-precision/J_A_ADC_MODULE.5",
+      "measurement-a-precision/J_A_ADC_MODULE.9",
+      "measurement-a-precision/J_A_ADC_MODULE.10",
+      "measurement-a-precision/R_OFF.2",
+      "measurement-a-precision/Q_STIM.1",
+      "measurement-a-precision/JP_RETURN.2",
+      "measurement-a-buffers/U_A_LED_DRIVER_0.8",
+      "measurement-a-buffers/U_A_LED_DRIVER_1.8",
+      "measurement-a-buffers/U_A_LED_DRIVER_1.3",
+      "measurement-a-buffers/U_A_LED_DRIVER_1.4",
+      "measurement-a-buffers/U_A_LED_DRIVER_1.5",
+      "measurement-a-buffers/U_A_LED_DRIVER_1.6",
+      "measurement-a-buffers/U_A_LED_DRIVER_1.7",
+      "measurement-a-buffers/U_A_BUFFERS.11",
+      "measurement-a-buffers/R_A_HI_BOTTOM.2",
+      "measurement-a-buffers/R_A_LO_BOTTOM.2",
+      "measurement-a-buffers/C_A_REFHI.2",
+      "measurement-a-buffers/C_A_REFLO.2",
+      "measurement-a-buffers/C_P1_1.2",
+      "measurement-a-buffers/C_P1_2.2",
+      "measurement-a-buffers/R_A_GENERAL_BIAS_BOTTOM.2",
+      "measurement-a-buffers/C_A_GENERAL_BIAS.2",
+      "measurement-a-buffers/C_A_BUFFERS.2",
+      "measurement-a-buffers/C_P2_1.2",
+      "measurement-a-buffers/C_P2_2.2",
+      "bank-a-position-0/J_P0_CURRENT_MODULE.2",
+      "bank-a-position-0/C_P0_CURRENT.2",
+      "bank-a-position-0/R_P0_SINK_SENSE.2",
+      "bank-a-position-0/U_P0_LIMIT.4",
+      "bank-a-position-0/C_P0_LIMIT.2",
+      "bank-a-position-0/U_P0_BUS.4",
+      "bank-a-position-0/C_P0_BUS_A.2",
+      "bank-a-position-0/C_P0_BUS_B.2",
+      "bank-a-position-1/J_P1_CURRENT_MODULE.2",
+      "bank-a-position-1/C_P1_CURRENT.2",
+      "bank-a-position-1/R_P1_SINK_SENSE.2",
+      "bank-a-position-1/U_P1_LIMIT.4",
+      "bank-a-position-1/C_P1_LIMIT.2",
+      "bank-a-position-1/U_P1_BUS.4",
+      "bank-a-position-1/C_P1_BUS_A.2",
+      "bank-a-position-1/C_P1_BUS_B.2",
+      "bank-a-position-2/J_P2_CURRENT_MODULE.2",
+      "bank-a-position-2/C_P2_CURRENT.2",
+      "bank-a-position-2/R_P2_SINK_SENSE.2",
+      "bank-a-position-2/U_P2_LIMIT.4",
+      "bank-a-position-2/C_P2_LIMIT.2",
+      "bank-a-position-2/U_P2_BUS.4",
+      "bank-a-position-2/C_P2_BUS_A.2",
+      "bank-a-position-2/C_P2_BUS_B.2",
+      "measurement-b-precision/C_P3_1.2",
+      "measurement-b-precision/C_P3_2.2",
+      "measurement-b-precision/R_B_PREC_BIAS_BOTTOM.2",
+      "measurement-b-precision/C_B_PREC_BIAS.2",
+      "measurement-b-precision/U_B_PRECISION.4",
+      "measurement-b-precision/C_B_PRECISION.2",
+      "measurement-b-precision/U_B_MUX.6",
+      "measurement-b-precision/U_B_MUX.7",
+      "measurement-b-precision/U_B_MUX.8",
+      "measurement-b-precision/U_B_MUX.11",
+      "measurement-b-precision/U_B_MUX.4",
+      "measurement-b-precision/C_B_MUX.2",
+      "measurement-b-precision/R_B_SEL_A.2",
+      "measurement-b-precision/R_B_SEL_B.2",
+      "measurement-b-precision/J_B_ADC_MODULE.2",
+      "measurement-b-precision/J_B_ADC_MODULE.5",
+      "measurement-b-precision/J_B_ADC_MODULE.9",
+      "measurement-b-precision/J_B_ADC_MODULE.10",
+      "measurement-b-buffers/U_B_LED_DRIVER_0.8",
+      "measurement-b-buffers/U_B_LED_DRIVER_1.8",
+      "measurement-b-buffers/U_B_LED_DRIVER_1.3",
+      "measurement-b-buffers/U_B_LED_DRIVER_1.4",
+      "measurement-b-buffers/U_B_LED_DRIVER_1.5",
+      "measurement-b-buffers/U_B_LED_DRIVER_1.6",
+      "measurement-b-buffers/U_B_LED_DRIVER_1.7",
+      "measurement-b-buffers/U_B_BUFFERS.11",
+      "measurement-b-buffers/R_B_HI_BOTTOM.2",
+      "measurement-b-buffers/R_B_LO_BOTTOM.2",
+      "measurement-b-buffers/C_B_REFHI.2",
+      "measurement-b-buffers/C_B_REFLO.2",
+      "measurement-b-buffers/C_P4_1.2",
+      "measurement-b-buffers/C_P4_2.2",
+      "measurement-b-buffers/R_B_GENERAL_BIAS_BOTTOM.2",
+      "measurement-b-buffers/C_B_GENERAL_BIAS.2",
+      "measurement-b-buffers/C_B_BUFFERS.2",
+      "measurement-b-buffers/C_P5_1.2",
+      "measurement-b-buffers/C_P5_2.2",
+      "bank-b-position-3/J_P3_CURRENT_MODULE.2",
+      "bank-b-position-3/C_P3_CURRENT.2",
+      "bank-b-position-3/R_P3_SINK_SENSE.2",
+      "bank-b-position-3/U_P3_LIMIT.4",
+      "bank-b-position-3/C_P3_LIMIT.2",
+      "bank-b-position-3/U_P3_BUS.4",
+      "bank-b-position-3/C_P3_BUS_A.2",
+      "bank-b-position-3/C_P3_BUS_B.2",
+      "bank-b-position-4/J_P4_CURRENT_MODULE.2",
+      "bank-b-position-4/C_P4_CURRENT.2",
+      "bank-b-position-4/R_P4_SINK_SENSE.2",
+      "bank-b-position-4/U_P4_LIMIT.4",
+      "bank-b-position-4/C_P4_LIMIT.2",
+      "bank-b-position-4/U_P4_BUS.4",
+      "bank-b-position-4/C_P4_BUS_A.2",
+      "bank-b-position-4/C_P4_BUS_B.2",
+      "bank-b-position-5/J_P5_CURRENT_MODULE.2",
+      "bank-b-position-5/C_P5_CURRENT.2",
+      "bank-b-position-5/R_P5_SINK_SENSE.2",
+      "bank-b-position-5/U_P5_LIMIT.4",
+      "bank-b-position-5/C_P5_LIMIT.2",
+      "bank-b-position-5/U_P5_BUS.4",
+      "bank-b-position-5/C_P5_BUS_A.2",
+      "bank-b-position-5/C_P5_BUS_B.2"
+    ]
+  },
+  {
+    "net": "3V3_SYS",
+    "drawingLabel": "3V3_SYS",
+    "sheets": [
+      "02-contacts",
+      "03-power",
+      "04-router-matrix",
+      "05-smart-controller",
+      "07-measurement-a-precision",
+      "08-measurement-a-buffers",
+      "11-smart-position-1",
+      "12-smart-position-2",
+      "13-smart-position-3",
+      "09-measurement-b-precision",
+      "10-measurement-b-buffers",
+      "14-smart-position-4",
+      "15-smart-position-5",
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "contact-a/J_A1_SERVICE.4",
+      "contact-a/J_A_SMART_POWER.2",
+      "contact-a/J_A2_SERVICE.4",
+      "contact-a/J_A3_SERVICE.4",
+      "contact-b/J_B1_SERVICE.4",
+      "contact-b/J_B_SMART_POWER.2",
+      "contact-b/J_B2_SERVICE.4",
+      "contact-b/J_B3_SERVICE.4",
+      "power/J_POWER_INTERLOCK_MATRIX.3",
+      "power/J_POWER_INTERLOCK_SMART.5",
+      "power/U_POWER_INTERLOCK_FAULT.10",
+      "power/U_POWER_INTERLOCK_FAULT.13",
+      "power/U_POWER_INTERLOCK_FAULT.14",
+      "power/U_POWER_INTERLOCK_LOGIC.14",
+      "power/U_POWER_GUARDS_OV_3V3.7",
+      "power/U_POWER_ANALOG_SENSE.5",
+      "power/U_POWER_INTERLOCK_POR.2",
+      "power/R_POWER_ANALOG_EDU_ON.1",
+      "power/R_POWER_ANALOG_PRESET.1",
+      "power/C_POWER_GUARDS_OV_3V3_OUT.1",
+      "power/Q_POWER_GUARDS_OV_3V3_OUT.3",
+      "power/C_POWER_INTERLOCK_FAULT.1",
+      "power/C_POWER_ANALOG_SENSE.1",
+      "power/C_POWER_INTERLOCK_LOGIC.1",
+      "power/R_LED_3V3SYS.1",
+      "router-matrix/D_MATRIX_CONTROL_SOURCE.1",
+      "router-matrix/J_ROUTER_POWER_CONTROL.3",
+      "smart-core/J_POWER.5",
+      "measurement-a-precision/R_A_PREC_BIAS_TOP.1",
+      "measurement-a-precision/U_A_PRECISION.8",
+      "measurement-a-precision/C_A_PRECISION.1",
+      "measurement-a-precision/U_A_MUX.16",
+      "measurement-a-precision/C_A_MUX.1",
+      "measurement-a-precision/J_A_ADC_MODULE.1",
+      "measurement-a-precision/D_STIM.1",
+      "measurement-a-precision/R_LED.1",
+      "measurement-a-buffers/U_A_BUFFERS.4",
+      "measurement-a-buffers/R_A_GENERAL_BIAS_TOP.1",
+      "measurement-a-buffers/C_A_BUFFERS.1",
+      "bank-a-position-0/J_P0_CURRENT_MODULE.1",
+      "bank-a-position-0/C_P0_CURRENT.1",
+      "bank-a-position-0/U_P0_BUS.8",
+      "bank-a-position-0/C_P0_BUS_B.1",
+      "bank-a-position-0/R_P0_SDA.2",
+      "bank-a-position-0/R_P0_SCL.2",
+      "bank-a-position-1/J_P1_CURRENT_MODULE.1",
+      "bank-a-position-1/C_P1_CURRENT.1",
+      "bank-a-position-1/U_P1_BUS.8",
+      "bank-a-position-1/C_P1_BUS_B.1",
+      "bank-a-position-1/R_P1_SDA.2",
+      "bank-a-position-1/R_P1_SCL.2",
+      "bank-a-position-2/J_P2_CURRENT_MODULE.1",
+      "bank-a-position-2/C_P2_CURRENT.1",
+      "bank-a-position-2/U_P2_BUS.8",
+      "bank-a-position-2/C_P2_BUS_B.1",
+      "bank-a-position-2/R_P2_SDA.2",
+      "bank-a-position-2/R_P2_SCL.2",
+      "measurement-b-precision/R_B_PREC_BIAS_TOP.1",
+      "measurement-b-precision/U_B_PRECISION.8",
+      "measurement-b-precision/C_B_PRECISION.1",
+      "measurement-b-precision/U_B_MUX.16",
+      "measurement-b-precision/C_B_MUX.1",
+      "measurement-b-precision/J_B_ADC_MODULE.1",
+      "measurement-b-buffers/U_B_BUFFERS.4",
+      "measurement-b-buffers/R_B_GENERAL_BIAS_TOP.1",
+      "measurement-b-buffers/C_B_BUFFERS.1",
+      "bank-b-position-3/J_P3_CURRENT_MODULE.1",
+      "bank-b-position-3/C_P3_CURRENT.1",
+      "bank-b-position-3/U_P3_BUS.8",
+      "bank-b-position-3/C_P3_BUS_B.1",
+      "bank-b-position-3/R_P3_SDA.2",
+      "bank-b-position-3/R_P3_SCL.2",
+      "bank-b-position-4/J_P4_CURRENT_MODULE.1",
+      "bank-b-position-4/C_P4_CURRENT.1",
+      "bank-b-position-4/U_P4_BUS.8",
+      "bank-b-position-4/C_P4_BUS_B.1",
+      "bank-b-position-4/R_P4_SDA.2",
+      "bank-b-position-4/R_P4_SCL.2",
+      "bank-b-position-5/J_P5_CURRENT_MODULE.1",
+      "bank-b-position-5/C_P5_CURRENT.1",
+      "bank-b-position-5/U_P5_BUS.8",
+      "bank-b-position-5/C_P5_BUS_B.1",
+      "bank-b-position-5/R_P5_SDA.2",
+      "bank-b-position-5/R_P5_SCL.2"
+    ]
+  },
+  {
+    "net": "NODE04",
+    "drawingLabel": "NODE04",
+    "sheets": [
+      "02-contacts",
+      "04-router-matrix",
+      "08-measurement-a-buffers",
+      "12-smart-position-2"
+    ],
+    "pins": [
+      "contact-a/J_A2_NODE04.1",
+      "contact-a/J_A2_NODE04.2",
+      "contact-a/J_A2_NODE04.3",
+      "contact-a/J_A2_NODE04.4",
+      "contact-a/J_A2_NODE04.5",
+      "contact-a/J_A2_NODE04.6",
+      "contact-a/J_A_NODE_BUNDLE_2.1",
+      "contact-a/J_A2_SMART.1",
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.29",
+      "router-matrix/J_MATRIX_NODE_A_2.1",
+      "measurement-a-buffers/R_P1_1_TOP.1",
+      "bank-a-position-1/K_P1_AMM_P.3"
+    ]
+  },
+  {
+    "net": "NODE05",
+    "drawingLabel": "NODE05",
+    "sheets": [
+      "02-contacts",
+      "04-router-matrix",
+      "08-measurement-a-buffers",
+      "12-smart-position-2"
+    ],
+    "pins": [
+      "contact-a/J_A2_NODE05.1",
+      "contact-a/J_A2_NODE05.2",
+      "contact-a/J_A2_NODE05.3",
+      "contact-a/J_A2_NODE05.4",
+      "contact-a/J_A2_NODE05.5",
+      "contact-a/J_A2_NODE05.6",
+      "contact-a/J_A_NODE_BUNDLE_2.2",
+      "contact-a/J_A2_SMART.3",
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.28",
+      "router-matrix/J_MATRIX_NODE_A_2.2",
+      "measurement-a-buffers/R_P1_2_TOP.1",
+      "bank-a-position-1/K_P1_AMM_N.4"
+    ]
+  },
+  {
+    "net": "NODE06",
+    "drawingLabel": "NODE06",
+    "sheets": [
+      "02-contacts",
+      "04-router-matrix",
+      "12-smart-position-2"
+    ],
+    "pins": [
+      "contact-a/J_A2_NODE06.1",
+      "contact-a/J_A2_NODE06.2",
+      "contact-a/J_A2_NODE06.3",
+      "contact-a/J_A2_NODE06.4",
+      "contact-a/J_A2_NODE06.5",
+      "contact-a/J_A2_NODE06.6",
+      "contact-a/J_A_NODE_BUNDLE_2.3",
+      "contact-a/J_A2_SMART.5",
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.8",
+      "router-matrix/J_MATRIX_NODE_A_2.3",
+      "bank-a-position-1/K_P1_HIGH.4",
+      "bank-a-position-1/K_P1_LOW.3"
+    ]
+  },
+  {
+    "net": "NODE07",
+    "drawingLabel": "NODE07",
+    "sheets": [
+      "02-contacts",
+      "04-router-matrix"
+    ],
+    "pins": [
+      "contact-a/J_A2_NODE07.1",
+      "contact-a/J_A2_NODE07.2",
+      "contact-a/J_A2_NODE07.3",
+      "contact-a/J_A2_NODE07.4",
+      "contact-a/J_A2_NODE07.5",
+      "contact-a/J_A2_NODE07.6",
+      "contact-a/J_A_NODE_BUNDLE_2.4",
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.9",
+      "router-matrix/J_MATRIX_NODE_A_2.4"
+    ]
+  },
+  {
+    "net": "SCL_POSITION_1",
+    "drawingLabel": "SCL2",
+    "sheets": [
+      "02-contacts",
+      "12-smart-position-2"
+    ],
+    "pins": [
+      "contact-a/J_A2_SERVICE.1",
+      "contact-a/J_A2_SMART.2",
+      "bank-a-position-1/J_P1_CURRENT_MODULE.3",
+      "bank-a-position-1/U_P1_BUS.7",
+      "bank-a-position-1/R_P1_SCL.1"
+    ]
+  },
+  {
+    "net": "SDA_POSITION_1",
+    "drawingLabel": "SDA2",
+    "sheets": [
+      "02-contacts",
+      "12-smart-position-2"
+    ],
+    "pins": [
+      "contact-a/J_A2_SERVICE.2",
+      "contact-a/J_A2_SMART.4",
+      "bank-a-position-1/J_P1_CURRENT_MODULE.4",
+      "bank-a-position-1/U_P1_BUS.6",
+      "bank-a-position-1/R_P1_SDA.1"
+    ]
+  },
+  {
+    "net": "NODE08",
+    "drawingLabel": "NODE08",
+    "sheets": [
+      "02-contacts",
+      "04-router-matrix",
+      "08-measurement-a-buffers",
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "contact-a/J_A3_NODE08.1",
+      "contact-a/J_A3_NODE08.2",
+      "contact-a/J_A3_NODE08.3",
+      "contact-a/J_A3_NODE08.4",
+      "contact-a/J_A3_NODE08.5",
+      "contact-a/J_A3_NODE08.6",
+      "contact-a/J_A_NODE_BUNDLE_3.1",
+      "contact-a/J_A3_SMART.1",
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.10",
+      "router-matrix/J_MATRIX_NODE_A_3.1",
+      "measurement-a-buffers/R_P2_1_TOP.1",
+      "bank-a-position-2/K_P2_AMM_P.3"
+    ]
+  },
+  {
+    "net": "NODE09",
+    "drawingLabel": "NODE09",
+    "sheets": [
+      "02-contacts",
+      "04-router-matrix",
+      "08-measurement-a-buffers",
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "contact-a/J_A3_NODE09.1",
+      "contact-a/J_A3_NODE09.2",
+      "contact-a/J_A3_NODE09.3",
+      "contact-a/J_A3_NODE09.4",
+      "contact-a/J_A3_NODE09.5",
+      "contact-a/J_A3_NODE09.6",
+      "contact-a/J_A_NODE_BUNDLE_3.2",
+      "contact-a/J_A3_SMART.3",
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.11",
+      "router-matrix/J_MATRIX_NODE_A_3.2",
+      "measurement-a-buffers/R_P2_2_TOP.1",
+      "bank-a-position-2/K_P2_AMM_N.4"
+    ]
+  },
+  {
+    "net": "NODE10",
+    "drawingLabel": "NODE10",
+    "sheets": [
+      "02-contacts",
+      "04-router-matrix",
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "contact-a/J_A3_NODE10.1",
+      "contact-a/J_A3_NODE10.2",
+      "contact-a/J_A3_NODE10.3",
+      "contact-a/J_A3_NODE10.4",
+      "contact-a/J_A3_NODE10.5",
+      "contact-a/J_A3_NODE10.6",
+      "contact-a/J_A_NODE_BUNDLE_3.3",
+      "contact-a/J_A3_SMART.5",
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.12",
+      "router-matrix/J_MATRIX_NODE_A_3.3",
+      "bank-a-position-2/K_P2_HIGH.4",
+      "bank-a-position-2/K_P2_LOW.3"
+    ]
+  },
+  {
+    "net": "SCL_POSITION_2",
+    "drawingLabel": "SCL3",
+    "sheets": [
+      "02-contacts",
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "contact-a/J_A3_SERVICE.1",
+      "contact-a/J_A3_SMART.2",
+      "bank-a-position-2/J_P2_CURRENT_MODULE.3",
+      "bank-a-position-2/U_P2_BUS.7",
+      "bank-a-position-2/R_P2_SCL.1"
+    ]
+  },
+  {
+    "net": "SDA_POSITION_2",
+    "drawingLabel": "SDA3",
+    "sheets": [
+      "02-contacts",
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "contact-a/J_A3_SERVICE.2",
+      "contact-a/J_A3_SMART.4",
+      "bank-a-position-2/J_P2_CURRENT_MODULE.4",
+      "bank-a-position-2/U_P2_BUS.6",
+      "bank-a-position-2/R_P2_SDA.1"
+    ]
+  },
+  {
+    "net": "NODE11",
+    "drawingLabel": "NODE11",
+    "sheets": [
+      "02-contacts",
+      "04-router-matrix",
+      "09-measurement-b-precision",
+      "14-smart-position-4"
+    ],
+    "pins": [
+      "contact-b/J_B1_NODE11.1",
+      "contact-b/J_B1_NODE11.2",
+      "contact-b/J_B1_NODE11.3",
+      "contact-b/J_B1_NODE11.4",
+      "contact-b/J_B1_NODE11.5",
+      "contact-b/J_B1_NODE11.6",
+      "contact-b/J_B_NODE_BUNDLE_1.1",
+      "contact-b/J_B1_SMART.1",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.33",
+      "router-matrix/J_MATRIX_NODE_B_1.1",
+      "measurement-b-precision/R_P3_1_TOP.1",
+      "bank-b-position-3/K_P3_AMM_P.3"
+    ]
+  },
+  {
+    "net": "NODE12",
+    "drawingLabel": "NODE12",
+    "sheets": [
+      "02-contacts",
+      "04-router-matrix",
+      "09-measurement-b-precision",
+      "14-smart-position-4"
+    ],
+    "pins": [
+      "contact-b/J_B1_NODE12.1",
+      "contact-b/J_B1_NODE12.2",
+      "contact-b/J_B1_NODE12.3",
+      "contact-b/J_B1_NODE12.4",
+      "contact-b/J_B1_NODE12.5",
+      "contact-b/J_B1_NODE12.6",
+      "contact-b/J_B_NODE_BUNDLE_1.2",
+      "contact-b/J_B1_SMART.3",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.32",
+      "router-matrix/J_MATRIX_NODE_B_1.2",
+      "measurement-b-precision/R_P3_2_TOP.1",
+      "bank-b-position-3/K_P3_AMM_N.4"
+    ]
+  },
+  {
+    "net": "NODE13",
+    "drawingLabel": "NODE13",
+    "sheets": [
+      "02-contacts",
+      "04-router-matrix",
+      "14-smart-position-4"
+    ],
+    "pins": [
+      "contact-b/J_B1_NODE13.1",
+      "contact-b/J_B1_NODE13.2",
+      "contact-b/J_B1_NODE13.3",
+      "contact-b/J_B1_NODE13.4",
+      "contact-b/J_B1_NODE13.5",
+      "contact-b/J_B1_NODE13.6",
+      "contact-b/J_B_NODE_BUNDLE_1.3",
+      "contact-b/J_B1_SMART.5",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.31",
+      "router-matrix/J_MATRIX_NODE_B_1.3",
+      "bank-b-position-3/K_P3_HIGH.4",
+      "bank-b-position-3/K_P3_LOW.3"
+    ]
+  },
+  {
+    "net": "NODE14",
+    "drawingLabel": "NODE14",
+    "sheets": [
+      "02-contacts",
+      "04-router-matrix"
+    ],
+    "pins": [
+      "contact-b/J_B1_NODE14.1",
+      "contact-b/J_B1_NODE14.2",
+      "contact-b/J_B1_NODE14.3",
+      "contact-b/J_B1_NODE14.4",
+      "contact-b/J_B1_NODE14.5",
+      "contact-b/J_B1_NODE14.6",
+      "contact-b/J_B_NODE_BUNDLE_1.4",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.30",
+      "router-matrix/J_MATRIX_NODE_B_1.4"
+    ]
+  },
+  {
+    "net": "SCL_POSITION_3",
+    "drawingLabel": "SCL4",
+    "sheets": [
+      "02-contacts",
+      "09-measurement-b-precision",
+      "14-smart-position-4"
+    ],
+    "pins": [
+      "contact-b/J_B1_SERVICE.1",
+      "contact-b/J_B1_SMART.2",
+      "measurement-b-precision/J_B_ADC_MODULE.3",
+      "bank-b-position-3/J_P3_CURRENT_MODULE.3",
+      "bank-b-position-3/U_P3_BUS.7",
+      "bank-b-position-3/R_P3_SCL.1"
+    ]
+  },
+  {
+    "net": "SDA_POSITION_3",
+    "drawingLabel": "SDA4",
+    "sheets": [
+      "02-contacts",
+      "09-measurement-b-precision",
+      "14-smart-position-4"
+    ],
+    "pins": [
+      "contact-b/J_B1_SERVICE.2",
+      "contact-b/J_B1_SMART.4",
+      "measurement-b-precision/J_B_ADC_MODULE.4",
+      "bank-b-position-3/J_P3_CURRENT_MODULE.4",
+      "bank-b-position-3/U_P3_BUS.6",
+      "bank-b-position-3/R_P3_SDA.1"
+    ]
+  },
+  {
+    "net": "NODE15",
+    "drawingLabel": "NODE15",
+    "sheets": [
+      "02-contacts",
+      "04-router-matrix",
+      "10-measurement-b-buffers",
+      "15-smart-position-5"
+    ],
+    "pins": [
+      "contact-b/J_B2_NODE15.1",
+      "contact-b/J_B2_NODE15.2",
+      "contact-b/J_B2_NODE15.3",
+      "contact-b/J_B2_NODE15.4",
+      "contact-b/J_B2_NODE15.5",
+      "contact-b/J_B2_NODE15.6",
+      "contact-b/J_B_NODE_BUNDLE_2.1",
+      "contact-b/J_B2_SMART.1",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.29",
+      "router-matrix/J_MATRIX_NODE_B_2.1",
+      "measurement-b-buffers/R_P4_1_TOP.1",
+      "bank-b-position-4/K_P4_AMM_P.3"
+    ]
+  },
+  {
+    "net": "NODE16",
+    "drawingLabel": "NODE16",
+    "sheets": [
+      "02-contacts",
+      "04-router-matrix",
+      "10-measurement-b-buffers",
+      "15-smart-position-5"
+    ],
+    "pins": [
+      "contact-b/J_B2_NODE16.1",
+      "contact-b/J_B2_NODE16.2",
+      "contact-b/J_B2_NODE16.3",
+      "contact-b/J_B2_NODE16.4",
+      "contact-b/J_B2_NODE16.5",
+      "contact-b/J_B2_NODE16.6",
+      "contact-b/J_B_NODE_BUNDLE_2.2",
+      "contact-b/J_B2_SMART.3",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.28",
+      "router-matrix/J_MATRIX_NODE_B_2.2",
+      "measurement-b-buffers/R_P4_2_TOP.1",
+      "bank-b-position-4/K_P4_AMM_N.4"
+    ]
+  },
+  {
+    "net": "NODE17",
+    "drawingLabel": "NODE17",
+    "sheets": [
+      "02-contacts",
+      "04-router-matrix",
+      "15-smart-position-5"
+    ],
+    "pins": [
+      "contact-b/J_B2_NODE17.1",
+      "contact-b/J_B2_NODE17.2",
+      "contact-b/J_B2_NODE17.3",
+      "contact-b/J_B2_NODE17.4",
+      "contact-b/J_B2_NODE17.5",
+      "contact-b/J_B2_NODE17.6",
+      "contact-b/J_B_NODE_BUNDLE_2.3",
+      "contact-b/J_B2_SMART.5",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.8",
+      "router-matrix/J_MATRIX_NODE_B_2.3",
+      "bank-b-position-4/K_P4_HIGH.4",
+      "bank-b-position-4/K_P4_LOW.3"
+    ]
+  },
+  {
+    "net": "NODE18",
+    "drawingLabel": "NODE18",
+    "sheets": [
+      "02-contacts",
+      "04-router-matrix"
+    ],
+    "pins": [
+      "contact-b/J_B2_NODE18.1",
+      "contact-b/J_B2_NODE18.2",
+      "contact-b/J_B2_NODE18.3",
+      "contact-b/J_B2_NODE18.4",
+      "contact-b/J_B2_NODE18.5",
+      "contact-b/J_B2_NODE18.6",
+      "contact-b/J_B_NODE_BUNDLE_2.4",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.9",
+      "router-matrix/J_MATRIX_NODE_B_2.4"
+    ]
+  },
+  {
+    "net": "SCL_POSITION_4",
+    "drawingLabel": "SCL5",
+    "sheets": [
+      "02-contacts",
+      "15-smart-position-5"
+    ],
+    "pins": [
+      "contact-b/J_B2_SERVICE.1",
+      "contact-b/J_B2_SMART.2",
+      "bank-b-position-4/J_P4_CURRENT_MODULE.3",
+      "bank-b-position-4/U_P4_BUS.7",
+      "bank-b-position-4/R_P4_SCL.1"
+    ]
+  },
+  {
+    "net": "SDA_POSITION_4",
+    "drawingLabel": "SDA5",
+    "sheets": [
+      "02-contacts",
+      "15-smart-position-5"
+    ],
+    "pins": [
+      "contact-b/J_B2_SERVICE.2",
+      "contact-b/J_B2_SMART.4",
+      "bank-b-position-4/J_P4_CURRENT_MODULE.4",
+      "bank-b-position-4/U_P4_BUS.6",
+      "bank-b-position-4/R_P4_SDA.1"
+    ]
+  },
+  {
+    "net": "NODE19",
+    "drawingLabel": "NODE19",
+    "sheets": [
+      "02-contacts",
+      "04-router-matrix",
+      "10-measurement-b-buffers",
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "contact-b/J_B3_NODE19.1",
+      "contact-b/J_B3_NODE19.2",
+      "contact-b/J_B3_NODE19.3",
+      "contact-b/J_B3_NODE19.4",
+      "contact-b/J_B3_NODE19.5",
+      "contact-b/J_B3_NODE19.6",
+      "contact-b/J_B_NODE_BUNDLE_3.1",
+      "contact-b/J_B3_SMART.1",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.10",
+      "router-matrix/J_MATRIX_NODE_B_3.1",
+      "measurement-b-buffers/R_P5_1_TOP.1",
+      "bank-b-position-5/K_P5_AMM_P.3"
+    ]
+  },
+  {
+    "net": "NODE20",
+    "drawingLabel": "NODE20",
+    "sheets": [
+      "02-contacts",
+      "04-router-matrix",
+      "10-measurement-b-buffers",
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "contact-b/J_B3_NODE20.1",
+      "contact-b/J_B3_NODE20.2",
+      "contact-b/J_B3_NODE20.3",
+      "contact-b/J_B3_NODE20.4",
+      "contact-b/J_B3_NODE20.5",
+      "contact-b/J_B3_NODE20.6",
+      "contact-b/J_B_NODE_BUNDLE_3.2",
+      "contact-b/J_B3_SMART.3",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.11",
+      "router-matrix/J_MATRIX_NODE_B_3.2",
+      "measurement-b-buffers/R_P5_2_TOP.1",
+      "bank-b-position-5/K_P5_AMM_N.4"
+    ]
+  },
+  {
+    "net": "NODE21",
+    "drawingLabel": "NODE21",
+    "sheets": [
+      "02-contacts",
+      "04-router-matrix",
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "contact-b/J_B3_NODE21.1",
+      "contact-b/J_B3_NODE21.2",
+      "contact-b/J_B3_NODE21.3",
+      "contact-b/J_B3_NODE21.4",
+      "contact-b/J_B3_NODE21.5",
+      "contact-b/J_B3_NODE21.6",
+      "contact-b/J_B_NODE_BUNDLE_3.3",
+      "contact-b/J_B3_SMART.5",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.12",
+      "router-matrix/J_MATRIX_NODE_B_3.3",
+      "bank-b-position-5/K_P5_HIGH.4",
+      "bank-b-position-5/K_P5_LOW.3"
+    ]
+  },
+  {
+    "net": "SCL_POSITION_5",
+    "drawingLabel": "SCL6",
+    "sheets": [
+      "02-contacts",
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "contact-b/J_B3_SERVICE.1",
+      "contact-b/J_B3_SMART.2",
+      "bank-b-position-5/J_P5_CURRENT_MODULE.3",
+      "bank-b-position-5/U_P5_BUS.7",
+      "bank-b-position-5/R_P5_SCL.1"
+    ]
+  },
+  {
+    "net": "SDA_POSITION_5",
+    "drawingLabel": "SDA6",
+    "sheets": [
+      "02-contacts",
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "contact-b/J_B3_SERVICE.2",
+      "contact-b/J_B3_SMART.4",
+      "bank-b-position-5/J_P5_CURRENT_MODULE.4",
+      "bank-b-position-5/U_P5_BUS.6",
+      "bank-b-position-5/R_P5_SDA.1"
+    ]
+  },
+  {
+    "net": "5V_EDU",
+    "drawingLabel": "5V_EDU",
+    "sheets": [
+      "03-power",
+      "04-router-matrix",
+      "05-smart-controller",
+      "08-measurement-a-buffers",
+      "11-smart-position-1",
+      "12-smart-position-2",
+      "13-smart-position-3",
+      "10-measurement-b-buffers",
+      "14-smart-position-4",
+      "15-smart-position-5",
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "power/J_POWER_INTERLOCK_MATRIX.1",
+      "power/J_POWER_INTERLOCK_SMART.3",
+      "power/U_POWER_ANALOG_SENSE.4",
+      "power/J_POWER_INTERLOCK_TEST.1",
+      "power/R_POWER_ANALOG_EDU_TOP.1",
+      "power/R_POWER_ANALOG_SHUNT.2",
+      "power/C_POWER_ANALOG_EDU.1",
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.37",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.37",
+      "router-matrix/J_ROUTER_POWER_CONTROL.1",
+      "smart-core/J_POWER.3",
+      "measurement-a-buffers/R_A_HI_TOP.1",
+      "measurement-a-buffers/R_A_LO_TOP.1",
+      "bank-a-position-0/R_P0_SOURCE_SENSE.1",
+      "bank-a-position-1/R_P1_SOURCE_SENSE.1",
+      "bank-a-position-2/R_P2_SOURCE_SENSE.1",
+      "measurement-b-buffers/R_B_HI_TOP.1",
+      "measurement-b-buffers/R_B_LO_TOP.1",
+      "bank-b-position-3/R_P3_SOURCE_SENSE.1",
+      "bank-b-position-4/R_P4_SOURCE_SENSE.1",
+      "bank-b-position-5/R_P5_SOURCE_SENSE.1"
+    ]
+  },
+  {
+    "net": "5V_SYS",
+    "drawingLabel": "5V_SYS",
+    "sheets": [
+      "03-power",
+      "04-router-matrix",
+      "05-smart-controller",
+      "06-smart-safety",
+      "08-measurement-a-buffers",
+      "11-smart-position-1",
+      "12-smart-position-2",
+      "13-smart-position-3",
+      "10-measurement-b-buffers",
+      "14-smart-position-4",
+      "15-smart-position-5",
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "power/J_POWER_INTERLOCK_MATRIX.4",
+      "power/J_POWER_INTERLOCK_SMART.1",
+      "power/U_POWER_GUARDS_OV_5V.7",
+      "power/U_POWER_ANALOG_TRIP.8",
+      "power/R_POWER_INTERLOCK_BATTERY_LED.1",
+      "power/R_POWER_ANALOG_REF_FEED.1",
+      "power/F_POWER_ANALOG_EDU.1",
+      "power/C_POWER_GUARDS_OV_5V_OUT.1",
+      "power/Q_POWER_GUARDS_OV_5V_OUT.3",
+      "power/C_POWER_ANALOG_TRIP.1",
+      "power/R_LED_5VSYS.1",
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.36",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.36",
+      "router-matrix/U_MATRIX_CONTROL_ADDR.10",
+      "router-matrix/U_MATRIX_CONTROL_ADDR.16",
+      "router-matrix/U_MATRIX_CONTROL_BUFFER.10",
+      "router-matrix/U_MATRIX_CONTROL_BUFFER.13",
+      "router-matrix/U_MATRIX_CONTROL_BUFFER.14",
+      "router-matrix/R_ROUTER_SAFETY_BUF_OE.1",
+      "router-matrix/J_ROUTER_CORE_LIGHT.1",
+      "router-matrix/C_MATRIX_CONTROL_BUFFER.1",
+      "router-matrix/C_MATRIX_CONTROL_ADDR.1",
+      "router-matrix/J_PROBE.2",
+      "router-matrix/J_ROUTER_POWER_CONTROL.4",
+      "smart-core/J_POWER.1",
+      "smart-safety/R_OE.1",
+      "smart-safety/U_SR0.16",
+      "smart-safety/U_SR0.10",
+      "smart-safety/C_SR0.1",
+      "smart-safety/U_SR1.16",
+      "smart-safety/U_SR1.10",
+      "smart-safety/C_SR1.1",
+      "smart-safety/U_SR2.16",
+      "smart-safety/U_SR2.10",
+      "smart-safety/C_SR2.1",
+      "measurement-a-buffers/U_A_LED_DRIVER_0.9",
+      "measurement-a-buffers/U_A_LED_DRIVER_1.9",
+      "bank-a-position-0/R_P0_K_AMM_P_LED.1",
+      "bank-a-position-0/R_P0_K_AMM_N_LED.1",
+      "bank-a-position-0/U_P0_LIMIT.8",
+      "bank-a-position-0/C_P0_LIMIT.1",
+      "bank-a-position-0/R_P0_K_HIGH_LED.1",
+      "bank-a-position-0/R_P0_K_LOW_LED.1",
+      "bank-a-position-1/R_P1_K_AMM_P_LED.1",
+      "bank-a-position-1/R_P1_K_AMM_N_LED.1",
+      "bank-a-position-1/U_P1_LIMIT.8",
+      "bank-a-position-1/C_P1_LIMIT.1",
+      "bank-a-position-1/R_P1_K_HIGH_LED.1",
+      "bank-a-position-1/R_P1_K_LOW_LED.1",
+      "bank-a-position-2/R_P2_K_AMM_P_LED.1",
+      "bank-a-position-2/R_P2_K_AMM_N_LED.1",
+      "bank-a-position-2/U_P2_LIMIT.8",
+      "bank-a-position-2/C_P2_LIMIT.1",
+      "bank-a-position-2/R_P2_K_HIGH_LED.1",
+      "bank-a-position-2/R_P2_K_LOW_LED.1",
+      "measurement-b-buffers/U_B_LED_DRIVER_0.9",
+      "measurement-b-buffers/U_B_LED_DRIVER_1.9",
+      "bank-b-position-3/R_P3_K_AMM_P_LED.1",
+      "bank-b-position-3/R_P3_K_AMM_N_LED.1",
+      "bank-b-position-3/U_P3_LIMIT.8",
+      "bank-b-position-3/C_P3_LIMIT.1",
+      "bank-b-position-3/R_P3_K_HIGH_LED.1",
+      "bank-b-position-3/R_P3_K_LOW_LED.1",
+      "bank-b-position-4/R_P4_K_AMM_P_LED.1",
+      "bank-b-position-4/R_P4_K_AMM_N_LED.1",
+      "bank-b-position-4/U_P4_LIMIT.8",
+      "bank-b-position-4/C_P4_LIMIT.1",
+      "bank-b-position-4/R_P4_K_HIGH_LED.1",
+      "bank-b-position-4/R_P4_K_LOW_LED.1",
+      "bank-b-position-5/R_P5_K_AMM_P_LED.1",
+      "bank-b-position-5/R_P5_K_AMM_N_LED.1",
+      "bank-b-position-5/U_P5_LIMIT.8",
+      "bank-b-position-5/C_P5_LIMIT.1",
+      "bank-b-position-5/R_P5_K_HIGH_LED.1",
+      "bank-b-position-5/R_P5_K_LOW_LED.1"
+    ]
+  },
+  {
+    "net": "EDU_PWR_EN",
+    "drawingLabel": "PWR_EN",
+    "sheets": [
+      "03-power",
+      "04-router-matrix"
+    ],
+    "pins": [
+      "power/J_POWER_INTERLOCK_MATRIX.5",
+      "power/U_POWER_INTERLOCK_LOGIC.1",
+      "power/R_POWER_INTERLOCK_EDU_PWR_EN_OFF.1",
+      "router-matrix/U_ROUTER_CORE_ESP1.7",
+      "router-matrix/J_ROUTER_CORE_PROTOTYPE.4",
+      "router-matrix/J_ROUTER_POWER_CONTROL.5"
+    ]
+  },
+  {
+    "net": "EDU_FAULT",
+    "drawingLabel": "EDU_FAULT",
+    "sheets": [
+      "03-power",
+      "04-router-matrix"
+    ],
+    "pins": [
+      "power/J_POWER_INTERLOCK_MATRIX.6",
+      "power/U_POWER_INTERLOCK_FAULT.5",
+      "power/J_POWER_INTERLOCK_TEST.6",
+      "router-matrix/U_ROUTER_SAFETY_FAULT_RETURN.2",
+      "router-matrix/J_PROBE.8",
+      "router-matrix/J_ROUTER_POWER_CONTROL.6"
+    ]
+  },
+  {
+    "net": "EDU_FAULT_RESET",
+    "drawingLabel": "FAULT_RST",
+    "sheets": [
+      "03-power",
+      "04-router-matrix"
+    ],
+    "pins": [
+      "power/J_POWER_INTERLOCK_MATRIX.7",
+      "power/U_POWER_INTERLOCK_LOGIC.9",
+      "power/R_POWER_INTERLOCK_EDU_FAULT_RESET_OFF.1",
+      "router-matrix/U_ROUTER_CORE_ESP1.30",
+      "router-matrix/J_ROUTER_POWER_CONTROL.7"
+    ]
+  },
+  {
+    "net": "CURRENT_SENSE",
+    "drawingLabel": "I_SENSE",
+    "sheets": [
+      "03-power",
+      "04-router-matrix"
+    ],
+    "pins": [
+      "power/J_POWER_INTERLOCK_MATRIX.8",
+      "power/U_POWER_ANALOG_TRIP.2",
+      "power/U_POWER_ANALOG_SENSE.1",
+      "power/J_POWER_INTERLOCK_TEST.4",
+      "router-matrix/K_ROUTER_SAFETY_ADC.3",
+      "router-matrix/J_ROUTER_POWER_CONTROL.8"
+    ]
+  },
+  {
+    "net": "ROUTER_ALIVE",
+    "drawingLabel": "ALIVE",
+    "sheets": [
+      "03-power",
+      "04-router-matrix"
+    ],
+    "pins": [
+      "power/J_POWER_INTERLOCK_MATRIX.9",
+      "power/U_POWER_INTERLOCK_LOGIC.13",
+      "power/R_POWER_INTERLOCK_ROUTER_ALIVE_OFF.1",
+      "router-matrix/U_ROUTER_SAFETY_WATCH.13",
+      "router-matrix/R_ROUTER_SAFETY_ALIVE_OFF.1",
+      "router-matrix/Q_ROUTER_SAFETY_BUF.2",
+      "router-matrix/Q_MATRIX_SWITCHES_RESET_ALIVE.2",
+      "router-matrix/J_PROBE.5",
+      "router-matrix/R_LED_ROUTERALIVE.1",
+      "router-matrix/J_ROUTER_POWER_CONTROL.9"
+    ]
+  },
+  {
+    "net": "12V_SYS",
+    "drawingLabel": "12V_SYS",
+    "sheets": [
+      "03-power",
+      "04-router-matrix"
+    ],
+    "pins": [
+      "power/J_POWER_INTERLOCK_MATRIX.10",
+      "power/D_POWER_INPUT_REVERSE.2",
+      "power/J_POWER_INPUT_BUCK_3V3.1",
+      "power/J_POWER_INPUT_BUCK_5V.1",
+      "power/C_POWER_INPUT_INPUT.1",
+      "power/C_POWER_INPUT_INPUT_HF.1",
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.40",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.40",
+      "router-matrix/R_MATRIX_SWITCHES_RESET_ON.1",
+      "router-matrix/J_ROUTER_CORE_FAN1.1",
+      "router-matrix/J_ROUTER_CORE_FAN2.1",
+      "router-matrix/C_MATRIX_SWITCHES_MT0_BULK.1",
+      "router-matrix/C_MATRIX_SWITCHES_MT1.1",
+      "router-matrix/C_MATRIX_SWITCHES_MT1_BULK.1",
+      "router-matrix/C_MATRIX_SWITCHES_MT0.1",
+      "router-matrix/J_PROBE.4",
+      "router-matrix/J_ROUTER_POWER_CONTROL.10"
+    ]
+  },
+  {
+    "net": "EDU_ON",
+    "drawingLabel": "EDU_ON",
+    "sheets": [
+      "03-power",
+      "05-smart-controller",
+      "06-smart-safety"
+    ],
+    "pins": [
+      "power/J_POWER_INTERLOCK_SMART.7",
+      "power/U_POWER_ANALOG_TRIP.7",
+      "power/R_POWER_ANALOG_EDU_ON.2",
+      "power/R_POWER_INTERLOCK_LED_GATE_OFF.1",
+      "power/Q_POWER_INTERLOCK_BATTERY_LED.2",
+      "smart-core/J_POWER.7",
+      "smart-safety/Q_RAIL.2",
+      "smart-safety/R_RAIL_OFF.1"
+    ]
+  },
+  {
+    "net": "CLEAR_N",
+    "drawingLabel": "CLEAR_N",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/U_POWER_INTERLOCK_FAULT.1",
+      "power/U_POWER_INTERLOCK_LOGIC.8"
+    ]
+  },
+  {
+    "net": "PRESET_N",
+    "drawingLabel": "PRESET_N",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/U_POWER_INTERLOCK_FAULT.4",
+      "power/U_POWER_INTERLOCK_LOGIC.10",
+      "power/U_POWER_INTERLOCK_LOGIC.11",
+      "power/U_POWER_GUARDS_OV_5V.6",
+      "power/U_POWER_ANALOG_TRIP.1",
+      "power/U_POWER_GUARDS_OV_3V3.6",
+      "power/U_POWER_INTERLOCK_POR.1",
+      "power/J_POWER_INTERLOCK_TEST.5",
+      "power/R_POWER_ANALOG_PRESET.2"
+    ]
+  },
+  {
+    "net": "NOT_FAULT",
+    "drawingLabel": "NOT_FAULT",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/U_POWER_INTERLOCK_FAULT.6",
+      "power/U_POWER_INTERLOCK_LOGIC.2",
+      "power/R_LED_NOTFAULT.1"
+    ]
+  },
+  {
+    "net": "power__ALLOW_N",
+    "drawingLabel": "P_ALLOW_N",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/U_POWER_INTERLOCK_LOGIC.3",
+      "power/U_POWER_INTERLOCK_LOGIC.4",
+      "power/U_POWER_INTERLOCK_LOGIC.5",
+      "power/U_POWER_INTERLOCK_LOGIC.12"
+    ]
+  },
+  {
+    "net": "ALLOW_RAIL",
+    "drawingLabel": "ALLOW_RAIL",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/U_POWER_INTERLOCK_LOGIC.6",
+      "power/R_R7_PASS_PD.1",
+      "power/Q_POWER_ANALOG_ENABLE.2"
+    ]
+  },
+  {
+    "net": "BUCK_5V",
+    "drawingLabel": "BUCK_5V",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/U_POWER_GUARDS_OV_5V.1",
+      "power/U_POWER_GUARDS_OV_5V.5",
+      "power/J_POWER_INPUT_BUCK_5V.3",
+      "power/Q_POWER_GUARDS_OV_5V_IN.3",
+      "power/C_POWER_GUARDS_OV_5V_IN.1",
+      "power/R_POWER_GUARDS_LADDER_5V_TOP.1"
+    ]
+  },
+  {
+    "net": "UV_5V",
+    "drawingLabel": "UV_5V",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/U_POWER_GUARDS_OV_5V.2",
+      "power/R_POWER_GUARDS_LADDER_5V_TOP.2",
+      "power/R_POWER_GUARDS_LADDER_5V_MID.1"
+    ]
+  },
+  {
+    "net": "OV_5V",
+    "drawingLabel": "OV_5V",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/U_POWER_GUARDS_OV_5V.3",
+      "power/R_POWER_GUARDS_LADDER_5V_MID.2",
+      "power/R_POWER_GUARDS_LADDER_5V_BOTTOM.1"
+    ]
+  },
+  {
+    "net": "OV_GATE_5V",
+    "drawingLabel": "OV_GATE_5V",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/U_POWER_GUARDS_OV_5V.8",
+      "power/Q_POWER_GUARDS_OV_5V_IN.1",
+      "power/Q_POWER_GUARDS_OV_5V_OUT.1"
+    ]
+  },
+  {
+    "net": "REF_TRIP",
+    "drawingLabel": "REF_TRIP",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/U_POWER_ANALOG_TRIP.3",
+      "power/U_POWER_ANALOG_TRIP.6",
+      "power/J_POWER_INTERLOCK_TEST.3",
+      "power/R_POWER_ANALOG_TRIP_TOP.2",
+      "power/R_POWER_ANALOG_TRIP_BOTTOM.1"
+    ]
+  },
+  {
+    "net": "EDU_DIV",
+    "drawingLabel": "EDU_DIV",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/U_POWER_ANALOG_TRIP.5",
+      "power/R_POWER_ANALOG_EDU_TOP.2",
+      "power/R_POWER_ANALOG_EDU_BOTTOM.1"
+    ]
+  },
+  {
+    "net": "BUCK_3V3",
+    "drawingLabel": "BUCK_3V3",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/U_POWER_GUARDS_OV_3V3.1",
+      "power/U_POWER_GUARDS_OV_3V3.5",
+      "power/J_POWER_INPUT_BUCK_3V3.3",
+      "power/Q_POWER_GUARDS_OV_3V3_IN.3",
+      "power/C_POWER_GUARDS_OV_3V3_IN.1",
+      "power/R_POWER_GUARDS_LADDER_3V3_TOP.1"
+    ]
+  },
+  {
+    "net": "UV_3V3",
+    "drawingLabel": "UV_3V3",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/U_POWER_GUARDS_OV_3V3.2",
+      "power/R_POWER_GUARDS_LADDER_3V3_TOP.2",
+      "power/R_POWER_GUARDS_LADDER_3V3_MID.1"
+    ]
+  },
+  {
+    "net": "OV_3V3",
+    "drawingLabel": "OV_3V3",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/U_POWER_GUARDS_OV_3V3.3",
+      "power/R_POWER_GUARDS_LADDER_3V3_MID.2",
+      "power/R_POWER_GUARDS_LADDER_3V3_BOTTOM.1"
+    ]
+  },
+  {
+    "net": "OV_GATE_3V3",
+    "drawingLabel": "OV_GATE_3V3",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/U_POWER_GUARDS_OV_3V3.8",
+      "power/Q_POWER_GUARDS_OV_3V3_IN.1",
+      "power/Q_POWER_GUARDS_OV_3V3_OUT.1"
+    ]
+  },
+  {
+    "net": "SHUNT_P",
+    "drawingLabel": "SHUNT_P",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/U_POWER_ANALOG_SENSE.3",
+      "power/R_POWER_ANALOG_SHUNT.1",
+      "power/Q_POWER_ANALOG_PASS.2"
+    ]
+  },
+  {
+    "net": "REF_2V495",
+    "drawingLabel": "REF_2V495",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/R_POWER_ANALOG_TRIP_TOP.1",
+      "power/R_POWER_ANALOG_REF_FEED.2",
+      "power/U_POWER_ANALOG_REF.1",
+      "power/U_POWER_ANALOG_REF.3"
+    ]
+  },
+  {
+    "net": "12V_SWITCHED",
+    "drawingLabel": "12V_SWITCHED",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/D_POWER_INPUT_REVERSE.1",
+      "power/J_POWER_INPUT_SW_MAIN.2"
+    ]
+  },
+  {
+    "net": "BATTERY_LED_A",
+    "drawingLabel": "BATTERY_LED_A",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/R_POWER_INTERLOCK_BATTERY_LED.2",
+      "power/LED_POWER_INTERLOCK_BATTERY.1"
+    ]
+  },
+  {
+    "net": "PTC_OUT",
+    "drawingLabel": "PTC_OUT",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/R_POWER_ANALOG_GATE_OFF.1",
+      "power/F_POWER_ANALOG_EDU.2",
+      "power/Q_POWER_ANALOG_PASS.3"
+    ]
+  },
+  {
+    "net": "PASS_GATE",
+    "drawingLabel": "PASS_GATE",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/R_POWER_ANALOG_GATE_OFF.2",
+      "power/Q_POWER_ANALOG_PASS.1",
+      "power/Q_POWER_ANALOG_ENABLE.3"
+    ]
+  },
+  {
+    "net": "12V_IN",
+    "drawingLabel": "12V_IN",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/F_POWER_INPUT_INPUT.1",
+      "power/J_POWER_INPUT_INPUT.1"
+    ]
+  },
+  {
+    "net": "12V_FUSED",
+    "drawingLabel": "12V_FUSED",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/F_POWER_INPUT_INPUT.2",
+      "power/J_POWER_INPUT_SW_MAIN.1"
+    ]
+  },
+  {
+    "net": "OV_MID_3V3",
+    "drawingLabel": "OV_MID_3V3",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/Q_POWER_GUARDS_OV_3V3_IN.2",
+      "power/Q_POWER_GUARDS_OV_3V3_OUT.2"
+    ]
+  },
+  {
+    "net": "BATTERY_LED_K",
+    "drawingLabel": "BATTERY_LED_K",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/Q_POWER_INTERLOCK_BATTERY_LED.3",
+      "power/LED_POWER_INTERLOCK_BATTERY.2"
+    ]
+  },
+  {
+    "net": "OV_MID_5V",
+    "drawingLabel": "OV_MID_5V",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/Q_POWER_GUARDS_OV_5V_IN.2",
+      "power/Q_POWER_GUARDS_OV_5V_OUT.2"
+    ]
+  },
+  {
+    "net": "power__LEDA_5VSYS",
+    "drawingLabel": "P_LEDA_5VSYS",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/R_LED_5VSYS.2",
+      "power/LED_5VSYS.1"
+    ]
+  },
+  {
+    "net": "power__LEDA_3V3SYS",
+    "drawingLabel": "P_LEDA_3V3SYS",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/R_LED_3V3SYS.2",
+      "power/LED_3V3SYS.1"
+    ]
+  },
+  {
+    "net": "power__LEDA_NOTFAULT",
+    "drawingLabel": "P_LEDA_NOTFAULT",
+    "sheets": [
+      "03-power"
+    ],
+    "pins": [
+      "power/R_LED_NOTFAULT.2",
+      "power/LED_NOTFAULT.1"
+    ]
+  },
+  {
+    "net": "USB_ROUTER_3V3",
+    "drawingLabel": "USB_ROUTER_3V3",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_ROUTER_CORE_ESP1.1",
+      "router-matrix/U_ROUTER_SAFETY_WATCH.16",
+      "router-matrix/U_MATRIX_CONTROL_DIAG.8",
+      "router-matrix/U_ROUTER_SAFETY_FAULT_RETURN.5",
+      "router-matrix/U_ROUTER_SAFETY_USB_POR.2",
+      "router-matrix/R_ROUTER_SAFETY_KADC_LED.1",
+      "router-matrix/R_ROUTER_SAFETY_USB_POR.1",
+      "router-matrix/J_ROUTER_CORE_FIXTURE.1",
+      "router-matrix/R_ROUTER_SAFETY_WATCH.1",
+      "router-matrix/J_ROUTER_CORE_PROTOTYPE.2",
+      "router-matrix/C_ROUTER_SAFETY_RETURN.1",
+      "router-matrix/C_MATRIX_CONTROL_DIAG_VCC.1",
+      "router-matrix/C_ROUTER_SAFETY_WATCH_VCC.1",
+      "router-matrix/J_PROBE.3",
+      "router-matrix/R_LED_USBROUTER3V3.1"
+    ]
+  },
+  {
+    "net": "DIAG_ADC",
+    "drawingLabel": "DIAG_ADC",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_ROUTER_CORE_ESP1.3",
+      "router-matrix/U_MATRIX_CONTROL_DIAG.1",
+      "router-matrix/U_MATRIX_CONTROL_DIAG.2"
+    ]
+  },
+  {
+    "net": "CURRENT_USB",
+    "drawingLabel": "CURRENT_USB",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_ROUTER_CORE_ESP1.5",
+      "router-matrix/K_ROUTER_SAFETY_ADC.4"
+    ]
+  },
+  {
+    "net": "FAULT_USB",
+    "drawingLabel": "FAULT_USB",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_ROUTER_CORE_ESP1.6",
+      "router-matrix/U_ROUTER_SAFETY_FAULT_RETURN.4"
+    ]
+  },
+  {
+    "net": "HEARTBEAT",
+    "drawingLabel": "HEARTBEAT",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_ROUTER_CORE_ESP1.8",
+      "router-matrix/U_ROUTER_SAFETY_WATCH.2",
+      "router-matrix/R_ROUTER_SAFETY_HEART.1",
+      "router-matrix/J_PROBE.6"
+    ]
+  },
+  {
+    "net": "FIX_STIM",
+    "drawingLabel": "FIX_STIM",
+    "sheets": [
+      "04-router-matrix",
+      "07-measurement-a-precision"
+    ],
+    "pins": [
+      "router-matrix/U_ROUTER_CORE_ESP1.9",
+      "router-matrix/J_ROUTER_CORE_FIXTURE.5",
+      "measurement-a-precision/R_OFF.1",
+      "measurement-a-precision/Q_STIM.2"
+    ]
+  },
+  {
+    "net": "RST_RELEASE",
+    "drawingLabel": "RST_REL",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_ROUTER_CORE_ESP1.11",
+      "router-matrix/R_MATRIX_SWITCHES_RST_RELEASE_OFF.1",
+      "router-matrix/Q_MATRIX_SWITCHES_RESET_RELEASE.2"
+    ]
+  },
+  {
+    "net": "USB_5V",
+    "drawingLabel": "USB_5V",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_ROUTER_CORE_ESP1.19",
+      "router-matrix/J_ROUTER_CORE_PROTOTYPE.1"
+    ]
+  },
+  {
+    "net": "XBAR_DAT",
+    "drawingLabel": "XBAR_DAT",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_ROUTER_CORE_ESP1.21",
+      "router-matrix/U_MATRIX_CONTROL_ADDR.14",
+      "router-matrix/R_MATRIX_CONTROL_XBAR_DAT_OFF.1"
+    ]
+  },
+  {
+    "net": "XBAR_LATCH",
+    "drawingLabel": "XBAR_LATCH",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_ROUTER_CORE_ESP1.22",
+      "router-matrix/U_MATRIX_CONTROL_ADDR.12",
+      "router-matrix/R_MATRIX_CONTROL_XBAR_LATCH_OFF.1",
+      "router-matrix/J_PROBE.7"
+    ]
+  },
+  {
+    "net": "STB_B_IN",
+    "drawingLabel": "STB_B_IN",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_ROUTER_CORE_ESP1.25",
+      "router-matrix/U_MATRIX_CONTROL_BUFFER.5",
+      "router-matrix/R_MATRIX_CONTROL_STB_B_IN_OFF.1"
+    ]
+  },
+  {
+    "net": "STB_A_IN",
+    "drawingLabel": "STB_A_IN",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_ROUTER_CORE_ESP1.27",
+      "router-matrix/U_MATRIX_CONTROL_BUFFER.2",
+      "router-matrix/R_MATRIX_CONTROL_STB_A_IN_OFF.1"
+    ]
+  },
+  {
+    "net": "XBAR_CLK",
+    "drawingLabel": "XBAR_CLK",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_ROUTER_CORE_ESP1.28",
+      "router-matrix/U_MATRIX_CONTROL_ADDR.11",
+      "router-matrix/R_MATRIX_CONTROL_XBAR_CLK_OFF.1"
+    ]
+  },
+  {
+    "net": "FIX_SCL",
+    "drawingLabel": "FIX_SCL",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_ROUTER_CORE_ESP1.31",
+      "router-matrix/J_ROUTER_CORE_FIXTURE.4"
+    ]
+  },
+  {
+    "net": "FIX_SDA",
+    "drawingLabel": "FIX_SDA",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_ROUTER_CORE_ESP1.32",
+      "router-matrix/J_ROUTER_CORE_FIXTURE.3"
+    ]
+  },
+  {
+    "net": "BUS3",
+    "drawingLabel": "BUS3",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.1",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.1"
+    ]
+  },
+  {
+    "net": "AY2",
+    "drawingLabel": "AY2",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.2",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.2",
+      "router-matrix/U_MATRIX_CONTROL_ADDR.6"
+    ]
+  },
+  {
+    "net": "XBAR_RESET",
+    "drawingLabel": "XBAR_RESET",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.3",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.3",
+      "router-matrix/R_MATRIX_SWITCHES_RESET_ON.2",
+      "router-matrix/Q_MATRIX_SWITCHES_RESET_RELEASE.3"
+    ]
+  },
+  {
+    "net": "AX3",
+    "drawingLabel": "AX3",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.4",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.4",
+      "router-matrix/U_MATRIX_CONTROL_ADDR.3"
+    ]
+  },
+  {
+    "net": "AX0",
+    "drawingLabel": "AX0",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.5",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.5",
+      "router-matrix/U_MATRIX_CONTROL_ADDR.15"
+    ]
+  },
+  {
+    "net": "DISCHARGE",
+    "drawingLabel": "DISCHARGE",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.6",
+      "router-matrix/R_MATRIX_CONTROL_DISCHARGE.1"
+    ]
+  },
+  {
+    "net": "CAL_LOAD",
+    "drawingLabel": "CAL_LOAD",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.7",
+      "router-matrix/R_MATRIX_CONTROL_CAL.1"
+    ]
+  },
+  {
+    "net": "SOURCE_HI",
+    "drawingLabel": "SOURCE_HI",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.13",
+      "router-matrix/R_MATRIX_CONTROL_SOURCE_HI.2"
+    ]
+  },
+  {
+    "net": "BUS7",
+    "drawingLabel": "BUS7",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.15",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.15"
+    ]
+  },
+  {
+    "net": "BUS6",
+    "drawingLabel": "BUS6",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.17",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.17"
+    ]
+  },
+  {
+    "net": "STROBE_A",
+    "drawingLabel": "STROBE_A",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.18",
+      "router-matrix/U_MATRIX_CONTROL_BUFFER.3",
+      "router-matrix/R_MATRIX_SWITCHES_STBA_OFF.1"
+    ]
+  },
+  {
+    "net": "BUS5",
+    "drawingLabel": "BUS5",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.19",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.19"
+    ]
+  },
+  {
+    "net": "BUS4",
+    "drawingLabel": "BUS4",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.21",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.21"
+    ]
+  },
+  {
+    "net": "AX1",
+    "drawingLabel": "AX1",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.22",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.22",
+      "router-matrix/U_MATRIX_CONTROL_ADDR.1"
+    ]
+  },
+  {
+    "net": "AX2",
+    "drawingLabel": "AX2",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.23",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.23",
+      "router-matrix/U_MATRIX_CONTROL_ADDR.2"
+    ]
+  },
+  {
+    "net": "AY0",
+    "drawingLabel": "AY0",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.24",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.24",
+      "router-matrix/U_MATRIX_CONTROL_ADDR.4"
+    ]
+  },
+  {
+    "net": "AY1",
+    "drawingLabel": "AY1",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.25",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.25",
+      "router-matrix/U_MATRIX_CONTROL_ADDR.5"
+    ]
+  },
+  {
+    "net": "DIAG_NODE",
+    "drawingLabel": "DIAG_NODE",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.26",
+      "router-matrix/R_MATRIX_CONTROL_DIAG_TOP.1"
+    ]
+  },
+  {
+    "net": "SOURCE_LO",
+    "drawingLabel": "SOURCE_LO",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.27",
+      "router-matrix/R_MATRIX_CONTROL_SOURCE_LO.2"
+    ]
+  },
+  {
+    "net": "XBAR_DATA",
+    "drawingLabel": "XBAR_DATA",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.38",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.38",
+      "router-matrix/U_MATRIX_CONTROL_ADDR.7"
+    ]
+  },
+  {
+    "net": "BUS2",
+    "drawingLabel": "BUS2",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_SWITCHES_MT_A.39",
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.39"
+    ]
+  },
+  {
+    "net": "STROBE_B",
+    "drawingLabel": "STROBE_B",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_SWITCHES_MT_B.18",
+      "router-matrix/U_MATRIX_CONTROL_BUFFER.6",
+      "router-matrix/R_MATRIX_SWITCHES_STBB_OFF.1"
+    ]
+  },
+  {
+    "net": "PI_3V3",
+    "drawingLabel": "PI_3V3",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/J_INTEGRATION_PI.1",
+      "router-matrix/J_INTEGRATION_RFID.1",
+      "router-matrix/R_INTEGRATION_BACK.1",
+      "router-matrix/R_INTEGRATION_ENERGIZE.1"
+    ]
+  },
+  {
+    "net": "MOSI",
+    "drawingLabel": "MOSI",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/J_INTEGRATION_PI.19",
+      "router-matrix/J_INTEGRATION_RFID.4"
+    ]
+  },
+  {
+    "net": "MISO",
+    "drawingLabel": "MISO",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/J_INTEGRATION_PI.21",
+      "router-matrix/J_INTEGRATION_RFID.5"
+    ]
+  },
+  {
+    "net": "RFID_RESET",
+    "drawingLabel": "RFID_RESET",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/J_INTEGRATION_PI.22",
+      "router-matrix/J_INTEGRATION_RFID.7"
+    ]
+  },
+  {
+    "net": "SCLK",
+    "drawingLabel": "SCLK",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/J_INTEGRATION_PI.23",
+      "router-matrix/J_INTEGRATION_RFID.3"
+    ]
+  },
+  {
+    "net": "CE0_N",
+    "drawingLabel": "CE0_N",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/J_INTEGRATION_PI.24",
+      "router-matrix/J_INTEGRATION_RFID.6"
+    ]
+  },
+  {
+    "net": "ENERGIZE_N",
+    "drawingLabel": "ENERGIZE_N",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/J_INTEGRATION_PI.29",
+      "router-matrix/R_INTEGRATION_ENERGIZE.2",
+      "router-matrix/J_INTEGRATION_SW_ENERGIZE.1"
+    ]
+  },
+  {
+    "net": "BACK_N",
+    "drawingLabel": "BACK_N",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/J_INTEGRATION_PI.31",
+      "router-matrix/R_INTEGRATION_BACK.2",
+      "router-matrix/J_INTEGRATION_SW_BACK.1"
+    ]
+  },
+  {
+    "net": "XBAR_OE_N",
+    "drawingLabel": "XBAR_OE_N",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_CONTROL_ADDR.13",
+      "router-matrix/U_MATRIX_CONTROL_BUFFER.1",
+      "router-matrix/U_MATRIX_CONTROL_BUFFER.4",
+      "router-matrix/R_ROUTER_SAFETY_BUF_OE.2",
+      "router-matrix/Q_ROUTER_SAFETY_BUF.3"
+    ]
+  },
+  {
+    "net": "USB_RESET_N",
+    "drawingLabel": "USB_RESET_N",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_ROUTER_SAFETY_WATCH.3",
+      "router-matrix/U_ROUTER_SAFETY_USB_POR.1",
+      "router-matrix/R_ROUTER_SAFETY_USB_POR.2"
+    ]
+  },
+  {
+    "net": "WATCH_CX",
+    "drawingLabel": "WATCH_CX",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_ROUTER_SAFETY_WATCH.14",
+      "router-matrix/C_ROUTER_SAFETY_WATCH.2"
+    ]
+  },
+  {
+    "net": "WATCH_RX",
+    "drawingLabel": "WATCH_RX",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_ROUTER_SAFETY_WATCH.15",
+      "router-matrix/R_ROUTER_SAFETY_WATCH.2",
+      "router-matrix/C_ROUTER_SAFETY_WATCH.1"
+    ]
+  },
+  {
+    "net": "DIAG_DIV",
+    "drawingLabel": "DIAG_DIV",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_CONTROL_DIAG.3",
+      "router-matrix/R_MATRIX_CONTROL_DIAG_TOP.2",
+      "router-matrix/R_MATRIX_CONTROL_DIAG_BOTTOM.1",
+      "router-matrix/C_MATRIX_CONTROL_DIAG.1"
+    ]
+  },
+  {
+    "net": "DIAG_UNUSED",
+    "drawingLabel": "DIAG_UNUSED",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/U_MATRIX_CONTROL_DIAG.6",
+      "router-matrix/U_MATRIX_CONTROL_DIAG.7"
+    ]
+  },
+  {
+    "net": "K_ADC_LED",
+    "drawingLabel": "K_ADC_LED",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/K_ROUTER_SAFETY_ADC.1",
+      "router-matrix/R_ROUTER_SAFETY_KADC_LED.2"
+    ]
+  },
+  {
+    "net": "SOURCE_FEED",
+    "drawingLabel": "SOURCE_FEED",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/R_MATRIX_CONTROL_SOURCE_LO.1",
+      "router-matrix/R_MATRIX_CONTROL_SOURCE_HI.1",
+      "router-matrix/D_MATRIX_CONTROL_SOURCE.2"
+    ]
+  },
+  {
+    "net": "RESET_MID",
+    "drawingLabel": "RESET_MID",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/Q_MATRIX_SWITCHES_RESET_RELEASE.1",
+      "router-matrix/Q_MATRIX_SWITCHES_RESET_ALIVE.3"
+    ]
+  },
+  {
+    "net": "router_matrix__LEDA_USBROUTER3V3",
+    "drawingLabel": "R_LEDA_USBROUTER3V3",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/R_LED_USBROUTER3V3.2",
+      "router-matrix/LED_USBROUTER3V3.1"
+    ]
+  },
+  {
+    "net": "router_matrix__LEDA_ROUTERALIVE",
+    "drawingLabel": "R_LEDA_ROUTERALIVE",
+    "sheets": [
+      "04-router-matrix"
+    ],
+    "pins": [
+      "router-matrix/R_LED_ROUTERALIVE.2",
+      "router-matrix/LED_ROUTERALIVE.1"
+    ]
+  },
+  {
+    "net": "USB_SMART_3V3",
+    "drawingLabel": "USB_SMART_3V3",
+    "sheets": [
+      "05-smart-controller",
+      "06-smart-safety",
+      "11-smart-position-1",
+      "12-smart-position-2",
+      "13-smart-position-3",
+      "14-smart-position-4",
+      "15-smart-position-5",
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "smart-core/U_ESP2.1",
+      "smart-core/R_SCL_A.1",
+      "smart-core/R_SDA_0.1",
+      "smart-core/R_SDA_1.1",
+      "smart-core/R_SDA_2.1",
+      "smart-core/R_SDA_3.1",
+      "smart-core/R_SDA_4.1",
+      "smart-core/R_SDA_5.1",
+      "smart-core/J_JOYSTICK.1",
+      "smart-core/R_JOY_SW.1",
+      "smart-safety/U_WATCH.16",
+      "smart-safety/R_WATCH.1",
+      "smart-safety/C_WATCH_VCC.1",
+      "smart-safety/U_USB_POR.2",
+      "smart-safety/R_USB_POR.1",
+      "bank-a-position-0/U_P0_BUS.1",
+      "bank-a-position-0/U_P0_BUS.5",
+      "bank-a-position-0/C_P0_BUS_A.1",
+      "bank-a-position-1/U_P1_BUS.1",
+      "bank-a-position-1/U_P1_BUS.5",
+      "bank-a-position-1/C_P1_BUS_A.1",
+      "bank-a-position-2/U_P2_BUS.1",
+      "bank-a-position-2/U_P2_BUS.5",
+      "bank-a-position-2/C_P2_BUS_A.1",
+      "bank-b-position-3/U_P3_BUS.1",
+      "bank-b-position-3/U_P3_BUS.5",
+      "bank-b-position-3/C_P3_BUS_A.1",
+      "bank-b-position-4/U_P4_BUS.1",
+      "bank-b-position-4/U_P4_BUS.5",
+      "bank-b-position-4/C_P4_BUS_A.1",
+      "bank-b-position-5/U_P5_BUS.1",
+      "bank-b-position-5/U_P5_BUS.5",
+      "bank-b-position-5/C_P5_BUS_A.1"
+    ]
+  },
+  {
+    "net": "SR_SRCLK",
+    "drawingLabel": "SR_SRCLK",
+    "sheets": [
+      "05-smart-controller",
+      "06-smart-safety"
+    ],
+    "pins": [
+      "smart-core/U_ESP2.9",
+      "smart-safety/U_SR0.11",
+      "smart-safety/U_SR1.11",
+      "smart-safety/U_SR2.11",
+      "smart-safety/R_SR_SRCLK_OFF.1"
+    ]
+  },
+  {
+    "net": "SR_RCLK",
+    "drawingLabel": "SR_RCLK",
+    "sheets": [
+      "05-smart-controller",
+      "06-smart-safety"
+    ],
+    "pins": [
+      "smart-core/U_ESP2.10",
+      "smart-safety/U_SR0.12",
+      "smart-safety/U_SR1.12",
+      "smart-safety/U_SR2.12",
+      "smart-safety/R_SR_RCLK_OFF.1"
+    ]
+  },
+  {
+    "net": "SR_SER",
+    "drawingLabel": "SR_SER",
+    "sheets": [
+      "05-smart-controller",
+      "06-smart-safety"
+    ],
+    "pins": [
+      "smart-core/U_ESP2.11",
+      "smart-safety/U_SR0.14",
+      "smart-safety/R_SR_SER_OFF.1"
+    ]
+  },
+  {
+    "net": "SMART_HEARTBEAT",
+    "drawingLabel": "SMART_HEARTBEAT",
+    "sheets": [
+      "05-smart-controller",
+      "06-smart-safety"
+    ],
+    "pins": [
+      "smart-core/U_ESP2.15",
+      "smart-safety/U_WATCH.2",
+      "smart-safety/R_HEART.1"
+    ]
+  },
+  {
+    "net": "SCL_A",
+    "drawingLabel": "SCL_A",
+    "sheets": [
+      "05-smart-controller",
+      "11-smart-position-1",
+      "12-smart-position-2",
+      "13-smart-position-3",
+      "14-smart-position-4",
+      "15-smart-position-5",
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "smart-core/U_ESP2.22",
+      "smart-core/R_SCL_A.2",
+      "bank-a-position-0/U_P0_BUS.2",
+      "bank-a-position-1/U_P1_BUS.2",
+      "bank-a-position-2/U_P2_BUS.2",
+      "bank-b-position-3/U_P3_BUS.2",
+      "bank-b-position-4/U_P4_BUS.2",
+      "bank-b-position-5/U_P5_BUS.2"
+    ]
+  },
+  {
+    "net": "SDA_0",
+    "drawingLabel": "SDA_0",
+    "sheets": [
+      "05-smart-controller",
+      "11-smart-position-1"
+    ],
+    "pins": [
+      "smart-core/U_ESP2.32",
+      "smart-core/R_SDA_0.2",
+      "bank-a-position-0/U_P0_BUS.3"
+    ]
+  },
+  {
+    "net": "SDA_1",
+    "drawingLabel": "SDA_1",
+    "sheets": [
+      "05-smart-controller",
+      "12-smart-position-2"
+    ],
+    "pins": [
+      "smart-core/U_ESP2.25",
+      "smart-core/R_SDA_1.2",
+      "bank-a-position-1/U_P1_BUS.3"
+    ]
+  },
+  {
+    "net": "SDA_2",
+    "drawingLabel": "SDA_2",
+    "sheets": [
+      "05-smart-controller",
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "smart-core/U_ESP2.27",
+      "smart-core/R_SDA_2.2",
+      "bank-a-position-2/U_P2_BUS.3"
+    ]
+  },
+  {
+    "net": "SDA_3",
+    "drawingLabel": "SDA_3",
+    "sheets": [
+      "05-smart-controller",
+      "14-smart-position-4"
+    ],
+    "pins": [
+      "smart-core/U_ESP2.28",
+      "smart-core/R_SDA_3.2",
+      "bank-b-position-3/U_P3_BUS.3"
+    ]
+  },
+  {
+    "net": "SDA_4",
+    "drawingLabel": "SDA_4",
+    "sheets": [
+      "05-smart-controller",
+      "15-smart-position-5"
+    ],
+    "pins": [
+      "smart-core/U_ESP2.30",
+      "smart-core/R_SDA_4.2",
+      "bank-b-position-4/U_P4_BUS.3"
+    ]
+  },
+  {
+    "net": "SDA_5",
+    "drawingLabel": "SDA_5",
+    "sheets": [
+      "05-smart-controller",
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "smart-core/U_ESP2.31",
+      "smart-core/R_SDA_5.2",
+      "bank-b-position-5/U_P5_BUS.3"
+    ]
+  },
+  {
+    "net": "MUX_A_A",
+    "drawingLabel": "MUX_A_A",
+    "sheets": [
+      "05-smart-controller",
+      "07-measurement-a-precision"
+    ],
+    "pins": [
+      "smart-core/U_ESP2.7",
+      "measurement-a-precision/U_A_MUX.10",
+      "measurement-a-precision/R_A_SEL_A.1"
+    ]
+  },
+  {
+    "net": "MUX_A_B",
+    "drawingLabel": "MUX_A_B",
+    "sheets": [
+      "05-smart-controller",
+      "07-measurement-a-precision"
+    ],
+    "pins": [
+      "smart-core/U_ESP2.8",
+      "measurement-a-precision/U_A_MUX.9",
+      "measurement-a-precision/R_A_SEL_B.1"
+    ]
+  },
+  {
+    "net": "MUX_B_A",
+    "drawingLabel": "MUX_B_A",
+    "sheets": [
+      "05-smart-controller",
+      "09-measurement-b-precision"
+    ],
+    "pins": [
+      "smart-core/U_ESP2.12",
+      "measurement-b-precision/U_B_MUX.10",
+      "measurement-b-precision/R_B_SEL_A.1"
+    ]
+  },
+  {
+    "net": "MUX_B_B",
+    "drawingLabel": "MUX_B_B",
+    "sheets": [
+      "05-smart-controller",
+      "09-measurement-b-precision"
+    ],
+    "pins": [
+      "smart-core/U_ESP2.21",
+      "measurement-b-precision/U_B_MUX.9",
+      "measurement-b-precision/R_B_SEL_B.1"
+    ]
+  },
+  {
+    "net": "JOY_X",
+    "drawingLabel": "JOY_X",
+    "sheets": [
+      "05-smart-controller"
+    ],
+    "pins": [
+      "smart-core/U_ESP2.3",
+      "smart-core/J_JOYSTICK.3"
+    ]
+  },
+  {
+    "net": "JOY_Y",
+    "drawingLabel": "JOY_Y",
+    "sheets": [
+      "05-smart-controller"
+    ],
+    "pins": [
+      "smart-core/U_ESP2.4",
+      "smart-core/J_JOYSTICK.4"
+    ]
+  },
+  {
+    "net": "JOY_SW_N",
+    "drawingLabel": "JOY_SW_N",
+    "sheets": [
+      "05-smart-controller"
+    ],
+    "pins": [
+      "smart-core/U_ESP2.6",
+      "smart-core/J_JOYSTICK.5",
+      "smart-core/R_JOY_SW.2"
+    ]
+  },
+  {
+    "net": "SMART_USB_RESET_N",
+    "drawingLabel": "SMART_USB_RESET_N",
+    "sheets": [
+      "06-smart-safety"
+    ],
+    "pins": [
+      "smart-safety/U_WATCH.3",
+      "smart-safety/U_USB_POR.1",
+      "smart-safety/R_USB_POR.2"
+    ]
+  },
+  {
+    "net": "SMART_ALIVE",
+    "drawingLabel": "SMART_ALIVE",
+    "sheets": [
+      "06-smart-safety"
+    ],
+    "pins": [
+      "smart-safety/U_WATCH.13",
+      "smart-safety/Q_ALIVE.2",
+      "smart-safety/R_ALIVE_OFF.1"
+    ]
+  },
+  {
+    "net": "SMART_WATCH_CX",
+    "drawingLabel": "SMART_WATCH_CX",
+    "sheets": [
+      "06-smart-safety"
+    ],
+    "pins": [
+      "smart-safety/U_WATCH.14",
+      "smart-safety/C_WATCH.2"
+    ]
+  },
+  {
+    "net": "SMART_WATCH_RX",
+    "drawingLabel": "SMART_WATCH_RX",
+    "sheets": [
+      "06-smart-safety"
+    ],
+    "pins": [
+      "smart-safety/U_WATCH.15",
+      "smart-safety/R_WATCH.2",
+      "smart-safety/C_WATCH.1"
+    ]
+  },
+  {
+    "net": "SR_OE_N",
+    "drawingLabel": "SR_OE_N",
+    "sheets": [
+      "06-smart-safety"
+    ],
+    "pins": [
+      "smart-safety/R_OE.2",
+      "smart-safety/Q_ALIVE.3",
+      "smart-safety/U_SR0.13",
+      "smart-safety/U_SR1.13",
+      "smart-safety/U_SR2.13"
+    ]
+  },
+  {
+    "net": "OE_MID",
+    "drawingLabel": "OE_MID",
+    "sheets": [
+      "06-smart-safety"
+    ],
+    "pins": [
+      "smart-safety/Q_ALIVE.1",
+      "smart-safety/Q_RAIL.3"
+    ]
+  },
+  {
+    "net": "SR_CHAIN_1",
+    "drawingLabel": "SR_CHAIN_1",
+    "sheets": [
+      "06-smart-safety"
+    ],
+    "pins": [
+      "smart-safety/U_SR0.9",
+      "smart-safety/U_SR1.14"
+    ]
+  },
+  {
+    "net": "RELAY_0",
+    "drawingLabel": "RELAY_0",
+    "sheets": [
+      "06-smart-safety",
+      "08-measurement-a-buffers"
+    ],
+    "pins": [
+      "smart-safety/U_SR0.15",
+      "measurement-a-buffers/U_A_LED_DRIVER_0.1"
+    ]
+  },
+  {
+    "net": "RELAY_1",
+    "drawingLabel": "RELAY_1",
+    "sheets": [
+      "06-smart-safety",
+      "08-measurement-a-buffers"
+    ],
+    "pins": [
+      "smart-safety/U_SR0.1",
+      "measurement-a-buffers/U_A_LED_DRIVER_0.2"
+    ]
+  },
+  {
+    "net": "RELAY_2",
+    "drawingLabel": "RELAY_2",
+    "sheets": [
+      "06-smart-safety",
+      "08-measurement-a-buffers"
+    ],
+    "pins": [
+      "smart-safety/U_SR0.2",
+      "measurement-a-buffers/U_A_LED_DRIVER_0.3"
+    ]
+  },
+  {
+    "net": "RELAY_3",
+    "drawingLabel": "RELAY_3",
+    "sheets": [
+      "06-smart-safety",
+      "08-measurement-a-buffers"
+    ],
+    "pins": [
+      "smart-safety/U_SR0.3",
+      "measurement-a-buffers/U_A_LED_DRIVER_0.4"
+    ]
+  },
+  {
+    "net": "RELAY_4",
+    "drawingLabel": "RELAY_4",
+    "sheets": [
+      "06-smart-safety",
+      "08-measurement-a-buffers"
+    ],
+    "pins": [
+      "smart-safety/U_SR0.4",
+      "measurement-a-buffers/U_A_LED_DRIVER_0.5"
+    ]
+  },
+  {
+    "net": "RELAY_5",
+    "drawingLabel": "RELAY_5",
+    "sheets": [
+      "06-smart-safety",
+      "08-measurement-a-buffers"
+    ],
+    "pins": [
+      "smart-safety/U_SR0.5",
+      "measurement-a-buffers/U_A_LED_DRIVER_0.6"
+    ]
+  },
+  {
+    "net": "RELAY_6",
+    "drawingLabel": "RELAY_6",
+    "sheets": [
+      "06-smart-safety",
+      "08-measurement-a-buffers"
+    ],
+    "pins": [
+      "smart-safety/U_SR0.6",
+      "measurement-a-buffers/U_A_LED_DRIVER_0.7"
+    ]
+  },
+  {
+    "net": "RELAY_7",
+    "drawingLabel": "RELAY_7",
+    "sheets": [
+      "06-smart-safety",
+      "08-measurement-a-buffers"
+    ],
+    "pins": [
+      "smart-safety/U_SR0.7",
+      "measurement-a-buffers/U_A_LED_DRIVER_1.1"
+    ]
+  },
+  {
+    "net": "SR_CHAIN_2",
+    "drawingLabel": "SR_CHAIN_2",
+    "sheets": [
+      "06-smart-safety"
+    ],
+    "pins": [
+      "smart-safety/U_SR1.9",
+      "smart-safety/U_SR2.14"
+    ]
+  },
+  {
+    "net": "RELAY_8",
+    "drawingLabel": "RELAY_8",
+    "sheets": [
+      "06-smart-safety",
+      "08-measurement-a-buffers"
+    ],
+    "pins": [
+      "smart-safety/U_SR1.15",
+      "measurement-a-buffers/U_A_LED_DRIVER_1.2"
+    ]
+  },
+  {
+    "net": "RELAY_9",
+    "drawingLabel": "RELAY_9",
+    "sheets": [
+      "06-smart-safety",
+      "10-measurement-b-buffers"
+    ],
+    "pins": [
+      "smart-safety/U_SR1.1",
+      "measurement-b-buffers/U_B_LED_DRIVER_0.1"
+    ]
+  },
+  {
+    "net": "RELAY_10",
+    "drawingLabel": "RELAY_10",
+    "sheets": [
+      "06-smart-safety",
+      "10-measurement-b-buffers"
+    ],
+    "pins": [
+      "smart-safety/U_SR1.2",
+      "measurement-b-buffers/U_B_LED_DRIVER_0.2"
+    ]
+  },
+  {
+    "net": "RELAY_11",
+    "drawingLabel": "RELAY_11",
+    "sheets": [
+      "06-smart-safety",
+      "10-measurement-b-buffers"
+    ],
+    "pins": [
+      "smart-safety/U_SR1.3",
+      "measurement-b-buffers/U_B_LED_DRIVER_0.3"
+    ]
+  },
+  {
+    "net": "RELAY_12",
+    "drawingLabel": "RELAY_12",
+    "sheets": [
+      "06-smart-safety",
+      "10-measurement-b-buffers"
+    ],
+    "pins": [
+      "smart-safety/U_SR1.4",
+      "measurement-b-buffers/U_B_LED_DRIVER_0.4"
+    ]
+  },
+  {
+    "net": "RELAY_13",
+    "drawingLabel": "RELAY_13",
+    "sheets": [
+      "06-smart-safety",
+      "10-measurement-b-buffers"
+    ],
+    "pins": [
+      "smart-safety/U_SR1.5",
+      "measurement-b-buffers/U_B_LED_DRIVER_0.5"
+    ]
+  },
+  {
+    "net": "RELAY_14",
+    "drawingLabel": "RELAY_14",
+    "sheets": [
+      "06-smart-safety",
+      "10-measurement-b-buffers"
+    ],
+    "pins": [
+      "smart-safety/U_SR1.6",
+      "measurement-b-buffers/U_B_LED_DRIVER_0.6"
+    ]
+  },
+  {
+    "net": "RELAY_15",
+    "drawingLabel": "RELAY_15",
+    "sheets": [
+      "06-smart-safety",
+      "10-measurement-b-buffers"
+    ],
+    "pins": [
+      "smart-safety/U_SR1.7",
+      "measurement-b-buffers/U_B_LED_DRIVER_0.7"
+    ]
+  },
+  {
+    "net": "SR_CHAIN_3",
+    "drawingLabel": "SR_CHAIN_3",
+    "sheets": [
+      "06-smart-safety"
+    ],
+    "pins": [
+      "smart-safety/U_SR2.9"
+    ]
+  },
+  {
+    "net": "RELAY_16",
+    "drawingLabel": "RELAY_16",
+    "sheets": [
+      "06-smart-safety",
+      "10-measurement-b-buffers"
+    ],
+    "pins": [
+      "smart-safety/U_SR2.15",
+      "measurement-b-buffers/U_B_LED_DRIVER_1.1"
+    ]
+  },
+  {
+    "net": "RELAY_17",
+    "drawingLabel": "RELAY_17",
+    "sheets": [
+      "06-smart-safety",
+      "10-measurement-b-buffers"
+    ],
+    "pins": [
+      "smart-safety/U_SR2.1",
+      "measurement-b-buffers/U_B_LED_DRIVER_1.2"
+    ]
+  },
+  {
+    "net": "P0_1_DIV",
+    "drawingLabel": "P0_1_DIV",
+    "sheets": [
+      "07-measurement-a-precision"
+    ],
+    "pins": [
+      "measurement-a-precision/R_P0_1_TOP.2",
+      "measurement-a-precision/R_P0_1_BOTTOM.1",
+      "measurement-a-precision/C_P0_1.1",
+      "measurement-a-precision/U_A_PRECISION.3"
+    ]
+  },
+  {
+    "net": "A_PREC_BIAS",
+    "drawingLabel": "A_PREC_BIAS",
+    "sheets": [
+      "07-measurement-a-precision"
+    ],
+    "pins": [
+      "measurement-a-precision/R_P0_1_BOTTOM.2",
+      "measurement-a-precision/R_P0_2_BOTTOM.2",
+      "measurement-a-precision/R_A_PREC_BIAS_TOP.2",
+      "measurement-a-precision/R_A_PREC_BIAS_BOTTOM.1",
+      "measurement-a-precision/C_A_PREC_BIAS.1"
+    ]
+  },
+  {
+    "net": "P0_1_BUF",
+    "drawingLabel": "P0_1_BUF",
+    "sheets": [
+      "07-measurement-a-precision"
+    ],
+    "pins": [
+      "measurement-a-precision/R_P0_1_ADC.1",
+      "measurement-a-precision/U_A_PRECISION.1",
+      "measurement-a-precision/U_A_PRECISION.2"
+    ]
+  },
+  {
+    "net": "P0_1_MUX",
+    "drawingLabel": "P0_1_MUX",
+    "sheets": [
+      "07-measurement-a-precision"
+    ],
+    "pins": [
+      "measurement-a-precision/R_P0_1_ADC.2",
+      "measurement-a-precision/U_A_MUX.12"
+    ]
+  },
+  {
+    "net": "P0_2_DIV",
+    "drawingLabel": "P0_2_DIV",
+    "sheets": [
+      "07-measurement-a-precision"
+    ],
+    "pins": [
+      "measurement-a-precision/R_P0_2_TOP.2",
+      "measurement-a-precision/R_P0_2_BOTTOM.1",
+      "measurement-a-precision/C_P0_2.1",
+      "measurement-a-precision/U_A_PRECISION.5"
+    ]
+  },
+  {
+    "net": "P0_2_BUF",
+    "drawingLabel": "P0_2_BUF",
+    "sheets": [
+      "07-measurement-a-precision"
+    ],
+    "pins": [
+      "measurement-a-precision/R_P0_2_ADC.1",
+      "measurement-a-precision/U_A_PRECISION.6",
+      "measurement-a-precision/U_A_PRECISION.7"
+    ]
+  },
+  {
+    "net": "P0_2_MUX",
+    "drawingLabel": "P0_2_MUX",
+    "sheets": [
+      "07-measurement-a-precision"
+    ],
+    "pins": [
+      "measurement-a-precision/R_P0_2_ADC.2",
+      "measurement-a-precision/U_A_MUX.1"
+    ]
+  },
+  {
+    "net": "ADC_A_P2",
+    "drawingLabel": "ADC_A_P2",
+    "sheets": [
+      "07-measurement-a-precision"
+    ],
+    "pins": [
+      "measurement-a-precision/U_A_MUX.3",
+      "measurement-a-precision/J_A_ADC_MODULE.8"
+    ]
+  },
+  {
+    "net": "ADC_A_P1",
+    "drawingLabel": "ADC_A_P1",
+    "sheets": [
+      "07-measurement-a-precision"
+    ],
+    "pins": [
+      "measurement-a-precision/U_A_MUX.13",
+      "measurement-a-precision/J_A_ADC_MODULE.7"
+    ]
+  },
+  {
+    "net": "P1_1_MUX",
+    "drawingLabel": "P1_1_MUX",
+    "sheets": [
+      "07-measurement-a-precision",
+      "08-measurement-a-buffers"
+    ],
+    "pins": [
+      "measurement-a-precision/U_A_MUX.14",
+      "measurement-a-buffers/R_P1_1_ADC.2"
+    ]
+  },
+  {
+    "net": "P1_2_MUX",
+    "drawingLabel": "P1_2_MUX",
+    "sheets": [
+      "07-measurement-a-precision",
+      "08-measurement-a-buffers"
+    ],
+    "pins": [
+      "measurement-a-precision/U_A_MUX.5",
+      "measurement-a-buffers/R_P1_2_ADC.2"
+    ]
+  },
+  {
+    "net": "P2_1_MUX",
+    "drawingLabel": "P2_1_MUX",
+    "sheets": [
+      "07-measurement-a-precision",
+      "08-measurement-a-buffers"
+    ],
+    "pins": [
+      "measurement-a-precision/U_A_MUX.15",
+      "measurement-a-buffers/R_P2_1_ADC.2"
+    ]
+  },
+  {
+    "net": "P2_2_MUX",
+    "drawingLabel": "P2_2_MUX",
+    "sheets": [
+      "07-measurement-a-precision",
+      "08-measurement-a-buffers"
+    ],
+    "pins": [
+      "measurement-a-precision/U_A_MUX.2",
+      "measurement-a-buffers/R_P2_2_ADC.2"
+    ]
+  },
+  {
+    "net": "STIM_FEED",
+    "drawingLabel": "STIM_FEED",
+    "sheets": [
+      "07-measurement-a-precision"
+    ],
+    "pins": [
+      "measurement-a-precision/D_STIM.2",
+      "measurement-a-precision/R_STIM.1"
+    ]
+  },
+  {
+    "net": "STIM_LIMIT",
+    "drawingLabel": "STIM_LIMIT",
+    "sheets": [
+      "07-measurement-a-precision"
+    ],
+    "pins": [
+      "measurement-a-precision/R_STIM.2",
+      "measurement-a-precision/K_STIM.3"
+    ]
+  },
+  {
+    "net": "STIM_LED_A",
+    "drawingLabel": "STIM_LED_A",
+    "sheets": [
+      "07-measurement-a-precision"
+    ],
+    "pins": [
+      "measurement-a-precision/K_STIM.1",
+      "measurement-a-precision/R_LED.2"
+    ]
+  },
+  {
+    "net": "STIM_LED_K",
+    "drawingLabel": "STIM_LED_K",
+    "sheets": [
+      "07-measurement-a-precision"
+    ],
+    "pins": [
+      "measurement-a-precision/K_STIM.2",
+      "measurement-a-precision/Q_STIM.3"
+    ]
+  },
+  {
+    "net": "TEST_A",
+    "drawingLabel": "TEST_A",
+    "sheets": [
+      "07-measurement-a-precision"
+    ],
+    "pins": [
+      "measurement-a-precision/K_STIM.4",
+      "measurement-a-precision/J_DIAGNOSTIC.1"
+    ]
+  },
+  {
+    "net": "TEST_B",
+    "drawingLabel": "TEST_B",
+    "sheets": [
+      "07-measurement-a-precision"
+    ],
+    "pins": [
+      "measurement-a-precision/J_DIAGNOSTIC.2",
+      "measurement-a-precision/JP_RETURN.1"
+    ]
+  },
+  {
+    "net": "P0_K_HIGH_CATHODE",
+    "drawingLabel": "P0_K_HIGH_CATHODE",
+    "sheets": [
+      "08-measurement-a-buffers",
+      "11-smart-position-1"
+    ],
+    "pins": [
+      "measurement-a-buffers/U_A_LED_DRIVER_0.16",
+      "bank-a-position-0/K_P0_HIGH.2"
+    ]
+  },
+  {
+    "net": "P0_K_LOW_CATHODE",
+    "drawingLabel": "P0_K_LOW_CATHODE",
+    "sheets": [
+      "08-measurement-a-buffers",
+      "11-smart-position-1"
+    ],
+    "pins": [
+      "measurement-a-buffers/U_A_LED_DRIVER_0.15",
+      "bank-a-position-0/K_P0_LOW.2"
+    ]
+  },
+  {
+    "net": "P0_AMM_CATHODE",
+    "drawingLabel": "P0_AMM_CATHODE",
+    "sheets": [
+      "08-measurement-a-buffers",
+      "11-smart-position-1"
+    ],
+    "pins": [
+      "measurement-a-buffers/U_A_LED_DRIVER_0.14",
+      "bank-a-position-0/K_P0_AMM_P.2",
+      "bank-a-position-0/K_P0_AMM_N.2"
+    ]
+  },
+  {
+    "net": "P1_K_HIGH_CATHODE",
+    "drawingLabel": "P1_K_HIGH_CATHODE",
+    "sheets": [
+      "08-measurement-a-buffers",
+      "12-smart-position-2"
+    ],
+    "pins": [
+      "measurement-a-buffers/U_A_LED_DRIVER_0.13",
+      "bank-a-position-1/K_P1_HIGH.2"
+    ]
+  },
+  {
+    "net": "P1_K_LOW_CATHODE",
+    "drawingLabel": "P1_K_LOW_CATHODE",
+    "sheets": [
+      "08-measurement-a-buffers",
+      "12-smart-position-2"
+    ],
+    "pins": [
+      "measurement-a-buffers/U_A_LED_DRIVER_0.12",
+      "bank-a-position-1/K_P1_LOW.2"
+    ]
+  },
+  {
+    "net": "P1_AMM_CATHODE",
+    "drawingLabel": "P1_AMM_CATHODE",
+    "sheets": [
+      "08-measurement-a-buffers",
+      "12-smart-position-2"
+    ],
+    "pins": [
+      "measurement-a-buffers/U_A_LED_DRIVER_0.11",
+      "bank-a-position-1/K_P1_AMM_P.2",
+      "bank-a-position-1/K_P1_AMM_N.2"
+    ]
+  },
+  {
+    "net": "P2_K_HIGH_CATHODE",
+    "drawingLabel": "P2_K_HIGH_CATHODE",
+    "sheets": [
+      "08-measurement-a-buffers",
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "measurement-a-buffers/U_A_LED_DRIVER_0.10",
+      "bank-a-position-2/K_P2_HIGH.2"
+    ]
+  },
+  {
+    "net": "P2_K_LOW_CATHODE",
+    "drawingLabel": "P2_K_LOW_CATHODE",
+    "sheets": [
+      "08-measurement-a-buffers",
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "measurement-a-buffers/U_A_LED_DRIVER_1.16",
+      "bank-a-position-2/K_P2_LOW.2"
+    ]
+  },
+  {
+    "net": "P2_AMM_CATHODE",
+    "drawingLabel": "P2_AMM_CATHODE",
+    "sheets": [
+      "08-measurement-a-buffers",
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "measurement-a-buffers/U_A_LED_DRIVER_1.15",
+      "bank-a-position-2/K_P2_AMM_P.2",
+      "bank-a-position-2/K_P2_AMM_N.2"
+    ]
+  },
+  {
+    "net": "P1_1_BUF",
+    "drawingLabel": "P1_1_BUF",
+    "sheets": [
+      "08-measurement-a-buffers"
+    ],
+    "pins": [
+      "measurement-a-buffers/U_A_BUFFERS.1",
+      "measurement-a-buffers/U_A_BUFFERS.2",
+      "measurement-a-buffers/R_P1_1_ADC.1"
+    ]
+  },
+  {
+    "net": "P1_1_DIV",
+    "drawingLabel": "P1_1_DIV",
+    "sheets": [
+      "08-measurement-a-buffers"
+    ],
+    "pins": [
+      "measurement-a-buffers/U_A_BUFFERS.3",
+      "measurement-a-buffers/R_P1_1_TOP.2",
+      "measurement-a-buffers/R_P1_1_BOTTOM.1",
+      "measurement-a-buffers/C_P1_1.1"
+    ]
+  },
+  {
+    "net": "P1_2_BUF",
+    "drawingLabel": "P1_2_BUF",
+    "sheets": [
+      "08-measurement-a-buffers"
+    ],
+    "pins": [
+      "measurement-a-buffers/U_A_BUFFERS.7",
+      "measurement-a-buffers/U_A_BUFFERS.6",
+      "measurement-a-buffers/R_P1_2_ADC.1"
+    ]
+  },
+  {
+    "net": "P1_2_DIV",
+    "drawingLabel": "P1_2_DIV",
+    "sheets": [
+      "08-measurement-a-buffers"
+    ],
+    "pins": [
+      "measurement-a-buffers/U_A_BUFFERS.5",
+      "measurement-a-buffers/R_P1_2_TOP.2",
+      "measurement-a-buffers/R_P1_2_BOTTOM.1",
+      "measurement-a-buffers/C_P1_2.1"
+    ]
+  },
+  {
+    "net": "P2_1_BUF",
+    "drawingLabel": "P2_1_BUF",
+    "sheets": [
+      "08-measurement-a-buffers"
+    ],
+    "pins": [
+      "measurement-a-buffers/U_A_BUFFERS.8",
+      "measurement-a-buffers/U_A_BUFFERS.9",
+      "measurement-a-buffers/R_P2_1_ADC.1"
+    ]
+  },
+  {
+    "net": "P2_1_DIV",
+    "drawingLabel": "P2_1_DIV",
+    "sheets": [
+      "08-measurement-a-buffers"
+    ],
+    "pins": [
+      "measurement-a-buffers/U_A_BUFFERS.10",
+      "measurement-a-buffers/R_P2_1_TOP.2",
+      "measurement-a-buffers/R_P2_1_BOTTOM.1",
+      "measurement-a-buffers/C_P2_1.1"
+    ]
+  },
+  {
+    "net": "P2_2_BUF",
+    "drawingLabel": "P2_2_BUF",
+    "sheets": [
+      "08-measurement-a-buffers"
+    ],
+    "pins": [
+      "measurement-a-buffers/U_A_BUFFERS.14",
+      "measurement-a-buffers/U_A_BUFFERS.13",
+      "measurement-a-buffers/R_P2_2_ADC.1"
+    ]
+  },
+  {
+    "net": "P2_2_DIV",
+    "drawingLabel": "P2_2_DIV",
+    "sheets": [
+      "08-measurement-a-buffers"
+    ],
+    "pins": [
+      "measurement-a-buffers/U_A_BUFFERS.12",
+      "measurement-a-buffers/R_P2_2_TOP.2",
+      "measurement-a-buffers/R_P2_2_BOTTOM.1",
+      "measurement-a-buffers/C_P2_2.1"
+    ]
+  },
+  {
+    "net": "A_REF_HI",
+    "drawingLabel": "A_REF_HI",
+    "sheets": [
+      "08-measurement-a-buffers",
+      "11-smart-position-1",
+      "12-smart-position-2",
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "measurement-a-buffers/R_A_HI_TOP.2",
+      "measurement-a-buffers/R_A_HI_BOTTOM.1",
+      "measurement-a-buffers/C_A_REFHI.1",
+      "bank-a-position-0/U_P0_LIMIT.3",
+      "bank-a-position-1/U_P1_LIMIT.3",
+      "bank-a-position-2/U_P2_LIMIT.3"
+    ]
+  },
+  {
+    "net": "A_REF_LO",
+    "drawingLabel": "A_REF_LO",
+    "sheets": [
+      "08-measurement-a-buffers",
+      "11-smart-position-1",
+      "12-smart-position-2",
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "measurement-a-buffers/R_A_LO_TOP.2",
+      "measurement-a-buffers/R_A_LO_BOTTOM.1",
+      "measurement-a-buffers/C_A_REFLO.1",
+      "bank-a-position-0/U_P0_LIMIT.5",
+      "bank-a-position-1/U_P1_LIMIT.5",
+      "bank-a-position-2/U_P2_LIMIT.5"
+    ]
+  },
+  {
+    "net": "A_GENERAL_BIAS",
+    "drawingLabel": "A_GENERAL_BIAS",
+    "sheets": [
+      "08-measurement-a-buffers"
+    ],
+    "pins": [
+      "measurement-a-buffers/R_P1_1_BOTTOM.2",
+      "measurement-a-buffers/R_P1_2_BOTTOM.2",
+      "measurement-a-buffers/R_A_GENERAL_BIAS_TOP.2",
+      "measurement-a-buffers/R_A_GENERAL_BIAS_BOTTOM.1",
+      "measurement-a-buffers/C_A_GENERAL_BIAS.1",
+      "measurement-a-buffers/R_P2_1_BOTTOM.2",
+      "measurement-a-buffers/R_P2_2_BOTTOM.2"
+    ]
+  },
+  {
+    "net": "P0_SHUNT_P",
+    "drawingLabel": "P0_SHUNT_P",
+    "sheets": [
+      "11-smart-position-1"
+    ],
+    "pins": [
+      "bank-a-position-0/R_P0_SHUNT.1",
+      "bank-a-position-0/J_P0_CURRENT_MODULE.5",
+      "bank-a-position-0/K_P0_AMM_P.4"
+    ]
+  },
+  {
+    "net": "P0_SHUNT_N",
+    "drawingLabel": "P0_SHUNT_N",
+    "sheets": [
+      "11-smart-position-1"
+    ],
+    "pins": [
+      "bank-a-position-0/R_P0_SHUNT.2",
+      "bank-a-position-0/J_P0_CURRENT_MODULE.6",
+      "bank-a-position-0/K_P0_AMM_N.3"
+    ]
+  },
+  {
+    "net": "P0_K_AMM_P_LED",
+    "drawingLabel": "P0_K_AMM_P_LED",
+    "sheets": [
+      "11-smart-position-1"
+    ],
+    "pins": [
+      "bank-a-position-0/K_P0_AMM_P.1",
+      "bank-a-position-0/R_P0_K_AMM_P_LED.2"
+    ]
+  },
+  {
+    "net": "P0_K_AMM_N_LED",
+    "drawingLabel": "P0_K_AMM_N_LED",
+    "sheets": [
+      "11-smart-position-1"
+    ],
+    "pins": [
+      "bank-a-position-0/K_P0_AMM_N.1",
+      "bank-a-position-0/R_P0_K_AMM_N_LED.2"
+    ]
+  },
+  {
+    "net": "P0_SOURCE_SENSE",
+    "drawingLabel": "P0_SOURCE_SENSE",
+    "sheets": [
+      "11-smart-position-1"
+    ],
+    "pins": [
+      "bank-a-position-0/R_P0_SOURCE_SENSE.2",
+      "bank-a-position-0/U_P0_LIMIT.2",
+      "bank-a-position-0/C_P0_HI_COMP.2",
+      "bank-a-position-0/Q_P0_HIGH.2"
+    ]
+  },
+  {
+    "net": "P0_SINK_SENSE",
+    "drawingLabel": "P0_SINK_SENSE",
+    "sheets": [
+      "11-smart-position-1"
+    ],
+    "pins": [
+      "bank-a-position-0/R_P0_SINK_SENSE.1",
+      "bank-a-position-0/U_P0_LIMIT.6",
+      "bank-a-position-0/C_P0_LO_COMP.2",
+      "bank-a-position-0/Q_P0_LOW.1"
+    ]
+  },
+  {
+    "net": "P0_HI_GATE_DRIVE",
+    "drawingLabel": "P0_HI_GATE_DRIVE",
+    "sheets": [
+      "11-smart-position-1"
+    ],
+    "pins": [
+      "bank-a-position-0/U_P0_LIMIT.1",
+      "bank-a-position-0/R_P0_HI_GATE.1",
+      "bank-a-position-0/C_P0_HI_COMP.1"
+    ]
+  },
+  {
+    "net": "P0_LO_GATE_DRIVE",
+    "drawingLabel": "P0_LO_GATE_DRIVE",
+    "sheets": [
+      "11-smart-position-1"
+    ],
+    "pins": [
+      "bank-a-position-0/U_P0_LIMIT.7",
+      "bank-a-position-0/R_P0_LO_GATE.1",
+      "bank-a-position-0/C_P0_LO_COMP.1"
+    ]
+  },
+  {
+    "net": "P0_HI_GATE",
+    "drawingLabel": "P0_HI_GATE",
+    "sheets": [
+      "11-smart-position-1"
+    ],
+    "pins": [
+      "bank-a-position-0/R_P0_HI_GATE.2",
+      "bank-a-position-0/Q_P0_HIGH.1"
+    ]
+  },
+  {
+    "net": "P0_LO_GATE",
+    "drawingLabel": "P0_LO_GATE",
+    "sheets": [
+      "11-smart-position-1"
+    ],
+    "pins": [
+      "bank-a-position-0/R_P0_LO_GATE.2",
+      "bank-a-position-0/Q_P0_LOW.2"
+    ]
+  },
+  {
+    "net": "P0_SOURCE_OUT",
+    "drawingLabel": "P0_SOURCE_OUT",
+    "sheets": [
+      "11-smart-position-1"
+    ],
+    "pins": [
+      "bank-a-position-0/Q_P0_HIGH.3",
+      "bank-a-position-0/K_P0_HIGH.3"
+    ]
+  },
+  {
+    "net": "P0_SINK_IN",
+    "drawingLabel": "P0_SINK_IN",
+    "sheets": [
+      "11-smart-position-1"
+    ],
+    "pins": [
+      "bank-a-position-0/Q_P0_LOW.3",
+      "bank-a-position-0/K_P0_LOW.4"
+    ]
+  },
+  {
+    "net": "P0_K_HIGH_LED",
+    "drawingLabel": "P0_K_HIGH_LED",
+    "sheets": [
+      "11-smart-position-1"
+    ],
+    "pins": [
+      "bank-a-position-0/K_P0_HIGH.1",
+      "bank-a-position-0/R_P0_K_HIGH_LED.2"
+    ]
+  },
+  {
+    "net": "P0_K_LOW_LED",
+    "drawingLabel": "P0_K_LOW_LED",
+    "sheets": [
+      "11-smart-position-1"
+    ],
+    "pins": [
+      "bank-a-position-0/K_P0_LOW.1",
+      "bank-a-position-0/R_P0_K_LOW_LED.2"
+    ]
+  },
+  {
+    "net": "P1_SHUNT_P",
+    "drawingLabel": "P1_SHUNT_P",
+    "sheets": [
+      "12-smart-position-2"
+    ],
+    "pins": [
+      "bank-a-position-1/R_P1_SHUNT.1",
+      "bank-a-position-1/J_P1_CURRENT_MODULE.5",
+      "bank-a-position-1/K_P1_AMM_P.4"
+    ]
+  },
+  {
+    "net": "P1_SHUNT_N",
+    "drawingLabel": "P1_SHUNT_N",
+    "sheets": [
+      "12-smart-position-2"
+    ],
+    "pins": [
+      "bank-a-position-1/R_P1_SHUNT.2",
+      "bank-a-position-1/J_P1_CURRENT_MODULE.6",
+      "bank-a-position-1/K_P1_AMM_N.3"
+    ]
+  },
+  {
+    "net": "P1_K_AMM_P_LED",
+    "drawingLabel": "P1_K_AMM_P_LED",
+    "sheets": [
+      "12-smart-position-2"
+    ],
+    "pins": [
+      "bank-a-position-1/K_P1_AMM_P.1",
+      "bank-a-position-1/R_P1_K_AMM_P_LED.2"
+    ]
+  },
+  {
+    "net": "P1_K_AMM_N_LED",
+    "drawingLabel": "P1_K_AMM_N_LED",
+    "sheets": [
+      "12-smart-position-2"
+    ],
+    "pins": [
+      "bank-a-position-1/K_P1_AMM_N.1",
+      "bank-a-position-1/R_P1_K_AMM_N_LED.2"
+    ]
+  },
+  {
+    "net": "P1_SOURCE_SENSE",
+    "drawingLabel": "P1_SOURCE_SENSE",
+    "sheets": [
+      "12-smart-position-2"
+    ],
+    "pins": [
+      "bank-a-position-1/R_P1_SOURCE_SENSE.2",
+      "bank-a-position-1/U_P1_LIMIT.2",
+      "bank-a-position-1/C_P1_HI_COMP.2",
+      "bank-a-position-1/Q_P1_HIGH.2"
+    ]
+  },
+  {
+    "net": "P1_SINK_SENSE",
+    "drawingLabel": "P1_SINK_SENSE",
+    "sheets": [
+      "12-smart-position-2"
+    ],
+    "pins": [
+      "bank-a-position-1/R_P1_SINK_SENSE.1",
+      "bank-a-position-1/U_P1_LIMIT.6",
+      "bank-a-position-1/C_P1_LO_COMP.2",
+      "bank-a-position-1/Q_P1_LOW.1"
+    ]
+  },
+  {
+    "net": "P1_HI_GATE_DRIVE",
+    "drawingLabel": "P1_HI_GATE_DRIVE",
+    "sheets": [
+      "12-smart-position-2"
+    ],
+    "pins": [
+      "bank-a-position-1/U_P1_LIMIT.1",
+      "bank-a-position-1/R_P1_HI_GATE.1",
+      "bank-a-position-1/C_P1_HI_COMP.1"
+    ]
+  },
+  {
+    "net": "P1_LO_GATE_DRIVE",
+    "drawingLabel": "P1_LO_GATE_DRIVE",
+    "sheets": [
+      "12-smart-position-2"
+    ],
+    "pins": [
+      "bank-a-position-1/U_P1_LIMIT.7",
+      "bank-a-position-1/R_P1_LO_GATE.1",
+      "bank-a-position-1/C_P1_LO_COMP.1"
+    ]
+  },
+  {
+    "net": "P1_HI_GATE",
+    "drawingLabel": "P1_HI_GATE",
+    "sheets": [
+      "12-smart-position-2"
+    ],
+    "pins": [
+      "bank-a-position-1/R_P1_HI_GATE.2",
+      "bank-a-position-1/Q_P1_HIGH.1"
+    ]
+  },
+  {
+    "net": "P1_LO_GATE",
+    "drawingLabel": "P1_LO_GATE",
+    "sheets": [
+      "12-smart-position-2"
+    ],
+    "pins": [
+      "bank-a-position-1/R_P1_LO_GATE.2",
+      "bank-a-position-1/Q_P1_LOW.2"
+    ]
+  },
+  {
+    "net": "P1_SOURCE_OUT",
+    "drawingLabel": "P1_SOURCE_OUT",
+    "sheets": [
+      "12-smart-position-2"
+    ],
+    "pins": [
+      "bank-a-position-1/Q_P1_HIGH.3",
+      "bank-a-position-1/K_P1_HIGH.3"
+    ]
+  },
+  {
+    "net": "P1_SINK_IN",
+    "drawingLabel": "P1_SINK_IN",
+    "sheets": [
+      "12-smart-position-2"
+    ],
+    "pins": [
+      "bank-a-position-1/Q_P1_LOW.3",
+      "bank-a-position-1/K_P1_LOW.4"
+    ]
+  },
+  {
+    "net": "P1_K_HIGH_LED",
+    "drawingLabel": "P1_K_HIGH_LED",
+    "sheets": [
+      "12-smart-position-2"
+    ],
+    "pins": [
+      "bank-a-position-1/K_P1_HIGH.1",
+      "bank-a-position-1/R_P1_K_HIGH_LED.2"
+    ]
+  },
+  {
+    "net": "P1_K_LOW_LED",
+    "drawingLabel": "P1_K_LOW_LED",
+    "sheets": [
+      "12-smart-position-2"
+    ],
+    "pins": [
+      "bank-a-position-1/K_P1_LOW.1",
+      "bank-a-position-1/R_P1_K_LOW_LED.2"
+    ]
+  },
+  {
+    "net": "P2_SHUNT_P",
+    "drawingLabel": "P2_SHUNT_P",
+    "sheets": [
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "bank-a-position-2/R_P2_SHUNT.1",
+      "bank-a-position-2/J_P2_CURRENT_MODULE.5",
+      "bank-a-position-2/K_P2_AMM_P.4"
+    ]
+  },
+  {
+    "net": "P2_SHUNT_N",
+    "drawingLabel": "P2_SHUNT_N",
+    "sheets": [
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "bank-a-position-2/R_P2_SHUNT.2",
+      "bank-a-position-2/J_P2_CURRENT_MODULE.6",
+      "bank-a-position-2/K_P2_AMM_N.3"
+    ]
+  },
+  {
+    "net": "P2_K_AMM_P_LED",
+    "drawingLabel": "P2_K_AMM_P_LED",
+    "sheets": [
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "bank-a-position-2/K_P2_AMM_P.1",
+      "bank-a-position-2/R_P2_K_AMM_P_LED.2"
+    ]
+  },
+  {
+    "net": "P2_K_AMM_N_LED",
+    "drawingLabel": "P2_K_AMM_N_LED",
+    "sheets": [
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "bank-a-position-2/K_P2_AMM_N.1",
+      "bank-a-position-2/R_P2_K_AMM_N_LED.2"
+    ]
+  },
+  {
+    "net": "P2_SOURCE_SENSE",
+    "drawingLabel": "P2_SOURCE_SENSE",
+    "sheets": [
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "bank-a-position-2/R_P2_SOURCE_SENSE.2",
+      "bank-a-position-2/U_P2_LIMIT.2",
+      "bank-a-position-2/C_P2_HI_COMP.2",
+      "bank-a-position-2/Q_P2_HIGH.2"
+    ]
+  },
+  {
+    "net": "P2_SINK_SENSE",
+    "drawingLabel": "P2_SINK_SENSE",
+    "sheets": [
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "bank-a-position-2/R_P2_SINK_SENSE.1",
+      "bank-a-position-2/U_P2_LIMIT.6",
+      "bank-a-position-2/C_P2_LO_COMP.2",
+      "bank-a-position-2/Q_P2_LOW.1"
+    ]
+  },
+  {
+    "net": "P2_HI_GATE_DRIVE",
+    "drawingLabel": "P2_HI_GATE_DRIVE",
+    "sheets": [
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "bank-a-position-2/U_P2_LIMIT.1",
+      "bank-a-position-2/R_P2_HI_GATE.1",
+      "bank-a-position-2/C_P2_HI_COMP.1"
+    ]
+  },
+  {
+    "net": "P2_LO_GATE_DRIVE",
+    "drawingLabel": "P2_LO_GATE_DRIVE",
+    "sheets": [
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "bank-a-position-2/U_P2_LIMIT.7",
+      "bank-a-position-2/R_P2_LO_GATE.1",
+      "bank-a-position-2/C_P2_LO_COMP.1"
+    ]
+  },
+  {
+    "net": "P2_HI_GATE",
+    "drawingLabel": "P2_HI_GATE",
+    "sheets": [
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "bank-a-position-2/R_P2_HI_GATE.2",
+      "bank-a-position-2/Q_P2_HIGH.1"
+    ]
+  },
+  {
+    "net": "P2_LO_GATE",
+    "drawingLabel": "P2_LO_GATE",
+    "sheets": [
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "bank-a-position-2/R_P2_LO_GATE.2",
+      "bank-a-position-2/Q_P2_LOW.2"
+    ]
+  },
+  {
+    "net": "P2_SOURCE_OUT",
+    "drawingLabel": "P2_SOURCE_OUT",
+    "sheets": [
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "bank-a-position-2/Q_P2_HIGH.3",
+      "bank-a-position-2/K_P2_HIGH.3"
+    ]
+  },
+  {
+    "net": "P2_SINK_IN",
+    "drawingLabel": "P2_SINK_IN",
+    "sheets": [
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "bank-a-position-2/Q_P2_LOW.3",
+      "bank-a-position-2/K_P2_LOW.4"
+    ]
+  },
+  {
+    "net": "P2_K_HIGH_LED",
+    "drawingLabel": "P2_K_HIGH_LED",
+    "sheets": [
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "bank-a-position-2/K_P2_HIGH.1",
+      "bank-a-position-2/R_P2_K_HIGH_LED.2"
+    ]
+  },
+  {
+    "net": "P2_K_LOW_LED",
+    "drawingLabel": "P2_K_LOW_LED",
+    "sheets": [
+      "13-smart-position-3"
+    ],
+    "pins": [
+      "bank-a-position-2/K_P2_LOW.1",
+      "bank-a-position-2/R_P2_K_LOW_LED.2"
+    ]
+  },
+  {
+    "net": "P3_1_DIV",
+    "drawingLabel": "P3_1_DIV",
+    "sheets": [
+      "09-measurement-b-precision"
+    ],
+    "pins": [
+      "measurement-b-precision/R_P3_1_TOP.2",
+      "measurement-b-precision/R_P3_1_BOTTOM.1",
+      "measurement-b-precision/C_P3_1.1",
+      "measurement-b-precision/U_B_PRECISION.3"
+    ]
+  },
+  {
+    "net": "B_PREC_BIAS",
+    "drawingLabel": "B_PREC_BIAS",
+    "sheets": [
+      "09-measurement-b-precision"
+    ],
+    "pins": [
+      "measurement-b-precision/R_P3_1_BOTTOM.2",
+      "measurement-b-precision/R_P3_2_BOTTOM.2",
+      "measurement-b-precision/R_B_PREC_BIAS_TOP.2",
+      "measurement-b-precision/R_B_PREC_BIAS_BOTTOM.1",
+      "measurement-b-precision/C_B_PREC_BIAS.1"
+    ]
+  },
+  {
+    "net": "P3_1_BUF",
+    "drawingLabel": "P3_1_BUF",
+    "sheets": [
+      "09-measurement-b-precision"
+    ],
+    "pins": [
+      "measurement-b-precision/R_P3_1_ADC.1",
+      "measurement-b-precision/U_B_PRECISION.1",
+      "measurement-b-precision/U_B_PRECISION.2"
+    ]
+  },
+  {
+    "net": "P3_1_MUX",
+    "drawingLabel": "P3_1_MUX",
+    "sheets": [
+      "09-measurement-b-precision"
+    ],
+    "pins": [
+      "measurement-b-precision/R_P3_1_ADC.2",
+      "measurement-b-precision/U_B_MUX.12"
+    ]
+  },
+  {
+    "net": "P3_2_DIV",
+    "drawingLabel": "P3_2_DIV",
+    "sheets": [
+      "09-measurement-b-precision"
+    ],
+    "pins": [
+      "measurement-b-precision/R_P3_2_TOP.2",
+      "measurement-b-precision/R_P3_2_BOTTOM.1",
+      "measurement-b-precision/C_P3_2.1",
+      "measurement-b-precision/U_B_PRECISION.5"
+    ]
+  },
+  {
+    "net": "P3_2_BUF",
+    "drawingLabel": "P3_2_BUF",
+    "sheets": [
+      "09-measurement-b-precision"
+    ],
+    "pins": [
+      "measurement-b-precision/R_P3_2_ADC.1",
+      "measurement-b-precision/U_B_PRECISION.6",
+      "measurement-b-precision/U_B_PRECISION.7"
+    ]
+  },
+  {
+    "net": "P3_2_MUX",
+    "drawingLabel": "P3_2_MUX",
+    "sheets": [
+      "09-measurement-b-precision"
+    ],
+    "pins": [
+      "measurement-b-precision/R_P3_2_ADC.2",
+      "measurement-b-precision/U_B_MUX.1"
+    ]
+  },
+  {
+    "net": "ADC_B_P2",
+    "drawingLabel": "ADC_B_P2",
+    "sheets": [
+      "09-measurement-b-precision"
+    ],
+    "pins": [
+      "measurement-b-precision/U_B_MUX.3",
+      "measurement-b-precision/J_B_ADC_MODULE.8"
+    ]
+  },
+  {
+    "net": "ADC_B_P1",
+    "drawingLabel": "ADC_B_P1",
+    "sheets": [
+      "09-measurement-b-precision"
+    ],
+    "pins": [
+      "measurement-b-precision/U_B_MUX.13",
+      "measurement-b-precision/J_B_ADC_MODULE.7"
+    ]
+  },
+  {
+    "net": "P4_1_MUX",
+    "drawingLabel": "P4_1_MUX",
+    "sheets": [
+      "09-measurement-b-precision",
+      "10-measurement-b-buffers"
+    ],
+    "pins": [
+      "measurement-b-precision/U_B_MUX.14",
+      "measurement-b-buffers/R_P4_1_ADC.2"
+    ]
+  },
+  {
+    "net": "P4_2_MUX",
+    "drawingLabel": "P4_2_MUX",
+    "sheets": [
+      "09-measurement-b-precision",
+      "10-measurement-b-buffers"
+    ],
+    "pins": [
+      "measurement-b-precision/U_B_MUX.5",
+      "measurement-b-buffers/R_P4_2_ADC.2"
+    ]
+  },
+  {
+    "net": "P5_1_MUX",
+    "drawingLabel": "P5_1_MUX",
+    "sheets": [
+      "09-measurement-b-precision",
+      "10-measurement-b-buffers"
+    ],
+    "pins": [
+      "measurement-b-precision/U_B_MUX.15",
+      "measurement-b-buffers/R_P5_1_ADC.2"
+    ]
+  },
+  {
+    "net": "P5_2_MUX",
+    "drawingLabel": "P5_2_MUX",
+    "sheets": [
+      "09-measurement-b-precision",
+      "10-measurement-b-buffers"
+    ],
+    "pins": [
+      "measurement-b-precision/U_B_MUX.2",
+      "measurement-b-buffers/R_P5_2_ADC.2"
+    ]
+  },
+  {
+    "net": "P3_K_HIGH_CATHODE",
+    "drawingLabel": "P3_K_HIGH_CATHODE",
+    "sheets": [
+      "10-measurement-b-buffers",
+      "14-smart-position-4"
+    ],
+    "pins": [
+      "measurement-b-buffers/U_B_LED_DRIVER_0.16",
+      "bank-b-position-3/K_P3_HIGH.2"
+    ]
+  },
+  {
+    "net": "P3_K_LOW_CATHODE",
+    "drawingLabel": "P3_K_LOW_CATHODE",
+    "sheets": [
+      "10-measurement-b-buffers",
+      "14-smart-position-4"
+    ],
+    "pins": [
+      "measurement-b-buffers/U_B_LED_DRIVER_0.15",
+      "bank-b-position-3/K_P3_LOW.2"
+    ]
+  },
+  {
+    "net": "P3_AMM_CATHODE",
+    "drawingLabel": "P3_AMM_CATHODE",
+    "sheets": [
+      "10-measurement-b-buffers",
+      "14-smart-position-4"
+    ],
+    "pins": [
+      "measurement-b-buffers/U_B_LED_DRIVER_0.14",
+      "bank-b-position-3/K_P3_AMM_P.2",
+      "bank-b-position-3/K_P3_AMM_N.2"
+    ]
+  },
+  {
+    "net": "P4_K_HIGH_CATHODE",
+    "drawingLabel": "P4_K_HIGH_CATHODE",
+    "sheets": [
+      "10-measurement-b-buffers",
+      "15-smart-position-5"
+    ],
+    "pins": [
+      "measurement-b-buffers/U_B_LED_DRIVER_0.13",
+      "bank-b-position-4/K_P4_HIGH.2"
+    ]
+  },
+  {
+    "net": "P4_K_LOW_CATHODE",
+    "drawingLabel": "P4_K_LOW_CATHODE",
+    "sheets": [
+      "10-measurement-b-buffers",
+      "15-smart-position-5"
+    ],
+    "pins": [
+      "measurement-b-buffers/U_B_LED_DRIVER_0.12",
+      "bank-b-position-4/K_P4_LOW.2"
+    ]
+  },
+  {
+    "net": "P4_AMM_CATHODE",
+    "drawingLabel": "P4_AMM_CATHODE",
+    "sheets": [
+      "10-measurement-b-buffers",
+      "15-smart-position-5"
+    ],
+    "pins": [
+      "measurement-b-buffers/U_B_LED_DRIVER_0.11",
+      "bank-b-position-4/K_P4_AMM_P.2",
+      "bank-b-position-4/K_P4_AMM_N.2"
+    ]
+  },
+  {
+    "net": "P5_K_HIGH_CATHODE",
+    "drawingLabel": "P5_K_HIGH_CATHODE",
+    "sheets": [
+      "10-measurement-b-buffers",
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "measurement-b-buffers/U_B_LED_DRIVER_0.10",
+      "bank-b-position-5/K_P5_HIGH.2"
+    ]
+  },
+  {
+    "net": "P5_K_LOW_CATHODE",
+    "drawingLabel": "P5_K_LOW_CATHODE",
+    "sheets": [
+      "10-measurement-b-buffers",
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "measurement-b-buffers/U_B_LED_DRIVER_1.16",
+      "bank-b-position-5/K_P5_LOW.2"
+    ]
+  },
+  {
+    "net": "P5_AMM_CATHODE",
+    "drawingLabel": "P5_AMM_CATHODE",
+    "sheets": [
+      "10-measurement-b-buffers",
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "measurement-b-buffers/U_B_LED_DRIVER_1.15",
+      "bank-b-position-5/K_P5_AMM_P.2",
+      "bank-b-position-5/K_P5_AMM_N.2"
+    ]
+  },
+  {
+    "net": "P4_1_BUF",
+    "drawingLabel": "P4_1_BUF",
+    "sheets": [
+      "10-measurement-b-buffers"
+    ],
+    "pins": [
+      "measurement-b-buffers/U_B_BUFFERS.1",
+      "measurement-b-buffers/U_B_BUFFERS.2",
+      "measurement-b-buffers/R_P4_1_ADC.1"
+    ]
+  },
+  {
+    "net": "P4_1_DIV",
+    "drawingLabel": "P4_1_DIV",
+    "sheets": [
+      "10-measurement-b-buffers"
+    ],
+    "pins": [
+      "measurement-b-buffers/U_B_BUFFERS.3",
+      "measurement-b-buffers/R_P4_1_TOP.2",
+      "measurement-b-buffers/R_P4_1_BOTTOM.1",
+      "measurement-b-buffers/C_P4_1.1"
+    ]
+  },
+  {
+    "net": "P4_2_BUF",
+    "drawingLabel": "P4_2_BUF",
+    "sheets": [
+      "10-measurement-b-buffers"
+    ],
+    "pins": [
+      "measurement-b-buffers/U_B_BUFFERS.7",
+      "measurement-b-buffers/U_B_BUFFERS.6",
+      "measurement-b-buffers/R_P4_2_ADC.1"
+    ]
+  },
+  {
+    "net": "P4_2_DIV",
+    "drawingLabel": "P4_2_DIV",
+    "sheets": [
+      "10-measurement-b-buffers"
+    ],
+    "pins": [
+      "measurement-b-buffers/U_B_BUFFERS.5",
+      "measurement-b-buffers/R_P4_2_TOP.2",
+      "measurement-b-buffers/R_P4_2_BOTTOM.1",
+      "measurement-b-buffers/C_P4_2.1"
+    ]
+  },
+  {
+    "net": "P5_1_BUF",
+    "drawingLabel": "P5_1_BUF",
+    "sheets": [
+      "10-measurement-b-buffers"
+    ],
+    "pins": [
+      "measurement-b-buffers/U_B_BUFFERS.8",
+      "measurement-b-buffers/U_B_BUFFERS.9",
+      "measurement-b-buffers/R_P5_1_ADC.1"
+    ]
+  },
+  {
+    "net": "P5_1_DIV",
+    "drawingLabel": "P5_1_DIV",
+    "sheets": [
+      "10-measurement-b-buffers"
+    ],
+    "pins": [
+      "measurement-b-buffers/U_B_BUFFERS.10",
+      "measurement-b-buffers/R_P5_1_TOP.2",
+      "measurement-b-buffers/R_P5_1_BOTTOM.1",
+      "measurement-b-buffers/C_P5_1.1"
+    ]
+  },
+  {
+    "net": "P5_2_BUF",
+    "drawingLabel": "P5_2_BUF",
+    "sheets": [
+      "10-measurement-b-buffers"
+    ],
+    "pins": [
+      "measurement-b-buffers/U_B_BUFFERS.14",
+      "measurement-b-buffers/U_B_BUFFERS.13",
+      "measurement-b-buffers/R_P5_2_ADC.1"
+    ]
+  },
+  {
+    "net": "P5_2_DIV",
+    "drawingLabel": "P5_2_DIV",
+    "sheets": [
+      "10-measurement-b-buffers"
+    ],
+    "pins": [
+      "measurement-b-buffers/U_B_BUFFERS.12",
+      "measurement-b-buffers/R_P5_2_TOP.2",
+      "measurement-b-buffers/R_P5_2_BOTTOM.1",
+      "measurement-b-buffers/C_P5_2.1"
+    ]
+  },
+  {
+    "net": "B_REF_HI",
+    "drawingLabel": "B_REF_HI",
+    "sheets": [
+      "10-measurement-b-buffers",
+      "14-smart-position-4",
+      "15-smart-position-5",
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "measurement-b-buffers/R_B_HI_TOP.2",
+      "measurement-b-buffers/R_B_HI_BOTTOM.1",
+      "measurement-b-buffers/C_B_REFHI.1",
+      "bank-b-position-3/U_P3_LIMIT.3",
+      "bank-b-position-4/U_P4_LIMIT.3",
+      "bank-b-position-5/U_P5_LIMIT.3"
+    ]
+  },
+  {
+    "net": "B_REF_LO",
+    "drawingLabel": "B_REF_LO",
+    "sheets": [
+      "10-measurement-b-buffers",
+      "14-smart-position-4",
+      "15-smart-position-5",
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "measurement-b-buffers/R_B_LO_TOP.2",
+      "measurement-b-buffers/R_B_LO_BOTTOM.1",
+      "measurement-b-buffers/C_B_REFLO.1",
+      "bank-b-position-3/U_P3_LIMIT.5",
+      "bank-b-position-4/U_P4_LIMIT.5",
+      "bank-b-position-5/U_P5_LIMIT.5"
+    ]
+  },
+  {
+    "net": "B_GENERAL_BIAS",
+    "drawingLabel": "B_GENERAL_BIAS",
+    "sheets": [
+      "10-measurement-b-buffers"
+    ],
+    "pins": [
+      "measurement-b-buffers/R_P4_1_BOTTOM.2",
+      "measurement-b-buffers/R_P4_2_BOTTOM.2",
+      "measurement-b-buffers/R_B_GENERAL_BIAS_TOP.2",
+      "measurement-b-buffers/R_B_GENERAL_BIAS_BOTTOM.1",
+      "measurement-b-buffers/C_B_GENERAL_BIAS.1",
+      "measurement-b-buffers/R_P5_1_BOTTOM.2",
+      "measurement-b-buffers/R_P5_2_BOTTOM.2"
+    ]
+  },
+  {
+    "net": "P3_SHUNT_P",
+    "drawingLabel": "P3_SHUNT_P",
+    "sheets": [
+      "14-smart-position-4"
+    ],
+    "pins": [
+      "bank-b-position-3/R_P3_SHUNT.1",
+      "bank-b-position-3/J_P3_CURRENT_MODULE.5",
+      "bank-b-position-3/K_P3_AMM_P.4"
+    ]
+  },
+  {
+    "net": "P3_SHUNT_N",
+    "drawingLabel": "P3_SHUNT_N",
+    "sheets": [
+      "14-smart-position-4"
+    ],
+    "pins": [
+      "bank-b-position-3/R_P3_SHUNT.2",
+      "bank-b-position-3/J_P3_CURRENT_MODULE.6",
+      "bank-b-position-3/K_P3_AMM_N.3"
+    ]
+  },
+  {
+    "net": "P3_K_AMM_P_LED",
+    "drawingLabel": "P3_K_AMM_P_LED",
+    "sheets": [
+      "14-smart-position-4"
+    ],
+    "pins": [
+      "bank-b-position-3/K_P3_AMM_P.1",
+      "bank-b-position-3/R_P3_K_AMM_P_LED.2"
+    ]
+  },
+  {
+    "net": "P3_K_AMM_N_LED",
+    "drawingLabel": "P3_K_AMM_N_LED",
+    "sheets": [
+      "14-smart-position-4"
+    ],
+    "pins": [
+      "bank-b-position-3/K_P3_AMM_N.1",
+      "bank-b-position-3/R_P3_K_AMM_N_LED.2"
+    ]
+  },
+  {
+    "net": "P3_SOURCE_SENSE",
+    "drawingLabel": "P3_SOURCE_SENSE",
+    "sheets": [
+      "14-smart-position-4"
+    ],
+    "pins": [
+      "bank-b-position-3/R_P3_SOURCE_SENSE.2",
+      "bank-b-position-3/U_P3_LIMIT.2",
+      "bank-b-position-3/C_P3_HI_COMP.2",
+      "bank-b-position-3/Q_P3_HIGH.2"
+    ]
+  },
+  {
+    "net": "P3_SINK_SENSE",
+    "drawingLabel": "P3_SINK_SENSE",
+    "sheets": [
+      "14-smart-position-4"
+    ],
+    "pins": [
+      "bank-b-position-3/R_P3_SINK_SENSE.1",
+      "bank-b-position-3/U_P3_LIMIT.6",
+      "bank-b-position-3/C_P3_LO_COMP.2",
+      "bank-b-position-3/Q_P3_LOW.1"
+    ]
+  },
+  {
+    "net": "P3_HI_GATE_DRIVE",
+    "drawingLabel": "P3_HI_GATE_DRIVE",
+    "sheets": [
+      "14-smart-position-4"
+    ],
+    "pins": [
+      "bank-b-position-3/U_P3_LIMIT.1",
+      "bank-b-position-3/R_P3_HI_GATE.1",
+      "bank-b-position-3/C_P3_HI_COMP.1"
+    ]
+  },
+  {
+    "net": "P3_LO_GATE_DRIVE",
+    "drawingLabel": "P3_LO_GATE_DRIVE",
+    "sheets": [
+      "14-smart-position-4"
+    ],
+    "pins": [
+      "bank-b-position-3/U_P3_LIMIT.7",
+      "bank-b-position-3/R_P3_LO_GATE.1",
+      "bank-b-position-3/C_P3_LO_COMP.1"
+    ]
+  },
+  {
+    "net": "P3_HI_GATE",
+    "drawingLabel": "P3_HI_GATE",
+    "sheets": [
+      "14-smart-position-4"
+    ],
+    "pins": [
+      "bank-b-position-3/R_P3_HI_GATE.2",
+      "bank-b-position-3/Q_P3_HIGH.1"
+    ]
+  },
+  {
+    "net": "P3_LO_GATE",
+    "drawingLabel": "P3_LO_GATE",
+    "sheets": [
+      "14-smart-position-4"
+    ],
+    "pins": [
+      "bank-b-position-3/R_P3_LO_GATE.2",
+      "bank-b-position-3/Q_P3_LOW.2"
+    ]
+  },
+  {
+    "net": "P3_SOURCE_OUT",
+    "drawingLabel": "P3_SOURCE_OUT",
+    "sheets": [
+      "14-smart-position-4"
+    ],
+    "pins": [
+      "bank-b-position-3/Q_P3_HIGH.3",
+      "bank-b-position-3/K_P3_HIGH.3"
+    ]
+  },
+  {
+    "net": "P3_SINK_IN",
+    "drawingLabel": "P3_SINK_IN",
+    "sheets": [
+      "14-smart-position-4"
+    ],
+    "pins": [
+      "bank-b-position-3/Q_P3_LOW.3",
+      "bank-b-position-3/K_P3_LOW.4"
+    ]
+  },
+  {
+    "net": "P3_K_HIGH_LED",
+    "drawingLabel": "P3_K_HIGH_LED",
+    "sheets": [
+      "14-smart-position-4"
+    ],
+    "pins": [
+      "bank-b-position-3/K_P3_HIGH.1",
+      "bank-b-position-3/R_P3_K_HIGH_LED.2"
+    ]
+  },
+  {
+    "net": "P3_K_LOW_LED",
+    "drawingLabel": "P3_K_LOW_LED",
+    "sheets": [
+      "14-smart-position-4"
+    ],
+    "pins": [
+      "bank-b-position-3/K_P3_LOW.1",
+      "bank-b-position-3/R_P3_K_LOW_LED.2"
+    ]
+  },
+  {
+    "net": "P4_SHUNT_P",
+    "drawingLabel": "P4_SHUNT_P",
+    "sheets": [
+      "15-smart-position-5"
+    ],
+    "pins": [
+      "bank-b-position-4/R_P4_SHUNT.1",
+      "bank-b-position-4/J_P4_CURRENT_MODULE.5",
+      "bank-b-position-4/K_P4_AMM_P.4"
+    ]
+  },
+  {
+    "net": "P4_SHUNT_N",
+    "drawingLabel": "P4_SHUNT_N",
+    "sheets": [
+      "15-smart-position-5"
+    ],
+    "pins": [
+      "bank-b-position-4/R_P4_SHUNT.2",
+      "bank-b-position-4/J_P4_CURRENT_MODULE.6",
+      "bank-b-position-4/K_P4_AMM_N.3"
+    ]
+  },
+  {
+    "net": "P4_K_AMM_P_LED",
+    "drawingLabel": "P4_K_AMM_P_LED",
+    "sheets": [
+      "15-smart-position-5"
+    ],
+    "pins": [
+      "bank-b-position-4/K_P4_AMM_P.1",
+      "bank-b-position-4/R_P4_K_AMM_P_LED.2"
+    ]
+  },
+  {
+    "net": "P4_K_AMM_N_LED",
+    "drawingLabel": "P4_K_AMM_N_LED",
+    "sheets": [
+      "15-smart-position-5"
+    ],
+    "pins": [
+      "bank-b-position-4/K_P4_AMM_N.1",
+      "bank-b-position-4/R_P4_K_AMM_N_LED.2"
+    ]
+  },
+  {
+    "net": "P4_SOURCE_SENSE",
+    "drawingLabel": "P4_SOURCE_SENSE",
+    "sheets": [
+      "15-smart-position-5"
+    ],
+    "pins": [
+      "bank-b-position-4/R_P4_SOURCE_SENSE.2",
+      "bank-b-position-4/U_P4_LIMIT.2",
+      "bank-b-position-4/C_P4_HI_COMP.2",
+      "bank-b-position-4/Q_P4_HIGH.2"
+    ]
+  },
+  {
+    "net": "P4_SINK_SENSE",
+    "drawingLabel": "P4_SINK_SENSE",
+    "sheets": [
+      "15-smart-position-5"
+    ],
+    "pins": [
+      "bank-b-position-4/R_P4_SINK_SENSE.1",
+      "bank-b-position-4/U_P4_LIMIT.6",
+      "bank-b-position-4/C_P4_LO_COMP.2",
+      "bank-b-position-4/Q_P4_LOW.1"
+    ]
+  },
+  {
+    "net": "P4_HI_GATE_DRIVE",
+    "drawingLabel": "P4_HI_GATE_DRIVE",
+    "sheets": [
+      "15-smart-position-5"
+    ],
+    "pins": [
+      "bank-b-position-4/U_P4_LIMIT.1",
+      "bank-b-position-4/R_P4_HI_GATE.1",
+      "bank-b-position-4/C_P4_HI_COMP.1"
+    ]
+  },
+  {
+    "net": "P4_LO_GATE_DRIVE",
+    "drawingLabel": "P4_LO_GATE_DRIVE",
+    "sheets": [
+      "15-smart-position-5"
+    ],
+    "pins": [
+      "bank-b-position-4/U_P4_LIMIT.7",
+      "bank-b-position-4/R_P4_LO_GATE.1",
+      "bank-b-position-4/C_P4_LO_COMP.1"
+    ]
+  },
+  {
+    "net": "P4_HI_GATE",
+    "drawingLabel": "P4_HI_GATE",
+    "sheets": [
+      "15-smart-position-5"
+    ],
+    "pins": [
+      "bank-b-position-4/R_P4_HI_GATE.2",
+      "bank-b-position-4/Q_P4_HIGH.1"
+    ]
+  },
+  {
+    "net": "P4_LO_GATE",
+    "drawingLabel": "P4_LO_GATE",
+    "sheets": [
+      "15-smart-position-5"
+    ],
+    "pins": [
+      "bank-b-position-4/R_P4_LO_GATE.2",
+      "bank-b-position-4/Q_P4_LOW.2"
+    ]
+  },
+  {
+    "net": "P4_SOURCE_OUT",
+    "drawingLabel": "P4_SOURCE_OUT",
+    "sheets": [
+      "15-smart-position-5"
+    ],
+    "pins": [
+      "bank-b-position-4/Q_P4_HIGH.3",
+      "bank-b-position-4/K_P4_HIGH.3"
+    ]
+  },
+  {
+    "net": "P4_SINK_IN",
+    "drawingLabel": "P4_SINK_IN",
+    "sheets": [
+      "15-smart-position-5"
+    ],
+    "pins": [
+      "bank-b-position-4/Q_P4_LOW.3",
+      "bank-b-position-4/K_P4_LOW.4"
+    ]
+  },
+  {
+    "net": "P4_K_HIGH_LED",
+    "drawingLabel": "P4_K_HIGH_LED",
+    "sheets": [
+      "15-smart-position-5"
+    ],
+    "pins": [
+      "bank-b-position-4/K_P4_HIGH.1",
+      "bank-b-position-4/R_P4_K_HIGH_LED.2"
+    ]
+  },
+  {
+    "net": "P4_K_LOW_LED",
+    "drawingLabel": "P4_K_LOW_LED",
+    "sheets": [
+      "15-smart-position-5"
+    ],
+    "pins": [
+      "bank-b-position-4/K_P4_LOW.1",
+      "bank-b-position-4/R_P4_K_LOW_LED.2"
+    ]
+  },
+  {
+    "net": "P5_SHUNT_P",
+    "drawingLabel": "P5_SHUNT_P",
+    "sheets": [
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "bank-b-position-5/R_P5_SHUNT.1",
+      "bank-b-position-5/J_P5_CURRENT_MODULE.5",
+      "bank-b-position-5/K_P5_AMM_P.4"
+    ]
+  },
+  {
+    "net": "P5_SHUNT_N",
+    "drawingLabel": "P5_SHUNT_N",
+    "sheets": [
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "bank-b-position-5/R_P5_SHUNT.2",
+      "bank-b-position-5/J_P5_CURRENT_MODULE.6",
+      "bank-b-position-5/K_P5_AMM_N.3"
+    ]
+  },
+  {
+    "net": "P5_K_AMM_P_LED",
+    "drawingLabel": "P5_K_AMM_P_LED",
+    "sheets": [
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "bank-b-position-5/K_P5_AMM_P.1",
+      "bank-b-position-5/R_P5_K_AMM_P_LED.2"
+    ]
+  },
+  {
+    "net": "P5_K_AMM_N_LED",
+    "drawingLabel": "P5_K_AMM_N_LED",
+    "sheets": [
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "bank-b-position-5/K_P5_AMM_N.1",
+      "bank-b-position-5/R_P5_K_AMM_N_LED.2"
+    ]
+  },
+  {
+    "net": "P5_SOURCE_SENSE",
+    "drawingLabel": "P5_SOURCE_SENSE",
+    "sheets": [
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "bank-b-position-5/R_P5_SOURCE_SENSE.2",
+      "bank-b-position-5/U_P5_LIMIT.2",
+      "bank-b-position-5/C_P5_HI_COMP.2",
+      "bank-b-position-5/Q_P5_HIGH.2"
+    ]
+  },
+  {
+    "net": "P5_SINK_SENSE",
+    "drawingLabel": "P5_SINK_SENSE",
+    "sheets": [
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "bank-b-position-5/R_P5_SINK_SENSE.1",
+      "bank-b-position-5/U_P5_LIMIT.6",
+      "bank-b-position-5/C_P5_LO_COMP.2",
+      "bank-b-position-5/Q_P5_LOW.1"
+    ]
+  },
+  {
+    "net": "P5_HI_GATE_DRIVE",
+    "drawingLabel": "P5_HI_GATE_DRIVE",
+    "sheets": [
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "bank-b-position-5/U_P5_LIMIT.1",
+      "bank-b-position-5/R_P5_HI_GATE.1",
+      "bank-b-position-5/C_P5_HI_COMP.1"
+    ]
+  },
+  {
+    "net": "P5_LO_GATE_DRIVE",
+    "drawingLabel": "P5_LO_GATE_DRIVE",
+    "sheets": [
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "bank-b-position-5/U_P5_LIMIT.7",
+      "bank-b-position-5/R_P5_LO_GATE.1",
+      "bank-b-position-5/C_P5_LO_COMP.1"
+    ]
+  },
+  {
+    "net": "P5_HI_GATE",
+    "drawingLabel": "P5_HI_GATE",
+    "sheets": [
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "bank-b-position-5/R_P5_HI_GATE.2",
+      "bank-b-position-5/Q_P5_HIGH.1"
+    ]
+  },
+  {
+    "net": "P5_LO_GATE",
+    "drawingLabel": "P5_LO_GATE",
+    "sheets": [
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "bank-b-position-5/R_P5_LO_GATE.2",
+      "bank-b-position-5/Q_P5_LOW.2"
+    ]
+  },
+  {
+    "net": "P5_SOURCE_OUT",
+    "drawingLabel": "P5_SOURCE_OUT",
+    "sheets": [
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "bank-b-position-5/Q_P5_HIGH.3",
+      "bank-b-position-5/K_P5_HIGH.3"
+    ]
+  },
+  {
+    "net": "P5_SINK_IN",
+    "drawingLabel": "P5_SINK_IN",
+    "sheets": [
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "bank-b-position-5/Q_P5_LOW.3",
+      "bank-b-position-5/K_P5_LOW.4"
+    ]
+  },
+  {
+    "net": "P5_K_HIGH_LED",
+    "drawingLabel": "P5_K_HIGH_LED",
+    "sheets": [
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "bank-b-position-5/K_P5_HIGH.1",
+      "bank-b-position-5/R_P5_K_HIGH_LED.2"
+    ]
+  },
+  {
+    "net": "P5_K_LOW_LED",
+    "drawingLabel": "P5_K_LOW_LED",
+    "sheets": [
+      "16-smart-position-6"
+    ],
+    "pins": [
+      "bank-b-position-5/K_P5_LOW.1",
+      "bank-b-position-5/R_P5_K_LOW_LED.2"
+    ]
+  }
+]
