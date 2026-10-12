@@ -1,0 +1,263 @@
+{
+  "revision": "r8-simplified-lower-boards",
+  "checks": [
+    {
+      "checkpoint": "CP00",
+      "netGroups": 19,
+      "unusedPassiveInterfacePins": [
+        {
+          "board": "router-matrix",
+          "endpoint": "J_ROUTER_POWER_CONTROL.3",
+          "net": "3V3_SYS",
+          "activeFrom": 9,
+          "reason": "Unused passive supply receiving pin; leave open until the qualified primary cable is fitted. No IC supply is exempted."
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP01",
+      "netGroups": 45,
+      "unusedPassiveInterfacePins": [
+        {
+          "board": "router-matrix",
+          "endpoint": "J_ROUTER_POWER_CONTROL.3",
+          "net": "3V3_SYS",
+          "activeFrom": 9,
+          "reason": "Unused passive supply receiving pin; leave open until the qualified primary cable is fitted. No IC supply is exempted."
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP02",
+      "netGroups": 45,
+      "unusedPassiveInterfacePins": [
+        {
+          "board": "router-matrix",
+          "endpoint": "J_ROUTER_POWER_CONTROL.3",
+          "net": "3V3_SYS",
+          "activeFrom": 9,
+          "reason": "Unused passive supply receiving pin; leave open until the qualified primary cable is fitted. No IC supply is exempted."
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP03",
+      "netGroups": 45,
+      "unusedPassiveInterfacePins": [
+        {
+          "board": "router-matrix",
+          "endpoint": "J_ROUTER_POWER_CONTROL.3",
+          "net": "3V3_SYS",
+          "activeFrom": 9,
+          "reason": "Unused passive supply receiving pin; leave open until the qualified primary cable is fitted. No IC supply is exempted."
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP04",
+      "netGroups": 45,
+      "unusedPassiveInterfacePins": [
+        {
+          "board": "router-matrix",
+          "endpoint": "J_ROUTER_POWER_CONTROL.3",
+          "net": "3V3_SYS",
+          "activeFrom": 9,
+          "reason": "Unused passive supply receiving pin; leave open until the qualified primary cable is fitted. No IC supply is exempted."
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP05",
+      "netGroups": 45,
+      "unusedPassiveInterfacePins": [
+        {
+          "board": "router-matrix",
+          "endpoint": "J_ROUTER_POWER_CONTROL.3",
+          "net": "3V3_SYS",
+          "activeFrom": 9,
+          "reason": "Unused passive supply receiving pin; leave open until the qualified primary cable is fitted. No IC supply is exempted."
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP06",
+      "netGroups": 46,
+      "unusedPassiveInterfacePins": [
+        {
+          "board": "router-matrix",
+          "endpoint": "J_ROUTER_POWER_CONTROL.3",
+          "net": "3V3_SYS",
+          "activeFrom": 9,
+          "reason": "Unused passive supply receiving pin; leave open until the qualified primary cable is fitted. No IC supply is exempted."
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP07",
+      "netGroups": 46,
+      "unusedPassiveInterfacePins": [
+        {
+          "board": "router-matrix",
+          "endpoint": "J_ROUTER_POWER_CONTROL.3",
+          "net": "3V3_SYS",
+          "activeFrom": 9,
+          "reason": "Unused passive supply receiving pin; leave open until the qualified primary cable is fitted. No IC supply is exempted."
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP08",
+      "netGroups": 46,
+      "unusedPassiveInterfacePins": [
+        {
+          "board": "router-matrix",
+          "endpoint": "J_ROUTER_POWER_CONTROL.3",
+          "net": "3V3_SYS",
+          "activeFrom": 9,
+          "reason": "Unused passive supply receiving pin; leave open until the qualified primary cable is fitted. No IC supply is exempted."
+        }
+      ]
+    },
+    {
+      "checkpoint": "CP09",
+      "netGroups": 53,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP10",
+      "netGroups": 64,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP11",
+      "netGroups": 82,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP12",
+      "netGroups": 82,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP13",
+      "netGroups": 86,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP14",
+      "netGroups": 86,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP15",
+      "netGroups": 144,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP16",
+      "netGroups": 144,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP17",
+      "netGroups": 144,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP18",
+      "netGroups": 144,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP19",
+      "netGroups": 144,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP20",
+      "netGroups": 144,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP21",
+      "netGroups": 144,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP22",
+      "netGroups": 148,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP23",
+      "netGroups": 148,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP24",
+      "netGroups": 198,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP25",
+      "netGroups": 198,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP26",
+      "netGroups": 198,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP27",
+      "netGroups": 221,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP28",
+      "netGroups": 239,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP29",
+      "netGroups": 279,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP30",
+      "netGroups": 302,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP31",
+      "netGroups": 320,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP32",
+      "netGroups": 326,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP33",
+      "netGroups": 326,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP34",
+      "netGroups": 331,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP35",
+      "netGroups": 331,
+      "unusedPassiveInterfacePins": []
+    },
+    {
+      "checkpoint": "CP36",
+      "netGroups": 331,
+      "unusedPassiveInterfacePins": []
+    }
+  ],
+  "issues": []
+}

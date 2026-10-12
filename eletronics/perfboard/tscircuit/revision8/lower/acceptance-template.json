@@ -1,0 +1,69 @@
+{
+  "revision": "r8-simplified-lower-boards",
+  "status": "pending",
+  "records": [
+    {
+      "test": "voltage guard UV/OV and failed-buck transients",
+      "status": "pending",
+      "equipment": [],
+      "measurements": [],
+      "waveform": null
+    },
+    {
+      "test": "trip >10.6 and <=12mA; cutoff <=1ms",
+      "status": "pending",
+      "equipment": [],
+      "measurements": [],
+      "waveform": null
+    },
+    {
+      "test": "PRESET wins against simultaneous reset",
+      "status": "pending",
+      "equipment": [],
+      "measurements": [],
+      "waveform": null
+    },
+    {
+      "test": "watchdog 200–350ms; stale heartbeat",
+      "status": "pending",
+      "equipment": [],
+      "measurements": [],
+      "waveform": null
+    },
+    {
+      "test": "all USB/bench-power combinations; no backfeed",
+      "status": "pending",
+      "equipment": [],
+      "measurements": [],
+      "waveform": null
+    },
+    {
+      "test": "permanent consumer-rail and safety-path continuity; interlock fail-safe behavior",
+      "status": "pending",
+      "equipment": [],
+      "measurements": [],
+      "waveform": null
+    },
+    {
+      "test": "22 independent NODE continuity paths",
+      "status": "pending",
+      "equipment": [],
+      "measurements": [],
+      "waveform": null
+    },
+    {
+      "test": "button bounce/held-at-boot/repeated press",
+      "status": "pending",
+      "equipment": [],
+      "measurements": [],
+      "waveform": null
+    },
+    {
+      "test": "stock grid, sockets, adapters, tray and plug access",
+      "status": "pending",
+      "equipment": [],
+      "measurements": [],
+      "waveform": null
+    }
+  ]
+}

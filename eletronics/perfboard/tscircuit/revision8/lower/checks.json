@@ -1,0 +1,339 @@
+{
+  "revision": "r8-simplified-lower-boards",
+  "sourceDigest": "8d6f6754224e862b996fd547e8dbebeac7a0ddaf95d3df7b593dbd93ef998c52",
+  "softwareStatus": "pass",
+  "assemblyIssues": [],
+  "native": [
+    {
+      "board": "power",
+      "section": "Complete board",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "power",
+      "section": "Complete schematic",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "power",
+      "section": "power-interlock: Outputs",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "power",
+      "section": "power-interlock: Latch",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "power",
+      "section": "power-guards: VoltageGuard 1",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "power",
+      "section": "power-guards: VoltageGuard 2",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "power",
+      "section": "power-analog: Reference",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "power",
+      "section": "power-analog: Student",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "power",
+      "section": "power-input: Input",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "power",
+      "section": "power-interlock: Indicator",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "power",
+      "section": "power-input: Circuit",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "power",
+      "section": "Test aids",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "Complete board",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "router-core: Controller",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "matrix-switches: Matrix",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "integration: Pi",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "matrix-control: Control",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "router-safety: Watchdog",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "matrix-control: Tools",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "router-safety: Return",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "integration: Circuit",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "matrix-switches: Control",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "integration: Buttons",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "router-core: Circuit",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    },
+    {
+      "board": "router-matrix",
+      "section": "Test aids",
+      "status": "pass",
+      "checks": {
+        "source": [],
+        "pins": [],
+        "netlist": [],
+        "schematic": [],
+        "placement": []
+      }
+    }
+  ],
+  "hardwareStatus": "pending",
+  "scope": "Native source/pin/netlist/schematic/placement and descriptor checks; hand wires are annotations, no routed copper.",
+  "copper": {
+    "status": "pass",
+    "results": [
+      {
+        "board": "power",
+        "stage": "shorts",
+        "exitCode": 0,
+        "ok": true
+      },
+      {
+        "board": "power",
+        "stage": "pcb-style",
+        "exitCode": 0,
+        "ok": true
+      },
+      {
+        "board": "router-matrix",
+        "stage": "shorts",
+        "exitCode": 0,
+        "ok": true
+      },
+      {
+        "board": "router-matrix",
+        "stage": "pcb-style",
+        "exitCode": 0,
+        "ok": true
+      }
+    ]
+  }
+}

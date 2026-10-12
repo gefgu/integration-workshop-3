@@ -45,7 +45,7 @@ for (const board of boards) {
       pins,
       signals,
       bounds: { xmin: groupStarts[group] - 1, xmax: groupStarts[group] + 4, ymin: row - 1, ymax: row + 1 },
-      phase: Math.min(...oldHeaders.map((p) => p.phase)),
+      phase: oldHeaders[group].phase,
       provisional: true,
       body: 'header',
       mpn: 'unverified 1x4 connector',
@@ -79,7 +79,7 @@ for (const board of boards) {
     ],
     signals: { 1: 'GND', 2: '3V3_SYS' },
     bounds: { xmin: powerX - 0.5, xmax: powerX + 1.5, ymin: powerRow - 0.5, ymax: powerRow + 0.5 },
-    phase: Math.min(...oldHeaders.map((p) => p.phase)),
+    phase: Math.min(...board.parts.filter((p) => p.origin === 'J_SERVICE').map((p) => p.phase)),
     provisional: true,
     body: 'header',
     mpn: 'unverified 1x2 connector',
@@ -149,10 +149,10 @@ for (const board of boards) {
     }
   }
 
-  // Feed the existing shared service rails at the middle service connector.
+  // Feed the existing shared service rails at the earliest-installed service connector.
   // The smart-component power fanout itself is an off-board harness branch.
-  const service = board.parts.find((part) => part.ref === `${boardPrefix}2_SERVICE`);
-  if (!service) throw new Error(`${board.id}: missing middle service connector for shared power feed`);
+  const service = board.parts.find((part) => part.ref === `${boardPrefix}1_SERVICE`);
+  if (!service) throw new Error(`${board.id}: missing first service connector for shared power feed`);
   for (const [signal, powerPin, servicePin] of [['GND', 1, 3], ['3V3_SYS', 2, 4]]) {
     const a = powerPart.pins[powerPin - 1].hole;
     const b = service.pins.find((pin) => pin.number === servicePin).hole;
@@ -163,7 +163,30 @@ for (const board of boards) {
       from: `${powerRef}.${powerPin}`,
       to: `${service.ref}.${servicePin}`,
       path: [a, b], color: signal === 'GND' ? '#202124' : '#e53935',
-      side: 'bottom', insulated: true, bar: false, phase: powerPart.phase,
+      side: 'bottom', insulated: true, bar: false, phase: Math.max(powerPart.phase, service.phase),
+    });
+  }
+
+  // Feed every service-contact 3V3 pad from the shared power connector. This
+  // makes the connector the fanout point instead of daisy-chaining the rail
+  // through the service contacts.
+  const serviceConnectors = board.parts
+    .filter((part) => part.origin === 'J_SERVICE')
+    .sort((a, b) => a.ref.localeCompare(b.ref, undefined, { numeric: true }));
+  const service3v3Endpoints = new Set(serviceConnectors.map((part) => `${part.ref}.4`));
+  board.wires = board.wires.filter((wire) =>
+    !(wire.net === '3V3_SYS' && service3v3Endpoints.has(wire.from) && service3v3Endpoints.has(wire.to)));
+  for (const target of serviceConnectors.slice(1)) {
+    const endpoint = `${target.ref}.4`;
+    board.wires.push({
+      id: `W_SMART_POWER_3V3_SYS_${target.ref}`,
+      uid: `wire:3V3_SYS:${powerRef}.2~${endpoint}`,
+      net: '3V3_SYS',
+      from: `${powerRef}.2`,
+      to: endpoint,
+      path: [powerPart.pins[1].hole, target.pins.find((pin) => pin.number === 4).hole],
+      color: '#e53935', side: 'bottom', insulated: true, bar: false,
+      phase: Math.max(powerPart.phase, target.phase),
     });
   }
 
@@ -203,17 +226,19 @@ for (const board of boards) {
     }
   }
 
-  // Red is reserved for power and black for ground. NODE signal leads use
-  // blue, white, yellow and green; service buses use blue/white as well.
-  const wirePalette = ['#1976d2', '#ffffff', '#fbc02d', '#388e3c'];
-  const bundlePinForNet = new Map(nodeNames.map((name, index) => [name, index + 1]));
+  for (const wire of board.wires) wire.phase = Math.max(partFor(wire.from).phase, partFor(wire.to).phase);
+
+  // Keep physical wire colors consistent by responsibility across both boards.
   for (const wire of board.wires) {
-    if (bundlePinForNet.has(wire.net)) {
-      wire.color = wirePalette[(bundlePinForNet.get(wire.net) - 1) % wirePalette.length];
-    } else if (wire.net === 'GND') wire.color = '#202124';
+    if (wire.net === 'GND') wire.color = '#202124';
     else if (wire.net === '3V3_SYS') wire.color = '#e53935';
     else if (wire.net.startsWith('SCL_')) wire.color = '#1976d2';
-    else if (wire.net.startsWith('SDA_')) wire.color = '#ffffff';
+    else if (wire.net.startsWith('SDA_')) wire.color = '#fbc02d';
+    else if (wire.net.startsWith('NODE')) {
+      const endpoints = [wire.from, wire.to];
+      const smartBranch = endpoints.some((endpoint) => partFor(endpoint)?.origin === 'J_SMART');
+      wire.color = smartBranch ? '#8e44ad' : '#388e3c';
+    }
   }
 
   // Tag the five logical pin-to-pin links in each node's six-contact chain as one
