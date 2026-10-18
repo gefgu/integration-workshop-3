@@ -8,11 +8,13 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "node --import tsx --test tests/*.test.ts",
-    "validator": "../graph_validator/.venv/bin/uvicorn graph_validator.service.app:app --port 8000",
+    "validator": "node scripts/venv.mjs uvicorn graph_validator.service.app:app --host 0.0.0.0 --port 8000",
     "typecheck": "tsc --noEmit",
-    "lint": "biome lint src tests vite.config.ts",
+    "lint": "biome lint src tests vite.config.ts scripts",
     "format": "biome format --write src tests vite.config.ts",
-    "check": "biome check src tests vite.config.ts"
+    "check": "biome check src tests vite.config.ts",
+    "migrate": "node scripts/venv.mjs alembic -c ../graph_validator/alembic.ini upgrade head",
+    "bench-service": "node scripts/venv.mjs python -m bench_service --dev --db ../bench/service/bench.sqlite3"
   },
   "dependencies": {
     "react": "^18.3.1",

@@ -1,0 +1,94 @@
+/* Workbench screen (7", 1024×600): large targets for joystick focus, one screen at a time. */
+.bench-shell {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  background: var(--color-bg);
+}
+.bench-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  font-size: 14px;
+  color: var(--color-neutral-600);
+}
+.bench-header strong {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  color: var(--color-text);
+}
+.bench-stage {
+  overflow: auto;
+  padding: 8px 20px 24px;
+  touch-action: pan-y;
+}
+.bench-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding-top: 12px;
+}
+.bench-card {
+  width: min(100%, 640px);
+  display: grid;
+  gap: 12px;
+}
+.bench-card h2 {
+  font-size: 22px;
+}
+.bench-big {
+  font-size: 18px;
+  padding: 16px 24px;
+}
+.bench-lessons {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.bench-lessons button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  text-align: left;
+}
+.bench-lessons small {
+  color: var(--color-neutral-600);
+  font-family: var(--font-body);
+}
+.bench-score {
+  font-family: var(--font-heading);
+  font-size: 72px;
+  text-align: center;
+  color: var(--color-accent-700);
+}
+.bench-podium {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.bench-podium li {
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: var(--color-neutral-100);
+}
+.bench-medal {
+  font-size: 24px;
+}
+.bench-lesson {
+  padding-top: 8px;
+}
+.bench-shell :focus-visible {
+  outline: 3px solid var(--color-accent-2);
+  outline-offset: 2px;
+}

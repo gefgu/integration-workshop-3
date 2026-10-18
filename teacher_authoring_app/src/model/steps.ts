@@ -26,6 +26,7 @@ const NOME = {
   resistor_220: 'o resistor de 220 Ω',
   resistor_470: 'o resistor de 470 Ω',
   resistor_1k: 'o resistor de 1 kΩ',
+  resistor_cc: 'o resistor de código de cores',
   capacitor: 'o capacitor',
   botao: 'o botão',
   potenciometro: 'o potenciômetro',

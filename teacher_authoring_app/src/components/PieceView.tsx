@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import { CAPSULE, DEFS, formatOhms, isCapsule, POT_DEFAULT } from '../engine/sim.ts';
+import { CAPSULE, CC_BANDS, CC_DEFAULT, ccDiscs, DEFS, formatOhms, isCapsule, POT_DEFAULT } from '../engine/sim.ts';
 import type { PieceType } from '../model/types.ts';
 
 /**
@@ -21,6 +21,8 @@ interface PieceViewProps {
   reversed?: boolean;
   value?: number;
   onPotStep?: (direction: number) => void;
+  /** Color-code resistor: turn disc 0, 1 or 2 to its next detent. */
+  onCcDisc?: (disc: 0 | 1 | 2) => void;
   pressed?: boolean;
   /** Smart capsule: lines shown on its OLED. */
   oled?: string[];
@@ -39,6 +41,7 @@ export default function PieceView({
   reversed = false,
   value,
   onPotStep,
+  onCcDisc,
   pressed = false,
   oled,
   fault = false,
@@ -78,6 +81,8 @@ export default function PieceView({
       {d.dots && !isJumper && <Dots n={d.dots} />}
       {type === 'potenciometro' ? (
         <PotFace value={value || POT_DEFAULT} onStep={onPotStep} />
+      ) : type === 'resistor_cc' ? (
+        <CcFace value={value || CC_DEFAULT} onDisc={onCcDisc} />
       ) : type === 'botao' ? (
         <ButtonCap pressed={pressed} onChange={onButton} />
       ) : (
@@ -236,6 +241,40 @@ function PotFace({ value, onStep }) {
           +
         </button>
       )}
+    </span>
+  );
+}
+
+/** Three color discs (EFR12); clicking a disc turns it to the next detent. */
+function CcFace({ value, onDisc }: { value: number; onDisc?: (disc: 0 | 1 | 2) => void }) {
+  const pos = ccDiscs(value) ?? ccDiscs(CC_DEFAULT);
+  const stop = (e) => e.stopPropagation();
+  return (
+    <span style={{ display: 'flex', alignItems: 'center', gap: 3, marginTop: 5, fontSize: 10 }}>
+      {([0, 1, 2] as const).map((disc) => {
+        const band = CC_BANDS[disc][pos[disc]];
+        return (
+          <button
+            key={disc}
+            type="button"
+            disabled={!onDisc}
+            onPointerDown={stop}
+            onClick={() => onDisc?.(disc)}
+            aria-label={`Disco ${disc + 1}: ${band.name}`}
+            title={band.name}
+            style={{
+              width: 11,
+              height: 14,
+              padding: 0,
+              borderRadius: 3,
+              border: '1px solid rgba(255,255,255,.7)',
+              background: band.color,
+              cursor: onDisc ? 'pointer' : 'inherit',
+            }}
+          />
+        );
+      })}
+      <span style={{ marginLeft: 2 }}>{formatOhms(value)}</span>
     </span>
   );
 }

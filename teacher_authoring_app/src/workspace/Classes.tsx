@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import type { ClassDetail, SchoolClass, Student, StudentInput } from '../api/workspace.ts';
+import type { ClassDetail, Module, SchoolClass } from '../api/workspace.ts';
 import { workspace } from '../api/workspace.ts';
 import type { Lesson } from '../model/types.ts';
-
-const emptyStudent: StudentInput = { name: '', nickname: '', nfc_code: null, active: true };
+import OrderedPicker from './OrderedPicker.tsx';
+import { StudentManager } from './Students.tsx';
 
 export default function Classes({ lessons }: { lessons: Lesson[] }) {
   const { classId } = useParams();
@@ -37,7 +37,7 @@ function ClassList() {
   return (
     <div className="workspace-page">
       <h2>Turmas</h2>
-      <p>Organize alunos e lições por turma.</p>
+      <p>Organize alunos e módulos por turma.</p>
       {error && (
         <p className="app-error" role="alert">
           {error}
@@ -75,7 +75,13 @@ function ClassList() {
           <article className="panel" key={item.id}>
             <h3>{item.name}</h3>
             <p>{item.description || 'Sem descrição'}</p>
-            <Link to={`/turmas/${item.id}`}>Abrir turma</Link>
+            <p className="muted-line">
+              {item.student_count ?? 0} {item.student_count === 1 ? 'aluno' : 'alunos'}
+            </p>
+            <div className="workspace-actions">
+              <Link to={`/turmas/${item.id}`}>Abrir turma</Link>
+              <Link to={`/painel/${item.id}`}>Ver desempenho</Link>
+            </div>
           </article>
         ))}
       </div>
@@ -86,20 +92,21 @@ function ClassList() {
 function ClassPage({ classId, lessons }: { classId: number; lessons: Lesson[] }) {
   const navigate = useNavigate();
   const [detail, setDetail] = useState<ClassDetail | null>(null);
+  const [classes, setClasses] = useState<SchoolClass[]>([]);
+  const [modules, setModules] = useState<Module[]>([]);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [student, setStudent] = useState<StudentInput>(emptyStudent);
-  const [editingStudentId, setEditingStudentId] = useState<number | null>(null);
-  const [selectedLesson, setSelectedLesson] = useState('');
   const [error, setError] = useState('');
   const [status, setStatus] = useState('');
 
   useEffect(() => {
-    workspace.getClass(classId).then(
-      (item) => {
+    Promise.all([workspace.getClass(classId), workspace.listClasses(), workspace.listModules()]).then(
+      ([item, allClasses, allModules]) => {
         setDetail(item);
         setName(item.name);
         setDescription(item.description);
+        setClasses(allClasses);
+        setModules(allModules);
         setError('');
       },
       (cause) => setError(cause.message)
@@ -127,7 +134,7 @@ function ClassPage({ classId, lessons }: { classId: number; lessons: Lesson[] })
   }
 
   async function removeClass() {
-    if (!confirm('Excluir esta turma e seus alunos? As lições serão preservadas.')) return;
+    if (!confirm('Excluir esta turma, seus alunos e o histórico deles? Módulos e lições serão preservados.')) return;
     try {
       await workspace.deleteClass(classId);
       navigate('/turmas');
@@ -136,34 +143,12 @@ function ClassPage({ classId, lessons }: { classId: number; lessons: Lesson[] })
     }
   }
 
-  async function saveStudent(event: React.FormEvent) {
-    event.preventDefault();
-    await run(
-      async () => {
-        if (editingStudentId == null) await workspace.createStudent(classId, student);
-        else await workspace.updateStudent(editingStudentId, student);
-        setStudent(emptyStudent);
-        setEditingStudentId(null);
-      },
-      editingStudentId == null ? 'Aluno criado. Veja o ID na lista.' : 'Aluno atualizado.'
-    );
-  }
-
-  function editStudent(item: Student) {
-    setEditingStudentId(item.id);
-    setStudent({ name: item.name, nickname: item.nickname, nfc_code: item.nfc_code, active: item.active });
-  }
-
-  function setOrder(next: string[]) {
-    return run(() => workspace.setClassLessons(classId, next), 'Lições da turma atualizadas.');
-  }
-
-  const ordered = detail?.lesson_ids ?? [];
-  const available = lessons.filter((item) => !ordered.includes(item.id));
-
   return (
     <div className="workspace-page">
-      <Link to="/turmas">← Todas as turmas</Link>
+      <div className="workspace-actions">
+        <Link to="/turmas">← Todas as turmas</Link>
+        <Link to={`/painel/${classId}`}>Ver desempenho da turma →</Link>
+      </div>
       {error && (
         <p className="app-error" role="alert">
           {error}
@@ -171,11 +156,11 @@ function ClassPage({ classId, lessons }: { classId: number; lessons: Lesson[] })
       )}
       {status && <p role="status">{status}</p>}
       {!detail ? (
-        <p>Carregando turma…</p>
+        !error && <p>Carregando turma…</p>
       ) : (
         <>
           <form className="panel workspace-form" onSubmit={saveClass}>
-            <h2>Turma #{detail.id}</h2>
+            <h2>Turma {detail.name}</h2>
             <label className="field-label" htmlFor="edit-class-name">
               Nome
             </label>
@@ -207,170 +192,39 @@ function ClassPage({ classId, lessons }: { classId: number; lessons: Lesson[] })
           </form>
 
           <section className="panel workspace-section">
-            <h2>Lições da turma</h2>
-            <p>Uma lição pode ser usada em várias turmas.</p>
-            <div className="workspace-actions">
-              <select
-                className="text-input"
-                aria-label="Lição para adicionar"
-                value={selectedLesson}
-                onChange={(e) => setSelectedLesson(e.target.value)}
-              >
-                <option value="">Selecione uma lição</option>
-                {available.map((item) => (
-                  <option value={item.id} key={item.id}>
-                    {item.title}
-                  </option>
-                ))}
-              </select>
-              <button
-                type="button"
-                className="btn-primary"
-                disabled={!selectedLesson}
-                onClick={() => {
-                  void setOrder([...ordered, selectedLesson]);
-                  setSelectedLesson('');
-                }}
-              >
-                Adicionar
-              </button>
-            </div>
-            {ordered.length === 0 && <p>Nenhuma lição atribuída.</p>}
-            <ol className="workspace-list">
-              {ordered.map((id, index) => {
-                const found = lessons.find((item) => item.id === id);
-                return (
-                  <li key={id}>
-                    <Link to={`/editor/${encodeURIComponent(id)}`}>{found?.title ?? `Lição ${id}`}</Link>
-                    <div className="workspace-actions">
-                      <button
-                        type="button"
-                        className="btn-outline"
-                        disabled={index === 0}
-                        aria-label={`Mover ${found?.title} para cima`}
-                        onClick={() => {
-                          const next = [...ordered];
-                          [next[index - 1], next[index]] = [next[index], next[index - 1]];
-                          void setOrder(next);
-                        }}
-                      >
-                        ↑
-                      </button>
-                      <button
-                        type="button"
-                        className="btn-outline"
-                        disabled={index === ordered.length - 1}
-                        aria-label={`Mover ${found?.title} para baixo`}
-                        onClick={() => {
-                          const next = [...ordered];
-                          [next[index + 1], next[index]] = [next[index], next[index + 1]];
-                          void setOrder(next);
-                        }}
-                      >
-                        ↓
-                      </button>
-                      <button
-                        type="button"
-                        className="pill-link-btn"
-                        onClick={() => void setOrder(ordered.filter((lessonId) => lessonId !== id))}
-                      >
-                        Remover
-                      </button>
-                    </div>
-                  </li>
-                );
-              })}
-            </ol>
+            <h2>Módulos da turma</h2>
+            <p>
+              Os módulos definem o que a turma estuda e o que conta no progresso.{' '}
+              <Link to="/modulos">Gerenciar módulos</Link>
+            </p>
+            <OrderedPicker
+              label="Selecione um módulo"
+              empty="Nenhum módulo atribuído."
+              value={detail.module_ids}
+              options={modules.map((item) => ({ id: item.id, label: item.title, href: `/modulos/${item.id}` }))}
+              onChange={(next) => void run(() => workspace.setClassModules(classId, next), 'Módulos atualizados.')}
+            />
           </section>
 
           <section className="panel workspace-section">
-            <h2>Alunos</h2>
-            <form className="workspace-form" onSubmit={saveStudent}>
-              <h3>{editingStudentId == null ? 'Novo aluno' : `Editar aluno #${editingStudentId}`}</h3>
-              <label className="field-label" htmlFor="student-name">
-                Nome
-              </label>
-              <input
-                id="student-name"
-                className="text-input"
-                required
-                maxLength={255}
-                value={student.name}
-                onChange={(e) => setStudent({ ...student, name: e.target.value })}
-              />
-              <label className="field-label" htmlFor="student-nickname">
-                Apelido
-              </label>
-              <input
-                id="student-nickname"
-                className="text-input"
-                required
-                maxLength={255}
-                value={student.nickname}
-                onChange={(e) => setStudent({ ...student, nickname: e.target.value })}
-              />
-              <label className="field-label" htmlFor="student-nfc">
-                Código NFC (opcional)
-              </label>
-              <input
-                id="student-nfc"
-                className="text-input"
-                maxLength={255}
-                value={student.nfc_code ?? ''}
-                onChange={(e) => setStudent({ ...student, nfc_code: e.target.value || null })}
-              />
-              <label className="workspace-checkbox">
-                <input
-                  type="checkbox"
-                  checked={student.active}
-                  onChange={(e) => setStudent({ ...student, active: e.target.checked })}
-                />{' '}
-                Ativo
-              </label>
-              <div className="workspace-actions">
-                <button className="btn-primary" type="submit">
-                  {editingStudentId == null ? 'Criar aluno' : 'Salvar aluno'}
-                </button>
-                {editingStudentId != null && (
-                  <button
-                    className="btn-outline"
-                    type="button"
-                    onClick={() => {
-                      setStudent(emptyStudent);
-                      setEditingStudentId(null);
-                    }}
-                  >
-                    Cancelar
-                  </button>
-                )}
-              </div>
-            </form>
-            {detail.students.length === 0 && <p>Nenhum aluno cadastrado.</p>}
-            <ul className="workspace-list">
-              {detail.students.map((item) => (
-                <li key={item.id}>
-                  <span>
-                    <strong>#{item.id}</strong> {item.name} ({item.nickname}) · {item.active ? 'Ativo' : 'Inativo'}
-                    {item.nfc_code ? ` · NFC ${item.nfc_code}` : ''}
-                  </span>
-                  <div className="workspace-actions">
-                    <button type="button" className="btn-outline" onClick={() => editStudent(item)}>
-                      Editar
-                    </button>
-                    <button
-                      type="button"
-                      className="pill-link-btn"
-                      onClick={() => {
-                        if (confirm(`Excluir ${item.name}?`))
-                          void run(() => workspace.deleteStudent(item.id), 'Aluno excluído.');
-                      }}
-                    >
-                      Excluir
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
+            <h2>Lições avulsas</h2>
+            <p>Lições fora de um módulo que também contam no progresso da turma.</p>
+            <OrderedPicker
+              label="Selecione uma lição"
+              empty="Nenhuma lição avulsa."
+              value={detail.lesson_ids}
+              options={lessons.map((item) => ({
+                id: item.id,
+                label: item.title,
+                href: `/editor/${encodeURIComponent(item.id)}`,
+              }))}
+              onChange={(next) => void run(() => workspace.setClassLessons(classId, next), 'Lições atualizadas.')}
+            />
+          </section>
+
+          <section className="panel workspace-section">
+            <h2>Alunos ({detail.students.length})</h2>
+            <StudentManager classes={classes} classId={classId} onChange={() => void refresh()} />
           </section>
         </>
       )}

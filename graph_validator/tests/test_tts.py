@@ -13,6 +13,7 @@ from sqlalchemy.pool import StaticPool
 from graph_validator.feedback import DEFAULT_MESSAGES, NAMES
 from graph_validator.service import tts as tts_service
 from graph_validator.service.app import app
+from graph_validator.service.auth import current_teacher
 from graph_validator.service.storage import Base, Teacher, get_session
 from graph_validator.tts import (PLAYER_PHRASES, PiperSynth, audio_file, build_system_pack, ensure_audio,
                                  lesson_audio, lesson_phrases, normalize, system_phrases)
@@ -125,6 +126,7 @@ def client(tmp_path, monkeypatch):
     monkeypatch.setenv("TEDTRONICS_AUDIO_DIR", str(tmp_path))
     monkeypatch.setattr(tts_service, "synthesizer", lambda: synth)
     app.dependency_overrides[get_session] = session
+    app.dependency_overrides[current_teacher] = lambda: Teacher(id=1, email="t@example.test", name="Demo")
     try:
         yield TestClient(app)
     finally:
