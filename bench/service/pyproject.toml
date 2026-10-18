@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tedtronics-bench"
+version = "0.1.0"
+description = "TedTronics workbench service: local storage, teacher-app protocol, local validation"
+requires-python = ">=3.10"
+# graph-validator is installed from ../../graph_validator (see bench/README.md)
+dependencies = ["graph-validator", "fastapi>=0.110", "uvicorn>=0.27", "websockets>=12"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "httpx>=0.27"]
+ble = ["bless>=0.2"]
+
+[tool.setuptools]
+packages = ["bench_service"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -65,3 +65,6 @@ eletronics/perfboard/tscircuit/checks/
 # Assembly app: generated frontend and private local build records
 eletronics/perfboard/tscircuit/app/dist/
 eletronics/perfboard/tscircuit/app/data/
+
+# Bench service local database
+bench/service/*.sqlite3*

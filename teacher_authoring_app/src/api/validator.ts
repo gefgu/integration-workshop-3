@@ -2,7 +2,12 @@ import { pieceOut, toValidatorLesson } from '../model/steps.ts';
 import type { Lesson, Piece } from '../model/types.ts';
 
 /** The Vite dev server proxies /api to the graph_validator service (see vite.config.js). */
-export const BASE = '/api';
+export let BASE = '/api';
+
+/** The bench screen validates against its local bench service (`<service>/validator`). */
+export function setValidatorBase(url: string): void {
+  BASE = url.replace(/\/+$/, '');
+}
 
 /** Result: { ok:true, data } | { ok:false, offline:true } | { ok:false, error, problems? }. */
 type FetchLike = (input: string, init?: RequestInit) => Promise<any>;

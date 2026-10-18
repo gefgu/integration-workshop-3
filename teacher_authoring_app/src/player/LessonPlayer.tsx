@@ -8,24 +8,12 @@ import { mergeTrails } from '../engine/capsules.ts';
 import { diagnose } from '../engine/diagnose.ts';
 import { capsuleConfig, formatOhms, isCapsule, NOMES } from '../engine/sim.ts';
 import { cumulativeBoard, effectiveSteps } from '../model/steps.ts';
+import { boardBefore, buildPhases, challengeScore, type PlayerEvent } from './phases.ts';
+
+export { boardBefore, buildPhases, challengeScore, type PlayerEvent };
 
 const PRAISE = ['Boa!', 'Isso aí!', 'Mandou bem!', 'Perfeito!', 'Show!', 'Exato!'];
 const praise = () => PRAISE[Math.floor(Math.random() * PRAISE.length)];
-
-function buildPhases(lesson) {
-  const quiz = (pos) => lesson.quizzes.filter((q) => q.position === pos).map((q) => ({ type: 'quiz', quiz: q }));
-  let middle = [];
-  if (lesson.kind === 'challenge') {
-    if (lesson.board.pieces.length > 0) middle = [{ type: 'challenge' }];
-  } else {
-    middle = effectiveSteps(lesson).map((step, idx) =>
-      step.action === 'interact'
-        ? { type: 'interact', idx, step, quiz: lesson.quizzes.find((q) => q.id === step.quizId) }
-        : { type: 'step', idx, step }
-    );
-  }
-  return [...quiz('before'), ...middle, ...quiz('after'), { type: 'done' }];
-}
 
 /**
  * Checks the student's board against step `stepIdx` with graph_validator (debounced).
@@ -77,8 +65,8 @@ const ISSUE_LABELS = {
 
 function pieceDescription(piece, withPosition = true) {
   let name =
-    piece.type === 'potenciometro' && piece.value
-      ? `Potenciômetro ${formatOhms(piece.value)}`
+    (piece.type === 'potenciometro' || piece.type === 'resistor_cc') && piece.value
+      ? `${NOMES[piece.type]} ${formatOhms(piece.value)}`
       : NOMES[piece.type] || piece.type;
   if (isCapsule(piece.type)) {
     const setting = Object.values(capsuleConfig(piece)).join(' · ');
@@ -193,17 +181,57 @@ function ValidationDebug({ lesson, stepIdx, pieces, result, error, problems }) {
   );
 }
 
-/** "Testar": roda a lição como o aluno veria — perguntas, passos de montagem validados pelo graph_validator. */
-export default function LessonPlayer({ lesson, onExit, mascotKind }) {
+/**
+ * "Testar": roda a lição como o aluno veria — perguntas, passos de montagem validados pelo graph_validator.
+ * `bench` mode is the workbench screen: no teacher tools, starts at `startPhase`, reports `onEvent`.
+ */
+export default function LessonPlayer({
+  lesson,
+  onExit,
+  mascotKind,
+  bench = false,
+  startPhase = 0,
+  onEvent,
+  exitLabel,
+}: {
+  lesson: any;
+  onExit: () => void;
+  mascotKind: string;
+  bench?: boolean;
+  startPhase?: number;
+  onEvent?: (event: PlayerEvent) => void;
+  exitLabel?: string;
+}) {
   const phases = useMemo(() => buildPhases(lesson), [lesson]);
-  const [idx, setIdx] = useState(0);
-  const [pieces, setPieces] = useState([]); // the student's board, kept across steps
+  const first = Math.min(Math.max(0, startPhase), phases.length - 1);
+  const [idx, setIdx] = useState(first);
+  const [pieces, setPieces] = useState(() => (bench ? boardBefore(lesson, first) : [])); // kept across steps
   const [debugEnabled, setDebugEnabled] = useState(false);
+  const startedAt = useRef(Date.now());
+  const outcome = useRef<{ expired: boolean }>({ expired: false });
   const phase = phases[idx];
-  const next = () => setIdx((i) => Math.min(i + 1, phases.length - 1));
   const steps = phases.length - 1;
+  const next = () => {
+    const current = phases[idx];
+    const nextIdx = Math.min(idx + 1, phases.length - 1);
+    onEvent?.({
+      type: 'phase_done',
+      phase: nextIdx,
+      phases: steps,
+      stepIdx: current.type === 'step' || current.type === 'interact' ? current.idx : null,
+    });
+    if (phases[nextIdx].type === 'done') {
+      const durationS = (Date.now() - startedAt.current) / 1000;
+      const score =
+        lesson.kind === 'challenge' ? challengeScore(durationS, lesson.timeLimitS, outcome.current.expired) : null;
+      onEvent?.({ type: 'lesson_done', durationS, score });
+    }
+    setIdx(nextIdx);
+  };
   const restart = () => {
     setPieces([]);
+    startedAt.current = Date.now();
+    outcome.current.expired = false;
     setIdx(0);
   };
   const stepKey = phase.type === 'step' || phase.type === 'interact' ? phase.step.id : 'challenge';
@@ -222,12 +250,14 @@ export default function LessonPlayer({ lesson, onExit, mascotKind }) {
             {phase.type === 'done' ? 'Concluída' : `Etapa ${idx + 1} de ${steps}`}
           </span>
           <button type="button" className="btn-outline" onClick={onExit}>
-            Voltar ao editor
+            {exitLabel ?? 'Voltar ao editor'}
           </button>
-          <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13 }}>
-            <input type="checkbox" checked={debugEnabled} onChange={(e) => setDebugEnabled(e.target.checked)} />
-            Depurar validação
-          </label>
+          {!bench && (
+            <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13 }}>
+              <input type="checkbox" checked={debugEnabled} onChange={(e) => setDebugEnabled(e.target.checked)} />
+              Depurar validação
+            </label>
+          )}
           <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13 }}>
             <input
               type="checkbox"
@@ -239,14 +269,20 @@ export default function LessonPlayer({ lesson, onExit, mascotKind }) {
             />
             Voz do tutor
           </label>
-          <AudioStatus lesson={lesson} />
+          {!bench && <AudioStatus lesson={lesson} />}
         </div>
         {lesson.instruction && (
           <p style={{ margin: 0, maxWidth: 720, fontSize: 14, lineHeight: 1.5 }}>{lesson.instruction}</p>
         )}
 
         {phase.type === 'quiz' && (
-          <QuizStep key={phase.quiz.id} quiz={phase.quiz} onDone={next} mascotKind={mascotKind} />
+          <QuizStep
+            key={phase.quiz.id}
+            quiz={phase.quiz}
+            onDone={next}
+            mascotKind={mascotKind}
+            onAnswer={(correct) => onEvent?.({ type: 'quiz', quizId: phase.quiz.id, correct })}
+          />
         )}
         {phase.type === 'interact' && (
           <InteractStep
@@ -269,10 +305,14 @@ export default function LessonPlayer({ lesson, onExit, mascotKind }) {
             debugEnabled={debugEnabled}
             timeLimitS={phase.type === 'challenge' ? lesson.timeLimitS : null}
             onDone={next}
+            onExpired={() => {
+              outcome.current.expired = true;
+            }}
             mascotKind={mascotKind}
+            bench={bench}
           />
         )}
-        {phase.type === 'done' && (
+        {phase.type === 'done' && !bench && (
           <>
             <SpokenBubble
               kind={mascotKind}
@@ -311,11 +351,13 @@ function QuizStep({
   onDone,
   mascotKind,
   verify,
+  onAnswer,
 }: {
   quiz: any;
   onDone: () => void;
   mascotKind: string;
   verify?: (id: string) => Promise<any>;
+  onAnswer?: (correct: boolean) => void;
 }) {
   const [picked, setPicked] = useState(null);
   const [verdict, setVerdict] = useState(null);
@@ -335,7 +377,7 @@ function QuizStep({
     if (verify) {
       setVerdict(null);
       setVerdict(await verify(o.id));
-    }
+    } else onAnswer?.(o.id === quiz.correctId);
   }
   return (
     <>
@@ -432,7 +474,19 @@ function Countdown({ seconds, running, onExpire }) {
   );
 }
 
-function BuildStep({ lesson, stepIdx, text, pieces, setPieces, debugEnabled, timeLimitS, onDone, mascotKind }) {
+function BuildStep({
+  lesson,
+  stepIdx,
+  text,
+  pieces,
+  setPieces,
+  debugEnabled,
+  timeLimitS,
+  onDone,
+  onExpired = undefined,
+  mascotKind,
+  bench = false,
+}) {
   const [energized, setEnergized] = useState(false);
   const [held, setHeld] = useState<Set<string>>(() => new Set());
   const [expired, setExpired] = useState(false);
@@ -463,7 +517,9 @@ function BuildStep({ lesson, stepIdx, text, pieces, setPieces, debugEnabled, tim
     msg = text || 'Monte o circuito.';
   if (expired) {
     tone = 'erro';
-    msg = 'O tempo acabou! Clique em “Testar de novo” para tentar outra vez.';
+    msg = bench
+      ? 'O tempo acabou! Termine o circuito para ver sua pontuação.'
+      : 'O tempo acabou! Clique em “Testar de novo” para tentar outra vez.';
   } else if (v.status === 'offline') {
     tone = 'erro';
     msg = 'Validador offline. Inicie o serviço (npm run validator) e tente de novo.';
@@ -472,7 +528,8 @@ function BuildStep({ lesson, stepIdx, text, pieces, setPieces, debugEnabled, tim
     msg = v.error + (v.problems?.length ? ` ${v.problems.join(' ')}` : '');
   } else if (shown && (touched || res?.approved)) ({ tone, msg } = { tone: shown.tone, msg: shown.msg });
 
-  const approved = !!res?.approved && !expired;
+  // On the bench an expired challenge can still be finished (and scores 0); the editor preview stops.
+  const approved = !!res?.approved && (bench || !expired);
   const fillAnswer = () =>
     setPieces(
       (lesson.kind === 'challenge' ? lesson.board.pieces : cumulativeBoard(lesson, stepIdx)).map((p) => ({ ...p }))
@@ -535,11 +592,20 @@ function BuildStep({ lesson, stepIdx, text, pieces, setPieces, debugEnabled, tim
           {energized ? (lit ? `${diag.mA.toFixed(1)} mA no LED` : 'Sem corrente') : 'Bancada desligada'}
         </span>
         {timeLimitS != null && (
-          <Countdown seconds={timeLimitS} running={!expired && !approved} onExpire={() => setExpired(true)} />
+          <Countdown
+            seconds={timeLimitS}
+            running={!expired && !approved}
+            onExpire={() => {
+              setExpired(true);
+              onExpired?.();
+            }}
+          />
         )}
-        <button type="button" className="pill-link-btn muted" onClick={fillAnswer}>
-          preencher com o gabarito
-        </button>
+        {!bench && (
+          <button type="button" className="pill-link-btn muted" onClick={fillAnswer}>
+            preencher com o gabarito
+          </button>
+        )}
         {approved && (
           <button type="button" className="btn-primary" onClick={onDone}>
             Continuar

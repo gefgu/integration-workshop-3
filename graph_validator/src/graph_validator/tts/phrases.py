@@ -12,6 +12,7 @@ from ..models import Piece
 _NOME = {
     "bateria": "a bateria", "led": "o LED", "buzzer": "o buzzer",
     "resistor_220": "o resistor de 220 Ω", "resistor_470": "o resistor de 470 Ω", "resistor_1k": "o resistor de 1 kΩ",
+    "resistor_cc": "o resistor de código de cores",
     "capacitor": "o capacitor", "botao": "o botão", "potenciometro": "o potenciômetro",
     "capsula_pulso": "a cápsula de pulso", "capsula_voltimetro": "a cápsula voltímetro",
     "capsula_amperimetro": "a cápsula amperímetro", "capsula_porta": "a cápsula de porta lógica",

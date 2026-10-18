@@ -12,7 +12,7 @@ import {
   span,
 } from '../engine/board.ts';
 import { AMMETER_SLOT, slotAnchor } from '../engine/nodes.ts';
-import { CAPSULE, DEFS, isCapsule, NOMES, nextConfig, POT_DEFAULT, POT_VALUES } from '../engine/sim.ts';
+import { CAPSULE, DEFS, isCapsule, NOMES, nextConfig, POT_DEFAULT, POT_VALUES, turnCcDisc } from '../engine/sim.ts';
 import type { CapsuleReading, CircuitTrail, Piece } from '../model/types.ts';
 import Breadboard from './Breadboard.tsx';
 import PieceView from './PieceView.tsx';
@@ -159,6 +159,10 @@ export default function BoardWorkspace({
     onChange(piecesRef.current.map((x) => (x.id === p.id ? { ...x, value: next } : x)));
   }
 
+  function turnDisc(p, disc) {
+    onChange(piecesRef.current.map((x) => (x.id === p.id ? { ...x, value: turnCcDisc(x.value, disc) } : x)));
+  }
+
   // Snap preview while dragging over the board.
   let preview = null;
   if (drag?.moved && boardRef.current) {
@@ -268,6 +272,7 @@ export default function BoardWorkspace({
                   oled={readings?.[p.id]?.lines}
                   fault={readings?.[p.id]?.fault}
                   onPotStep={!readOnly && p.type === 'potenciometro' ? (dir) => stepPot(p, dir) : undefined}
+                  onCcDisc={!readOnly && p.type === 'resistor_cc' ? (disc) => turnDisc(p, disc) : undefined}
                   pressed={!!pressed && pressed.has(p.id)}
                   onButton={p.type === 'botao' && onPress ? (down) => onPress(p.id, down) : undefined}
                 />

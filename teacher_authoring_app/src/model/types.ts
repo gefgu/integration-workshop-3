@@ -5,6 +5,7 @@ export type PieceType =
   | 'resistor_220'
   | 'resistor_470'
   | 'resistor_1k'
+  | 'resistor_cc'
   | 'capacitor'
   | 'botao'
   | 'potenciometro'

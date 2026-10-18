@@ -38,6 +38,8 @@ CATALOG: dict[str, ComponentDef] = {
     "resistor_220": ComponentDef("resistor", 1, _PIN, value=220, kit_limit=1),
     "resistor_470": ComponentDef("resistor", 1, _PIN, value=470, kit_limit=1),
     "resistor_1k": ComponentDef("resistor", 1, _PIN, value=1000, kit_limit=1),
+    # Color-code resistor capsule (EFR12): three 4-position discs pick the value, stored in `value`.
+    "resistor_cc": ComponentDef("resistor", 1, _PIN, kit_limit=1),
     "capacitor": ComponentDef("capacitor", 1, _PIN, kit_limit=2),
     "botao": ComponentDef("botao", 1, _PIN, kit_limit=2),
     "potenciometro": ComponentDef("potenciometro", 1, _PIN, kit_limit=1),
@@ -56,6 +58,12 @@ CATALOG: dict[str, ComponentDef] = {
 TYPES = tuple(CATALOG)
 POT_VALUES = (100, 220, 470, 1000, 2200, 4700, 10000)
 POT_DEFAULT = 1000
+# Disc 1 and 2 are significant digits, disc 3 the multiplier; four detents each (EFR12).
+CC_DISC1 = (1, 2, 4, 7)
+CC_DISC2 = (0, 2, 5, 7)
+CC_MULT = (1, 10, 100, 1000)
+CC_VALUES = frozenset((d1 * 10 + d2) * m for d1 in CC_DISC1 for d2 in CC_DISC2 for m in CC_MULT)
+CC_DEFAULT = 220
 JUMPER_FAMILY = "jumper"
 # Types whose a->b direction matters (polarity).
 DIRECTED = frozenset({"bateria", "led"})
@@ -132,4 +140,6 @@ def piece_value(ctype: str, value: int | None) -> int | None:
         return d.value
     if ctype == "potenciometro":
         return value if value is not None else POT_DEFAULT
+    if ctype == "resistor_cc":
+        return value if value is not None else CC_DEFAULT
     return None
