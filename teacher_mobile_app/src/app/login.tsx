@@ -1,3 +1,4 @@
+import Constants from 'expo-constants';
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -5,9 +6,15 @@ import Button from '../components/Button';
 import { useApp } from '../lib/AppContext';
 import { colors, fonts, ui } from '../theme';
 
+/** In development the API usually runs on the PC serving the bundle: Metro's host, port 8000. */
+function suggestedServer(): string {
+  const host = Constants.expoConfig?.hostUri?.split(':')[0];
+  return `http://${host || '192.168.0.10'}:8000`;
+}
+
 export default function Login() {
   const { api, login } = useApp();
-  const [server, setServer] = useState(api.server || 'http://192.168.0.10:8000');
+  const [server, setServer] = useState(api.server || suggestedServer());
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');

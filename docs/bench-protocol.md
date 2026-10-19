@@ -12,8 +12,8 @@ O código fica em dois lugares, com o mesmo enquadramento e as mesmas mensagens:
 
 | Transporte | Onde | Status |
 |---|---|---|
-| **BLE GATT**: serviço `7e1d0001-7ed7-4b1c-9a6e-0c1e5f7a0000` | Bancada real (Raspberry Pi) | O app tem o cliente (`react-native-ble-plx`). O periférico na bancada fica para o D4. |
-| **WebSocket** `ws://<bancada>:8765/ble` | Bancada simulada (`bench/service`) | Pronto para a demo do D3. |
+| **BLE GATT**: serviço `7e1d0001-7ed7-4b1c-9a6e-0c1e5f7a0000` | Bancada real (Raspberry Pi, BlueZ) | Pronto: periférico em [`bench_service/ble.py`](../bench/service/bench_service/ble.py) com `bless`; cliente no app com `react-native-ble-plx` (build de desenvolvimento). |
+| **WebSocket** `ws://<bancada>:8765/ble` | Bancada simulada (`bench/service`) | Pronto. Usado no Expo Go e nos testes. |
 
 As características do serviço GATT são estas:
 
@@ -22,17 +22,33 @@ As características do serviço GATT são estas:
 | RX | `7e1d0002-…` | app → bancada | write (com resposta) |
 | TX | `7e1d0003-…` | bancada → app | notify |
 
-O nome anunciado é `TedTronics-<bench_id>`.
+O nome anunciado é `TedTronics-<bench_id>`, e o anúncio traz o UUID do serviço (o app filtra a busca por ele).
+Mantenha o `bench_id` curto (até ~18 caracteres): o nome vai na resposta de varredura, que tem 31 bytes.
+
+Para ligar o BLE junto com o HTTP/WebSocket, no Raspberry Pi:
+
+```
+pip install -e '.[ble]'
+python -m bench_service --db bench.sqlite3 --ble [--adapter hci0]
+```
+
+Os dois transportes rodam no mesmo processo e usam o mesmo `BenchStore`. Um `HELLO` por Bluetooth libera a tela da bancada, e os eventos são os mesmos nos dois caminhos.
+Se o adaptador ou o BlueZ falharem, o serviço inteiro para com o erro, em vez de ficar no ar sem Bluetooth.
 
 ## Quadros
 
-Uma mensagem JSON pode passar do MTU. Por isso ela é dividida em quadros de texto UTF-8:
+Uma mensagem JSON pode passar do MTU. Por isso ela é dividida em quadros de texto ASCII:
 
 ```
 <msgId>|<índice>|<total>|<fatia do JSON>
 ```
 
-Cada quadro carrega até 150 caracteres do JSON, o que cabe num MTU de 185 bytes.
+O JSON é serializado só com ASCII: todo caractere fora do ASCII vira `\uXXXX` (`ensure_ascii=True` no Python, `asciiJson()` no TypeScript).
+Assim um caractere é um byte, e cada quadro carrega até 150 caracteres do JSON, o que cabe num MTU de 185 bytes (182 bytes úteis) junto com o cabeçalho.
+Sem isso, um texto com acentos passaria de 182 bytes: a notificação seria cortada, e a escrita viraria uma escrita longa, que o `bless` não remonta.
+
+No BLE, cada quadro do app é uma escrita com resposta na RX. A bancada responde com uma notificação na TX por quadro, na ordem.
+O app pede MTU 185 ao conectar (`requestMTU`, no Android).
 O WebSocket usa exatamente os mesmos quadros, então a demo exercita o mesmo código do BLE.
 O receptor remonta a mensagem pelo `msgId`, e quadros de mensagens diferentes podem chegar intercalados.
 

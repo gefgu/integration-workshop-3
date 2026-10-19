@@ -1,7 +1,7 @@
 """Frame encoding and message handling for the teacher-app protocol (docs/bench-protocol.md).
 
-Mirrors protocol/bench.ts. The handler is transport-agnostic: the WebSocket simulator uses it
-today, and the BLE peripheral (D4) will feed it the same frames from the RX characteristic.
+Mirrors protocol/bench.ts. The handler is transport-agnostic: the WebSocket simulator and the
+BLE peripheral (ble.py) feed it the same frames.
 """
 from __future__ import annotations
 
@@ -23,7 +23,8 @@ BLE_TX = "7e1d0003-7ed7-4b1c-9a6e-0c1e5f7a0000"
 def encode_frames(message: dict[str, Any], msg_id: str, chunk: int = DEFAULT_CHUNK) -> list[str]:
     if "|" in msg_id:
         raise ValueError('msg_id must not contain "|"')
-    text = json.dumps(message, ensure_ascii=False, separators=(",", ":"))
+    # ASCII JSON (\uXXXX escapes): one char is one byte, so a frame fits a single BLE notification.
+    text = json.dumps(message, ensure_ascii=True, separators=(",", ":"))
     total = max(1, -(-len(text) // chunk))
     return [f"{msg_id}|{i}|{total}|{text[i * chunk:(i + 1) * chunk]}" for i in range(total)]
 

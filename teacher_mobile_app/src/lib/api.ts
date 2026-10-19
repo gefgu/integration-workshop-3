@@ -66,7 +66,8 @@ export class Api {
 
   constructor(
     private store: KeyValueStore,
-    private fetchImpl: Fetch = fetch
+    private fetchImpl: Fetch = fetch,
+    private timeoutMs = 10_000
   ) {}
 
   async load(): Promise<void> {
@@ -76,14 +77,17 @@ export class Api {
     this.teacher = teacher ? JSON.parse(teacher) : null;
   }
 
+  /** Kept in memory only: login() saves it once it works, so a mistyped address is not remembered. */
   async setServer(url: string): Promise<void> {
     this.server = url.trim().replace(/\/+$/, '');
-    await this.store.setItem(KEYS.server, this.server);
   }
 
   async request<T>(path: string, method = 'GET', body?: unknown): Promise<T> {
     if (!this.server) throw new ApiError('Informe o endereço do servidor.', 0);
     let response: Response;
+    // A wrong address or a firewall drops packets silently; without a timeout the request never ends.
+    const abort = new AbortController();
+    const timer = setTimeout(() => abort.abort(), this.timeoutMs);
     try {
       response = await this.fetchImpl(`${this.server}${path}`, {
         method,
@@ -92,9 +96,16 @@ export class Api {
           ...(body === undefined ? {} : { 'Content-Type': 'application/json' }),
         },
         body: body === undefined ? undefined : JSON.stringify(body),
+        signal: abort.signal,
       });
-    } catch {
-      throw new OfflineError('Sem conexão com o servidor.');
+    } catch (cause) {
+      const why = abort.signal.aborted ? 'sem resposta em 10 s' : String((cause as Error)?.message ?? cause);
+      console.warn(`fetch ${this.server}${path} failed:`, cause);
+      throw new OfflineError(
+        `Sem conexão com o servidor ${this.server} (${why}). Confira o endereço e se o celular está na mesma rede.`
+      );
+    } finally {
+      clearTimeout(timer);
     }
     if (response.ok) return response.status === 204 ? (undefined as T) : ((await response.json()) as T);
     let detail: unknown;
@@ -119,6 +130,7 @@ export class Api {
     const session = await this.request<{ token: string; teacher: Teacher }>('/auth/login', 'POST', { email, password });
     this.token = session.token;
     this.teacher = session.teacher;
+    await this.store.setItem(KEYS.server, this.server);
     await this.store.setItem(KEYS.token, session.token);
     await this.store.setItem(KEYS.teacher, JSON.stringify(session.teacher));
     return session.teacher;
