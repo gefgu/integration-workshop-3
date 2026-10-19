@@ -84,14 +84,22 @@ export type BenchMessage =
 export type BenchErrorCode = 'locked' | 'bad_token' | 'bad_message' | 'bad_package' | 'busy';
 
 /**
- * A frame is `msgId|index|total|payload`, payload being a slice of the message JSON.
+ * A frame is `msgId|index|total|payload`, payload being a slice of the message's ASCII JSON.
  * Both sides reassemble by msgId, so frames from two messages may interleave.
  */
 export function encodeFrames(message: object, msgId: string, chunk = DEFAULT_CHUNK): string[] {
   if (msgId.includes('|')) throw new Error('msgId must not contain "|"');
-  const json = JSON.stringify(message);
+  const json = asciiJson(message);
   const total = Math.max(1, Math.ceil(json.length / chunk));
   return Array.from({ length: total }, (_, i) => `${msgId}|${i}|${total}|${json.slice(i * chunk, (i + 1) * chunk)}`);
+}
+
+/**
+ * JSON with every non-ASCII UTF-16 unit escaped as \uXXXX, so one char is one byte: a 150-char frame
+ * plus its header fits one BLE write or notification (MTU 185), and a slice never splits a surrogate pair.
+ */
+export function asciiJson(message: object): string {
+  return JSON.stringify(message).replace(/[\u0080-￿]/g, (c) => `\\u${c.charCodeAt(0).toString(16).padStart(4, '0')}`);
 }
 
 export class FrameAssembler<T = unknown> {

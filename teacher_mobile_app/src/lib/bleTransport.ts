@@ -16,11 +16,12 @@ const ble = () => {
 
 export async function requestBlePermissions(): Promise<boolean> {
   if (Platform.OS !== 'android') return true;
-  const result = await PermissionsAndroid.requestMultiple([
-    PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
-    PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
-    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-  ]);
+  // Android 12+ has the Bluetooth runtime permissions; older versions only know location for scans.
+  const result = await PermissionsAndroid.requestMultiple(
+    Number(Platform.Version) >= 31
+      ? [PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN, PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT]
+      : [PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION]
+  );
   return Object.values(result).every((r) => r === PermissionsAndroid.RESULTS.GRANTED);
 }
 

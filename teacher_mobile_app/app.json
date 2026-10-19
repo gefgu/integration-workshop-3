@@ -35,7 +35,8 @@
           "bluetoothAlwaysPermission": "O TedTronics usa o Bluetooth para enviar módulos à bancada e buscar o progresso dos alunos."
         }
       ],
-      "expo-font"
+      "expo-font",
+      "expo-status-bar"
     ],
     "scheme": "tedtronics",
     "experiments": {
