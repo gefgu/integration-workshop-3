@@ -1,8 +1,1 @@
 "row","between columns","reason"
-"2","3 and 4","separates the 3.3 V LED node from the 3V3_SYS strip"
-"4","2 and 3","separates the 5 V LED node from the 5V_SYS strip"
-"5","34 and 35","leaves interface pin 5 unconnected"
-"6","24 and 25","leaves interface pin 6 unconnected"
-"8","26 and 27","splits MID (Q2/Q3) from the node between R_S and F_EDU"
-"8","34 and 35","leaves interface pin 8 unconnected"
-"14","5 and 6","splits 12V_IN from 12V_F around fuse F1"
