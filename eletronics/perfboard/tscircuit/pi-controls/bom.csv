@@ -1,0 +1,8 @@
+"Item","Quantity","Notes"
+"Raspberry Pi 3B","1","Existing; separate supply"
+"Classic ESP32 DevKit","1","Existing ESP32 #2; confirm header positions"
+"KY-023 joystick module","1","3.3 V; menu navigation"
+"RC522 module","1","3.3 V; verify actual header labels"
+"10 kΩ resistor","3","External button pull-ups"
+"Normally open momentary push button","2","Energize and Back"
+"Harness/connectors","As needed","Part numbers and physical arrangement unconfirmed"

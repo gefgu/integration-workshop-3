@@ -1,0 +1,17 @@
+#table(columns: (1fr, 1fr, 1.6fr, 3fr), inset: 5pt,
+[Controller], [Physical pin], [Signal], [Destination],
+[Pi], [1], [3.3V], [RC522 3.3V; R_EN.1; R_BACK.1],
+[Pi], [6], [GND], [RC522 GND; button returns; ESP32 \#2 GND],
+[Pi], [19], [GPIO10 / MOSI], [RC522 MOSI],
+[Pi], [21], [GPIO9 / MISO], [RC522 MISO],
+[Pi], [23], [GPIO11 / SCLK], [RC522 SCK],
+[Pi], [24], [GPIO8 / CE0], [RC522 SDA/SS],
+[Pi], [22], [GPIO25], [RC522 RST],
+[Pi], [29], [GPIO5 / ENERGIZE_N], [Energize switch; R_EN.2],
+[Pi], [31], [GPIO6 / BACK_N], [Back switch; R_BACK.2],
+[ESP32 \#2], [Unconfirmed], [3V3], [KY-023 VCC; R_JOY.1],
+[ESP32 \#2], [Unconfirmed], [GND], [KY-023 GND; common ground],
+[ESP32 \#2], [Unconfirmed], [GPIO36 / VP], [KY-023 VRx],
+[ESP32 \#2], [Unconfirmed], [GPIO39 / VN], [KY-023 VRy],
+[ESP32 \#2], [Unconfirmed], [GPIO35], [KY-023 SW; R_JOY.2]
+)

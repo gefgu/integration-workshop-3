@@ -1,0 +1,14 @@
+{
+  "status": "pass",
+  "checks": {
+    "source": [],
+    "pins": [],
+    "netlist": [],
+    "placement": [],
+    "assembly": [],
+    "nativePadCoordinates": [],
+    "netEquivalence": []
+  },
+  "physicalRelease": "PENDING manual measurements and bench audit",
+  "copper": "No routed PCB copper; native pads do not verify insulated hand wires"
+}
