@@ -65,3 +65,8 @@ eletronics/perfboard/tscircuit/checks/
 # Assembly app: generated frontend and private local build records
 eletronics/perfboard/tscircuit/app/dist/
 eletronics/perfboard/tscircuit/app/data/
+
+
+d3/*.pdf
+
+docs/deliverables/d3/Planejamento para a apresentação de oficinas.pdf
