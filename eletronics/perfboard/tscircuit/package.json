@@ -26,7 +26,8 @@
     "build:revision8:schematic": "bun revision8/build-overall-schematic.tsx",
     "build:pi-controls": "bun pi-controls/build.tsx",
     "build:smart-perfboard": "bun smart-perfboard/build.tsx && node smart-perfboard/layout.mjs && node smart-perfboard/documents.mjs",
-    "build:smart-perfboard:stage1": "bun smart-perfboard/stage1.tsx"
+    "build:smart-perfboard:stage1": "bun smart-perfboard/stage1.tsx",
+    "build:smart-perfboard:compact": "bun smart-perfboard/compact.tsx"
   },
   "dependencies": {
     "@jscad/modeling": "2.13.0",
