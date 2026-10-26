@@ -93,3 +93,7 @@ Pull-up update: the former six SDA resistors and optional SCL footprint were rem
 - [First-stage native schematic PDF](stage1/esquema-etapa1.pdf)
 
 Build with `npm run build:smart-perfboard:stage1`. Includes only sockets, power input/link, capacitors and OLED/joystick/UART connectors. Stage wires use Sxx identifiers and omit deferred sensing/expansion/ground-distribution headers; use this stage-specific ground tree. Confirm the actual photo against proposed hole coordinates, capacitor value/polarity and connector mating clearances before soldering. No measured fit or bench acceptance is implied.
+
+### Compact schematic alternative
+
+[Single-page 4:3 PDF with continuous signal wires](stage1/compact/schematic-4x3.pdf) and [SVG](stage1/compact/schematic-4x3.svg). No section frames; only supply and GND labels remain. Power-entry hardware stays in the assembly guide; this view represents the regulated rail by symbols. Build using `npm run build:smart-perfboard:compact`. The source graph is checked against the first-stage pin map; physical wiring and hole positions are unchanged.

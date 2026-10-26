@@ -1,0 +1,181 @@
+{
+  "consultedOn": "2026-10-25",
+  "source": "collection://3df9670c-116e-80cc-9ba8-000b4d2c2ec4",
+  "notes": "Leitura via Notion; requisitos não foram alterados. Alterações locais de escopo devem ser distinguidas do texto original.",
+  "requirements": [
+    {
+      "url": "https://app.notion.com/3e89670c116e80118a99d3a250137cc5",
+      "Req. ID": "EFR28",
+      "Requirement": "A smart component's P1–P3 shall be high-impedance (leakage ≤ 10 µA) whenever the educational rail is off, the component has no valid configuration, or it loses service-bus communication.",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__"
+    },
+    {
+      "url": "https://app.notion.com/3df9670c116e80319ce2ea8c5b76ecbc",
+      "Req. ID": "EFR3",
+      "Requirement": "The system must allow multiple nodes to be connected to the same internal bus, forming the same electrical network.",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__"
+    },
+    {
+      "url": "https://app.notion.com/3e89670c116e81cc8f85fca00516f167",
+      "Req. ID": "EFR30",
+      "Requirement": "Every smart component output that can source current into the educational circuit shall be limited in hardware to ≤12 mA into a short to GND or 5 V, independent of firmware.",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__"
+    },
+    {
+      "url": "https://app.notion.com/3df9670c116e804b85a6fa50e8e7f494",
+      "Req. ID": "EFR31",
+      "Requirement": "The system shall provide exactly 3 smart components.",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__"
+    },
+    {
+      "url": "https://app.notion.com/3e89670c116e8106b828ceef6ada1ad9",
+      "Req. ID": "EFR31.1",
+      "Requirement": "Each smart component shall have an OLED screen that shows the name of its assigned behavior in pt-BR (e.g., \"Porta E\", \"Voltímetro\") and, in meter modes, the live reading.",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__"
+    },
+    {
+      "url": "https://app.notion.com/3e89670c116e819e8ee6d8825f5fc3ba",
+      "Req. ID": "EFR31.2",
+      "Requirement": "The board shall provide 3 fixed smart component positions on row 1, at columns 1–3, 5–7, and 9–11, each with service power, ground, and communication contacts.",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__"
+    },
+    {
+      "url": "https://app.notion.com/3e89670c116e81a4af9ac138b26a1a6b",
+      "Req. ID": "EFR31.3",
+      "Requirement": "The three smart capsules shall be interchangeable. The system shall identify each placed capsule by its board position, not by which physical capsule it is.",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__"
+    },
+    {
+      "url": "https://app.notion.com/3e89670c116e81e2a0dcf254f616a4a8",
+      "Req. ID": "EFR31.4",
+      "Requirement": "When a smart capsule is moved to a position assigned a different behavior, the system shall change the capsule's behavior to the one assigned to its new position.",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__YES__"
+    },
+    {
+      "url": "https://app.notion.com/3e89670c116e8158a762c45a50c663b9",
+      "Req. ID": "EFR31.5",
+      "Requirement": "Within 1 s of a smart capsule being detected at a new position, the system shall configure it with that position's behavior, and its OLED shall show the new behavior.",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__YES__"
+    },
+    {
+      "url": "https://app.notion.com/3e89670c116e81bf8ee0f495603277ec",
+      "Req. ID": "EFR31.6",
+      "Requirement": "If a smart capsule is moved while the educational rail is on, the system shall disable the rail before reconfiguring the capsule.",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__YES__"
+    },
+    {
+      "url": "https://app.notion.com/3e89670c116e81969b40f0207aff05c9",
+      "Req. ID": "EFR32",
+      "Requirement": "In any behavior that drives P3, with a load of up to 2 mA, a smart component's output low shall be at or below 0.5 V and output high at or above 3.5 V, measured at the board node connected to P3.",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__"
+    },
+    {
+      "url": "https://app.notion.com/3df9670c116e802e806bff8a94b6262e",
+      "Req. ID": "EFR32.1",
+      "Requirement": "A smart component assigned as AND, OR, NAND, NOR, or XOR shall use P1 and P2 as inputs and P3 as its physical output. It shall recognize an input at or below 1 V as low and at or above 3 V as high; while an input is between 1 V and 3 V, P3 shall keep its last value. Each input shall have an internal pull-down so that an unconnected input reads low. An input counts as stable once it has been unchanged for 20 ms, and P3 shall update within 100 ms after both inputs become stable. Its output voltage levels shall meet EFR32.",
+      "Optional (20%)": "__YES__",
+      "Optional if someone withdraws (36%)": "__YES__"
+    },
+    {
+      "url": "https://app.notion.com/3e59670c116e8121b480e06dc6383eae",
+      "Req. ID": "EFR32.2",
+      "Requirement": "A smart component assigned as a pulse source shall generate a physical repeating signal on P3. The lesson shall be able to set its frequency from 0.5 to 10 Hz and its duty cycle, defined as the percentage of each period that P3 is high, from 25% to 75%. Measured frequency shall be within ±5% of the setting and duty cycle within ±5 percentage points. Its output voltage levels shall meet EFR32.",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__"
+    },
+    {
+      "url": "https://app.notion.com/3e59670c116e81999695fe37067892c0",
+      "Req. ID": "EFR32.3",
+      "Requirement": "In voltage mode, a smart component shall measure V(P1) − V(P2) while connected across two circuit nodes, without making a conductive connection between those nodes. It shall display a signed reading from −5.25 to +5.25 V, have an input impedance of at least 1 MΩ, and have error no greater than ±(0.10 V + 5% of the absolute reading). P3 shall be unused. The displayed reading shall update at least once every 100 ms while the circuit is energized.",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__YES__"
+    },
+    {
+      "url": "https://app.notion.com/3e89670c116e8144a329d8e01bea4b16",
+      "Req. ID": "EFR32.4",
+      "Requirement": "In current mode, a smart component shall connect in series between P1 and P2 and display signed current from −10 to +10 mA, with error no greater than ±(0.20 mA + 5% of the absolute reading). P3 shall be unused. The displayed reading shall update at least once every 100 ms while the circuit is energized. The internal series path between P1 and P2 shall open whenever the educational rail is off (see EFR28).",
+      "Optional (20%)": "__YES__",
+      "Optional if someone withdraws (36%)": "__YES__"
+    },
+    {
+      "url": "https://app.notion.com/3e89670c116e810eb146fae72a63c48e",
+      "Req. ID": "EFR32.5",
+      "Requirement": "A smart component assigned as a one-bit memory shall use P1 as Set, P2 as Reset, and P3 as its stored-bit output. It shall treat an input at or below 1 V as low and at or above 3 V as high. A high Set input shall store 1; a high Reset input shall store 0; when both inputs are low, the previous value shall be retained. If both inputs are high, Reset shall take priority. The stored bit shall start at 0 when the lesson begins or the capsule is assigned this mode, shall be retained while the educational rail remains on, and shall reset to 0 when the rail turns off. P3 shall meet the output voltage limits in EFR32, and the OLED shall show the stored state.",
+      "Optional (20%)": "__YES__",
+      "Optional if someone withdraws (36%)": "__YES__"
+    },
+    {
+      "url": "https://app.notion.com/3df9670c116e80118debf3552643295e",
+      "Req. ID": "SFR1",
+      "Requirement": "The system must take the identified positions (column, row) of the component terminals and the component type to build a graph representation. This graph representation considers each terminal a node, distinguishing between terminal types (e.g anode and cathode). It places an edge between nodes of the same component and between nodes of the same column. Each node has an attribute for its type and position.",
+      "Optional (20%)": "__NO__",
+      "Optional if someone withdraws (36%)": "__NO__"
+    },
+    {
+      "url": "https://app.notion.com/3df9670c116e80769fc8cb036e29fb8b",
+      "Req. ID": "EFR12",
+      "Requirement": "The configurable resistor piece shall allow resistance selection through three independently rotating discs on its top face, each with four detented positions showing a color band from the standard resistor color code; discs 1 and 2 shall select the first and second significant digits, and disc 3 the decimal multiplier, with the system reading each disc position independently."
+    },
+    {
+      "url": "https://app.notion.com/3e49670c116e80e18d99d898b0c0260c",
+      "Req. ID": "EFR27",
+      "Requirement": "The ground contact of the service rail of the smart components shall be the same as the educational workbench ground."
+    },
+    {
+      "url": "https://app.notion.com/3e89670c116e81c8817cf1d5ba2853c9",
+      "Req. ID": "EFR29",
+      "Requirement": "The service connection at each valid smart component position shall be individually addressable, so the controller can configure the capsule at a given position without knowing which physical capsule it is."
+    },
+    {
+      "url": "https://app.notion.com/3df9670c116e803ab2c2eaf2024be7ce",
+      "Req. ID": "ENFR6",
+      "Requirement": "The routing validator shall reject any circuit whose worst-case predicted continuous current exceeds 12 mA through any closed CH446Q switch, 80 mA as the sum of absolute currents through all closed switches in any one CH446Q IC, or a lower limit of any rail or connected component. These operating limits shall remain below the CH446Q datasheet absolute maxima of 15 mA per switch and 100 mA per IC. For this validation, a smart component driving P3 shall be modeled as a 5 V source behind its series current-limiting resistor, and a smart component in current mode shall be modeled as a series element between P1 and P2."
+    },
+    {
+      "url": "https://app.notion.com/3df9670c116e806c8443c5483d0e901b",
+      "Req. ID": "MFR1",
+      "Requirement": "The system shall include a 20 cm × 22.5 cm powered connection board with an 11×6 socket grid on top and another on the bottom."
+    },
+    {
+      "url": "https://app.notion.com/3df9670c116e80cd84d2f641a2e55ee2",
+      "Req. ID": "MFR8",
+      "Requirement": "The kit must contain the components listed below:\n  • 1 Battery.\n  • 2 LED.\n  • 1 Buzzer.\n  • 1 Resistor of 220 Ω.\n  • 1 Resistor of 470 Ω.\n  • 1 Resistor of 1 kΩ.\n  • 2 Capacitors of 1000 uF.\n  • 1 Color-Code resistor capsule.\n  • 2 Pushbutton.\n  • 1 Potentiometer.\n  • 6 Short Jumpers (span 2 columns).\n  • 3 Long Jumpers (span 3 columns).\n  • 3 Smart Capsules."
+    },
+    {
+      "url": "https://app.notion.com/3e19670c116e815cba6ee455451b8467",
+      "Req. ID": "MNFR9",
+      "Requirement": "The system case must include ventilation slots to ensure the internal ambient temperature remains below 55°C during continuous operation."
+    },
+    {
+      "url": "https://app.notion.com/3df9670c116e80d4999cf3c73b667a89",
+      "Req. ID": "EFR1",
+      "Requirement": "The system must use a programmable electronic switching matrix, implemented with integrated circuits, to connect workbench nodes to internal buses."
+    },
+    {
+      "url": "https://app.notion.com/3e19670c116e8166b0d9e630378c6be7",
+      "Req. ID": "EFR24",
+      "Requirement": "The system must be powered by an external 12V/2A DC power supply via a 5.5×2.1mm DC barrel jack located on the rear or side panel of the main board unit."
+    },
+    {
+      "url": "https://app.notion.com/3e19670c116e81eaaa4ad40332c046d3",
+      "Req. ID": "EFR25",
+      "Requirement": "The internal circuitry must step down the 12V input to logic level (5V) using switching buck converters."
+    },
+    {
+      "url": "https://app.notion.com/3df9670c116e80c5a7fcc11d7179d9b7",
+      "Req. ID": "EFR4",
+      "Requirement": "The system must remove the previous programmable connections before configuring a new circuit."
+    }
+  ]
+}
