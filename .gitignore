@@ -72,3 +72,6 @@ docs/deliverables/d3/Planejamento para a apresentação de oficinas.pdf
 # Bench service local database
 bench/service/*.sqlite3*
 .neon
+
+# Local presentation video (exceeds GitHub file limit)
+/docs/deliverables/d3/software_images/web_app_overview.mp4
