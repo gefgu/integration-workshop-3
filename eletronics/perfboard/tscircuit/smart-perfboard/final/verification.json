@@ -1,0 +1,25 @@
+{
+  "status": "pass",
+  "parts": 77,
+  "pins": 235,
+  "wires": 166,
+  "checks": {
+    "source": [],
+    "pins": [],
+    "netlist": [],
+    "placement": [],
+    "model": [],
+    "nativePads": [],
+    "netEquivalence": []
+  },
+  "nativeChecks": [
+    "source",
+    "pin specification",
+    "netlist",
+    "schematic placement",
+    "PCB placement",
+    "pad shorts (PCB mode)",
+    "PCB style"
+  ],
+  "physicalRelease": "PENDING measured fit, analog stability, pulse/short tests and matching router/power interfaces"
+}

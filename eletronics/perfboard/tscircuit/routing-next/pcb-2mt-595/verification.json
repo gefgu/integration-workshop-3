@@ -1,0 +1,21 @@
+{
+  "schematicAndPlacement": "passed",
+  "nativeChecks": {
+    "source": [],
+    "pins": [],
+    "netlist": [],
+    "placement": [],
+    "netEquivalence": []
+  },
+  "parts": 61,
+  "boardMm": [
+    100,
+    200
+  ],
+  "copperLayersPlanned": 1,
+  "copperRoutingComplete": false,
+  "padsOnlyChecks": "shorts and PCB style; no completed traces",
+  "physicalFit": "pending actual purchased module/socket/connector measurements",
+  "benchQualification": "pending",
+  "manufacturingRelease": false
+}

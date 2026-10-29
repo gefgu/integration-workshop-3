@@ -41,3 +41,7 @@ Usuário aceitou somente um gerador ativo por vez. Não unir P3: selecionar e is
 ## Atualização v04 — seis posições completas
 
 [PDF atual](planejamento-22-nos-v04.pdf), [fonte](planejamento-v04.typ). Confirmado explicitamente: seis posições completas para receber as três peças intercambiáveis, até três ativas. Cada posição deve permitir P1/P2 para voltímetro e P3 para pulso, além dos contatos de serviço; apenas um gerador de pulsos ativo por vez. Pode haver geração/medição compartilhada com seleção e isolamento adequados: não unir os terminais das posições. A expansão de três para seis posições é decisão desta conversa, distinta do texto consultado no Notion; nenhuma escrita externa foi feita. Mapear P1/P2/P3 aos 22 nós depende da placa real; fotos/dimensões/condicionamento e proteção continuam pendentes.
+
+## Candidato atual: dois MT8816, registradores e transistores
+
+O planejamento de PCB de face única 100 × 200 mm está em [pcb-2mt-595/README.md](pcb-2mt-595/README.md), com [PDF em pt-BR](pcb-2mt-595/planejamento-pcb-2mt-595.pdf). Mantém dois 74HC595 e os estágios discretos. Esquema e posicionamento passaram nas verificações; cobre e tabela final de pontes ainda não foram fechados. Não é um fotolito liberado para corrosão. As propostas v01–v04 e simplificacao-direta permanecem históricas.

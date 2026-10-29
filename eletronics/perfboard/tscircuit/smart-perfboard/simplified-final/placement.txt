@@ -1,0 +1,38 @@
+placement summary: no placement issues
+
+board top-layer utilization:
+- occupied: 10.079% (877.856mm^2 of 8709.66mm^2)
+- empty spaces over 5% of board area:
+  - 22.37% (1948.37mm^2); bounds=(minX=-0.635mm, maxX=38.1mm, minY=-57.15mm, maxY=-6.85mm)
+  - 8.839% (769.806mm^2); bounds=(minX=-24.9mm, maxX=-15.74mm, minY=-26.89mm, maxY=57.15mm)
+  - 6.099% (531.198mm^2); bounds=(minX=-12.2mm, maxX=9.66mm, minY=32.85mm, maxY=57.15mm)
+
+board-edge status:
+- J_ESP_L: 10.68mm inside bottom edge
+- J_ESP_R: 10.68mm inside bottom edge
+- J_POWER: 5.6mm inside bottom edge
+- JP_EXT: 10.68mm inside right edge
+- J_UART: 8.14mm inside right edge
+- J_JOY: 8.14mm inside right edge
+- J_OLED0: 3.06mm inside left edge
+- J_OLED1: 3.06mm inside left edge
+- J_OLED2: 3.06mm inside left edge
+- J_OLED3: 3.06mm inside left edge
+- J_OLED4: 3.06mm inside left edge
+- J_OLED5: 3.06mm inside left edge
+- C_BULK: 7.89mm inside right edge
+- C_LOCAL: 13.335mm inside right edge
+- J_ROUTER: 3.06mm inside left edge
+- J_NFC: 8.14mm inside right edge
+- R_A_TOP: 5.65mm inside left edge
+- R_A_BOT: 5.65mm inside left edge
+- R_A_ADC: 5.65mm inside left edge
+- C_A_ADC: 13.335mm inside left edge
+- R_B_TOP: 25.97mm inside left edge
+- R_B_BOT: 25.97mm inside left edge
+- R_B_ADC: 20.89mm inside top edge
+- C_B_ADC: 13.335mm inside top edge
+
+placement drc:
+Errors: 0
+Warnings: 0

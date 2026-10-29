@@ -1,0 +1,77 @@
+placement summary: no placement issues
+
+board top-layer utilization:
+- occupied: 18.723% (3744.658mm^2 of 20000mm^2)
+- empty spaces over 5% of board area:
+  - 6.573% (1314.61mm^2); bounds=(minX=-50mm, maxX=-14.47mm, minY=63mm, maxY=100mm)
+  - 6.573% (1314.61mm^2); bounds=(minX=14.47mm, maxX=50mm, minY=63mm, maxY=100mm)
+  - 5.92% (1184.088mm^2); bounds=(minX=-14.33mm, maxX=14.33mm, minY=-49.95mm, maxY=-8.635mm)
+  - 5.602% (1120.325mm^2); bounds=(minX=-10.93mm, maxX=10.93mm, minY=48.75mm, maxY=100mm)
+  - 5.475% (1095mm^2); bounds=(minX=-50mm, maxX=50mm, minY=-100mm, maxY=-89.05mm)
+
+board-edge status:
+- J_ESP_L: 5.47mm inside bottom edge
+- J_ESP_R: 5.47mm inside bottom edge
+- Q1: 13.255mm inside left edge
+- R19: 10.49mm inside left edge
+- R20: 10.49mm inside left edge
+- R2: 10.49mm inside left edge
+- Q2: 27.255mm inside left edge
+- R22: 24.49mm inside left edge
+- R23: 24.49mm inside left edge
+- R3: 24.49mm inside left edge
+- Q3: 41.255mm inside left edge
+- R25: 38.49mm inside left edge
+- R26: 38.49mm inside left edge
+- R4: 38.49mm inside left edge
+- Q4: 41.255mm inside right edge
+- R28: 38.49mm inside right edge
+- R29: 38.49mm inside right edge
+- R5: 38.49mm inside right edge
+- Q5: 27.255mm inside right edge
+- R31: 24.49mm inside right edge
+- R32: 24.49mm inside right edge
+- R1: 24.49mm inside right edge
+- Q6: 13.255mm inside right edge
+- R6: 10.49mm inside right edge
+- R12: 10.49mm inside right edge
+- R7: 10.49mm inside right edge
+- U5: 24.39mm inside left edge
+- U6: 24.39mm inside right edge
+- C4: 15.095mm inside left edge
+- C5: 15.095mm inside right edge
+- R8: 38.49mm inside left edge
+- R9: 38.49mm inside right edge
+- U1: 18.58mm inside left edge
+- C1: 38.095mm inside left edge
+- H1: 4.25mm inside left edge
+- U2: 18.58mm inside right edge
+- C2: 38.095mm inside right edge
+- H3: 4.25mm inside right edge
+- Q7: 14.255mm inside left edge
+- Q8: 28.255mm inside left edge
+- R21: 11.49mm inside left edge
+- R30: 25.49mm inside left edge
+- R13: 19.3mm inside top edge
+- R14: 11.3mm inside top edge
+- R17: 11.3mm inside top edge
+- Q11: 14.255mm inside right edge
+- R_LOW_BASE: 11.49mm inside right edge
+- R_LOW_PD: 11.49mm inside right edge
+- R_LOW_LIMIT: 11.3mm inside top edge
+- Q9: 36.505mm inside top edge
+- Q10: 36.505mm inside top edge
+- R24: 27.3mm inside top edge
+- R27: 27.3mm inside top edge
+- R15: 19.3mm inside top edge
+- R16: 11.3mm inside top edge
+- R18: 11.3mm inside top edge
+- H2: 5.25mm inside left edge
+- J_SMART: 5.25mm inside right edge
+- R_PULSE_IN: 45.49mm inside left edge
+- C_BULK5: 20.73mm inside left edge
+- C_BULK12: 20.73mm inside right edge
+
+placement drc:
+Errors: 0
+Warnings: 0

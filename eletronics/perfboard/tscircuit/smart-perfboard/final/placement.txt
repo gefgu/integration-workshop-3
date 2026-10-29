@@ -1,0 +1,89 @@
+placement summary: no placement issues
+
+board top-layer utilization:
+- occupied: 26.999% (2351.528mm^2 of 8709.66mm^2)
+- empty spaces over 5% of board area:
+  - 24.007% (2090.928mm^2); bounds=(minX=-38.1mm, maxX=38.1mm, minY=-57.15mm, maxY=-29.71mm)
+
+board-edge status:
+- J_CTRL: 3.06mm inside left edge
+- J_POWER: 13.22mm inside right edge
+- J_ROUTER: 15.76mm inside left edge
+- U_BUF: 3.01mm inside bottom edge
+- R_BIAS_TOP: 13.27mm inside right edge
+- R_BIAS_BOT: 31.05mm inside left edge
+- C_BIAS: 3.175mm inside bottom edge
+- R_A_TOP: 23.43mm inside right edge
+- R_A_BOT: 10.73mm inside right edge
+- C_A_DIV: 5.715mm inside right edge
+- R_A_ADC: 3.11mm inside left edge
+- C_A_ADC: 5.715mm inside right edge
+- R_B_TOP: 15.81mm inside left edge
+- R_B_BOT: 28.51mm inside left edge
+- C_B_DIV: 5.715mm inside right edge
+- R_B_ADC: 25.97mm inside right edge
+- C_B_ADC: 18.415mm inside right edge
+- C_BUF: 8.255mm inside right edge
+- U_WATCH: 3.01mm inside bottom edge
+- R_WATCH: 3.11mm inside left edge
+- C_WATCH: 15.875mm inside left edge
+- C_WATCH_VCC: 26.035mm inside left edge
+- R_PD_ARM: 33.59mm inside left edge
+- R_PD_HB: 20.89mm inside right edge
+- R_PD_MODE_A: 8.19mm inside right edge
+- R_PD_MODE_B: 3.11mm inside left edge
+- R_PD_MODE_C: 15.81mm inside left edge
+- R_PD_EDU_ON: 28.51mm inside left edge
+- R_PD_EDU_OFF_OK: 25.97mm inside right edge
+- U_MODE: 3.01mm inside bottom edge
+- U_GATE: 3.01mm inside bottom edge
+- C_MODE: 18.415mm inside right edge
+- C_GATE: 8.255mm inside right edge
+- U_LIMIT: 3.01mm inside bottom edge
+- R_REF_H_TOP: 3.11mm inside left edge
+- R_REF_H_BOT: 15.81mm inside left edge
+- R_REF_L_TOP: 28.51mm inside left edge
+- R_REF_L_BOT: 25.97mm inside right edge
+- C_REF_H: 3.175mm inside left edge
+- C_REF_L: 13.335mm inside left edge
+- R_H_SENSE: 13.27mm inside right edge
+- R_L_SENSE: 20.89mm inside left edge
+- R_IN_H_N: 33.59mm inside left edge
+- R_IN_H_P: 20.89mm inside right edge
+- R_IN_L_P: 8.19mm inside right edge
+- R_IN_L_N: 3.11mm inside left edge
+- C_LIMIT: 15.875mm inside left edge
+- R_H_GATE: 23.43mm inside left edge
+- R_L_GATE: 31.05mm inside right edge
+- R_H_OFF: 18.35mm inside right edge
+- R_L_OFF: 5.65mm inside right edge
+- C_H_COMP: 3.175mm inside left edge
+- C_L_COMP: 26.035mm inside left edge
+- Q_H_ADAPTER: 10.68mm inside left edge
+- Q_LOW: 33.54mm inside left edge
+- U_SSR_HIGH: 3.01mm inside left edge
+- U_SSR_LOW: 13.17mm inside right edge
+- R_U_SSR_HIGH_LED: 23.43mm inside right edge
+- R_U_SSR_HIGH_BASE: 10.73mm inside right edge
+- R_U_SSR_HIGH_OFF: 3.11mm inside left edge
+- Q_U_SSR_HIGH: 15.76mm inside left edge
+- R_U_SSR_LOW_LED: 25.97mm inside left edge
+- R_U_SSR_LOW_BASE: 28.51mm inside right edge
+- R_U_SSR_LOW_OFF: 15.81mm inside right edge
+- Q_U_SSR_LOW: 5.6mm inside right edge
+- U_SSR_STIM: 3.01mm inside left edge
+- U_SSR_RETURN: 23.33mm inside bottom edge
+- D_STIM: 3.11mm inside left edge
+- R_STIM: 15.81mm inside left edge
+- R_U_SSR_STIM_LED: 28.51mm inside left edge
+- R_U_SSR_STIM_BASE: 25.97mm inside right edge
+- R_U_SSR_STIM_OFF: 13.27mm inside right edge
+- Q_U_SSR_STIM: 3.06mm inside left edge
+- R_U_SSR_RETURN_LED: 13.27mm inside left edge
+- R_U_SSR_RETURN_BASE: 25.97mm inside left edge
+- R_U_SSR_RETURN_OFF: 28.51mm inside top edge
+- Q_U_SSR_RETURN: 18.3mm inside right edge
+
+placement drc:
+Errors: 0
+Warnings: 0
