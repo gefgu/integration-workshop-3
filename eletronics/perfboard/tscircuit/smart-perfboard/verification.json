@@ -1,0 +1,33 @@
+{
+  "status": "pass",
+  "counts": {
+    "parts": 27,
+    "pins": 108,
+    "insulatedWires": 72,
+    "nativePads": 108
+  },
+  "nativeChecks": [
+    "source",
+    "pin specification",
+    "netlist",
+    "schematic placement",
+    "complete-board PCB placement",
+    "pad shorts (PCB mode)",
+    "PCB style"
+  ],
+  "modelChecks": [
+    "occupied holes",
+    "expansion area unoccupied by pins",
+    "all native pad coordinates and coverage",
+    "source-net equivalence",
+    "insulated-wire endpoint equivalence"
+  ],
+  "physicalRelease": "PENDING",
+  "audit": "audit.csv",
+  "limitations": [
+    "Socket/DevKit/connector body fit and board dimensions are not measured.",
+    "No routed PCB copper; pad checks do not verify hand wires.",
+    "Unbuffered 20k input, no power-off isolation or overvoltage clamps.",
+    "No pulse output driver or complete firmware is delivered."
+  ]
+}

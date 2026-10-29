@@ -15,23 +15,21 @@ mkdirSync(out, { recursive: true });
 const place: Record<string, [number, number, number?]> = {
   J_IN: [-9, 3], F1: [-6, 3], D1: [-3, 3], C1: [-1, 1], C2: [1, 1],
   M_BUCK5: [5, 4.5], M_BUCK3: [5, 0.5],
-  R_LED5: [9, 4.5], LED5: [11.5, 4.5], R_LED3: [9, 0.5], LED3: [11.5, 0.5],
   R_GP: [14.5, -2.2], Q1: [18, -2.2], Q2: [18, -6.6], Q3: [18, -11],
-  R_PD_EN: [14.5, -6.6], R_PD_RA: [14.5, -11], R_S: [22, -2.2], F_EDU: [25.5, -2.2],
+  R_PD_EN: [14.5, -6.6], R_PD_RA: [14.5, -11], R_S: [22, -2.2],
   R_DT: [28.5, -3.8, 90], R_DB: [28.5, -7, 90], C_SENSE: [31, -5.4, 90], J_OUT: [37, -5.5],
 };
 // Direct wires: [from ref.pin, to ref.pin]
 const wires: [string, string][] = [
   ['J_IN.12V', 'F1.1'], ['F1.2', 'D1.A'],
-  ['R_LED5.2', 'LED5.A'], ['R_LED3.2', 'LED3.A'],
-  ['Q3.D', 'Q2.S'], ['R_S.2', 'F_EDU.1'], ['Q1.D', 'R_S.1'], ['R_GP.2', 'Q1.G'], ['Q2.D', 'Q1.G'],
+  ['Q3.D', 'Q2.S'], ['Q1.D', 'R_S.1'], ['R_GP.2', 'Q1.G'], ['Q2.D', 'Q1.G'],
   ['R_DT.2', 'R_DB.1'], ['R_DT.2', 'C_SENSE.1'],
 ];
 
 const portName = (ref: string, label: string) => {
   const p = parts.find((x) => x.ref === ref)!;
   if (p.kind === 'pmos' || p.kind === 'nmos') return ({ S: 'source', G: 'gate', D: 'drain' } as any)[label];
-  if (p.kind === 'diode' || p.kind === 'led') return label === 'A' ? 'pin1' : 'pin2';
+  if (p.kind === 'diode') return label === 'A' ? 'pin1' : 'pin2';
   if (p.kind === 'header' || p.kind === 'module') return `pin${p.pins.findIndex((q) => q[0] === label) + 1}`;
   if (p.kind === 'capacitor' && p.polarized) return label === '+' ? 'pin1' : 'pin2';
   return `pin${label}`;
@@ -51,7 +49,6 @@ for (const p of parts) {
   if (p.kind === 'resistor') children.push(<resistor {...common} resistance={p.value.replace(' ', '').replace('Ω', '')} />);
   else if (p.kind === 'capacitor') children.push(<capacitor {...common} capacitance={p.value.replace(' ', '').replace('µ', 'u')} polarized={!!p.polarized} />);
   else if (p.kind === 'diode') children.push(<diode {...common} />);
-  else if (p.kind === 'led') children.push(<led {...common} color="red" />);
   else if (p.kind === 'fuse' || p.kind === 'ptc') children.push(<fuse {...common} currentRating={p.kind === 'fuse' ? '2A' : '500mA'} voltageRating="30V" />);
   else if (p.kind === 'pmos' || p.kind === 'nmos') children.push(<mosfet {...common} channelType={p.kind === 'pmos' ? 'p' : 'n'} mosfetMode="enhancement" />);
   else {

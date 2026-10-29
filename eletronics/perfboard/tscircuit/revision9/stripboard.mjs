@@ -1,8 +1,7 @@
 // Stripboard model for revision 9: connectivity from strips, cuts, links and component pins, plus SVG drawings.
-import { ROWS, COLS, rowNets, cuts, parts, links } from './design.mjs';
+import { ROWS, COLS, cuts, parts, links, inputJackGuide, copperGroups } from './design.mjs';
 
 const key = ([r, c]) => `${r},${c}`;
-const NAME = { '12V_IN': '12V_IN', '12V_F': '12V_F', EDU_R: 'EDU_R', LED3_A: 'LED3_A', LED5_A: 'LED5_A' };
 
 // --- connectivity -------------------------------------------------------------------------------
 export function connectivity() {
@@ -10,11 +9,8 @@ export function connectivity() {
   const find = (a) => { while (parent.get(a) !== a) { parent.set(a, parent.get(parent.get(a))); a = parent.get(a); } return a; };
   const add = (a) => { if (!parent.has(a)) parent.set(a, a); };
   const union = (a, b) => { add(a); add(b); parent.set(find(a), find(b)); };
-  const cutAfter = new Set(cuts.map((c) => `${c.row},${c.after}`));
-  for (let r = 1; r <= ROWS; r++) for (let c = 1; c <= COLS; c++) {
-    add(`${r},${c}`);
-    if (c < COLS && !cutAfter.has(`${r},${c}`)) union(`${r},${c}`, `${r},${c + 1}`);
-  }
+  for (let r = 1; r <= ROWS; r++) for (let c = 1; c <= COLS; c++) add(`${r},${c}`);
+  for (const g of copperGroups) for (let i=1;i<g.holes.length;i++) union(key(g.holes[0]),key(g.holes[i]));
   for (const l of links) union(key(l.from), key(l.to));
   return { find, key };
 }
@@ -30,7 +26,6 @@ export function checkDesign() {
   };
   const pinList = [];
   for (const p of parts) for (const [label, net, hole] of p.pins) { claim(hole, `${p.ref}.${label}`); pinList.push({ ref: p.ref, label, net, hole }); }
-  for (const l of links) { claim(l.from, `${l.id}.a`); claim(l.to, `${l.id}.b`); }
   // Group pins by strip component and compare with the intended net names.
   const byStrip = new Map();
   for (const pin of pinList) {
@@ -53,10 +48,7 @@ export function checkDesign() {
     claim(hole, `${p.ref}.NC`);
   }
   // Every cut must separate two pins/links that would otherwise be joined (otherwise it is not needed).
-  for (const cut of cuts) {
-    const left = [cut.row, cut.after], right = [cut.row, cut.after + 1];
-    if (find(k(left)) === find(k(right))) issues.push({ code: 'cut-ineffective', cut });
-  }
+  for(const l of links) if(l.from.some((v,i)=>v<1||v>[ROWS,COLS][i])||l.to.some((v,i)=>v<1||v>[ROWS,COLS][i])) issues.push({code:'out-of-board-link',link:l.id});
   // Strip net names must match the dominant net of the pins on each row segment.
   return { issues, pins: pinList, nets: [...rootsByNet.keys()], pinCount: pinList.length };
 }
@@ -65,33 +57,17 @@ export function checkDesign() {
 const P = 30, M = 60, BOARD_W = (COLS - 1) * P, BOARD_H = (ROWS - 1) * P;
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const COLORS = { GND: '#202124', '3V3_SYS': '#e53935', '5V_SYS': '#e53935', '12V_SYS': '#e53935', '12V_IN': '#e53935', '12V_F': '#e53935', '5V_EDU': '#fb8c00',
-  EDU_SW: '#fb8c00', EDU_R: '#fb8c00', GATE: '#1976d2', MID: '#1976d2', EDU_PWR_EN: '#388e3c', ROUTER_ALIVE: '#388e3c', EDU_SENSE: '#8e44ad' };
+  EDU_SW: '#fb8c00', GATE: '#1976d2', MID: '#1976d2', EDU_PWR_EN: '#388e3c', ROUTER_ALIVE: '#388e3c', EDU_SENSE: '#8e44ad' };
 const colorOf = (n) => COLORS[n] ?? '#546e7a';
-const PART_FILL = { resistor: '#ffe0a3', ptc: '#ffe0a3', capacitor: '#ddc7f5', led: '#ffb3b3', diode: '#cfd8dc', fuse: '#fff3b0', header: '#eeeeee', module: '#c8e6c9', pmos: '#cfd8dc', nmos: '#cfd8dc' };
+const PART_FILL = { resistor: '#ffe0a3', capacitor: '#ddc7f5', diode: '#cfd8dc', fuse: '#fff3b0', header: '#eeeeee', module: '#c8e6c9', pmos: '#cfd8dc', nmos: '#cfd8dc' };
 
 const xy = (hole, mirror) => {
   const [r, c] = hole;
   return [M + ((mirror ? COLS - c : c - 1)) * P, M + (r - 1) * P];
 };
 
-function rowLabelNets() {
-  // Net name per row for the left/right margin labels, derived from the pins on the row.
-  const { find, key: k } = connectivity();
-  const names = new Map();
-  for (const p of parts) for (const [, net, hole] of p.pins) names.set(find(k(hole)), net);
-  const out = [];
-  for (let r = 1; r <= ROWS; r++) {
-    const segs = [];
-    let start = 1;
-    const cutAfter = new Set(cuts.filter((c) => c.row === r).map((c) => c.after));
-    for (let c = 1; c <= COLS; c++) if (c === COLS || cutAfter.has(c)) { segs.push([start, c]); start = c + 1; }
-    out.push({ row: r, segs: segs.map(([a, b]) => ({ a, b, net: names.get(find(k([r, a]))) ?? '' })) });
-  }
-  return out;
-}
-
-function frame(inner, mirror, title) {
-  const W = M * 2 + BOARD_W + 120, H = M * 2 + BOARD_H + 56;
+function frame(inner, mirror, title, extraHeight = 0) {
+  const W = M * 2 + BOARD_W + 120, H = M * 2 + BOARD_H + 56 + extraHeight;
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" font-family="DejaVu Sans, Arial, sans-serif">
 <rect width="${W}" height="${H}" fill="#fafaf7"/>
 <text x="${M - 30}" y="16" font-size="15" font-weight="700" fill="#203545">${esc(title)}</text>
@@ -110,19 +86,12 @@ const colTicks = (mirror) => {
 };
 
 function strips(mirror) {
-  const rl = rowLabelNets();
   let s = '';
-  for (const { row, segs } of rl) {
-    const [, y] = xy([row, 1], mirror);
-    for (const seg of segs) {
-      const [x1] = xy([row, seg.a], mirror), [x2] = xy([row, seg.b], mirror);
-      const left = Math.min(x1, x2) - 10, w = Math.abs(x2 - x1) + 20;
-      s += mirror
-        ? `<rect x="${left}" y="${y - 7}" width="${w}" height="14" rx="3" fill="#d9a441" stroke="#a87820" stroke-width=".8"><title>row ${row}: ${esc(seg.net)}</title></rect>`
-        : `<rect x="${left}" y="${y - 7}" width="${w}" height="14" rx="3" fill="#cfd8cd" opacity=".55"/>`;
-    }
-    const label = `R${row}`;
-    s += `<text x="${mirror ? M + BOARD_W + 36 : M - 40}" y="${y + 3}" font-size="9" fill="#37474f" text-anchor="${mirror ? 'start' : 'end'}">${label}</text>`;
+  for(const g of copperGroups){
+    const coords=g.holes.map(h=>xy(h,mirror));
+    const xs=coords.map(q=>q[0]),ys=coords.map(q=>q[1]);
+    const left=Math.min(...xs)-7,top=Math.min(...ys)-7,w=Math.max(14,Math.max(...xs)-Math.min(...xs)+14),h=Math.max(14,Math.max(...ys)-Math.min(...ys)+14);
+    s+=mirror?`<rect x="${left}" y="${top}" width="${w}" height="${h}" rx="3" fill="#d9a441" stroke="#a87820" stroke-width=".8"><title>${esc(g.id)}</title></rect>`:`<rect x="${left}" y="${top}" width="${w}" height="${h}" rx="3" fill="#cfd8cd" opacity=".35"/>`;
   }
   return s;
 }
@@ -156,6 +125,9 @@ function linkWires(mirror) {
 }
 
 function partBody(p, mirror) {
+  // Buck modules are mounted off-board and connect through insulated pigtails.
+  // Draw their landing holes, but do not imply an unmeasured physical footprint.
+  if (p.kind === 'module') return '';
   const pts = p.pins.map((q) => xy(q[2], mirror));
   const xs = pts.map((q) => q[0]), ys = pts.map((q) => q[1]);
   const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
@@ -190,19 +162,35 @@ function partLabel(p, mirror) {
   if (p.ref === 'J_IN') [tx, ty, anchor] = [x0 - 14, cy + 3, 'end'];
   if (p.kind === 'module') [tx, ty, anchor] = [x0, y0 - 14, 'middle'];
   // Hand-placed labels where neighbouring parts would collide with the default spot.
-  const nudge = { R_LED3: [0, 28, 'middle'], R_LED5: [0, 28, 'middle'], LED3: [-12, 4, 'end'], LED5: [14, 20, 'start'],
+  const nudge = {
     R_PD_RA: [-12, 3, 'end'], R_DT: [12, 3, 'start'], R_DB: [12, 3, 'start'], R_GP: [12, 3, 'start'] }[p.ref];
   if (nudge) [tx, ty, anchor] = [nudge[2] === 'middle' ? cx : (nudge[2] === 'end' ? x0 : x1) + nudge[0], (nudge[2] === 'middle' ? cy : cy) + nudge[1] - (nudge[2] === 'middle' ? 0 : 0), nudge[2]];
   return `<text x="${tx}" y="${ty}" font-size="9.5" font-weight="700" fill="#102027" text-anchor="${anchor}">${esc(p.ref)}</text>`;
 }
 
 export function topSvg() {
-  const inner = colTicks(false) + strips(false) + holes(false) + cutMarks(false) + linkWires(false) +
+  const inner = colTicks(false) + strips(false) + holes(false) + cutMarks(false) +
     parts.map((p) => partBody(p, false)).join('') +
     parts.flatMap((p) => p.pins.map(([, net, hole]) => { const [x, y] = xy(hole, false); return `<circle cx="${x}" cy="${y}" r="3.6" fill="${colorOf(net)}" stroke="#fff" stroke-width=".8"/>`; })).join('') +
     parts.flatMap((p) => (p.unconnected ?? []).map((hole) => { const [x, y] = xy(hole, false); return `<circle cx="${x}" cy="${y}" r="3.6" fill="none" stroke="#b71c1c" stroke-width="1.2" stroke-dasharray="2 1"/>`; })).join('') +
-    parts.map((p) => partLabel(p, false)).join('');
-  return frame(inner, false, 'Revision 9 power stripboard — TOP (component side)');
+    parts.map((p) => partLabel(p, false)).join('') +
+    // Off-board female barrel socket guide beside the input corner. This is a
+    // pigtail accessory, not a claimed through-hole footprint or measured fit.
+    (() => {
+      const [px, py] = xy(inputJackGuide.positiveLanding, false);
+      const [gx, gy] = xy(inputJackGuide.groundLanding, false);
+      const guideY = M + BOARD_H + 42;
+      const boardBottom = M + BOARD_H + 22;
+      return `<g><title>${esc(inputJackGuide.value)}; off-board guide, exact socket unverified</title>
+<path d="M55 ${guideY + 5} V${boardBottom + 3} H17 V${py} H${px}" fill="none" stroke="#e53935" stroke-width="2.5" stroke-dasharray="6 4"/>
+<path d="M70 ${guideY + 5} V${boardBottom + 10} H10 V${gy} H${gx}" fill="none" stroke="#202124" stroke-width="2.5" stroke-dasharray="6 4"/>
+<rect x="38" y="${guideY - 4}" width="48" height="28" rx="8" fill="#303238" stroke="#111" stroke-width="2"/>
+<rect x="78" y="${guideY + 3}" width="12" height="14" rx="4" fill="#17191c" stroke="#777"/>
+<text x="99" y="${guideY + 5}" font-size="10" font-weight="700" fill="#203545">J_DC female barrel socket (off-board)</text>
+<text x="99" y="${guideY + 20}" font-size="9" fill="#203545">center + to J_IN 12V; sleeve − to J_IN GND</text>
+<text x="99" y="${guideY + 35}" font-size="8.5" fill="#8a4b00">guide only; socket body / terminals not measured</text></g>`;
+    })();
+  return frame(inner, false, 'Revision 9 power stripboard — TOP (component side)', 110);
 }
 
 export function undersideSvg() {

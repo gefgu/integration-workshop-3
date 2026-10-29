@@ -68,3 +68,7 @@ eletronics/perfboard/tscircuit/app/data/
 
 # Bench service local database
 bench/service/*.sqlite3*
+
+d3/*.pdf
+
+docs/deliverables/d3/Planejamento para a apresentação de oficinas.pdf

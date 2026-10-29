@@ -1,0 +1,13 @@
+{
+  "status": "pass",
+  "checks": {
+    "source": [],
+    "pins": [],
+    "netlist": [],
+    "connectivity": []
+  },
+  "limitations": [
+    "Software checks are not measured hardware evidence.",
+    "No PCB placement, routed copper, or perfboard layout is supplied."
+  ]
+}

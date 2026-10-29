@@ -23,7 +23,10 @@
     "build:revision8": "bun revision8/build-contact-boards.tsx && bun revision8/build-lower-boards.tsx && node revision8/check-lower-copper.mjs && node revision8/check-lower-boards.mjs && bun revision8/build-power-matrix.ts",
     "build:revision9": "bun revision9/build-schematic.tsx && node revision9/check.mjs && node revision9/mutation-test.mjs && node revision9/build-html.mjs",
     "schematic:editor": "node revision8/schematic-editor-server.mjs",
-    "build:revision8:schematic": "bun revision8/build-overall-schematic.tsx"
+    "build:revision8:schematic": "bun revision8/build-overall-schematic.tsx",
+    "build:pi-controls": "bun pi-controls/build.tsx",
+    "build:smart-perfboard": "bun smart-perfboard/build.tsx && node smart-perfboard/layout.mjs && node smart-perfboard/documents.mjs",
+    "build:smart-perfboard:stage1": "bun smart-perfboard/stage1.tsx"
   },
   "dependencies": {
     "@jscad/modeling": "2.13.0",

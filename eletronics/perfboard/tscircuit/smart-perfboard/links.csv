@@ -1,0 +1,4 @@
+"Link","External mode","USB mode","Purpose"
+"JP_EXT","FITTED","OPEN","External 3.3 V source isolation; USB and external power never parallel"
+"JP_SENSE1","FITTED only after input checks","OPEN","Remove before unpowering receiver / during standalone programming"
+"JP_SENSE2","FITTED only after input checks","OPEN","Remove before unpowering receiver / during standalone programming"
