@@ -4,11 +4,13 @@ import { setValidatorBase } from '../api/validator.ts';
 import Bubble from '../components/Bubble.tsx';
 import LessonPlayer, { type PlayerEvent } from '../player/LessonPlayer.tsx';
 import { type BenchApi, benchApi, type LoginResult, type RankRow, serviceUrl } from './benchApi.ts';
+import CameraView from './CameraView.tsx';
 import { lessonStates, type Screen, screenAfterLesson } from './screens.ts';
 
 /**
  * The workbench's 7" screen. Exactly one screen is shown at a time (SFR17): locked (waiting for the
- * teacher's app), home (tap your tag), the student's lessons, a running lesson, the score and the ranking.
+ * teacher's app), home (tap your tag), the student's lessons, a running lesson, the score, the ranking and the
+ * camera board view.
  * Keyboard stands in for the hardware: arrows/Tab + Enter = joystick, Esc = Voltar.
  */
 export default function BenchApp() {
@@ -77,11 +79,12 @@ export default function BenchApp() {
       if (event.key !== 'Escape') return;
       if (screen.name === 'lesson' || screen.name === 'score') void backToStudent();
       else if (screen.name === 'ranking') setScreen(session ? { name: 'student' } : { name: 'home' });
+      else if (screen.name === 'camera') setScreen(screen.back);
       else if (screen.name === 'student') void logout();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [screen.name, session, logout, backToStudent]);
+  }, [screen, session, logout, backToStudent]);
 
   async function login(code: string) {
     try {
@@ -109,7 +112,13 @@ export default function BenchApp() {
         {error && <p className="app-error">{error}</p>}
         {screen.name === 'locked' && <Locked status={status} api={api} />}
         {screen.name === 'home' && (
-          <Home pkg={pkg} notice={screen.notice} onTag={login} onRanking={() => setScreen({ name: 'ranking' })} />
+          <Home
+            pkg={pkg}
+            notice={screen.notice}
+            onTag={login}
+            onRanking={() => setScreen({ name: 'ranking' })}
+            onCamera={() => setScreen({ name: 'camera', back: { name: 'home' } })}
+          />
         )}
         {screen.name === 'student' && session && pkg && (
           <StudentHome
@@ -117,6 +126,7 @@ export default function BenchApp() {
             pkg={pkg}
             onOpen={(lessonId, phase) => setScreen({ name: 'lesson', lessonId, phase })}
             onRanking={() => setScreen({ name: 'ranking' })}
+            onCamera={() => setScreen({ name: 'camera', back: { name: 'student' } })}
             onLogout={logout}
           />
         )}
@@ -143,6 +153,7 @@ export default function BenchApp() {
             onBack={() => setScreen({ name: 'student' })}
           />
         )}
+        {screen.name === 'camera' && <CameraView onBack={() => setScreen(screen.back)} />}
         {screen.name === 'ranking' && (
           <RankingScreen
             api={api}
@@ -160,7 +171,7 @@ function Locked({ status, api }: { status: BenchStatus | null; api: BenchApi }) 
   return (
     <section className="bench-center">
       <Bubble
-        kind="fox"
+        kind="hamster"
         tone="info"
         message="Olá! Peça ao seu professor para conectar o app à bancada. Depois é só aproximar sua tag."
       />
@@ -193,11 +204,13 @@ function Home({
   notice,
   onTag,
   onRanking,
+  onCamera,
 }: {
   pkg: BenchPackage | null;
   notice?: string;
   onTag: (code: string) => void;
   onRanking: () => void;
+  onCamera: () => void;
 }) {
   const [code, setCode] = useState('');
   const input = useRef<HTMLInputElement>(null);
@@ -207,7 +220,7 @@ function Home({
     return (
       <section className="bench-center">
         <Bubble
-          kind="fox"
+          kind="hamster"
           tone="obs"
           message="A bancada está liberada, mas ainda não recebeu um módulo do professor."
         />
@@ -217,7 +230,7 @@ function Home({
   return (
     <section className="bench-center">
       <Bubble
-        kind="fox"
+        kind="hamster"
         tone={notice ? 'erro' : 'info'}
         message={notice ?? `Módulo “${pkg.module.title}”. Aproxime sua tag do leitor para começar!`}
       />
@@ -248,6 +261,9 @@ function Home({
           <button className="btn-outline" type="button" onClick={onRanking}>
             Ranking
           </button>
+          <button className="btn-outline" type="button" onClick={onCamera}>
+            Câmera
+          </button>
         </div>
       </form>
     </section>
@@ -259,12 +275,14 @@ function StudentHome({
   pkg,
   onOpen,
   onRanking,
+  onCamera,
   onLogout,
 }: {
   session: LoginResult;
   pkg: BenchPackage;
   onOpen: (lessonId: string, phase: number) => void;
   onRanking: () => void;
+  onCamera: () => void;
   onLogout: () => void;
 }) {
   const lessons = lessonStates(pkg, session.progress);
@@ -275,7 +293,7 @@ function StudentHome({
   return (
     <section className="bench-center">
       <Bubble
-        kind="fox"
+        kind="hamster"
         tone="ok"
         message={
           resumeLesson
@@ -315,6 +333,9 @@ function StudentHome({
         <div className="workspace-actions">
           <button type="button" className="btn-outline" onClick={onRanking}>
             Ranking
+          </button>
+          <button type="button" className="btn-outline" onClick={onCamera}>
+            Câmera
           </button>
           <button type="button" className="btn-outline" onClick={onLogout}>
             Sair
@@ -385,7 +406,7 @@ function LessonScreen({
       {saveError && <p className="app-error">{saveError}</p>}
       <LessonPlayer
         lesson={lesson}
-        mascotKind="fox"
+        mascotKind="hamster"
         bench
         startPhase={phase}
         onEvent={onEvent}
@@ -414,7 +435,7 @@ function ScoreScreen({
   return (
     <section className="bench-center">
       <Bubble
-        kind="fox"
+        kind="hamster"
         tone={score >= 70 ? 'ok' : 'obs'}
         message={
           score > 0

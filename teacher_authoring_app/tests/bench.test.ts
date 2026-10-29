@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { serviceUrl } from '../src/bench/benchApi.ts';
+import { cameraErrorMessage, gridLines } from '../src/bench/camera.ts';
 import { lessonStates, screenAfterLesson } from '../src/bench/screens.ts';
 import { newLesson } from '../src/model/lesson.ts';
 import { boardBefore, buildPhases, challengeScore } from '../src/player/phases.ts';
@@ -59,4 +60,15 @@ test('endereço do serviço da bancada', () => {
     serviceUrl({ search: '?servico=http://10.0.0.5:9000/', hostname: 'x', protocol: 'http:' }),
     'http://10.0.0.5:9000'
   );
+});
+
+test('câmera: mensagens de erro em pt-BR e grade com uma linha por borda de coluna e de banco', () => {
+  assert.match(cameraErrorMessage('NotFoundError'), /Nenhuma câmera/);
+  assert.match(cameraErrorMessage('NotAllowedError'), /permissão/);
+  assert.match(cameraErrorMessage('qualquer'), /Não consegui/);
+  const { xs, ys } = gridLines(11, 6);
+  assert.equal(xs.length, 12);
+  assert.equal(ys.length, 7);
+  assert.equal(xs[0], 6);
+  assert.equal(Math.round(xs[11]), 94);
 });

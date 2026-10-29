@@ -14,7 +14,7 @@ const TONE_INK = {
 };
 
 /** Mascote + balão de fala colorido pelo tom da mensagem. */
-export default function Bubble({ kind = 'fox', tone = 'info', message }) {
+export default function Bubble({ kind = 'hamster', tone = 'info', message }) {
   return (
     <div style={{ width: '100%', maxWidth: 720, display: 'flex', alignItems: 'center', gap: 16 }}>
       <Mascot kind={kind} message={message} size={80} />
