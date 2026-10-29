@@ -2,6 +2,7 @@
 
 import os
 import unittest
+from unittest import mock
 
 import numpy as np
 import cv2 as cv
@@ -117,8 +118,36 @@ class TestComponentes(unittest.TestCase):
         # "mão": mancha cor de pele (pouco saturada) sobre vários sockets
         for linha in range(4):
             desenha_peca(img, H, 1, linha, 3, 6, (140, 170, 210), espessura=40)
-        res = Pipeline(temporal=False).processa(img)
+        # o limite padrão é folgado (a câmera real não vê ~40 furos escuros); aqui testa-se o mecanismo
+        with mock.patch.object(cfg, 'MAX_OBSTRUIDOS', 6):
+            res = Pipeline(temporal=False).processa(img)
         self.assertFalse(res.valido)
+
+
+class TestFaixa(unittest.TestCase):
+    """ peças azuis: a faixa colorida do meio define a peça (catálogo do app web)."""
+
+    def retificada_com_faixa(self, bgr):
+        ret = np.zeros((cfg.ALTURA_RET, cfg.LARGURA_RET, 3), np.uint8)
+        (x0, y), (x1, _) = cfg.para_retificada(3, 1), cfg.para_retificada(4, 1)
+        cv.rectangle(ret, (int(x0) - 20, int(y) - 22), (int(x1) + 20, int(y) + 8), (200, 110, 30), -1)  # corpo azul
+        xm = int((x0 + x1) / 2)
+        cv.rectangle(ret, (xm - 7, int(y) - 22), (xm + 7, int(y) + 8), bgr, -1)
+        return ret
+
+    def test_cor_da_faixa_define_a_peca(self):
+        from visao.componentes import le_faixa
+        # cada faixa, na cor que a câmera real vê (centros medidos em FAIXAS), vira o tipo do catálogo do app web
+        tipos = {'laranja': 'resistor_220', 'vermelho': 'resistor_470', 'amarelo': 'resistor_1k',
+                 'rosa': 'resistor_cc', 'verde': 'capacitor'}
+        for faixa, dados in cfg.FAIXAS.items():
+            bgr = cv.cvtColor(np.uint8([[dados['hsv']]]), cv.COLOR_HSV2BGR)[0, 0].tolist()
+            self.assertEqual(le_faixa(self.retificada_com_faixa(bgr), 0, 1, 3), faixa)
+            self.assertEqual(dados['tipo'], tipos[faixa])
+
+    def test_sem_faixa_nao_ha_faixa(self):
+        from visao.componentes import le_faixa
+        self.assertIsNone(le_faixa(self.retificada_com_faixa((200, 110, 30)), 0, 1, 3))
 
 
 class TestTemporal(unittest.TestCase):

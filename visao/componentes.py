@@ -23,6 +23,7 @@ class Componente:
     colunas: list          # colunas ocupadas (em ordem)
     terminais: list        # colunas que são terminais elétricos
     pontos: int = None     # nº de pontos pretos (só calculado quando precisa desempatar)
+    faixa: str = None      # cor da faixa do meio (peças azuis): define resistor/capacitor
     id: str = field(init=False)
 
     def __post_init__(self):
@@ -57,6 +58,32 @@ def _grupos_linha(cores, pontes):
         grupos.append((cor, list(range(c, fim + 1))))
         c = fim + 1
     return grupos
+
+
+def le_faixa(ret_bgr, metade, linha, coluna):
+    """ cor da faixa colorida sobre a ponte entre `coluna` e `coluna + 1` (peça azul), ou None.
+    a peça fica um pouco acima do centro dos sockets, então a janela é mais alta para cima;
+    o corpo azul e o preto da placa são ignorados e a cor é a do centro de FAIXAS mais próximo."""
+    x, y = cfg.coord_modelo(metade, linha, coluna)
+    cx, cy = (int(round(v)) for v in cfg.para_retificada(x + 0.5, y))
+    meia, acima, abaixo = cfg.FAIXA_JANELA
+    recorte = ret_bgr[max(0, cy - acima):cy + abaixo + 1, max(0, cx - meia):cx + meia + 1]
+    if recorte.size == 0:
+        return None
+    hsv = cv.cvtColor(cv.GaussianBlur(recorte, (3, 3), 0), cv.COLOR_BGR2HSV).reshape(-1, 3).astype(float)
+    colorido = (hsv[:, 1] > 60) & (hsv[:, 2] > 100) & ((hsv[:, 0] < 90) | (hsv[:, 0] > 140))
+    if colorido.sum() < cfg.FAIXA_MIN_PIXELS:
+        return None
+    h, s, v = np.median(hsv[colorido], axis=0)
+    melhor, dist_melhor = None, cfg.FAIXA_DIST_MAX
+    for nome, faixa in cfg.FAIXAS.items():
+        ch, cs, cv_ = faixa['hsv']
+        dh = min(abs(h - ch), 180 - abs(h - ch))
+        dist = np.sqrt((cfg.FAIXA_PESOS[0] * dh) ** 2 + (cfg.FAIXA_PESOS[1] * (s - cs)) ** 2
+                       + (cfg.FAIXA_PESOS[2] * (v - cv_)) ** 2)
+        if dist < dist_melhor:
+            melhor, dist_melhor = nome, dist
+    return melhor
 
 
 def conta_pontos(ret_bgr, cor, metade, linha, colunas):
@@ -98,17 +125,34 @@ def conta_pontos(ret_bgr, cor, metade, linha, colunas):
 def identifica(cores, pontes, ret_bgr=None):
     """ cores: (2, 6, 11), pontes: (2, 6, 10) -> lista de Componente."""
     componentes = []
+    pontes = pontes.copy()
+    faixas = {}  # (metade, linha, coluna esquerda) -> cor da faixa
+    if ret_bgr is not None:
+        # dois sockets azuis vizinhos com faixa colorida entre eles são UMA peça: a faixa cobre a
+        # ponte com outra cor, que sozinha separaria a peça em duas
+        for m in range(2):
+            for l in range(cfg.N_LINHAS_METADE):
+                for c in range(cfg.N_COLUNAS - 1):
+                    if cores[m, l, c] == 'azul' and cores[m, l, c + 1] == 'azul':
+                        faixa = le_faixa(ret_bgr, m, l, c)
+                        if faixa:
+                            faixas[(m, l, c)] = faixa
+                            pontes[m, l, c] = 'azul'
+
     for m in range(2):
         for l in range(cfg.N_LINHAS_METADE):
             for cor, colunas in _grupos_linha(cores[m, l], pontes[m, l]):
                 regra = cfg.COMPONENTES.get((cor, len(colunas)))
                 tipo = regra['tipo'] if regra else f'desconhecido_{cor}_{len(colunas)}'
+                faixa = faixas.get((m, l, colunas[0])) if cor == 'azul' and len(colunas) == 2 else None
+                if faixa:
+                    tipo = cfg.FAIXAS[faixa]['tipo']
                 pontos = None
-                if regra and 'pontos' in regra and ret_bgr is not None:
+                if regra and 'pontos' in regra and ret_bgr is not None and not faixa:
                     pontos = conta_pontos(ret_bgr, cor, m, l, colunas)
                     tipo = regra['pontos'].get(pontos, tipo)
 
                 idx_terminais = cfg.TERMINAIS.get(tipo, range(len(colunas)))
                 terminais = [colunas[i] for i in idx_terminais]
-                componentes.append(Componente(tipo, cor, m, l, colunas, terminais, pontos))
+                componentes.append(Componente(tipo, cor, m, l, colunas, terminais, pontos, faixa))
     return componentes
