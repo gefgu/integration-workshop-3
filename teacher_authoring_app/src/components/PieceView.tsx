@@ -4,7 +4,7 @@ import type { PieceType } from '../model/types.ts';
 
 /**
  * Visual for one component, sized to `width` × `height`. Used on the board, tray and drag ghost.
- * Capsule colors follow MFR10; the black dots on top follow MFR11.
+ * Capsule colors follow MFR10; colored top bands distinguish blue components.
  *  - fill: jumpers take the full `height` (on the board they cover the whole square sockets)
  *  - lit: LED glows / buzzer pulses
  *  - value + onPotStep(±1): potentiometer setting with −/+ buttons
@@ -48,7 +48,7 @@ export default function PieceView({
   onButton,
   style,
 }: PieceViewProps) {
-  const d: { len: number; cor: string; text: string; dots?: number; pinA?: string; pinB?: string } = DEFS[type];
+  const d: { len: number; cor: string; text: string; dots?: number; stripe?: string; pinA?: string; pinB?: string } = DEFS[type];
   const c = CAPSULE[d.cor as keyof typeof CAPSULE];
   const isLed = type === 'led';
   const isJumper = type.startsWith('jumper');
@@ -78,7 +78,7 @@ export default function PieceView({
 
   return (
     <div style={base}>
-      {d.dots && !isJumper && <Dots n={d.dots} />}
+      {d.stripe && !isJumper && <Stripe color={d.stripe} />}
       {type === 'potenciometro' ? (
         <PotFace value={value || POT_DEFAULT} onStep={onPotStep} />
       ) : type === 'resistor_cc' ? (
@@ -86,7 +86,13 @@ export default function PieceView({
       ) : type === 'botao' ? (
         <ButtonCap pressed={pressed} onChange={onButton} />
       ) : (
-        <span style={type === 'buzzer' && lit ? { animation: 'pulse .5s ease-in-out infinite alternate' } : undefined}>
+        <span
+          style={{
+            position: 'relative',
+            zIndex: 1,
+            ...(type === 'buzzer' && lit ? { animation: 'pulse .5s ease-in-out infinite alternate' } : {}),
+          }}
+        >
           {d.text}
         </span>
       )}
@@ -178,26 +184,25 @@ function CapsuleFace({ base, text, oled, fault, pins }) {
   );
 }
 
-/** 1–4 black dots printed on top of the capsule (MFR11). */
-function Dots({ n }) {
+/** Colored identifying band, matching the physical blue components. */
+function Stripe({ color }: { color: string }) {
   return (
     <span
       aria-hidden="true"
       style={{
         position: 'absolute',
-        top: 2,
-        left: 0,
-        right: 0,
-        display: 'flex',
-        justifyContent: 'center',
-        gap: 3,
+        top: 0,
+        bottom: 0,
+        left: '50%',
+        width: 12,
+        transform: 'translateX(-50%)',
+        background: color,
+        borderRadius: 3,
+        boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.24)',
+        zIndex: 0,
         pointerEvents: 'none',
       }}
-    >
-      {Array.from({ length: n }, (_, dot) => dot + 1).map((dot) => (
-        <i key={dot} style={{ width: 5, height: 5, borderRadius: 999, background: '#111' }} />
-      ))}
-    </span>
+    />
   );
 }
 
