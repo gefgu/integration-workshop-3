@@ -1,6 +1,15 @@
 import { COLS, ROWS } from '../engine/board.ts';
 import { AMMETER_SLOT, slotOf } from '../engine/nodes.ts';
-import { configProblems, countByType, isCapsule, KIT_LIMITS, MAX_CAPSULES, POT_VALUES, TYPES } from '../engine/sim.ts';
+import {
+  CC_VALUES,
+  configProblems,
+  countByType,
+  isCapsule,
+  KIT_LIMITS,
+  MAX_CAPSULES,
+  POT_VALUES,
+  TYPES,
+} from '../engine/sim.ts';
 import { uid } from './ids.ts';
 import { ACTIONS, autoSplit, CATEGORIES, connectionStep, stepProblems } from './steps.ts';
 import type { Lesson, LessonStep, LessonValidation, Piece, Quiz, QuizOption, QuizPosition } from './types.ts';
@@ -132,7 +141,9 @@ export function validateLesson(raw: any): LessonValidation {
       pieces: pieces.map((p) => {
         const base = { id: p.id, type: p.type, a: p.a, b: p.b, row: p.row };
         if (isCapsule(p.type)) return p.config ? { ...base, c: p.c, config: p.config } : { ...base, c: p.c };
-        return p.type === 'potenciometro' && POT_VALUES.includes(p.value) ? { ...base, value: p.value } : base;
+        if (p.type === 'potenciometro' && POT_VALUES.includes(p.value)) return { ...base, value: p.value };
+        if (p.type === 'resistor_cc' && CC_VALUES.includes(p.value)) return { ...base, value: p.value };
+        return base;
       }),
     },
     steps,

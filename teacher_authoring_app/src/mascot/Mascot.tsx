@@ -1,9 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
-import { useSpeaking } from '../audio/useTutorVoice.ts';
 import foxIdle from '../assets/mascots/fox-idle.png';
 import foxTalking from '../assets/mascots/fox-talking.png';
+import hamsterIdle from '../assets/mascots/hamster-idle.png';
+import hamsterTalking from '../assets/mascots/hamster-talking.png';
+import { useSpeaking } from '../audio/useTutorVoice.ts';
 
+/** The hamster is the tutor's identity (drawn by scripts/draw-hamster.py); the fox stays for older lessons. */
 const SPRITES = {
+  hamster: { idle: hamsterIdle, talking: hamsterTalking },
   fox: { idle: foxIdle, talking: foxTalking },
 };
 
@@ -45,7 +49,7 @@ export default function Mascot({ kind, message, size = 44 }) {
     };
   }, [message, voiced]);
 
-  const sprite = SPRITES[kind] || SPRITES.fox;
+  const sprite = SPRITES[kind] || SPRITES.hamster;
   const src = talkFrame ? sprite.talking : sprite.idle;
 
   return <img className="mascot-img" src={src} width={size} height={size} alt="Mascote tutor" />;

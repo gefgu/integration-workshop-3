@@ -85,7 +85,7 @@ def test_snfr6_compare_within_200ms_on_max_kit_boards():
     worst = 0.0
     for seed in range(40):
         pieces = _max_kit_board(seed)
-        assert len(pieces) == 30
+        assert len(pieces) == 34  # full MFR8 kit, including the color-code resistor capsule and 3-column jumpers
         target = G(pieces)
         # student has the same circuit, built in a different order/orientation
         student = G(list(reversed([p.model_copy(update={"a": p.b, "b": p.a}) if p.type not in ("bateria", "led") else p for p in pieces])))

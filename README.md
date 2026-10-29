@@ -12,15 +12,41 @@ Project documentation (blog, project description, requirements, budget, risk ana
 
 📄 [Project Notion](https://app.notion.com/p/fdd9670c116e82209954010e6b830a37)
 
-## Teacher app and SQLite
+## Software (D3): teacher website, teacher app, server and bench
 
-The teacher workspace stores lessons, turmas, students, and turma lesson assignments in `graph_validator/tedtronics.sqlite3`. The file is created automatically on first start and ignored by Git. The login is a demo placeholder using the seeded teacher (ID 1); it does not authenticate the entered credentials.
+| Part | Folder | What it does |
+|---|---|---|
+| Server API | `graph_validator/` | FastAPI + SQLite (Alembic): teacher accounts, lessons, modules, classes, students, NFC tags (with audit log), bench sync, dashboard, and the graph validator. |
+| Teacher website | `teacher_authoring_app/` (`index.html`) | Phone-first React site: sign-up/login, lesson editor, modules, classes, students and tags, performance dashboard. |
+| Teacher app | `teacher_mobile_app/` | Expo / React Native: login, classes and students, connect to a bench (Bluetooth or simulator), send a module, sync progress, offline queue. |
+| Bench | `bench/service/` + `teacher_authoring_app/bench.html` | Bench service (local storage, protocol, local validation) and the 7" screen: tag login, guided lesson, challenge, score and top-3 ranking. |
+| Protocol | `protocol/bench.ts`, `docs/bench-protocol.md` | App ⇄ bench messages, framed for BLE; the simulator carries the same frames over WebSocket. |
 
-1. Run `cd graph_validator && python3 -m venv .venv && .venv/bin/pip install -e '.[dev]'`.
-2. Run `cd teacher_authoring_app && npm install`.
-3. Run `./run.sh` from the repository root. It applies the Alembic migration, starts the FastAPI service on port 8000, and starts Vite. No Docker or database server is needed.
+### Setup
 
-If you start the services separately, run `graph_validator/.venv/bin/alembic -c graph_validator/alembic.ini upgrade head` before `npm run validator` from `teacher_authoring_app`. The Vite `/api` proxy forwards workspace and validator requests to FastAPI. To use a different SQLite file, set `TEDTRONICS_DATABASE_URL=sqlite:////absolute/path/to/file.sqlite3` for both migration and API processes.
+1. `cd graph_validator && python -m venv .venv`, then install with `.venv/bin/pip install -e ".[dev]" -e ../bench/service` (Windows: `.venv\Scripts\pip ...`).
+2. `cd teacher_authoring_app && npm install`
+3. Start everything: `./run.sh` (Linux/macOS/Git Bash) or `powershell -ExecutionPolicy Bypass -File run.ps1` (Windows). This applies the migrations and starts:
+   - API on `http://<pc>:8000`
+   - bench service on `http://<pc>:8765` (demo mode on)
+   - website on `http://<pc>:5173`, bench screen on `http://<pc>:5173/bench.html`
+4. Teacher app: `cd teacher_mobile_app && npm install && npx expo start`. In Expo Go only the **Simulador** link works. Bluetooth needs a development build (`npx expo run:android`). On the login screen, use the PC's IP: `http://<pc>:8000`.
+
+The demo teacher created by the migration is `professor@tedtronics.local` / `tedtronics`. New teachers sign up on the website. Data lives in `graph_validator/tedtronics.sqlite3` and `bench/service/bench.sqlite3`; both are git-ignored. `TEDTRONICS_DATABASE_URL` points the API to another file. `TEDTRONICS_BENCH_SECRET` must be the same on the API and on the bench: it signs the session that unlocks the bench.
+
+### End-to-end demo
+
+1. On the website: sign up → create lessons (one guided, one challenge) → **Módulos**: create a module with them and tick the class → **Alunos**: register students and link a tag code (e.g. `TAG-1`).
+2. In the app: log in → **Bancada** → **Simulador** → `<pc>:8765` → **Enviar módulo** (module + class). Without the phone, the bench screen's "Modo demonstração" unlocks it, but no module is loaded.
+3. On `bench.html`: type `TAG-1` + Enter (a USB NFC reader types the same way) → do the lesson → leave halfway and come back: it resumes at the same step → the challenge shows the score and the top 3.
+4. In the app: **Sincronizar progresso** (with no internet, the data waits on the phone and goes up later) → the website's **Painel** shows progress, score and time.
+
+### Tests
+
+- `graph_validator`: `.venv/bin/python -m pytest`
+- `bench/service`: `../../graph_validator/.venv/bin/python -m pytest`
+- `teacher_authoring_app`: `npm test && npm run typecheck`
+- `teacher_mobile_app`: `npm test && npm run typecheck && npx expo lint`
 
 ### Tutor voice (Piper TTS)
 
@@ -30,8 +56,6 @@ Saving a lesson also synthesizes everything the tutor says in it (title, instruc
 2. `graph_validator/tools/fetch_voice.sh` downloads the voice (~63 MB) into `graph_validator/voices/` and builds the system pack (~340 phrases, takes several minutes once).
 
 The MP3s are cached by text in `graph_validator/audio/` (both folders are git-ignored; override with `TEDTRONICS_AUDIO_DIR` and `TEDTRONICS_PIPER_VOICE`), so re-saving only synthesizes changed phrases. "Exportar" downloads a `.zip` with `lesson.json` and `audio/*.mp3`; `GET /tts/system.zip` has the system pack. Without the `tts` extra or the voice, lessons still save, just without audio. Rebuild the system pack (`.venv/bin/python -m graph_validator.tts system`) after changing default messages in `feedback.py`.
-
-Previously saved browser lessons are not imported. The teacher can still import and export lesson JSON files through the app.
 
 ## Team
 

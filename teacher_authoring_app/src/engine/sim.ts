@@ -25,6 +25,7 @@ export const DEFS = {
   resistor_220: { len: 1, cor: 'azul', dots: 1, text: '220 Ω' },
   resistor_470: { len: 1, cor: 'azul', dots: 1, text: '470 Ω' },
   resistor_1k: { len: 1, cor: 'azul', dots: 1, text: '1 kΩ' },
+  resistor_cc: { len: 1, cor: 'azul', dots: 3, text: '' },
   capacitor: { len: 1, cor: 'azul', dots: 2, text: '1000 µF' },
   botao: { len: 1, cor: 'amarelo', text: '●' },
   potenciometro: { len: 2, cor: 'amarelo', text: '' },
@@ -48,6 +49,7 @@ export const NOMES = {
   resistor_220: 'Resistor 220 Ω',
   resistor_470: 'Resistor 470 Ω',
   resistor_1k: 'Resistor 1 kΩ',
+  resistor_cc: 'Resistor código de cores',
   capacitor: 'Capacitor 1000 µF',
   botao: 'Botão',
   potenciometro: 'Potenciômetro',
@@ -125,8 +127,57 @@ export const RESISTOR_OHMS: Record<string, number> = {
 export const POT_VALUES = [100, 220, 470, 1000, 2200, 4700, 10000];
 export const POT_DEFAULT = 1000;
 
+/**
+ * Color-code resistor capsule (EFR12): three discs with four detents each. Discs 1 and 2 are the
+ * significant digits, disc 3 the multiplier; colors follow the standard resistor code.
+ */
+export const CC_BANDS = [
+  [
+    { digit: 1, color: '#7a4a22', name: 'marrom' },
+    { digit: 2, color: '#d23a30', name: 'vermelho' },
+    { digit: 4, color: '#f2c318', name: 'amarelo' },
+    { digit: 7, color: '#8a4fc0', name: 'violeta' },
+  ],
+  [
+    { digit: 0, color: '#151515', name: 'preto' },
+    { digit: 2, color: '#d23a30', name: 'vermelho' },
+    { digit: 5, color: '#3f9b4f', name: 'verde' },
+    { digit: 7, color: '#8a4fc0', name: 'violeta' },
+  ],
+  [
+    { digit: 1, color: '#151515', name: 'preto' },
+    { digit: 10, color: '#7a4a22', name: 'marrom' },
+    { digit: 100, color: '#d23a30', name: 'vermelho' },
+    { digit: 1000, color: '#ef7d22', name: 'laranja' },
+  ],
+] as const;
+export const CC_DEFAULT = 220;
+
+export function ccOhms([d1, d2, m]: number[]): number {
+  return (CC_BANDS[0][d1].digit * 10 + CC_BANDS[1][d2].digit) * CC_BANDS[2][m].digit;
+}
+
+/** Disc positions (0..3 each) for a value, or null when the discs cannot show it. */
+export function ccDiscs(ohms: number): [number, number, number] | null {
+  for (let m = 0; m < 4; m++)
+    for (let d1 = 0; d1 < 4; d1++) for (let d2 = 0; d2 < 4; d2++) if (ccOhms([d1, d2, m]) === ohms) return [d1, d2, m];
+  return null;
+}
+
+export const CC_VALUES = [
+  ...new Set([0, 1, 2, 3].flatMap((m) => [0, 1, 2, 3].flatMap((a) => [0, 1, 2, 3].map((b) => ccOhms([a, b, m]))))),
+].sort((x, y) => x - y);
+
+/** Turns one disc to its next detent. */
+export function turnCcDisc(ohms: number | undefined, disc: 0 | 1 | 2): number {
+  const pos = ccDiscs(ohms || CC_DEFAULT) ?? ccDiscs(CC_DEFAULT);
+  pos[disc] = (pos[disc] + 1) % 4;
+  return ccOhms(pos);
+}
+
 export function pieceOhms(p: Piece): number {
   if (p.type === 'potenciometro') return p.value || POT_DEFAULT;
+  if (p.type === 'resistor_cc') return p.value || CC_DEFAULT;
   return RESISTOR_OHMS[p.type] || 0;
 }
 
@@ -142,6 +193,7 @@ export const KIT_LIMITS = {
   resistor_220: 1,
   resistor_470: 1,
   resistor_1k: 1,
+  resistor_cc: 1,
   capacitor: 2,
   botao: 2,
   potenciometro: 1,

@@ -1,9 +1,11 @@
 """Stateless HTTP wrapper around the validator."""
 from __future__ import annotations
 
+import os
 from typing import Any
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, ValidationError
 
 from ..adapters.detection import load_board
@@ -14,11 +16,24 @@ from ..models import Category
 from ..equiv import describe_canonical, describe_nets
 from ..graph import parts_from_pieces
 from ..steps import StepDebug, StepResult, evaluate_step, lint, lint_issues, resolve_targets
+from .auth import router as auth_router
+from .bench import router as bench_router
+from .dashboard import router as dashboard_router
 from .tts import router as tts_router
 from .workspace import router as workspace_router
 
 app = FastAPI(title="TedTronics graph validator")
+# Bearer tokens, no cookies: the phone app and the bench UI may call from any origin.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=os.getenv("TEDTRONICS_CORS_ORIGINS", "*").split(","),
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+app.include_router(auth_router)
 app.include_router(workspace_router)
+app.include_router(bench_router)
+app.include_router(dashboard_router)
 app.include_router(tts_router)
 
 
