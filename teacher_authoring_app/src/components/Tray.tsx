@@ -21,7 +21,7 @@ export default function Tray({ pieces, onDragStart }) {
       <p style={{ margin: '0 0 6px', fontSize: 12, color: 'var(--color-neutral-600)' }}>
         Arraste para a bancada. Clique numa peça para girar; arraste para fora para remover.
       </p>
-      <TrayGrid types={TYPES.filter((t) => !isCapsule(t))} used={used} onDragStart={onDragStart} />
+      <TrayGrid types={TYPES.filter((t) => !isCapsule(t) && t !== 'resistor_cc')} used={used} onDragStart={onDragStart} />
       <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: 14, margin: '8px 0 0' }}>Cápsulas inteligentes</h3>
       <p style={{ margin: 0, fontSize: 12, color: 'var(--color-neutral-600)' }}>
         Cabem só nos 6 encaixes tracejados (E1–E6), com P1, P2 e P3 em 3 colunas. O amperímetro só funciona no E2.
