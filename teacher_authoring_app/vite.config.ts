@@ -15,7 +15,7 @@ export default defineConfig({
     fs: { allow: ['..'] },
     // graph_validator (FastAPI): `npm run validator`
     proxy: {
-      '/api': { target: 'http://127.0.0.1:8000', rewrite: (path) => path.replace(/^\/api/, '') },
+      '/api': { target: `http://127.0.0.1:${process.env.TEDTRONICS_API_PORT ?? '8000'}`, rewrite: (path) => path.replace(/^\/api/, '') },
     },
   },
 });

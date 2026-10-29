@@ -3,6 +3,8 @@ import NetInfo from '@react-native-community/netinfo';
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import type { BenchStatus } from '../../../protocol/bench.ts';
 import { Api, type Teacher } from './api';
+import { NeonApi } from './neonApi';
+import { neonConfig } from './neonConfig';
 import { BenchClient, type BenchTransport } from './benchClient';
 import { type SyncReport, SyncQueue, sendModule, syncBench } from './sync';
 
@@ -17,6 +19,8 @@ interface AppState {
   bench: BenchStatus | null;
   benchLabel: string | null;
   login: (server: string, email: string, password: string) => Promise<void>;
+  /** Neon mode only: creates the phone account, then signs in. */
+  signUp: (email: string, password: string, name: string) => Promise<void>;
   logout: () => Promise<void>;
   connectBench: (transport: BenchTransport) => Promise<BenchStatus>;
   disconnectBench: () => Promise<void>;
@@ -28,7 +32,7 @@ interface AppState {
 const Ctx = createContext<AppState | null>(null);
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
-  const api = useMemo(() => new Api(AsyncStorage), []);
+  const api = useMemo(() => (neonConfig ? new NeonApi(AsyncStorage, neonConfig) : new Api(AsyncStorage)), []);
   const queue = useMemo(() => new SyncQueue(AsyncStorage), []);
   const client = useRef<BenchClient | null>(null);
   const [ready, setReady] = useState(false);
@@ -73,6 +77,14 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     async (server: string, email: string, password: string) => {
       await api.setServer(server);
       setTeacher(await api.login(email, password));
+    },
+    [api]
+  );
+
+  const signUp = useCallback(
+    async (email: string, password: string, name: string) => {
+      if (!(api instanceof NeonApi)) throw new Error('Criar conta só está disponível com a nuvem configurada.');
+      setTeacher(await api.signUp(email, password, name));
     },
     [api]
   );
@@ -140,6 +152,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       bench,
       benchLabel,
       login,
+      signUp,
       logout,
       connectBench,
       disconnectBench,
@@ -149,7 +162,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }),
     // queueTick re-reads the queue's counters after each change
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [ready, api, teacher, online, queue, queueTick, bench, benchLabel, login, logout, connectBench, disconnectBench, syncNow, sendModuleToBench, retryUpload]
+    [ready, api, teacher, online, queue, queueTick, bench, benchLabel, login, signUp, logout, connectBench, disconnectBench, syncNow, sendModuleToBench, retryUpload]
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

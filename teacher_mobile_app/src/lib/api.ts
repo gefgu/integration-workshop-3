@@ -56,7 +56,7 @@ export class ApiError extends Error {
 /** Network failure (no internet / server down), as opposed to the server refusing the request. */
 export class OfflineError extends Error {}
 
-type Fetch = typeof fetch;
+export type Fetch = typeof fetch;
 const KEYS = { server: 'tedtronics.server', token: 'tedtronics.token', teacher: 'tedtronics.teacher' };
 
 export class Api {
@@ -65,9 +65,9 @@ export class Api {
   teacher: Teacher | null = null;
 
   constructor(
-    private store: KeyValueStore,
-    private fetchImpl: Fetch = fetch,
-    private timeoutMs = 10_000
+    protected store: KeyValueStore,
+    protected fetchImpl: Fetch = fetch,
+    protected timeoutMs = 10_000
   ) {}
 
   async load(): Promise<void> {
@@ -141,7 +141,7 @@ export class Api {
     await this.forget();
   }
 
-  private async forget(): Promise<void> {
+  protected async forget(): Promise<void> {
     this.token = null;
     this.teacher = null;
     await this.store.removeItem(KEYS.token);
