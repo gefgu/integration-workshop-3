@@ -1,15 +1,119 @@
 import { useEffect, useRef, useState } from 'react';
 import Bubble from '../components/Bubble.tsx';
 import { BANK_ROWS, COLS } from '../engine/board.ts';
+import type { BenchApi, VisionState } from './benchApi.ts';
 import { cameraErrorMessage, gridLines } from './camera.ts';
 
 const GRID = gridLines(COLS, BANK_ROWS);
 
 /**
- * Camera board view (SFR17.1): the live picture of the student's board, with the bench grid and the four
- * corner marks drawn over it so the board can be lined up. Recognition and corner calibration come later.
+ * Camera board view (SFR17.1). With the vision pipeline running in the bench service, it shows the service's
+ * annotated frame (the socket grid it found and the pieces it read) and the pieces the lesson will get.
+ * Without it, it falls back to the browser's own camera preview with a guide grid.
  */
-export default function CameraView({ onBack }: { onBack: () => void }) {
+export default function CameraView({
+  api,
+  vision,
+  onBack,
+}: {
+  api: BenchApi;
+  vision: VisionState;
+  onBack: () => void;
+}) {
+  return vision.available ? (
+    <VisionFeed api={api} vision={vision} onBack={onBack} />
+  ) : (
+    <BrowserPreview onBack={onBack} />
+  );
+}
+
+const NOMES_VISAO: Record<string, string> = {
+  led: 'LED',
+  buzzer: 'Buzzer',
+  capacitor: 'Capacitor',
+  botao: 'Botão',
+  jumper_curto: 'Fio curto',
+  jumper_longo: 'Fio longo',
+  resistor_220: 'Resistor',
+  bateria: 'Bateria',
+};
+
+function where(p: { a: number; b: number; row: number }) {
+  const bank = p.row < BANK_ROWS ? 'C' : 'B';
+  return `${bank}, linha ${(p.row % BANK_ROWS) + 1}, colunas ${p.a}–${p.b}`;
+}
+
+function VisionFeed({ api, vision, onBack }: { api: BenchApi; vision: VisionState; onBack: () => void }) {
+  const back = useRef<HTMLButtonElement>(null);
+  const [stamp, setStamp] = useState(() => Date.now());
+  const [frameError, setFrameError] = useState(false);
+  useEffect(() => back.current?.focus(), []);
+  // Next frame only after the previous one loaded, so slow links never pile up requests.
+  const nextFrame = (failed: boolean) => {
+    setFrameError(failed);
+    setTimeout(() => setStamp(Date.now()), failed ? 1000 : 250);
+  };
+  const pieces = vision.pieces ?? [];
+  const unknown = vision.unknown ?? [];
+  const message = vision.valid
+    ? pieces.length
+      ? 'Assim a bancada vê a sua placa. As peças reconhecidas aparecem na lição.'
+      : 'Estou vendo a placa, mas nenhuma peça ainda.'
+    : `Não consegui ler a placa agora: ${vision.reason || 'aguardando imagem'}.`;
+  return (
+    <section className="bench-center">
+      <Bubble kind="hamster" tone={vision.valid ? 'info' : 'obs'} message={message} />
+      <div className="bench-camera">
+        <img
+          src={api.visionFrameUrl(stamp)}
+          alt="Imagem da câmera com a leitura da placa"
+          onLoad={() => nextFrame(false)}
+          onError={() => nextFrame(true)}
+        />
+        {frameError && <p className="bench-camera-status">Ligando a câmera…</p>}
+      </div>
+      <div className="panel bench-card bench-vision-list">
+        <strong>Peças reconhecidas ({pieces.length})</strong>
+        {pieces.length > 0 && (
+          <ul>
+            {pieces.map((p) => (
+              <li key={p.id}>
+                {NOMES_VISAO[p.type] ?? p.type} <small>{where(p)}</small>
+              </li>
+            ))}
+          </ul>
+        )}
+        {unknown.length > 0 && (
+          <>
+            <strong>Não reconhecidas ({unknown.length})</strong>
+            <ul>
+              {unknown.map((p) => (
+                <li key={p.id}>
+                  {p.reason} <small>{where(p)}</small>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </div>
+      <div className="workspace-actions">
+        <button ref={back} type="button" className="btn-outline" onClick={onBack}>
+          Voltar (Esc)
+        </button>
+        <button
+          type="button"
+          className="btn-outline"
+          onClick={() => void api.visionRecalibrate().catch(() => undefined)}
+        >
+          Recalibrar câmera
+        </button>
+      </div>
+    </section>
+  );
+}
+
+/** No vision service: the browser's own camera, with a guide grid and corner marks to line the board up. */
+function BrowserPreview({ onBack }: { onBack: () => void }) {
   const video = useRef<HTMLVideoElement>(null);
   const back = useRef<HTMLButtonElement>(null);
   const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);

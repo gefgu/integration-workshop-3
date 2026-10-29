@@ -134,3 +134,82 @@ def test_full_cycle(server, tmp_path):
 def test_validator_is_served_offline(tmp_path):
     bench = TestClient(create_app(BenchStore(tmp_path / "b.sqlite3")))
     assert bench.get("/validator/health").json() == {"status": "ok"}
+
+
+# --- camera board (vision pipeline → lesson pieces) ---------------------------------------------
+
+from pathlib import Path  # noqa: E402
+
+from bench_service.vision import VisionSource, to_pieces  # noqa: E402
+from graph_validator.adapters.detection import load_board  # noqa: E402
+
+REPO = Path(__file__).resolve().parents[3]
+
+
+def comp(tipo, metade, linha, colunas, cor="verde"):
+    return {"id": f"{tipo}@{metade}{linha}:{colunas[0]}-{colunas[-1]}", "tipo": tipo, "cor": cor,
+            "posicao": {"metade": metade, "linha": linha, "colunas": colunas}}
+
+
+def test_vision_components_become_editor_pieces():
+    pieces, unknown = to_pieces({"componentes": [
+        comp("led", "C", 0, [2, 3]),
+        comp("jumper_longo", "B", 5, [0, 1, 2], "branco"),
+        comp("vermelho_2", "C", 0, [0, 1], "vermelho"),
+        comp("resistor", "B", 1, [4, 5], "azul"),
+        comp("led_ou_buzzer", "B", 1, [2, 3]),
+        comp("potenciometro", "C", 3, [6, 7, 8], "amarelo"),
+        comp("desconhecido_azul_1", "B", 2, [0], "azul"),
+    ]})
+    assert [(p["type"], p["a"], p["b"], p["row"]) for p in pieces] == [
+        ("led", 3, 4, 0), ("jumper_longo", 1, 3, 11), ("bateria", 1, 2, 0), ("resistor_220", 5, 6, 7),
+    ]
+    assert [u["type"] for u in unknown] == ["led_ou_buzzer", "potenciometro", "desconhecido_azul_1"]
+    assert all(u["reason"] for u in unknown)
+    # the validator accepts them as a board
+    assert len(load_board({"pieces": pieces})) == 4
+
+
+class FakeVision:
+    def __init__(self):
+        self.recalibrated = False
+
+    def state(self):
+        return {"available": True, "valid": True, "version": 3, "pieces": [{"id": "x"}], "unknown": []}
+
+    def frame(self):
+        return b"\xff\xd8jpeg"
+
+    def recalibrate(self):
+        self.recalibrated = True
+
+
+def test_vision_endpoints(tmp_path):
+    off = TestClient(create_app(BenchStore(str(tmp_path / "a.sqlite3"))))
+    assert off.get("/vision/state").json()["available"] is False
+    assert off.get("/vision/frame.jpg").status_code == 404
+    fake = FakeVision()
+    on = TestClient(create_app(BenchStore(str(tmp_path / "b.sqlite3")), vision=fake))
+    assert on.get("/vision/state").json()["version"] == 3
+    frame = on.get("/vision/frame.jpg")
+    assert frame.headers["content-type"] == "image/jpeg" and frame.content == b"\xff\xd8jpeg"
+    assert on.post("/vision/recalibrate").json() == {"ok": True} and fake.recalibrated
+
+
+def test_vision_source_reads_a_real_photo():
+    pytest.importorskip("cv2")
+    photo = REPO / "real_img" / "pecas2.jpeg"
+    if not photo.exists():
+        pytest.skip("photo not in this checkout")
+    source = VisionSource(image=str(photo)).start()
+    try:
+        import time
+        deadline = time.time() + 20
+        while time.time() < deadline and source.state()["version"] == 0:
+            time.sleep(0.2)
+        state = source.state()
+    finally:
+        source.stop()
+    assert state["available"] and state["valid"], state["reason"]
+    assert ("bateria", 1, 2, 0) in [(p["type"], p["a"], p["b"], p["row"]) for p in state["pieces"]]
+    assert source.frame()[:2] == b"\xff\xd8"
