@@ -1,0 +1,23 @@
+{
+  "schematicAndPlacementChecks": {
+    "source": [],
+    "pins": [],
+    "netlist": [],
+    "placement": [],
+    "netEquivalence": []
+  },
+  "boardMm": [
+    100,
+    200
+  ],
+  "parts": 48,
+  "routing": "FAILED",
+  "singleCopperLayer": true,
+  "completeConnectivityVerifiedInCopper": false,
+  "shortsCheckOnIndexedAttempt": "FAILED; see failed-indexed-shorts.txt",
+  "globalAttempt": "native jumper solver exhausted iterations; zero completed traces",
+  "wireBridgesPermittedByUser": true,
+  "wireBridgePlanComplete": false,
+  "physicalQualification": "PENDING",
+  "manufacturingRelease": false
+}

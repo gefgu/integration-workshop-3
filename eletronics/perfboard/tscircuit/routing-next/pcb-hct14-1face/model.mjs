@@ -1,0 +1,11 @@
+import{parts as baseline,gpio,serviceAllocation}from'../pcb-2mt-595/model.mjs';
+export{gpio,serviceAllocation};
+const remove=new Set(['Q1','Q2','Q3','Q4','Q5','R19','R20','R2','R22','R23','R3','R25','R26','R4','R28','R29','R5','R31','R32','R1']);
+export const parts=structuredClone(baseline.filter(p=>!remove.has(p.ref)));
+const pin=(pin,label,net)=>({pin,label,net});
+parts.push({ref:'U_LEVEL',kind:'IC',value:'74HCT14',section:'AdaptadorHCT',x:0,y:35,mpn:'SN74HCT14N',footprint:'dip14_w7.62mm',pins:[pin(1,'1A','GPIO23'),pin(2,'1Y','SER5'),pin(3,'2A','GPIO18'),pin(4,'2Y','CLK5'),pin(5,'3A','GPIO22'),pin(6,'3Y','LATCH5'),pin(7,'GND','GND'),pin(8,'4Y','STROBE5'),pin(9,'4A','GPIO19'),pin(10,'5Y','OE_N5'),pin(11,'5A','GPIO21'),pin(12,'6Y',null),pin(13,'6A','GND'),pin(14,'VCC','V5')]});
+for(const [i,g]of[23,18,22,19,21].entries())parts.push({ref:'R_PD_'+g,kind:'R',value:'47k',section:'AdaptadorHCT',x:-28+i*14,y:47,mpn:'Generic axial resistor',footprint:'axial_p0.3in',pins:[pin(1,'A','GPIO'+g),pin(2,'B','GND')]});
+parts.push({ref:'C_LEVEL',kind:'C',value:'100nF',section:'AdaptadorHCT',x:12,y:35,mpn:'Generic radial capacitor',footprint:'radial_p2.54mm',pins:[pin(1,'A','V5'),pin(2,'B','GND')]});
+export const sections=[...new Set(parts.map(p=>p.section))];export const nets=[...new Set(parts.flatMap(p=>p.pins.map(q=>q.net).filter(Boolean)))];
+export const routeNets=nets.filter(n=>parts.flatMap(p=>p.pins).filter(p=>p.net===n).length>1).sort((a,b)=>{const rank=n=>n.startsWith('NODE')?0:['V5','V12','GND'].includes(n)?4:['SENSE_A','SENSE_B','PULSE_BUS','TEST_BUS'].includes(n)?3:n.startsWith('AX')||n.startsWith('AY')?2:1;return rank(a)-rank(b)||a.localeCompare(b);});
+parts.find(p=>p.ref==='R_PD_21').x=25;

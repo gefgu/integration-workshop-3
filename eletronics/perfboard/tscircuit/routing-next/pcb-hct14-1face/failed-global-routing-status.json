@@ -1,0 +1,3544 @@
+{
+  "status": "CANDIDATE_NOT_RELEASED",
+  "errors": [
+    {
+      "type": "pcb_autorouting_error",
+      "pcb_autorouting_error_id": "pcb_autorouting_error_0",
+      "pcb_error_id": "pcb_autorouter_error_subcircuit_subcircuit_source_group_9",
+      "error_type": "pcb_autorouting_error",
+      "message": "HyperJumperPrepatternSolver2 failed for node: cmn_0: All solvers failed in hyper solver. Example failures: JumperGraphSolver ran out of iterations, JumperGraphSolver ran out of iterations, JumperGraphSolver ran out of iterations, JumperGraphSolver ran out of iterations, JumperGraphSolver ran out of iterations (capacity-autorouter@0.0.958)"
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_0",
+      "message": "Port [J_ESP_L.GND] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_1"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_0"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_1",
+      "message": "Port [J_ESP_R.GND] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_16"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_1"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_2",
+      "message": "Port [J_ESP_L.GPIO18] is not connected to net [GPIO18] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_8"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_0"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_3",
+      "message": "Port [J_ESP_L.GPIO19] is not connected to net [GPIO19] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_9"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_0"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_4",
+      "message": "Port [J_ESP_L.GPIO21] is not connected to net [GPIO21] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_10"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_0"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_5",
+      "message": "Port [J_ESP_L.GPIO22] is not connected to net [GPIO22] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_13"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_0"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_6",
+      "message": "Port [J_ESP_L.GPIO23] is not connected to net [GPIO23] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_14"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_0"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_7",
+      "message": "Port [J_ESP_R.GPIO14] is not connected to net [GPIO14] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_19"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_1"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_8",
+      "message": "Port [J_ESP_R.GPIO27] is not connected to net [GPIO27] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_20"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_1"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_9",
+      "message": "Port [J_ESP_R.GPIO26] is not connected to net [GPIO26] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_21"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_1"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_10",
+      "message": "Port [J_ESP_R.GPIO25] is not connected to net [GPIO25] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_22"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_1"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_11",
+      "message": "Port [J_ESP_R.GPIO34] is not connected to net [GPIO34] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_26"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_1"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_12",
+      "message": "Port [Q6.pin3] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_31"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_2"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_13",
+      "message": "Port [R12.pin2] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_36"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_4"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_14",
+      "message": "Port [R6.pin1] is not connected to net [GPIO25] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_33"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_3"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_15",
+      "message": "Port [Q6.pin1] is not connected to net [RESET12] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_30"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_2"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_16",
+      "message": "Ports [Q6.pin1, R7.pin2] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_30",
+        "pcb_port_38"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_2",
+        "pcb_component_5"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_17",
+      "message": "Port [Q6.pin2] is not connected to net [Q6_B] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_32"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_2"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_18",
+      "message": "Ports [Q6.pin2, R6.pin2] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_32",
+        "pcb_port_34"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_2",
+        "pcb_component_3"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_19",
+      "message": "Ports [Q6.pin2, R12.pin1] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_32",
+        "pcb_port_35"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_2",
+        "pcb_component_4"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_20",
+      "message": "Port [R7.pin1] is not connected to net [V12] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_37"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_5"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_21",
+      "message": "Port [U5.GND] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_46"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_6"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_22",
+      "message": "Port [U6.GND] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_62"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_7"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_23",
+      "message": "Port [C4.pin2] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_72"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_8"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_24",
+      "message": "Port [C5.pin2] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_74"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_9"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_25",
+      "message": "Port [R8.pin2] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_76"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_10"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_26",
+      "message": "Port [R9.pin2] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_78"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_11"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_27",
+      "message": "Port [U5.QB] is not connected to net [AX1] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_39"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_6"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_28",
+      "message": "Port [U5.QC] is not connected to net [AX2] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_40"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_6"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_29",
+      "message": "Port [U5.QD] is not connected to net [AX3] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_41"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_6"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_30",
+      "message": "Port [U5.QE] is not connected to net [AY0] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_42"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_6"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_31",
+      "message": "Port [U5.QF] is not connected to net [AY1] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_43"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_6"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_32",
+      "message": "Port [U5.QG] is not connected to net [AY2] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_44"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_6"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_33",
+      "message": "Port [U5.QH] is not connected to net [DATA] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_45"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_6"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_34",
+      "message": "Port [U5.QH_SER] is not connected to net [CHAIN] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_47"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_6"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_35",
+      "message": "Ports [U5.QH_SER, U6.SER] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_47",
+        "pcb_port_68"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_6",
+        "pcb_component_7"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_36",
+      "message": "Port [U5.SRCLR_N] is not connected to net [V5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_48"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_6"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_37",
+      "message": "Port [U5.VCC] is not connected to net [V5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_54"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_6"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_38",
+      "message": "Port [U6.SRCLR_N] is not connected to net [V5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_64"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_7"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_39",
+      "message": "Port [U6.VCC] is not connected to net [V5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_70"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_7"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_40",
+      "message": "Port [C4.pin1] is not connected to net [V5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_71"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_8"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_41",
+      "message": "Port [C5.pin1] is not connected to net [V5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_73"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_9"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_42",
+      "message": "Port [U5.SRCLK] is not connected to net [CLK5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_49"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_6"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_43",
+      "message": "Ports [U5.SRCLK, U6.SRCLK] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_49",
+        "pcb_port_65"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_6",
+        "pcb_component_7"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_44",
+      "message": "Port [U5.RCLK] is not connected to net [LATCH5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_50"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_6"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_45",
+      "message": "Ports [U5.RCLK, U6.RCLK] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_50",
+        "pcb_port_66"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_6",
+        "pcb_component_7"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_46",
+      "message": "Port [U5.OE_N] is not connected to net [OE_N5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_51"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_6"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_47",
+      "message": "Ports [U5.OE_N, U6.OE_N] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_51",
+        "pcb_port_67"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_6",
+        "pcb_component_7"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_48",
+      "message": "Port [U5.SER] is not connected to net [SER5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_52"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_6"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_49",
+      "message": "Port [U5.QA] is not connected to net [AX0] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_53"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_6"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_50",
+      "message": "Port [U6.QB] is not connected to net [CS_B] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_55"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_7"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_51",
+      "message": "Ports [U6.QB, R9.pin1] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_55",
+        "pcb_port_77"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_7",
+        "pcb_component_11"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_52",
+      "message": "Port [U6.QA] is not connected to net [CS_A] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_69"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_7"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_53",
+      "message": "Ports [U6.QA, R8.pin1] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_69",
+        "pcb_port_75"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_7",
+        "pcb_component_10"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_54",
+      "message": "Port [U1.VSS] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_94"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_55",
+      "message": "Port [U1.VEE] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_98"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_56",
+      "message": "Port [U1.Y0] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_113"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_57",
+      "message": "Port [C1.pin2] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_120"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_13"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_58",
+      "message": "Port [U1.RESET] is not connected to net [RESET12] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_81"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_59",
+      "message": "Port [U1.VDD] is not connected to net [V12] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_118"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_60",
+      "message": "Port [C1.pin1] is not connected to net [V12] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_119"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_13"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_61",
+      "message": "Port [U1.AX1] is not connected to net [AX1] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_100"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_62",
+      "message": "Port [U1.AX2] is not connected to net [AX2] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_101"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_63",
+      "message": "Port [U1.AX3] is not connected to net [AX3] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_82"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_64",
+      "message": "Port [U1.AY0] is not connected to net [AY0] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_102"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_65",
+      "message": "Port [U1.AY1] is not connected to net [AY1] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_103"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_66",
+      "message": "Port [U1.AY2] is not connected to net [AY2] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_80"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_67",
+      "message": "Port [U1.DATA] is not connected to net [DATA] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_116"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_68",
+      "message": "Port [U1.AX0] is not connected to net [AX0] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_83"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_69",
+      "message": "Port [U1.CS] is not connected to net [CS_A] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_114"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_70",
+      "message": "Port [U1.Y3] is not connected to net [SENSE_A] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_79"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_71",
+      "message": "Port [U1.X6] is not connected to net [NODE06] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_86"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_72",
+      "message": "Ports [U1.X6, H1.NODE06] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_86",
+        "pcb_port_127"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12",
+        "pcb_component_14"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_73",
+      "message": "Port [U1.X7] is not connected to net [NODE07] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_87"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_74",
+      "message": "Ports [U1.X7, H1.NODE07] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_87",
+        "pcb_port_128"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12",
+        "pcb_component_14"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_75",
+      "message": "Port [U1.X8] is not connected to net [NODE08] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_88"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_76",
+      "message": "Ports [U1.X8, H1.NODE08] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_88",
+        "pcb_port_129"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12",
+        "pcb_component_14"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_77",
+      "message": "Port [U1.X9] is not connected to net [NODE09] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_89"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_78",
+      "message": "Ports [U1.X9, H1.NODE09] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_89",
+        "pcb_port_130"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12",
+        "pcb_component_14"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_79",
+      "message": "Port [U1.X10] is not connected to net [NODE10] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_90"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_80",
+      "message": "Ports [U1.X10, H1.NODE10] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_90",
+        "pcb_port_131"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12",
+        "pcb_component_14"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_81",
+      "message": "Port [U1.STROBE] is not connected to net [STROBE5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_96"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_82",
+      "message": "Port [U1.Y4] is not connected to net [SENSE_B] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_99"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_83",
+      "message": "Port [U1.X5] is not connected to net [NODE05] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_106"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_84",
+      "message": "Ports [U1.X5, H1.NODE05] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_106",
+        "pcb_port_126"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12",
+        "pcb_component_14"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_85",
+      "message": "Port [U1.X4] is not connected to net [NODE04] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_107"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_86",
+      "message": "Ports [U1.X4, H1.NODE04] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_107",
+        "pcb_port_125"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12",
+        "pcb_component_14"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_87",
+      "message": "Port [U1.X3] is not connected to net [NODE03] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_108"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_88",
+      "message": "Ports [U1.X3, H1.NODE03] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_108",
+        "pcb_port_124"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12",
+        "pcb_component_14"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_89",
+      "message": "Port [U1.X2] is not connected to net [NODE02] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_109"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_90",
+      "message": "Ports [U1.X2, H1.NODE02] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_109",
+        "pcb_port_123"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12",
+        "pcb_component_14"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_91",
+      "message": "Port [U1.X1] is not connected to net [NODE01] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_110"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_92",
+      "message": "Ports [U1.X1, H1.NODE01] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_110",
+        "pcb_port_122"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12",
+        "pcb_component_14"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_93",
+      "message": "Port [U1.X0] is not connected to net [NODE00] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_111"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_94",
+      "message": "Ports [U1.X0, H1.NODE00] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_111",
+        "pcb_port_121"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12",
+        "pcb_component_14"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_95",
+      "message": "Port [U1.Y1] is not connected to net [PULSE_BUS] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_115"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_96",
+      "message": "Port [U1.Y2] is not connected to net [TEST_BUS] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_117"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_12"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_97",
+      "message": "Port [U2.VSS] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_147"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_98",
+      "message": "Port [U2.VEE] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_151"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_99",
+      "message": "Port [U2.Y0] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_166"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_100",
+      "message": "Port [C2.pin2] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_173"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_16"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_101",
+      "message": "Port [U2.RESET] is not connected to net [RESET12] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_134"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_102",
+      "message": "Port [U2.VDD] is not connected to net [V12] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_171"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_103",
+      "message": "Port [C2.pin1] is not connected to net [V12] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_172"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_16"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_104",
+      "message": "Port [U2.AX1] is not connected to net [AX1] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_153"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_105",
+      "message": "Port [U2.AX2] is not connected to net [AX2] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_154"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_106",
+      "message": "Port [U2.AX3] is not connected to net [AX3] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_135"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_107",
+      "message": "Port [U2.AY0] is not connected to net [AY0] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_155"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_108",
+      "message": "Port [U2.AY1] is not connected to net [AY1] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_156"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_109",
+      "message": "Port [U2.AY2] is not connected to net [AY2] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_133"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_110",
+      "message": "Port [U2.DATA] is not connected to net [DATA] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_169"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_111",
+      "message": "Port [U2.AX0] is not connected to net [AX0] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_136"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_112",
+      "message": "Port [U2.CS] is not connected to net [CS_B] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_167"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_113",
+      "message": "Port [U2.Y3] is not connected to net [SENSE_A] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_132"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_114",
+      "message": "Port [U2.STROBE] is not connected to net [STROBE5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_149"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_115",
+      "message": "Port [U2.Y4] is not connected to net [SENSE_B] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_152"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_116",
+      "message": "Port [U2.Y1] is not connected to net [PULSE_BUS] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_168"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_117",
+      "message": "Port [U2.Y2] is not connected to net [TEST_BUS] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_170"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_118",
+      "message": "Port [U2.X6] is not connected to net [NODE17] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_139"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_119",
+      "message": "Ports [U2.X6, H3.NODE17] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_139",
+        "pcb_port_180"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15",
+        "pcb_component_17"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_120",
+      "message": "Port [U2.X7] is not connected to net [NODE18] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_140"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_121",
+      "message": "Ports [U2.X7, H3.NODE18] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_140",
+        "pcb_port_181"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15",
+        "pcb_component_17"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_122",
+      "message": "Port [U2.X8] is not connected to net [NODE19] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_141"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_123",
+      "message": "Ports [U2.X8, H3.NODE19] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_141",
+        "pcb_port_182"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15",
+        "pcb_component_17"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_124",
+      "message": "Port [U2.X9] is not connected to net [NODE20] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_142"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_125",
+      "message": "Ports [U2.X9, H3.NODE20] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_142",
+        "pcb_port_183"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15",
+        "pcb_component_17"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_126",
+      "message": "Port [U2.X10] is not connected to net [NODE21] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_143"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_127",
+      "message": "Ports [U2.X10, H3.NODE21] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_143",
+        "pcb_port_184"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15",
+        "pcb_component_17"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_128",
+      "message": "Port [U2.X5] is not connected to net [NODE16] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_159"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_129",
+      "message": "Ports [U2.X5, H3.NODE16] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_159",
+        "pcb_port_179"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15",
+        "pcb_component_17"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_130",
+      "message": "Port [U2.X4] is not connected to net [NODE15] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_160"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_131",
+      "message": "Ports [U2.X4, H3.NODE15] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_160",
+        "pcb_port_178"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15",
+        "pcb_component_17"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_132",
+      "message": "Port [U2.X3] is not connected to net [NODE14] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_161"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_133",
+      "message": "Ports [U2.X3, H3.NODE14] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_161",
+        "pcb_port_177"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15",
+        "pcb_component_17"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_134",
+      "message": "Port [U2.X2] is not connected to net [NODE13] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_162"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_135",
+      "message": "Ports [U2.X2, H3.NODE13] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_162",
+        "pcb_port_176"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15",
+        "pcb_component_17"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_136",
+      "message": "Port [U2.X1] is not connected to net [NODE12] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_163"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_137",
+      "message": "Ports [U2.X1, H3.NODE12] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_163",
+        "pcb_port_175"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15",
+        "pcb_component_17"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_138",
+      "message": "Port [U2.X0] is not connected to net [NODE11] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_164"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_139",
+      "message": "Ports [U2.X0, H3.NODE11] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_164",
+        "pcb_port_174"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_15",
+        "pcb_component_17"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_140",
+      "message": "Port [Q8.pin3] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_189"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_19"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_141",
+      "message": "Port [R14.pin2] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_198"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_23"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_142",
+      "message": "Port [Q11.pin3] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_202"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_25"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_143",
+      "message": "Port [R_LOW_PD.pin2] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_207"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_27"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_144",
+      "message": "Port [R_LOW_BASE.pin1] is not connected to net [GPIO27] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_204"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_26"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_145",
+      "message": "Port [R13.pin1] is not connected to net [GPIO26] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_195"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_22"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_146",
+      "message": "Port [Q7.pin3] is not connected to net [V5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_186"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_18"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_147",
+      "message": "Port [R21.pin1] is not connected to net [V5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_191"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_20"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_148",
+      "message": "Port [R17.pin2] is not connected to net [PULSE_BUS] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_200"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_24"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_149",
+      "message": "Ports [R17.pin2, R_LOW_LIMIT.pin1] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_200",
+        "pcb_port_208"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_24",
+        "pcb_component_28"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_150",
+      "message": "Port [Q7.pin1] is not connected to net [HIGH_C] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_185"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_18"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_151",
+      "message": "Ports [Q7.pin1, R17.pin1] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_185",
+        "pcb_port_199"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_18",
+        "pcb_component_24"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_152",
+      "message": "Port [Q7.pin2] is not connected to net [HIGH_B] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_187"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_18"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_153",
+      "message": "Ports [Q7.pin2, R21.pin2] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_187",
+        "pcb_port_192"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_18",
+        "pcb_component_20"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_154",
+      "message": "Ports [Q7.pin2, R30.pin1] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_187",
+        "pcb_port_193"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_18",
+        "pcb_component_21"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_155",
+      "message": "Port [Q8.pin1] is not connected to net [HIGH_DRV] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_188"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_19"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_156",
+      "message": "Ports [Q8.pin1, R30.pin2] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_188",
+        "pcb_port_194"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_19",
+        "pcb_component_21"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_157",
+      "message": "Port [Q8.pin2] is not connected to net [Q8_B] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_190"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_19"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_158",
+      "message": "Ports [Q8.pin2, R13.pin2] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_190",
+        "pcb_port_196"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_19",
+        "pcb_component_22"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_159",
+      "message": "Ports [Q8.pin2, R14.pin1] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_190",
+        "pcb_port_197"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_19",
+        "pcb_component_23"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_160",
+      "message": "Port [Q11.pin1] is not connected to net [LOW_C] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_201"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_25"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_161",
+      "message": "Ports [Q11.pin1, R_LOW_LIMIT.pin2] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_201",
+        "pcb_port_209"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_25",
+        "pcb_component_28"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_162",
+      "message": "Port [Q11.pin2] is not connected to net [Q11_B] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_203"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_25"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_163",
+      "message": "Ports [Q11.pin2, R_LOW_BASE.pin2] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_203",
+        "pcb_port_205"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_25",
+        "pcb_component_26"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_164",
+      "message": "Ports [Q11.pin2, R_LOW_PD.pin1] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_203",
+        "pcb_port_206"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_25",
+        "pcb_component_27"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_165",
+      "message": "Port [Q10.pin3] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_214"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_30"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_166",
+      "message": "Port [R16.pin2] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_223"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_34"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_167",
+      "message": "Port [R15.pin1] is not connected to net [GPIO14] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_220"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_33"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_168",
+      "message": "Port [Q9.pin3] is not connected to net [V5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_211"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_29"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_169",
+      "message": "Port [R24.pin1] is not connected to net [V5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_216"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_31"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_170",
+      "message": "Port [R18.pin2] is not connected to net [TEST_BUS] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_225"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_35"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_171",
+      "message": "Port [Q9.pin1] is not connected to net [TEST_C] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_210"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_29"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_172",
+      "message": "Ports [Q9.pin1, R18.pin1] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_210",
+        "pcb_port_224"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_29",
+        "pcb_component_35"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_173",
+      "message": "Port [Q9.pin2] is not connected to net [TEST_B] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_212"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_29"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_174",
+      "message": "Ports [Q9.pin2, R24.pin2] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_212",
+        "pcb_port_217"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_29",
+        "pcb_component_31"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_175",
+      "message": "Ports [Q9.pin2, R27.pin1] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_212",
+        "pcb_port_218"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_29",
+        "pcb_component_32"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_176",
+      "message": "Port [Q10.pin1] is not connected to net [TEST_DRV] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_213"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_30"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_177",
+      "message": "Ports [Q10.pin1, R27.pin2] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_213",
+        "pcb_port_219"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_30",
+        "pcb_component_32"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_178",
+      "message": "Port [Q10.pin2] is not connected to net [Q10_B] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_215"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_30"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_179",
+      "message": "Ports [Q10.pin2, R15.pin2] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_215",
+        "pcb_port_221"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_30",
+        "pcb_component_33"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_180",
+      "message": "Ports [Q10.pin2, R16.pin1] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_215",
+        "pcb_port_222"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_30",
+        "pcb_component_34"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_181",
+      "message": "Port [H2.GND] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_229"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_36"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_182",
+      "message": "Port [J_SMART.GND] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_231"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_37"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_183",
+      "message": "Port [R_PULSE_IN.pin2] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_235"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_38"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_184",
+      "message": "Port [C_BULK5.pin2] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_236"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_39"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_185",
+      "message": "Port [C_BULK12.pin2] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_238"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_40"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_186",
+      "message": "Port [J_SMART.GPIO34] is not connected to net [GPIO34] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_233"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_37"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_187",
+      "message": "Ports [J_SMART.GPIO34, R_PULSE_IN.pin1] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_233",
+        "pcb_port_234"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_37",
+        "pcb_component_38"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_188",
+      "message": "Port [H2.V12] is not connected to net [V12] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_226"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_36"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_189",
+      "message": "Port [C_BULK12.pin1] is not connected to net [V12] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_239"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_40"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_190",
+      "message": "Port [H2.V5] is not connected to net [V5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_227"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_36"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_191",
+      "message": "Port [C_BULK5.pin1] is not connected to net [V5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_237"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_39"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_192",
+      "message": "Port [J_SMART.SENSE_A] is not connected to net [SENSE_A] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_230"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_37"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_193",
+      "message": "Port [J_SMART.SENSE_B] is not connected to net [SENSE_B] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_232"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_37"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_194",
+      "message": "Port [U_LEVEL.GND] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_246"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_41"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_195",
+      "message": "Port [U_LEVEL.6A] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_252"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_41"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_196",
+      "message": "Port [R_PD_23.pin2] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_255"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_42"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_197",
+      "message": "Port [R_PD_18.pin2] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_257"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_43"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_198",
+      "message": "Port [R_PD_22.pin2] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_259"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_44"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_199",
+      "message": "Port [R_PD_19.pin2] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_261"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_45"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_200",
+      "message": "Port [R_PD_21.pin2] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_263"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_46"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_201",
+      "message": "Port [C_LEVEL.pin2] is not connected to net [GND] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_265"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_47"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_202",
+      "message": "Port [U_LEVEL.2A] is not connected to net [GPIO18] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_242"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_41"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_203",
+      "message": "Ports [U_LEVEL.2A, R_PD_18.pin1] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_242",
+        "pcb_port_256"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_41",
+        "pcb_component_43"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_204",
+      "message": "Port [U_LEVEL.4A] is not connected to net [GPIO19] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_248"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_41"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_205",
+      "message": "Ports [U_LEVEL.4A, R_PD_19.pin1] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_248",
+        "pcb_port_260"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_41",
+        "pcb_component_45"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_206",
+      "message": "Port [U_LEVEL.5A] is not connected to net [GPIO21] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_250"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_41"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_207",
+      "message": "Ports [U_LEVEL.5A, R_PD_21.pin1] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_250",
+        "pcb_port_262"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_41",
+        "pcb_component_46"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_208",
+      "message": "Port [U_LEVEL.3A] is not connected to net [GPIO22] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_244"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_41"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_209",
+      "message": "Ports [U_LEVEL.3A, R_PD_22.pin1] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_244",
+        "pcb_port_258"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_41",
+        "pcb_component_44"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_210",
+      "message": "Port [U_LEVEL.1A] is not connected to net [GPIO23] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_240"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_41"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_211",
+      "message": "Ports [U_LEVEL.1A, R_PD_23.pin1] are not connected together through the same net.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_240",
+        "pcb_port_254"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_41",
+        "pcb_component_42"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_212",
+      "message": "Port [U_LEVEL.VCC] is not connected to net [V5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_253"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_41"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_213",
+      "message": "Port [C_LEVEL.pin1] is not connected to net [V5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_264"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_47"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_214",
+      "message": "Port [U_LEVEL.2Y] is not connected to net [CLK5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_243"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_41"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_215",
+      "message": "Port [U_LEVEL.3Y] is not connected to net [LATCH5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_245"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_41"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_216",
+      "message": "Port [U_LEVEL.5Y] is not connected to net [OE_N5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_249"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_41"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_217",
+      "message": "Port [U_LEVEL.1Y] is not connected to net [SER5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_241"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_41"
+      ]
+    },
+    {
+      "type": "pcb_port_not_connected_error",
+      "pcb_port_not_connected_error_id": "pcb_port_not_connected_error_218",
+      "message": "Port [U_LEVEL.4Y] is not connected to net [STROBE5] by a PCB trace.",
+      "error_type": "pcb_port_not_connected_error",
+      "pcb_port_ids": [
+        "pcb_port_247"
+      ],
+      "pcb_component_ids": [
+        "pcb_component_41"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_0",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.Q6 > .pin1 to .R7 > .pin2] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_16",
+      "pcb_component_ids": [
+        "pcb_component_2",
+        "pcb_component_5"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_30",
+        "pcb_port_38"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_1",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.Q6 > .pin2 to .R6 > .pin2] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_18",
+      "pcb_component_ids": [
+        "pcb_component_2",
+        "pcb_component_3"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_32",
+        "pcb_port_34"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_2",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.Q6 > .pin2 to .R12 > .pin1] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_19",
+      "pcb_component_ids": [
+        "pcb_component_2",
+        "pcb_component_4"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_32",
+        "pcb_port_35"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_3",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U5 > .pin9 to .U6 > .pin14] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_35",
+      "pcb_component_ids": [
+        "pcb_component_6",
+        "pcb_component_7"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_47",
+        "pcb_port_68"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_4",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U5 > .pin11 to .U6 > .pin11] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_43",
+      "pcb_component_ids": [
+        "pcb_component_6",
+        "pcb_component_7"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_49",
+        "pcb_port_65"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_5",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U5 > .pin12 to .U6 > .pin12] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_45",
+      "pcb_component_ids": [
+        "pcb_component_6",
+        "pcb_component_7"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_50",
+        "pcb_port_66"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_6",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U5 > .pin13 to .U6 > .pin13] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_47",
+      "pcb_component_ids": [
+        "pcb_component_6",
+        "pcb_component_7"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_51",
+        "pcb_port_67"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_7",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U6 > .pin1 to .R9 > .pin1] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_51",
+      "pcb_component_ids": [
+        "pcb_component_7",
+        "pcb_component_11"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_55",
+        "pcb_port_77"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_8",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U6 > .pin15 to .R8 > .pin1] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_53",
+      "pcb_component_ids": [
+        "pcb_component_7",
+        "pcb_component_10"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_69",
+        "pcb_port_75"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_9",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U1 > .pin8 to .H1 > .pin7] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_72",
+      "pcb_component_ids": [
+        "pcb_component_12",
+        "pcb_component_14"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_86",
+        "pcb_port_127"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_10",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U1 > .pin9 to .H1 > .pin8] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_74",
+      "pcb_component_ids": [
+        "pcb_component_12",
+        "pcb_component_14"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_87",
+        "pcb_port_128"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_11",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U1 > .pin10 to .H1 > .pin9] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_76",
+      "pcb_component_ids": [
+        "pcb_component_12",
+        "pcb_component_14"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_88",
+        "pcb_port_129"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_12",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U1 > .pin11 to .H1 > .pin10] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_78",
+      "pcb_component_ids": [
+        "pcb_component_12",
+        "pcb_component_14"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_89",
+        "pcb_port_130"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_13",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U1 > .pin12 to .H1 > .pin11] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_80",
+      "pcb_component_ids": [
+        "pcb_component_12",
+        "pcb_component_14"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_90",
+        "pcb_port_131"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_14",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U1 > .pin28 to .H1 > .pin6] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_84",
+      "pcb_component_ids": [
+        "pcb_component_12",
+        "pcb_component_14"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_106",
+        "pcb_port_126"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_15",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U1 > .pin29 to .H1 > .pin5] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_86",
+      "pcb_component_ids": [
+        "pcb_component_12",
+        "pcb_component_14"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_107",
+        "pcb_port_125"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_16",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U1 > .pin30 to .H1 > .pin4] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_88",
+      "pcb_component_ids": [
+        "pcb_component_12",
+        "pcb_component_14"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_108",
+        "pcb_port_124"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_17",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U1 > .pin31 to .H1 > .pin3] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_90",
+      "pcb_component_ids": [
+        "pcb_component_12",
+        "pcb_component_14"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_109",
+        "pcb_port_123"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_18",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U1 > .pin32 to .H1 > .pin2] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_92",
+      "pcb_component_ids": [
+        "pcb_component_12",
+        "pcb_component_14"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_110",
+        "pcb_port_122"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_19",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U1 > .pin33 to .H1 > .pin1] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_94",
+      "pcb_component_ids": [
+        "pcb_component_12",
+        "pcb_component_14"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_111",
+        "pcb_port_121"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_20",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U2 > .pin8 to .H3 > .pin7] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_119",
+      "pcb_component_ids": [
+        "pcb_component_15",
+        "pcb_component_17"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_139",
+        "pcb_port_180"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_21",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U2 > .pin9 to .H3 > .pin8] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_121",
+      "pcb_component_ids": [
+        "pcb_component_15",
+        "pcb_component_17"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_140",
+        "pcb_port_181"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_22",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U2 > .pin10 to .H3 > .pin9] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_123",
+      "pcb_component_ids": [
+        "pcb_component_15",
+        "pcb_component_17"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_141",
+        "pcb_port_182"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_23",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U2 > .pin11 to .H3 > .pin10] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_125",
+      "pcb_component_ids": [
+        "pcb_component_15",
+        "pcb_component_17"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_142",
+        "pcb_port_183"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_24",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U2 > .pin12 to .H3 > .pin11] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_127",
+      "pcb_component_ids": [
+        "pcb_component_15",
+        "pcb_component_17"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_143",
+        "pcb_port_184"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_25",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U2 > .pin28 to .H3 > .pin6] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_129",
+      "pcb_component_ids": [
+        "pcb_component_15",
+        "pcb_component_17"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_159",
+        "pcb_port_179"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_26",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U2 > .pin29 to .H3 > .pin5] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_131",
+      "pcb_component_ids": [
+        "pcb_component_15",
+        "pcb_component_17"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_160",
+        "pcb_port_178"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_27",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U2 > .pin30 to .H3 > .pin4] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_133",
+      "pcb_component_ids": [
+        "pcb_component_15",
+        "pcb_component_17"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_161",
+        "pcb_port_177"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_28",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U2 > .pin31 to .H3 > .pin3] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_135",
+      "pcb_component_ids": [
+        "pcb_component_15",
+        "pcb_component_17"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_162",
+        "pcb_port_176"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_29",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U2 > .pin32 to .H3 > .pin2] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_137",
+      "pcb_component_ids": [
+        "pcb_component_15",
+        "pcb_component_17"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_163",
+        "pcb_port_175"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_30",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U2 > .pin33 to .H3 > .pin1] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_139",
+      "pcb_component_ids": [
+        "pcb_component_15",
+        "pcb_component_17"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_164",
+        "pcb_port_174"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_31",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.R17 > .pin2 to .R_LOW_LIMIT > .pin1] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_149",
+      "pcb_component_ids": [
+        "pcb_component_24",
+        "pcb_component_28"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_200",
+        "pcb_port_208"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_32",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.Q7 > .pin1 to .R17 > .pin1] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_151",
+      "pcb_component_ids": [
+        "pcb_component_18",
+        "pcb_component_24"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_185",
+        "pcb_port_199"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_33",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.Q7 > .pin2 to .R21 > .pin2] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_153",
+      "pcb_component_ids": [
+        "pcb_component_18",
+        "pcb_component_20"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_187",
+        "pcb_port_192"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_34",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.Q7 > .pin2 to .R30 > .pin1] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_154",
+      "pcb_component_ids": [
+        "pcb_component_18",
+        "pcb_component_21"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_187",
+        "pcb_port_193"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_35",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.Q8 > .pin1 to .R30 > .pin2] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_156",
+      "pcb_component_ids": [
+        "pcb_component_19",
+        "pcb_component_21"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_188",
+        "pcb_port_194"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_36",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.Q8 > .pin2 to .R13 > .pin2] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_158",
+      "pcb_component_ids": [
+        "pcb_component_19",
+        "pcb_component_22"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_190",
+        "pcb_port_196"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_37",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.Q8 > .pin2 to .R14 > .pin1] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_159",
+      "pcb_component_ids": [
+        "pcb_component_19",
+        "pcb_component_23"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_190",
+        "pcb_port_197"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_38",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.Q11 > .pin1 to .R_LOW_LIMIT > .pin2] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_161",
+      "pcb_component_ids": [
+        "pcb_component_25",
+        "pcb_component_28"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_201",
+        "pcb_port_209"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_39",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.Q11 > .pin2 to .R_LOW_BASE > .pin2] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_163",
+      "pcb_component_ids": [
+        "pcb_component_25",
+        "pcb_component_26"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_203",
+        "pcb_port_205"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_40",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.Q11 > .pin2 to .R_LOW_PD > .pin1] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_164",
+      "pcb_component_ids": [
+        "pcb_component_25",
+        "pcb_component_27"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_203",
+        "pcb_port_206"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_41",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.Q9 > .pin1 to .R18 > .pin1] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_172",
+      "pcb_component_ids": [
+        "pcb_component_29",
+        "pcb_component_35"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_210",
+        "pcb_port_224"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_42",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.Q9 > .pin2 to .R24 > .pin2] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_174",
+      "pcb_component_ids": [
+        "pcb_component_29",
+        "pcb_component_31"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_212",
+        "pcb_port_217"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_43",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.Q9 > .pin2 to .R27 > .pin1] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_175",
+      "pcb_component_ids": [
+        "pcb_component_29",
+        "pcb_component_32"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_212",
+        "pcb_port_218"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_44",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.Q10 > .pin1 to .R27 > .pin2] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_177",
+      "pcb_component_ids": [
+        "pcb_component_30",
+        "pcb_component_32"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_213",
+        "pcb_port_219"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_45",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.Q10 > .pin2 to .R15 > .pin2] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_179",
+      "pcb_component_ids": [
+        "pcb_component_30",
+        "pcb_component_33"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_215",
+        "pcb_port_221"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_46",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.Q10 > .pin2 to .R16 > .pin1] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_180",
+      "pcb_component_ids": [
+        "pcb_component_30",
+        "pcb_component_34"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_215",
+        "pcb_port_222"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_47",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.J_SMART > .pin4 to .R_PULSE_IN > .pin1] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_187",
+      "pcb_component_ids": [
+        "pcb_component_37",
+        "pcb_component_38"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_233",
+        "pcb_port_234"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_48",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U_LEVEL > .pin3 to .R_PD_18 > .pin1] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_203",
+      "pcb_component_ids": [
+        "pcb_component_41",
+        "pcb_component_43"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_242",
+        "pcb_port_256"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_49",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U_LEVEL > .pin9 to .R_PD_19 > .pin1] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_205",
+      "pcb_component_ids": [
+        "pcb_component_41",
+        "pcb_component_45"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_248",
+        "pcb_port_260"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_50",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U_LEVEL > .pin11 to .R_PD_21 > .pin1] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_207",
+      "pcb_component_ids": [
+        "pcb_component_41",
+        "pcb_component_46"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_250",
+        "pcb_port_262"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_51",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U_LEVEL > .pin5 to .R_PD_22 > .pin1] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_209",
+      "pcb_component_ids": [
+        "pcb_component_41",
+        "pcb_component_44"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_244",
+        "pcb_port_258"
+      ]
+    },
+    {
+      "type": "pcb_trace_missing_error",
+      "pcb_trace_missing_error_id": "pcb_trace_missing_error_52",
+      "error_type": "pcb_trace_missing_error",
+      "message": "Trace [.U_LEVEL > .pin1 to .R_PD_23 > .pin1] is not connected (it has no PCB trace)",
+      "source_trace_id": "source_trace_211",
+      "pcb_component_ids": [
+        "pcb_component_41",
+        "pcb_component_42"
+      ],
+      "pcb_port_ids": [
+        "pcb_port_240",
+        "pcb_port_254"
+      ]
+    }
+  ],
+  "traces": 0,
+  "vias": 0,
+  "physicalAcceptance": "pending"
+}

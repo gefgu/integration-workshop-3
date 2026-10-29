@@ -1,0 +1,1929 @@
+[
+  {
+    "ref": "J_ESP_L",
+    "kind": "J",
+    "value": "Conector sem modelo comprado",
+    "section": "ESP32",
+    "x": -12.7,
+    "y": 76,
+    "pins": [
+      {
+        "pin": 1,
+        "net": null,
+        "label": "3V3"
+      },
+      {
+        "pin": 2,
+        "net": "GND",
+        "label": "GND"
+      },
+      {
+        "pin": 3,
+        "net": null,
+        "label": "GPIO15"
+      },
+      {
+        "pin": 4,
+        "net": null,
+        "label": "GPIO2"
+      },
+      {
+        "pin": 5,
+        "net": null,
+        "label": "GPIO4"
+      },
+      {
+        "pin": 6,
+        "net": null,
+        "label": "GPIO16"
+      },
+      {
+        "pin": 7,
+        "net": null,
+        "label": "GPIO17"
+      },
+      {
+        "pin": 8,
+        "net": null,
+        "label": "GPIO5"
+      },
+      {
+        "pin": 9,
+        "net": "GPIO18",
+        "label": "GPIO18"
+      },
+      {
+        "pin": 10,
+        "net": "GPIO19",
+        "label": "GPIO19"
+      },
+      {
+        "pin": 11,
+        "net": "GPIO21",
+        "label": "GPIO21"
+      },
+      {
+        "pin": 12,
+        "net": null,
+        "label": "GPIO3_RX0"
+      },
+      {
+        "pin": 13,
+        "net": null,
+        "label": "GPIO1_TX0"
+      },
+      {
+        "pin": 14,
+        "net": "GPIO22",
+        "label": "GPIO22"
+      },
+      {
+        "pin": 15,
+        "net": "GPIO23",
+        "label": "GPIO23"
+      }
+    ],
+    "mpn": "61201021621",
+    "footprint": "pinrow15_p2.54mm",
+    "rotation": 270
+  },
+  {
+    "ref": "J_ESP_R",
+    "kind": "J",
+    "value": "Conector sem modelo comprado",
+    "section": "ESP32",
+    "x": 12.7,
+    "y": 76,
+    "pins": [
+      {
+        "pin": 1,
+        "net": null,
+        "label": "VIN"
+      },
+      {
+        "pin": 2,
+        "net": "GND",
+        "label": "GND"
+      },
+      {
+        "pin": 3,
+        "net": null,
+        "label": "GPIO13"
+      },
+      {
+        "pin": 4,
+        "net": null,
+        "label": "GPIO12"
+      },
+      {
+        "pin": 5,
+        "net": "GPIO14",
+        "label": "GPIO14"
+      },
+      {
+        "pin": 6,
+        "net": "GPIO27",
+        "label": "GPIO27"
+      },
+      {
+        "pin": 7,
+        "net": "GPIO26",
+        "label": "GPIO26"
+      },
+      {
+        "pin": 8,
+        "net": "GPIO25",
+        "label": "GPIO25"
+      },
+      {
+        "pin": 9,
+        "net": null,
+        "label": "GPIO33"
+      },
+      {
+        "pin": 10,
+        "net": null,
+        "label": "GPIO32"
+      },
+      {
+        "pin": 11,
+        "net": null,
+        "label": "GPIO35"
+      },
+      {
+        "pin": 12,
+        "net": "GPIO34",
+        "label": "GPIO34"
+      },
+      {
+        "pin": 13,
+        "net": null,
+        "label": "GPIO39_VN"
+      },
+      {
+        "pin": 14,
+        "net": null,
+        "label": "GPIO36_VP"
+      },
+      {
+        "pin": 15,
+        "net": null,
+        "label": "EN"
+      }
+    ],
+    "mpn": "61201021621",
+    "footprint": "pinrow15_p2.54mm",
+    "rotation": 270
+  },
+  {
+    "ref": "Q6",
+    "kind": "Q",
+    "value": "BC548B",
+    "section": "AdaptacaoControle",
+    "x": 35,
+    "y": 44,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "RESET12",
+        "label": "C"
+      },
+      {
+        "pin": 2,
+        "net": "Q6_B",
+        "label": "B"
+      },
+      {
+        "pin": 3,
+        "net": "GND",
+        "label": "E"
+      }
+    ],
+    "mpn": "BC548B",
+    "footprint": "to92",
+    "pnp": false
+  },
+  {
+    "ref": "R6",
+    "kind": "R",
+    "value": "10k",
+    "section": "AdaptacaoControle",
+    "x": 35,
+    "y": 40,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "GPIO25",
+        "label": "A"
+      },
+      {
+        "pin": 2,
+        "net": "Q6_B",
+        "label": "B"
+      }
+    ],
+    "mpn": "Generic axial resistor",
+    "footprint": "axial_p0.3in"
+  },
+  {
+    "ref": "R12",
+    "kind": "R",
+    "value": "100k",
+    "section": "AdaptacaoControle",
+    "x": 35,
+    "y": 35,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "Q6_B",
+        "label": "A"
+      },
+      {
+        "pin": 2,
+        "net": "GND",
+        "label": "B"
+      }
+    ],
+    "mpn": "Generic axial resistor",
+    "footprint": "axial_p0.3in"
+  },
+  {
+    "ref": "R7",
+    "kind": "R",
+    "value": "47k",
+    "section": "AdaptacaoControle",
+    "x": 35,
+    "y": 30,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "V12",
+        "label": "A"
+      },
+      {
+        "pin": 2,
+        "net": "RESET12",
+        "label": "B"
+      }
+    ],
+    "mpn": "Generic axial resistor",
+    "footprint": "axial_p0.3in"
+  },
+  {
+    "ref": "U5",
+    "kind": "IC",
+    "value": "74HC595",
+    "section": "Registros",
+    "x": -21,
+    "y": 15,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "AX1",
+        "label": "QB"
+      },
+      {
+        "pin": 2,
+        "net": "AX2",
+        "label": "QC"
+      },
+      {
+        "pin": 3,
+        "net": "AX3",
+        "label": "QD"
+      },
+      {
+        "pin": 4,
+        "net": "AY0",
+        "label": "QE"
+      },
+      {
+        "pin": 5,
+        "net": "AY1",
+        "label": "QF"
+      },
+      {
+        "pin": 6,
+        "net": "AY2",
+        "label": "QG"
+      },
+      {
+        "pin": 7,
+        "net": "DATA",
+        "label": "QH"
+      },
+      {
+        "pin": 8,
+        "net": "GND",
+        "label": "GND"
+      },
+      {
+        "pin": 9,
+        "net": "CHAIN",
+        "label": "QH_SER"
+      },
+      {
+        "pin": 10,
+        "net": "V5",
+        "label": "SRCLR_N"
+      },
+      {
+        "pin": 11,
+        "net": "CLK5",
+        "label": "SRCLK"
+      },
+      {
+        "pin": 12,
+        "net": "LATCH5",
+        "label": "RCLK"
+      },
+      {
+        "pin": 13,
+        "net": "OE_N5",
+        "label": "OE_N"
+      },
+      {
+        "pin": 14,
+        "net": "SER5",
+        "label": "SER"
+      },
+      {
+        "pin": 15,
+        "net": "AX0",
+        "label": "QA"
+      },
+      {
+        "pin": 16,
+        "net": "V5",
+        "label": "VCC"
+      }
+    ],
+    "mpn": "SN74HC595N",
+    "footprint": "dip16_w7.62mm"
+  },
+  {
+    "ref": "U6",
+    "kind": "IC",
+    "value": "74HC595",
+    "section": "Registros",
+    "x": 21,
+    "y": 15,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "CS_B",
+        "label": "QB"
+      },
+      {
+        "pin": 2,
+        "net": null,
+        "label": "QC"
+      },
+      {
+        "pin": 3,
+        "net": null,
+        "label": "QD"
+      },
+      {
+        "pin": 4,
+        "net": null,
+        "label": "QE"
+      },
+      {
+        "pin": 5,
+        "net": null,
+        "label": "QF"
+      },
+      {
+        "pin": 6,
+        "net": null,
+        "label": "QG"
+      },
+      {
+        "pin": 7,
+        "net": null,
+        "label": "QH"
+      },
+      {
+        "pin": 8,
+        "net": "GND",
+        "label": "GND"
+      },
+      {
+        "pin": 9,
+        "net": null,
+        "label": "QH_SER"
+      },
+      {
+        "pin": 10,
+        "net": "V5",
+        "label": "SRCLR_N"
+      },
+      {
+        "pin": 11,
+        "net": "CLK5",
+        "label": "SRCLK"
+      },
+      {
+        "pin": 12,
+        "net": "LATCH5",
+        "label": "RCLK"
+      },
+      {
+        "pin": 13,
+        "net": "OE_N5",
+        "label": "OE_N"
+      },
+      {
+        "pin": 14,
+        "net": "CHAIN",
+        "label": "SER"
+      },
+      {
+        "pin": 15,
+        "net": "CS_A",
+        "label": "QA"
+      },
+      {
+        "pin": 16,
+        "net": "V5",
+        "label": "VCC"
+      }
+    ],
+    "mpn": "SN74HC595N",
+    "footprint": "dip16_w7.62mm"
+  },
+  {
+    "ref": "C4",
+    "kind": "C",
+    "value": "100nF",
+    "section": "Registros",
+    "x": -33,
+    "y": 15,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "V5",
+        "label": "A"
+      },
+      {
+        "pin": 2,
+        "net": "GND",
+        "label": "B"
+      }
+    ],
+    "mpn": "Generic radial capacitor",
+    "footprint": "radial_p2.54mm",
+    "polarized": false
+  },
+  {
+    "ref": "C5",
+    "kind": "C",
+    "value": "100nF",
+    "section": "Registros",
+    "x": 33,
+    "y": 15,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "V5",
+        "label": "A"
+      },
+      {
+        "pin": 2,
+        "net": "GND",
+        "label": "B"
+      }
+    ],
+    "mpn": "Generic radial capacitor",
+    "footprint": "radial_p2.54mm",
+    "polarized": false
+  },
+  {
+    "ref": "R8",
+    "kind": "R",
+    "value": "10k",
+    "section": "Registros",
+    "x": -7,
+    "y": 10,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "CS_A",
+        "label": "A"
+      },
+      {
+        "pin": 2,
+        "net": "GND",
+        "label": "B"
+      }
+    ],
+    "mpn": "Generic axial resistor",
+    "footprint": "axial_p0.3in"
+  },
+  {
+    "ref": "R9",
+    "kind": "R",
+    "value": "10k",
+    "section": "Registros",
+    "x": 7,
+    "y": 10,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "CS_B",
+        "label": "A"
+      },
+      {
+        "pin": 2,
+        "net": "GND",
+        "label": "B"
+      }
+    ],
+    "mpn": "Generic axial resistor",
+    "footprint": "axial_p0.3in"
+  },
+  {
+    "ref": "U1",
+    "kind": "IC",
+    "value": "MT8816AE1",
+    "section": "MatrizA",
+    "x": -23,
+    "y": -25,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "SENSE_A",
+        "label": "Y3"
+      },
+      {
+        "pin": 2,
+        "net": "AY2",
+        "label": "AY2"
+      },
+      {
+        "pin": 3,
+        "net": "RESET12",
+        "label": "RESET"
+      },
+      {
+        "pin": 4,
+        "net": "AX3",
+        "label": "AX3"
+      },
+      {
+        "pin": 5,
+        "net": "AX0",
+        "label": "AX0"
+      },
+      {
+        "pin": 6,
+        "net": null,
+        "label": "X14"
+      },
+      {
+        "pin": 7,
+        "net": null,
+        "label": "X15"
+      },
+      {
+        "pin": 8,
+        "net": "NODE06",
+        "label": "X6"
+      },
+      {
+        "pin": 9,
+        "net": "NODE07",
+        "label": "X7"
+      },
+      {
+        "pin": 10,
+        "net": "NODE08",
+        "label": "X8"
+      },
+      {
+        "pin": 11,
+        "net": "NODE09",
+        "label": "X9"
+      },
+      {
+        "pin": 12,
+        "net": "NODE10",
+        "label": "X10"
+      },
+      {
+        "pin": 13,
+        "net": null,
+        "label": "X11"
+      },
+      {
+        "pin": 14,
+        "net": null,
+        "label": "NC"
+      },
+      {
+        "pin": 15,
+        "net": "BUS_A7",
+        "label": "Y7"
+      },
+      {
+        "pin": 16,
+        "net": "GND",
+        "label": "VSS"
+      },
+      {
+        "pin": 17,
+        "net": "BUS_A6",
+        "label": "Y6"
+      },
+      {
+        "pin": 18,
+        "net": "STROBE5",
+        "label": "STROBE"
+      },
+      {
+        "pin": 19,
+        "net": "BUS_A5",
+        "label": "Y5"
+      },
+      {
+        "pin": 20,
+        "net": "GND",
+        "label": "VEE"
+      },
+      {
+        "pin": 21,
+        "net": "SENSE_B",
+        "label": "Y4"
+      },
+      {
+        "pin": 22,
+        "net": "AX1",
+        "label": "AX1"
+      },
+      {
+        "pin": 23,
+        "net": "AX2",
+        "label": "AX2"
+      },
+      {
+        "pin": 24,
+        "net": "AY0",
+        "label": "AY0"
+      },
+      {
+        "pin": 25,
+        "net": "AY1",
+        "label": "AY1"
+      },
+      {
+        "pin": 26,
+        "net": null,
+        "label": "X13"
+      },
+      {
+        "pin": 27,
+        "net": null,
+        "label": "X12"
+      },
+      {
+        "pin": 28,
+        "net": "NODE05",
+        "label": "X5"
+      },
+      {
+        "pin": 29,
+        "net": "NODE04",
+        "label": "X4"
+      },
+      {
+        "pin": 30,
+        "net": "NODE03",
+        "label": "X3"
+      },
+      {
+        "pin": 31,
+        "net": "NODE02",
+        "label": "X2"
+      },
+      {
+        "pin": 32,
+        "net": "NODE01",
+        "label": "X1"
+      },
+      {
+        "pin": 33,
+        "net": "NODE00",
+        "label": "X0"
+      },
+      {
+        "pin": 34,
+        "net": null,
+        "label": "NC"
+      },
+      {
+        "pin": 35,
+        "net": "GND",
+        "label": "Y0"
+      },
+      {
+        "pin": 36,
+        "net": "CS_A",
+        "label": "CS"
+      },
+      {
+        "pin": 37,
+        "net": "PULSE_BUS",
+        "label": "Y1"
+      },
+      {
+        "pin": 38,
+        "net": "DATA",
+        "label": "DATA"
+      },
+      {
+        "pin": 39,
+        "net": "TEST_BUS",
+        "label": "Y2"
+      },
+      {
+        "pin": 40,
+        "net": "V12",
+        "label": "VDD"
+      }
+    ],
+    "mpn": "MT8816AE1",
+    "footprint": "dip40_w15.24mm"
+  },
+  {
+    "ref": "C1",
+    "kind": "C",
+    "value": "100nF",
+    "section": "MatrizA",
+    "x": -10,
+    "y": -8,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "V12",
+        "label": "A"
+      },
+      {
+        "pin": 2,
+        "net": "GND",
+        "label": "B"
+      }
+    ],
+    "mpn": "Generic radial capacitor",
+    "footprint": "radial_p2.54mm",
+    "polarized": false
+  },
+  {
+    "ref": "H1",
+    "kind": "J",
+    "value": "Conector sem modelo comprado",
+    "section": "MatrizA",
+    "x": -45,
+    "y": -25,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "NODE00",
+        "label": "NODE00"
+      },
+      {
+        "pin": 2,
+        "net": "NODE01",
+        "label": "NODE01"
+      },
+      {
+        "pin": 3,
+        "net": "NODE02",
+        "label": "NODE02"
+      },
+      {
+        "pin": 4,
+        "net": "NODE03",
+        "label": "NODE03"
+      },
+      {
+        "pin": 5,
+        "net": "NODE04",
+        "label": "NODE04"
+      },
+      {
+        "pin": 6,
+        "net": "NODE05",
+        "label": "NODE05"
+      },
+      {
+        "pin": 7,
+        "net": "NODE06",
+        "label": "NODE06"
+      },
+      {
+        "pin": 8,
+        "net": "NODE07",
+        "label": "NODE07"
+      },
+      {
+        "pin": 9,
+        "net": "NODE08",
+        "label": "NODE08"
+      },
+      {
+        "pin": 10,
+        "net": "NODE09",
+        "label": "NODE09"
+      },
+      {
+        "pin": 11,
+        "net": "NODE10",
+        "label": "NODE10"
+      }
+    ],
+    "mpn": "61201021621",
+    "footprint": "pinrow11_p2.54mm",
+    "rotation": 270
+  },
+  {
+    "ref": "U2",
+    "kind": "IC",
+    "value": "MT8816AE1",
+    "section": "MatrizB",
+    "x": 23,
+    "y": -25,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "SENSE_A",
+        "label": "Y3"
+      },
+      {
+        "pin": 2,
+        "net": "AY2",
+        "label": "AY2"
+      },
+      {
+        "pin": 3,
+        "net": "RESET12",
+        "label": "RESET"
+      },
+      {
+        "pin": 4,
+        "net": "AX3",
+        "label": "AX3"
+      },
+      {
+        "pin": 5,
+        "net": "AX0",
+        "label": "AX0"
+      },
+      {
+        "pin": 6,
+        "net": null,
+        "label": "X14"
+      },
+      {
+        "pin": 7,
+        "net": null,
+        "label": "X15"
+      },
+      {
+        "pin": 8,
+        "net": "NODE17",
+        "label": "X6"
+      },
+      {
+        "pin": 9,
+        "net": "NODE18",
+        "label": "X7"
+      },
+      {
+        "pin": 10,
+        "net": "NODE19",
+        "label": "X8"
+      },
+      {
+        "pin": 11,
+        "net": "NODE20",
+        "label": "X9"
+      },
+      {
+        "pin": 12,
+        "net": "NODE21",
+        "label": "X10"
+      },
+      {
+        "pin": 13,
+        "net": null,
+        "label": "X11"
+      },
+      {
+        "pin": 14,
+        "net": null,
+        "label": "NC"
+      },
+      {
+        "pin": 15,
+        "net": "BUS_B7",
+        "label": "Y7"
+      },
+      {
+        "pin": 16,
+        "net": "GND",
+        "label": "VSS"
+      },
+      {
+        "pin": 17,
+        "net": "BUS_B6",
+        "label": "Y6"
+      },
+      {
+        "pin": 18,
+        "net": "STROBE5",
+        "label": "STROBE"
+      },
+      {
+        "pin": 19,
+        "net": "BUS_B5",
+        "label": "Y5"
+      },
+      {
+        "pin": 20,
+        "net": "GND",
+        "label": "VEE"
+      },
+      {
+        "pin": 21,
+        "net": "SENSE_B",
+        "label": "Y4"
+      },
+      {
+        "pin": 22,
+        "net": "AX1",
+        "label": "AX1"
+      },
+      {
+        "pin": 23,
+        "net": "AX2",
+        "label": "AX2"
+      },
+      {
+        "pin": 24,
+        "net": "AY0",
+        "label": "AY0"
+      },
+      {
+        "pin": 25,
+        "net": "AY1",
+        "label": "AY1"
+      },
+      {
+        "pin": 26,
+        "net": null,
+        "label": "X13"
+      },
+      {
+        "pin": 27,
+        "net": null,
+        "label": "X12"
+      },
+      {
+        "pin": 28,
+        "net": "NODE16",
+        "label": "X5"
+      },
+      {
+        "pin": 29,
+        "net": "NODE15",
+        "label": "X4"
+      },
+      {
+        "pin": 30,
+        "net": "NODE14",
+        "label": "X3"
+      },
+      {
+        "pin": 31,
+        "net": "NODE13",
+        "label": "X2"
+      },
+      {
+        "pin": 32,
+        "net": "NODE12",
+        "label": "X1"
+      },
+      {
+        "pin": 33,
+        "net": "NODE11",
+        "label": "X0"
+      },
+      {
+        "pin": 34,
+        "net": null,
+        "label": "NC"
+      },
+      {
+        "pin": 35,
+        "net": "GND",
+        "label": "Y0"
+      },
+      {
+        "pin": 36,
+        "net": "CS_B",
+        "label": "CS"
+      },
+      {
+        "pin": 37,
+        "net": "PULSE_BUS",
+        "label": "Y1"
+      },
+      {
+        "pin": 38,
+        "net": "DATA",
+        "label": "DATA"
+      },
+      {
+        "pin": 39,
+        "net": "TEST_BUS",
+        "label": "Y2"
+      },
+      {
+        "pin": 40,
+        "net": "V12",
+        "label": "VDD"
+      }
+    ],
+    "mpn": "MT8816AE1",
+    "footprint": "dip40_w15.24mm"
+  },
+  {
+    "ref": "C2",
+    "kind": "C",
+    "value": "100nF",
+    "section": "MatrizB",
+    "x": 10,
+    "y": -8,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "V12",
+        "label": "A"
+      },
+      {
+        "pin": 2,
+        "net": "GND",
+        "label": "B"
+      }
+    ],
+    "mpn": "Generic radial capacitor",
+    "footprint": "radial_p2.54mm",
+    "polarized": false
+  },
+  {
+    "ref": "H3",
+    "kind": "J",
+    "value": "Conector sem modelo comprado",
+    "section": "MatrizB",
+    "x": 45,
+    "y": -25,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "NODE11",
+        "label": "NODE11"
+      },
+      {
+        "pin": 2,
+        "net": "NODE12",
+        "label": "NODE12"
+      },
+      {
+        "pin": 3,
+        "net": "NODE13",
+        "label": "NODE13"
+      },
+      {
+        "pin": 4,
+        "net": "NODE14",
+        "label": "NODE14"
+      },
+      {
+        "pin": 5,
+        "net": "NODE15",
+        "label": "NODE15"
+      },
+      {
+        "pin": 6,
+        "net": "NODE16",
+        "label": "NODE16"
+      },
+      {
+        "pin": 7,
+        "net": "NODE17",
+        "label": "NODE17"
+      },
+      {
+        "pin": 8,
+        "net": "NODE18",
+        "label": "NODE18"
+      },
+      {
+        "pin": 9,
+        "net": "NODE19",
+        "label": "NODE19"
+      },
+      {
+        "pin": 10,
+        "net": "NODE20",
+        "label": "NODE20"
+      },
+      {
+        "pin": 11,
+        "net": "NODE21",
+        "label": "NODE21"
+      }
+    ],
+    "mpn": "61201021621",
+    "footprint": "pinrow11_p2.54mm",
+    "rotation": 270
+  },
+  {
+    "ref": "Q7",
+    "kind": "Q",
+    "value": "BC557B",
+    "section": "Pulso",
+    "x": -34,
+    "y": -64,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "HIGH_C",
+        "label": "C"
+      },
+      {
+        "pin": 2,
+        "net": "HIGH_B",
+        "label": "B"
+      },
+      {
+        "pin": 3,
+        "net": "V5",
+        "label": "E"
+      }
+    ],
+    "mpn": "BC557B",
+    "footprint": "to92",
+    "pnp": true
+  },
+  {
+    "ref": "Q8",
+    "kind": "Q",
+    "value": "BC548B",
+    "section": "Pulso",
+    "x": -20,
+    "y": -64,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "HIGH_DRV",
+        "label": "C"
+      },
+      {
+        "pin": 2,
+        "net": "Q8_B",
+        "label": "B"
+      },
+      {
+        "pin": 3,
+        "net": "GND",
+        "label": "E"
+      }
+    ],
+    "mpn": "BC548B",
+    "footprint": "to92",
+    "pnp": false
+  },
+  {
+    "ref": "R21",
+    "kind": "R",
+    "value": "47k",
+    "section": "Pulso",
+    "x": -34,
+    "y": -72,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "V5",
+        "label": "A"
+      },
+      {
+        "pin": 2,
+        "net": "HIGH_B",
+        "label": "B"
+      }
+    ],
+    "mpn": "Generic axial resistor",
+    "footprint": "axial_p0.3in"
+  },
+  {
+    "ref": "R30",
+    "kind": "R",
+    "value": "4.7k",
+    "section": "Pulso",
+    "x": -20,
+    "y": -72,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "HIGH_B",
+        "label": "A"
+      },
+      {
+        "pin": 2,
+        "net": "HIGH_DRV",
+        "label": "B"
+      }
+    ],
+    "mpn": "Generic axial resistor",
+    "footprint": "axial_p0.3in"
+  },
+  {
+    "ref": "R13",
+    "kind": "R",
+    "value": "10k",
+    "section": "Pulso",
+    "x": -20,
+    "y": -80,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "GPIO26",
+        "label": "A"
+      },
+      {
+        "pin": 2,
+        "net": "Q8_B",
+        "label": "B"
+      }
+    ],
+    "mpn": "Generic axial resistor",
+    "footprint": "axial_p0.3in",
+    "rotation": 180
+  },
+  {
+    "ref": "R14",
+    "kind": "R",
+    "value": "100k",
+    "section": "Pulso",
+    "x": -20,
+    "y": -88,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "Q8_B",
+        "label": "A"
+      },
+      {
+        "pin": 2,
+        "net": "GND",
+        "label": "B"
+      }
+    ],
+    "mpn": "Generic axial resistor",
+    "footprint": "axial_p0.3in"
+  },
+  {
+    "ref": "R17",
+    "kind": "R",
+    "value": "470",
+    "section": "Pulso",
+    "x": -34,
+    "y": -88,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "HIGH_C",
+        "label": "A"
+      },
+      {
+        "pin": 2,
+        "net": "PULSE_BUS",
+        "label": "B"
+      }
+    ],
+    "mpn": "Generic axial resistor",
+    "footprint": "axial_p0.3in"
+  },
+  {
+    "ref": "Q11",
+    "kind": "Q",
+    "value": "BC548B",
+    "section": "Pulso",
+    "x": 34,
+    "y": -64,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "LOW_C",
+        "label": "C"
+      },
+      {
+        "pin": 2,
+        "net": "Q11_B",
+        "label": "B"
+      },
+      {
+        "pin": 3,
+        "net": "GND",
+        "label": "E"
+      }
+    ],
+    "mpn": "BC548B",
+    "footprint": "to92",
+    "pnp": false
+  },
+  {
+    "ref": "R_LOW_BASE",
+    "kind": "R",
+    "value": "4.7k",
+    "section": "Pulso",
+    "x": 34,
+    "y": -72,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "GPIO27",
+        "label": "A"
+      },
+      {
+        "pin": 2,
+        "net": "Q11_B",
+        "label": "B"
+      }
+    ],
+    "mpn": "Generic axial resistor",
+    "footprint": "axial_p0.3in"
+  },
+  {
+    "ref": "R_LOW_PD",
+    "kind": "R",
+    "value": "100k",
+    "section": "Pulso",
+    "x": 34,
+    "y": -80,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "Q11_B",
+        "label": "A"
+      },
+      {
+        "pin": 2,
+        "net": "GND",
+        "label": "B"
+      }
+    ],
+    "mpn": "Generic axial resistor",
+    "footprint": "axial_p0.3in"
+  },
+  {
+    "ref": "R_LOW_LIMIT",
+    "kind": "R",
+    "value": "470",
+    "section": "Pulso",
+    "x": 34,
+    "y": -88,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "PULSE_BUS",
+        "label": "A"
+      },
+      {
+        "pin": 2,
+        "net": "LOW_C",
+        "label": "B"
+      }
+    ],
+    "mpn": "Generic axial resistor",
+    "footprint": "axial_p0.3in"
+  },
+  {
+    "ref": "Q9",
+    "kind": "Q",
+    "value": "BC557B",
+    "section": "Continuidade",
+    "x": -4,
+    "y": -64,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "TEST_C",
+        "label": "C"
+      },
+      {
+        "pin": 2,
+        "net": "TEST_B",
+        "label": "B"
+      },
+      {
+        "pin": 3,
+        "net": "V5",
+        "label": "E"
+      }
+    ],
+    "mpn": "BC557B",
+    "footprint": "to92",
+    "pnp": true
+  },
+  {
+    "ref": "Q10",
+    "kind": "Q",
+    "value": "BC548B",
+    "section": "Continuidade",
+    "x": 10,
+    "y": -64,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "TEST_DRV",
+        "label": "C"
+      },
+      {
+        "pin": 2,
+        "net": "Q10_B",
+        "label": "B"
+      },
+      {
+        "pin": 3,
+        "net": "GND",
+        "label": "E"
+      }
+    ],
+    "mpn": "BC548B",
+    "footprint": "to92",
+    "pnp": false
+  },
+  {
+    "ref": "R24",
+    "kind": "R",
+    "value": "47k",
+    "section": "Continuidade",
+    "x": -4,
+    "y": -72,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "V5",
+        "label": "A"
+      },
+      {
+        "pin": 2,
+        "net": "TEST_B",
+        "label": "B"
+      }
+    ],
+    "mpn": "Generic axial resistor",
+    "footprint": "axial_p0.3in"
+  },
+  {
+    "ref": "R27",
+    "kind": "R",
+    "value": "10k",
+    "section": "Continuidade",
+    "x": 10,
+    "y": -72,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "TEST_B",
+        "label": "A"
+      },
+      {
+        "pin": 2,
+        "net": "TEST_DRV",
+        "label": "B"
+      }
+    ],
+    "mpn": "Generic axial resistor",
+    "footprint": "axial_p0.3in"
+  },
+  {
+    "ref": "R15",
+    "kind": "R",
+    "value": "10k",
+    "section": "Continuidade",
+    "x": 10,
+    "y": -80,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "GPIO14",
+        "label": "A"
+      },
+      {
+        "pin": 2,
+        "net": "Q10_B",
+        "label": "B"
+      }
+    ],
+    "mpn": "Generic axial resistor",
+    "footprint": "axial_p0.3in",
+    "rotation": 180
+  },
+  {
+    "ref": "R16",
+    "kind": "R",
+    "value": "100k",
+    "section": "Continuidade",
+    "x": 10,
+    "y": -88,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "Q10_B",
+        "label": "A"
+      },
+      {
+        "pin": 2,
+        "net": "GND",
+        "label": "B"
+      }
+    ],
+    "mpn": "Generic axial resistor",
+    "footprint": "axial_p0.3in"
+  },
+  {
+    "ref": "R18",
+    "kind": "R",
+    "value": "10k",
+    "section": "Continuidade",
+    "x": -4,
+    "y": -88,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "TEST_C",
+        "label": "A"
+      },
+      {
+        "pin": 2,
+        "net": "TEST_BUS",
+        "label": "B"
+      }
+    ],
+    "mpn": "Generic axial resistor",
+    "footprint": "axial_p0.3in"
+  },
+  {
+    "ref": "H2",
+    "kind": "J",
+    "value": "Conector sem modelo comprado",
+    "section": "Interfaces",
+    "x": -44,
+    "y": -74,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "V12",
+        "label": "V12"
+      },
+      {
+        "pin": 2,
+        "net": "V5",
+        "label": "V5"
+      },
+      {
+        "pin": 3,
+        "net": null,
+        "label": "NC"
+      },
+      {
+        "pin": 4,
+        "net": "GND",
+        "label": "GND"
+      }
+    ],
+    "mpn": "61201021621",
+    "footprint": "pinrow4_p2.54mm",
+    "rotation": 270
+  },
+  {
+    "ref": "J_SMART",
+    "kind": "J",
+    "value": "Conector sem modelo comprado",
+    "section": "Interfaces",
+    "x": 44,
+    "y": -74,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "SENSE_A",
+        "label": "SENSE_A"
+      },
+      {
+        "pin": 2,
+        "net": "GND",
+        "label": "GND"
+      },
+      {
+        "pin": 3,
+        "net": "SENSE_B",
+        "label": "SENSE_B"
+      },
+      {
+        "pin": 4,
+        "net": "GPIO34",
+        "label": "GPIO34"
+      }
+    ],
+    "mpn": "61201021621",
+    "footprint": "pinrow4_p2.54mm",
+    "rotation": 270
+  },
+  {
+    "ref": "R_PULSE_IN",
+    "kind": "R",
+    "value": "47k",
+    "section": "Interfaces",
+    "x": 0,
+    "y": -51,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "GPIO34",
+        "label": "A"
+      },
+      {
+        "pin": 2,
+        "net": "GND",
+        "label": "B"
+      }
+    ],
+    "mpn": "Generic axial resistor",
+    "footprint": "axial_p0.3in"
+  },
+  {
+    "ref": "C_BULK5",
+    "kind": "C",
+    "value": "47uF",
+    "section": "Interfaces",
+    "x": -27,
+    "y": 62,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "V5",
+        "label": "+"
+      },
+      {
+        "pin": 2,
+        "net": "GND",
+        "label": "-"
+      }
+    ],
+    "mpn": "Generic radial capacitor",
+    "footprint": "electrolytic_d6.3mm_p2.54mm",
+    "polarized": true
+  },
+  {
+    "ref": "C_BULK12",
+    "kind": "C",
+    "value": "47uF",
+    "section": "Interfaces",
+    "x": 27,
+    "y": 62,
+    "pins": [
+      {
+        "pin": 1,
+        "net": "V12",
+        "label": "+"
+      },
+      {
+        "pin": 2,
+        "net": "GND",
+        "label": "-"
+      }
+    ],
+    "mpn": "Generic radial capacitor",
+    "footprint": "electrolytic_d6.3mm_p2.54mm",
+    "polarized": true,
+    "rotation": 180
+  },
+  {
+    "ref": "U_LEVEL",
+    "kind": "IC",
+    "value": "74HCT14",
+    "section": "AdaptadorHCT",
+    "x": 0,
+    "y": 35,
+    "mpn": "SN74HCT14N",
+    "footprint": "dip14_w7.62mm",
+    "pins": [
+      {
+        "pin": 1,
+        "label": "1A",
+        "net": "GPIO23"
+      },
+      {
+        "pin": 2,
+        "label": "1Y",
+        "net": "SER5"
+      },
+      {
+        "pin": 3,
+        "label": "2A",
+        "net": "GPIO18"
+      },
+      {
+        "pin": 4,
+        "label": "2Y",
+        "net": "CLK5"
+      },
+      {
+        "pin": 5,
+        "label": "3A",
+        "net": "GPIO22"
+      },
+      {
+        "pin": 6,
+        "label": "3Y",
+        "net": "LATCH5"
+      },
+      {
+        "pin": 7,
+        "label": "GND",
+        "net": "GND"
+      },
+      {
+        "pin": 8,
+        "label": "4Y",
+        "net": "STROBE5"
+      },
+      {
+        "pin": 9,
+        "label": "4A",
+        "net": "GPIO19"
+      },
+      {
+        "pin": 10,
+        "label": "5Y",
+        "net": "OE_N5"
+      },
+      {
+        "pin": 11,
+        "label": "5A",
+        "net": "GPIO21"
+      },
+      {
+        "pin": 12,
+        "label": "6Y",
+        "net": null
+      },
+      {
+        "pin": 13,
+        "label": "6A",
+        "net": "GND"
+      },
+      {
+        "pin": 14,
+        "label": "VCC",
+        "net": "V5"
+      }
+    ]
+  },
+  {
+    "ref": "R_PD_23",
+    "kind": "R",
+    "value": "47k",
+    "section": "AdaptadorHCT",
+    "x": -28,
+    "y": 47,
+    "mpn": "Generic axial resistor",
+    "footprint": "axial_p0.3in",
+    "pins": [
+      {
+        "pin": 1,
+        "label": "A",
+        "net": "GPIO23"
+      },
+      {
+        "pin": 2,
+        "label": "B",
+        "net": "GND"
+      }
+    ]
+  },
+  {
+    "ref": "R_PD_18",
+    "kind": "R",
+    "value": "47k",
+    "section": "AdaptadorHCT",
+    "x": -14,
+    "y": 47,
+    "mpn": "Generic axial resistor",
+    "footprint": "axial_p0.3in",
+    "pins": [
+      {
+        "pin": 1,
+        "label": "A",
+        "net": "GPIO18"
+      },
+      {
+        "pin": 2,
+        "label": "B",
+        "net": "GND"
+      }
+    ]
+  },
+  {
+    "ref": "R_PD_22",
+    "kind": "R",
+    "value": "47k",
+    "section": "AdaptadorHCT",
+    "x": 0,
+    "y": 47,
+    "mpn": "Generic axial resistor",
+    "footprint": "axial_p0.3in",
+    "pins": [
+      {
+        "pin": 1,
+        "label": "A",
+        "net": "GPIO22"
+      },
+      {
+        "pin": 2,
+        "label": "B",
+        "net": "GND"
+      }
+    ]
+  },
+  {
+    "ref": "R_PD_19",
+    "kind": "R",
+    "value": "47k",
+    "section": "AdaptadorHCT",
+    "x": 14,
+    "y": 47,
+    "mpn": "Generic axial resistor",
+    "footprint": "axial_p0.3in",
+    "pins": [
+      {
+        "pin": 1,
+        "label": "A",
+        "net": "GPIO19"
+      },
+      {
+        "pin": 2,
+        "label": "B",
+        "net": "GND"
+      }
+    ]
+  },
+  {
+    "ref": "R_PD_21",
+    "kind": "R",
+    "value": "47k",
+    "section": "AdaptadorHCT",
+    "x": 25,
+    "y": 47,
+    "mpn": "Generic axial resistor",
+    "footprint": "axial_p0.3in",
+    "pins": [
+      {
+        "pin": 1,
+        "label": "A",
+        "net": "GPIO21"
+      },
+      {
+        "pin": 2,
+        "label": "B",
+        "net": "GND"
+      }
+    ]
+  },
+  {
+    "ref": "C_LEVEL",
+    "kind": "C",
+    "value": "100nF",
+    "section": "AdaptadorHCT",
+    "x": 12,
+    "y": 35,
+    "mpn": "Generic radial capacitor",
+    "footprint": "radial_p2.54mm",
+    "pins": [
+      {
+        "pin": 1,
+        "label": "A",
+        "net": "V5"
+      },
+      {
+        "pin": 2,
+        "label": "B",
+        "net": "GND"
+      }
+    ]
+  }
+]
