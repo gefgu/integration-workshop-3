@@ -16,8 +16,9 @@ import cv2 as cv
 
 from . import config as cfg
 from .pipeline import Pipeline
-from .circuito import para_dict, resumo
+from .circuito import desenha_placa, para_dict
 from .sockets import hsv_ocupados
+from .tela import desenha_tela
 from .debug import desenha_frame, desenha_retificada, desenha_sockets, tabela_sockets
 
 
@@ -34,6 +35,7 @@ def salva_debug(pasta, nome, frame, res):
     if ret is not None:
         cv.imwrite(os.path.join(pasta, f'{nome}_retificada.jpg'), ret)
     cv.imwrite(os.path.join(pasta, f'{nome}_sockets.jpg'), desenha_sockets(frame, res))
+    cv.imwrite(os.path.join(pasta, f'{nome}_placa.png'), desenha_tela(res))
     tabela = tabela_sockets(res)
     if tabela:
         with open(os.path.join(pasta, f'{nome}_sockets.csv'), 'w', newline='') as f:
@@ -50,7 +52,7 @@ def roda_imagens(args):
             continue
         res = Pipeline(temporal=False).processa(frame)
         print(f"== {caminho}  [{'ok' if res.valido else 'DESCARTADO: ' + res.motivo}]")
-        print(resumo(res.grafo))
+        print(desenha_placa(res.grafo))
         if args.json:
             print(json.dumps(saida_json(res), ensure_ascii=False, indent=2))
         if args.cores and res.retificada is not None:
@@ -61,9 +63,14 @@ def roda_imagens(args):
 
 
 def abre_camera(indice, travar):
-    cap = cv.VideoCapture(indice)
-    cap.set(cv.CAP_PROP_FRAME_WIDTH, 1280)
-    cap.set(cv.CAP_PROP_FRAME_HEIGHT, 720)
+    # V4L2 direto: o backend automático pode cair num que só entrega 640x480.
+    # MJPG é o formato em que as câmeras USB entregam 720p/1080p.
+    cap = cv.VideoCapture(indice, cv.CAP_V4L2)
+    if not cap.isOpened():
+        cap = cv.VideoCapture(indice)
+    cap.set(cv.CAP_PROP_FOURCC, cv.VideoWriter_fourcc(*'MJPG'))
+    cap.set(cv.CAP_PROP_FRAME_WIDTH, cfg.CAMERA_LARGURA)
+    cap.set(cv.CAP_PROP_FRAME_HEIGHT, cfg.CAMERA_ALTURA)
     cap.set(cv.CAP_PROP_BUFFERSIZE, 1)
     if travar:
         # exposição e balanço de branco automáticos mudam as cores entre frames
@@ -91,7 +98,7 @@ def roda_camera(args):
 
             if res.mudou:
                 dados = saida_json(res)
-                print(f'--- frame {n}: circuito mudou\n{resumo(res.grafo)}', flush=True)
+                print(f'--- frame {n}: circuito mudou ({len(res.componentes)} componente(s))', flush=True)
                 if args.json and args.json != '-':
                     with open(args.json, 'w') as f:
                         json.dump(dados, f, ensure_ascii=False, indent=2)
@@ -100,6 +107,7 @@ def roda_camera(args):
 
             if args.mostrar:
                 cv.imshow('visao', desenha_frame(frame, res))
+                cv.imshow('placa', desenha_tela(res))
                 ret = desenha_retificada(res)
                 if ret is not None:
                     cv.imshow('retificada', ret)

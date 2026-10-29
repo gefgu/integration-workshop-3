@@ -14,7 +14,7 @@ from . import config as cfg
 def monta_grafo(componentes):
     G = nx.Graph()
     for comp in componentes:
-        G.add_node(comp.id, kind='componente', tipo=comp.tipo, cor=comp.cor,
+        G.add_node(comp.id, kind='componente', tipo=comp.tipo, cor=comp.cor, faixa=comp.faixa,
                    metade=cfg.METADES[comp.metade], linha=comp.linha, colunas=comp.colunas)
         for i, rede in enumerate(comp.redes()):
             G.add_node(rede, kind='rede')
@@ -62,7 +62,7 @@ def para_dict(G):
         if d['kind'] != 'componente':
             continue
         terminais = sorted(G.edges(n, data=True), key=lambda e: e[2]['terminal'])
-        componentes.append({'id': n, 'tipo': d['tipo'], 'cor': d['cor'],
+        componentes.append({'id': n, 'tipo': d['tipo'], 'cor': d['cor'], 'faixa': d.get('faixa'),
                             'posicao': {'metade': d['metade'], 'linha': d['linha'], 'colunas': d['colunas']},
                             'redes': [e[1] for e in terminais]})
     redes = sorted((n for n, d in G.nodes(data=True) if d['kind'] == 'rede'), key=_ordem_rede)
@@ -79,3 +79,32 @@ def resumo(G):
     if not d['componentes']:
         return '  (nenhum componente)'
     return '\n'.join(f"  {c['tipo']:<24} {c['id']:<36} redes: {' - '.join(c['redes'])}" for c in d['componentes'])
+
+
+_SIMBOLOS = '123456789abcdefghijklmnopqrstuvwxyz'
+
+
+def desenha_placa(G):
+    """ texto: a placa em ASCII (metade de cima, canal, metade de baixo) com cada componente
+    no lugar onde foi achado. cada componente é um símbolo; a legenda vem logo abaixo."""
+    comps = sorted((d | {'id': n} for n, d in G.nodes(data=True) if d['kind'] == 'componente'),
+                   key=lambda d: d['id'])
+    celulas = {}
+    legenda = []
+    for i, c in enumerate(comps):
+        simbolo = _SIMBOLOS[i] if i < len(_SIMBOLOS) else '#'
+        for col in c['colunas']:
+            celulas[(cfg.METADES.index(c['metade']), c['linha'], col)] = simbolo
+        cols = c['colunas']
+        legenda.append(f"  {simbolo} = {c['tipo']} ({c['cor']}{' + faixa ' + c['faixa'] if c.get('faixa') else ''}) em {c['metade']}{c['linha']}, "
+                       f"colunas {cols[0]}-{cols[-1]}  redes: {' - '.join(sorted(set(G.neighbors(c['id'])), key=_ordem_rede))}")
+
+    cabecalho = '       ' + ' '.join(f'{c:>2}' for c in range(cfg.N_COLUNAS))
+    linhas = [cabecalho]
+    for m in (0, 1):
+        for l in range(cfg.N_LINHAS_METADE):
+            sockets = ' '.join(f" {celulas.get((m, l, c), '.')}" for c in range(cfg.N_COLUNAS))
+            linhas.append(f'  {cfg.METADES[m]}{l}   {sockets}')
+        if m == 0:
+            linhas.append('       ' + '-' * (3 * cfg.N_COLUNAS - 1))
+    return '\n'.join(linhas + legenda)

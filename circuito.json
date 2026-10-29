@@ -1,0 +1,394 @@
+{
+  "valido": true,
+  "motivo": "",
+  "circuito": {
+    "componentes": [
+      {
+        "id": "capacitor@C5:5-6",
+        "tipo": "capacitor",
+        "cor": "azul",
+        "faixa": "verde",
+        "posicao": {
+          "metade": "C",
+          "linha": 5,
+          "colunas": [
+            5,
+            6
+          ]
+        },
+        "redes": [
+          "C5",
+          "C6"
+        ]
+      },
+      {
+        "id": "desconhecido_verde_1@B2:7-7",
+        "tipo": "desconhecido_verde_1",
+        "cor": "verde",
+        "faixa": null,
+        "posicao": {
+          "metade": "B",
+          "linha": 2,
+          "colunas": [
+            7
+          ]
+        },
+        "redes": [
+          "B7"
+        ]
+      },
+      {
+        "id": "desconhecido_verde_1@B3:5-5",
+        "tipo": "desconhecido_verde_1",
+        "cor": "verde",
+        "faixa": null,
+        "posicao": {
+          "metade": "B",
+          "linha": 3,
+          "colunas": [
+            5
+          ]
+        },
+        "redes": [
+          "B5"
+        ]
+      },
+      {
+        "id": "desconhecido_verde_1@B3:6-6",
+        "tipo": "desconhecido_verde_1",
+        "cor": "verde",
+        "faixa": null,
+        "posicao": {
+          "metade": "B",
+          "linha": 3,
+          "colunas": [
+            6
+          ]
+        },
+        "redes": [
+          "B6"
+        ]
+      },
+      {
+        "id": "desconhecido_verde_1@B4:6-6",
+        "tipo": "desconhecido_verde_1",
+        "cor": "verde",
+        "faixa": null,
+        "posicao": {
+          "metade": "B",
+          "linha": 4,
+          "colunas": [
+            6
+          ]
+        },
+        "redes": [
+          "B6"
+        ]
+      },
+      {
+        "id": "desconhecido_verde_1@B5:6-6",
+        "tipo": "desconhecido_verde_1",
+        "cor": "verde",
+        "faixa": null,
+        "posicao": {
+          "metade": "B",
+          "linha": 5,
+          "colunas": [
+            6
+          ]
+        },
+        "redes": [
+          "B6"
+        ]
+      },
+      {
+        "id": "jumper_curto@B1:0-1",
+        "tipo": "jumper_curto",
+        "cor": "branco",
+        "faixa": null,
+        "posicao": {
+          "metade": "B",
+          "linha": 1,
+          "colunas": [
+            0,
+            1
+          ]
+        },
+        "redes": [
+          "B0",
+          "B1"
+        ]
+      },
+      {
+        "id": "resistor_1k@C5:2-3",
+        "tipo": "resistor_1k",
+        "cor": "azul",
+        "faixa": "amarelo",
+        "posicao": {
+          "metade": "C",
+          "linha": 5,
+          "colunas": [
+            2,
+            3
+          ]
+        },
+        "redes": [
+          "C2",
+          "C3"
+        ]
+      },
+      {
+        "id": "resistor_220@C2:3-4",
+        "tipo": "resistor_220",
+        "cor": "azul",
+        "faixa": "laranja",
+        "posicao": {
+          "metade": "C",
+          "linha": 2,
+          "colunas": [
+            3,
+            4
+          ]
+        },
+        "redes": [
+          "C3",
+          "C4"
+        ]
+      },
+      {
+        "id": "resistor_470@B2:5-6",
+        "tipo": "resistor_470",
+        "cor": "azul",
+        "faixa": "vermelho",
+        "posicao": {
+          "metade": "B",
+          "linha": 2,
+          "colunas": [
+            5,
+            6
+          ]
+        },
+        "redes": [
+          "B5",
+          "B6"
+        ]
+      },
+      {
+        "id": "resistor_cc@C0:6-7",
+        "tipo": "resistor_cc",
+        "cor": "azul",
+        "faixa": "rosa",
+        "posicao": {
+          "metade": "C",
+          "linha": 0,
+          "colunas": [
+            6,
+            7
+          ]
+        },
+        "redes": [
+          "C6",
+          "C7"
+        ]
+      }
+    ],
+    "redes": [
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6",
+      "C7",
+      "B0",
+      "B1",
+      "B5",
+      "B6",
+      "B7"
+    ]
+  },
+  "circuito_eletrico": {
+    "componentes": [
+      {
+        "id": "capacitor@C5:5-6",
+        "tipo": "capacitor",
+        "cor": "azul",
+        "faixa": "verde",
+        "posicao": {
+          "metade": "C",
+          "linha": 5,
+          "colunas": [
+            5,
+            6
+          ]
+        },
+        "redes": [
+          "C5",
+          "C6"
+        ]
+      },
+      {
+        "id": "desconhecido_verde_1@B2:7-7",
+        "tipo": "desconhecido_verde_1",
+        "cor": "verde",
+        "faixa": null,
+        "posicao": {
+          "metade": "B",
+          "linha": 2,
+          "colunas": [
+            7
+          ]
+        },
+        "redes": [
+          "B7"
+        ]
+      },
+      {
+        "id": "desconhecido_verde_1@B3:5-5",
+        "tipo": "desconhecido_verde_1",
+        "cor": "verde",
+        "faixa": null,
+        "posicao": {
+          "metade": "B",
+          "linha": 3,
+          "colunas": [
+            5
+          ]
+        },
+        "redes": [
+          "B5"
+        ]
+      },
+      {
+        "id": "desconhecido_verde_1@B3:6-6",
+        "tipo": "desconhecido_verde_1",
+        "cor": "verde",
+        "faixa": null,
+        "posicao": {
+          "metade": "B",
+          "linha": 3,
+          "colunas": [
+            6
+          ]
+        },
+        "redes": [
+          "B6"
+        ]
+      },
+      {
+        "id": "desconhecido_verde_1@B4:6-6",
+        "tipo": "desconhecido_verde_1",
+        "cor": "verde",
+        "faixa": null,
+        "posicao": {
+          "metade": "B",
+          "linha": 4,
+          "colunas": [
+            6
+          ]
+        },
+        "redes": [
+          "B6"
+        ]
+      },
+      {
+        "id": "desconhecido_verde_1@B5:6-6",
+        "tipo": "desconhecido_verde_1",
+        "cor": "verde",
+        "faixa": null,
+        "posicao": {
+          "metade": "B",
+          "linha": 5,
+          "colunas": [
+            6
+          ]
+        },
+        "redes": [
+          "B6"
+        ]
+      },
+      {
+        "id": "resistor_1k@C5:2-3",
+        "tipo": "resistor_1k",
+        "cor": "azul",
+        "faixa": "amarelo",
+        "posicao": {
+          "metade": "C",
+          "linha": 5,
+          "colunas": [
+            2,
+            3
+          ]
+        },
+        "redes": [
+          "C2",
+          "C3"
+        ]
+      },
+      {
+        "id": "resistor_220@C2:3-4",
+        "tipo": "resistor_220",
+        "cor": "azul",
+        "faixa": "laranja",
+        "posicao": {
+          "metade": "C",
+          "linha": 2,
+          "colunas": [
+            3,
+            4
+          ]
+        },
+        "redes": [
+          "C3",
+          "C4"
+        ]
+      },
+      {
+        "id": "resistor_470@B2:5-6",
+        "tipo": "resistor_470",
+        "cor": "azul",
+        "faixa": "vermelho",
+        "posicao": {
+          "metade": "B",
+          "linha": 2,
+          "colunas": [
+            5,
+            6
+          ]
+        },
+        "redes": [
+          "B5",
+          "B6"
+        ]
+      },
+      {
+        "id": "resistor_cc@C0:6-7",
+        "tipo": "resistor_cc",
+        "cor": "azul",
+        "faixa": "rosa",
+        "posicao": {
+          "metade": "C",
+          "linha": 0,
+          "colunas": [
+            6,
+            7
+          ]
+        },
+        "redes": [
+          "C6",
+          "C7"
+        ]
+      }
+    ],
+    "redes": [
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6",
+      "C7",
+      "B5",
+      "B6",
+      "B7"
+    ]
+  }
+}
