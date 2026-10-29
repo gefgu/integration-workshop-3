@@ -1,0 +1,89 @@
+# Roteador simplificado — plano de alteração do EasyEDA
+
+Data: 2026-10-29. Base examinada: 10ProPrj_Roteamento_Oficinas 3_2026-10-28.epro 2.zip, esquema Roteamento_Oficinas 3 e netlist PAD_NET da PCB. Proposta independente; não modifica o arquivo do amigo, revisões anteriores, placa inteligente soldada ou firmware. Aplicação da skill tscircuit na seleção e revisão elétrica. Este documento é um planejamento, não um esquema/PCB verificado nem liberação para corrosão.
+
+## 1. Decisões fechadas
+
+Três MT8816AE1 em 12 V; VSS e VEE em GND. Apenas experimentos em 5 V limitados. Remover os dois 74HC595. Usar dois SN74AHCT244N (PDIP-20, conferir compra e encapsulamento) como buffers não inversores 3,3→5 V; não substituir por 74HC244. Manter o RESET com transistor e pull-up de 12 V existente. Dois pontos de medição sequenciais, seis posições físicas e até três cápsulas, um par por vez. Fonte e pulso são compartilhados, não duplicados por posição. Sem amperímetro, banco de resistores ou ADC externo. Raspberry coordena USB do roteador e UART da placa inteligente; nenhum novo UART entre ESP32.
+
+O controle direto remove os registradores e cinco conversores discretos. Não garante menor número de CIs: entram dois buffers. Simplifica a sequência de comandos e o diagnóstico. O GPIO27 do roteador é RESET_RELEASE; GPIO27 da placa inteligente é PULSE_CMD. São ESP32 diferentes e esses sinais não são interligados.
+
+## 2. Barramentos reservados
+
+BUS00 = GND permanente (já é a mesma rede no arquivo); renomear toda a rede para GND, incluindo X0 dos três MT8816. BUS01 fica livre após remover saída de 3,3 V. BUS02 = EXC_PULSE: saída push-pull de 5 V através de 470 ohms, 1%, 1/4 W. BUS03 = EXC_TEST: estímulo de continuidade através de 10 kohms, 1%, 1/4 W. BUS14 = SENSE_A. BUS15 = SENSE_B. Restam BUS01 e BUS04…BUS13: 11 barramentos gerais. Endereços AX não são diretamente a numeração X: preservar a tabela de decodificação do datasheet, especialmente X12…X15.
+
+Cada barramento reservado conecta somente os nós autorizados para sua função. Ligar dois nós ao mesmo barramento os conecta entre si. Nunca unir fontes diferentes. Nó ligado a GND não pode receber simultaneamente saída alta sem o resistor limitador previsto.
+
+## 3. Pinagem proposta do ESP32 de roteamento
+
+GPIO16 AX0; GPIO17 AX1; GPIO18 AX2; GPIO19 AX3; GPIO21 AY0; GPIO22 AY1; GPIO23 AY2; GPIO25 DATA; GPIO26 STROBE; GPIO13 CS_U1; GPIO14 CS_U2; GPIO32 CS_U3. Estes 12 sinais passam pelos AHCT244.
+
+GPIO27 RESET_RELEASE → R6 → base Q6. LOW/alta impedância: RESET dos MT8816 alto e todas as chaves abertas. HIGH: Q6 conduz e libera o controle, levando RESET a zero. GPIO33 PULSE_LEVEL → entrada A do TC4427A. GPIO4 TEST_LEVEL → entrada B do TC4427A. GPIO34 PULSE_CMD_IN recebe somente 3,3 V da placa inteligente. GPIO1/3 ficam para USB/serial. GPIO0/2/5/12/15 permanecem sem uso. GPIO35/36/39 livres como entradas. Total: 15 saídas e uma entrada de aplicação; verificar a placa física de 30 pinos e seu pinout antes de ligar.
+
+## 4. Buffers de controle
+
+Adicionar U20 e U21 = SN74AHCT244N. Em ambos: pino 20 em 5V_SYS, pino 10 em GND, pinos 1 e 19 (/OE) em GND, 100 nF entre 20 e 10 junto ao CI. Entradas são 3,3 V; saídas são 5 V e vão exclusivamente aos MT8816. Nunca retornar uma saída de 5 V ao ESP32.
+
+U20: entrada 2→saída 18 AX0; 4→16 AX1; 6→14 AX2; 8→12 AX3; 11→9 AY0; 13→7 AY1; 15→5 AY2; 17→3 DATA.
+
+U21: entrada 2→saída 18 STROBE; 4→16 CS_U1; 6→14 CS_U2; 8→12 CS_U3. Entradas 11,13,15,17 em GND; saídas 9,7,5,3 sem conexão. Não unir saídas.
+
+Adicionar um pull-down de 47 kohms em cada uma das 12 entradas usadas. Manter R8/R9/R10 de 10 kohms nos CS dos MT8816. Esses resistores definem estados de controle; não são os pull-ups OLED removidos anteriormente. Alimentações devem estar presentes e estáveis antes de liberar RESET; não presumir operação garantida durante energização parcial.
+
+## 5. RESET existente
+
+Manter Q6 BC548B, R6 10 kohms de base, R12 100 kohms base–GND e R7 47 kohms de XBAR_RESET para 12V_SYS. Trocar a origem de R6: antigo GPIO25 → novo GPIO27. Coletor de Q6 em XBAR_RESET; emissor em GND. Conferir C/B/E pelo datasheet da peça comprada; não confiar na orientação gráfica do símbolo. RESET é a única linha digital de controle em 12 V; não ligar ao buffer de 5 V nem diretamente a um GPIO. Esse circuito reage a reset/alta impedância, mas não detecta sozinho firmware travado mantendo GPIO27 alto.
+
+## 6. Saída e estímulo: um CI, dois canais
+
+Adicionar U22 TC4427A, versão não inversora, PDIP-8 conforme compra. Pino 6 em 5V_SYS, pino 3 em GND; pinos 1 e 8 NC. Entrada A pino 2 no GPIO33; saída A pino 7 → R_PULSE 470 ohms,1%,1/4W → BUS02. Entrada B pino 4 no GPIO4; saída B pino 5 → R_TEST 10 kohms,1%,1/4W → BUS03. Um pull-down 47 kohms em cada entrada. Capacitores 100 nF e 1 uF entre 6 e 3 junto ao CI. A entrada do TC4427A aceita lógica alta a partir de 2,4 V. Não usar TC4426A, que inverte os dois canais. A capacidade de corrente do CI não é a limitação: os resistores são obrigatórios, e nenhum conector de experimento pode ficar antes deles.
+
+O estágio A fornece alto e baixo ativamente, resolvendo a ausência de descarga do circuito PNP original. A alta impedância vista pelo experimento vem das chaves abertas dos MT8816, não de um terceiro estado do TC4427A. Para desabilitar, abrir todas as conexões ao BUS02/BUS03; no reset, abrir toda a matriz. Nenhuma chave muda para criar/breakar cada borda do pulso: manter caminho selecionado e mudar PULSE_LEVEL.
+
+Com fonte≤5,25 V, R_PULSE mínimo 465,3 ohms limita a corrente pelo resistor a≤11,29 mA para curto a GND ou ao mesmo domínio 5 V. R_TEST mínimo 9900 ohms limita a≤0,531 mA. Esses limites não cobrem fonte externa de 12 V nem caminho que contorne os resistores. Não ligar saídas A e B em paralelo. Não usar apenas a proteção global da fonte como limite de corrente do experimento.
+
+## 7. Conector com a placa inteligente
+
+Adicionar J_SMART de quatro posições, sem MPN de conector na folha: 1SENSE_A/BUS14; 2GND; 3SENSE_B/BUS15; 4PULSE_CMD_IN/GPIO34 do roteador. Pull-down 47 kohms no pino 4. Pino 4 recebe GPIO27 da placa inteligente, nunca 5 V. Preservar a ordem A/GND/B/comando do guia já existente. SENSE_A/B vão aos divisores 10k/10k com resistor série 1k e filtro 100 nF já planejados, chegando aos GPIO34/35 do ESP32 inteligente. O fato de ambos usarem GPIO34 não significa ligação direta entre os ADCs: são funções distintas em placas distintas.
+
+Alimentação externa da placa inteligente segue separada conforme seu guia, com GND comum. H2 da placa de roteamento conserva o conector de quatro vias: 1=12 V,2=5 V,3=NC (antiga 3V3_SYS),4=GND; não mudar o cabo existente sem revisar as duas pontas. ESP32 de roteamento continua alimentado por USB neste plano; não ligar 5V_SYS ao VIN em paralelo com USB. Se futuramente operar sem USB, revisar sua alimentação separadamente.
+
+## 8. Operação e firmware a implementar
+
+Partida: configurar RESET_RELEASE LOW, PULSE_LEVEL LOW, TEST_LEVEL LOW, CS e STROBE LOW; estabilizar alimentação e saídas; só então elevar RESET_RELEASE. Desconectado = configuração padrão. Estabelecer endereços/DATA comCS/STROBE baixos; selecionar somente um CI, aplicar STROBE, voltar STROBE/CS a LOW. Usar tempos conservadores e conferir no osciloscópio; respeitar a tabela do MT8816. Mudanças de topologia exigem saída desconectada, nova validação e nova autorização.
+
+Medição: ligar nó A→BUS14 e nó B→BUS15 e obterVA/VB na placa inteligente; subtrair. Sem conectar fontes adicionais.
+
+Continuidade: remover energia normal e descartar carga residual; selecionar nó A→BUS03 e BUS14, nó B→BUS00 e BUS15; elevarTEST_LEVEL temporariamente. LerVA/VB, classificar contra calibração de curto/aberto/resistores conhecidos. BaixarTEST_LEVEL e abrir todas as conexões de teste antes de energizar. O estímulo é de aproximadamente 0,5 mA no máximo. A leitura é afetada pelos divisores 20 kohms, R_ON e caminhos paralelos; nenhum limiar 20/100 ohms é garantido. O nó B deve poder ser aterrado para este teste e não pode ter fonte externa. Capacitor previamente carregado deve ser descarregado pelo caminho resistivo e verificado antes de aterrar diretamente.
+
+Pulso: após autorização, selecionar um nó→BUS02 e retorno autorizado→BUS00. ESP32 de roteamento acompanha PULSE_CMD_IN em PULSE_LEVEL somente nesse modo. Para tensãoDC usar PULSE_LEVEL alto. EmOFF, falha de protocolo ou autorização expirada, baixar saídas e abrir conexões. PULSE_CMD não autoriza energia por si. Heartbeat e prazo de autorização são obrigatórios no firmware; não representam watchdog físico e não garantem desligamento em travamento do MCU.
+
+## 9. Mudanças no arquivo EasyEDA — lista por referência original
+
+Salvar uma cópia com novo nome. Não sobrescrever o original do amigo.
+
+Manter U1/U2/U3 (MT8816), U7(ESP32), C1/C2/C3, H1/H3(22nós), H2(alimentação), U17/U18/U19(capacitores de alimentação), Q6/R6/R7/R12(RESET), R8/R9/R10(CS) e R11(1kohm entreY6/Y7 deU3). R11 serve como carga interna de autoteste, não substitui teste dos pogos.
+
+Remover U5/U6(74HC595), Q1…Q5 e resistoresR1…R5, R19, R20, R22, R23, R25, R26, R28, R29, R31, R32. C4/C5 podem ser realocados aos doisbuffers; manter 100 nF junto de cada CI. Remover redesC_Q1…C_Q5 eSER_U6 após reconectar os sinais úteis.
+
+Remover o estágio de saída original inteiro: Q7/Q8/Q9/Q10 eR13, R14, R15, R16, R17, R18, R21, R24, R27, R30. R17/R18 de 1kohm não serão o limite de saída desta proposta: entram R_PULSE470 ohms e R_TEST10 kohms no novo bloco. Remover 3V3_SYS do circuito de potência; H2.3 passa NC. Renomear BUS00 para GND globalmente. Não remover os 12 V.
+
+Adicionar U20/U21 eU22 com conexões das seções 4/6; adicionar 14pull-downs 47 kohms(12buffers+2driver), mais 1pull-down 47 kohms no PULSE_CMD_IN; 2capacitores 100 nF de buffers (reaproveitarC4/C5) e 100 nF+1 uF do driver; R_PULSE/R_TEST eJ_SMART. Preservar os terminais NODE00…NODE21 sem renumerar os cabos deH1/H3.
+
+Pontos de teste: GND,12V_SYS,5V_SYS, XBAR_RESET, STROBE, CS_U1/2/3, SENSE_A, SENSE_B, BUS02, BUS03. Rever cada testpointU4/U8…U16 existente: renomear/reconectar ou remover os obsoletos. Atualizar esquema→PCB com a ferramenta do EasyEDA; só então posicionar e rotear. Não usar as linhas de airwire como trilhas. Verificar footprint de ESP32, MT8816, DIP20, DIP8 e transistor comprado. Registrar face de cobre, jumpers, largura/espaçamento/furação com o profissional; a fabricação em face única pode exigir pontes. ERC/DRC e todas as ligações não roteadas precisam ser revisados antes de gerar o desenho de corrosão.
+
+## 10. Limites que impedem chamar isto de produto final conforme
+
+A saída é 5 V nominal ANTES do resistor, não 5 V regulados no componente. Em 2 mA,470 ohms perde 0,94 V, além de driver e MT8816. Com dois MT8816, a margem para alto≥3,5 V pode faltar no pior caso; baixo≤0,5 V em 2 mA também não é garantido com o resistor série. Logo, esta proposta simples não fecha EFR32 de níveis sob carga. Se esses limites forem obrigatórios na avaliação, substituir o limitador resistivo por estágio ativo de limitação source/sink e refazer a análise; não esconder isso sob uma medição típica.
+
+Divisores 10k/10k não cumprem entrada≥1Mohm nem garantem fuga≤10uA com placa inteligente desligada. Medição de continuidade 20/100 ohms não qualificada. Travamento do ESP32 com saída habilitada não é coberto por RESET padrão/heartbeat de software. Saída desconectada depende do MT8816 e de sua alimentação; estado comrails parciais requer ensaio. Estes pontos permanecem pendentes de conformidade, não de simples roteamento da PCB.
+
+## 11. Sequência de bancada antes de corrosão final
+
+Montar primeirobuffers+RESET com um MT8816 e fontes limitadas. Medir níveis 5 V e RESET12 V sem levar essas tensões ao ESP32; confirmar RESET por reboot/desconexão USB. Conferir os 128endereços, inversões e tabela de decodificação. Depois testar o driver isolado com resistor 470 ohms: alto/baixo, curto a GND/5 V, corrente e aquecimento; repetir com 10 kohms para estímulo. Não aplicarcurto antes de verificar o resistor obrigatório. Conectar a placa inteligente e calibrar 0 V/pontosconhecidos, curto/aberto/1kohm. Expandir aos três MT8816 e 22nós, incluindo caminhos entrechips. Demonstrar LED/resistor, botão, resistores série/paralelo eRC. Medir saída sobcarga, reset/perda de comunicação, energia residual e alta impedância. Registrar valores medidos e limitações; desenhos não são evidência de bancada.
+
+## Fontes técnicas
+
+MT8816: https://www.mouser.com/datasheet/2/268/Microchip_06182024_MT8816AE1-3459976.pdf
+SN74AHCT244: https://www.ti.com/lit/ds/symlink/sn 74ahct 244.pdf
+TC4427A: https://ww 1.microchip.com/downloads/aemDocuments/documents/APID/ProductDocuments/DataSheets/TC4426A-TC4427A-TC4428A-1.5A-Dual-High-Speed-Power-MOSFET-Drivers-20001423.pdf

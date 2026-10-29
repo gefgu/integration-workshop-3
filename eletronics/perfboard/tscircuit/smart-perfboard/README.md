@@ -1,3 +1,14 @@
+# Versão atual — placa única simplificada com RC522
+
+- [Guia atual em pt-BR — wiring_guide.pdf](wiring_guide.pdf)
+- [Mesmo PDF, nome anterior — wiring-guide.pdf](wiring-guide.pdf)
+- [Vista superior/inferior e tabelas atuais](simplified-final/review.html)
+- [Fonte, escopo e verificações](simplified-final/README.md)
+
+Decisão atual: preservar a placa soldada, acrescentar os dois canais10k/10k e conectores de sinais/RC522. Sem placa complementar nem60/69 componentes novos. Comando de pulsoGPIO27 é3,3V; seleção, estágio5V e estímulo de continuidade ficam fora da placa. `npm run build:smart-perfboard` agora gera esta versão e mantém os dois nomes do PDF sincronizados.
+
+## Histórico — documentos abaixo não são o guia atual
+
 # ESP32 smart-controller — 30 × 45-hole perfboard candidate
 
 This is the independent design requested on **2026-10-21**: classic **30-pin** ESP32 DevKit, six remote SSD1306 ports (at most three active positions), two basic ADC voltage inputs selected by the main routing board, two-axis joystick, GPIO UART to the Pi, and an empty future pulse area. The photographed 15-pin-per-edge labels define the socket map. No 16-channel mux, ammeter, joystick click, or pulse output driver is installed.
@@ -97,3 +108,7 @@ Build with `npm run build:smart-perfboard:stage1`. Includes only sockets, power 
 ### Compact schematic alternative
 
 [Single-page 4:3 PDF with continuous signal wires](stage1/compact/schematic-4x3.pdf) and [SVG](stage1/compact/schematic-4x3.svg). No section frames; only supply and GND labels remain. Power-entry hardware stays in the assembly guide; this view represents the regulated rail by symbols. Build using `npm run build:smart-perfboard:compact`. The source graph is checked against the first-stage pin map; physical wiring and hole positions are unchanged.
+
+## Complete smart-board wiring package
+
+[Final smart-board wiring guide](final/guia-final-placa-inteligente.pdf) preserves the simplified soldered board and adds a separate completion perfboard for high-impedance measurement, one protected pulse output and continuity stimulus. [Scope, wiring, interfaces and acceptance limits](final/README.md). This is a wiring-only delivery; internal routing-board design is excluded. Physical fit, analog stability, external safety flags and integration firmware remain pending; do not treat the generated guide as measured release.

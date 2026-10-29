@@ -25,9 +25,12 @@
     "schematic:editor": "node revision8/schematic-editor-server.mjs",
     "build:revision8:schematic": "bun revision8/build-overall-schematic.tsx",
     "build:pi-controls": "bun pi-controls/build.tsx",
-    "build:smart-perfboard": "bun smart-perfboard/build.tsx && node smart-perfboard/layout.mjs && node smart-perfboard/documents.mjs",
+    "build:smart-perfboard": "bun smart-perfboard/simplified-final/build.tsx && node smart-perfboard/simplified-final/guide.mjs",
     "build:smart-perfboard:stage1": "bun smart-perfboard/stage1.tsx",
-    "build:smart-perfboard:compact": "bun smart-perfboard/compact.tsx"
+    "build:smart-perfboard:compact": "bun smart-perfboard/compact.tsx",
+    "build:smart-perfboard:final": "bun smart-perfboard/final/build.tsx && node smart-perfboard/final/documents.mjs",
+    "build:smart-perfboard:integrated-simple": "bun smart-perfboard/integrated-simple/build.tsx && node smart-perfboard/integrated-simple/plan.mjs",
+    "build:smart-perfboard:simplified-final": "bun smart-perfboard/simplified-final/build.tsx && node smart-perfboard/simplified-final/guide.mjs"
   },
   "dependencies": {
     "@jscad/modeling": "2.13.0",

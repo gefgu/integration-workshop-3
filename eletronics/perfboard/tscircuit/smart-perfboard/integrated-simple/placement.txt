@@ -1,0 +1,153 @@
+placement summary: 8 suboptimal orientations
+
+worst issues:
+1. C_B_ADC connections cross the routing path between its pads. Suggested move: rotate C_B_ADC 180 degrees.
+2. C_WATCH connections cross the routing path between its pads. Suggested move: rotate C_WATCH 180 degrees.
+3. C_WATCH_VCC connections cross the routing path between its pads. Suggested move: rotate C_WATCH_VCC 180 degrees.
+4. C_GATE connections cross the routing path between its pads. Suggested move: rotate C_GATE 180 degrees.
+5. C_H_COMP connections cross the routing path between its pads. Suggested move: rotate C_H_COMP 180 degrees.
+
+board top-layer utilization:
+- occupied: 31.773% (2767.287mm^2 of 8709.66mm^2)
+- empty spaces over 5% of board area:
+  - 15.175% (1321.656mm^2); bounds=(minX=-12.2mm, maxX=9.66mm, minY=-3.31mm, maxY=57.15mm)
+  - 5.772% (502.701mm^2); bounds=(minX=-24.9mm, maxX=-15.74mm, minY=-3.31mm, maxY=51.57mm)
+
+board-edge status:
+- J_ESP_L: 10.68mm inside bottom edge
+- J_ESP_R: 10.68mm inside bottom edge
+- J_POWER: 5.6mm inside bottom edge
+- JP_EXT: 10.68mm inside right edge
+- J_UART: 8.14mm inside right edge
+- J_JOY: 8.14mm inside right edge
+- J_OLED0: 3.06mm inside left edge
+- J_OLED1: 3.06mm inside left edge
+- J_OLED2: 3.06mm inside left edge
+- J_OLED3: 3.06mm inside left edge
+- J_OLED4: 3.06mm inside left edge
+- J_OLED5: 3.06mm inside left edge
+- C_BULK: 7.89mm inside right edge
+- C_LOCAL: 13.335mm inside right edge
+- J_SIGNALS: 3.06mm inside left edge
+- J_AUX_PWR: 25.92mm inside top edge
+- R_A_TOP: 23.38mm inside left edge
+- R_A_BOT: 31mm inside left edge
+- R_A_ADC: 33.54mm inside right edge
+- C_A_ADC: 26.035mm inside right edge
+- R_B_TOP: 18.3mm inside right edge
+- R_B_BOT: 10.68mm inside right edge
+- R_B_ADC: 3.06mm inside right edge
+- C_B_ADC: 3.175mm inside right edge
+- U_WATCH: 3.01mm inside left edge
+- R_WATCH: 3.06mm inside right edge
+- C_WATCH: 5.715mm inside right edge
+- C_WATCH_VCC: 5.715mm inside right edge
+- R_PD_ARM: 3.06mm inside left edge
+- R_PD_HB: 10.68mm inside left edge
+- R_PD_MODE_A: 13.22mm inside top edge
+- R_PD_MODE_B: 13.22mm inside top edge
+- R_PD_MODE_C: 10.68mm inside top edge
+- R_PD_EDU_ON: 10.68mm inside top edge
+- R_PD_EDU_OFF_OK: 10.68mm inside top edge
+- U_MODE: 15.71mm inside left edge
+- U_GATE: 28.41mm inside left edge
+- C_MODE: 26.035mm inside top edge
+- C_GATE: 3.175mm inside left edge
+- U_LIMIT: 25.87mm inside right edge
+- R_REF_H_TOP: 10.68mm inside top edge
+- R_REF_H_BOT: 5.6mm inside right edge
+- R_REF_L_TOP: 3.06mm inside left edge
+- R_REF_L_BOT: 8.14mm inside top edge
+- C_REF_H: 13.335mm inside left edge
+- C_REF_L: 20.955mm inside right edge
+- R_H_SENSE: 8.14mm inside top edge
+- R_L_SENSE: 8.14mm inside top edge
+- R_IN_H_N: 5.6mm inside top edge
+- R_IN_H_P: 5.6mm inside top edge
+- R_IN_L_P: 5.6mm inside top edge
+- R_IN_L_N: 5.6mm inside top edge
+- C_LIMIT: 20.955mm inside top edge
+- R_H_GATE: 5.6mm inside top edge
+- R_L_GATE: 0.52mm inside right edge
+- R_H_OFF: 3.06mm inside top edge
+- R_L_OFF: 3.06mm inside top edge
+- C_H_COMP: 10.795mm inside right edge
+- C_L_COMP: 18.415mm inside top edge
+- Q_H_ADAPTER: 20.84mm inside top edge
+- Q_LOW: 3.06mm inside left edge
+- U_SSR_HIGH: 13.17mm inside right edge
+- U_SSR_LOW: 13.17mm inside right edge
+- R_U_SSR_HIGH_LED: 3.06mm inside top edge
+- R_U_SSR_HIGH_BASE: 3.06mm inside top edge
+- R_U_SSR_HIGH_OFF: 0.52mm inside top edge
+- Q_U_SSR_HIGH: 13.22mm inside left edge
+- R_U_SSR_LOW_LED: 0.52mm inside top edge
+- R_U_SSR_LOW_BASE: 0.52mm inside top edge
+- R_U_SSR_LOW_OFF: 0.52mm inside top edge
+- Q_U_SSR_LOW: 18.3mm inside top edge
+- U_SSR_STIM: 25.87mm inside right edge
+- U_SSR_RETURN: 13.17mm inside right edge
+- D_STIM: 5.65mm inside right edge
+- R_STIM: 0.52mm inside top edge
+- R_U_SSR_STIM_LED: 0.52mm inside right edge
+- R_U_SSR_STIM_BASE: 3.06mm inside bottom edge
+- R_U_SSR_STIM_OFF: 3.06mm inside bottom edge
+- Q_U_SSR_STIM: 15.76mm inside top edge
+- R_U_SSR_RETURN_LED: 3.06mm inside bottom edge
+- R_U_SSR_RETURN_BASE: 3.06mm inside right edge
+- R_U_SSR_RETURN_OFF: 3.06mm inside right edge
+- Q_U_SSR_RETURN: 15.76mm inside top edge
+
+flagged components:
+- C_B_ADC
+  source placement: placement_mode=none
+  resolved placement: center=(33.02mm, -12.7mm) on top; bounds=(minX=31.115mm, maxX=34.925mm, minY=-13.335mm, maxY=-12.065mm); size=(width=3.81mm, height=1.27mm); anchor_alignment="center"
+  board edge status: 3.175mm inside right edge
+  issues:
+  - C_B_ADC connections cross the routing path between its pads. Suggested move: rotate C_B_ADC 180 degrees.
+- C_WATCH
+  source placement: placement_mode=none
+  resolved placement: center=(30.48mm, -20.32mm) on top; bounds=(minX=28.575mm, maxX=32.385mm, minY=-20.955mm, maxY=-19.685mm); size=(width=3.81mm, height=1.27mm); anchor_alignment="center"
+  board edge status: 5.715mm inside right edge
+  issues:
+  - C_WATCH connections cross the routing path between its pads. Suggested move: rotate C_WATCH 180 degrees.
+- C_WATCH_VCC
+  source placement: placement_mode=none
+  resolved placement: center=(30.48mm, -27.94mm) on top; bounds=(minX=28.575mm, maxX=32.385mm, minY=-28.575mm, maxY=-27.305mm); size=(width=3.81mm, height=1.27mm); anchor_alignment="center"
+  board edge status: 5.715mm inside right edge
+  issues:
+  - C_WATCH_VCC connections cross the routing path between its pads. Suggested move: rotate C_WATCH_VCC 180 degrees.
+- C_GATE
+  source placement: placement_mode=none
+  resolved placement: center=(-33.02mm, -33.02mm) on top; bounds=(minX=-34.925mm, maxX=-31.115mm, minY=-33.655mm, maxY=-32.385mm); size=(width=3.81mm, height=1.27mm); anchor_alignment="center"
+  board edge status: 3.175mm inside left edge
+  issues:
+  - C_GATE connections cross the routing path between its pads. Suggested move: rotate C_GATE 180 degrees.
+- C_H_COMP
+  source placement: placement_mode=none
+  resolved placement: center=(25.4mm, -35.56mm) on top; bounds=(minX=23.495mm, maxX=27.305mm, minY=-36.195mm, maxY=-34.925mm); size=(width=3.81mm, height=1.27mm); anchor_alignment="center"
+  board edge status: 10.795mm inside right edge
+  issues:
+  - C_H_COMP connections cross the routing path between its pads. Suggested move: rotate C_H_COMP 180 degrees.
+- D_STIM
+  source placement: placement_mode=none
+  resolved placement: center=(27.94mm, -40.64mm) on top; bounds=(minX=23.43mm, maxX=32.45mm, minY=-41.34mm, maxY=-39.94mm); size=(width=9.02mm, height=1.4mm); anchor_alignment="center"
+  board edge status: 5.65mm inside right edge
+  issues:
+  - D_STIM connections cross the routing path between its pads. Suggested move: rotate D_STIM 180 degrees.
+- R_STIM
+  source placement: placement_mode=none
+  resolved placement: center=(27.94mm, -55.88mm) on top; bounds=(minX=25.92mm, maxX=29.96mm, minY=-56.63mm, maxY=-55.13mm); size=(width=4.04mm, height=1.5mm); anchor_alignment="center"
+  board edge status: 0.52mm inside top edge
+  issues:
+  - R_STIM connections cross the routing path between its pads. Suggested move: rotate R_STIM 180 degrees.
+- R_U_SSR_RETURN_OFF
+  source placement: placement_mode=none
+  resolved placement: center=(33.02mm, 43.18mm) on top; bounds=(minX=31mm, maxX=35.04mm, minY=42.43mm, maxY=43.93mm); size=(width=4.04mm, height=1.5mm); anchor_alignment="center"
+  board edge status: 3.06mm inside right edge
+  issues:
+  - R_U_SSR_RETURN_OFF connections cross the routing path between its pads. Suggested move: rotate R_U_SSR_RETURN_OFF 180 degrees.
+
+placement drc:
+Errors: 0
+Warnings: 0

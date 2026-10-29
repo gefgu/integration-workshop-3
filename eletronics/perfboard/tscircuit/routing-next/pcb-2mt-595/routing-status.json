@@ -1,0 +1,9 @@
+{
+  "status": "NOT_COMPLETED",
+  "method": "native tscircuit local autorouter, one layer",
+  "lastAttempt": "timeout after 45 seconds; earlier attempt manually interrupted without result",
+  "doesNotProveImpossible": true,
+  "wireBridgesPermitted": true,
+  "bridgeLocationsFinalized": false,
+  "etchingMaskReleased": false
+}

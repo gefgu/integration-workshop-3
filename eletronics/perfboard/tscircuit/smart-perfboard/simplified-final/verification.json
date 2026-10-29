@@ -1,0 +1,30 @@
+{
+  "status": "pass",
+  "parts": 24,
+  "pins": 96,
+  "wires": 62,
+  "checks": {
+    "source": [],
+    "pins": [],
+    "netlist": [],
+    "placement": [],
+    "model": [],
+    "nativePads": [],
+    "netEquivalence": []
+  },
+  "nativeChecks": [
+    "source",
+    "pin specification",
+    "netlist",
+    "schematic placement",
+    "PCB placement",
+    "pad shorts (PCB mode)",
+    "PCB style"
+  ],
+  "physicalRelease": "PENDING measured fit, continuity, ADC calibration, NFC and external routing interface tests",
+  "limitations": [
+    "Simple 20k input loading; does not meet original >=1M input requirement.",
+    "No local 5V output driver or continuity stimulus; these functions must be implemented externally.",
+    "Firmware integration for RC522/ADC/pulse is not part of this wiring guide."
+  ]
+}

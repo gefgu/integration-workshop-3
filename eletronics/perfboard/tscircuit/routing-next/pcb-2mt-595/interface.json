@@ -1,0 +1,24 @@
+{
+  "gpio": {
+    "SER": 23,
+    "CLK": 18,
+    "LATCH": 22,
+    "STROBE": 19,
+    "OE_ENABLE": 21,
+    "RESET_RELEASE": 25,
+    "HIGH": 26,
+    "LOW": 27,
+    "TEST": 14,
+    "PULSE_IN": 34
+  },
+  "serviceAllocation": {
+    "Y0": "GND",
+    "Y1": "PULSE_BUS",
+    "Y2": "TEST_BUS",
+    "Y3": "SENSE_A",
+    "Y4": "SENSE_B",
+    "Y5": "PRIVATE_5",
+    "Y6": "PRIVATE_6",
+    "Y7": "PRIVATE_7"
+  }
+}
