@@ -184,6 +184,7 @@ function ValidationDebug({ lesson, stepIdx, pieces, result, error, problems }) {
 /**
  * "Testar": roda a lição como o aluno veria — perguntas, passos de montagem validados pelo graph_validator.
  * `bench` mode is the workbench screen: no teacher tools, starts at `startPhase`, reports `onEvent`.
+ * `livePieces` (bench with the camera on) replaces the draggable board: the board shows what the camera sees.
  */
 export default function LessonPlayer({
   lesson,
@@ -193,6 +194,7 @@ export default function LessonPlayer({
   startPhase = 0,
   onEvent,
   exitLabel,
+  livePieces = null,
 }: {
   lesson: any;
   onExit: () => void;
@@ -201,11 +203,15 @@ export default function LessonPlayer({
   startPhase?: number;
   onEvent?: (event: PlayerEvent) => void;
   exitLabel?: string;
+  livePieces?: any[] | null;
 }) {
   const phases = useMemo(() => buildPhases(lesson), [lesson]);
   const first = Math.min(Math.max(0, startPhase), phases.length - 1);
   const [idx, setIdx] = useState(first);
-  const [pieces, setPieces] = useState(() => (bench ? boardBefore(lesson, first) : [])); // kept across steps
+  const [pieces, setPieces] = useState(() => livePieces ?? (bench ? boardBefore(lesson, first) : [])); // kept across steps
+  useEffect(() => {
+    if (livePieces) setPieces(livePieces);
+  }, [livePieces]);
   const [debugEnabled, setDebugEnabled] = useState(false);
   const startedAt = useRef(Date.now());
   const outcome = useRef<{ expired: boolean }>({ expired: false });
@@ -310,6 +316,7 @@ export default function LessonPlayer({
             }}
             mascotKind={mascotKind}
             bench={bench}
+            fromCamera={!!livePieces}
           />
         )}
         {phase.type === 'done' && !bench && (
@@ -486,6 +493,7 @@ function BuildStep({
   onExpired = undefined,
   mascotKind,
   bench = false,
+  fromCamera = false,
 }) {
   const [energized, setEnergized] = useState(false);
   const [held, setHeld] = useState<Set<string>>(() => new Set());
@@ -558,6 +566,7 @@ function BuildStep({
       <BoardWorkspace
         pieces={pieces}
         onChange={setPieces}
+        readOnly={fromCamera}
         trail={lit ? mergeTrails(valid ? diag.trail : null, cap.driven) : null}
         ledMa={lit ? Math.max(valid ? diag.mA : 0, cap.drivenMa) : 0}
         readings={cap.readings}

@@ -16,6 +16,26 @@ export interface RankRow {
   score: number;
   duration_s: number;
 }
+/** Camera board (bench/service/bench_service/vision.py): the pieces the vision pipeline sees right now. */
+export interface VisionPiece {
+  id: string;
+  type: string;
+  a: number;
+  b: number;
+  row: number;
+}
+export interface VisionState {
+  available: boolean;
+  running?: boolean;
+  /** last frame was usable (grid found, no hand in front, scene still) */
+  valid?: boolean;
+  reason?: string;
+  /** bumps each time the stable circuit changes */
+  version?: number;
+  pieces?: VisionPiece[];
+  /** components the lesson cannot use (ambiguous colour, unsupported part), with a pt-BR reason */
+  unknown?: (VisionPiece & { reason: string })[];
+}
 export interface LoginResult {
   student: BenchStudent;
   progress: Record<string, ProgressRow>;
@@ -70,6 +90,9 @@ export function benchApi(base: string, fetchImpl: typeof fetch = (input, init) =
     ranking: (lessonId?: string) =>
       call<RankRow[]>(`/ranking${lessonId ? `?lesson_id=${encodeURIComponent(lessonId)}` : ''}`),
     devUnlock: () => call<BenchStatus>('/dev/unlock', 'POST'),
+    vision: () => call<VisionState>('/vision/state'),
+    visionRecalibrate: () => call('/vision/recalibrate', 'POST'),
+    visionFrameUrl: (stamp: number) => `${base}/vision/frame.jpg?t=${stamp}`,
   };
 }
 

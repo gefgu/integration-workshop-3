@@ -156,3 +156,28 @@
   margin: 0;
   color: var(--color-bg);
 }
+.bench-camera img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.bench-vision-list ul {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 4px;
+}
+.bench-vision-list small {
+  color: var(--color-neutral-600);
+}
+.bench-camera-line {
+  margin: 0 0 6px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-accent-2-700);
+}
+.bench-camera-line.paused {
+  color: var(--color-neutral-600);
+}

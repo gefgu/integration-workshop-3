@@ -3,6 +3,7 @@ import test from 'node:test';
 import { serviceUrl } from '../src/bench/benchApi.ts';
 import { cameraErrorMessage, gridLines } from '../src/bench/camera.ts';
 import { lessonStates, screenAfterLesson } from '../src/bench/screens.ts';
+import { mergeVision } from '../src/bench/useVision.ts';
 import { newLesson } from '../src/model/lesson.ts';
 import { boardBefore, buildPhases, challengeScore } from '../src/player/phases.ts';
 
@@ -71,4 +72,23 @@ test('câmera: mensagens de erro em pt-BR e grade com uma linha por borda de col
   assert.equal(ys.length, 7);
   assert.equal(xs[0], 6);
   assert.equal(Math.round(xs[11]), 94);
+});
+
+test('visão: mantém o mesmo estado enquanto o circuito não muda e troca quando a versão sobe', () => {
+  const a = {
+    available: true,
+    valid: true,
+    reason: '',
+    version: 1,
+    pieces: [{ id: 'led', type: 'led', a: 1, b: 2, row: 0 }],
+  };
+  assert.equal(mergeVision(a, { ...a, pieces: [...a.pieces] }), a);
+  const paused = mergeVision(a, { ...a, valid: false, reason: 'movimento' });
+  assert.equal(paused.pieces, a.pieces);
+  assert.equal(paused.valid, false);
+  const changed = { ...a, version: 2, pieces: [] };
+  assert.equal(mergeVision(a, changed), changed);
+  const off = { available: false };
+  assert.equal(mergeVision(off, { available: false }), off);
+  assert.equal(mergeVision(a, off), off);
 });

@@ -8,7 +8,7 @@ from __future__ import annotations
 import os
 from typing import Any
 
-from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, Response, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
@@ -16,6 +16,7 @@ from graph_validator.service.app import app as validator_app
 
 from .protocol import FrameAssembler, Session, encode_frames
 from .store import BenchStore
+from .vision import VisionSource
 
 NOT_RECOGNIZED = "Tag não reconhecida — chame seu professor."
 LOCKED = "Conecte o app do professor para liberar a bancada."
@@ -48,11 +49,12 @@ class LogoutInput(BaseModel):
     duration_s: float = Field(ge=0)
 
 
-def create_app(store: BenchStore, dev_unlock: bool = False) -> FastAPI:
+def create_app(store: BenchStore, dev_unlock: bool = False, vision: VisionSource | None = None) -> FastAPI:
     app = FastAPI(title="TedTronics bench")
     app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
     app.mount("/validator", validator_app)  # /validator/validate/step works offline on the bench
     app.state.store = store
+    app.state.vision = vision
 
     def student(student_id: int) -> dict[str, Any]:
         package = store.package()
@@ -125,6 +127,27 @@ def create_app(store: BenchStore, dev_unlock: bool = False) -> FastAPI:
     def ranking(lesson_id: str | None = None) -> list[dict]:
         return store.ranking(lesson_id)
 
+    # Camera board (SFR17.1): pieces the vision pipeline sees, for the lesson and the camera screen.
+    @app.get("/vision/state")
+    def vision_state() -> dict:
+        if vision is None:
+            return {"available": False, "reason": "Visão desligada (inicie o serviço com --camera ou --vision-image)."}
+        return vision.state()
+
+    @app.get("/vision/frame.jpg")
+    def vision_frame() -> Response:
+        frame = vision.frame() if vision else None
+        if frame is None:
+            raise HTTPException(404, "Ainda não há imagem da câmera.")
+        return Response(frame, media_type="image/jpeg", headers={"Cache-Control": "no-store"})
+
+    @app.post("/vision/recalibrate")
+    def vision_recalibrate() -> dict:
+        if vision is None:
+            raise HTTPException(404, "Visão desligada.")
+        vision.recalibrate()
+        return {"ok": True}
+
     if dev_unlock:
         @app.post("/dev/unlock")
         def dev_unlock_endpoint() -> dict:
@@ -163,4 +186,6 @@ def create_app(store: BenchStore, dev_unlock: bool = False) -> FastAPI:
 
 def default_app() -> FastAPI:
     store = BenchStore(os.getenv("TEDTRONICS_BENCH_DB", "bench.sqlite3"), os.getenv("TEDTRONICS_BENCH_ID"))
-    return create_app(store, dev_unlock=os.getenv("TEDTRONICS_BENCH_DEV") == "1")
+    camera, image = os.getenv("TEDTRONICS_BENCH_CAMERA"), os.getenv("TEDTRONICS_BENCH_VISION_IMAGE")
+    vision = VisionSource(int(camera) if camera else None, image).start() if camera or image else None
+    return create_app(store, dev_unlock=os.getenv("TEDTRONICS_BENCH_DEV") == "1", vision=vision)
