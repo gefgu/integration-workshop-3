@@ -156,7 +156,12 @@ _engine = None
 
 def database_url() -> str:
     default_file = Path(__file__).resolve().parents[3] / "tedtronics.sqlite3"
-    return os.getenv("TEDTRONICS_DATABASE_URL") or f"sqlite:///{default_file}"
+    url = os.getenv("TEDTRONICS_DATABASE_URL") or f"sqlite:///{default_file}"
+    # Neon hands out plain postgresql:// URLs; SQLAlchemy needs the psycopg driver named.
+    for prefix in ("postgresql://", "postgres://"):
+        if url.startswith(prefix):
+            return "postgresql+psycopg://" + url[len(prefix):]
+    return url
 
 
 def get_engine():

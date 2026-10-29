@@ -71,3 +71,4 @@ d3/*.pdf
 docs/deliverables/d3/Planejamento para a apresentação de oficinas.pdf
 # Bench service local database
 bench/service/*.sqlite3*
+.neon
