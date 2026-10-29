@@ -1,0 +1,46 @@
+{
+  "expo": {
+    "name": "TedTronics Professor",
+    "slug": "tedtronics-professor",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "br.edu.utfpr.tedtronics.professor"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#F5EAD8",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "package": "br.edu.utfpr.tedtronics.professor"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "react-native-ble-plx",
+        {
+          "isBackgroundEnabled": false,
+          "modes": [
+            "central"
+          ],
+          "bluetoothAlwaysPermission": "O TedTronics usa o Bluetooth para enviar módulos à bancada e buscar o progresso dos alunos."
+        }
+      ],
+      "expo-font",
+      "expo-status-bar"
+    ],
+    "scheme": "tedtronics",
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

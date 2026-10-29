@@ -93,7 +93,7 @@ export default function Sandbox({ lesson, mode, onMode, onExit }) {
       </section>
       <div style={{ display: mode === 'lesson' ? 'block' : 'none', width: '100%' }}>
         {mode === 'lesson' && (
-          <LessonPlayer key={lesson.id + lesson.updatedAt} lesson={lesson} onExit={onExit} mascotKind="fox" />
+          <LessonPlayer key={lesson.id + lesson.updatedAt} lesson={lesson} onExit={onExit} mascotKind="hamster" />
         )}
       </div>
     </div>

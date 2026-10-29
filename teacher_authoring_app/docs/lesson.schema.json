@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tedtronics.local/schemas/lesson-v3.json",
+  "title": "TedTronics lesson (v3)",
+  "type": "object",
+  "required": ["version", "id", "title", "instruction", "kind", "board", "steps", "quizzes"],
+  "properties": {
+    "version": { "const": 3 },
+    "id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "title": { "type": "string", "minLength": 1, "maxLength": 255 },
+    "instruction": { "type": "string" },
+    "kind": { "enum": ["guided", "challenge"] },
+    "board": {
+      "type": "object",
+      "required": ["pieces"],
+      "properties": {
+        "cols": { "const": 11 },
+        "rows": { "const": 12 },
+        "pieces": { "type": "array", "items": { "$ref": "#/$defs/piece" } }
+      }
+    },
+    "steps": { "type": "array", "items": { "$ref": "#/$defs/step" } },
+    "timeLimitS": { "type": ["integer", "null"], "minimum": 1 },
+    "quizzes": { "type": "array", "items": { "$ref": "#/$defs/quiz" } },
+    "updatedAt": { "type": "string" },
+    "lessonVersion": { "type": "string", "description": "Only in bench packages (SFR58)." },
+    "audio": { "type": "object" }
+  },
+  "$defs": {
+    "piece": {
+      "type": "object",
+      "required": ["id", "type", "a", "b", "row"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": {
+          "enum": [
+            "bateria", "led", "buzzer", "resistor_220", "resistor_470", "resistor_1k", "resistor_cc", "capacitor",
+            "botao", "potenciometro", "jumper_curto", "jumper_longo", "jumper_3", "jumper_4", "jumper_5",
+            "capsula_pulso", "capsula_voltimetro", "capsula_amperimetro", "capsula_porta", "capsula_memoria"
+          ]
+        },
+        "a": { "type": "integer", "minimum": 1, "maximum": 11 },
+        "b": { "type": "integer", "minimum": 1, "maximum": 11 },
+        "c": { "type": "integer", "minimum": 1, "maximum": 11 },
+        "row": { "type": "integer", "minimum": 0, "maximum": 11 },
+        "value": { "type": "integer", "minimum": 1 },
+        "config": { "type": "object" }
+      }
+    },
+    "step": {
+      "type": "object",
+      "required": ["id", "action"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "action": { "enum": ["place_component", "place_connection", "connect_circuit", "interact"] },
+        "pieceId": { "type": ["string", "null"] },
+        "quizId": { "type": ["string", "null"] },
+        "text": { "type": "string" },
+        "options": {
+          "type": "object",
+          "properties": { "matchValues": { "type": "boolean" }, "strictPositions": { "type": "boolean" } }
+        },
+        "overrides": {
+          "type": "object",
+          "additionalProperties": { "type": "object", "additionalProperties": { "type": "string" } }
+        }
+      }
+    },
+    "quiz": {
+      "type": "object",
+      "required": ["id", "prompt", "options"],
+      "properties": {
+        "id": { "type": "string" },
+        "position": { "enum": ["before", "after", "step"] },
+        "prompt": { "type": "string" },
+        "correctId": { "type": "string" },
+        "options": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "object",
+            "required": ["id", "text"],
+            "properties": { "id": { "type": "string" }, "text": { "type": "string" }, "feedback": { "type": "string" } }
+          }
+        }
+      }
+    }
+  }
+}

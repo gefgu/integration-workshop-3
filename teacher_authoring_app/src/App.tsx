@@ -11,14 +11,18 @@ import {
   useParams,
 } from 'react-router-dom';
 import { workspace } from './api/workspace.ts';
+import { AuthProvider, useAuth } from './auth/AuthContext.tsx';
+import LoginScreen from './auth/LoginScreen.tsx';
+import Profile from './auth/Profile.tsx';
+import Dashboard from './dashboard/Dashboard.tsx';
 import LessonEditor from './editor/LessonEditor.tsx';
 import Library from './editor/Library.tsx';
-import { newLesson, slugify } from './model/lesson.ts';
 import Sandbox from './editor/Sandbox.tsx';
+import { newLesson, slugify } from './model/lesson.ts';
 import { downloadBlob, downloadLesson, duplicateLesson, readLessonFile } from './storage/lessonStore.ts';
 import Classes from './workspace/Classes.tsx';
-
-const SESSION_KEY = 'tedtronics-mock-signed-in';
+import Modules from './workspace/Modules.tsx';
+import Students from './workspace/Students.tsx';
 
 function audioStatus(audio) {
   if (audio?.status === 'ok') return `Voz do tutor: ${Object.keys(audio.phrases).length} falas em áudio.`;
@@ -28,21 +32,29 @@ function audioStatus(audio) {
 export default function App() {
   return (
     <BrowserRouter>
-      <AppRoutes />
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
     </BrowserRouter>
   );
 }
 
 function AppRoutes() {
   const navigate = useNavigate();
-  const [signedIn, setSignedIn] = useState(() => sessionStorage.getItem(SESSION_KEY) === 'true');
+  const { teacher, signOut: endSession } = useAuth();
+  const signedIn = Boolean(teacher);
+  const teacherId = teacher?.id;
   const [lessons, setLessons] = useState([]);
   const [lesson, setLesson] = useState(newLesson);
   const [loaded, setLoaded] = useState(false);
   const [status, setStatus] = useState('');
   const [error, setError] = useState('');
   useEffect(() => {
-    if (!signedIn) return;
+    if (!teacherId) {
+      setLessons([]);
+      setLesson(newLesson());
+      return;
+    }
     let active = true;
     setLoaded(false);
     workspace.listLessons().then(
@@ -63,7 +75,7 @@ function AppRoutes() {
     return () => {
       active = false;
     };
-  }, [signedIn]);
+  }, [teacherId]);
 
   const flash = (msg) => {
     setStatus(msg);
@@ -144,26 +156,24 @@ function AppRoutes() {
     }
   }
 
-  function signIn() {
-    sessionStorage.setItem(SESSION_KEY, 'true');
-    setSignedIn(true);
-    navigate('/home', { replace: true });
-  }
-
-  function signOut() {
-    sessionStorage.removeItem(SESSION_KEY);
-    setSignedIn(false);
-    setLessons([]);
-    setLesson(newLesson());
+  async function signOut() {
+    await endSession();
     navigate('/login', { replace: true });
   }
+
+  if (teacher === undefined) return <p className="workspace-loading">Verificando sua sessão…</p>;
 
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/login" replace />} />
-      <Route path="/login" element={signedIn ? <Navigate to="/home" replace /> : <LoginScreen onSignIn={signIn} />} />
+      <Route path="/login" element={signedIn ? <Navigate to="/home" replace /> : <LoginScreen />} />
       <Route element={<RequireAuth signedIn={signedIn} />}>
-        <Route element={<AppLayout lesson={lesson} onSignOut={signOut} />}>
+        <Route element={<AppLayout lesson={lesson} teacherName={teacher?.name} onSignOut={signOut} />}>
+          <Route path="/perfil" element={<Profile />} />
+          <Route path="/alunos" element={<Students />} />
+          <Route path="/painel" element={<Dashboard />} />
+          <Route path="/painel/:classId" element={<Dashboard />} />
+          <Route path="/painel/aluno/:studentId" element={<Dashboard />} />
           {!loaded ? (
             <Route path="*" element={<p className="workspace-loading">Carregando lições…</p>} />
           ) : (
@@ -189,6 +199,8 @@ function AppRoutes() {
                   </>
                 }
               />
+              <Route path="/modulos" element={<Modules lessons={lessons} />} />
+              <Route path="/modulos/:moduleId" element={<Modules lessons={lessons} />} />
               <Route path="/turmas" element={<Classes lessons={lessons} />} />
               <Route path="/turmas/:classId" element={<Classes lessons={lessons} />} />
               <Route
@@ -259,19 +271,29 @@ function RequireAuth({ signedIn }) {
   return signedIn ? <Outlet /> : <Navigate to="/login" replace />;
 }
 
-function AppLayout({ lesson, onSignOut }) {
+function AppLayout({ lesson, teacherName, onSignOut }) {
   const { pathname } = useLocation();
+  const section = (prefix: string) => () => (pathname.startsWith(prefix) ? 'active' : '');
   return (
     <div className="app-shell">
       <header className="header">
-        <h1>Editor de Lições</h1>
-        <span style={{ fontSize: 14, color: 'var(--color-neutral-600)' }}>TedTronics — app do professor</span>
+        <h1>TedTronics</h1>
+        <span style={{ fontSize: 14, color: 'var(--color-neutral-600)' }}>Área do professor</span>
         <nav className="mode-toggle" aria-label="Navegação principal">
           <NavLink to="/home" className={({ isActive }) => (isActive ? 'active' : '')}>
-            Início
+            Lições
           </NavLink>
-          <NavLink to="/turmas" className={() => (pathname.startsWith('/turmas') ? 'active' : '')}>
+          <NavLink to="/modulos" className={section('/modulos')}>
+            Módulos
+          </NavLink>
+          <NavLink to="/turmas" className={section('/turmas')}>
             Turmas
+          </NavLink>
+          <NavLink to="/alunos" className={section('/alunos')}>
+            Alunos
+          </NavLink>
+          <NavLink to="/painel" className={section('/painel')}>
+            Painel
           </NavLink>
           <NavLink
             to={`/editor/${encodeURIComponent(lesson.id)}`}
@@ -283,6 +305,9 @@ function AppLayout({ lesson, onSignOut }) {
             Sandbox
           </NavLink>
         </nav>
+        <NavLink to="/perfil" className="pill-link-btn muted">
+          {teacherName ?? 'Perfil'}
+        </NavLink>
         <button type="button" className="pill-link-btn muted" onClick={onSignOut}>
           Sair
         </button>
@@ -320,65 +345,6 @@ function EditorRoute({ lessons, lesson, setLesson, onSave, onExport, onTest, sta
         status={status}
       />
     </>
-  );
-}
-
-function LoginScreen({ onSignIn }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    if (!email.trim() || !password.trim()) {
-      setError('Preencha o e-mail e a senha para continuar.');
-      return;
-    }
-    onSignIn();
-  }
-
-  return (
-    <main className="login-screen">
-      <form className="login-card panel" onSubmit={handleSubmit}>
-        <div className="login-brand">TedTronics</div>
-        <h1>Editor de Lições</h1>
-        <p>Entre para organizar, criar e testar lições.</p>
-        <label className="field-label" htmlFor="login-email">
-          E-mail
-        </label>
-        <input
-          id="login-email"
-          className="text-input"
-          type="text"
-          inputMode="email"
-          autoComplete="email"
-          required
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-        />
-        <label className="field-label" htmlFor="login-password">
-          Senha
-        </label>
-        <input
-          id="login-password"
-          className="text-input"
-          type="password"
-          autoComplete="current-password"
-          required
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
-        {error && (
-          <p className="login-error" role="alert">
-            {error}
-          </p>
-        )}
-        <button type="submit" className="btn-primary login-submit">
-          Entrar
-        </button>
-        <small>Autenticação temporária para demonstração.</small>
-      </form>
-    </main>
   );
 }
 

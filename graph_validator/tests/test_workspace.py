@@ -25,46 +25,47 @@ def test_workspace_crud_and_assignments(tmp_path):
     Base.metadata.create_all(engine)
     try:
         with Session(engine) as db:
-            db.add(Teacher(id=1, email="teacher@example.test", name="Demo"))
+            me = Teacher(id=1, email="teacher@example.test", name="Demo")
+            db.add(me)
             db.commit()
-            first = create_class(ClassInput(name="7A", description="Morning"), db)
-            second = create_class(ClassInput(name="7B", description="Afternoon"), db)
+            first = create_class(ClassInput(name="7A", description="Morning"), db, me)
+            second = create_class(ClassInput(name="7B", description="Afternoon"), db, me)
             student = StudentInput(name="Ana", nickname="ana", nfc_code="NFC-1", active=True)
-            created = create_student(first["id"], student, db)
+            created = create_student(first["id"], student, db, me)
             assert isinstance(created["id"], int)
             with pytest.raises(HTTPException) as duplicate:
-                create_student(first["id"], student, db)
+                create_student(first["id"], student, db, me)
             assert duplicate.value.status_code == 409
             with pytest.raises(HTTPException) as duplicate_nfc:
-                create_student(second["id"], student, db)
+                create_student(second["id"], student, db, me)
             assert duplicate_nfc.value.status_code == 409
 
             for id_ in ("a", "b"):
-                assert save_lesson(id_, lesson(id_), db)["id"] == id_
-            assert len(list_lessons(db)) == 2
-            set_class_lessons(first["id"], LessonOrder(lesson_ids=["a", "b"]), db)
-            set_class_lessons(second["id"], LessonOrder(lesson_ids=["a"]), db)
-            set_class_lessons(first["id"], LessonOrder(lesson_ids=["b", "a"]), db)
-            assert get_class(first["id"], db)["lesson_ids"] == ["b", "a"]
+                assert save_lesson(id_, lesson(id_), db, me)["id"] == id_
+            assert len(list_lessons(db, me)) == 2
+            set_class_lessons(first["id"], LessonOrder(lesson_ids=["a", "b"]), db, me)
+            set_class_lessons(second["id"], LessonOrder(lesson_ids=["a"]), db, me)
+            set_class_lessons(first["id"], LessonOrder(lesson_ids=["b", "a"]), db, me)
+            assert get_class(first["id"], db, me)["lesson_ids"] == ["b", "a"]
 
             with pytest.raises(HTTPException) as assigned:
-                delete_lesson("a", db)
+                delete_lesson("a", db, me)
             assert assigned.value.status_code == 409
             with pytest.raises(HTTPException) as duplicate_order:
-                set_class_lessons(first["id"], LessonOrder(lesson_ids=["b", "b"]), db)
+                set_class_lessons(first["id"], LessonOrder(lesson_ids=["b", "b"]), db, me)
             assert duplicate_order.value.status_code == 422
             with pytest.raises(HTTPException) as missing_lesson:
-                set_class_lessons(first["id"], LessonOrder(lesson_ids=["missing"]), db)
+                set_class_lessons(first["id"], LessonOrder(lesson_ids=["missing"]), db, me)
             assert missing_lesson.value.status_code == 404
-            assert get_class(first["id"], db)["lesson_ids"] == ["b", "a"]
+            assert get_class(first["id"], db, me)["lesson_ids"] == ["b", "a"]
 
             inactive = student.model_copy(update={"active": False})
-            assert update_student(created["id"], inactive, db)["active"] is False
-            delete_class(first["id"], db)
+            assert update_student(created["id"], inactive, db, me)["active"] is False
+            delete_class(first["id"], db, me)
             with pytest.raises(HTTPException) as missing_class:
-                get_class(first["id"], db)
+                get_class(first["id"], db, me)
             assert missing_class.value.status_code == 404
-            delete_class(second["id"], db)
-            delete_lesson("a", db)
+            delete_class(second["id"], db, me)
+            delete_lesson("a", db, me)
     finally:
         engine.dispose()

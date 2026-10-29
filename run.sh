@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
+# Starts the server API (8000), the simulated bench service (8765) and Vite (website + bench screen).
 set -euo pipefail
 
 ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 APP_DIR="$ROOT_DIR/teacher_authoring_app"
-VALIDATOR="$ROOT_DIR/graph_validator/.venv/bin/uvicorn"
+VENV_BIN="$ROOT_DIR/graph_validator/.venv/bin"
+[[ -d "$VENV_BIN" ]] || VENV_BIN="$ROOT_DIR/graph_validator/.venv/Scripts"
 
-if [[ ! -x "$VALIDATOR" ]]; then
-  echo "API validator not found at $VALIDATOR" >&2
-  echo "Set it up with: cd graph_validator && python3 -m venv .venv && .venv/bin/pip install -e '.[dev]'" >&2
+if [[ ! -e "$VENV_BIN/uvicorn" && ! -e "$VENV_BIN/uvicorn.exe" ]]; then
+  echo "API not installed in graph_validator/.venv" >&2
+  echo "Set it up with: cd graph_validator && python3 -m venv .venv && .venv/bin/pip install -e '.[dev]' -e ../bench/service" >&2
   exit 1
 fi
 
@@ -22,16 +24,18 @@ if [[ ! -d "$APP_DIR/node_modules" ]]; then
 fi
 
 cd "$APP_DIR"
-"$ROOT_DIR/graph_validator/.venv/bin/alembic" -c "$ROOT_DIR/graph_validator/alembic.ini" upgrade head
+npm run migrate
 npm run validator &
 validator_pid=$!
-npm run dev &
+npm run bench-service &
+bench_pid=$!
+npm run dev -- --host &
 web_pid=$!
 
 cleanup() {
-  kill "$validator_pid" "$web_pid" 2>/dev/null || true
-  wait "$validator_pid" "$web_pid" 2>/dev/null || true
+  kill "$validator_pid" "$bench_pid" "$web_pid" 2>/dev/null || true
+  wait "$validator_pid" "$bench_pid" "$web_pid" 2>/dev/null || true
 }
 trap cleanup EXIT INT TERM
 
-wait -n "$validator_pid" "$web_pid"
+wait -n "$validator_pid" "$bench_pid" "$web_pid"
