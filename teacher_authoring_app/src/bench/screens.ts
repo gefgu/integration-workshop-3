@@ -8,7 +8,9 @@ export type Screen =
   | { name: 'student' }
   | { name: 'lesson'; lessonId: string; phase: number }
   | { name: 'score'; lessonId: string; score: number; durationS: number; ranking: RankRow[] }
-  | { name: 'ranking' };
+  | { name: 'ranking' }
+  /** live camera board view (SFR17.1); Esc returns to `back` */
+  | { name: 'camera'; back: Screen };
 
 export interface LessonState {
   // biome-ignore lint/suspicious/noExplicitAny: lesson documents are the editor's Lesson
