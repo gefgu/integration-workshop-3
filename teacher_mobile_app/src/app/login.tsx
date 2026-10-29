@@ -4,6 +4,7 @@ import { KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, View } fro
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Button from '../components/Button';
 import { useApp } from '../lib/AppContext';
+import { neonConfig } from '../lib/neonConfig';
 import { colors, fonts, ui } from '../theme';
 
 /** In development the API usually runs on the PC serving the bundle: Metro's host, port 8000. */
@@ -13,8 +14,10 @@ function suggestedServer(): string {
 }
 
 export default function Login() {
-  const { api, login } = useApp();
+  const { api, login, signUp } = useApp();
   const [server, setServer] = useState(api.server || suggestedServer());
+  const [creating, setCreating] = useState(false);
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -24,7 +27,8 @@ export default function Login() {
     setBusy(true);
     setError('');
     try {
-      await login(server, email.trim(), password);
+      if (creating) await signUp(email.trim(), password, name.trim());
+      else await login(server, email.trim(), password);
     } catch (cause) {
       setError((cause as Error).message);
     } finally {
@@ -40,16 +44,26 @@ export default function Login() {
             <Text style={{ fontFamily: fonts.heading, color: colors.accentDark, fontSize: 16 }}>TedTronics</Text>
             <Text style={ui.h1}>App do professor</Text>
             <Text style={ui.muted}>Entre com a mesma conta do site para levar módulos e buscar o progresso das bancadas.</Text>
-            <Text style={ui.label}>Servidor</Text>
-            <TextInput
-              style={ui.input}
-              value={server}
-              onChangeText={setServer}
-              autoCapitalize="none"
-              autoCorrect={false}
-              keyboardType="url"
-              accessibilityLabel="Endereço do servidor"
-            />
+            {!neonConfig && (
+              <>
+                <Text style={ui.label}>Servidor</Text>
+                <TextInput
+                  style={ui.input}
+                  value={server}
+                  onChangeText={setServer}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="url"
+                  accessibilityLabel="Endereço do servidor"
+                />
+              </>
+            )}
+            {creating && (
+              <>
+                <Text style={ui.label}>Nome</Text>
+                <TextInput style={ui.input} value={name} onChangeText={setName} autoComplete="name" accessibilityLabel="Nome" />
+              </>
+            )}
             <Text style={ui.label}>E-mail</Text>
             <TextInput
               style={ui.input}
@@ -71,8 +85,24 @@ export default function Login() {
               onSubmitEditing={submit}
             />
             {error ? <Text style={ui.error}>{error}</Text> : null}
-            <Button title="Entrar" onPress={submit} busy={busy} disabled={!email || !password} />
-            <Text style={ui.muted}>Ainda não tem conta? Crie pelo site do professor.</Text>
+            <Button
+              title={creating ? 'Criar conta' : 'Entrar'}
+              onPress={submit}
+              busy={busy}
+              disabled={!email || !password || (creating && !name.trim())}
+            />
+            {neonConfig ? (
+              <Button
+                title={creating ? 'Já tenho conta' : 'Criar conta no celular'}
+                variant="outline"
+                onPress={() => {
+                  setCreating(!creating);
+                  setError('');
+                }}
+              />
+            ) : (
+              <Text style={ui.muted}>Ainda não tem conta? Crie pelo site do professor.</Text>
+            )}
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

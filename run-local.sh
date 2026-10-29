@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 # Find free localhost ports and run the TedTronics API, bench screen/service, and website.
+# Usage: ./run-local.sh [--mobile]   (--mobile also starts Expo for the phone app, with a clean cache)
 set -euo pipefail
 
 ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 PYTHON="$ROOT_DIR/graph_validator/.venv/bin/python"
 ALEMBIC="$ROOT_DIR/graph_validator/.venv/bin/alembic"
 APP_DIR="$ROOT_DIR/teacher_authoring_app"
+MOBILE_DIR="$ROOT_DIR/teacher_mobile_app"
+WITH_MOBILE=0
+[[ "${1:-}" == "--mobile" ]] && WITH_MOBILE=1
 
 if [[ ! -x "$PYTHON" || ! -x "$ALEMBIC" || ! -d "$APP_DIR/node_modules" ]]; then
   echo "Missing project Python environment or web dependencies. Follow README.md setup first." >&2
@@ -33,10 +37,10 @@ while [[ "$WEB_PORT" == "$API_PORT" || "$WEB_PORT" == "$BENCH_PORT" ]]; do WEB_P
 
 TEDTRONICS_DATABASE_URL="${MIGRATE_URL:-${TEDTRONICS_DATABASE_URL:-}}" "$ALEMBIC" -c "$ROOT_DIR/graph_validator/alembic.ini" upgrade head
 
-api_pid= bench_pid= web_pid=
+api_pid= bench_pid= web_pid= mobile_pid=
 cleanup() {
   trap - EXIT INT TERM
-  for pid in "$web_pid" "$bench_pid" "$api_pid"; do
+  for pid in "$mobile_pid" "$web_pid" "$bench_pid" "$api_pid"; do
     [[ -n "$pid" ]] && kill "$pid" 2>/dev/null || true
   done
   wait 2>/dev/null || true
@@ -52,11 +56,21 @@ cd "$APP_DIR"
 TEDTRONICS_API_PORT="$API_PORT" VITE_BENCH_PORT="$BENCH_PORT" \
   npm run dev -- --host 127.0.0.1 --port "$WEB_PORT" --strictPort & web_pid=$!
 
-echo "TedTronics is starting:"
+if [[ "$WITH_MOBILE" == 1 ]]; then
+  (cd "$MOBILE_DIR" && exec npx expo start -c) & mobile_pid=$!
+fi
+
+if [[ "${TEDTRONICS_DATABASE_URL:-}" == postgres* ]]; then DB_LABEL="Neon (${NEON_BRANCH:-?})"; else DB_LABEL="local SQLite"; fi
+if [[ "${TEDTRONICS_DATABASE_URL:-}" == postgres* && -z "${TEDTRONICS_BENCH_SECRET:-}" ]]; then
+  echo "WARNING: TEDTRONICS_BENCH_SECRET is not set in .env.local; bench tokens from Neon will not verify." >&2
+fi
+
+echo "TedTronics is starting (database: $DB_LABEL):"
 echo "  Teacher website: http://127.0.0.1:$WEB_PORT/"
 echo "  Bench screen:    http://127.0.0.1:$WEB_PORT/bench.html"
 echo "  API:             http://127.0.0.1:$API_PORT/"
 echo "  Bench service:   http://127.0.0.1:$BENCH_PORT/"
+[[ "$WITH_MOBILE" == 1 ]] && echo "  Phone app:       Expo is starting in this terminal output (scan the QR code)."
 echo "Press Ctrl+C to stop all services."
 
 wait -n "$api_pid" "$bench_pid" "$web_pid"
