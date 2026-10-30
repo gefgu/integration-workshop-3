@@ -1,11 +1,24 @@
 import { slugify, uid, validateLesson } from '../model/lesson.ts';
 import type { Lesson, LessonValidation } from '../model/types.ts';
 
+/** Tags that mark the ready-made curriculum: a copy is the teacher's own lesson, so it does not keep them. */
+const CURRICULUM_TAGS = ['exemplo', 'currículo'];
+
 export function duplicateLesson(lesson: Lesson): Lesson {
+  const copy: Lesson = JSON.parse(JSON.stringify(lesson));
+  // Fresh question ids, so answers to the copy never mix with the original's in the dashboard.
+  const quizIds = new Map<string, string>();
+  for (const q of copy.quizzes || []) {
+    const next = uid('quiz');
+    quizIds.set(q.id, next);
+    q.id = next;
+  }
+  for (const s of copy.steps || []) if (s.quizId && quizIds.has(s.quizId)) s.quizId = quizIds.get(s.quizId);
   return {
-    ...JSON.parse(JSON.stringify(lesson)),
+    ...copy,
     id: uid('lesson'),
     title: `${lesson.title} (cópia)`,
+    tags: (copy.tags || []).filter((t) => !CURRICULUM_TAGS.includes(t)),
     updatedAt: new Date().toISOString(),
   };
 }

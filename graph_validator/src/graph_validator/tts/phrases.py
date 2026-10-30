@@ -12,7 +12,6 @@ from ..models import Piece
 _NOME = {
     "bateria": "a bateria", "led": "o LED", "buzzer": "o buzzer",
     "resistor_220": "o resistor de 220 Ω", "resistor_470": "o resistor de 470 Ω", "resistor_1k": "o resistor de 1 kΩ",
-    "resistor_cc": "o resistor de código de cores",
     "capacitor": "o capacitor", "botao": "o botão", "potenciometro": "o potenciômetro",
     "capsula_pulso": "a cápsula de pulso", "capsula_voltimetro": "a cápsula voltímetro",
     "capsula_amperimetro": "a cápsula amperímetro", "capsula_porta": "a cápsula de porta lógica",
@@ -31,6 +30,9 @@ PLAYER_PHRASES = [
     "Lição concluída! É assim que o aluno vai passar por ela.",
     "Agora responda à pergunta.",
     "Quase! Observe de novo e tente outra vez.",
+    "Missões cumpridas! Você viu o efeito acontecer. Continue quando quiser.",
+    "Montagem certa! Agora clique em Energizar e confira se funciona.",
+    "Ainda não é isso. Observe o circuito com calma e tente de novo.",
 ]
 
 
@@ -81,7 +83,11 @@ def lesson_phrases(doc: dict[str, Any]) -> list[str]:
     if doc.get("kind") == "guided" and not steps:
         out += [step_text(p) for p in pieces] + ([CONNECT_TEXT] if pieces else [])
     for s in steps:
-        out.append(s.get("text", ""))
+        if s.get("action") == "explain":  # the player reads the heading, then one paragraph at a time
+            out.append(s.get("title", ""))
+            out += (s.get("text") or "").split("\n\n")
+        else:
+            out.append(s.get("text", ""))
         out += _overrides(s.get("overrides") or {}, families)
     for q in quizzes:
         if q.get("position") != "before":

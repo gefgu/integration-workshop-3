@@ -1,5 +1,13 @@
 import type { CSSProperties } from 'react';
-import { CAPSULE, CC_BANDS, CC_DEFAULT, ccDiscs, DEFS, formatOhms, isCapsule, POT_DEFAULT } from '../engine/sim.ts';
+import { bandsText, ohmsBands } from '../engine/lab.ts';
+import {
+  CAPSULE,
+  DEFS,
+  formatOhms,
+  isCapsule,
+  POT_DEFAULT,
+  RESISTOR_OHMS,
+} from '../engine/sim.ts';
 import type { PieceType } from '../model/types.ts';
 
 /**
@@ -21,8 +29,6 @@ interface PieceViewProps {
   reversed?: boolean;
   value?: number;
   onPotStep?: (direction: number) => void;
-  /** Color-code resistor: turn disc 0, 1 or 2 to its next detent. */
-  onCcDisc?: (disc: 0 | 1 | 2) => void;
   pressed?: boolean;
   /** Smart capsule: lines shown on its OLED. */
   oled?: string[];
@@ -41,7 +47,6 @@ export default function PieceView({
   reversed = false,
   value,
   onPotStep,
-  onCcDisc,
   pressed = false,
   oled,
   fault = false,
@@ -52,6 +57,9 @@ export default function PieceView({
   const c = CAPSULE[d.cor as keyof typeof CAPSULE];
   const isLed = type === 'led';
   const isJumper = type.startsWith('jumper');
+  // Bands are drawn from the real value (software illustration; the camera does not read this drawing).
+  const fixedOhms = RESISTOR_OHMS[type] && !isCapsule(type) ? RESISTOR_OHMS[type] : 0;
+  const bands = fixedOhms ? ohmsBands(fixedOhms) : null;
   const h = isJumper && !fill ? 12 : height;
   const base: CSSProperties = {
     width,
@@ -78,11 +86,24 @@ export default function PieceView({
 
   return (
     <div style={base}>
-      {d.stripe && !isJumper && <Stripe color={d.stripe} />}
+      {bands ? (
+        <span
+          role="img"
+          aria-label={`Faixas do resistor de ${formatOhms(fixedOhms)}: ${bandsText(fixedOhms)} (ilustração do software)`}
+          title={`Faixas: ${bandsText(fixedOhms)} = ${formatOhms(fixedOhms)} (ilustração; não é leitura da câmera)`}
+          style={{ position: 'absolute', inset: 0, display: 'flex', justifyContent: 'center', gap: 3, padding: '0 6px' }}
+        >
+          {bands.colors.map((color, i) => (
+            <span
+              // biome-ignore lint/suspicious/noArrayIndexKey: the bands are positional and never reorder
+              key={`${i}-${bands.names[i]}`}
+              style={{ width: i === 0 ? 14 : 8, background: color, boxShadow: 'inset 0 0 0 1px rgba(0,0,0,.35)' }}
+            />
+          ))}
+        </span>
+      ) : d.stripe && !isJumper && <Stripe color={d.stripe} />}
       {type === 'potenciometro' ? (
         <PotFace value={value || POT_DEFAULT} onStep={onPotStep} />
-      ) : type === 'resistor_cc' ? (
-        <CcFace value={value || CC_DEFAULT} onDisc={onCcDisc} />
       ) : type === 'botao' ? (
         <ButtonCap pressed={pressed} onChange={onButton} />
       ) : (
@@ -90,23 +111,26 @@ export default function PieceView({
           style={{
             position: 'relative',
             zIndex: 1,
+            // The value sits on a dark chip so it never blurs into the bands behind it.
+            ...(bands ? { background: 'rgba(20,20,20,.72)', color: '#fff', borderRadius: 4, padding: '0 4px' } : {}),
             ...(type === 'buzzer' && lit ? { animation: 'pulse .5s ease-in-out infinite alternate' } : {}),
           }}
         >
-          {d.text}
+          {isLed && reversed ? '◀' : d.text}
         </span>
       )}
       {isLed && (
+        // The bar marks the cathode (K, the − side): dark and thick so it can be seen at a glance.
         <span
           style={{
             position: 'absolute',
             [reversed ? 'left' : 'right']: 6,
             top: 3,
             bottom: 3,
-            width: 4,
-            background: '#f5ead8',
+            width: 5,
+            background: '#1d1b1a',
+            boxShadow: '0 0 0 1px rgba(255,255,255,.55)',
             borderRadius: 2,
-            opacity: 0.8,
           }}
         />
       )}
@@ -250,39 +274,6 @@ function PotFace({ value, onStep }) {
   );
 }
 
-/** Three color discs (EFR12); clicking a disc turns it to the next detent. */
-function CcFace({ value, onDisc }: { value: number; onDisc?: (disc: 0 | 1 | 2) => void }) {
-  const pos = ccDiscs(value) ?? ccDiscs(CC_DEFAULT);
-  const stop = (e) => e.stopPropagation();
-  return (
-    <span style={{ display: 'flex', alignItems: 'center', gap: 3, marginTop: 5, fontSize: 10 }}>
-      {([0, 1, 2] as const).map((disc) => {
-        const band = CC_BANDS[disc][pos[disc]];
-        return (
-          <button
-            key={disc}
-            type="button"
-            disabled={!onDisc}
-            onPointerDown={stop}
-            onClick={() => onDisc?.(disc)}
-            aria-label={`Disco ${disc + 1}: ${band.name}`}
-            title={band.name}
-            style={{
-              width: 11,
-              height: 14,
-              padding: 0,
-              borderRadius: 3,
-              border: '1px solid rgba(255,255,255,.7)',
-              background: band.color,
-              cursor: onDisc ? 'pointer' : 'inherit',
-            }}
-          />
-        );
-      })}
-      <span style={{ marginLeft: 2 }}>{formatOhms(value)}</span>
-    </span>
-  );
-}
 
 /** Round cap: hold the pointer on it to press; releasing anywhere lets go. */
 function ButtonCap({ pressed, onChange }) {

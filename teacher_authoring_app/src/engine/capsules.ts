@@ -201,3 +201,68 @@ export function mergeTrails(a: CircuitTrail | null, b: CircuitTrail | null): Cir
   if (!a || !b) return a || b;
   return { edgeIds: new Set([...a.edgeIds, ...b.edgeIds]), nodes: new Set([...a.nodes, ...b.nodes]) };
 }
+
+const GATE_TEXT: Record<string, string> = {
+  and: 'AND (E): a saída só vale 1 quando as duas entradas valem 1.',
+  or: 'OR (OU): a saída vale 1 quando pelo menos uma entrada vale 1.',
+  nand: 'NAND: o contrário do AND — só vale 0 quando as duas entradas valem 1.',
+  nor: 'NOR: o contrário do OR — só vale 1 quando as duas entradas valem 0.',
+  xor: 'XOR (OU exclusivo): a saída vale 1 quando as entradas são diferentes.',
+  not: 'NOT (NÃO): inverte a entrada P1 — 0 vira 1 e 1 vira 0.',
+};
+
+/**
+ * What a capsule's screen means, in plain Portuguese, for the reading it shows right now.
+ * `title` names the capsule; `lines` explain each value on its screen. Simulated values only.
+ */
+export function explainReading(piece: Piece, reading: CapsuleReading | undefined): { title: string; lines: string[] } {
+  const cfg = capsuleConfig(piece);
+  const shown = reading?.lines.join(' · ') ?? '';
+  switch (piece.type) {
+    case 'capsula_voltimetro':
+      return {
+        title: `Voltímetro — tela: “${shown}”`,
+        lines: [
+          'V = volts, a unidade de tensão: a “força” que empurra a corrente.',
+          'O número é quanto a tensão em P1 passa a de P2. Perto de 5 V, P1 está ligado ao + da bateria e P2 ao −; 0 V, os dois pontos estão no mesmo nó.',
+          '“sem sinal” quer dizer que P1 ou P2 não está ligado à bateria por nenhum caminho.',
+        ],
+      };
+    case 'capsula_amperimetro':
+      return {
+        title: `Amperímetro — tela: “${shown}”`,
+        lines: [
+          'mA = miliampère, um milésimo de ampère (1 mA = 0,001 A): mede quanta corrente passa pelo caminho.',
+          'Ele fica NO caminho, em série: toda a corrente do circuito atravessa as portas P1 e P2.',
+          '“sem corrente” = não há caminho fechado. “DISPAROU” = passou de 15 mA, o limite seguro da bancada.',
+        ],
+      };
+    case 'capsula_pulso':
+      return {
+        title: `Pulso — tela: “${shown}”`,
+        lines: [
+          `Hz = ciclos por segundo: ${String(cfg.hz).replace('.', ',')} Hz liga e desliga ${String(cfg.hz).replace('.', ',')} vez(es) por segundo.`,
+          `${cfg.duty}% = a parte de cada ciclo em que a saída fica ligada.`,
+          'P3 ALTO = saída ligada (5 V) agora; BAIXO = desligada (0 V). A tela muda sozinha com o relógio.',
+        ],
+      };
+    case 'capsula_porta':
+      return {
+        title: `Porta lógica — tela: “${shown}”`,
+        lines: [
+          '0 = nível baixo (perto de 0 V); 1 = nível alto (perto de 5 V). A tela mostra as entradas P1 P2 → a saída P3.',
+          GATE_TEXT[cfg.op as string] ?? '',
+        ],
+      };
+    default:
+      return {
+        title: `Memória de 1 bit — tela: “${shown}”`,
+        lines: [
+          'Q é o bit guardado: 0 ou 1. Ele continua igual mesmo depois que a entrada muda.',
+          cfg.mem === 'sr'
+            ? 'Tipo SR: um pulso em P1 coloca Q em 1 (set); um pulso em P2 volta Q a 0 (reset).'
+            : 'Tipo D: quando P2 (relógio) sobe de 0 para 1, Q copia o valor de P1.',
+        ],
+      };
+  }
+}

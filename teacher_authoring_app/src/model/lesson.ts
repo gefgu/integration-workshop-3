@@ -1,22 +1,30 @@
 import { COLS, ROWS } from '../engine/board.ts';
 import { AMMETER_SLOT, slotOf } from '../engine/nodes.ts';
 import {
-  CC_VALUES,
   configProblems,
   countByType,
   isCapsule,
   KIT_LIMITS,
   MAX_CAPSULES,
-  POT_VALUES,
   TYPES,
 } from '../engine/sim.ts';
 import { uid } from './ids.ts';
 import { ACTIONS, autoSplit, CATEGORIES, connectionStep, stepProblems } from './steps.ts';
-import type { Lesson, LessonStep, LessonValidation, Piece, Quiz, QuizOption, QuizPosition } from './types.ts';
+import type {
+  Illustration,
+  Lesson,
+  LessonSettings,
+  LessonStep,
+  LessonValidation,
+  Piece,
+  Quiz,
+  QuizOption,
+  QuizPosition,
+} from './types.ts';
 
-export const LESSON_VERSION = 3;
+export const LESSON_VERSION = 4;
 /** Versions `validateLesson` reads; v1/v2 guided lessons migrate to explicit connection steps. */
-const READABLE_VERSIONS = [1, 2, 3];
+const READABLE_VERSIONS = [1, 2, 3, 4];
 export const KINDS = ['guided', 'challenge'];
 /** `step` quizzes belong to an interact step (SFR19) and are not shown before/after the build. */
 export const POSITIONS = ['before', 'after', 'step'];
@@ -74,6 +82,55 @@ export function lessonProblems(lesson: Lesson): string[] {
 
 const isInt = (n) => Number.isInteger(n);
 
+/** Shape, kit and slot rules shared by a lesson's target board and its starting bench. Error text or null. */
+function checkPieces(pieces: any[]): string | null {
+  const ids = new Set();
+  for (const p of pieces) {
+    if (p && p.type === 'resistor') p.type = 'resistor_470'; // lessons saved before resistor values existed
+    if (!p || !TYPES.includes(p.type)) return `Peça desconhecida: ${p?.type}.`;
+    if (!isInt(p.a) || !isInt(p.b) || p.a < 1 || p.b < 1 || p.a > COLS || p.b > COLS) return 'Peça fora das 11 colunas.';
+    if (!isInt(p.row) || p.row < 0 || p.row >= ROWS) return 'Peça fora das linhas da bancada.';
+    if (isCapsule(p.type)) {
+      if (!isInt(p.c) || p.b !== p.a + 1 || p.c !== p.a + 2 || p.c > COLS)
+        return `${p.type} precisa de três colunas seguidas (P1, P2, P3).`;
+      const slot = slotOf(p);
+      if (slot == null) return `${p.type} só cabe nos 6 encaixes de cápsula da bancada.`;
+      if (p.type === 'capsula_amperimetro' && slot !== AMMETER_SLOT)
+        return `O amperímetro só funciona no encaixe ${AMMETER_SLOT}.`;
+      const bad = configProblems(p.type, p.config);
+      if (bad.length) return `${p.type}: ${bad[0]}`;
+    } else if (p.c != null || p.config != null) return `${p.type} não tem terceira coluna nem configuração.`;
+    if (typeof p.id !== 'string' || ids.has(p.id)) return 'Peças com id repetido.';
+    ids.add(p.id);
+  }
+  const used = countByType(pieces);
+  for (const t of TYPES) if ((used[t] || 0) > KIT_LIMITS[t]) return `Peças demais: o kit tem só ${KIT_LIMITS[t]} × ${t}.`;
+  if (pieces.filter((p) => isCapsule(p.type)).length > MAX_CAPSULES)
+    return `No máximo ${MAX_CAPSULES} cápsulas inteligentes ao mesmo tempo.`;
+  return null;
+}
+
+function cleanPiece(p: any): Piece {
+  const base: any = { id: p.id, type: p.type, a: p.a, b: p.b, row: p.row };
+  if (isCapsule(p.type)) {
+    base.c = p.c;
+    if (p.config) base.config = p.config;
+  } else if (p.type === 'potenciometro' && Number.isInteger(p.value) && p.value > 0) base.value = p.value;
+  if (p.loose === true) base.loose = true;
+  return base;
+}
+
+const SETTING_FLAGS = ['statusLed', 'allowNoResistor', 'requireLit', 'matchValues', 'strictPositions'];
+
+function cleanSettings(raw: any): LessonSettings | undefined {
+  if (!raw || typeof raw !== 'object') return undefined;
+  const out: LessonSettings = {};
+  for (const k of SETTING_FLAGS) if (raw[k] === true) out[k] = true;
+  if (Number.isInteger(raw.hintAfter) && raw.hintAfter >= 2) out.hintAfter = raw.hintAfter;
+  if (Array.isArray(raw.tray)) out.tray = raw.tray.filter((t) => TYPES.includes(t));
+  return Object.keys(out).length ? out : undefined;
+}
+
 /** Parses/validates untrusted JSON (imported file). Returns { ok, lesson } or { ok:false, error }. */
 export function validateLesson(raw: any): LessonValidation {
   const fail = (error: string): { ok: false; error: string } => ({ ok: false, error });
@@ -85,31 +142,14 @@ export function validateLesson(raw: any): LessonValidation {
   if (!KINDS.includes(raw.kind)) return fail('Tipo de lição inválido.');
   const pieces = raw.board?.pieces;
   if (!Array.isArray(pieces)) return fail('Bancada inválida.');
-  const ids = new Set();
-  for (const p of pieces) {
-    if (p && p.type === 'resistor') p.type = 'resistor_470'; // lessons saved before resistor values existed
-    if (!p || !TYPES.includes(p.type)) return fail(`Peça desconhecida: ${p?.type}.`);
-    if (!isInt(p.a) || !isInt(p.b) || p.a < 1 || p.b < 1 || p.a > COLS || p.b > COLS)
-      return fail('Peça fora das 11 colunas.');
-    if (!isInt(p.row) || p.row < 0 || p.row >= ROWS) return fail('Peça fora das linhas da bancada.');
-    if (isCapsule(p.type)) {
-      if (!isInt(p.c) || p.b !== p.a + 1 || p.c !== p.a + 2 || p.c > COLS)
-        return fail(`${p.type} precisa de três colunas seguidas (P1, P2, P3).`);
-      const slot = slotOf(p);
-      if (slot == null) return fail(`${p.type} só cabe nos 6 encaixes de cápsula da bancada.`);
-      if (p.type === 'capsula_amperimetro' && slot !== AMMETER_SLOT)
-        return fail(`O amperímetro só funciona no encaixe ${AMMETER_SLOT}.`);
-      const bad = configProblems(p.type, p.config);
-      if (bad.length) return fail(`${p.type}: ${bad[0]}`);
-    } else if (p.c != null || p.config != null) return fail(`${p.type} não tem terceira coluna nem configuração.`);
-    if (typeof p.id !== 'string' || ids.has(p.id)) return fail('Peças com id repetido.');
-    ids.add(p.id);
+  const pieceError = checkPieces(pieces);
+  if (pieceError) return fail(pieceError);
+  const startRaw = raw.start == null ? null : raw.start;
+  if (startRaw) {
+    if (!Array.isArray(startRaw.pieces)) return fail('Bancada inicial inválida.');
+    const startError = checkPieces(startRaw.pieces);
+    if (startError) return fail(`Bancada inicial: ${startError}`);
   }
-  const used = countByType(pieces);
-  for (const t of TYPES)
-    if ((used[t] || 0) > KIT_LIMITS[t]) return fail(`Peças demais: o kit tem só ${KIT_LIMITS[t]} × ${t}.`);
-  if (pieces.filter((p) => isCapsule(p.type)).length > MAX_CAPSULES)
-    return fail(`No máximo ${MAX_CAPSULES} cápsulas inteligentes ao mesmo tempo.`);
   if (!Array.isArray(raw.quizzes)) return fail('Perguntas inválidas.');
   for (const q of raw.quizzes) {
     if (!q || typeof q.id !== 'string' || !POSITIONS.includes(q.position) || typeof q.prompt !== 'string')
@@ -138,13 +178,7 @@ export function validateLesson(raw: any): LessonValidation {
     board: {
       cols: COLS,
       rows: ROWS,
-      pieces: pieces.map((p) => {
-        const base = { id: p.id, type: p.type, a: p.a, b: p.b, row: p.row };
-        if (isCapsule(p.type)) return p.config ? { ...base, c: p.c, config: p.config } : { ...base, c: p.c };
-        if (p.type === 'potenciometro' && POT_VALUES.includes(p.value)) return { ...base, value: p.value };
-        if (p.type === 'resistor_cc' && CC_VALUES.includes(p.value)) return { ...base, value: p.value };
-        return base;
-      }),
+      pieces: pieces.map(cleanPiece),
     },
     steps,
     timeLimitS,
@@ -160,7 +194,16 @@ export function validateLesson(raw: any): LessonValidation {
       })),
     })),
     updatedAt: typeof raw.updatedAt === 'string' ? raw.updatedAt : new Date().toISOString(),
-  };
+  } as Lesson;
+  if (startRaw) {
+    lesson.start = { pieces: startRaw.pieces.map(cleanPiece) };
+    const drop = Array.isArray(startRaw.removeOneOf) ? startRaw.removeOneOf.filter((id) => typeof id === 'string') : [];
+    if (drop.length) lesson.start.removeOneOf = drop;
+  }
+  const settings = cleanSettings(raw.settings);
+  if (settings) lesson.settings = settings;
+  if (typeof raw.teacherNotes === 'string' && raw.teacherNotes.trim()) lesson.teacherNotes = raw.teacherNotes;
+  if (Array.isArray(raw.tags)) lesson.tags = raw.tags.filter((t) => typeof t === 'string' && t.trim());
   if (raw.version < 3 && lesson.kind === 'guided' && lesson.board.pieces.length) {
     if (steps.length === 0) steps = autoSplit(lesson.board.pieces);
     else if (!steps.some((s) => s.action === 'connect_circuit')) {
@@ -199,7 +242,33 @@ function cleanStep(st: any) {
       strictPositions: !!st.options?.strictPositions,
     },
     overrides,
+    ...cleanClientFields(st),
   };
+}
+
+function cleanIllustration(raw: any): Illustration | null {
+  if (!raw || typeof raw.svg !== 'string' || !raw.svg.trim().startsWith('<svg')) return null;
+  return { svg: raw.svg, alt: typeof raw.alt === 'string' ? raw.alt : '', ...(typeof raw.caption === 'string' && raw.caption ? { caption: raw.caption } : {}) };
+}
+
+/** Optional fields of explain/experiment steps; absent on the older step kinds. */
+function cleanClientFields(st: any): Partial<LessonStep> {
+  const out: Partial<LessonStep> = {};
+  if (typeof st.title === 'string' && st.title) out.title = st.title;
+  const illustration = cleanIllustration(st.illustration);
+  if (illustration) out.illustration = illustration;
+  if (st.widget === 'nodes') out.widget = 'nodes';
+  if (st.action === 'experiment' && st.experiment && Array.isArray(st.experiment.goals)) {
+    const e = st.experiment;
+    out.experiment = {
+      goals: e.goals.map((g) => ({ id: String(g.id), label: String(g.label ?? ''), ...(g.seen ? { seen: g.seen } : {}), ...(g.now ? { now: g.now } : {}), ...(g.ccDistinct ? { ccDistinct: g.ccDistinct } : {}), ...(g.presetsLit ? { presetsLit: g.presetsLit } : {}), ...(g.presetsFaded ? { presetsFaded: g.presetsFaded } : {}) })),
+      ...(Array.isArray(e.board) ? { board: e.board.map(cleanPiece) } : {}),
+      ...(Array.isArray(e.presets) ? { presets: e.presets.map((p) => ({ label: String(p.label), pieces: p.pieces.map(cleanPiece) })) } : {}),
+      ...(e.slider ? { slider: { pieceId: String(e.slider.pieceId), label: String(e.slider.label ?? '') } } : {}),
+      ...(e.clips ? { clips: { a: Number(e.clips.a), b: Number(e.clips.b) } } : {}),
+    };
+  }
+  return out;
 }
 
 export function slugify(title: string): string {

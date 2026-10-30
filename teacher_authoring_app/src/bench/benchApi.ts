@@ -26,7 +26,7 @@ export interface LoginResult {
 export function serviceUrl(location: Pick<Location, 'search' | 'hostname' | 'protocol'> = window.location): string {
   const fromQuery = new URLSearchParams(location.search).get('servico');
   if (fromQuery) return fromQuery.replace(/\/+$/, '');
-  const port = import.meta.env.VITE_BENCH_PORT || '8765';
+  const port = import.meta.env?.VITE_BENCH_PORT || '8765';
   return `${location.protocol === 'https:' ? 'https' : 'http'}://${location.hostname || 'localhost'}:${port}`;
 }
 

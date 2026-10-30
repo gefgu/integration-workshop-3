@@ -28,7 +28,8 @@ export default function QuizEditor({ quizzes, onChange, only = ['before', 'after
       {shown.length === 0 && (
         <p style={{ margin: 0, fontSize: 13, color: 'var(--color-neutral-600)' }}>Nenhuma pergunta ainda.</p>
       )}
-      {shown.map((q, i) => (
+      {shown.length > 0 && <p style={{ margin: 0, fontSize: 13 }}>Marque o círculo ao lado da resposta correta. Use o retorno para explicar cada alternativa ao aluno.</p>}
+      {shown.map((q) => (
         <div
           key={q.id}
           style={{
@@ -41,7 +42,7 @@ export default function QuizEditor({ quizzes, onChange, only = ['before', 'after
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <strong style={{ fontFamily: 'var(--font-heading)', fontSize: 14 }}>Pergunta {i + 1}</strong>
+            <strong style={{ fontFamily: 'var(--font-heading)', fontSize: 14 }}>Pergunta {quizzes.indexOf(q) + 1}</strong>
             {!stepOnly && (
               <select
                 value={q.position}
@@ -64,6 +65,7 @@ export default function QuizEditor({ quizzes, onChange, only = ['before', 'after
           <textarea
             rows={2}
             style={field}
+            aria-label={`Enunciado da pergunta ${quizzes.indexOf(q) + 1}`}
             placeholder="Enunciado da pergunta"
             value={q.prompt}
             onChange={(e) => patch(q.id, (x) => ({ ...x, prompt: e.target.value }))}
@@ -80,6 +82,7 @@ export default function QuizEditor({ quizzes, onChange, only = ['before', 'after
                 />
                 <input
                   style={field}
+                  aria-label="Texto da alternativa"
                   placeholder="Alternativa"
                   value={o.text}
                   onChange={(e) =>
@@ -107,6 +110,7 @@ export default function QuizEditor({ quizzes, onChange, only = ['before', 'after
               </div>
               <input
                 style={{ ...field, marginLeft: 26, width: 'calc(100% - 26px)', fontSize: 12 }}
+                aria-label={`Retorno para a alternativa ${o.text || 'sem texto'}`}
                 placeholder="Retorno ao aluno (opcional)"
                 value={o.feedback}
                 onChange={(e) =>

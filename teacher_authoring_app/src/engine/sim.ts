@@ -25,7 +25,6 @@ export const DEFS = {
   resistor_220: { len: 1, cor: 'azul', dots: 1, stripe: '#f28c28', text: '220 Ω' },
   resistor_470: { len: 1, cor: 'azul', dots: 1, stripe: '#e5423a', text: '470 Ω' },
   resistor_1k: { len: 1, cor: 'azul', dots: 1, stripe: '#f2d52e', text: '1 kΩ' },
-  resistor_cc: { len: 1, cor: 'azul', dots: 3, stripe: '#e883bd', text: '' },
   capacitor: { len: 1, cor: 'azul', dots: 2, stripe: '#39b96b', text: '1000 µF' },
   botao: { len: 1, cor: 'amarelo', text: '●' },
   potenciometro: { len: 2, cor: 'amarelo', text: '' },
@@ -49,7 +48,6 @@ export const NOMES = {
   resistor_220: 'Resistor 220 Ω',
   resistor_470: 'Resistor 470 Ω',
   resistor_1k: 'Resistor 1 kΩ',
-  resistor_cc: 'Resistor código de cores',
   capacitor: 'Capacitor 1000 µF',
   botao: 'Botão',
   potenciometro: 'Potenciômetro',
@@ -127,57 +125,8 @@ export const RESISTOR_OHMS: Record<string, number> = {
 export const POT_VALUES = [100, 220, 470, 1000, 2200, 4700, 10000];
 export const POT_DEFAULT = 1000;
 
-/**
- * Color-code resistor capsule (EFR12): three discs with four detents each. Discs 1 and 2 are the
- * significant digits, disc 3 the multiplier; colors follow the standard resistor code.
- */
-export const CC_BANDS = [
-  [
-    { digit: 1, color: '#7a4a22', name: 'marrom' },
-    { digit: 2, color: '#d23a30', name: 'vermelho' },
-    { digit: 4, color: '#f2c318', name: 'amarelo' },
-    { digit: 7, color: '#8a4fc0', name: 'violeta' },
-  ],
-  [
-    { digit: 0, color: '#151515', name: 'preto' },
-    { digit: 2, color: '#d23a30', name: 'vermelho' },
-    { digit: 5, color: '#3f9b4f', name: 'verde' },
-    { digit: 7, color: '#8a4fc0', name: 'violeta' },
-  ],
-  [
-    { digit: 1, color: '#151515', name: 'preto' },
-    { digit: 10, color: '#7a4a22', name: 'marrom' },
-    { digit: 100, color: '#d23a30', name: 'vermelho' },
-    { digit: 1000, color: '#ef7d22', name: 'laranja' },
-  ],
-] as const;
-export const CC_DEFAULT = 220;
-
-export function ccOhms([d1, d2, m]: number[]): number {
-  return (CC_BANDS[0][d1].digit * 10 + CC_BANDS[1][d2].digit) * CC_BANDS[2][m].digit;
-}
-
-/** Disc positions (0..3 each) for a value, or null when the discs cannot show it. */
-export function ccDiscs(ohms: number): [number, number, number] | null {
-  for (let m = 0; m < 4; m++)
-    for (let d1 = 0; d1 < 4; d1++) for (let d2 = 0; d2 < 4; d2++) if (ccOhms([d1, d2, m]) === ohms) return [d1, d2, m];
-  return null;
-}
-
-export const CC_VALUES = [
-  ...new Set([0, 1, 2, 3].flatMap((m) => [0, 1, 2, 3].flatMap((a) => [0, 1, 2, 3].map((b) => ccOhms([a, b, m]))))),
-].sort((x, y) => x - y);
-
-/** Turns one disc to its next detent. */
-export function turnCcDisc(ohms: number | undefined, disc: 0 | 1 | 2): number {
-  const pos = ccDiscs(ohms || CC_DEFAULT) ?? ccDiscs(CC_DEFAULT);
-  pos[disc] = (pos[disc] + 1) % 4;
-  return ccOhms(pos);
-}
-
 export function pieceOhms(p: Piece): number {
   if (p.type === 'potenciometro') return p.value || POT_DEFAULT;
-  if (p.type === 'resistor_cc') return p.value || CC_DEFAULT;
   return RESISTOR_OHMS[p.type] || 0;
 }
 
@@ -193,7 +142,6 @@ export const KIT_LIMITS = {
   resistor_220: 1,
   resistor_470: 1,
   resistor_1k: 1,
-  resistor_cc: 1,
   capacitor: 2,
   botao: 2,
   potenciometro: 1,
@@ -235,7 +183,10 @@ export const MSG = {
  * `opts.pressed`: Set of pushbutton ids being held. null/undefined = every button
  * counts as pressed (used when judging the design in the editor).
  */
-export function analyze(all: Piece[], opts: { pressed?: Set<string> | null } = {}): CircuitAnalysis {
+export function analyze(
+  all: Piece[],
+  opts: { pressed?: Set<string> | null; allowNoResistor?: boolean } = {}
+): CircuitAnalysis {
   // Only the ammeter conducts (10 Ω shunt between P1 and P2); the other capsules just sense or drive.
   // Pieces become edges between nodes; a column is one node per bank, so the banks never connect.
   const pieces = all
@@ -246,7 +197,13 @@ export function analyze(all: Piece[], opts: { pressed?: Set<string> | null } = {
     for (let j = i + 1; j < pieces.length; j++) {
       const a = pieces[i],
         b = pieces[j];
-      if ((a.a === b.a && a.b === b.b) || (a.a === b.b && a.b === b.a)) return { code: 'par_duplicado', trail: null };
+      if ((a.a === b.a && a.b === b.b) || (a.a === b.b && a.b === b.a)) {
+        // Two capacitors across the same columns are just a bigger capacitor, not a mistake.
+        if (a.type === 'capacitor' && b.type === 'capacitor') continue;
+        // A jumper over the battery's own two nodes is the classic short, not a duplicated piece.
+        const shorted = (a.type === 'bateria' && b.type.startsWith('jumper')) || (b.type === 'bateria' && a.type.startsWith('jumper'));
+        return { code: shorted ? 'curto' : 'par_duplicado', trail: null };
+      }
     }
   }
   if (!bat) return { code: 'sem_bateria', trail: null };
@@ -293,6 +250,7 @@ export function analyze(all: Piece[], opts: { pressed?: Set<string> | null } = {
 
   const rank = ['curto', 'valido', 'sem_resistor', 'led_invertido', 'sem_led'];
   let best = null;
+  const branches: NonNullable<CircuitAnalysis['branches']> = [];
   for (const t of trails) {
     const led = t.find((x) => x.type === 'led');
     const buzzer = t.some((x) => x.type === 'buzzer');
@@ -301,16 +259,17 @@ export function analyze(all: Piece[], opts: { pressed?: Set<string> | null } = {
     let load: 'led' | 'buzzer' | null = null;
     if (led) {
       load = 'led';
-      code = !led.forward ? 'led_invertido' : ohms > 0 ? 'valido' : 'sem_resistor';
+      code = !led.forward ? 'led_invertido' : ohms > 0 || opts.allowNoResistor ? 'valido' : 'sem_resistor';
     } else if (buzzer) {
       load = 'buzzer';
       code = 'valido';
     } else {
       code = ohms > 0 ? 'sem_led' : 'curto';
     }
+    if (code === 'valido') branches.push({ trail: t, ohms, load });
     if (!best || rank.indexOf(code) < rank.indexOf(best.code)) best = { code, trail: t, ohms, load };
   }
-  if (best) return best;
+  if (best) return best.code === 'valido' ? { ...best, branches } : best;
 
   // No conducting path: explain *why* when a capacitor or a released button is the cause.
   if (base.some((p) => p.type === 'botao') && pressed) {
@@ -349,6 +308,15 @@ export function reach(pieces: Piece[], start: number, excludeIds: string[]): Set
 export function corrente(an: CircuitAnalysis): number {
   if (an.code !== 'valido') return 0;
   return an.load === 'buzzer' ? (5 / (an.ohms + 250)) * 1000 : ((5 - 2.0) / an.ohms) * 1000;
+}
+
+/** The routing hardware caps every branch at this current (mA); the simulator shows the capped value. */
+export const BENCH_LIMIT_MA = 15;
+
+/** Current (mA) through one lit branch, capped at the bench ceiling; `limited` says the cap applied. */
+export function branchCurrent(branch: { ohms: number; load: 'led' | 'buzzer' | null }): { mA: number; limited: boolean } {
+  const raw = branch.load === 'buzzer' ? (5 / (branch.ohms + 250)) * 1000 : branch.ohms > 0 ? ((5 - 2.0) / branch.ohms) * 1000 : Infinity;
+  return raw > BENCH_LIMIT_MA ? { mA: BENCH_LIMIT_MA, limited: true } : { mA: raw, limited: false };
 }
 
 import type { CapsuleConfig, CircuitAnalysis, Piece, PieceType } from '../model/types.ts';

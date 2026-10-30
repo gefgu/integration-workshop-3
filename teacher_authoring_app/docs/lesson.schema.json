@@ -34,7 +34,7 @@
         "id": { "type": "string" },
         "type": {
           "enum": [
-            "bateria", "led", "buzzer", "resistor_220", "resistor_470", "resistor_1k", "resistor_cc", "capacitor",
+            "bateria", "led", "buzzer", "resistor_220", "resistor_470", "resistor_1k", "capacitor",
             "botao", "potenciometro", "jumper_curto", "jumper_longo", "jumper_3", "jumper_4", "jumper_5",
             "capsula_pulso", "capsula_voltimetro", "capsula_amperimetro", "capsula_porta", "capsula_memoria"
           ]

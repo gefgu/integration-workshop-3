@@ -17,6 +17,7 @@ import {
   stepText,
 } from '../model/steps.ts';
 import type { Piece } from '../model/types.ts';
+import { AddClientButtons, ChallengeSteps, ClientStepForm } from './ClientSteps.tsx';
 import QuizEditor from './QuizEditor.tsx';
 
 const field: CSSProperties = {
@@ -35,6 +36,8 @@ const ACTION_LABEL = {
   place_connection: 'Colocar jumper',
   connect_circuit: 'Conectar circuito',
   interact: 'Pergunta',
+  explain: 'Explicação',
+  experiment: 'Experimento',
 };
 const CATEGORY_LABEL = {
   missing_component: 'Falta uma peça',
@@ -103,7 +106,8 @@ export default function StepsEditor({ lesson, setLesson, selected, setSelected }
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         <p style={{ margin: 0, fontSize: 13, color: 'var(--color-neutral-600)' }}>
-          No desafio só o circuito final é conferido, sem passos.
+          No desafio só o circuito final é conferido. O aluno recebe a bancada inicial (vazia, ou a que você definir em
+          “Bancada inicial”) e monta sozinho.
         </p>
         <label className="field-label" htmlFor="time-limit" style={{ margin: 0 }}>
           Tempo limite (segundos)
@@ -125,6 +129,16 @@ export default function StepsEditor({ lesson, setLesson, selected, setSelected }
             </button>
           )}
         </div>
+        <strong style={{ fontSize: 13, marginTop: 6 }}>Depois da montagem</strong>
+        <ChallengeSteps lesson={lesson} setLesson={setLesson} selected={selected} setSelected={setSelected} />
+        {lesson.quizzes.some((q) => q.position === 'step') && (
+          <details open={selected != null && lesson.steps[selected]?.action === 'interact'}>
+            <summary style={{ fontSize: 13, cursor: 'pointer' }}>Perguntas dos passos</summary>
+            <div style={{ marginTop: 8 }}>
+              <QuizEditor quizzes={lesson.quizzes} onChange={(quizzes) => set({ quizzes })} only={['step']} />
+            </div>
+          </details>
+        )}
       </div>
     );
   }
@@ -143,7 +157,12 @@ export default function StepsEditor({ lesson, setLesson, selected, setSelected }
     if (selected === i) setSelected(j);
   };
   const remove = (i) => {
-    setSteps(steps.filter((_, k) => k !== i));
+    const removed = steps[i];
+    setLesson((l) => {
+      const next = l.steps.filter((_, k) => k !== i);
+      const orphan = removed.quizId && !next.some((s) => s.quizId === removed.quizId);
+      return { ...l, steps: next, quizzes: orphan ? l.quizzes.filter((q) => q.id !== removed.quizId) : l.quizzes };
+    });
     setSelected(null);
   };
   const generate = () => {
@@ -188,9 +207,7 @@ export default function StepsEditor({ lesson, setLesson, selected, setSelected }
         <button type="button" className="btn-outline" disabled={lesson.board.pieces.length === 0} onClick={generate}>
           Gerar passos
         </button>
-        <button type="button" className="btn-outline" onClick={() => addInteract()}>
-          + Pergunta no final
-        </button>
+        <AddClientButtons lesson={lesson} setLesson={setLesson} select={setSelected} />
         <button
           type="button"
           className="btn-outline"
@@ -234,92 +251,98 @@ export default function StepsEditor({ lesson, setLesson, selected, setSelected }
           <div key={s.id} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             <div
               style={{
-              background: 'var(--color-bg)',
-              borderRadius: 20,
-              padding: 12,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 8,
-              outline: open ? '2px solid var(--color-accent)' : 'none',
+                background: 'var(--color-bg)',
+                borderRadius: 20,
+                padding: 12,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 8,
+                outline: open ? '2px solid var(--color-accent)' : 'none',
               }}
             >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <button
-                type="button"
-                onClick={() => setSelected(open ? null : i)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  border: 0,
-                  padding: 0,
-                  background: 'transparent',
-                  color: 'inherit',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                }}
-              >
-                <strong style={{ fontFamily: 'var(--font-heading)', fontSize: 14 }}>Passo {i + 1}</strong>
-                <span style={{ fontSize: 12, color: 'var(--color-neutral-700)' }}>
-                  {ACTION_LABEL[s.action]}
-                  {piece ? ` · ${NOMES[piece.type]}` : ''}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <button
+                  type="button"
+                  onClick={() => setSelected(open ? null : i)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    border: 0,
+                    padding: 0,
+                    background: 'transparent',
+                    color: 'inherit',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                  }}
+                >
+                  <strong style={{ fontFamily: 'var(--font-heading)', fontSize: 14 }}>Passo {i + 1}</strong>
+                  <span style={{ fontSize: 12, color: 'var(--color-neutral-700)' }}>
+                    {ACTION_LABEL[s.action]}
+                    {piece ? ` · ${NOMES[piece.type]}` : ''}
+                    {s.title ? ` — ${s.title}` : ''}
+                  </span>
+                </button>
+                <span style={{ marginLeft: 'auto', display: 'flex', gap: 4 }}>
+                  <button
+                    type="button"
+                    className="pill-link-btn muted"
+                    disabled={i === 0}
+                    onClick={() => move(i, -1)}
+                    aria-label="Subir passo"
+                  >
+                    ↑
+                  </button>
+                  <button
+                    type="button"
+                    className="pill-link-btn muted"
+                    disabled={i === steps.length - 1}
+                    onClick={() => move(i, 1)}
+                    aria-label="Descer passo"
+                  >
+                    ↓
+                  </button>
+                  <button
+                    type="button"
+                    className="pill-link-btn muted"
+                    onClick={() => remove(i)}
+                    aria-label="Remover passo"
+                  >
+                    ×
+                  </button>
                 </span>
-              </button>
-              <span style={{ marginLeft: 'auto', display: 'flex', gap: 4 }}>
-                <button
-                  type="button"
-                  className="pill-link-btn muted"
-                  disabled={i === 0}
-                  onClick={() => move(i, -1)}
-                  aria-label="Subir passo"
-                >
-                  ↑
-                </button>
-                <button
-                  type="button"
-                  className="pill-link-btn muted"
-                  disabled={i === steps.length - 1}
-                  onClick={() => move(i, 1)}
-                  aria-label="Descer passo"
-                >
-                  ↓
-                </button>
-                <button
-                  type="button"
-                  className="pill-link-btn muted"
-                  onClick={() => remove(i)}
-                  aria-label="Remover passo"
-                >
-                  ×
-                </button>
-              </span>
-            </div>
-            <input
-              style={field}
-              aria-label={`Texto do passo ${i + 1}`}
-              value={s.text}
-              placeholder={piece ? stepText(piece) : 'Texto do passo'}
-              onChange={(e) => patchStep(s.id, (x) => ({ ...x, text: e.target.value }))}
-            />
-            {isDangling && (
-              <p className="problems" style={{ margin: 0 }}>
-                A peça deste passo não está mais na bancada. Exclua o passo.
-              </p>
-            )}
-            {problems.map((m) => (
-              <p key={m} className="problems" style={{ margin: 0 }}>
-                {m}
-              </p>
-            ))}
-            {open && (
-              <StepDetails
-                lesson={lesson}
-                step={s}
-                patch={(fn) => patchStep(s.id, fn)}
-                catalog={catalog}
-                stepQuizzes={stepQuizzes}
-              />
-            )}
+              </div>
+              {(s.action === 'explain' || s.action === 'experiment') && open && (
+                <ClientStepForm lesson={lesson} step={s} patch={(fn) => patchStep(s.id, fn)} />
+              )}
+              {s.action !== 'explain' && s.action !== 'experiment' && (
+                <input
+                  style={field}
+                  aria-label={`Texto do passo ${i + 1}`}
+                  value={s.text}
+                  placeholder={piece ? stepText(piece) : 'Texto do passo'}
+                  onChange={(e) => patchStep(s.id, (x) => ({ ...x, text: e.target.value }))}
+                />
+              )}
+              {isDangling && (
+                <p className="problems" style={{ margin: 0 }}>
+                  A peça deste passo não está mais na bancada. Exclua o passo.
+                </p>
+              )}
+              {problems.map((m) => (
+                <p key={m} className="problems" style={{ margin: 0 }}>
+                  {m}
+                </p>
+              ))}
+              {open && s.action !== 'explain' && s.action !== 'experiment' && (
+                <StepDetails
+                  lesson={lesson}
+                  step={s}
+                  patch={(fn) => patchStep(s.id, fn)}
+                  catalog={catalog}
+                  stepQuizzes={stepQuizzes}
+                />
+              )}
             </div>
             <button
               type="button"
@@ -337,8 +360,11 @@ export default function StepsEditor({ lesson, setLesson, selected, setSelected }
       {selected != null && steps[selected] && <StepPreview lesson={lesson} idx={selected} />}
 
       {stepQuizzes.length > 0 && (
-        <details open={selected != null && steps[selected]?.action === 'interact'}>
-          <summary style={{ fontSize: 13, cursor: 'pointer' }}>Perguntas dos passos de interação</summary>
+        // Open while a step question is selected or still has no prompt, so a new question is never hidden.
+        <details open={(selected != null && steps[selected]?.action === 'interact') || stepQuizzes.some((q) => !q.prompt.trim())}>
+          <summary style={{ fontSize: 13, cursor: 'pointer' }}>
+            Perguntas dos passos (o enunciado e as alternativas de cada “Pergunta” acima ficam aqui)
+          </summary>
           <div style={{ marginTop: 8 }}>
             <QuizEditor quizzes={lesson.quizzes} onChange={(quizzes) => set({ quizzes })} only={['step']} />
           </div>

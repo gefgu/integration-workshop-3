@@ -173,7 +173,9 @@ def test_real_piper_voice_makes_an_mp3(tmp_path):
 
 def test_player_lines_are_in_the_system_pack():
     """LessonPlayer.tsx's fixed lines must stay in PLAYER_PHRASES, or the preview goes silent for them."""
-    player = (Path(__file__).parents[2] / "teacher_authoring_app/src/player/LessonPlayer.tsx").read_text("utf-8")
+    player_dir = Path(__file__).parents[2] / "teacher_authoring_app/src/player"
+    # The fixed lines live in the player and in the lab step it hands off to.
+    player = "".join((player_dir / name).read_text("utf-8") for name in ("LessonPlayer.tsx", "ExperimentStep.tsx"))
     from graph_validator.tts.phrases import PRAISE
     for line in PLAYER_PHRASES:
         if line not in ("Agora responda à pergunta.", "Quase! Observe de novo e tente outra vez."):  # steps.py

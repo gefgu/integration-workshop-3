@@ -12,8 +12,8 @@ import {
   span,
 } from '../engine/board.ts';
 import { AMMETER_SLOT, slotAnchor } from '../engine/nodes.ts';
-import { CAPSULE, DEFS, isCapsule, NOMES, nextConfig, POT_DEFAULT, POT_VALUES, turnCcDisc } from '../engine/sim.ts';
-import type { CapsuleReading, CircuitTrail, Piece } from '../model/types.ts';
+import { CAPSULE, DEFS, isCapsule, NOMES, nextConfig, POT_DEFAULT, POT_VALUES } from '../engine/sim.ts';
+import type { CapsuleReading, CircuitTrail, Piece, PieceType } from '../model/types.ts';
 import Breadboard from './Breadboard.tsx';
 import PieceView from './PieceView.tsx';
 import Tray from './Tray.tsx';
@@ -43,6 +43,10 @@ interface BoardWorkspaceProps {
   readOnly?: boolean;
   highlightIds?: Set<string> | null;
   boardFooter?: ReactNode;
+  /** Parts offered in the tray (default: the kit without the color-code capsule). */
+  trayTypes?: PieceType[] | null;
+  /** A loose piece was clicked and is now seated. */
+  onReseat?: (id: string) => void;
 }
 export default function BoardWorkspace({
   pieces,
@@ -56,6 +60,8 @@ export default function BoardWorkspace({
   readOnly = false,
   highlightIds = null,
   boardFooter,
+  trayTypes = null,
+  onReseat,
 }: BoardWorkspaceProps) {
   const boardRef = useRef(null);
   const [drag, setDrag] = useState(null);
@@ -118,7 +124,14 @@ export default function BoardWorkspace({
       setDrag(null);
       const cur = piecesRef.current;
       if (d.id && !d.moved) {
-        // click without moving: flip the piece (a capsule steps through its setting instead)
+        // click without moving: re-seat a loose piece, else flip it (a capsule steps through its setting instead)
+        const clicked = cur.find((p) => p.id === d.id);
+        if (clicked?.loose) {
+          onChange(cur.map((p) => (p.id === d.id ? { ...p, loose: false } : p)));
+          onReseat?.(d.id);
+          setNotice('Encaixado! A peça agora faz contato firme.');
+          return;
+        }
         onChange(
           cur.map((p) => {
             if (p.id !== d.id) return p;
@@ -151,7 +164,7 @@ export default function BoardWorkspace({
       window.removeEventListener('pointerup', up);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onChange, say, holeAt, begin, readOnly]);
+  }, [onChange, say, holeAt, begin, readOnly, onReseat]);
 
   function stepPot(p, dir) {
     const i = POT_VALUES.indexOf(p.value || POT_DEFAULT);
@@ -159,9 +172,6 @@ export default function BoardWorkspace({
     onChange(piecesRef.current.map((x) => (x.id === p.id ? { ...x, value: next } : x)));
   }
 
-  function turnDisc(p, disc) {
-    onChange(piecesRef.current.map((x) => (x.id === p.id ? { ...x, value: turnCcDisc(x.value, disc) } : x)));
-  }
 
   // Snap preview while dragging over the board.
   let preview = null;
@@ -180,11 +190,11 @@ export default function BoardWorkspace({
     <div style={{ display: 'flex', gap: 18, alignItems: 'flex-start', justifyContent: 'center' }}>
       {!readOnly && (
         <div className="board-tray-column">
-          <Tray pieces={pieces} onDragStart={startTrayDrag} />
+          <Tray pieces={pieces} onDragStart={startTrayDrag} types={trayTypes} />
         </div>
       )}
       <div className="board-workbench-column">
-        <Breadboard boardRef={boardRef} trail={trail}>
+        <Breadboard boardRef={boardRef} trail={trail} labels={!readOnly}>
           {[1, 2, 3, 4, 5, 6].map((slot) => {
             const { a, row } = slotAnchor(slot);
             return (
@@ -242,7 +252,13 @@ export default function BoardWorkspace({
               <div
                 key={p.id}
                 onPointerDown={readOnly ? undefined : (e) => startPieceDrag(p, e)}
-                title={isCapsule(p.type) ? `${NOMES[p.type]} — clique para mudar (Shift: ciclo)` : NOMES[p.type]}
+                title={
+                  p.loose
+                    ? `${NOMES[p.type]} — mal encaixado: clique para encaixar de verdade`
+                    : isCapsule(p.type)
+                      ? `${NOMES[p.type]} — clique para mudar (Shift: ciclo)`
+                      : NOMES[p.type]
+                }
                 style={{
                   position: 'absolute',
                   left: colX(lo) - BODY_PAD,
@@ -254,12 +270,32 @@ export default function BoardWorkspace({
                   outline: highlightIds?.has(p.id) ? '3px solid var(--color-accent)' : 'none',
                   outlineOffset: 2,
                   borderRadius: 8,
+                  transform: p.loose ? 'translateY(-6px) rotate(-5deg)' : undefined,
+                  transition: 'transform .15s',
                   filter:
                     glow && p.type !== 'led' && p.type !== 'buzzer'
                       ? 'drop-shadow(0 0 6px rgba(143,160,115,.9))'
                       : 'none',
                 }}
               >
+                {p.loose && (
+                  <span
+                    aria-hidden="true"
+                    style={{
+                      position: 'absolute',
+                      top: -17,
+                      left: 0,
+                      fontSize: 9,
+                      fontWeight: 700,
+                      padding: '1px 5px',
+                      borderRadius: 6,
+                      background: 'var(--color-accent-700)',
+                      color: '#fff',
+                    }}
+                  >
+                    solto
+                  </span>
+                )}
                 <PieceView
                   type={p.type}
                   width={colX(hi) - colX(lo) + 2 * BODY_PAD}
@@ -272,7 +308,6 @@ export default function BoardWorkspace({
                   oled={readings?.[p.id]?.lines}
                   fault={readings?.[p.id]?.fault}
                   onPotStep={!readOnly && p.type === 'potenciometro' ? (dir) => stepPot(p, dir) : undefined}
-                  onCcDisc={!readOnly && p.type === 'resistor_cc' ? (disc) => turnDisc(p, disc) : undefined}
                   pressed={!!pressed && pressed.has(p.id)}
                   onButton={p.type === 'botao' && onPress ? (down) => onPress(p.id, down) : undefined}
                 />

@@ -139,7 +139,7 @@ class TestFaixa(unittest.TestCase):
         from visao.componentes import le_faixa
         # cada faixa, na cor que a câmera real vê (centros medidos em FAIXAS), vira o tipo do catálogo do app web
         tipos = {'laranja': 'resistor_220', 'vermelho': 'resistor_470', 'amarelo': 'resistor_1k',
-                 'rosa': 'resistor_cc', 'verde': 'capacitor'}
+                 'verde': 'capacitor'}
         for faixa, dados in cfg.FAIXAS.items():
             bgr = cv.cvtColor(np.uint8([[dados['hsv']]]), cv.COLOR_HSV2BGR)[0, 0].tolist()
             self.assertEqual(le_faixa(self.retificada_com_faixa(bgr), 0, 1, 3), faixa)

@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { validateStep } from '../api/validator.ts';
 import { TutorVoiceContext, useSay, useTutorVoice } from '../audio/useTutorVoice.ts';
-import BoardWorkspace from '../components/BoardWorkspace.tsx';
 import Bubble from '../components/Bubble.tsx';
-import { useCapsules } from '../components/useCapsules.ts';
-import { mergeTrails } from '../engine/capsules.ts';
-import { diagnose } from '../engine/diagnose.ts';
+import LabBoard from '../components/LabBoard.tsx';
 import { capsuleConfig, formatOhms, isCapsule, NOMES } from '../engine/sim.ts';
-import { cumulativeBoard, effectiveSteps } from '../model/steps.ts';
+import { cumulativeBoard, effectiveSteps, startPieces } from '../model/steps.ts';
+import ExperimentStep from './ExperimentStep.tsx';
+import ExplainStep from './ExplainStep.tsx';
 import { boardBefore, buildPhases, challengeScore, type PlayerEvent } from './phases.ts';
+import { useLab } from './useLab.ts';
 
 export { boardBefore, buildPhases, challengeScore, type PlayerEvent };
 
@@ -65,7 +65,7 @@ const ISSUE_LABELS = {
 
 function pieceDescription(piece, withPosition = true) {
   let name =
-    (piece.type === 'potenciometro' || piece.type === 'resistor_cc') && piece.value
+    piece.type === 'potenciometro' && piece.value
       ? `${NOMES[piece.type]} ${formatOhms(piece.value)}`
       : NOMES[piece.type] || piece.type;
   if (isCapsule(piece.type)) {
@@ -204,8 +204,15 @@ export default function LessonPlayer({
 }) {
   const phases = useMemo(() => buildPhases(lesson), [lesson]);
   const first = Math.min(Math.max(0, startPhase), phases.length - 1);
+  /** The board a phase begins with: the lesson's starting bench for a challenge build, an experiment's own board. */
+  const boardFor = (phaseIdx: number, current: any[]) => {
+    const target = phases[phaseIdx];
+    if (target.type === 'challenge') return startPieces(lesson);
+    if (target.type === 'experiment' && target.step.experiment?.board) return target.step.experiment.board.map((p) => ({ ...p }));
+    return current;
+  };
   const [idx, setIdx] = useState(first);
-  const [pieces, setPieces] = useState(() => (bench ? boardBefore(lesson, first) : [])); // kept across steps
+  const [pieces, setPieces] = useState(() => boardFor(first, boardBefore(lesson, first))); // kept across steps
   const [debugEnabled, setDebugEnabled] = useState(false);
   const startedAt = useRef(Date.now());
   const outcome = useRef<{ expired: boolean }>({ expired: false });
@@ -218,7 +225,7 @@ export default function LessonPlayer({
       type: 'phase_done',
       phase: nextIdx,
       phases: steps,
-      stepIdx: current.type === 'step' || current.type === 'interact' ? current.idx : null,
+      stepIdx: 'idx' in current ? current.idx : null,
     });
     if (phases[nextIdx].type === 'done') {
       const durationS = (Date.now() - startedAt.current) / 1000;
@@ -226,15 +233,16 @@ export default function LessonPlayer({
         lesson.kind === 'challenge' ? challengeScore(durationS, lesson.timeLimitS, outcome.current.expired) : null;
       onEvent?.({ type: 'lesson_done', durationS, score });
     }
+    setPieces((cur) => boardFor(nextIdx, cur));
     setIdx(nextIdx);
   };
   const restart = () => {
-    setPieces([]);
+    setPieces(boardFor(0, boardBefore(lesson, 0)));
     startedAt.current = Date.now();
     outcome.current.expired = false;
     setIdx(0);
   };
-  const stepKey = phase.type === 'step' || phase.type === 'interact' ? phase.step.id : 'challenge';
+  const stepKey = 'step' in phase ? phase.step.id : 'challenge';
   const voice = useTutorVoice(lesson);
   const [muted, setMuted] = useState(false);
   useSay([lesson.title, lesson.instruction], -1, idx === 0); // again on "Testar de novo"
@@ -284,6 +292,18 @@ export default function LessonPlayer({
             onAnswer={(correct) => onEvent?.({ type: 'quiz', quizId: phase.quiz.id, correct })}
           />
         )}
+        {phase.type === 'explain' && <ExplainStep key={stepKey} step={phase.step} onDone={next} />}
+        {phase.type === 'experiment' && (
+          <ExperimentStep
+            key={stepKey}
+            lesson={lesson}
+            step={phase.step}
+            pieces={pieces}
+            setPieces={setPieces}
+            onDone={next}
+            mascotKind={mascotKind}
+          />
+        )}
         {phase.type === 'interact' && (
           <InteractStep
             key={stepKey}
@@ -292,6 +312,7 @@ export default function LessonPlayer({
             pieces={pieces}
             onDone={next}
             mascotKind={mascotKind}
+            onAnswer={(correct) => onEvent?.({ type: 'quiz', quizId: phase.quiz?.id, correct })}
           />
         )}
         {(phase.type === 'step' || phase.type === 'challenge') && (
@@ -299,6 +320,7 @@ export default function LessonPlayer({
             key={stepKey}
             lesson={lesson}
             stepIdx={phase.type === 'step' ? phase.idx : 0}
+            final={phase.type === 'challenge' || phase.step.action === 'connect_circuit'}
             text={phase.type === 'step' ? phase.step.text : ''}
             pieces={pieces}
             setPieces={setPieces}
@@ -417,7 +439,7 @@ function QuizStep({
 }
 
 /** SFR19: a step that leaves the circuit unchanged — approved by the validator from the student's answer. */
-function InteractStep({ lesson, phase, pieces, onDone, mascotKind }) {
+function InteractStep({ lesson, phase, pieces, onDone, mascotKind, onAnswer }) {
   const quiz = phase.quiz;
   useSay([phase.step.text], -0.5, !!quiz);
   if (!quiz) {
@@ -435,6 +457,12 @@ function InteractStep({ lesson, phase, pieces, onDone, mascotKind }) {
     );
   }
   async function verify(optionId) {
+    // A challenge's follow-up questions are the app's own; the validator only knows the final circuit.
+    if (phase.local) {
+      const approved = optionId === quiz.correctId;
+      onAnswer?.(approved);
+      return { approved, message: 'Quase! Pense no que você observou e tente de novo.' };
+    }
     const r = await validateStep({ lesson, pieces, stepIdx: phase.idx, answer: optionId });
     if (!r.ok)
       return {
@@ -477,6 +505,7 @@ function Countdown({ seconds, running, onExpire }) {
 function BuildStep({
   lesson,
   stepIdx,
+  final,
   text,
   pieces,
   setPieces,
@@ -487,34 +516,47 @@ function BuildStep({
   mascotKind,
   bench = false,
 }) {
-  const [energized, setEnergized] = useState(false);
-  const [held, setHeld] = useState<Set<string>>(() => new Set());
+  const settings = lesson.settings;
   const [expired, setExpired] = useState(false);
   const initial = useRef(pieces);
   const touched = pieces !== initial.current;
-  const press = (id, down) =>
-    setHeld((h) => {
-      const n = new Set(h);
-      if (down) n.add(id);
-      else n.delete(id);
-      return n;
-    });
   const v = useStepValidation({ lesson, pieces, stepIdx, debug: debugEnabled });
-  const diag = diagnose(pieces, held);
-  const cap = useCapsules(pieces, held, energized);
+  const lab = useLab(pieces, settings);
+  const { diag, cap } = lab;
 
   // The bubble shows the step's instruction until the student touches the board, then the
-  // validator's message — a hint only arrives when the graph actually changed (SFR7).
+  // validator's message — a hint only arrives when the graph actually changed (SFR7). With
+  // settings.hintAfter the hint waits until the same mistake happened that many times in a row.
   const [shown, setShown] = useState(null);
+  const streak = useRef<{ category: string | null; n: number }>({ category: null, n: 0 });
   const res = v.status === 'ok' ? v.result : null;
   useEffect(() => {
     if (!res) return;
-    if (res.approved) setShown({ tone: 'ok', msg: res.message });
-    else if (touched && res.hint) setShown({ tone: toneFor(res.category), msg: res.hint });
-  }, [res, touched]);
+    if (res.approved) {
+      streak.current = { category: null, n: 0 };
+      setShown({ tone: 'ok', msg: res.message });
+    } else if (touched && res.hint) {
+      // Consecutive misses count whatever the mistake was: a student trying different wrong fixes still gets help.
+      streak.current = { category: res.category, n: streak.current.n + 1 };
+      const wait = settings?.hintAfter ?? 1;
+      if (streak.current.n >= wait) setShown({ tone: toneFor(res.category), msg: res.hint });
+      else setShown({ tone: 'obs', msg: 'Ainda não é isso. Observe o circuito com calma e tente de novo.' });
+    }
+  }, [res, touched, settings?.hintAfter]);
+
+  const looseLeft = pieces.some((p) => p.loose);
+  // The circuit matches; the lesson may also want to see it work (energized and lit) with firm contacts.
+  const built = !!res?.approved && !looseLeft;
+  const working = lab.energized && diag.code === 'valido';
+  const needsWork = final && !!settings?.requireLit;
+  const ready = built && (!needsWork || working);
 
   let tone = 'info',
-    msg = text || 'Monte o circuito.';
+    msg =
+      text ||
+      (lesson.kind === 'challenge' && lesson.start?.pieces.length
+        ? 'Encontre o que está errado no circuito e conserte.'
+        : 'Monte o circuito.');
   if (expired) {
     tone = 'erro';
     msg = bench
@@ -526,16 +568,29 @@ function BuildStep({
   } else if (v.status === 'error') {
     tone = 'erro';
     msg = v.error + (v.problems?.length ? ` ${v.problems.join(' ')}` : '');
+  } else if (lab.alarm) {
+    tone = 'erro';
+    msg = lab.alarm;
+  } else if (res?.approved && looseLeft) {
+    tone = 'obs';
+    msg = 'O circuito está certo, mas uma peça está mal encaixada (marcada como “solta”). Clique nela para encaixar de verdade.';
+  } else if (built && needsWork && !working) {
+    tone = 'ok';
+    msg = 'Montagem certa! Agora clique em Energizar e confira se funciona.';
+  } else if (ready) {
+    tone = 'ok';
+    msg =
+      !touched && final && lesson.kind === 'guided'
+        ? 'Conferi o circuito inteiro: todas as ligações estão certas. Clique em Continuar.'
+        : (shown?.msg ?? 'Muito bem!') + (working && !diag.limited ? ' Circuito fechado ✓' : '');
   } else if (shown && (touched || res?.approved)) ({ tone, msg } = { tone: shown.tone, msg: shown.msg });
 
   // On the bench an expired challenge can still be finished (and scores 0); the editor preview stops.
-  const approved = !!res?.approved && (bench || !expired);
+  const approved = ready && (bench || !expired);
   const fillAnswer = () =>
     setPieces(
       (lesson.kind === 'challenge' ? lesson.board.pieces : cumulativeBoard(lesson, stepIdx)).map((p) => ({ ...p }))
     );
-  const valid = diag.code === 'valido';
-  const lit = energized && (valid || !!cap.driven);
   useSay([msg]);
   return (
     <>
@@ -555,42 +610,8 @@ function BuildStep({
           Tentar de novo
         </button>
       )}
-      <BoardWorkspace
-        pieces={pieces}
-        onChange={setPieces}
-        trail={lit ? mergeTrails(valid ? diag.trail : null, cap.driven) : null}
-        ledMa={lit ? Math.max(valid ? diag.mA : 0, cap.drivenMa) : 0}
-        readings={cap.readings}
-        pressed={held}
-        onPress={press}
-      />
+      <LabBoard lab={lab} pieces={pieces} setPieces={setPieces} settings={settings} />
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, flexWrap: 'wrap' }}>
-        <button
-          type="button"
-          onClick={() => setEnergized((e) => !e)}
-          style={{
-            border: 0,
-            cursor: 'pointer',
-            fontFamily: 'var(--font-heading)',
-            fontSize: 16,
-            padding: '14px 30px',
-            borderRadius: 999,
-            background: energized ? 'var(--color-neutral-700)' : 'var(--color-accent)',
-            color: 'var(--color-bg)',
-            boxShadow: 'var(--shadow-md)',
-          }}
-        >
-          {energized ? 'Desligar' : 'Energizar'}
-        </button>
-        <span
-          style={{
-            fontSize: 14,
-            fontWeight: 600,
-            color: lit ? 'var(--color-accent-2-700)' : 'var(--color-neutral-600)',
-          }}
-        >
-          {energized ? (lit ? `${diag.mA.toFixed(1)} mA no LED` : 'Sem corrente') : 'Bancada desligada'}
-        </span>
         {timeLimitS != null && (
           <Countdown
             seconds={timeLimitS}

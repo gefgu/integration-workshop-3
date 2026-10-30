@@ -45,7 +45,7 @@ DESCONHECIDO = (_bgr('#a19786'), _bgr('#ffffff'))
 ROTULOS = {
     'led_ou_buzzer': 'LED?', 'resistor_ou_capacitor': 'R/C?', 'botao': 'BOTAO',
     'potenciometro': 'POT', 'jumper_curto': '', 'jumper_longo': '',
-    'resistor_220': '220R', 'resistor_470': '470R', 'resistor_1k': '1kR', 'resistor_cc': 'R CC',
+    'resistor_220': '220R', 'resistor_470': '470R', 'resistor_1k': '1kR',
     'capacitor': 'CAP',
 }
 

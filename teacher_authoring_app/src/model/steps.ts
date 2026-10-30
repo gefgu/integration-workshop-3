@@ -1,7 +1,43 @@
 import { uid } from './ids.ts';
 import type { Lesson, LessonStep, Piece, StepAction, StepOptions } from './types.ts';
 
-export const ACTIONS = ['place_component', 'place_connection', 'connect_circuit', 'interact'];
+export const ACTIONS = [
+  'place_component',
+  'place_connection',
+  'connect_circuit',
+  'interact',
+  'explain',
+  'experiment',
+];
+/** Steps only the app plays: the graph_validator never judges them. */
+export const CLIENT_ACTIONS = ['explain', 'experiment'];
+export const isClientStep = (s: Pick<LessonStep, 'action'>) => CLIENT_ACTIONS.includes(s.action);
+
+/**
+ * The steps a challenge plays after its build: explanations, questions and experiments only.
+ * (Guided lessons use `effectiveSteps`.)
+ */
+export function challengeSteps(lesson: Lesson): LessonStep[] {
+  return lesson.kind === 'challenge' ? (lesson.steps || []).filter((s) => isClientStep(s) || s.action === 'interact') : [];
+}
+
+/** The bench a lesson starts from: its preassembled pieces (one of `removeOneOf` removed at random). */
+export function startPieces(lesson: Lesson, random: () => number = Math.random): Piece[] {
+  const start = lesson.start;
+  if (!start) return [];
+  const pool = start.removeOneOf?.length ? start.removeOneOf : null;
+  const drop = pool ? pool[Math.floor(random() * pool.length)] : null;
+  return start.pieces.filter((p) => p.id !== drop).map((p) => ({ ...p }));
+}
+
+/** A challenge only needs a build phase when its starting bench is not already the finished circuit. */
+export function needsBuild(lesson: Lesson): boolean {
+  if (lesson.kind !== 'challenge' || lesson.board.pieces.length === 0) return false;
+  const key = (p: Piece) => `${p.type}:${p.a}:${p.b}:${p.row}:${p.value ?? ''}:${p.loose ? 'x' : ''}`;
+  const have = (lesson.start?.pieces || []).map(key).sort().join('|');
+  const want = lesson.board.pieces.map(key).sort().join('|');
+  return have !== want || !!lesson.start?.removeOneOf?.length;
+}
 export const CATEGORIES = [
   'missing_component',
   'missing_connection',
@@ -26,7 +62,6 @@ const NOME = {
   resistor_220: 'o resistor de 220 Ω',
   resistor_470: 'o resistor de 470 Ω',
   resistor_1k: 'o resistor de 1 kΩ',
-  resistor_cc: 'o resistor de código de cores',
   capacitor: 'o capacitor',
   botao: 'o botão',
   potenciometro: 'o potenciômetro',
@@ -54,11 +89,40 @@ export function newStep(patch: Partial<LessonStep> = {}): LessonStep {
   };
 }
 
+// Jumpers are named the way the tray names them, so the step text matches what the student sees.
+const JUMPER_NOME = {
+  jumper_curto: 'o jumper curto',
+  jumper_longo: 'o jumper longo',
+  jumper_3: 'o jumper de 3 colunas',
+  jumper_4: 'o jumper de 4 colunas',
+  jumper_5: 'o jumper de 5 colunas',
+};
+
 export function stepText(piece: Piece): string {
   if (isJumper(piece.type)) {
-    return `Coloque um jumper de ${Math.abs(piece.a - piece.b)} colunas na bancada. As conexões serão conferidas no passo final.`;
+    return `Coloque ${JUMPER_NOME[piece.type] || 'um jumper'} na bancada. As conexões serão conferidas no passo final.`;
   }
   return `Coloque ${NOME[piece.type] || 'a peça'} na bancada.`;
+}
+
+/** True when the text is one `stepText` generated (so it is safe to regenerate), not something the teacher wrote. */
+const isGeneratedText = (text: string) =>
+  /^Coloque [^.]+ na bancada\.( As conexões serão conferidas no passo final\.)?$/.test(text.trim());
+
+/**
+ * Steps whose text was generated for a piece other than the one now bound to them (the teacher swapped the piece)
+ * get the text of the current piece. Custom text is never touched.
+ */
+export function refreshGeneratedText(lesson: Lesson): Lesson {
+  const byId = new Map(lesson.board.pieces.map((p) => [p.id, p]));
+  let changed = false;
+  const steps = lesson.steps.map((s) => {
+    const piece = s.pieceId ? byId.get(s.pieceId) : null;
+    if (!piece || s.text === stepText(piece) || !(!s.text.trim() || isGeneratedText(s.text))) return s;
+    changed = true;
+    return { ...s, text: stepText(piece) };
+  });
+  return changed ? { ...lesson, steps } : lesson;
 }
 
 /**
@@ -105,7 +169,8 @@ export function reconcile(lesson: Lesson): { unassigned: Piece[]; dangling: Less
   return {
     unassigned: lesson.board.pieces.filter((p) => !used.has(p.id)),
     dangling: lesson.steps.filter(
-      (s) => !['interact', 'connect_circuit'].includes(s.action) && (!s.pieceId || !ids.has(s.pieceId))
+      (s) =>
+        !['interact', 'connect_circuit', ...CLIENT_ACTIONS].includes(s.action) && (!s.pieceId || !ids.has(s.pieceId))
     ),
   };
 }
@@ -118,12 +183,36 @@ export function stepProblems(lesson: Lesson): string[] {
     else if (!Number.isInteger(lesson.timeLimitS) || lesson.timeLimitS < 1)
       out.push('O tempo limite precisa ser um número de segundos maior que zero.');
   }
+  const quizzes = new Map(lesson.quizzes.map((q) => [q.id, q]));
+  const clientProblem = (s: LessonStep, n: number) => {
+    if (s.action === 'experiment') {
+      const goals = s.experiment?.goals;
+      if (!goals?.length) out.push(`Passo ${n}: o experimento precisa de pelo menos uma missão.`);
+      else if (goals.some((g) => !g.label.trim())) out.push(`Passo ${n}: escreva o texto de cada missão.`);
+    }
+    if (s.action === 'explain' && !s.text.trim() && !s.illustration)
+      out.push(`Passo ${n}: escreva a explicação ou adicione uma ilustração.`);
+  };
+  if (lesson.kind === 'challenge') {
+    lesson.steps.forEach((s, i) => {
+      const n = i + 1;
+      if (isClientStep(s)) clientProblem(s, n);
+      else if (s.action === 'interact') {
+        if (quizzes.get(s.quizId)?.position !== 'step')
+          out.push(`Passo ${n}: escolha uma pergunta para o passo de interação.`);
+      } else out.push(`Passo ${n}: o desafio só aceita explicações, experimentos e perguntas depois da montagem.`);
+    });
+    return out;
+  }
   if (lesson.kind !== 'guided' || lesson.steps.length === 0) return out;
   const byId = new Map(lesson.board.pieces.map((p) => [p.id, p]));
-  const quizzes = new Map(lesson.quizzes.map((q) => [q.id, q]));
   const seen = new Set();
   lesson.steps.forEach((s, i) => {
     const n = i + 1;
+    if (isClientStep(s)) {
+      clientProblem(s, n);
+      return;
+    }
     if (s.action === 'interact') {
       const q = quizzes.get(s.quizId);
       if (q?.position !== 'step') out.push(`Passo ${n}: escolha uma pergunta para o passo de interação.`);
@@ -181,7 +270,14 @@ export function toValidatorLesson(lesson: Lesson): any {
     const out: any = {
       id: lesson.id,
       kind: 'challenge',
-      steps: [{ id: 'final', action: 'place_component', pieces: lesson.board.pieces.map(pieceOut) }],
+      steps: [
+        {
+          id: 'final',
+          action: 'place_component',
+          pieces: lesson.board.pieces.map(pieceOut),
+          options: optsOut(lesson.settings),
+        },
+      ],
     };
     if (lesson.timeLimitS != null) out.time_limit_s = lesson.timeLimitS;
     return out;
@@ -194,6 +290,8 @@ export function toValidatorLesson(lesson: Lesson): any {
       const q = quizzes.get(s.quizId);
       return { ...base, interact: { quiz_correct_id: q ? q.correctId : '' } };
     }
+    // Explanations and experiments are the app's: to the validator they are questions nobody answers.
+    if (isClientStep(s)) return { ...base, action: 'interact', interact: { quiz_correct_id: '' } };
     if (s.action === 'connect_circuit') return { ...base, add: [] };
     const p = byId.get(s.pieceId);
     return { ...base, add: p ? [pieceOut(p)] : [] };

@@ -7,7 +7,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, Field, field_validator
 
 from .catalog import (
-    AMMETER_SLOT, CAPSULES, CATALOG, CC_VALUES, COLS, MAX_CAPSULES, ROWS, SLOT_COLS, SLOT_ROWS, TYPES, config_problems,
+    AMMETER_SLOT, CAPSULES, CATALOG, COLS, MAX_CAPSULES, ROWS, SLOT_COLS, SLOT_ROWS, TYPES, config_problems,
     normalize_type, slot_of,
 )
 
@@ -136,8 +136,6 @@ def board_problems(pieces: list[Piece]) -> list[str]:
                 out.append(f"{p.id}: {p.type} must span {CATALOG[p.type].length} column(s)")
             if p.c is not None or p.config:
                 out.append(f"{p.id}: {p.type} takes no third column or config")
-            if p.type == "resistor_cc" and p.value is not None and p.value not in CC_VALUES:
-                out.append(f"{p.id}: {p.value} ohms cannot be set on the color-code discs")
         used[p.type] = used.get(p.type, 0) + 1
         lo, hi = min(cols), max(cols)
         for olo, ohi, oid in spans.get(p.row, []):

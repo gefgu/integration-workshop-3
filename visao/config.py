@@ -97,7 +97,6 @@ FAIXAS = {
     'laranja':  {'hsv': (11, 127, 220), 'tipo': 'resistor_220', 'web': '#f28c28'},
     'vermelho': {'hsv': (8, 171, 175),  'tipo': 'resistor_470', 'web': '#e5423a'},
     'amarelo':  {'hsv': (33, 82, 224),  'tipo': 'resistor_1k',  'web': '#f2d52e'},
-    'rosa':     {'hsv': (170, 75, 185), 'tipo': 'resistor_cc',  'web': '#e883bd'},
     'verde':    {'hsv': (81, 170, 130), 'tipo': 'capacitor',    'web': '#39b96b'},
 }
 FAIXA_JANELA = (8, 22, 8)   # px na imagem retificada: meia largura, acima e abaixo do centro da ponte
