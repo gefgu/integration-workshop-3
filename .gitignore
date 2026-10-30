@@ -75,3 +75,7 @@ bench/service/*.sqlite3*
 
 # Local presentation video (exceeds GitHub file limit)
 /docs/deliverables/d3/software_images/web_app_overview.mp4
+
+# headless browser driver profile and test servers
+graph_validator/.cdp-profile*/
+graph_validator/*.log

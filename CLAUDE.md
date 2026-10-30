@@ -90,3 +90,13 @@ The current independent electronics redesign is revision5. Follow the revision5 
 The latest testable-perfboard candidate is revision7: it keeps revision6's four boards, functional parts, nets and phases and changes wiring and test aids only (ground bus bars, a standard probe header, status LEDs, designated test pads, fail-safe removable links). Read the revision7 section of the perfboard guidelines and eletronics/perfboard/tscircuit/revision7/README.md and selftest.md. Do not edit revision5/revision6 or the shared design/model.mjs and design/boards.mjs; extend model7.mjs, place7.mjs, testaids7.mjs and links7.mjs. Generated drawings, PDFs and self-test tables are not measured evidence.
 
 **Connector part numbers:** never show connector, header or pogo-pin MPNs (e.g. Mill-Max `0906-0-15-20-76-14-11-0`, `61201021621`, `TSW-105-07-G-S`) on any tscircuit schematic — the purchased parts are not identified yet, and the number reads as a claim about the part. The MPN must stay in the circuit data (tscircuit checks fail without one), so `eletronics/perfboard/tscircuit/scripts/strip-connector-mpns.mjs` removes the drawn text from `dist/boards/*/schematic.svg`, `local.json` and `assembly/*-schematic.svg`; it runs from `npm run build` and `build:local`. Keep that hook and regenerate the schematics after any change. MPNs may stay in BOM/catalog data, flagged as unverified.
+
+## Color-coded resistor: removed
+
+The color-code resistor (the three-disc "resistor de código de cores", piece type `resistor_cc`, requirement EFR12) is
+**fully removed from the project**; do not bring it back or design around it. It is gone from the teacher app
+(types, simulator, board, tray, editor options, the `ccLimited`/`hideColorKey` lesson settings), the validator
+(catalog, models, feedback, TTS phrases), the vision config (the pink `rosa` band) and the curriculum (the resistor-color
+bonus lessons; the curriculum is now 20 lessons). Ordinary 220 Ω, 470 Ω and 1 kΩ resistors stay, and the app still
+draws their bands from the value. Lessons saved earlier with a `resistor_cc` piece are no longer valid. `circuito.json`
+is a captured vision output from before the removal and still lists one such piece.

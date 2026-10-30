@@ -77,6 +77,19 @@ function AppRoutes() {
     };
   }, [teacherId]);
 
+  // The open lesson differs from the saved one (or was never saved): leaving or testing would not keep the edits.
+  const unsaved = (() => {
+    const strip = (l) => JSON.stringify({ ...l, updatedAt: 0, audio: 0 });
+    const stored = lessons.find((item) => item.id === lesson.id);
+    return !stored || strip(stored) !== strip(lesson);
+  })();
+  useEffect(() => {
+    if (!unsaved || !window.location.pathname.startsWith('/editor')) return;
+    const warn = (e: BeforeUnloadEvent) => e.preventDefault();
+    window.addEventListener('beforeunload', warn);
+    return () => window.removeEventListener('beforeunload', warn);
+  }, [unsaved]);
+
   const flash = (msg) => {
     setStatus(msg);
     setTimeout(() => setStatus(''), 3000);
@@ -215,6 +228,7 @@ function AppRoutes() {
                     onTest={() => navigate(lessonTestPath(lesson.id))}
                     status={status}
                     error={error}
+                    unsaved={unsaved}
                   />
                 }
               />
@@ -226,6 +240,7 @@ function AppRoutes() {
                     lessons={lessons}
                     lesson={lesson}
                     setLesson={setLesson}
+                    unsaved={unsaved}
                     onExit={() => navigate(`/editor/${encodeURIComponent(lesson.id)}`)}
                   />
                 }
@@ -242,7 +257,7 @@ function AppRoutes() {
 /** "Testar" opens the lesson validator; the lesson id in the URL makes the page linkable. */
 export const lessonTestPath = (id: string) => `/sandbox/licao/${encodeURIComponent(id)}`;
 
-function SandboxRoute({ lessons, lesson, setLesson, onExit }) {
+function SandboxRoute({ lessons, lesson, setLesson, onExit, unsaved }) {
   const { mode, lessonId } = useParams();
   const navigate = useNavigate();
   const testing = mode === 'licao';
@@ -258,12 +273,20 @@ function SandboxRoute({ lessons, lesson, setLesson, onExit }) {
   }, [mode, testing, lessonId, lesson.id, lessons, navigate, setLesson]);
 
   return (
-    <Sandbox
-      lesson={lesson}
-      mode={testing ? 'lesson' : 'free'}
-      onMode={(next) => navigate(next === 'lesson' ? lessonTestPath(lesson.id) : '/sandbox')}
-      onExit={onExit}
-    />
+    <>
+      {testing && unsaved && (
+        <p role="status" className="problems" style={{ margin: '0 0 10px' }}>
+          Você está testando a versão aberta no editor, que ainda não foi salva. Volte ao editor e clique em Salvar para
+          guardá-la.
+        </p>
+      )}
+      <Sandbox
+        lesson={lesson}
+        mode={testing ? 'lesson' : 'free'}
+        onMode={(next) => navigate(next === 'lesson' ? lessonTestPath(lesson.id) : '/sandbox')}
+        onExit={onExit}
+      />
+    </>
   );
 }
 
@@ -319,7 +342,7 @@ function AppLayout({ lesson, teacherName, onSignOut }) {
   );
 }
 
-function EditorRoute({ lessons, lesson, setLesson, onSave, onExport, onTest, status, error }) {
+function EditorRoute({ lessons, lesson, setLesson, onSave, onExport, onTest, status, error, unsaved }) {
   const { lessonId } = useParams();
   const navigate = useNavigate();
 
@@ -343,6 +366,7 @@ function EditorRoute({ lessons, lesson, setLesson, onSave, onExport, onTest, sta
         onExport={onExport}
         onTest={onTest}
         status={status}
+        unsaved={unsaved}
       />
     </>
   );

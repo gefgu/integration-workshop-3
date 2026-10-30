@@ -7,6 +7,8 @@ import {
   effectiveSteps,
   newStep,
   reconcile,
+  refreshGeneratedText,
+  stepText,
   stepProblems,
   toValidatorLesson,
 } from '../src/model/steps.ts';
@@ -37,7 +39,7 @@ test('autoSplit: bateria primeiro, componentes por coluna, jumpers por último, 
     ['place_component', 'place_component', 'place_connection', 'place_connection', 'connect_circuit']
   );
   assert.match(steps[0].text, /bateria/);
-  assert.match(steps[2].text, /jumper de 1 colunas/);
+  assert.match(steps[2].text, /jumper curto/); // named the way the tray names it
   assert.equal(new Set(steps.map((s) => s.id)).size, 5);
 });
 
@@ -126,7 +128,7 @@ test('toValidatorLesson: interact usa o correctId da pergunta; desafio vira pass
   assert.equal(v.time_limit_s, 90);
 });
 
-test('validateLesson: v1 migra para v3 e versões anteriores preservam os passos', () => {
+test('validateLesson: v1 migra para v4 e versões anteriores preservam os passos', () => {
   const v1 = {
     version: 1,
     id: 'l1',
@@ -139,7 +141,7 @@ test('validateLesson: v1 migra para v3 e versões anteriores preservam os passos
   };
   const m = validateLesson(JSON.parse(JSON.stringify(v1)));
   assert.equal(m.ok, true);
-  assert.equal(m.lesson.version, 3);
+  assert.equal(m.lesson.version, 4);
   assert.equal(m.lesson.steps.length, 5);
   assert.equal(m.lesson.timeLimitS, null);
 
@@ -165,4 +167,25 @@ test('overrideRows/rowsToOverrides são inversas', async () => {
   const ov = { reversed_polarity: { led: 'Vire!', '*': 'Gire.' }, missing_connection: { '*': 'Falta fio.' } };
   assert.deepEqual(rowsToOverrides(overrideRows(ov)), ov);
   assert.deepEqual(overrideRows({}), []);
+});
+
+test('refreshGeneratedText troca o texto gerado para outra peça, mas não o texto do professor', () => {
+  const lesson = newLesson();
+  lesson.board.pieces = [{ id: 'p1', type: 'jumper_4', a: 1, b: 5, row: 0 }];
+  const stale = newStep({ action: 'place_connection', pieceId: 'p1', text: 'Coloque um jumper de 5 colunas na bancada. As conexões serão conferidas no passo final.' });
+  const custom = newStep({ action: 'place_connection', pieceId: 'p1', text: 'Use o fio vermelho da caixa.' });
+  lesson.steps = [stale, custom];
+  const next = refreshGeneratedText(lesson);
+  assert.equal(next.steps[0].text, stepText(lesson.board.pieces[0]));
+  assert.match(next.steps[0].text, /4 colunas/);
+  assert.equal(next.steps[1].text, 'Use o fio vermelho da caixa.');
+  assert.equal(refreshGeneratedText(next), next, 'idempotente');
+});
+
+test('o texto dos jumpers usa o nome da bandeja, sem "1 colunas"', () => {
+  for (const type of ['jumper_curto', 'jumper_longo', 'jumper_3', 'jumper_4', 'jumper_5'] as const) {
+    const text = stepText({ id: 'x', type, a: 1, b: 2, row: 0 });
+    assert.doesNotMatch(text, /\b1 colunas/);
+    assert.match(text, /jumper (curto|longo|de \d colunas)/);
+  }
 });

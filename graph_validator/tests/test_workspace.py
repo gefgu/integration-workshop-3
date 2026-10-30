@@ -69,3 +69,32 @@ def test_workspace_crud_and_assignments(tmp_path):
             delete_lesson("a", db, me)
     finally:
         engine.dispose()
+
+
+def test_v4_fields_are_kept_and_older_lessons_stay_clean(tmp_path):
+    engine = create_engine(f"sqlite:///{tmp_path / 'v4.db'}")
+    Base.metadata.create_all(engine)
+    try:
+        with Session(engine) as db:
+            me = Teacher(id=1, email="teacher@example.test", name="Demo")
+            db.add(me)
+            db.commit()
+            plain = save_lesson("plain", lesson("plain"), db, me)
+            assert not {"start", "settings", "teacherNotes", "tags"} & plain.keys()
+            rich = lesson("rich").model_copy(update={
+                "version": 4,
+                "start": {"pieces": [], "removeOneOf": ["w1"]},
+                "settings": {"requireLit": True, "hintAfter": 2},
+                "teacherNotes": "Objetivo: ...",
+                "tags": ["exemplo"],
+                "steps": [{"id": "s1", "action": "experiment", "title": "Lab",
+                           "experiment": {"goals": [{"id": "g", "label": "Veja", "seen": ["lit"]}]}}],
+            })
+            saved = save_lesson("rich", rich, db, me)
+            assert saved["settings"] == {"requireLit": True, "hintAfter": 2}
+            assert saved["start"]["removeOneOf"] == ["w1"]
+            assert saved["tags"] == ["exemplo"] and saved["teacherNotes"].startswith("Objetivo")
+            assert saved["steps"][0]["experiment"]["goals"][0]["seen"] == ["lit"]
+            assert [d["id"] for d in list_lessons(db, me)] == ["rich", "plain"]
+    finally:
+        engine.dispose()

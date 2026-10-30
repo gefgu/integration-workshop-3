@@ -23,8 +23,8 @@ test('analyze: bateria → resistor → LED → volta é válido', () => {
   assert.equal(analyze(pieces).code, 'valido');
 });
 
-test('analyze: jumper direto nos polos é curto', () => {
-  assert.equal(analyze([P('bat', 'bateria', 1, 2), P('w', 'jumper_curto', 1, 2, 1)]).code, 'par_duplicado');
+test('analyze: jumper direto nos polos é curto (mesmo nas mesmas colunas da bateria)', () => {
+  assert.equal(analyze([P('bat', 'bateria', 1, 2), P('w', 'jumper_curto', 1, 2, 1)]).code, 'curto');
   assert.equal(
     analyze([P('bat', 'bateria', 1, 2), P('w', 'jumper_curto', 1, 3), P('w2', 'jumper_curto', 3, 2, 1)]).code,
     'curto'

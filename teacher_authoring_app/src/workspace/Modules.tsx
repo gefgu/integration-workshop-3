@@ -42,7 +42,7 @@ function ModuleList({ lessons }: { lessons: Lesson[] }) {
   return (
     <div className="workspace-page">
       <h2>Módulos</h2>
-      <p>Um módulo é uma trilha de lições em ordem. Atribua módulos às turmas e envie-os à bancada pelo app.</p>
+      <p>Um módulo é uma trilha de lições em ordem. Atribua módulos às turmas; o aplicativo do professor leva o pacote à bancada.</p>
       {error && (
         <p className="app-error" role="alert">
           {error}
@@ -88,6 +88,7 @@ function ModuleList({ lessons }: { lessons: Lesson[] }) {
               {item.lesson_ids.slice(0, 4).map((lessonId) => (
                 <li key={lessonId}>{lessons.find((l) => l.id === lessonId)?.title ?? lessonId}</li>
               ))}
+              {item.lesson_ids.length > 4 && <li>… e mais {item.lesson_ids.length - 4}</li>}
             </ol>
             <Link to={`/modulos/${item.id}`}>Abrir módulo</Link>
           </article>
@@ -231,7 +232,9 @@ function ModulePage({ moduleId, lessons }: { moduleId: number; lessons: Lesson[]
               value={module.lesson_ids}
               options={lessons.map((lesson) => ({
                 id: lesson.id,
-                label: `${lesson.title} (${kindLabel(lesson)})`,
+                label: lesson.title.trim().endsWith(`(${kindLabel(lesson)})`)
+                  ? lesson.title
+                  : `${lesson.title} (${kindLabel(lesson)})`,
                 href: `/editor/${encodeURIComponent(lesson.id)}`,
               }))}
               onChange={(next) =>
@@ -264,8 +267,9 @@ function ModulePage({ moduleId, lessons }: { moduleId: number; lessons: Lesson[]
           <section className="panel workspace-section">
             <h2>Pacote para a bancada</h2>
             <p>
-              O app do professor envia este pacote à bancada por Bluetooth. Aqui você pode baixar o mesmo pacote (JSON)
-              para conferência.
+              Este site não se conecta à bancada: ele monta o pacote do módulo para a turma escolhida. O envio à bancada
+              é feito pelo aplicativo do professor, no celular, por Bluetooth. Aqui você pode baixar o mesmo pacote
+              (JSON) para conferência.
             </p>
             <div className="workspace-actions">
               <select

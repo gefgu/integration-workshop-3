@@ -24,13 +24,11 @@ O esquema formal está em [`lesson.schema.json`](lesson.schema.json). Na leitura
 ### Piece
 
 ```json
-{"id": "r1", "type": "resistor_cc", "a": 3, "b": 4, "row": 1, "value": 470}
+{"id": "r1", "type": "resistor_470", "a": 3, "b": 4, "row": 1}
 ```
 
 - `a` e `b` são as colunas dos terminais (1–11). `row` vai de 0 a 11: as linhas 0–5 são o banco A e as linhas 6–11 são o banco B.
-- `value` existe só para dois tipos:
-  - `potenciometro`: um dos valores de `POT_VALUES`.
-  - `resistor_cc`: um valor que os três discos conseguem formar (`CC_VALUES`, EFR12).
+- `value` existe só no potenciômetro (`potenciometro`): um dos valores de `POT_VALUES`.
 - `c` e `config` existem só nas cápsulas inteligentes (`capsula_*`).
 
 ### LessonStep

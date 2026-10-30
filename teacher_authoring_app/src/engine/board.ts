@@ -4,9 +4,10 @@ import { countByType, DEFS, isCapsule, KIT_LIMITS, MAX_CAPSULES, NOMES } from '.
 
 /**
  * Two banks of 11 columns × 6 rows (12 rows total) split by a central channel.
- * All sockets of a column are ONE electrical node (across both banks), so a
- * piece only stores its two columns (`a`, `b`) plus a cosmetic `row` 0–11
- * (rows 0–5 = first bank, 6–11 = second bank).
+ * The six sockets of a column inside ONE bank are one electrical node; the same column number in the
+ * other bank is a different node (the channel breaks it), so each column number has two nodes
+ * (A5 and B5). A piece stores its two columns (`a`, `b`) plus its `row` 0–11
+ * (rows 0–5 = bank A, 6–11 = bank B), and the row decides which bank's nodes it joins.
  */
 export const COLS = 11;
 export const BANK_ROWS = 6;

@@ -108,6 +108,11 @@ class LessonInput(BaseModel):
     quizzes: list[dict[str, Any]]
     timeLimitS: int | None = None
     updatedAt: str | None = None
+    # v4: preassembled/faulty start bench, per-lesson behaviour, notes and labels for teachers.
+    start: dict[str, Any] | None = None
+    settings: dict[str, Any] | None = None
+    teacherNotes: str | None = None
+    tags: list[str] | None = None
 
     @field_validator("title")
     @classmethod
@@ -245,6 +250,9 @@ def save_lesson(lesson_id: str, body: LessonInput, db: Db, me: Me) -> dict:
         db.add(item)
     updated = datetime.now(timezone.utc)
     document = body.model_dump()
+    for optional in ("start", "settings", "teacherNotes", "tags"):  # absent, not null, on older lessons
+        if document.get(optional) is None:
+            document.pop(optional, None)
     document["updatedAt"] = updated.isoformat()
     document["audio"] = speak(document)
     item.title = body.title
