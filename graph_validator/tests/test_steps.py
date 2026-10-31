@@ -88,3 +88,15 @@ def test_invalid_board_is_an_error_not_feedback():
     bad = parts_from_pieces([P("a", "led", 1, 2, 0), P("b", "led", 2, 3, 0), P("c", "led", 5, 6, 0)])
     with pytest.raises(InvalidBoard):
         evaluate_step(l, 0, bad)
+
+
+def test_n01_disconnected_jumper_is_not_praised():
+    l = lesson()
+    wrong = parts_from_pieces([
+        P('bat', 'bateria', 1, 2, 0), P('led', 'led', 3, 4, 2),
+        P('j', 'jumper_curto', 8, 9, 3),
+    ])
+    result = evaluate_step(l, 2, wrong)
+    assert not result.approved
+    assert result.message
+    assert evaluate_step(l, 2, parts(3)).approved

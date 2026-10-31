@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { statusLedOn } from '../engine/lab.ts';
+import { statusLedOn, buzzerSound } from '../engine/lab.ts';
 import { NOMES } from '../engine/sim.ts';
 import type { Lab } from '../player/useLab.ts';
 import type { LessonSettings, Piece } from '../model/types.ts';
@@ -55,10 +55,13 @@ export default function LabBoard({
   let readout = 'Bancada desligada';
   if (lab.fading) readout = `Descarregando o capacitor: ${mA(lab.ledMa)} mA no LED, caindo…`;
   else if (lab.energized && lab.lit) {
-    const where = loads.length > 1 ? 'no LED e no buzzer (cada ramo)' : loads[0] === 'buzzer' ? 'no buzzer' : 'no LED';
-    readout = `${mA(lab.ledMa)} mA ${where}`;
+    const where = loads[0] === 'buzzer' ? 'no buzzer' : 'no LED';
+    const currents = lab.diag.currents;
+    readout = loads.length > 1 && currents
+      ? `LED: ${mA(currents.led ?? 0)} mA · buzzer: ${mA(currents.buzzer ?? 0)} mA · total da bateria: ${mA((currents.led ?? 0) + (currents.buzzer ?? 0))} mA`
+      : `${mA(lab.ledMa)} mA ${where}`;
     // Without a resistor the real current would be far above this: say the bench is holding it back.
-    if (lab.diag.limited) readout += ' (limitada pela bancada)';
+    if (lab.diag.limited) readout += ' (limite da simulação)';
   } else if (lab.energized && lab.blinkOff) readout = 'Contato instável: a luz pisca';
   else if (lab.energized) readout = 'Sem corrente';
   return (
@@ -145,8 +148,7 @@ export default function LabBoard({
         </span>
         {lab.diag.code === 'valido' && lab.energized && lab.diag.limited && (
           <span style={{ fontSize: 13 }}>
-            ⚠ circuito fechado, mas sem resistor: a bancada está segurando a corrente. Um LED sozinho, sem esse limite,
-            poderia queimar.
+            ⚠ resistência ausente ou pequena demais: o modelo simulado limita a corrente a 15 mA. Isso não comprova proteção na bancada física.
           </span>
         )}
         {lab.diag.code === 'valido' && lab.energized && !lab.diag.limited && !pieces.some((p) => p.loose) && (
@@ -162,6 +164,9 @@ export default function LabBoard({
           </span>
         )}
       </div>
+      {pieces.some((p) => p.type === 'buzzer') && (
+        <p role="status">Som simulado: volume {Math.round(buzzerSound(lab.energized ? lab.diag.currents?.buzzer ?? 0 : 0).volume * 100)}% · tom {buzzerSound(lab.energized ? lab.diag.currents?.buzzer ?? 0 : 0).hz} Hz. O comportamento do buzzer físico ainda não foi medido.</p>
+      )}
       {pieces.some((p) => p.type === 'buzzer') && (
         <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13 }}>
           <input type="checkbox" checked={lab.soundOn} onChange={(e) => lab.setSoundOn(e.target.checked)} />

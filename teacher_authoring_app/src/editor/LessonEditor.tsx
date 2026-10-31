@@ -53,6 +53,7 @@ export default function LessonEditor({ lesson, setLesson, onSave, onExport, onTe
 
       <section className="panel" style={{ flex: '1 1 340px', maxWidth: 460 }}>
         <h2>Lição</h2>
+        {lesson.title.endsWith('(cópia)') && <p>Cópia de “{lesson.title.replace(/ \(cópia\)$/, '')}”. Suas alterações aqui não mudam o original.</p>}
         <details>
           <summary>Como criar uma atividade (e que tipos existem)</summary>
           <ol>

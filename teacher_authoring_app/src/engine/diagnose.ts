@@ -29,10 +29,12 @@ export function diagnose(
   const branches = an.code === 'valido' ? an.branches || [{ trail: an.trail, ohms: an.ohms, load: an.load }] : [];
   let mA = 0;
   let limited = false;
+  const currents: Partial<Record<'led' | 'buzzer', number>> = {};
   for (const b of branches) {
     const c = branchCurrent(b);
     mA = Math.max(mA, c.mA);
     limited = limited || c.limited;
+    if (b.load) currents[b.load] = (currents[b.load] ?? 0) + c.mA;
   }
   let trail = null;
   const loadsLit = [...new Set(branches.map((b) => b.load).filter((l) => l != null))] as ('led' | 'buzzer')[];
@@ -55,7 +57,7 @@ export function diagnose(
   const msg =
     an.code === 'valido'
       ? both
-        ? `Circuito fechado. A corrente se divide: o LED e o buzzer funcionam ao mesmo tempo (até ${mA.toFixed(1)} mA em cada ramo).`
+        ? `Circuito fechado. LED: ${currents.led.toFixed(1)} mA; buzzer: ${currents.buzzer.toFixed(1)} mA. A corrente se divide entre os ramos.`
         : an.load === 'buzzer'
           ? `Circuito fechado. O buzzer toca com ${mA.toFixed(1)} mA.`
           : `Circuito fechado. Passam ${mA.toFixed(1)} mA pelo LED.`
@@ -63,7 +65,8 @@ export function diagnose(
   return {
     code: an.code,
     tone,
-    msg: limited ? `${msg} A bancada limita a corrente a ${BENCH_LIMIT_MA} mA.` : msg,
+    msg: limited ? `${msg} O modelo simulado limita a corrente a ${BENCH_LIMIT_MA} mA.` : msg,
+    currents,
     trail,
     mA,
     load: an.load || null,

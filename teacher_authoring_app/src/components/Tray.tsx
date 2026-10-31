@@ -68,6 +68,8 @@ function TrayGrid({ types, used, onDragStart }) {
             />
             <div>
               <div className="name">{NOMES[type]}</div>
+              {type.startsWith('jumper') && <div className="meta">Alcance: {DEFS[type].len + 1} colunas, de ponta a ponta</div>}
+              {type === 'potenciometro' && <div className="meta">100 Ω – 10 kΩ (−/+ em sete valores)</div>}
               <div className="meta">
                 {left} de {KIT_LIMITS[type]} no kit
               </div>

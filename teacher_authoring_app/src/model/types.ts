@@ -141,6 +141,8 @@ export interface QuizOption {
   feedback: string;
 }
 export interface Quiz {
+  /** A hypothesis: every option permits continuing to the experiment. */
+  prediction?: boolean;
   id: string;
   position: QuizPosition;
   prompt: string;
@@ -241,6 +243,7 @@ export interface CircuitTrail {
   nodes: Set<number>;
 }
 export interface DiagnoseResult {
+  currents?: Partial<Record<'led' | 'buzzer', number>>;
   code: string;
   tone: 'info' | 'ok' | 'erro';
   msg: string;

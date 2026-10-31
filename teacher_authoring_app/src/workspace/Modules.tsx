@@ -5,6 +5,8 @@ import { bench, workspace } from '../api/workspace.ts';
 import type { Lesson } from '../model/types.ts';
 import { downloadBlob } from '../storage/lessonStore.ts';
 import OrderedPicker from './OrderedPicker.tsx';
+import { orderLessons, lessonLabel } from '../model/library.ts';
+import { useUnsavedChanges } from '../useUnsavedChanges.ts';
 
 /** A module is an ordered track of lessons; classes receive modules and the bench loads one at a time. */
 export default function Modules({ lessons }: { lessons: Lesson[] }) {
@@ -15,8 +17,6 @@ export default function Modules({ lessons }: { lessons: Lesson[] }) {
     <ModuleList lessons={lessons} />
   );
 }
-
-const kindLabel = (lesson?: Lesson) => (lesson?.kind === 'challenge' ? 'desafio' : 'guiada');
 
 function ModuleList({ lessons }: { lessons: Lesson[] }) {
   const navigate = useNavigate();
@@ -107,6 +107,8 @@ function ModulePage({ moduleId, lessons }: { moduleId: number; lessons: Lesson[]
   const [packageClass, setPackageClass] = useState('');
   const [error, setError] = useState('');
   const [status, setStatus] = useState('');
+  const dirty = !!module && (title !== module.title || description !== module.description);
+  useUnsavedChanges(dirty);
 
   useEffect(() => {
     Promise.all([workspace.listModules(), workspace.listClasses()]).then(
@@ -189,10 +191,11 @@ function ModulePage({ moduleId, lessons }: { moduleId: number; lessons: Lesson[]
             className="panel workspace-form"
             onSubmit={(event) => {
               event.preventDefault();
-              void run(() => workspace.updateModule(moduleId, { title, description }), 'Módulo atualizado.');
+              void run(() => workspace.updateModule(moduleId, { title, description }), 'Módulo salvo.');
             }}
           >
             <h2>Módulo</h2>
+            {dirty && <p role="status">Alterações ainda não salvas no título ou na descrição.</p>}
             <label className="field-label" htmlFor="edit-module-title">
               Título
             </label>
@@ -225,16 +228,14 @@ function ModulePage({ moduleId, lessons }: { moduleId: number; lessons: Lesson[]
 
           <section className="panel workspace-section">
             <h2>Lições do módulo</h2>
-            <p>A bancada apresenta as lições nesta ordem e retoma na primeira que o aluno não concluiu.</p>
+            <p>A ordem das lições e as turmas são salvas automaticamente. Título e descrição precisam de “Salvar módulo”. A bancada apresenta as lições nesta ordem.</p>
             <OrderedPicker
               label="Selecione uma lição"
               empty="Nenhuma lição no módulo."
               value={module.lesson_ids}
-              options={lessons.map((lesson) => ({
+              options={orderLessons(lessons).map((lesson) => ({
                 id: lesson.id,
-                label: lesson.title.trim().endsWith(`(${kindLabel(lesson)})`)
-                  ? lesson.title
-                  : `${lesson.title} (${kindLabel(lesson)})`,
+                label: lessonLabel(lesson),
                 href: `/editor/${encodeURIComponent(lesson.id)}`,
               }))}
               onChange={(next) =>
@@ -268,8 +269,8 @@ function ModulePage({ moduleId, lessons }: { moduleId: number; lessons: Lesson[]
             <h2>Pacote para a bancada</h2>
             <p>
               Este site não se conecta à bancada: ele monta o pacote do módulo para a turma escolhida. O envio à bancada
-              é feito pelo aplicativo do professor, no celular, por Bluetooth. Aqui você pode baixar o mesmo pacote
-              (JSON) para conferência.
+              é feito pelo aplicativo do professor, no celular. A transferência com a bancada física ainda precisa de teste de ponta a ponta. Aqui você pode baixar o pacote
+              (JSON) para conferência e backup; este arquivo não é enviado à bancada por este site. Use o aplicativo do professor para a entrega.
             </p>
             <div className="workspace-actions">
               <select

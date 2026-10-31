@@ -100,14 +100,14 @@ const JUMPER_NOME = {
 
 export function stepText(piece: Piece): string {
   if (isJumper(piece.type)) {
-    return `Coloque ${JUMPER_NOME[piece.type] || 'um jumper'} na bancada. As conexões serão conferidas no passo final.`;
+    return `Coloque ${JUMPER_NOME[piece.type] || 'um jumper'} na bancada. Confira se ele liga as colunas pedidas no circuito.`;
   }
   return `Coloque ${NOME[piece.type] || 'a peça'} na bancada.`;
 }
 
 /** True when the text is one `stepText` generated (so it is safe to regenerate), not something the teacher wrote. */
 const isGeneratedText = (text: string) =>
-  /^Coloque [^.]+ na bancada\.( As conexões serão conferidas no passo final\.)?$/.test(text.trim());
+  /^Coloque [^.]+ na bancada\.( As conexões serão conferidas no passo final\.| Confira se ele liga as colunas pedidas no circuito\.)?$/.test(text.trim());
 
 /**
  * Steps whose text was generated for a piece other than the one now bound to them (the teacher swapped the piece)

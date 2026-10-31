@@ -9,6 +9,7 @@ import ExperimentStep from './ExperimentStep.tsx';
 import ExplainStep from './ExplainStep.tsx';
 import { boardBefore, buildPhases, challengeScore, type PlayerEvent } from './phases.ts';
 import { useLab } from './useLab.ts';
+import { challengeHint } from './hints.ts';
 
 export { boardBefore, buildPhases, challengeScore, type PlayerEvent };
 
@@ -24,7 +25,8 @@ function useStepValidation({ lesson, pieces, stepIdx, answer = null, debug = fal
   const prevHash = useRef(null);
   const seq = useRef(0);
   const [state, setState] = useState<any>({ status: 'checking' });
-  const [_tries, setTries] = useState(0);
+  const [tries, setTries] = useState(0);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: tries deliberately retriggers an offline validation
   useEffect(() => {
     const mine = ++seq.current;
     const t = setTimeout(async () => {
@@ -32,13 +34,14 @@ function useStepValidation({ lesson, pieces, stepIdx, answer = null, debug = fal
       if (mine !== seq.current) return;
       if (r.ok === true) {
         prevHash.current = r.result.graphHash;
-        setState({ status: 'ok', result: r.result });
+        setState({ status: 'ok', result: r.result, pieces });
       } else setState({ status: r.offline ? 'offline' : 'error', error: r.error, problems: r.problems });
     }, 250);
     return () => clearTimeout(t);
-  }, [lesson, pieces, stepIdx, answer, debug]);
+  }, [lesson, pieces, stepIdx, answer, debug, tries]);
   return {
     ...state,
+    ...(state.status === 'ok' && state.pieces !== pieces ? { status: 'checking', result: null } : {}),
     retry: () => {
       setState({ status: 'checking' });
       setTries((n) => n + 1);
@@ -134,7 +137,7 @@ function ValidationDebug({ lesson, stepIdx, pieces, result, error, problems }) {
           <div>
             <strong>Ligações esperadas</strong>
             <ul>
-              {result.debug.expectedNets.map((net) => (
+              {[...new Set<string>(result.debug.expectedNets)].map((net) => (
                 <li key={net}>{net}</li>
               ))}
             </ul>
@@ -143,7 +146,7 @@ function ValidationDebug({ lesson, stepIdx, pieces, result, error, problems }) {
           <div>
             <strong>Ligações na bancada</strong>
             <ul>
-              {result.debug.actualNets.map((net) => (
+              {[...new Set<string>(result.debug.actualNets)].map((net) => (
                 <li key={net}>{net}</li>
               ))}
             </ul>
@@ -208,12 +211,15 @@ export default function LessonPlayer({
   const boardFor = (phaseIdx: number, current: any[]) => {
     const target = phases[phaseIdx];
     if (target.type === 'challenge') return startPieces(lesson);
-    if (target.type === 'experiment' && target.step.experiment?.board) return target.step.experiment.board.map((p) => ({ ...p }));
+    if (target.type === 'experiment' && target.step.experiment?.board)
+      return target.step.experiment.board.map((p) => ({ ...p }));
     return current;
   };
   const [idx, setIdx] = useState(first);
   const [pieces, setPieces] = useState(() => boardFor(first, boardBefore(lesson, first))); // kept across steps
   const [debugEnabled, setDebugEnabled] = useState(false);
+  const [prediction, setPrediction] = useState<string | null>(null);
+  const [clipsSwapped, setClipsSwapped] = useState(() => Math.random() < 0.5);
   const startedAt = useRef(Date.now());
   const outcome = useRef<{ expired: boolean }>({ expired: false });
   const phase = phases[idx];
@@ -240,6 +246,8 @@ export default function LessonPlayer({
     setPieces(boardFor(0, boardBefore(lesson, 0)));
     startedAt.current = Date.now();
     outcome.current.expired = false;
+    setPrediction(null);
+    setClipsSwapped(Math.random() < 0.5);
     setIdx(0);
   };
   const stepKey = 'step' in phase ? phase.step.id : 'challenge';
@@ -290,6 +298,7 @@ export default function LessonPlayer({
             onDone={next}
             mascotKind={mascotKind}
             onAnswer={(correct) => onEvent?.({ type: 'quiz', quizId: phase.quiz.id, correct })}
+            onPrediction={setPrediction}
           />
         )}
         {phase.type === 'explain' && <ExplainStep key={stepKey} step={phase.step} onDone={next} />}
@@ -302,6 +311,8 @@ export default function LessonPlayer({
             setPieces={setPieces}
             onDone={next}
             mascotKind={mascotKind}
+            prediction={prediction}
+            clipsSwapped={clipsSwapped}
           />
         )}
         {phase.type === 'interact' && (
@@ -313,6 +324,8 @@ export default function LessonPlayer({
             onDone={next}
             mascotKind={mascotKind}
             onAnswer={(correct) => onEvent?.({ type: 'quiz', quizId: phase.quiz?.id, correct })}
+            onPrediction={setPrediction}
+            clipsSwapped={clipsSwapped}
           />
         )}
         {(phase.type === 'step' || phase.type === 'challenge') && (
@@ -362,7 +375,7 @@ function AudioStatus({ lesson }) {
   const audio = lesson.audio;
   let text = '';
   if (!audio) text = 'Sem áudio: salve a lição para gerar a voz.';
-  else if (audio.status !== 'ok') text = `Sem áudio (${audio.detail || audio.status}).`;
+  else if (audio.status !== 'ok') text = 'Sem voz do tutor. Você pode ler os textos na tela.';
   if (!text) return null;
   return <span style={{ fontSize: 12, color: 'var(--color-neutral-600)' }}>{text}</span>;
 }
@@ -374,19 +387,22 @@ function QuizStep({
   mascotKind,
   verify,
   onAnswer,
+  onPrediction,
 }: {
   quiz: any;
   onDone: () => void;
   mascotKind: string;
   verify?: (id: string) => Promise<any>;
   onAnswer?: (correct: boolean) => void;
+  onPrediction?: (text: string) => void;
 }) {
   const [picked, setPicked] = useState(null);
   const [verdict, setVerdict] = useState(null);
   const option = quiz.options.find((o) => o.id === picked);
-  const correct = verify ? !!verdict?.approved : picked === quiz.correctId;
+  const correct = quiz.prediction ? !!option : verify ? !!verdict?.approved : picked === quiz.correctId;
   let msg: string;
   if (!option) msg = 'Escolha uma alternativa.';
+  else if (quiz.prediction) msg = 'Hipótese anotada! Continue para testar e comparar com o resultado.';
   else if (verify && !verdict) msg = 'Conferindo…';
   else if (correct) msg = option.feedback || praise();
   else msg = option.feedback || (verify && verdict.message) || 'Não foi dessa vez. Tente de novo.';
@@ -396,6 +412,10 @@ function QuizStep({
 
   async function pick(o) {
     setPicked(o.id);
+    if (quiz.prediction) {
+      onPrediction?.(o.text);
+      return;
+    }
     if (verify) {
       setVerdict(null);
       setVerdict(await verify(o.id));
@@ -405,7 +425,7 @@ function QuizStep({
     <>
       <Bubble
         kind={mascotKind}
-        tone={!option || (verify && !verdict) ? 'info' : correct ? 'ok' : 'erro'}
+        tone={quiz.prediction || !option || (verify && !verdict) ? 'info' : correct ? 'ok' : 'erro'}
         message={msg}
       />
       <div className="panel" style={{ maxWidth: 720, width: '100%' }}>
@@ -439,8 +459,17 @@ function QuizStep({
 }
 
 /** SFR19: a step that leaves the circuit unchanged — approved by the validator from the student's answer. */
-function InteractStep({ lesson, phase, pieces, onDone, mascotKind, onAnswer }) {
-  const quiz = phase.quiz;
+function InteractStep({ lesson, phase, pieces, onDone, mascotKind, onAnswer, onPrediction, clipsSwapped }) {
+  const sourceQuiz = phase.quiz;
+  const clipQuestion = sourceQuiz?.options.length === 2 && sourceQuiz.options.every((o) => /^Clipe [AB]$/.test(o.text));
+  const quiz =
+    clipQuestion && clipsSwapped
+      ? {
+          ...sourceQuiz,
+          correctId: sourceQuiz.options.find((o) => o.id !== sourceQuiz.correctId).id,
+          options: sourceQuiz.options.map((o, i) => ({ ...o, feedback: sourceQuiz.options[1 - i].feedback })),
+        }
+      : sourceQuiz;
   useSay([phase.step.text], -0.5, !!quiz);
   if (!quiz) {
     return (
@@ -474,7 +503,7 @@ function InteractStep({ lesson, phase, pieces, onDone, mascotKind, onAnswer }) {
   return (
     <>
       {phase.step.text && <p style={{ margin: 0, maxWidth: 720, fontSize: 14 }}>{phase.step.text}</p>}
-      <QuizStep quiz={quiz} onDone={onDone} mascotKind={mascotKind} verify={verify} />
+      <QuizStep quiz={quiz} onDone={onDone} mascotKind={mascotKind} verify={verify} onPrediction={onPrediction} />
     </>
   );
 }
@@ -491,9 +520,14 @@ function Countdown({ seconds, running, onExpire }) {
   }, [left, onExpire]);
   return (
     <span
+      role="timer"
+      aria-label="Tempo restante do desafio"
       style={{
-        fontSize: 14,
+        fontSize: 22,
         fontWeight: 700,
+        padding: '10px 18px',
+        border: '2px solid currentColor',
+        borderRadius: 12,
         color: left <= 10 ? 'var(--color-accent-700)' : 'var(--color-neutral-700)',
       }}
     >
@@ -524,31 +558,33 @@ function BuildStep({
   const lab = useLab(pieces, settings);
   const { diag, cap } = lab;
 
-  // The bubble shows the step's instruction until the student touches the board, then the
-  // validator's message — a hint only arrives when the graph actually changed (SFR7). With
-  // settings.hintAfter the hint waits until the same mistake happened that many times in a row.
+  // Count deliberate board changes and power-on attempts, not responses or the starting board.
   const [shown, setShown] = useState(null);
-  const streak = useRef<{ category: string | null; n: number }>({ category: null, n: 0 });
+  const [misses, setMisses] = useState(0);
+  const lastBoard = useRef(pieces);
+  useEffect(() => {
+    if (pieces !== lastBoard.current) {
+      lastBoard.current = pieces;
+      setMisses((n) => n + 1);
+    }
+  }, [pieces]);
   const res = v.status === 'ok' ? v.result : null;
   useEffect(() => {
     if (!res) return;
     if (res.approved) {
-      streak.current = { category: null, n: 0 };
+      setMisses(0);
       setShown({ tone: 'ok', msg: res.message });
-    } else if (touched && res.hint) {
-      // Consecutive misses count whatever the mistake was: a student trying different wrong fixes still gets help.
-      streak.current = { category: res.category, n: streak.current.n + 1 };
-      const wait = settings?.hintAfter ?? 1;
-      if (streak.current.n >= wait) setShown({ tone: toneFor(res.category), msg: res.hint });
-      else setShown({ tone: 'obs', msg: 'Ainda não é isso. Observe o circuito com calma e tente de novo.' });
+    } else if (misses > 0) {
+      setShown({ tone: toneFor(res.category), msg: challengeHint(lesson, pieces, misses, res.hint || res.message) });
     }
-  }, [res, touched, settings?.hintAfter]);
+  }, [res, misses, lesson, pieces]);
 
   const looseLeft = pieces.some((p) => p.loose);
   // The circuit matches; the lesson may also want to see it work (energized and lit) with firm contacts.
   const built = !!res?.approved && !looseLeft;
   const working = lab.energized && diag.code === 'valido';
-  const needsWork = final && !!settings?.requireLit;
+  const predictionBeforeExperiment = lesson.kind === 'guided' && lesson.quizzes.some((q) => q.prediction);
+  const needsWork = final && !!settings?.requireLit && !predictionBeforeExperiment;
   const ready = built && (!needsWork || working);
 
   let tone = 'info',
@@ -556,12 +592,10 @@ function BuildStep({
       text ||
       (lesson.kind === 'challenge' && lesson.start?.pieces.length
         ? 'Encontre o que está errado no circuito e conserte.'
-        : 'Monte o circuito.');
+        : lesson.instruction || 'Monte o circuito.');
   if (expired) {
     tone = 'erro';
-    msg = bench
-      ? 'O tempo acabou! Termine o circuito para ver sua pontuação.'
-      : 'O tempo acabou! Vamos para a explicação, e depois você pode tentar de novo com “Testar de novo”.';
+    msg = 'O tempo acabou! Clique em Continuar para ver a explicação. Você pode refazer a lição depois.';
   } else if (v.status === 'offline') {
     tone = 'erro';
     msg = 'Validador offline. Inicie o serviço (npm run validator) e tente de novo.';
@@ -571,9 +605,16 @@ function BuildStep({
   } else if (lab.alarm) {
     tone = 'erro';
     msg = lab.alarm;
+  } else if (lab.energized && diag.limited) {
+    tone = 'obs';
+    msg = 'Funcionou na simulação, mas veja o aviso de limite de corrente antes de continuar.';
+  } else if (built && lab.energized && !working && needsWork) {
+    tone = 'obs';
+    msg = diag.msg || 'O caminho está aberto: siga do + da bateria até o LED e confira onde cada jumper termina.';
   } else if (res?.approved && looseLeft) {
     tone = 'obs';
-    msg = 'O circuito está certo, mas uma peça está mal encaixada (marcada como “solta”). Clique nela para encaixar de verdade.';
+    msg =
+      'O circuito está certo, mas uma peça está mal encaixada (marcada como “solta”). Clique nela para encaixar de verdade.';
   } else if (built && needsWork && !working) {
     tone = 'ok';
     msg = 'Montagem certa! Agora clique em Energizar e confira se funciona.';
@@ -581,11 +622,11 @@ function BuildStep({
     tone = 'ok';
     msg =
       !touched && final && lesson.kind === 'guided'
-        ? 'Conferi o circuito inteiro: todas as ligações estão certas. Clique em Continuar.'
+        ? 'Esta etapa está conferida. Observe a montagem e clique em Continuar.'
         : (shown?.msg ?? 'Muito bem!') + (working && !diag.limited ? ' Circuito fechado ✓' : '');
-  } else if (shown && (touched || res?.approved)) ({ tone, msg } = { tone: shown.tone, msg: shown.msg });
+  } else if (shown && (touched || misses > 0 || res?.approved)) ({ tone, msg } = { tone: shown.tone, msg: shown.msg });
 
-  // On the bench an expired challenge can still be finished (and scores 0); the editor preview stops.
+  // A timeout scores zero and permits continuing to the explanation in both player modes.
   const approved = ready && (bench || !expired);
   const fillAnswer = () =>
     setPieces(
@@ -610,24 +651,35 @@ function BuildStep({
           Tentar de novo
         </button>
       )}
-      <LabBoard lab={lab} pieces={pieces} setPieces={setPieces} settings={settings} />
+      {timeLimitS != null && (
+        <Countdown
+          seconds={timeLimitS}
+          running={!expired && !approved}
+          onExpire={() => {
+            setExpired(true);
+            onExpired?.();
+          }}
+        />
+      )}
+      <LabBoard
+        lab={{
+          ...lab,
+          toggle: () => {
+            if (!lab.energized && !ready) setMisses((n) => n + 1);
+            lab.toggle();
+          },
+        }}
+        pieces={pieces}
+        setPieces={setPieces}
+        settings={settings}
+      />
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, flexWrap: 'wrap' }}>
-        {timeLimitS != null && (
-          <Countdown
-            seconds={timeLimitS}
-            running={!expired && !approved}
-            onExpire={() => {
-              setExpired(true);
-              onExpired?.();
-            }}
-          />
-        )}
         {!bench && (
           <button type="button" className="pill-link-btn muted" onClick={fillAnswer}>
             preencher com o gabarito
           </button>
         )}
-        {(approved || (expired && !bench)) && (
+        {(approved || expired) && (
           <button type="button" className="btn-primary" onClick={onDone}>
             Continuar
           </button>

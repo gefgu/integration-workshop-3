@@ -113,7 +113,7 @@ export default function LessonOptions({
             placeholder="—"
             onChange={(e) => setSettings({ hintAfter: e.target.value ? Number(e.target.value) : undefined })}
           />{' '}
-          erros iguais seguidos (vazio: dar a dica sempre)
+          erros seguidos, de qualquer tipo (vazio: dar a dica sempre)
         </label>
 
         <strong style={{ fontSize: 13 }}>Peças na bandeja do aluno</strong>

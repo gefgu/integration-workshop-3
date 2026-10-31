@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
-  BrowserRouter,
+  createBrowserRouter,
+  RouterProvider,
   Navigate,
   NavLink,
   Outlet,
@@ -23,20 +24,25 @@ import { downloadBlob, downloadLesson, duplicateLesson, readLessonFile } from '.
 import Classes from './workspace/Classes.tsx';
 import Modules from './workspace/Modules.tsx';
 import Students from './workspace/Students.tsx';
+import { useUnsavedChanges } from './useUnsavedChanges.ts';
 
 function audioStatus(audio) {
   if (audio?.status === 'ok') return `Voz do tutor: ${Object.keys(audio.phrases).length} falas em áudio.`;
-  return `Sem voz do tutor${audio?.detail ? ` (${audio.detail})` : ''}.`;
+  return 'Sem voz do tutor. Você pode ler os textos na tela.';
 }
 
-export default function App() {
-  return (
-    <BrowserRouter>
+const router = createBrowserRouter([
+  {
+    path: '*',
+    element: (
       <AuthProvider>
         <AppRoutes />
       </AuthProvider>
-    </BrowserRouter>
-  );
+    ),
+  },
+]);
+export default function App() {
+  return <RouterProvider router={router} />;
 }
 
 function AppRoutes() {
@@ -49,6 +55,8 @@ function AppRoutes() {
   const [loaded, setLoaded] = useState(false);
   const [status, setStatus] = useState('');
   const [error, setError] = useState('');
+  const [pendingImport, setPendingImport] = useState(null);
+  const [replaceImport, setReplaceImport] = useState(false);
   useEffect(() => {
     if (!teacherId) {
       setLessons([]);
@@ -83,12 +91,6 @@ function AppRoutes() {
     const stored = lessons.find((item) => item.id === lesson.id);
     return !stored || strip(stored) !== strip(lesson);
   })();
-  useEffect(() => {
-    if (!unsaved || !window.location.pathname.startsWith('/editor')) return;
-    const warn = (e: BeforeUnloadEvent) => e.preventDefault();
-    window.addEventListener('beforeunload', warn);
-    return () => window.removeEventListener('beforeunload', warn);
-  }, [unsaved]);
 
   const flash = (msg) => {
     setStatus(msg);
@@ -104,7 +106,7 @@ function AppRoutes() {
         current.id === saved.id ? { ...current, updatedAt: saved.updatedAt, audio: saved.audio } : current
       );
       setError('');
-      flash(`Lição salva no banco de dados. ${audioStatus(saved.audio)}`);
+      flash(`Lição salva. ${audioStatus(saved.audio)}`);
       return saved;
     } catch (cause) {
       setError((cause as Error).message);
@@ -145,18 +147,21 @@ function AppRoutes() {
       return;
     }
     const exists = lessons.some((savedLesson) => savedLesson.id === result.lesson.id);
-    try {
-      const saved = await workspace.saveLesson(result.lesson);
-      setLessons((items) => [saved, ...items.filter((item) => item.id !== saved.id)]);
-      open(saved);
-      flash(exists ? 'Lição importada (substituiu a de mesmo id).' : 'Lição importada.');
-    } catch (cause) {
-      setError((cause as Error).message);
+    if (exists) {
+      setPendingImport(result.lesson);
+      setReplaceImport(false);
+    } else {
+      open(result.lesson);
+      flash('Lição importada no editor. Clique em Salvar para guardá-la.');
     }
   }
 
   async function duplicate(selectedLesson) {
-    await save(duplicateLesson(selectedLesson));
+    const copy = await save(duplicateLesson(selectedLesson));
+    if (copy) {
+      open(copy);
+      flash(`Cópia de “${selectedLesson.title}”. O original não muda.`);
+    }
   }
 
   async function remove(selectedLesson) {
@@ -170,6 +175,7 @@ function AppRoutes() {
   }
 
   async function signOut() {
+    if (!window.dispatchEvent(new Event('tedtronics:before-signout', { cancelable: true }))) return;
     await endSession();
     navigate('/login', { replace: true });
   }
@@ -196,6 +202,43 @@ function AppRoutes() {
                 element={
                   <>
                     {error && <AppError message={error} />}
+                    {pendingImport && (
+                      <section className="panel" role="dialog" aria-label="Importar lição existente">
+                        <p>Já existe uma lição com este id. Como deseja abrir o arquivo?</p>
+                        <label>
+                          <input
+                            type="radio"
+                            name="import-mode"
+                            checked={!replaceImport}
+                            onChange={() => setReplaceImport(false)}
+                          />{' '}
+                          Importar como cópia (recomendado)
+                        </label>
+                        <label>
+                          <input
+                            type="radio"
+                            name="import-mode"
+                            checked={replaceImport}
+                            onChange={() => setReplaceImport(true)}
+                          />{' '}
+                          Substituir ao salvar
+                        </label>
+                        <p>A lição armazenada só muda quando você clicar em Salvar.</p>
+                        <button
+                          type="button"
+                          className="btn-primary"
+                          onClick={() => {
+                            open(replaceImport ? pendingImport : duplicateLesson(pendingImport));
+                            setPendingImport(null);
+                          }}
+                        >
+                          Abrir no editor
+                        </button>
+                        <button type="button" className="btn-outline" onClick={() => setPendingImport(null)}>
+                          Cancelar
+                        </button>
+                      </section>
+                    )}
                     <Library
                       lessons={lessons}
                       onNew={create}
@@ -261,6 +304,10 @@ function SandboxRoute({ lessons, lesson, setLesson, onExit, unsaved }) {
   const { mode, lessonId } = useParams();
   const navigate = useNavigate();
   const testing = mode === 'licao';
+  useUnsavedChanges(
+    unsaved && testing,
+    (path) => path === `/editor/${encodeURIComponent(lesson.id)}` || path === lessonTestPath(lesson.id)
+  );
 
   useEffect(() => {
     if (mode && !testing) navigate('/sandbox', { replace: true });
@@ -345,6 +392,7 @@ function AppLayout({ lesson, teacherName, onSignOut }) {
 function EditorRoute({ lessons, lesson, setLesson, onSave, onExport, onTest, status, error, unsaved }) {
   const { lessonId } = useParams();
   const navigate = useNavigate();
+  useUnsavedChanges(unsaved, (path) => path === lessonTestPath(lesson.id));
 
   useEffect(() => {
     if (!lessonId || lesson.id === lessonId) return;

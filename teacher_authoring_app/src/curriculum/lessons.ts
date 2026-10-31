@@ -114,6 +114,7 @@ function lesson(s: Spec): Lesson {
   const steps = (s.steps ?? []).map((st) => ({ ...st, id: scope(st.id), quizId: st.quizId ? scope(st.quizId) : null }));
   const quizzes = (s.quizzes ?? []).map((q) => ({
     ...q,
+    ...(/q-prev|q-pred/.test(q.id) ? { prediction: true } : {}),
     id: scope(q.id),
     correctId: scope(q.correctId),
     options: q.options.map((o) => ({ ...o, id: scope(o.id) })),
@@ -143,7 +144,7 @@ const KIT = (...types: Piece['type'][]) => types;
 // --- Lesson 1 ------------------------------------------------------------------------------------
 
 const L01_NOTES = `Objetivo: reconhecer a bancada e entender que cada coluna tem DOIS nós (A em cima, B embaixo) separados pela abertura central.
-Como saber que deu certo: a cápsula da bateria encaixada, confirmada pelo LED de status da própria bancada.
+Como saber que deu certo: a bateria encaixada e o LED de status simulado aceso na tela.
 ${SIM} O LED de status é desenhado na tela quando há uma bateria encaixada; a lição não afirma que o LED físico foi lido.
 A versão guiada tem explicações, o explorador de nós e duas perguntas; o desafio não mostra instrução.`;
 
@@ -235,11 +236,13 @@ function lesson01(): Lesson[] {
   const challenge = lesson({
     id: `${SEED_PREFIX}01-desafio`,
     title: 'Lição 1 — Conhecendo a bancada (desafio)',
-    instruction: '',
+    instruction: 'Encaixe a bateria com + e − em colunas diferentes. Observe o LED de status simulado e depois explique quais furos estão ligados.',
     kind: 'challenge',
     board,
+    steps: [interact('i-nos', 'Agora confira o que você sabe sobre os dois bancos.', q1)],
+    quizzes: [q1],
     settings: { statusLed: true, tray: KIT('bateria') },
-    notes: `${L01_NOTES}\nDesafio: bancada vazia, bateria solta na bandeja e nenhuma instrução na tela (o campo de instrução fica vazio de propósito).`,
+    notes: `${L01_NOTES}\nDesafio: encaixar a bateria, observar o LED de status simulado e responder sobre os nós.`,
     tags: ['desafio', 'sem instruções', 'exemplo'],
   });
   return [guided, challenge];
@@ -249,7 +252,7 @@ function lesson01(): Lesson[] {
 
 const L02_NOTES = `Objetivo: o primeiro circuito fechado — a corrente só passa em um caminho completo do + ao −.
 Como saber que deu certo: ao clicar em “Energizar” o LED acende e a tela mostra “circuito fechado ✓”.
-Simplificação didática: sem resistor nesta lição; o resistor entra na lição 3. A tela avisa que a bancada está limitando a corrente; com um LED real, sem resistor, ele poderia queimar.
+Simplificação didática: sem resistor nesta lição; o resistor entra na lição 3. A tela avisa que a simulação está limitando a corrente; com um LED real, sem resistor, ele poderia queimar.
 ${SIM}
 O circuito foi refeito para a bancada de 5 V.`;
 
@@ -267,7 +270,7 @@ function lesson02(): Lesson[] {
   );
   const qFio = quiz(
     'q-fio',
-    'Você tirou um jumper e a luz apagou. Por quê?',
+    'Por que a luz apaga quando falta um jumper?',
     [
       ['A bateria acabou.', 'A bateria continua boa — repare que ao recolocar o fio a luz volta.'],
       [
@@ -299,7 +302,7 @@ function lesson02(): Lesson[] {
           ['w1', 'Use um jumper para ligar o + da bateria ao lado “+” do LED.'],
           ['w2', 'Use outro jumper para ligar o lado “−” do LED de volta ao − da bateria.'],
         ],
-        'Agora confira o circuito inteiro e clique em Energizar para ver o LED acender.'
+        'Confira o circuito inteiro. Faça sua previsão antes de energizar.'
       ),
       interact('i-prev', 'Pense antes de testar.', qPrev),
       experiment(
@@ -308,7 +311,7 @@ function lesson02(): Lesson[] {
         'Clique em Energizar. Depois, tire um jumper (arraste para fora), energize de novo e veja o que muda.',
         {
           goals: [
-            { id: 'lit', label: 'Energize e veja o LED acender com “circuito fechado ✓”.', seen: ['lit'] },
+            { id: 'lit', label: 'Energize e observe o LED e o aviso da simulação.', seen: ['lit'] },
             { id: 'open', label: 'Tire um jumper e veja a luz apagar.', seen: ['energized'], now: ['dark'] },
           ],
         }
@@ -331,6 +334,8 @@ function lesson02(): Lesson[] {
     kind: 'challenge',
     board,
     start: { pieces: board, removeOneOf: ['w1', 'w2'] },
+    steps: [interact('i-fio', 'O que faltava para a corrente dar a volta?', qFio)],
+    quizzes: [qFio],
     settings: {
       requireLit: true,
       allowNoResistor: true,
@@ -405,7 +410,7 @@ function lesson03(): Lesson[] {
       experiment(
         'x-ma',
         'Leia a corrente',
-        'Energize e olhe a tela do amperímetro: ela mostra quantos mA passam pelo LED.',
+        'Energize e olhe a tela do amperímetro: ela mostra a corrente simulada pelo LED. As telas arredondam para uma casa decimal: 6,25 mA aparece como 6,3 mA. O amperímetro acrescenta 10 Ω ao modelo; sem ele, 470 Ω dá cerca de 6,4 mA.',
         {
           goals: [
             { id: 'lit', label: 'Energize: o LED acende e o amperímetro mostra a corrente em mA.', seen: ['lit'] },
@@ -505,7 +510,7 @@ function lesson04(): Lesson[] {
       ],
       [
         'Quando a barra fica do lado do +.',
-        'Nessa posição o LED ficou apagado (você viu “reversed” na bancada). Teste de novo.',
+        'Nessa posição o LED ficou apagado (você viu o LED apagado na simulação). Teste de novo.',
       ],
       ['Nas duas posições.', 'O LED só acende em uma delas. Gire a peça e compare.'],
     ],
@@ -542,7 +547,7 @@ function lesson04(): Lesson[] {
         {
           goals: [
             { id: 'acende', label: 'Veja o LED acender em uma posição.', seen: ['lit'] },
-            { id: 'apaga', label: 'Gire o LED e veja que, ao contrário, ele fica apagado.', seen: ['reversed_dark'] },
+            { id: 'apaga', label: 'Gire o LED, energize de novo e compare as duas posições.', seen: ['reversed_dark'] },
           ],
         }
       ),
@@ -550,7 +555,7 @@ function lesson04(): Lesson[] {
       explain(
         'e-pol',
         'O nome disso: polaridade',
-        'Você descobriu a polaridade: o LED é uma via de mão única. A corrente entra pelo anodo (+) e sai pelo catodo (−). Ligado ao contrário, ele bloqueia e não acende — e isso protege o LED.\n\nMuitas peças têm polaridade: a bateria, o LED e, em geral, o capacitor.',
+        'Você descobriu a polaridade: o LED é uma via de mão única. A corrente entra pelo anodo (+) e sai pelo catodo (−). Ligado ao contrário, ele bloqueia a corrente e não acende.\n\nMuitas peças têm polaridade: a bateria, o LED e, em geral, o capacitor.',
         artLedPolarity()
       ),
     ],
@@ -572,7 +577,7 @@ function lesson04(): Lesson[] {
       hintAfter: 2,
       tray: KIT('bateria', 'resistor_470', 'led', 'jumper_longo', 'jumper_3'),
     },
-    notes: `${L04_NOTES}\nDesafio: o LED começa invertido, sem aviso. A dica só vem depois de dois erros iguais seguidos.`,
+    notes: `${L04_NOTES}\nDesafio: o LED começa invertido, sem aviso. A dica só vem depois de dois erros seguidos, de qualquer tipo.`,
     tags: ['desafio', 'bancada com defeito', 'polaridade', 'exemplo'],
   });
   return [guided, challenge];
@@ -638,8 +643,8 @@ function lesson05(): Lesson[] {
         'Energize. Segure o botão (ou use os controles abaixo da bancada) e depois solte.',
         {
           goals: [
-            { id: 'ap', label: 'Aperte o botão e veja o LED acender.', seen: ['pressed_lit'] },
-            { id: 'so', label: 'Solte o botão e veja o LED apagar.', seen: ['released_dark'] },
+            { id: 'ap', label: 'Energize e observe o LED com o botão apertado.', seen: ['pressed_lit'] },
+            { id: 'so', label: 'Solte o botão e compare o LED.', seen: ['released_dark'] },
           ],
         }
       ),
@@ -697,21 +702,21 @@ function lesson05(): Lesson[] {
 
 // --- Lesson 6 ------------------------------------------------------------------------------------
 
-const L06_NOTES = `Objetivo: a resistência pode variar de forma contínua; o potenciômetro regula o brilho sem degraus.
-Como saber que deu certo: guiada — o brilho muda em tempo real ao girar, sem degraus perceptíveis, confirmado em pergunta; desafio — prever para que lado girar para escurecer e conferir varrendo todo o curso.
-${SIM} O botão giratório é um controle deslizante contínuo entre 220 Ω e 10 kΩ (a bancada limita a corrente em 15 mA, por isso o mínimo é 220 Ω).`;
+const L06_NOTES = `Objetivo: entender como variar a resistência muda o brilho, distinguindo um controle físico dos controles na tela.
+Como saber que deu certo: guiada — comparar os sete valores de −/+ com os valores intermediários do controle deslizante; desafio — prever para que lado aumentar a resistência e conferir varrendo o curso.
+${SIM} Na tela, os botões −/+ passam por sete valores entre 100 Ω e 10 kΩ; o controle deslizante permite valores intermediários entre 220 Ω e 10 kΩ (o modelo simulado limita a corrente em 15 mA, por isso o mínimo é 220 Ω).`;
 
 function lesson06(): Lesson[] {
   const board = circuitL06();
   const qGradual = quiz(
     'q-gradual',
-    'Quando você girou o botão, o brilho mudou…',
+    'Como o brilho muda nos controles desta simulação?',
     [
-      ['Aos pulos, em poucos degraus.', 'Passe o controle devagar: o brilho muda aos poucos, sem pulos.'],
-      ['Aos poucos e continuamente.', 'Isso! O potenciômetro varia a resistência de forma contínua.'],
+      ['Aos pulos com −/+; aos poucos com o controle deslizante.', 'Isso! Os botões usam sete valores; o controle deslizante permite valores intermediários.'],
+      ['Sempre sem degraus, inclusive com −/+.', 'Os botões −/+ usam sete valores. Compare com o controle deslizante.'],
       ['Não mudou.', 'Gire de ponta a ponta com o LED aceso e observe o brilho.'],
     ],
-    1
+    0
   );
   const guided = lesson({
     id: `${SEED_PREFIX}06-guiada`,
@@ -723,7 +728,7 @@ function lesson06(): Lesson[] {
       explain(
         'e-pot',
         'Um resistor que gira',
-        'O potenciômetro é um resistor que você regula com um botão giratório. Girando para um lado a resistência aumenta e a corrente diminui; para o outro, acontece o contrário. Diferente dos resistores fixos, ele tem infinitos valores entre o mínimo e o máximo.',
+        'O potenciômetro é um resistor que você regula com um botão giratório. Girando para um lado a resistência aumenta e a corrente diminui; para o outro, acontece o contrário. Um potenciômetro físico permite valores intermediários. Nesta tela, −/+ usa sete valores; no experimento há também um controle deslizante.',
         artPot()
       ),
       ...build(
@@ -740,7 +745,7 @@ function lesson06(): Lesson[] {
       experiment(
         'x-gira',
         'Gire o botão',
-        'Energize e arraste o controle de uma ponta à outra. Observe o brilho em tempo real.',
+        'Energize e experimente −/+ (sete valores) ou o controle deslizante abaixo. Compare o brilho.',
         {
           slider: { pieceId: 'pot', label: 'Resistência do potenciômetro' },
           goals: [
@@ -866,7 +871,7 @@ function lesson07(): Lesson[] {
         {
           goals: [
             { id: 'lit', label: 'Energize e veja o LED aceso.', seen: ['lit'] },
-            { id: 'fade', label: 'Desligue e veja o LED apagar aos poucos até sumir.', seen: ['faded'] },
+            { id: 'fade', label: 'Desligue e observe a luz até ela sumir.', seen: ['faded'] },
           ],
         }
       ),
@@ -936,7 +941,7 @@ function lesson07(): Lesson[] {
 
 const L08_NOTES = `Objetivo: relacionar o valor do resistor ao som do buzzer (força/altura).
 Como saber que deu certo: guiada — o buzzer soa e o aluno percebe a diferença ao trocar o resistor; desafio — dois clipes de áudio com resistores diferentes e o aluno diz qual é o maior.
-Limitações documentadas: (1) Não existem gravações do buzzer real no repositório; os sons são SINTETIZADOS no navegador por um modelo didático (volume proporcional à corrente; altura sobe de 450 Hz com 60 Hz por mA). A resposta de um buzzer físico não foi medida — verifique na bancada antes de afirmar a mesma coisa em aula. (2) O desafio usa dois clipes simulados (A = 1 kΩ, B = 220 Ω), não gravações.
+Limitações documentadas: (1) Não há gravações do buzzer físico nesta atividade; os sons são SINTETIZADOS no navegador por um modelo didático (volume proporcional à corrente; altura sobe de 450 Hz com 60 Hz por mA). A resposta de um buzzer físico não foi medida — verifique na bancada antes de afirmar a mesma coisa em aula. (2) O desafio usa dois clipes simulados (1 kΩ e 220 Ω, em ordem sorteada), não gravações.
 ${SIM}
 Há duas versões guiadas: resistores fixos (220/470/1k) e potenciômetro.`;
 
@@ -1011,7 +1016,7 @@ function lesson08(): Lesson[] {
     [
       [
         'Ficou mais fraco e mais grave (na simulação).',
-        'Isso! É o mesmo efeito de trocar por um resistor maior, só que sem degraus.',
+        'Isso! Mais resistência reduz a corrente neste modelo. Os botões −/+ usam sete valores.',
       ],
       ['Ficou mais forte.', 'Observe de novo: mais resistência, menos corrente.'],
     ],
@@ -1027,7 +1032,7 @@ function lesson08(): Lesson[] {
       explain(
         'e-pot',
         'Do degrau à rampa',
-        'Com resistores fixos você troca de valor aos saltos. O potenciômetro permite passar por todos os valores no meio do caminho. O som simulado muda com ele.',
+        'Um potenciômetro físico permite valores intermediários. Nesta tela, −/+ usa sete valores; o controle deslizante abaixo permite valores intermediários. Compare o som e o indicador visual simulados.',
         artPot()
       ),
       ...build(
@@ -1061,12 +1066,16 @@ function lesson08(): Lesson[] {
     notes: L08_NOTES,
     tags: ['guiada', 'buzzer', 'potenciômetro', 'som simulado', 'exemplo'],
   });
+  const qClipWhy = quiz('q-clipe-porque', 'Como você percebeu qual resistência era maior nesta simulação?', [
+    ['Pelo volume menor e pelo tom mais grave no som e nos indicadores.', 'Isso! Os indicadores permitem comparar mesmo sem escutar. É um modelo didático; o buzzer físico ainda não foi medido.'],
+    ['Pela letra A ou B.', 'A ordem é sorteada. Compare o som ou os indicadores de volume e tom.'],
+  ], 0);
   const qClip = quiz(
     'q-clipe',
     'Qual clipe foi feito com o resistor MAIOR?',
     [
-      ['Clipe A (mais fraco e mais grave).', 'Isso! Mais resistência → menos corrente → som mais fraco e mais grave.'],
-      ['Clipe B (mais forte e mais agudo).', 'O Clipe B é o do resistor menor: a corrente é maior.'],
+      ['Clipe A', 'Isso! Mais resistência → menos corrente → som mais fraco e mais grave.'],
+      ['Clipe B', 'Esse clipe tem menos resistência: a corrente e o volume simulado são maiores. Compare os dois indicadores.'],
     ],
     0
   );
@@ -1086,9 +1095,10 @@ function lesson08(): Lesson[] {
         ],
       }),
       interact('i-clipe', 'Qual é qual?', qClip),
+      interact('i-clipe-porque', 'Explique como você comparou.', qClipWhy),
     ],
-    quizzes: [qClip],
-    notes: `${L08_NOTES}\nNo desafio os dois clipes são sintetizados pelo software (A = 1 kΩ, B = 220 Ω); ainda não existem gravações do buzzer real.`,
+    quizzes: [qClip, qClipWhy],
+    notes: `${L08_NOTES}\nNo desafio os clipes são sintetizados com 1 kΩ e 220 Ω, em ordem sorteada. Há indicadores visuais de volume e tom; não são gravações do buzzer físico.`,
     tags: ['desafio', 'áudio', 'som simulado', 'exemplo'],
   });
   return [guided, potVersion, challenge];
@@ -1210,7 +1220,7 @@ function lesson09(): Lesson[] {
 // --- Lesson 10 -----------------------------------------------------------------------------------
 
 const L10_NOTES = `Objetivo: integrar botão, resistores, LED e buzzer num alarme: ao apertar, o LED acende E o buzzer toca.
-Como saber que deu certo: o LED acende e o buzzer soa ao mesmo tempo ao apertar o botão; o tutor só interfere depois de 2 tentativas consecutivas erradas no mesmo passo.
+Como saber que deu certo: o LED acende e o buzzer soa ao mesmo tempo ao apertar o botão; depois de 2 erros seguidos o tutor dá uma dica mais direta.
 Circuito: o botão alimenta dois ramos em paralelo — resistor 1 → LED e resistor 2 → buzzer — que se juntam no nó 3.
 ${SIM} A corrente de cada ramo vem do modelo (LED: (5−2)/R; buzzer ≈ 250 Ω em série).`;
 
@@ -1234,7 +1244,7 @@ function lesson10(): Lesson[] {
   );
   const guided = lesson({
     id: `${SEED_PREFIX}10-guiada`,
-    title: 'Lição 10 — Desafio de integração: o alarme (guiada)',
+    title: 'Lição 10 — Integração: o alarme (guiada)',
     instruction:
       'Agora você vai montar um alarme: ao apertar o botão, o LED acende E o buzzer toca ao mesmo tempo. Você já sabe montar cada parte — o novo desafio é juntar tudo.',
     kind: 'guided',
@@ -1243,7 +1253,7 @@ function lesson10(): Lesson[] {
       explain(
         'e-alarme',
         'Um alarme em blocos',
-        'Um alarme junta o que você aprendeu: o botão liga tudo, cada resistor protege a sua peça, o LED mostra e o buzzer avisa. O botão alimenta dois ramos ao mesmo tempo.\n\nVocê vai montar com ajuda mínima: o tutor só fala depois de dois erros seguidos no mesmo passo.',
+        'Um alarme junta o que você aprendeu: o botão liga tudo, cada resistor protege a sua peça, o LED mostra e o buzzer avisa. O botão alimenta dois ramos ao mesmo tempo.\n\nVocê vai montar por etapas. Depois de dois erros seguidos, o tutor dá uma dica mais direta. O retorno é o caminho comum dos dois ramos até o − da bateria.',
         artAlarm()
       ),
       ...build(
@@ -1257,8 +1267,8 @@ function lesson10(): Lesson[] {
           ['buz', 'Coloque o buzzer.'],
           ['w1', 'Jumper do + da bateria ao botão.'],
           ['w3', 'Jumper do botão ao ramo do buzzer.'],
-          ['w4', 'Jumper do buzzer ao ponto de retorno.'],
-          ['w2', 'Jumper do retorno ao − da bateria.'],
+          ['w4', 'Jumper do buzzer à coluna do catodo (−) do LED: esse é o ponto de retorno comum.'],
+          ['w2', 'Jumper dessa coluna de retorno (catodo do LED) ao − da bateria.'],
         ],
         'Conecte os dois ramos e confira o circuito.'
       ),
@@ -1290,7 +1300,7 @@ function lesson10(): Lesson[] {
       ),
     },
     notes: L10_NOTES,
-    tags: ['guiada', 'integração', 'paralelo', 'ajuda mínima', 'exemplo'],
+    tags: ['guiada', 'integração', 'paralelo', 'exemplo'],
   });
   return [guided];
 }

@@ -18,10 +18,10 @@ const field: CSSProperties = {
  * `only`: posições mostradas. As perguntas de passo ('step') são criadas pelo editor de passos,
  * então ali não há "+ Pergunta" nem escolha de quando aparece.
  */
-export default function QuizEditor({ quizzes, onChange, only = ['before', 'after'] }) {
+export default function QuizEditor({ quizzes, onChange, only = ['before', 'after'], onlyId = null, excludeIds = [] }) {
   const patch = (id, fn) => onChange(quizzes.map((q) => (q.id === id ? fn(q) : q)));
   const stepOnly = only.length === 1 && only[0] === 'step';
-  const shown = quizzes.filter((q) => only.includes(q.position));
+  const shown = quizzes.filter((q) => only.includes(q.position) && (!onlyId || q.id === onlyId) && !excludeIds.includes(q.id));
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -41,6 +41,7 @@ export default function QuizEditor({ quizzes, onChange, only = ['before', 'after
             gap: 8,
           }}
         >
+          <label><input type="checkbox" checked={!!q.prediction} onChange={(e) => patch(q.id, (x) => ({ ...x, prediction: e.target.checked }))} /> Previsão: aceitar qualquer hipótese e conferir no experimento</label>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <strong style={{ fontFamily: 'var(--font-heading)', fontSize: 14 }}>Pergunta {quizzes.indexOf(q) + 1}</strong>
             {!stepOnly && (

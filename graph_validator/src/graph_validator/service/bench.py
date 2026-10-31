@@ -48,6 +48,7 @@ def bench_package(module_id: int, class_id: int, db: Db, me: Me) -> dict:
     for link in module.lessons:
         document = dict(documents[link.lesson_id])
         document.pop("audio", None)  # audio travels as files, not over Bluetooth
+        document.pop("teacherNotes", None)  # teacher-only prose is not needed by the offline player
         lessons.append({**document, "lessonVersion": lesson_version(document)})
     students = [{"id": s.id, "name": s.name, "nickname": s.nickname, "nfc_code": s.nfc_code}
                 for s in sorted(school_class.students, key=lambda s: s.name) if s.active and s.nfc_code]

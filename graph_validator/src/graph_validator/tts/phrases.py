@@ -26,7 +26,10 @@ PLAYER_PHRASES = [
     "Escolha uma alternativa.",
     "Não foi dessa vez. Tente de novo.",
     "Monte o circuito.",
-    "O tempo acabou! Clique em “Testar de novo” para tentar outra vez.",
+    "O tempo acabou! Clique em Continuar para ver a explicação. Você pode refazer a lição depois.",
+    "Hipótese anotada! Continue para testar e comparar com o resultado.",
+    "Esta etapa está conferida. Observe a montagem e clique em Continuar.",
+    "Funcionou na simulação, mas veja o aviso de limite de corrente antes de continuar.",
     "Lição concluída! É assim que o aluno vai passar por ela.",
     "Agora responda à pergunta.",
     "Quase! Observe de novo e tente outra vez.",
@@ -38,8 +41,11 @@ PLAYER_PHRASES = [
 
 def step_text(piece: dict[str, Any]) -> str:
     if piece["type"].startswith("jumper"):
-        return (f"Coloque um jumper de {abs(piece['a'] - piece['b'])} colunas na bancada. "
-                "As conexões serão conferidas no passo final.")
+        names = {"jumper_curto": "o jumper curto", "jumper_longo": "o jumper longo",
+                 "jumper_3": "o jumper de 3 colunas", "jumper_4": "o jumper de 4 colunas",
+                 "jumper_5": "o jumper de 5 colunas"}
+        return (f"Coloque {names.get(piece['type'], 'um jumper')} na bancada. "
+                "Confira se ele liga as colunas pedidas no circuito.")
     return f"Coloque {_NOME.get(piece['type'], 'a peça')} na bancada."
 
 

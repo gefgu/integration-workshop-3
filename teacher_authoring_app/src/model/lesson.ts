@@ -187,6 +187,7 @@ export function validateLesson(raw: any): LessonValidation {
       position: q.position,
       prompt: q.prompt,
       correctId: q.correctId,
+      ...(q.prediction === true ? { prediction: true } : {}),
       options: q.options.map((o) => ({
         id: o.id,
         text: o.text,
