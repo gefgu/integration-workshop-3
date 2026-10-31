@@ -561,7 +561,7 @@ function BuildStep({
     tone = 'erro';
     msg = bench
       ? 'O tempo acabou! Termine o circuito para ver sua pontuação.'
-      : 'O tempo acabou! Clique em “Testar de novo” para tentar outra vez.';
+      : 'O tempo acabou! Vamos para a explicação, e depois você pode tentar de novo com “Testar de novo”.';
   } else if (v.status === 'offline') {
     tone = 'erro';
     msg = 'Validador offline. Inicie o serviço (npm run validator) e tente de novo.';
@@ -627,7 +627,7 @@ function BuildStep({
             preencher com o gabarito
           </button>
         )}
-        {approved && (
+        {(approved || (expired && !bench)) && (
           <button type="button" className="btn-primary" onClick={onDone}>
             Continuar
           </button>
