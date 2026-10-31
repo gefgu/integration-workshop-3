@@ -255,6 +255,16 @@ O circuito foi refeito para a bancada de 5 V.`;
 
 function lesson02(): Lesson[] {
   const board = circuitL02();
+  const qPrev = quiz(
+    'q-prev',
+    'Antes de energizar: o que você espera que aconteça com o LED?',
+    [
+      ['Ele acende, porque o caminho está completo.', 'Isso! Vamos conferir energizando.'],
+      ['Ele não acende, porque falta alguma coisa.', 'Vamos testar: o caminho do + ao − está completo?'],
+      ['Ele só pisca.', 'Vamos observar com calma: ele pisca ou fica aceso?'],
+    ],
+    0
+  );
   const qFio = quiz(
     'q-fio',
     'Você tirou um jumper e a luz apagou. Por quê?',
@@ -291,6 +301,7 @@ function lesson02(): Lesson[] {
         ],
         'Agora confira o circuito inteiro e clique em Energizar para ver o LED acender.'
       ),
+      interact('i-prev', 'Pense antes de testar.', qPrev),
       experiment(
         'x-fecha',
         'Feche o circuito e veja a luz',
@@ -304,7 +315,7 @@ function lesson02(): Lesson[] {
       ),
       interact('i-fio', 'Por que a luz apagou quando você tirou o fio?', qFio),
     ],
-    quizzes: [qFio],
+    quizzes: [qPrev, qFio],
     settings: {
       requireLit: true,
       allowNoResistor: true,
@@ -474,6 +485,16 @@ ${SIM}`;
 
 function lesson04(): Lesson[] {
   const board = circuitL04();
+  const qPrev = quiz(
+    'q-prev',
+    'Se você virar o LED ao contrário, o que acha que vai acontecer?',
+    [
+      ['Acende do mesmo jeito.', 'Vamos testar! Gire o LED e compare nas duas posições.'],
+      ['Não acende.', 'Boa hipótese! Vamos conferir testando as duas posições.'],
+      ['Acende mais forte.', 'Vamos testar para ver se é isso mesmo.'],
+    ],
+    1
+  );
   const qWhich = quiz(
     'q-sentido',
     'Em qual posição o LED acendeu?',
@@ -513,6 +534,7 @@ function lesson04(): Lesson[] {
         ],
         'Confira o circuito.'
       ),
+      interact('i-prev', 'Faça sua aposta antes de testar.', qPrev),
       experiment(
         'x-gira',
         'Teste os dois sentidos',
@@ -532,7 +554,7 @@ function lesson04(): Lesson[] {
         artLedPolarity()
       ),
     ],
-    quizzes: [qWhich],
+    quizzes: [qPrev, qWhich],
     settings: { requireLit: true, tray: KIT('bateria', 'resistor_470', 'led', 'jumper_longo', 'jumper_3') },
     notes: L04_NOTES,
     tags: ['guiada', 'polaridade', 'experimento', 'exemplo'],
@@ -564,6 +586,16 @@ ${SIM} Na tela o botão pode ser segurado com o mouse/dedo ou travado pelos cont
 
 function lesson05(): Lesson[] {
   const board = circuitL05();
+  const qPrev = quiz(
+    'q-prev',
+    'Com tudo montado e energizado, o que acontece com o LED enquanto você NÃO aperta o botão?',
+    [
+      ['Fica aceso.', 'Vamos testar: o botão solto deixa o caminho fechado?'],
+      ['Fica apagado, porque o botão solto deixa o caminho aberto.', 'Isso! Vamos conferir.'],
+      ['Pisca.', 'Vamos observar com calma o que acontece.'],
+    ],
+    1
+  );
   const qWhen = quiz(
     'q-quando',
     'Quando o LED acendeu?',
@@ -599,6 +631,7 @@ function lesson05(): Lesson[] {
         ],
         'Confira o circuito.'
       ),
+      interact('i-prev', 'Faça sua aposta antes de testar.', qPrev),
       experiment(
         'x-aperta',
         'Aperte e solte',
@@ -612,7 +645,7 @@ function lesson05(): Lesson[] {
       ),
       interact('i-quando', 'Confirme o que você viu.', qWhen),
     ],
-    quizzes: [qWhen],
+    quizzes: [qPrev, qWhen],
     settings: { tray: KIT('bateria', 'resistor_470', 'led', 'botao', 'jumper_longo', 'jumper_4') },
     notes: L05_NOTES,
     tags: ['guiada', 'botão', 'experimento', 'exemplo'],
@@ -780,6 +813,16 @@ ${SIM} A descarga é um modelo exponencial; nenhum tempo foi medido na bancada.`
 
 function lesson07(): Lesson[] {
   const board = circuitL07(1);
+  const qPrev = quiz(
+    'q-prev',
+    'Quando você desligar a fonte, o que acha que o LED vai fazer?',
+    [
+      ['Apagar na hora.', 'Vamos conferir: observe com atenção a luz ao desligar.'],
+      ['Apagar aos poucos, porque o capacitor guarda energia.', 'Boa ideia! Vamos ver se acontece mesmo.'],
+      ['Ficar aceso para sempre.', 'Vamos testar: o que o capacitor consegue guardar?'],
+    ],
+    1
+  );
   const qFade = quiz(
     'q-apaga',
     'Ao desligar a fonte, o LED…',
@@ -815,6 +858,7 @@ function lesson07(): Lesson[] {
         ],
         'Confira o circuito.'
       ),
+      interact('i-prev', 'Faça sua aposta antes de testar.', qPrev),
       experiment(
         'x-descarga',
         'Ligue e desligue',
@@ -828,7 +872,7 @@ function lesson07(): Lesson[] {
       ),
       interact('i-apaga', 'O que você observou ao desligar?', qFade),
     ],
-    quizzes: [qFade],
+    quizzes: [qPrev, qFade],
     settings: { tray: KIT('bateria', 'resistor_470', 'led', 'capacitor', 'jumper_longo', 'jumper_3') },
     notes: L07_NOTES,
     tags: ['guiada', 'capacitor', 'experimento', 'tempo', 'exemplo'],
