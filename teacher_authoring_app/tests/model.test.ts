@@ -196,3 +196,11 @@ test('cores das cápsulas seguem MFR10 e pontos MFR11 distinguem tipos da mesma 
   assert.ok(DEFS.resistor_470.dots >= 1 && DEFS.capacitor.dots <= 4 && DEFS.resistor_470.dots !== DEFS.capacitor.dots);
   for (const t of ['led', 'buzzer', 'botao', 'potenciometro']) assert.equal(DEFS[t].dots, undefined);
 });
+
+test('N-04: isolated parallel jumpers do not disable a working circuit', () => {
+  const pieces = [P('bat', 'bateria', 1, 2), P('led', 'led', 1, 3), P('w', 'jumper_curto', 3, 2, 1)];
+  const options = { allowNoResistor: true };
+  assert.equal(analyze(pieces, options).code, 'valido');
+  const extra = [P('extra1', 'jumper_curto', 9, 10, 6), P('extra2', 'jumper_curto', 9, 10, 7)];
+  assert.equal(analyze([...pieces, ...extra], options).code, 'valido');
+});

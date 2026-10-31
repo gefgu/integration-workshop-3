@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { useState } from 'react';
 import Illustration from '../components/Illustration.tsx';
 import { newQuiz } from '../model/lesson.ts';
 import { newStep } from '../model/steps.ts';
@@ -128,13 +129,15 @@ export function ClientStepForm({
 }
 
 function ExplainForm({ step, patch }) {
+  const [error, setError] = useState('');
   async function pickSvg(file: File | undefined) {
     if (!file) return;
     const svg = await file.text();
     if (!svg.trim().startsWith('<svg') || svg.length > MAX_SVG) {
-      window.alert('Use um arquivo .svg (começando em <svg>) de até 60 KB.');
+      setError('Use um arquivo .svg (começando em <svg>) de até 60 KB.');
       return;
     }
+    setError('');
     patch((s) => ({ ...s, illustration: { svg, alt: s.illustration?.alt ?? '', caption: s.illustration?.caption } }));
   }
   return (
@@ -190,12 +193,14 @@ function ExplainForm({ step, patch }) {
             remover ilustração
           </button>
         </>
-      ) : (
+      ) : null}
+      {error && <p role="alert">{error}</p>}
+      {
         <label style={{ fontSize: 13 }}>
           Ilustração (arquivo .svg, até 60 KB; fica salva com a lição e funciona sem internet){' '}
           <input type="file" accept=".svg,image/svg+xml" onChange={(e) => pickSvg(e.target.files?.[0])} />
         </label>
-      )}
+      }
     </div>
   );
 }

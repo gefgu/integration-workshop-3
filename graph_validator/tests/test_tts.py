@@ -68,7 +68,7 @@ def test_lesson_phrases_cover_what_the_teacher_wrote():
 def test_lesson_without_steps_uses_generated_step_texts():
     out = lesson_phrases(doc(steps=[]))
     assert "Coloque a bateria na bancada." in out and CONNECT_TEXT in out
-    assert any(t.startswith("Coloque um jumper de 2 colunas") for t in out)
+    assert any(t.startswith("Coloque o jumper longo") for t in out)
     assert CONNECT_TEXT not in lesson_phrases(doc(steps=[], kind="challenge"))
 
 
@@ -175,7 +175,7 @@ def test_player_lines_are_in_the_system_pack():
     """LessonPlayer.tsx's fixed lines must stay in PLAYER_PHRASES, or the preview goes silent for them."""
     player_dir = Path(__file__).parents[2] / "teacher_authoring_app/src/player"
     # The fixed lines live in the player and in the lab step it hands off to.
-    player = "".join((player_dir / name).read_text("utf-8") for name in ("LessonPlayer.tsx", "ExperimentStep.tsx"))
+    player = "".join((player_dir / name).read_text("utf-8") for name in ("LessonPlayer.tsx", "ExperimentStep.tsx", "hints.ts"))
     from graph_validator.tts.phrases import PRAISE
     for line in PLAYER_PHRASES:
         if line not in ("Agora responda à pergunta.", "Quase! Observe de novo e tente outra vez."):  # steps.py

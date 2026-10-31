@@ -24,6 +24,8 @@ export default function ExperimentStep({
   setPieces,
   onDone,
   mascotKind,
+  prediction,
+  clipsSwapped = false,
 }: {
   lesson: Lesson;
   step: LessonStep;
@@ -31,8 +33,11 @@ export default function ExperimentStep({
   setPieces: (next: Piece[]) => void;
   onDone: () => void;
   mascotKind: string;
+  prediction?: string | null;
+  clipsSwapped?: boolean;
 }) {
   const spec = step.experiment;
+  const clips = spec?.clips && clipsSwapped ? { a: spec.clips.b, b: spec.clips.a } : spec?.clips;
   const settings = lesson.settings;
   const lab = useLab(pieces, settings);
   const [events, setEvents] = useState<Set<LabEvent>>(() => new Set());
@@ -48,7 +53,6 @@ export default function ExperimentStep({
     });
   }, [pieces, lab.held, lab.energized, lab.diag, lab.flags]);
 
-
   const matched = spec?.presets ? matchingPreset(pieces, spec.presets) : -1;
   const steadyLit = lab.energized && lab.diag.code === 'valido';
   useEffect(() => {
@@ -63,7 +67,20 @@ export default function ExperimentStep({
   const states = labStates(lab.snapshot);
   const done = (spec?.goals ?? []).map((g) => goalDone(g, events, states, { presetsLit, presetsFaded }));
   const allDone = done.length > 0 && done.every(Boolean);
-  const pot = spec?.slider ? pieces.find((p) => p.id === spec.slider.pieceId) : null;
+  const observation = events.has('reversed_dark')
+    ? 'O LED acendeu em um sentido e ficou apagado no outro.'
+    : events.has('released_dark')
+      ? 'O LED acendeu com o botão apertado e apagou ao soltar.'
+      : events.has('faded')
+        ? 'Depois de desligar, o LED apagou aos poucos.'
+        : events.has('pot_low') && events.has('pot_high')
+          ? 'Neste modelo, mais resistência deixa passar menos corrente e reduz o brilho.'
+          : events.has('lit') && states.dark
+            ? 'O LED acendeu com o caminho fechado e apagou com o caminho aberto.'
+            : 'Confira o resultado mostrado na bancada simulada.';
+  const pot = spec?.slider
+    ? (pieces.find((p) => p.id === spec.slider.pieceId) ?? pieces.find((p) => p.type === 'potenciometro'))
+    : null;
 
   let tone = 'info';
   let msg = step.text || 'Faça o experimento e cumpra as missões.';
@@ -74,11 +91,15 @@ export default function ExperimentStep({
     tone = 'ok';
     msg = 'Missões cumpridas! Você viu o efeito acontecer. Continue quando quiser.';
   }
+  if (lab.energized && lab.diag.limited) {
+    tone = 'obs';
+    msg = 'Funcionou na simulação, mas veja o aviso de limite de corrente antes de continuar.';
+  }
   useSay([msg]);
 
   async function play(which: 'a' | 'b') {
     if (!spec?.clips) return;
-    const ohms = spec.clips[which];
+    const ohms = clips[which];
     const mA = buzzerMa(ohms);
     const { hz, volume } = buzzerSound(mA);
     setPlaying(which);
@@ -90,6 +111,14 @@ export default function ExperimentStep({
   return (
     <>
       <Bubble kind={mascotKind} tone={tone} message={msg} />
+      {prediction && (
+        <p>
+          Você previu: “{prediction}”{' '}
+          {allDone
+            ? `Resultado da simulação: ${observation} Sua hipótese combinou com esse resultado?`
+            : 'Faça o experimento para conferir.'}
+        </p>
+      )}
       {step.title && <h2 style={{ margin: 0, fontFamily: 'var(--font-heading)' }}>{step.title}</h2>}
       {spec?.clips ? null : <LabBoard lab={lab} pieces={pieces} setPieces={setPieces} settings={settings} />}
       {spec?.presets && (
@@ -146,6 +175,17 @@ export default function ExperimentStep({
               </button>
             ))}
           </div>
+          {(['a', 'b'] as const)
+            .filter((w) => lab.flags.heard?.has(w))
+            .map((w) => {
+              const sound = buzzerSound(buzzerMa(clips[w]));
+              return (
+                <p key={w}>
+                  Clipe {w.toUpperCase()} — volume simulado: {Math.round(sound.volume * 100)}% · tom: {sound.hz} Hz. O
+                  comportamento do buzzer físico não foi medido.
+                </p>
+              );
+            })}
         </div>
       )}
       {spec && (

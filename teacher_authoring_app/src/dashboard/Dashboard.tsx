@@ -41,7 +41,7 @@ function ClassView({ classId }: { classId?: number }) {
   return (
     <div className="workspace-page">
       <h2>Painel de desempenho</h2>
-      <p>Os dados chegam quando o app do professor sincroniza com a bancada.</p>
+      <p>O aplicativo do professor no celular faz a entrega dos dados. A sincronização com a bancada física ainda precisa de teste de ponta a ponta.</p>
       {error && (
         <p className="app-error" role="alert">
           {error}
@@ -118,8 +118,8 @@ function ClassView({ classId }: { classId?: number }) {
                     </small>
                   </span>
                   <span data-label="Pontuação">
-                    {row.best_score ?? '—'}
-                    {row.challenges > 0 && <small> melhor de {row.challenges}</small>}
+                    {row.best_score == null ? '—' : `Melhor nota: ${row.best_score}`}
+                    {row.challenges > 0 && <small> ({row.challenges} desafios)</small>}
                   </span>
                   <span data-label="Tempo">{formatDuration(row.time_spent_s)}</span>
                   <span data-label="Última atividade">{when(row.last_activity)}</span>

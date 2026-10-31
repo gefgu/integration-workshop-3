@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { orderLessons, lessonLabel } from '../model/library.ts';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import type { ClassDetail, Module, SchoolClass } from '../api/workspace.ts';
 import { workspace } from '../api/workspace.ts';
@@ -213,9 +214,9 @@ function ClassPage({ classId, lessons }: { classId: number; lessons: Lesson[] })
               label="Selecione uma lição"
               empty="Nenhuma lição avulsa."
               value={detail.lesson_ids}
-              options={lessons.map((item) => ({
+              options={orderLessons(lessons).map((item) => ({
                 id: item.id,
-                label: item.title,
+                label: lessonLabel(item),
                 href: `/editor/${encodeURIComponent(item.id)}`,
               }))}
               onChange={(next) => void run(() => workspace.setClassLessons(classId, next), 'Lições atualizadas.')}

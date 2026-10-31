@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from 'react';
 import CircuitPreview from '../components/CircuitPreview.tsx';
+import { orderLessons } from '../model/library.ts';
 
 const KIND = { guided: 'Lição guiada', challenge: 'Desafio' };
 
@@ -8,24 +9,14 @@ export default function Library({ lessons, onNew, onOpen, onTest, onDuplicate, o
   const [tag, setTag] = useState('');
   const tags = useMemo(() => {
     const counts = new Map<string, number>();
-    for (const l of lessons) for (const t of l.tags ?? []) counts.set(t, (counts.get(t) ?? 0) + 1);
-    return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+    for (const l of lessons) for (const t of new Set([...(l.tags ?? []).filter((t) => !['guiada', 'desafio'].includes(t)), l.kind === 'challenge' ? 'desafio' : 'guiada'])) counts.set(t, (counts.get(t) ?? 0) + 1);
+    const members = (tag: string) => lessons.filter((l) => l.tags?.includes(tag)).map((l) => l.id).sort().join('|');
+    return [...counts.entries()].filter(([t, n]) => (n < lessons.length || t === 'currículo') && !(t === 'exemplo' && members(t) === members('currículo'))).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
   }, [lessons]);
   // The teacher's own lessons first (newest first), then the curriculum in teaching order (ids are numbered).
-  const ordered = useMemo(() => {
-    const own = lessons.filter((l) => !l.tags?.includes('currículo'));
-    const curriculum = lessons.filter((l) => l.tags?.includes('currículo'));
-    own.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
-    // Same lesson number: the guided version before its challenge.
-    const lessonKey = (l) => l.id.replace(/-(guiada|desafio|potenciometro)$/, '');
-    curriculum.sort(
-      (a, b) =>
-        lessonKey(a).localeCompare(lessonKey(b)) || Number(a.kind === 'challenge') - Number(b.kind === 'challenge')
-    );
-    return [...own, ...curriculum];
-  }, [lessons]);
+  const ordered = useMemo(() => orderLessons(lessons), [lessons]);
   const hasCurriculum = lessons.some((l) => l.tags?.includes('currículo'));
-  const shown = tag ? ordered.filter((l) => l.tags?.includes(tag)) : ordered;
+  const shown = tag ? ordered.filter((l) => tag === 'guiada' ? l.kind === 'guided' : tag === 'desafio' ? l.kind === 'challenge' : l.tags?.includes(tag)) : ordered;
   const count = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
   return (
     <div className="lesson-library">
@@ -68,7 +59,7 @@ export default function Library({ lessons, onNew, onOpen, onTest, onDuplicate, o
           >
             Todas ({lessons.length})
           </button>
-          {tags.map(([t, n]) => (
+          {tags.slice(0, 6).map(([t, n]) => (
             <button
               key={t}
               type="button"
@@ -79,6 +70,10 @@ export default function Library({ lessons, onNew, onOpen, onTest, onDuplicate, o
               {t} ({n})
             </button>
           ))}
+          {tags.length > 6 && <select aria-label="Mais etiquetas" value={tags.slice(6).some(([t]) => t === tag) ? tag : ''} onChange={(e) => setTag(e.target.value)}>
+            <option value="">Mais etiquetas…</option>
+            {tags.slice(6).map(([t, n]) => <option key={t} value={t}>{t} ({n})</option>)}
+          </select>}
         </div>
       )}
       {hasCurriculum && !tag && (

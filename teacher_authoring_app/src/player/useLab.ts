@@ -100,7 +100,7 @@ export function useLab(pieces: Piece[], settings?: LessonSettings) {
   const blinkOff = looseActive && !flickerOn;
   const lit = (litSteady && !blinkOff) || fading;
   const fadeMa = fade ? dischargeMa(fade.startMa, (now - fade.start) / 1000, fade.tau) : 0;
-  const ledMa = fading ? fadeMa : lit ? Math.max(diag.code === 'valido' ? diag.mA : 0, cap.drivenMa) : 0;
+  const ledMa = fading ? fadeMa : lit ? Math.max(diag.code === 'valido' ? diag.currents?.led ?? diag.mA : 0, cap.drivenMa) : 0;
   const trail = fading
     ? { edgeIds: fade.discharge.edgeIds, nodes: new Set<number>() }
     : lit
@@ -109,7 +109,7 @@ export function useLab(pieces: Piece[], settings?: LessonSettings) {
 
   // The simulated buzzer sound follows the current through the buzzer branch.
   const buzzing = lit && diag.loadsLit.includes('buzzer') && soundOn;
-  const buzzMa = buzzing ? Math.max(0.1, ledMa) : 0;
+  const buzzMa = buzzing ? Math.max(0.1, diag.currents?.buzzer ?? ledMa) : 0;
   useEffect(() => {
     if (!buzzing) {
       tone.current?.stop();

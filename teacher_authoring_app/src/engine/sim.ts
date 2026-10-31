@@ -193,10 +193,12 @@ export function analyze(
     .filter((p) => !isCapsule(p.type) || p.type === 'capsula_amperimetro')
     .map((p) => ({ ...p, a: nodeOf(p.a, p.row), b: nodeOf(p.b, p.row) }));
   const bat = pieces.find((p) => p.type === 'bateria');
+  const poweredNodes = bat ? new Set([...reach(pieces, bat.a, []), ...reach(pieces, bat.b, [])]) : new Set<number>();
   for (let i = 0; i < pieces.length; i++) {
     for (let j = i + 1; j < pieces.length; j++) {
       const a = pieces[i],
         b = pieces[j];
+      if (bat && !poweredNodes.has(a.a) && !poweredNodes.has(a.b)) continue;
       if ((a.a === b.a && a.b === b.b) || (a.a === b.b && a.b === b.a)) {
         // Two capacitors across the same columns are just a bigger capacitor, not a mistake.
         if (a.type === 'capacitor' && b.type === 'capacitor') continue;
@@ -310,7 +312,7 @@ export function corrente(an: CircuitAnalysis): number {
   return an.load === 'buzzer' ? (5 / (an.ohms + 250)) * 1000 : ((5 - 2.0) / an.ohms) * 1000;
 }
 
-/** The routing hardware caps every branch at this current (mA); the simulator shows the capped value. */
+/** Didactic simulator ceiling per branch (mA), not verified hardware protection. */
 export const BENCH_LIMIT_MA = 15;
 
 /** Current (mA) through one lit branch, capped at the bench ceiling; `limited` says the cap applied. */

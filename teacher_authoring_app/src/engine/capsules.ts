@@ -147,7 +147,7 @@ export function simulateCapsules(
       const mA = inLoop ? corrente(an) : 0;
       const fault = mA > TRIP_MA;
       reading = {
-        lines: ['AMPERÍMETRO', fault ? 'DISPAROU' : inLoop ? `${num(mA)} mA` : 'sem corrente'],
+        lines: ['AMPERÍMETRO', fault ? 'DISPAROU' : inLoop ? `${mA.toFixed(1).replace('.', ',')} mA` : 'sem corrente'],
         out: 'z',
         fault,
       };

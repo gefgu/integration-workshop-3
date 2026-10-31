@@ -167,7 +167,7 @@ ${line(340, 52, 340, 96, ORANGE, 4)}<path d="M330 80 L340 98 L350 80" fill="${OR
 ${text(235, 170, 'menos resistência', { size: 13 })}${text(445, 170, 'mais resistência', { size: 13, anchor: 'end' })}
 ${arrow(240, 192, 440, 192, TEAL)}${text(340, 218, 'mais resistência → menos corrente → LED mais fraco', { anchor: 'middle', bold: true, fill: TEAL, size: 14 })}`,
     'Potenciômetro desenhado como um resistor com uma seta giratória; girar para um lado aumenta a resistência e reduz a corrente.',
-    'O potenciômetro é um resistor que você regula, sem degraus.'
+    'O potenciômetro regula a resistência. Na tela, −/+ usa sete valores.'
   );
 }
 

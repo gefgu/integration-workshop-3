@@ -236,7 +236,7 @@ export default function StepsEditor({ lesson, setLesson, selected, setSelected }
           Validador offline: a checagem avançada dos passos está indisponível (rode <code>npm run validator</code>).
         </p>
       )}
-      {lint?.problems && lint.problems.length === 0 && steps.length > 0 && (
+      {lint?.problems && lint.problems.length === 0 && steps.length > 0 && !dangling.length && !unassigned.length && (
         <p style={{ margin: 0, fontSize: 12, color: 'var(--color-accent-2-700)' }}>
           Validador: passos corretos (uma ação por passo).
         </p>
@@ -329,6 +329,7 @@ export default function StepsEditor({ lesson, setLesson, selected, setSelected }
                   A peça deste passo não está mais na bancada. Exclua o passo.
                 </p>
               )}
+              {s.action === 'interact' && s.quizId && <QuizEditor quizzes={lesson.quizzes} onChange={(quizzes) => set({ quizzes })} only={['step']} onlyId={s.quizId} />}
               {problems.map((m) => (
                 <p key={m} className="problems" style={{ margin: 0 }}>
                   {m}
@@ -359,14 +360,13 @@ export default function StepsEditor({ lesson, setLesson, selected, setSelected }
 
       {selected != null && steps[selected] && <StepPreview lesson={lesson} idx={selected} />}
 
-      {stepQuizzes.length > 0 && (
-        // Open while a step question is selected or still has no prompt, so a new question is never hidden.
-        <details open={(selected != null && steps[selected]?.action === 'interact') || stepQuizzes.some((q) => !q.prompt.trim())}>
+      {stepQuizzes.some((q) => !steps.some((s) => s.quizId === q.id)) && (
+        <details open>
           <summary style={{ fontSize: 13, cursor: 'pointer' }}>
-            Perguntas dos passos (o enunciado e as alternativas de cada “Pergunta” acima ficam aqui)
+            Perguntas ainda sem passo
           </summary>
           <div style={{ marginTop: 8 }}>
-            <QuizEditor quizzes={lesson.quizzes} onChange={(quizzes) => set({ quizzes })} only={['step']} />
+            <QuizEditor quizzes={lesson.quizzes} onChange={(quizzes) => set({ quizzes })} only={['step']} excludeIds={steps.map((s) => s.quizId)} />
           </div>
         </details>
       )}

@@ -143,8 +143,10 @@ def evaluate_step(
                         for i in issues],
                 graph_hash=graph_hash(build_graph(parts), opts),
             )
-        cat, msg = feedback([], step.overrides)
-        return StepResult(approved=True, category=cat, message=msg, graph_hash=graph_hash(build_graph(parts), opts))
+        if step.action == "place_component":
+            cat, msg = feedback([], step.overrides)
+            return StepResult(approved=True, category=cat, message=msg, graph_hash=graph_hash(build_graph(parts), opts))
+        # A wire-placement step teaches a connection: inventory alone cannot approve it.
     if lesson.kind == "guided" and step.action == "interact":
         gh = graph_hash(build_graph(parts), opts)
         if answer is None:

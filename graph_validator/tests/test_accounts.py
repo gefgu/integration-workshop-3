@@ -173,7 +173,7 @@ def test_tags_link_unlink_keeps_history_and_audit(client):
 def test_bench_package_sync_is_idempotent_and_dashboard(client):
     ana, bia = signup(client), signup(client, "bia@escola.test", "Bia")
     for id_, kind in (("l1", "guided"), ("l2", "challenge")):
-        client.put(f"/workspace/lessons/{id_}", headers=ana, json=lesson(id_, kind))
+        client.put(f"/workspace/lessons/{id_}", headers=ana, json={**lesson(id_, kind), "teacherNotes": "Teacher-only notes"})
     module = client.post("/workspace/modules", headers=ana, json={"title": "M1", "lesson_ids": ["l1", "l2"]}).json()
     turma = client.post("/workspace/classes", headers=ana, json={"name": "7A"}).json()
     client.put(f"/workspace/classes/{turma['id']}/modules", headers=ana, json={"module_ids": [module["id"]]})
@@ -189,6 +189,7 @@ def test_bench_package_sync_is_idempotent_and_dashboard(client):
     assert [l["id"] for l in package["lessons"]] == ["l1", "l2"]
     assert [s["nickname"] for s in package["students"]] == ["caio"]
     assert all("audio" not in l and l["lessonVersion"] for l in package["lessons"])
+    assert all("teacherNotes" not in l for l in package["lessons"])
     again = client.get(f"/bench/package/{module['id']}?class_id={turma['id']}", headers=ana).json()
     assert again["version_id"] == package["version_id"]
     assert client.get(f"/bench/package/{module['id']}?class_id={turma['id']}", headers=bia).status_code == 404

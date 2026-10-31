@@ -178,7 +178,7 @@ function Locked({ status, api }: { status: BenchStatus | null; api: BenchApi }) 
       <div className="panel bench-card">
         <h2>Bancada bloqueada</h2>
         <p>
-          Aguardando o app do professor (Bluetooth). Esta bancada se chama <strong>{status?.bench_id ?? '…'}</strong>.
+          Aguardando o aplicativo do professor no celular. A transferência física ainda está em teste. Esta bancada se chama <strong>{status?.bench_id ?? '…'}</strong>.
         </p>
         <button
           type="button"
