@@ -12,7 +12,7 @@ export default function ExplainStep({ step, onDone }: { step: LessonStep; onDone
       {step.title && <h2 style={{ marginTop: 0 }}>{step.title}</h2>}
       {step.illustration && <Illustration art={step.illustration} />}
       {paragraphs.map((t) => (
-        <p key={t} style={{ fontSize: 15, lineHeight: 1.55 }}>
+        <p key={t} style={{ fontSize: 'calc(15px * var(--text-scale, 1))', lineHeight: 1.55 }}>
           {t}
         </p>
       ))}

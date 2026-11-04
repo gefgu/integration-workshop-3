@@ -123,7 +123,7 @@ export default function ExperimentStep({
       {spec?.clips ? null : <LabBoard lab={lab} pieces={pieces} setPieces={setPieces} settings={settings} />}
       {spec?.presets && (
         <div className="panel" style={{ maxWidth: 720, width: '100%' }}>
-          <h3 style={{ margin: '0 0 6px', fontSize: 15 }}>Troque a peça e compare</h3>
+          <h3 style={{ margin: '0 0 6px', fontSize: 'calc(15px * var(--text-scale, 1))' }}>Troque a peça e compare</h3>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             {spec.presets.map((p, i) => (
               <button
@@ -141,7 +141,7 @@ export default function ExperimentStep({
       )}
       {spec?.slider && pot && (
         <div className="panel" style={{ maxWidth: 720, width: '100%' }}>
-          <label htmlFor="pot-slider" style={{ fontWeight: 700, fontSize: 14 }}>
+          <label htmlFor="pot-slider" style={{ fontWeight: 700, fontSize: 'calc(14px * var(--text-scale, 1))' }}>
             {spec.slider.label}: {formatOhms(pot.value ?? 1000)}
           </label>
           <input
@@ -155,7 +155,7 @@ export default function ExperimentStep({
             }
             style={{ width: '100%' }}
           />
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'calc(12px * var(--text-scale, 1))' }}>
             <span>menos resistência</span>
             <span>mais resistência</span>
           </div>
@@ -163,8 +163,8 @@ export default function ExperimentStep({
       )}
       {spec?.clips && (
         <div className="panel" style={{ maxWidth: 720, width: '100%' }}>
-          <h3 style={{ margin: '0 0 6px', fontSize: 15 }}>Escute os dois clipes</h3>
-          <p style={{ margin: '0 0 8px', fontSize: 13 }}>
+          <h3 style={{ margin: '0 0 6px', fontSize: 'calc(15px * var(--text-scale, 1))' }}>Escute os dois clipes</h3>
+          <p style={{ margin: '0 0 8px', fontSize: 'calc(13px * var(--text-scale, 1))' }}>
             Os clipes são <strong>sons simulados</strong> pelo software (não são gravações da bancada). O valor do
             resistor de cada um está escondido.
           </p>
@@ -190,10 +190,10 @@ export default function ExperimentStep({
       )}
       {spec && (
         <section className="panel" style={{ maxWidth: 720, width: '100%', textAlign: 'left' }} aria-label="Missões">
-          <h3 style={{ margin: '0 0 6px', fontSize: 15 }}>Missões</h3>
+          <h3 style={{ margin: '0 0 6px', fontSize: 'calc(15px * var(--text-scale, 1))' }}>Missões</h3>
           <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 4 }}>
             {spec.goals.map((g, i) => (
-              <li key={g.id} style={{ fontSize: 14, color: done[i] ? 'var(--color-accent-2-800)' : 'inherit' }}>
+              <li key={g.id} style={{ fontSize: 'calc(14px * var(--text-scale, 1))', color: done[i] ? 'var(--color-accent-2-800)' : 'inherit' }}>
                 <span aria-hidden="true">{done[i] ? '✅' : '⬜'}</span> {g.label}
                 <span className="sr-only"> {done[i] ? '(feita)' : '(a fazer)'}</span>
               </li>

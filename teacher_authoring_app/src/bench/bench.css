@@ -1,21 +1,72 @@
 /* Workbench screen (7", 1024×600): large targets for joystick focus, one screen at a time. */
 .bench-shell {
+  /* The 7" LCD washes colours out and is read from arm's length: deeper ink, firmer edges and larger text than
+     the teacher site. Components read these tokens, so overriding them here only affects the bench. */
+  --text-scale: 1.5;
+  --bubble-width: 880px;
+  --color-bg: #fbf6ec;
+  --color-surface: #e2cca8;
+  --color-text: #120f0d;
+  --color-neutral-100: #fffdf8;
+  --color-neutral-200: #ece2d0;
+  --color-neutral-500: #675e50;
+  --color-neutral-600: #4a4338;
+  --color-neutral-700: #3a342c;
+  --color-neutral-800: #24201b;
+  --color-accent-2-200: #d3e6b6;
+  --color-accent-200: #ffd2b8;
+  --color-divider: color-mix(in srgb, #120f0d 38%, transparent);
   height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr;
   background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 19px;
+}
+.bench-shell .panel {
+  border: 2px solid var(--color-divider);
+}
+.bench-shell .panel h2 {
+  font-size: 26px;
+}
+.bench-shell .btn-primary,
+.bench-shell .btn-outline {
+  font-size: 21px;
+  padding: 13px 24px;
+}
+.bench-shell .btn-outline {
+  border-width: 2px;
+}
+.bench-shell .text-input {
+  font-size: 20px;
+  padding: 12px 14px;
+  border-width: 2px;
+}
+.bench-shell .field-label {
+  font-size: 15px;
+  font-weight: 700;
+}
+.bench-shell .pill-link-btn {
+  font-size: 18px;
+}
+.bench-shell .tray-item .name {
+  font-size: 15px;
+}
+.bench-shell .tray-item .meta {
+  font-size: 13px;
 }
 .bench-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  font-size: 14px;
-  color: var(--color-neutral-600);
+  font-size: 17px;
+  color: var(--color-neutral-700);
+  border-bottom: 2px solid var(--color-divider);
 }
 .bench-header strong {
   font-family: var(--font-heading);
-  font-size: 20px;
+  font-size: 26px;
   color: var(--color-text);
 }
 .bench-stage {
@@ -31,16 +82,17 @@
   padding-top: 12px;
 }
 .bench-card {
-  width: min(100%, 640px);
+  width: min(100%, 780px);
   display: grid;
   gap: 12px;
 }
 .bench-card h2 {
-  font-size: 22px;
+  font-size: 28px;
+  margin: 0;
 }
-.bench-big {
-  font-size: 18px;
-  padding: 16px 24px;
+.bench-shell .bench-big {
+  font-size: 24px;
+  padding: 18px 28px;
 }
 .bench-lessons {
   list-style: none;
@@ -57,8 +109,10 @@
   text-align: left;
 }
 .bench-lessons small {
-  color: var(--color-neutral-600);
+  color: var(--color-neutral-700);
   font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
 }
 .bench-score {
   font-family: var(--font-heading);
@@ -75,15 +129,17 @@
 }
 .bench-podium li {
   display: grid;
-  grid-template-columns: 40px 1fr auto;
+  grid-template-columns: 48px 1fr auto;
   align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
+  gap: 12px;
+  padding: 12px 16px;
   border-radius: 16px;
   background: var(--color-neutral-100);
+  border: 2px solid var(--color-divider);
+  font-size: 21px;
 }
 .bench-medal {
-  font-size: 24px;
+  font-size: 30px;
 }
 .bench-lesson {
   padding-top: 8px;
