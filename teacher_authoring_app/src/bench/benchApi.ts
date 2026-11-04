@@ -70,7 +70,7 @@ export function benchApi(base: string, fetchImpl: typeof fetch = (input, init) =
     logout: (studentId: number, duration_s: number) => call(`/students/${studentId}/logout`, 'POST', { duration_s }),
     ranking: (lessonId?: string) =>
       call<RankRow[]>(`/ranking${lessonId ? `?lesson_id=${encodeURIComponent(lessonId)}` : ''}`),
-    devUnlock: () => call<BenchStatus>('/dev/unlock', 'POST'),
+    devUnlock: (pkg?: BenchPackage) => call<BenchStatus>('/dev/unlock', 'POST', pkg ? { package: pkg } : undefined),
   };
 }
 

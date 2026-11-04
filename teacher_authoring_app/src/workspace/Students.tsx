@@ -210,7 +210,11 @@ export function StudentManager({
         </div>
       </form>
 
-      {students.length === 0 && <p>Nenhum aluno cadastrado.</p>}
+      {students.length === 0 && (
+        <div className="empty-state">
+          <p>Nenhum aluno ainda. Cadastre o primeiro no formulário acima e vincule uma tag (ex.: TAG-1) para ele entrar na bancada.</p>
+        </div>
+      )}
       <ul className="workspace-list student-list">
         {students.map((item) => (
           <li key={item.id}>

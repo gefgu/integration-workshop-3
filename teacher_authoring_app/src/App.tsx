@@ -15,6 +15,7 @@ import { workspace } from './api/workspace.ts';
 import { AuthProvider, useAuth } from './auth/AuthContext.tsx';
 import LoginScreen from './auth/LoginScreen.tsx';
 import Profile from './auth/Profile.tsx';
+import Start from './guide/Start.tsx';
 import Dashboard from './dashboard/Dashboard.tsx';
 import LessonEditor from './editor/LessonEditor.tsx';
 import Library from './editor/Library.tsx';
@@ -91,6 +92,8 @@ function AppRoutes() {
     const stored = lessons.find((item) => item.id === lesson.id);
     return !stored || strip(stored) !== strip(lesson);
   })();
+
+  const reloadLessons = () => workspace.listLessons().then(setLessons, (cause) => setError(cause.message));
 
   const flash = (msg) => {
     setStatus(msg);
@@ -185,9 +188,10 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/login" replace />} />
-      <Route path="/login" element={signedIn ? <Navigate to="/home" replace /> : <LoginScreen />} />
+      <Route path="/login" element={signedIn ? <Navigate to="/inicio" replace /> : <LoginScreen />} />
       <Route element={<RequireAuth signedIn={signedIn} />}>
         <Route element={<AppLayout lesson={lesson} teacherName={teacher?.name} onSignOut={signOut} />}>
+          <Route path="/inicio" element={<Start onLessonsChanged={reloadLessons} />} />
           <Route path="/perfil" element={<Profile />} />
           <Route path="/alunos" element={<Students />} />
           <Route path="/painel" element={<Dashboard />} />
@@ -292,7 +296,7 @@ function AppRoutes() {
           )}
         </Route>
       </Route>
-      <Route path="*" element={<Navigate to={signedIn ? '/home' : '/login'} replace />} />
+      <Route path="*" element={<Navigate to={signedIn ? '/inicio' : '/login'} replace />} />
     </Routes>
   );
 }
@@ -350,6 +354,9 @@ function AppLayout({ lesson, teacherName, onSignOut }) {
         <h1>TedTronics</h1>
         <span style={{ fontSize: 14, color: 'var(--color-neutral-600)' }}>Área do professor</span>
         <nav className="mode-toggle" aria-label="Navegação principal">
+          <NavLink to="/inicio" className={({ isActive }) => (isActive ? 'active' : '')}>
+            Início
+          </NavLink>
           <NavLink to="/home" className={({ isActive }) => (isActive ? 'active' : '')}>
             Lições
           </NavLink>

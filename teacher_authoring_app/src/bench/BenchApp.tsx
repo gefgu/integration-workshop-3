@@ -5,6 +5,7 @@ import Bubble from '../components/Bubble.tsx';
 import LessonPlayer, { type PlayerEvent } from '../player/LessonPlayer.tsx';
 import { type BenchApi, benchApi, type LoginResult, type RankRow, serviceUrl } from './benchApi.ts';
 import CameraView from './CameraView.tsx';
+import { DEMO_TAG, demoPackage } from './demoPackage.ts';
 import { lessonStates, type Screen, screenAfterLesson } from './screens.ts';
 
 /**
@@ -113,6 +114,7 @@ export default function BenchApp() {
         {screen.name === 'locked' && <Locked status={status} api={api} />}
         {screen.name === 'home' && (
           <Home
+            api={api}
             pkg={pkg}
             notice={screen.notice}
             onTag={login}
@@ -173,24 +175,26 @@ function Locked({ status, api }: { status: BenchStatus | null; api: BenchApi }) 
       <Bubble
         kind="hamster"
         tone="info"
-        message="Olá! Peça ao seu professor para conectar o app à bancada. Depois é só aproximar sua tag."
+        message="Olá! Esta bancada ainda está bloqueada. Peça ao seu professor para enviar um módulo pelo app. Depois é só aproximar sua tag."
       />
       <div className="panel bench-card">
         <h2>Bancada bloqueada</h2>
+        <p>Aguardando o aplicativo do professor no celular. Esta bancada se chama <strong>{status?.bench_id ?? '…'}</strong>.</p>
         <p>
-          Aguardando o aplicativo do professor no celular. A transferência física ainda está em teste. Esta bancada se chama <strong>{status?.bench_id ?? '…'}</strong>.
+          <strong>Professor:</strong> no app, abra <strong>Bancada</strong> e conecte; depois abra <strong>Módulos</strong> e toque em
+          <strong> Enviar para a bancada</strong>.
         </p>
         <button
           type="button"
           className="pill-link-btn muted"
           onClick={() =>
-            api.devUnlock().then(
-              () => setDemo(''),
+            api.devUnlock(demoPackage()).then(
+              () => setDemo(`Módulo de exemplo carregado. Digite ${DEMO_TAG} no leitor para entrar.`),
               () => setDemo('Modo demonstração desligado (inicie o serviço com --dev).')
             )
           }
         >
-          Modo demonstração
+          Modo demonstração (módulo de exemplo, tag {DEMO_TAG})
         </button>
         {demo && <p className="muted-line">{demo}</p>}
       </div>
@@ -200,12 +204,14 @@ function Locked({ status, api }: { status: BenchStatus | null; api: BenchApi }) 
 
 /** Home: the NFC reader types the tag code and Enter, like a keyboard (SFR35, SFR36). */
 function Home({
+  api,
   pkg,
   notice,
   onTag,
   onRanking,
   onCamera,
 }: {
+  api: BenchApi;
   pkg: BenchPackage | null;
   notice?: string;
   onTag: (code: string) => void;
@@ -222,8 +228,15 @@ function Home({
         <Bubble
           kind="hamster"
           tone="obs"
-          message="A bancada está liberada, mas ainda não recebeu um módulo do professor."
+          message="A bancada está liberada, mas ainda não tem um módulo. Professor: no app, abra Módulos, escolha módulo e turma e toque em Enviar para a bancada."
         />
+        <button
+          type="button"
+          className="pill-link-btn muted"
+          onClick={() => void api.devUnlock(demoPackage()).catch(() => undefined)}
+        >
+          Carregar módulo de exemplo (tag {DEMO_TAG})
+        </button>
       </section>
     );
   }
