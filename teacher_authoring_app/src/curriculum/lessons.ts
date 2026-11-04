@@ -38,7 +38,7 @@ import {
   P,
   withPiece,
 } from './circuits.ts';
-import { circuitHints, placementHints } from './stepHints.ts';
+import { circuitHints, groupHints, placementHints } from './stepHints.ts';
 
 export const SEED_PREFIX = 'curriculo-';
 
@@ -99,6 +99,52 @@ function build(
   if (loop) connect.overrides = circuitHints(loop, board);
   if (options) connect.options = options;
   return [...placed, connect];
+}
+
+/** A build step: place these pieces and connect them. `done` is what the tutor says when the step is right. */
+interface Group {
+  ids: string[];
+  text: string;
+  done: string;
+}
+
+/**
+ * Build steps grouped the way a student thinks about them ("place the battery and the LED, and connect them"),
+ * then the final circuit check. Every piece of the board belongs to exactly one group.
+ */
+function buildGroups(
+  board: Piece[],
+  groups: Group[],
+  connectText: string,
+  options?: LessonStep['options'],
+  loop?: string
+): LessonStep[] {
+  const byId = new Map(board.map((p) => [p.id, p]));
+  const before: Piece[] = [];
+  const steps = groups.map((g, i) => {
+    const pieces = g.ids.map((id) => {
+      const piece = byId.get(id);
+      if (!piece) throw new Error(`piece ${id} not on the board`);
+      return piece;
+    });
+    const step = newStep({
+      id: `build-${i + 1}`,
+      action: 'place_connection',
+      pieceId: g.ids[0],
+      pieceIds: g.ids,
+      text: g.text,
+      overrides: groupHints(pieces, before, g.done),
+    });
+    before.push(...pieces);
+    return step;
+  });
+  if (before.length !== board.length || new Set(before.map((p) => p.id)).size !== board.length)
+    throw new Error('every piece needs to be in exactly one group');
+  const connect = connectionStep('connect');
+  connect.text = connectText;
+  if (loop) connect.overrides = circuitHints(loop, board);
+  if (options) connect.options = options;
+  return [...steps, connect];
 }
 
 interface Spec {
@@ -338,15 +384,19 @@ function lesson02(): Lesson[] {
         'Para o LED acender, a corrente sai do + da bateria, passa pelo LED e volta ao − da bateria. Se o caminho tiver um buraco, a corrente para.\n\nNesta lição vamos fazer só isso: bateria + LED + um jumper. (Atenção: só aqui o resistor fica de fora. Na próxima lição você vai descobrir por que ele é importante.)',
         artLoop(false)
       ),
-      ...build(
+      ...buildGroups(
         board,
         [
-          ['bat', 'Coloque a bateria na bancada.'],
-          [
-            'led',
-            'Coloque o LED. O lado da barra é o −: encaixe esse lado na mesma coluna do − da bateria, assim o caminho de volta já fica pronto.',
-          ],
-          ['w1', 'Falta o caminho de ida: use um jumper para ligar o + da bateria ao lado “+” do LED.'],
+          {
+            ids: ['bat', 'led'],
+            text: 'Coloque a bateria e o LED na bancada e conecte os dois. Encaixe o lado da barra do LED (o −) na mesma coluna do − da bateria.',
+            done: 'Isso! A bateria e o LED estão conectados: os dois dividem uma coluna, e todos os furos de uma coluna são o mesmo nó.',
+          },
+          {
+            ids: ['w1'],
+            text: 'Agora falta o caminho de ida: use um jumper para ligar o + da bateria ao lado “+” do LED.',
+            done: 'O caminho está completo: do + da bateria, pelo jumper, pelo LED e de volta ao −.',
+          },
         ],
         'Confira o circuito inteiro. Faça sua previsão antes de energizar.',
         undefined,
@@ -439,18 +489,24 @@ function lesson03(): Lesson[] {
         'Um LED deixa passar quase toda a corrente que a bateria empurrar — e demais pode queimá-lo. O resistor funciona como um “estreitamento” no caminho: quanto maior o valor (em ohms, Ω), menos corrente passa.\n\nO valor está escrito em faixas coloridas. Este resistor tem as faixas amarelo · violeta · marrom, que valem 470 Ω.',
         artResistorBands(470)
       ),
-      ...build(
+      ...buildGroups(
         board,
         [
-          ['bat', 'Coloque a bateria na bancada.'],
-          ['res', 'Coloque o resistor de 470 Ω (faixas amarelo, violeta, marrom).'],
-          ['led', 'Coloque o LED, depois do resistor.'],
-          [
-            'amp',
-            'Encaixe o amperímetro no encaixe E2 (o tracejado marcado “A”). Ele mede a corrente que passa por ele.',
-          ],
-          ['w1', 'Jumper do + da bateria até o resistor.'],
-          ['w2', 'Jumper do amperímetro de volta ao − da bateria.'],
+          {
+            ids: ['bat', 'res', 'w1'],
+            text: 'Coloque a bateria e o resistor de 470 Ω (faixas amarelo, violeta, marrom) e conecte os dois: um jumper leva o + da bateria até o resistor.',
+            done: 'A corrente já sai do + da bateria e chega ao resistor.',
+          },
+          {
+            ids: ['led'],
+            text: 'Coloque o LED depois do resistor e conecte os dois: um terminal de cada peça na mesma coluna.',
+            done: 'O resistor e o LED estão em série: a mesma corrente passa pelos dois, um depois do outro.',
+          },
+          {
+            ids: ['amp', 'w2'],
+            text: 'Encaixe o amperímetro no encaixe E2 (o tracejado marcado “A”) e feche o circuito: um jumper leva o amperímetro de volta ao − da bateria.',
+            done: 'O amperímetro está no caminho: toda a corrente passa por ele, e é por isso que ele consegue medir.',
+          },
         ],
         'Conecte tudo, confira o circuito e clique em Energizar.',
         { matchValues: true, strictPositions: false },
@@ -577,14 +633,19 @@ function lesson04(): Lesson[] {
         'Será que o LED tem um lado certo?',
         'Você já acendeu um LED. Agora vai fazer um teste: monte o circuito de novo e depois gire o LED (clicando nele) para ver o que acontece nas duas posições. Escreva mentalmente o que você observa — depois eu explico o nome disso.'
       ),
-      ...build(
+      ...buildGroups(
         board,
         [
-          ['bat', 'Coloque a bateria.'],
-          ['res', 'Coloque o resistor de 470 Ω.'],
-          ['led', 'Coloque o LED.'],
-          ['w1', 'Jumper do + da bateria ao resistor.'],
-          ['w2', 'Jumper do LED de volta ao − da bateria.'],
+          {
+            ids: ['bat', 'res', 'w1'],
+            text: 'Coloque a bateria e o resistor de 470 Ω e conecte os dois: um jumper leva o + da bateria até o resistor.',
+            done: 'A corrente já sai do + da bateria e chega ao resistor.',
+          },
+          {
+            ids: ['led', 'w2'],
+            text: 'Coloque o LED depois do resistor e feche o circuito: um jumper leva o lado − do LED de volta ao − da bateria.',
+            done: 'Circuito fechado em série: bateria → resistor → LED → bateria.',
+          },
         ],
         'Confira o circuito.',
         undefined,
@@ -675,15 +736,24 @@ function lesson05(): Lesson[] {
         'Um botão é um interruptor: solto, ele deixa um buraco no caminho e nada passa; apertado, ele fecha o caminho e a corrente passa. Ele fica no meio do circuito, junto com o resistor e o LED.',
         artButton()
       ),
-      ...build(
+      ...buildGroups(
         board,
         [
-          ['bat', 'Coloque a bateria.'],
-          ['res', 'Coloque o resistor de 470 Ω.'],
-          ['led', 'Coloque o LED.'],
-          ['btn', 'Coloque o botão depois do LED.'],
-          ['w1', 'Jumper do + da bateria ao resistor.'],
-          ['w2', 'Jumper do botão de volta ao − da bateria.'],
+          {
+            ids: ['bat', 'res', 'w1'],
+            text: 'Coloque a bateria e o resistor de 470 Ω e conecte os dois: um jumper leva o + da bateria até o resistor.',
+            done: 'A corrente já sai do + da bateria e chega ao resistor.',
+          },
+          {
+            ids: ['led'],
+            text: 'Coloque o LED depois do resistor e conecte os dois: um terminal de cada peça na mesma coluna.',
+            done: 'O resistor e o LED estão em série.',
+          },
+          {
+            ids: ['btn', 'w2'],
+            text: 'Coloque o botão depois do LED e feche o circuito: um jumper leva o botão de volta ao − da bateria.',
+            done: 'O botão entrou no caminho da corrente: apertado ele fecha o circuito, solto ele abre.',
+          },
         ],
         'Confira o circuito.',
         undefined,
@@ -784,14 +854,19 @@ function lesson06(): Lesson[] {
         'O potenciômetro é um resistor que você regula com um botão giratório. Girando para um lado a resistência aumenta e a corrente diminui; para o outro, acontece o contrário. Um potenciômetro físico permite valores intermediários. Nesta tela, −/+ usa sete valores; no experimento há também um controle deslizante.',
         artPot()
       ),
-      ...build(
+      ...buildGroups(
         board,
         [
-          ['bat', 'Coloque a bateria.'],
-          ['pot', 'Coloque o potenciômetro.'],
-          ['led', 'Coloque o LED.'],
-          ['w1', 'Jumper do + da bateria ao potenciômetro.'],
-          ['w2', 'Jumper do LED de volta ao − da bateria.'],
+          {
+            ids: ['bat', 'pot', 'w1'],
+            text: 'Coloque a bateria e o potenciômetro e conecte os dois: um jumper leva o + da bateria até o potenciômetro.',
+            done: 'O potenciômetro é um resistor que você gira: agora ele recebe a corrente da bateria.',
+          },
+          {
+            ids: ['led', 'w2'],
+            text: 'Coloque o LED depois do potenciômetro e feche o circuito: um jumper leva o lado − do LED de volta ao − da bateria.',
+            done: 'Circuito fechado: bateria → potenciômetro → LED → bateria.',
+          },
         ],
         'Confira o circuito.',
         undefined,
@@ -906,15 +981,24 @@ function lesson07(): Lesson[] {
         'Um capacitor é como um pequeno tanque: enquanto a bateria está ligada ele se enche de energia. Quando você desliga a fonte, ele esvazia pelo caminho que encontrar — aqui, pelo resistor e pelo LED.\n\nPreste atenção: o que você vai ver na luz depois de desligar?',
         artCapacitor()
       ),
-      ...build(
+      ...buildGroups(
         board,
         [
-          ['bat', 'Coloque a bateria.'],
-          ['res', 'Coloque o resistor de 470 Ω.'],
-          ['led', 'Coloque o LED.'],
-          ['cap1', 'Coloque o capacitor ligado entre as colunas do + e do −. Atenção: um capacitor como este tem lado — a faixa marca o −. Na bancada, ligá-lo ao contrário pode danificá-lo (aqui a tela não simula esse defeito).'],
-          ['w1', 'Jumper do + da bateria ao resistor.'],
-          ['w2', 'Jumper do LED de volta ao − da bateria.'],
+          {
+            ids: ['bat', 'res', 'w1'],
+            text: 'Coloque a bateria e o resistor de 470 Ω e conecte os dois: um jumper leva o + da bateria até o resistor.',
+            done: 'A corrente já sai do + da bateria e chega ao resistor.',
+          },
+          {
+            ids: ['led', 'w2'],
+            text: 'Coloque o LED depois do resistor e feche o circuito: um jumper leva o lado − do LED de volta ao − da bateria.',
+            done: 'Circuito fechado em série: bateria → resistor → LED → bateria.',
+          },
+          {
+            ids: ['cap1'],
+            text: 'Coloque o capacitor ligado entre as colunas do + e do −. Atenção: um capacitor como este tem lado — a faixa marca o −. Na bancada, ligá-lo ao contrário pode danificá-lo (aqui a tela não simula esse defeito).',
+            done: 'O capacitor ficou entre os dois lados do circuito: ele vai guardar carga, como um tanquinho.',
+          },
         ],
         'Confira o circuito.',
         undefined,
@@ -1034,14 +1118,19 @@ function lesson08(): Lesson[] {
         'O buzzer é uma peça que faz barulho quando passa corrente por ele. Quanto mais corrente, “mais forte” ele trabalha. O resistor limita essa corrente, então o valor dele muda o som.\n\nAtenção: o som que você escuta aqui é uma simulação feita pelo computador, para ensinar a ideia.',
         artBuzzer()
       ),
-      ...build(
+      ...buildGroups(
         board,
         [
-          ['bat', 'Coloque a bateria.'],
-          ['res', 'Coloque o resistor de 470 Ω.'],
-          ['buz', 'Coloque o buzzer.'],
-          ['w1', 'Jumper do + da bateria ao resistor.'],
-          ['w2', 'Jumper do buzzer de volta ao − da bateria.'],
+          {
+            ids: ['bat', 'res', 'w1'],
+            text: 'Coloque a bateria e o resistor de 470 Ω e conecte os dois: um jumper leva o + da bateria até o resistor.',
+            done: 'A corrente já sai do + da bateria e chega ao resistor.',
+          },
+          {
+            ids: ['buz', 'w2'],
+            text: 'Coloque o buzzer depois do resistor e feche o circuito: um jumper leva o buzzer de volta ao − da bateria.',
+            done: 'Circuito fechado em série: bateria → resistor → buzzer → bateria.',
+          },
         ],
         'Confira o circuito.',
         undefined,
@@ -1094,14 +1183,19 @@ function lesson08(): Lesson[] {
         'Um potenciômetro físico permite valores intermediários. Nesta tela, −/+ usa sete valores; o controle deslizante abaixo permite valores intermediários. Compare o som e o indicador visual simulados.',
         artPot()
       ),
-      ...build(
+      ...buildGroups(
         potBoard,
         [
-          ['bat', 'Coloque a bateria.'],
-          ['pot', 'Coloque o potenciômetro.'],
-          ['buz', 'Coloque o buzzer.'],
-          ['w1', 'Jumper do + da bateria ao potenciômetro.'],
-          ['w2', 'Jumper do buzzer de volta ao − da bateria.'],
+          {
+            ids: ['bat', 'pot', 'w1'],
+            text: 'Coloque a bateria e o potenciômetro e conecte os dois: um jumper leva o + da bateria até o potenciômetro.',
+            done: 'O potenciômetro recebe a corrente da bateria e vai deixar você ajustar o som.',
+          },
+          {
+            ids: ['buz', 'w2'],
+            text: 'Coloque o buzzer depois do potenciômetro e feche o circuito: um jumper leva o buzzer de volta ao − da bateria.',
+            done: 'Circuito fechado: bateria → potenciômetro → buzzer → bateria.',
+          },
         ],
         'Confira o circuito.',
         undefined,
@@ -1317,19 +1411,29 @@ function lesson10(): Lesson[] {
         'Um alarme junta o que você aprendeu: o botão liga tudo, cada resistor protege a sua peça, o LED mostra e o buzzer avisa. O botão alimenta dois ramos ao mesmo tempo.\n\nVocê vai montar por etapas. Depois de dois erros seguidos, o tutor dá uma dica mais direta. O retorno é o caminho comum dos dois ramos até o − da bateria.',
         artAlarm()
       ),
-      ...build(
+      ...buildGroups(
         board,
         [
-          ['bat', 'Coloque a bateria.'],
-          ['btn', 'Coloque o botão.'],
-          ['res1', 'Coloque o resistor de 470 Ω do ramo do LED.'],
-          ['led', 'Coloque o LED.'],
-          ['res2', 'Coloque o resistor de 220 Ω do ramo do buzzer.'],
-          ['buz', 'Coloque o buzzer.'],
-          ['w1', 'Jumper do + da bateria ao botão.'],
-          ['w3', 'Jumper do botão ao ramo do buzzer.'],
-          ['w4', 'Jumper do buzzer à coluna do catodo (−) do LED: esse é o ponto de retorno comum.'],
-          ['w2', 'Jumper dessa coluna de retorno (catodo do LED) ao − da bateria.'],
+          {
+            ids: ['bat', 'btn', 'w1'],
+            text: 'Coloque a bateria e o botão e conecte os dois: um jumper leva o + da bateria até o botão.',
+            done: 'O botão controla tudo o que vem depois dele: sem apertar, nada recebe corrente.',
+          },
+          {
+            ids: ['res1', 'led'],
+            text: 'Coloque o resistor de 470 Ω e o LED, e conecte os dois ao botão: este é o primeiro ramo.',
+            done: 'Primeiro ramo pronto: botão → resistor de 470 Ω → LED.',
+          },
+          {
+            ids: ['res2', 'buz', 'w3'],
+            text: 'Coloque o resistor de 220 Ω e o buzzer e ligue este segundo ramo ao botão com um jumper: a corrente vai se dividir entre os dois ramos.',
+            done: 'Segundo ramo pronto: botão → resistor de 220 Ω → buzzer, ao lado do primeiro (em paralelo).',
+          },
+          {
+            ids: ['w4', 'w2'],
+            text: 'Feche o circuito: um jumper leva o buzzer à coluna do catodo (−) do LED, e outro leva essa coluna de retorno ao − da bateria.',
+            done: 'Os dois ramos voltam juntos ao − da bateria: o ponto de retorno é comum.',
+          },
         ],
         'Conecte os dois ramos e confira o circuito.',
         undefined,

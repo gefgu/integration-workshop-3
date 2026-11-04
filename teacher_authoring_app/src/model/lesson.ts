@@ -236,6 +236,9 @@ function cleanStep(st: any) {
     id: st.id,
     action: st.action,
     pieceId: typeof st.pieceId === 'string' ? st.pieceId : null,
+    ...(Array.isArray(st.pieceIds) && st.pieceIds.some((x) => typeof x === 'string')
+      ? { pieceIds: st.pieceIds.filter((x) => typeof x === 'string') }
+      : {}),
     quizId: typeof st.quizId === 'string' ? st.quizId : null,
     text: typeof st.text === 'string' ? st.text : '',
     options: {

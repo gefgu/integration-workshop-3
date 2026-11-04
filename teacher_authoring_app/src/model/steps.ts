@@ -1,14 +1,7 @@
 import { uid } from './ids.ts';
 import type { Lesson, LessonStep, Piece, StepAction, StepOptions } from './types.ts';
 
-export const ACTIONS = [
-  'place_component',
-  'place_connection',
-  'connect_circuit',
-  'interact',
-  'explain',
-  'experiment',
-];
+export const ACTIONS = ['place_component', 'place_connection', 'connect_circuit', 'interact', 'explain', 'experiment'];
 /** Steps only the app plays: the graph_validator never judges them. */
 export const CLIENT_ACTIONS = ['explain', 'experiment'];
 export const isClientStep = (s: Pick<LessonStep, 'action'>) => CLIENT_ACTIONS.includes(s.action);
@@ -18,7 +11,9 @@ export const isClientStep = (s: Pick<LessonStep, 'action'>) => CLIENT_ACTIONS.in
  * (Guided lessons use `effectiveSteps`.)
  */
 export function challengeSteps(lesson: Lesson): LessonStep[] {
-  return lesson.kind === 'challenge' ? (lesson.steps || []).filter((s) => isClientStep(s) || s.action === 'interact') : [];
+  return lesson.kind === 'challenge'
+    ? (lesson.steps || []).filter((s) => isClientStep(s) || s.action === 'interact')
+    : [];
 }
 
 /** The bench a lesson starts from: its preassembled pieces (one of `removeOneOf` removed at random). */
@@ -89,6 +84,12 @@ export function newStep(patch: Partial<LessonStep> = {}): LessonStep {
   };
 }
 
+/** The pieces a step places: its group (build step) or its single piece. */
+export function stepPieceIds(s: LessonStep): string[] {
+  if (s.pieceIds?.length) return s.pieceIds;
+  return s.pieceId ? [s.pieceId] : [];
+}
+
 // Jumpers are named the way the tray names them, so the step text matches what the student sees.
 const JUMPER_NOME = {
   jumper_curto: 'o jumper curto',
@@ -107,7 +108,9 @@ export function stepText(piece: Piece): string {
 
 /** True when the text is one `stepText` generated (so it is safe to regenerate), not something the teacher wrote. */
 const isGeneratedText = (text: string) =>
-  /^Coloque [^.]+ na bancada\.( As conexões serão conferidas no passo final\.| Confira se ele liga as colunas pedidas no circuito\.)?$/.test(text.trim());
+  /^Coloque [^.]+ na bancada\.( As conexões serão conferidas no passo final\.| Confira se ele liga as colunas pedidas no circuito\.)?$/.test(
+    text.trim()
+  );
 
 /**
  * Steps whose text was generated for a piece other than the one now bound to them (the teacher swapped the piece)
@@ -117,7 +120,7 @@ export function refreshGeneratedText(lesson: Lesson): Lesson {
   const byId = new Map(lesson.board.pieces.map((p) => [p.id, p]));
   let changed = false;
   const steps = lesson.steps.map((s) => {
-    const piece = s.pieceId ? byId.get(s.pieceId) : null;
+    const piece = s.pieceId && !s.pieceIds ? byId.get(s.pieceId) : null;
     if (!piece || s.text === stepText(piece) || !(!s.text.trim() || isGeneratedText(s.text))) return s;
     changed = true;
     return { ...s, text: stepText(piece) };
@@ -156,8 +159,10 @@ export function cumulativeBoard(lesson: Lesson, idx: number, steps: LessonStep[]
   const byId = new Map(lesson.board.pieces.map((p) => [p.id, p]));
   const out = [];
   for (const s of steps.slice(0, idx + 1)) {
-    const p = s.pieceId && byId.get(s.pieceId);
-    if (p) out.push(p);
+    for (const id of stepPieceIds(s)) {
+      const p = byId.get(id);
+      if (p) out.push(p);
+    }
   }
   return out;
 }
@@ -165,12 +170,13 @@ export function cumulativeBoard(lesson: Lesson, idx: number, steps: LessonStep[]
 /** Pieces with no step, and steps whose piece is gone. */
 export function reconcile(lesson: Lesson): { unassigned: Piece[]; dangling: LessonStep[] } {
   const ids = new Set(lesson.board.pieces.map((p) => p.id));
-  const used = new Set(lesson.steps.filter((s) => s.pieceId).map((s) => s.pieceId));
+  const used = new Set(lesson.steps.flatMap(stepPieceIds));
   return {
     unassigned: lesson.board.pieces.filter((p) => !used.has(p.id)),
     dangling: lesson.steps.filter(
       (s) =>
-        !['interact', 'connect_circuit', ...CLIENT_ACTIONS].includes(s.action) && (!s.pieceId || !ids.has(s.pieceId))
+        !['interact', 'connect_circuit', ...CLIENT_ACTIONS].includes(s.action) &&
+        (!stepPieceIds(s).length || !stepPieceIds(s).every((id) => ids.has(id)))
     ),
   };
 }
@@ -222,14 +228,18 @@ export function stepProblems(lesson: Lesson): string[] {
       if (s.pieceId) out.push(`Passo ${n}: o passo de conexão não deve conter uma peça.`);
       return;
     }
-    const p = byId.get(s.pieceId);
-    if (!p) {
+    const group = stepPieceIds(s).map((id) => byId.get(id));
+    if (!group.length || group.some((p) => !p)) {
       out.push(`Passo ${n}: a peça deste passo não está mais na bancada.`);
       return;
     }
-    if (seen.has(p.id)) out.push(`Passo ${n}: a peça já foi usada em outro passo.`);
-    seen.add(p.id);
-    if (s.action !== actionFor(p)) out.push(`Passo ${n}: a ação deveria ser "${actionFor(p)}".`);
+    for (const p of group as Piece[]) {
+      if (seen.has(p.id)) out.push(`Passo ${n}: a peça já foi usada em outro passo.`);
+      seen.add(p.id);
+    }
+    // A build step (several pieces, or an explicit group) places and connects: it always checks the connection.
+    const want = s.pieceIds ? 'place_connection' : actionFor(group[0] as Piece);
+    if (s.action !== want) out.push(`Passo ${n}: a ação deveria ser "${want}".`);
   });
   const missing = lesson.board.pieces.filter((p) => !seen.has(p.id));
   if (missing.length) out.push(`${missing.length} peça(s) da bancada ainda não têm passo.`);
@@ -293,8 +303,8 @@ export function toValidatorLesson(lesson: Lesson): any {
     // Explanations and experiments are the app's: to the validator they are questions nobody answers.
     if (isClientStep(s)) return { ...base, action: 'interact', interact: { quiz_correct_id: '' } };
     if (s.action === 'connect_circuit') return { ...base, add: [] };
-    const p = byId.get(s.pieceId);
-    return { ...base, add: p ? [pieceOut(p)] : [] };
+    const placed = stepPieceIds(s).flatMap((id) => (byId.has(id) ? [pieceOut(byId.get(id) as Piece)] : []));
+    return { ...base, add: placed };
   });
   return { id: lesson.id, kind: 'guided', steps };
 }

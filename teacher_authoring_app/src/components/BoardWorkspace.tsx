@@ -14,7 +14,9 @@ import {
 import { AMMETER_SLOT, slotAnchor } from '../engine/nodes.ts';
 import { CAPSULE, DEFS, isCapsule, NOMES, nextConfig, POT_DEFAULT, POT_VALUES } from '../engine/sim.ts';
 import type { CapsuleReading, CircuitTrail, Piece, PieceType } from '../model/types.ts';
+import type { LinkHint } from '../engine/linkHint.ts';
 import Breadboard from './Breadboard.tsx';
+import LinkHintOverlay from './LinkHintOverlay.tsx';
 import PieceView from './PieceView.tsx';
 import Tray from './Tray.tsx';
 
@@ -47,6 +49,8 @@ interface BoardWorkspaceProps {
   trayTypes?: PieceType[] | null;
   /** A loose piece was clicked and is now seated. */
   onReseat?: (id: string) => void;
+  /** Green dotted line showing where a component still has to be connected. */
+  linkHint?: LinkHint | null;
 }
 export default function BoardWorkspace({
   pieces,
@@ -62,6 +66,7 @@ export default function BoardWorkspace({
   boardFooter,
   trayTypes = null,
   onReseat,
+  linkHint = null,
 }: BoardWorkspaceProps) {
   const boardRef = useRef(null);
   const [drag, setDrag] = useState(null);
@@ -314,6 +319,7 @@ export default function BoardWorkspace({
               </div>
             );
           })}
+          <LinkHintOverlay hint={linkHint} />
         </Breadboard>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, minHeight: 36, marginTop: 8 }}>
           {!readOnly && (

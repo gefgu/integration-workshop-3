@@ -14,6 +14,7 @@ import {
   overrideRows,
   reconcile,
   rowsToOverrides,
+  stepPieceIds,
   stepText,
 } from '../model/steps.ts';
 import type { Piece } from '../model/types.ts';
@@ -279,7 +280,7 @@ export default function StepsEditor({ lesson, setLesson, selected, setSelected }
                   <strong style={{ fontFamily: 'var(--font-heading)', fontSize: 14 }}>Passo {i + 1}</strong>
                   <span style={{ fontSize: 12, color: 'var(--color-neutral-700)' }}>
                     {ACTION_LABEL[s.action]}
-                    {piece ? ` · ${NOMES[piece.type]}` : ''}
+                    {s.pieceIds && s.pieceIds.length > 1 ? ` · ${s.pieceIds.length} peças` : piece ? ` · ${NOMES[piece.type]}` : ''}
                     {s.title ? ` — ${s.title}` : ''}
                   </span>
                 </button>
@@ -516,7 +517,7 @@ function StepDetails({ lesson, step, patch, catalog, stepQuizzes }) {
 function StepPreview({ lesson, idx }) {
   const scale = 0.62;
   const pieces = useMemo(() => cumulativeBoard(lesson, idx, lesson.steps), [lesson, idx]);
-  const hl = useMemo(() => new Set(lesson.steps[idx].pieceId ? [lesson.steps[idx].pieceId] : []), [lesson, idx]);
+  const hl = useMemo(() => new Set(stepPieceIds(lesson.steps[idx])), [lesson, idx]);
   return (
     <div>
       <strong style={{ fontSize: 13 }}>Bancada ao fim do passo {idx + 1}</strong>

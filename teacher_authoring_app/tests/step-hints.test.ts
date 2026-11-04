@@ -16,17 +16,21 @@ const step = (l: ReturnType<typeof find>, id: string) => {
   return found;
 };
 
-test('lesson 2: the jumper hint names the battery + and the LED anode, with correct Portuguese', () => {
+test('lesson 2: each build step says what is not connected, with correct Portuguese', () => {
   const l = find('02-guiada');
-  const text = step(l, 'place-w1').overrides.missing_connection.jumper;
-  assert.match(text, /ligue o \+ da bateria ao lado \+ \(anodo\) do LED/);
-  assert.doesNotMatch(text, /\ba o\b|\bde o\b/);
+  const first = step(l, 'build-1').overrides.open_circuit['*'];
+  assert.match(first, /A bateria e o LED ainda não estão conectados/);
+  assert.match(first, /o − da bateria com o lado − \(catodo, o da barra\) do LED/);
+  const second = step(l, 'build-2').overrides.open_circuit['*'];
+  assert.match(second, /o \+ da bateria com o lado \+ \(anodo\) do LED/);
+  for (const text of [first, second]) assert.doesNotMatch(text, /\ba o\b|\bde o\b/);
 });
 
 test('every build step of the guided curriculum carries specific hints', () => {
   for (const l of lessons.filter((x) => x.kind === 'guided')) {
     for (const s of l.steps.filter((x) => x.action === 'place_component' || x.action === 'place_connection')) {
       assert.ok(Object.keys(s.overrides).length >= 4, `${s.id} has hints`);
+      if (s.pieceIds) assert.ok(s.overrides.complete, `${s.id} explains what the student just achieved`);
       for (const text of Object.values(s.overrides).flatMap((per) => Object.values(per)))
         assert.doesNotMatch(text, /\ba o\b|\bde o\b|undefined|\{nome_cap\}/, `${s.id}: ${text}`);
     }

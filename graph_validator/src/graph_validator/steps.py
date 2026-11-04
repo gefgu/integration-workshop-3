@@ -68,9 +68,15 @@ def lint_issues(lesson: Lesson) -> list[tuple[str | None, str]]:
                 out.append((s.id, "connect_circuit must not add or remove pieces"))
             if lesson.kind == "guided" and not cur:
                 out.append((s.id, "connect_circuit needs a target circuit"))
-        elif removed or sum(added.values()) > 1:
-            out.append((s.id, f"a step must teach exactly one action (SFR4); "
-                              f"it adds {sum(added.values())} and removes {sum(removed.values())} pieces"))
+        elif removed:
+            out.append((s.id, f"a step must not remove pieces; it removes {sum(removed.values())}"))
+        elif s.action == "place_connection":
+            # A build step: place one or more pieces and connect them. It is checked by the circuit, not by inventory.
+            if not added:
+                out.append((s.id, "a build step must add at least one piece"))
+        elif sum(added.values()) > 1:
+            out.append((s.id, f"a placement step must teach exactly one action (SFR4); it adds {sum(added.values())}. "
+                              f"Use place_connection to place several pieces and connect them"))
         elif s.action != "connect_circuit":
             if added:
                 (ctype, _), = added.keys()
