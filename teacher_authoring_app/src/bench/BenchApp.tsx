@@ -48,6 +48,12 @@ export default function BenchApp() {
   }, [api]);
 
   const version = status?.package?.version_id;
+
+  // A demo module left on the bench from an older build of the curriculum is refreshed (a real module never is).
+  const demoVersion = useMemo(() => demoPackage().version_id, []);
+  useEffect(() => {
+    if (version?.startsWith('demo') && version !== demoVersion) void api.devUnlock(demoPackage()).catch(() => undefined);
+  }, [api, version, demoVersion]);
   useEffect(() => {
     if (!status?.unlocked || !version) {
       setPkg(null);

@@ -177,7 +177,7 @@ test('refreshGeneratedText troca o texto gerado para outra peça, mas não o tex
   lesson.steps = [stale, custom];
   const next = refreshGeneratedText(lesson);
   assert.equal(next.steps[0].text, stepText(lesson.board.pieces[0]));
-  assert.match(next.steps[0].text, /4 colunas/);
+  assert.match(next.steps[0].text, /super hiper longo/);
   assert.equal(next.steps[1].text, 'Use o fio vermelho da caixa.');
   assert.equal(refreshGeneratedText(next), next, 'idempotente');
 });
@@ -186,6 +186,6 @@ test('o texto dos jumpers usa o nome da bandeja, sem "1 colunas"', () => {
   for (const type of ['jumper_curto', 'jumper_longo', 'jumper_3', 'jumper_4', 'jumper_5'] as const) {
     const text = stepText({ id: 'x', type, a: 1, b: 2, row: 0 });
     assert.doesNotMatch(text, /\b1 colunas/);
-    assert.match(text, /jumper (curto|longo|de \d colunas)/);
+    assert.match(text, /jumper (curto|longo|super longo|super hiper longo|de \d colunas)/);
   }
 });

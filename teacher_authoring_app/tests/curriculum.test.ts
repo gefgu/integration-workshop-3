@@ -92,14 +92,13 @@ test('challenge lessons start from the right bench and the target works', () => 
     }
   }
   const l2 = lessons.find((l) => l.id.endsWith('02-desafio'));
-  assert.deepEqual(
-    startPieces(l2, () => 0).map((p) => p.id),
-    ['bat', 'led', 'w2']
-  );
-  assert.deepEqual(
-    startPieces(l2, () => 0.99).map((p) => p.id),
-    ['bat', 'led', 'w1']
-  );
+  // The circuit needs a single jumper; the challenge starts without it, whatever the draw.
+  for (const draw of [0, 0.99]) {
+    assert.deepEqual(
+      startPieces(l2, () => draw).map((p) => p.id),
+      ['bat', 'led']
+    );
+  }
 });
 
 test('phases: challenges with follow-up steps play the build first, then the lab', () => {

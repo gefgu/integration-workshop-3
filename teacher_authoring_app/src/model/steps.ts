@@ -93,8 +93,8 @@ export function newStep(patch: Partial<LessonStep> = {}): LessonStep {
 const JUMPER_NOME = {
   jumper_curto: 'o jumper curto',
   jumper_longo: 'o jumper longo',
-  jumper_3: 'o jumper de 3 colunas',
-  jumper_4: 'o jumper de 4 colunas',
+  jumper_3: 'o jumper super longo',
+  jumper_4: 'o jumper super hiper longo',
   jumper_5: 'o jumper de 5 colunas',
 };
 

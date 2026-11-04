@@ -34,15 +34,28 @@ PLAYER_PHRASES = [
     "Agora responda à pergunta.",
     "Quase! Observe de novo e tente outra vez.",
     "Missões cumpridas! Você viu o efeito acontecer. Continue quando quiser.",
-    "Montagem certa! Agora clique em Energizar e confira se funciona.",
-    "Ainda não é isso. Observe o circuito com calma e tente de novo.",
+    "Montagem certa! Tente energizar!",
+    "Falta ligar alguma coisa. Siga com o dedo do + da bateria até o − e veja onde o caminho para.",
+    "Confira as peças da bandeja: será que falta alguma na sua bancada?",
+    "Confira as peças da bancada: será que tem alguma a mais do que o circuito pede?",
+    "Alguma peça da bancada não é a que o circuito pede. Confira cada uma.",
+    "A peça está certa, mas o valor não. Veja o valor escrito em cada peça da bandeja.",
+    "Ainda não é isso. Siga o caminho da corrente com o dedo: ela sai do + da bateria, passa pelas peças e volta ao −.",
+    "Siga do + da bateria até o LED e depois até o −. Procure onde falta um jumper para completar o caminho.",
+    "Falta o jumper do + da bateria até o lado + (anodo) do LED: uma ponta na coluna do +, a outra na coluna do anodo. O lado − do LED já está na coluna do − da bateria.",
+    "Compare os lados do LED com os polos da bateria. O LED só conduz em um sentido.",
+    "Gire o LED: o lado da barra (catodo) deve ficar no caminho de volta ao − da bateria. Preserve a posição da bateria para comparar.",
+    "Para o LED só acender com os DOIS botões apertados, a corrente tem de passar por um botão E depois pelo outro, um atrás do outro (em série).",
+    "Monte a fila: + da bateria → resistor → LED → botão A → botão B → − da bateria, ligando cada peça à próxima com jumpers.",
+    "São dois defeitos ao mesmo tempo. Comece pelo mais perigoso: procure um jumper que liga os dois lados da bateria direto. É ele que dispara o alarme de curto.",
+    "Tire o jumper curto que liga as duas colunas da bateria. Depois, se uma peça estiver marcada como “solta”, clique nela para encaixá-la de verdade.",
 ]
 
 
 def step_text(piece: dict[str, Any]) -> str:
     if piece["type"].startswith("jumper"):
         names = {"jumper_curto": "o jumper curto", "jumper_longo": "o jumper longo",
-                 "jumper_3": "o jumper de 3 colunas", "jumper_4": "o jumper de 4 colunas",
+                 "jumper_3": "o jumper super longo", "jumper_4": "o jumper super hiper longo",
                  "jumper_5": "o jumper de 5 colunas"}
         return (f"Coloque {names.get(piece['type'], 'um jumper')} na bancada. "
                 "Confira se ele liga as colunas pedidas no circuito.")

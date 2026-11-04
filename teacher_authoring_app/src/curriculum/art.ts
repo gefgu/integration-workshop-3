@@ -60,9 +60,9 @@ export function artNodes(): Illustration {
 ${col(260, 'nó A5', 52, 36)}${col(460, 'nó A6', 52, 36)}
 ${rect(140, 182, 440, 30, '#c9c2b0', 6)}${text(360, 202, 'abertura central — separa os nós de cima e de baixo', { anchor: 'middle', size: 13 })}
 ${col(260, 'nó B5', 240, 386)}${col(460, 'nó B6', 240, 386)}
-${text(40, 112, 'banco A', { bold: true })}${text(40, 300, 'banco B', { bold: true })}`,
+${text(40, 112, 'socket A', { bold: true })}${text(40, 300, 'socket B', { bold: true })}`,
     'Duas colunas da bancada. Em cada uma, os seis furos de cima formam um nó (A) e os seis de baixo formam outro nó (B); a abertura central separa os dois.',
-    'Cada coluna tem DOIS nós: A (em cima) e B (embaixo). Os 6 furos de um banco já estão ligados entre si.'
+    'Cada coluna tem DOIS nós: A (em cima) e B (embaixo). Os 6 furos de um socket já estão ligados entre si.'
   );
 }
 

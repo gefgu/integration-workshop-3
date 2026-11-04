@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { validateStep } from '../api/validator.ts';
 import { TutorVoiceContext, useSay, useTutorVoice } from '../audio/useTutorVoice.ts';
 import Bubble from '../components/Bubble.tsx';
+import GoalBar from './GoalBar.tsx';
 import LabBoard from '../components/LabBoard.tsx';
 import { capsuleConfig, formatOhms, isCapsule, NOMES } from '../engine/sim.ts';
 import { cumulativeBoard, effectiveSteps, startPieces } from '../model/steps.ts';
@@ -536,6 +537,9 @@ function Countdown({ seconds, running, onExpire }) {
   );
 }
 
+/** Spoken by the tutor (it is part of the system phrase pack). */
+export const ENERGIZE_NUDGE = 'Montagem certa! Tente energizar!';
+
 function BuildStep({
   lesson,
   stepIdx,
@@ -575,7 +579,7 @@ function BuildStep({
       setMisses(0);
       setShown({ tone: 'ok', msg: res.message });
     } else if (misses > 0) {
-      setShown({ tone: toneFor(res.category), msg: challengeHint(lesson, pieces, misses, res.hint || res.message) });
+      setShown({ tone: toneFor(res.category), msg: challengeHint(lesson, pieces, misses, res.hint || res.message, res.category) });
     }
   }, [res, misses, lesson, pieces]);
 
@@ -586,6 +590,7 @@ function BuildStep({
   const predictionBeforeExperiment = lesson.kind === 'guided' && lesson.quizzes.some((q) => q.prediction);
   const needsWork = final && !!settings?.requireLit && !predictionBeforeExperiment;
   const ready = built && (!needsWork || working);
+  const canEnergize = lesson.board.pieces.length > 1; // a lone battery (lesson 1) has nothing to power
 
   let tone = 'info',
     msg =
@@ -615,9 +620,10 @@ function BuildStep({
     tone = 'obs';
     msg =
       'O circuito está certo, mas uma peça está mal encaixada (marcada como “solta”). Clique nela para encaixar de verdade.';
-  } else if (built && needsWork && !working) {
+  } else if (built && final && canEnergize && !lab.energized) {
+    // Right, but the student has not powered it yet: the next move is the Energizar button.
     tone = 'ok';
-    msg = 'Montagem certa! Agora clique em Energizar e confira se funciona.';
+    msg = ENERGIZE_NUDGE;
   } else if (ready) {
     tone = 'ok';
     msg =
@@ -633,8 +639,14 @@ function BuildStep({
       (lesson.kind === 'challenge' ? lesson.board.pieces : cumulativeBoard(lesson, stepIdx)).map((p) => ({ ...p }))
     );
   useSay([msg]);
+  // What the step asks for stays pinned; the bubble above it is free to show hints and warnings.
+  const goal =
+    text ||
+    (lesson.kind === 'challenge' ? lesson.instruction : '') ||
+    (final ? 'Monte o circuito completo e confira se está certo.' : '');
   return (
     <>
+      <GoalBar text={goal} />
       <Bubble kind={mascotKind} tone={tone} message={msg} />
       {debugEnabled && (
         <ValidationDebug

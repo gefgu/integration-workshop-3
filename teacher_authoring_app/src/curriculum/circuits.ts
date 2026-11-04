@@ -22,12 +22,14 @@ const battery = () => P('bat', 'bateria', 1, 2, 1); // + on column 1, − on col
 /** Lesson 1: only the battery capsule. */
 export const circuitL01 = (): Piece[] => [battery()];
 
-/** Lesson 2 (schematic _02): battery → node 1 → LED → node 2 → back. No resistor yet. */
+/**
+ * Lesson 2 (schematic _02): battery → LED → back. No resistor yet.
+ * One jumper is enough: the LED's cathode shares column 2 with the battery's −, so only the + → anode wire is needed.
+ */
 export const circuitL02 = (): Piece[] => [
   battery(),
-  P('led', 'led', 3, 4, 2),
+  P('led', 'led', 3, 2, 2), // anode on column 3, cathode on column 2 (the battery's −)
   P('w1', 'jumper_longo', 1, 3, 3), // + → LED anode
-  P('w2', 'jumper_longo', 4, 2, 4), // LED cathode → −
 ];
 
 /** Lesson 3 (schematic _03): resistor limits the current; the ammeter capsule (slot E2) shows it in mA. */

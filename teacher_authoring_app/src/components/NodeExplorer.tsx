@@ -22,7 +22,7 @@ export default function NodeExplorer() {
               // biome-ignore lint/suspicious/noArrayIndexKey: a fixed grid of holes, never reordered
               key={`${col}-${row}`}
               type="button"
-              aria-label={`Furo da coluna ${col}, banco ${row < BANK_ROWS ? 'A' : 'B'}`}
+              aria-label={`Furo da coluna ${col}, socket ${row < BANK_ROWS ? 'A' : 'B'}`}
               onClick={() => setPick({ col, row })}
               onPointerEnter={() => setPick({ col, row })}
               style={{
@@ -49,7 +49,7 @@ export default function NodeExplorer() {
               nó {bank}
               {pick.col}
             </strong>
-            : os 6 furos acesos da coluna {pick.col} (banco {bank}) são a mesma ligação elétrica. O{' '}
+            : os 6 furos acesos da coluna {pick.col} (socket {bank}) são a mesma ligação elétrica. O{' '}
             <strong>
               nó {other}
               {pick.col}
