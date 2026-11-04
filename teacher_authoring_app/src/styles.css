@@ -1010,3 +1010,96 @@ a.dash-row:hover {
     padding: 12px;
   }
 }
+
+/* Primeiros passos */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.start-progress {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--color-neutral-300);
+  overflow: hidden;
+  margin: 8px 0 16px;
+}
+.start-progress span {
+  display: block;
+  height: 100%;
+  background: var(--color-accent-2);
+  transition: width 0.3s;
+}
+.start-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.start-step {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  opacity: 0.75;
+}
+.start-step.current {
+  opacity: 1;
+  outline: 2px solid var(--color-accent);
+}
+.start-step.done {
+  opacity: 0.9;
+}
+.start-mark {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  background: var(--color-neutral-300);
+}
+.start-step.done .start-mark {
+  background: var(--color-accent-2);
+  color: #fff;
+}
+.start-step.current .start-mark {
+  background: var(--color-accent);
+  color: #fff;
+}
+.start-body {
+  flex: 1;
+  min-width: 0;
+}
+.start-body h3 {
+  margin: 4px 0 4px;
+  font-size: 16px;
+}
+.start-body p {
+  margin: 0 0 8px;
+}
+.start-badge {
+  margin-left: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--color-accent);
+  color: #fff;
+  vertical-align: middle;
+}
+.start-substeps {
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 4px;
+}
+.empty-state {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+}

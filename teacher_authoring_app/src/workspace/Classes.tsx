@@ -71,6 +71,12 @@ function ClassList() {
           Criar turma
         </button>
       </form>
+      {items.length === 0 && (
+        <div className="panel empty-state">
+          <p>Nenhuma turma ainda. Crie a primeira no formulário acima; depois cadastre os alunos e atribua um módulo.</p>
+          <Link to="/inicio">Ver o passo a passo</Link>
+        </div>
+      )}
       <div className="workspace-cards">
         {items.map((item) => (
           <article className="panel" key={item.id}>

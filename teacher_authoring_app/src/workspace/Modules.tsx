@@ -75,6 +75,12 @@ function ModuleList({ lessons }: { lessons: Lesson[] }) {
           Criar módulo
         </button>
       </form>
+      {items.length === 0 && (
+        <div className="panel empty-state">
+          <p>Nenhum módulo ainda. Crie um acima ou importe o currículo TedTronics, que já vem com 5 módulos prontos.</p>
+          <Link to="/inicio">Usar o currículo pronto</Link>
+        </div>
+      )}
       <div className="workspace-cards">
         {items.map((item) => (
           <article className="panel" key={item.id}>

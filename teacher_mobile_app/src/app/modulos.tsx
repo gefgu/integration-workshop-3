@@ -46,19 +46,34 @@ export default function Modulos() {
     }
   }
 
+  // The one thing still missing, in the order the teacher has to do it (the button says it instead of just being gray).
+  const missing = !bench
+    ? 'Conecte uma bancada'
+    : moduleId == null
+      ? 'Escolha um módulo'
+      : classId == null
+        ? 'Escolha a turma'
+        : '';
+
   if (!modules && !error) return <ActivityIndicator style={{ marginTop: 32 }} color={colors.accent} />;
   return (
     <ScrollView style={ui.screen} contentContainerStyle={ui.content} contentInsetAdjustmentBehavior="automatic">
       {error ? <Text style={ui.error}>{error}</Text> : null}
       {message ? <Text style={ui.ok}>{message}</Text> : null}
-      {!bench && (
-        <View style={ui.card}>
-          <Text style={ui.text}>Conecte uma bancada para enviar o módulo.</Text>
+      <View style={ui.card}>
+        <Text style={ui.text}>{bench ? '✓ 1. Bancada conectada' : '1. Conecte a bancada'}</Text>
+        {bench ? (
+          <Text style={ui.muted}>{bench.bench_id}</Text>
+        ) : (
           <Button title="Conectar bancada" variant="outline" onPress={() => router.push('/bancada')} />
-        </View>
+        )}
+      </View>
+      <Text style={ui.label}>{moduleId == null ? '2. Escolha o módulo' : '✓ 2. Módulo'}</Text>
+      {modules?.length === 0 && (
+        <Text style={ui.muted}>
+          Nenhum módulo ainda. No site do professor, abra Início e toque em “Usar currículo TedTronics”.
+        </Text>
       )}
-      <Text style={ui.label}>1. Módulo</Text>
-      {modules?.length === 0 && <Text style={ui.muted}>Nenhum módulo. Crie módulos pelo site.</Text>}
       {modules?.map((m) => (
         <Choice
           key={m.id}
@@ -73,7 +88,7 @@ export default function Modulos() {
       ))}
       {selected && (
         <>
-          <Text style={ui.label}>2. Turma</Text>
+          <Text style={ui.label}>{classId == null ? '3. Escolha a turma' : '✓ 3. Turma'}</Text>
           {classChoices.map((c) => (
             <Choice
               key={c.id}
@@ -85,7 +100,13 @@ export default function Modulos() {
           ))}
         </>
       )}
-      <Button title="Enviar para a bancada" busy={busy} disabled={!bench || !moduleId || !classId} onPress={send} />
+      <Button
+        title={missing ? `Enviar para a bancada (${missing.toLowerCase()})` : 'Enviar para a bancada'}
+        busy={busy}
+        disabled={Boolean(missing)}
+        onPress={send}
+      />
+      {missing ? <Text style={ui.muted}>Falta: {missing.toLowerCase()}.</Text> : null}
     </ScrollView>
   );
 }

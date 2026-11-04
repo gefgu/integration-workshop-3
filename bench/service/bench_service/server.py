@@ -14,7 +14,7 @@ from pydantic import BaseModel, Field
 
 from graph_validator.service.app import app as validator_app
 
-from .protocol import FrameAssembler, Session, encode_frames
+from .protocol import FrameAssembler, Session, encode_frames, package_problem
 from .store import BenchStore
 
 NOT_RECOGNIZED = "Tag não reconhecida — chame seu professor."
@@ -127,10 +127,16 @@ def create_app(store: BenchStore, dev_unlock: bool = False) -> FastAPI:
 
     if dev_unlock:
         @app.post("/dev/unlock")
-        def dev_unlock_endpoint() -> dict:
-            """Demo only (TEDTRONICS_BENCH_DEV=1): unlock without the phone."""
+        def dev_unlock_endpoint(body: dict[str, Any] | None = None) -> dict:
+            """Demo only (TEDTRONICS_BENCH_DEV=1): unlock without the phone.
+
+            A demo `package` in the body is loaded only when the bench has none, so a real module is never replaced.
+            """
             import time
             store.unlock({"id": 0, "name": "Modo demonstração"}, time.time() + 3600)
+            package = (body or {}).get("package")
+            if package and not store.package() and package_problem(package) is None:
+                store.load_package(package)
             return store.status()
 
     @app.websocket("/ble")
