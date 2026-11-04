@@ -53,8 +53,8 @@ export const NOMES = {
   potenciometro: 'Potenciômetro',
   jumper_curto: 'Jumper curto',
   jumper_longo: 'Jumper longo',
-  jumper_3: 'Jumper 3 colunas',
-  jumper_4: 'Jumper 4 colunas',
+  jumper_3: 'Jumper super longo',
+  jumper_4: 'Jumper super hiper longo',
   jumper_5: 'Jumper 5 colunas',
   capsula_pulso: 'Cápsula de pulso',
   capsula_voltimetro: 'Cápsula voltímetro',
@@ -166,16 +166,22 @@ export function countByType(pieces: Piece[]): Partial<Record<PieceType, number>>
 export const DIRECTED = new Set(['bateria', 'led']);
 
 export const MSG = {
-  sem_bateria: 'O circuito não tem fonte de energia. Pegue a bateria na bandeja.',
-  led_invertido: 'O LED só funciona em um sentido. Gire a peça e tente de novo.',
-  falta_resistor: 'Sem resistor, nada limita a corrente pelo LED. Ele queimaria. Coloque um resistor antes do LED.',
-  aberto: 'Falta um pedaço do caminho. Siga do + até o − da bateria com o dedo e veja onde ele para.',
-  curto: 'Você ligou os dois polos da bateria direto um no outro. Isso é um curto. Coloque os componentes no caminho.',
-  peca_isolada: 'Esta peça não está ligada ao resto do circuito. Confira se os dois pinos estão em colunas certas.',
-  par_duplicado: 'Há duas peças ligando as mesmas colunas. Tire uma delas.',
-  sem_led: 'O caminho fecha sem passar por um LED ou buzzer. Leve a corrente por uma carga.',
-  capacitor: 'O capacitor bloqueia a corrente contínua: depois de carregar, nada passa. Tire-o do caminho.',
-  botao_aberto: 'O botão está solto, então o caminho está aberto. Segure o botão para fechar o circuito.',
+  sem_bateria: 'O circuito ainda não tem fonte de energia. Pegue a bateria na bandeja e encaixe na bancada.',
+  led_invertido:
+    'O LED está ao contrário e a corrente não passa. Gire-o: o lado da barra (catodo) precisa ficar do lado que volta ao − da bateria.',
+  falta_resistor:
+    'Sem resistor, nada limita a corrente pelo LED e ele queimaria. Coloque um resistor no mesmo caminho do LED, um atrás do outro.',
+  aberto:
+    'O caminho está aberto: a corrente não consegue dar a volta. Siga com o dedo do + da bateria até o − e veja onde ele para; costuma ser um jumper com uma ponta fora da coluna certa.',
+  curto:
+    'Curto! A corrente vai direto de um polo da bateria ao outro, sem passar por nada. Procure o jumper que liga os dois lados da bateria e tire-o: o caminho precisa passar pelas peças.',
+  peca_isolada:
+    'Há uma peça sem ligação com o resto do circuito. Veja se os dois pinos dela estão em colunas que levam à bateria; se não, use um jumper para chegar lá.',
+  par_duplicado: 'Há duas peças ligando as mesmas duas colunas. Tire uma delas ou mude uma de coluna.',
+  sem_led: 'O caminho fecha, mas não passa por nada que acenda ou toque. Leve a corrente por um LED ou por um buzzer.',
+  capacitor:
+    'O capacitor no meio do caminho bloqueia a corrente contínua: depois de carregar, nada passa. Ligue-o ao lado da carga (entre os dois lados do circuito), e não em fila com ela.',
+  botao_aberto: 'O botão está solto, então o caminho está aberto. Segure o botão apertado para fechar o circuito.',
   valido: 'Circuito fechado.',
 };
 

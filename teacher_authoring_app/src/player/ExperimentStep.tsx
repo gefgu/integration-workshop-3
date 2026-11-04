@@ -6,6 +6,7 @@ import LabBoard from '../components/LabBoard.tsx';
 import { detectEvents, goalDone, labStates, matchingPreset, buzzerMa, buzzerSound } from '../engine/lab.ts';
 import { formatOhms } from '../engine/sim.ts';
 import type { Lesson, LabEvent, LessonStep, Piece } from '../model/types.ts';
+import GoalBar from './GoalBar.tsx';
 import { useLab } from './useLab.ts';
 
 const SLIDER_MIN = 220;
@@ -92,8 +93,12 @@ export default function ExperimentStep({
     msg = 'Missões cumpridas! Você viu o efeito acontecer. Continue quando quiser.';
   }
   if (lab.energized && lab.diag.limited) {
+    // The warning must not hide what is still missing: the Continuar button only comes with every mission done.
+    const pending = (spec?.goals ?? []).find((_, i) => !done[i]);
     tone = 'obs';
-    msg = 'Funcionou na simulação, mas veja o aviso de limite de corrente antes de continuar.';
+    msg = allDone
+      ? 'Funcionou na simulação, mas veja o aviso de limite de corrente. Missões cumpridas! Continue quando quiser.'
+      : `Funcionou na simulação, mas veja o aviso de limite de corrente.${pending ? ` Ainda falta: ${pending.label}` : ''}`;
   }
   useSay([msg]);
 
@@ -110,6 +115,7 @@ export default function ExperimentStep({
 
   return (
     <>
+      <GoalBar text={step.text} items={(spec?.goals ?? []).map((g, i) => ({ label: g.label, done: done[i] }))} />
       <Bubble kind={mascotKind} tone={tone} message={msg} />
       {prediction && (
         <p>

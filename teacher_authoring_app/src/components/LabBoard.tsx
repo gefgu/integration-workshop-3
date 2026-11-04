@@ -99,8 +99,8 @@ export default function LabBoard({
       <details className="panel" style={{ maxWidth: 720, width: '100%', textAlign: 'left' }}>
         <summary>Entenda a bancada e as telas</summary>
         <p>
-          Cada coluna tem <strong>dois nós</strong>: um no banco de cima (A) e outro no de baixo (B). Os 6 furos da
-          mesma linha vertical, dentro de um banco, já estão ligados entre si. A abertura central separa A de B, mesmo
+          Cada coluna tem <strong>dois nós</strong>: um no socket de cima (A) e outro no de baixo (B). Os 6 furos da
+          mesma linha vertical, dentro de um socket, já estão ligados entre si. A abertura central separa A de B, mesmo
           com o mesmo número de coluna.
         </p>
         <p>

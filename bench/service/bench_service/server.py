@@ -130,12 +130,15 @@ def create_app(store: BenchStore, dev_unlock: bool = False) -> FastAPI:
         def dev_unlock_endpoint(body: dict[str, Any] | None = None) -> dict:
             """Demo only (TEDTRONICS_BENCH_DEV=1): unlock without the phone.
 
-            A demo `package` in the body is loaded only when the bench has none, so a real module is never replaced.
+            A demo `package` in the body is loaded when the bench has none, or replaces an older *demo* package
+            (version_id starting with "demo"), so a real module sent by the teacher is never replaced.
             """
             import time
             store.unlock({"id": 0, "name": "Modo demonstração"}, time.time() + 3600)
             package = (body or {}).get("package")
-            if package and not store.package() and package_problem(package) is None:
+            current = store.package()
+            stale_demo = bool(current) and str(current.get("version_id", "")).startswith("demo")
+            if package and (not current or stale_demo) and package_problem(package) is None:
                 store.load_package(package)
             return store.status()
 

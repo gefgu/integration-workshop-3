@@ -4,13 +4,20 @@ import { curriculumLessons, curriculumModules } from '../curriculum/lessons.ts';
 
 export const DEMO_TAG = 'TAG-1';
 
+/** Small stable hash, so the demo package gets a new version whenever the curriculum text changes. */
+function fingerprint(text: string): string {
+  let h = 5381;
+  for (let i = 0; i < text.length; i++) h = ((h * 33) ^ text.charCodeAt(i)) >>> 0;
+  return h.toString(36);
+}
+
 export function demoPackage(): BenchPackage {
   const [module] = curriculumModules();
   const all = curriculumLessons();
   const lessons = module.lessonIds.flatMap((id) => all.filter((lesson) => lesson.id === id));
   return {
     format: 1,
-    version_id: 'demo',
+    version_id: `demo-${fingerprint(JSON.stringify(lessons))}`,
     created_at: new Date().toISOString(),
     teacher: { id: 0, name: 'Modo demonstração' },
     module: { id: 0, title: module.title, description: module.description, lesson_ids: module.lessonIds },

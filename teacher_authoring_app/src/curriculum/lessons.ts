@@ -38,6 +38,7 @@ import {
   P,
   withPiece,
 } from './circuits.ts';
+import { circuitHints, placementHints } from './stepHints.ts';
 
 export const SEED_PREFIX = 'curriculo-';
 
@@ -74,22 +75,28 @@ function build(
   board: Piece[],
   order: [string, string][],
   connectText: string,
-  options?: LessonStep['options']
+  options?: LessonStep['options'],
+  loop?: string
 ): LessonStep[] {
   const byId = new Map(board.map((p) => [p.id, p]));
+  const before: Piece[] = [];
   const placed = order.map(([pieceId, text]) => {
     const piece = byId.get(pieceId);
     if (!piece) throw new Error(`piece ${pieceId} not on the board`);
-    return newStep({
+    const step = newStep({
       id: `place-${pieceId}`,
       action: piece.type.startsWith('jumper') ? 'place_connection' : 'place_component',
       pieceId,
       text,
+      overrides: placementHints(piece, before),
     });
+    before.push(piece);
+    return step;
   });
   if (placed.length !== board.length) throw new Error('every piece needs a placement step');
   const connect = connectionStep('connect');
   connect.text = connectText;
+  if (loop) connect.overrides = circuitHints(loop, board);
   if (options) connect.options = options;
   return [...placed, connect];
 }
@@ -111,7 +118,13 @@ interface Spec {
 function lesson(s: Spec): Lesson {
   // Step ids and quiz ids stay unique across the whole curriculum, so progress and answers never collide.
   const scope = (id: string) => `${s.id}.${id}`;
-  const steps = (s.steps ?? []).map((st) => ({ ...st, id: scope(st.id), quizId: st.quizId ? scope(st.quizId) : null }));
+  // Resistor values are checked on every build step and in every challenge.
+  const steps = (s.steps ?? []).map((st) => ({
+    ...st,
+    id: scope(st.id),
+    quizId: st.quizId ? scope(st.quizId) : null,
+    options: { ...st.options, matchValues: true },
+  }));
   const quizzes = (s.quizzes ?? []).map((q) => ({
     ...q,
     ...(/q-prev|q-pred/.test(q.id) ? { prediction: true } : {}),
@@ -131,7 +144,7 @@ function lesson(s: Spec): Lesson {
     quizzes,
     updatedAt: SEED_DATE,
     ...(s.start ? { start: s.start } : {}),
-    ...(s.settings ? { settings: s.settings } : {}),
+    ...(s.settings ? { settings: { ...s.settings, matchValues: true } } : { settings: { matchValues: true } }),
     teacherNotes: s.notes,
     tags: ['currículo', ...s.tags],
   };
@@ -146,22 +159,22 @@ const KIT = (...types: Piece['type'][]) => types;
 const L01_NOTES = `Objetivo: reconhecer a bancada e entender que cada coluna tem DOIS nós (A em cima, B embaixo) separados pela abertura central.
 Como saber que deu certo: a bateria encaixada e o LED de status simulado aceso na tela.
 ${SIM} O LED de status é desenhado na tela quando há uma bateria encaixada; a lição não afirma que o LED físico foi lido.
-A versão guiada tem explicações, o explorador de nós e duas perguntas; o desafio não mostra instrução.`;
+A versão guiada tem explicações, o explorador de nós e duas perguntas; o desafio pede para encaixar a bateria e responder três perguntas sobre nós.`;
 
 function lesson01(): Lesson[] {
   const board = circuitL01();
   const q1 = quiz(
     'q-nos',
-    'Os furos A5 e B5 (mesma coluna, um em cada banco) estão ligados entre si?',
+    'Os furos A5 e B5 (mesma coluna, um em cada socket) estão ligados entre si?',
     [
       [
         'Sim, porque são da mesma coluna 5.',
         'Quase! Mas a abertura central corta a coluna ao meio: A5 e B5 são dois nós diferentes.',
       ],
-      ['Não. A abertura central separa o nó A5 do nó B5.', 'Isso! Cada coluna tem dois nós, um em cada banco.'],
+      ['Não. A abertura central separa o nó A5 do nó B5.', 'Isso! Cada coluna tem dois nós, um em cada socket.'],
       [
         'Só quando tem uma peça no meio.',
-        'Não é a peça que liga: dentro de um banco os 6 furos já são o mesmo nó; entre bancos não há ligação.',
+        'Não é a peça que liga: dentro de um socket os 6 furos já são o mesmo nó; entre sockets não há ligação.',
       ],
     ],
     1
@@ -201,7 +214,7 @@ function lesson01(): Lesson[] {
       explain(
         'e-nos',
         'Furos ligados: o que é um nó?',
-        'Dentro da bancada, os 6 furos de uma mesma linha vertical já estão ligados entre si. Chamamos esse conjunto de nó: tudo que está num nó tem a mesma ligação elétrica.\n\nA abertura no meio da bancada corta cada coluna em duas. Por isso cada coluna tem DOIS nós: um em cima (banco A) e um embaixo (banco B). Toque nos furos abaixo e veja.',
+        'Dentro da bancada, os 6 furos de uma mesma linha vertical já estão ligados entre si. Chamamos esse conjunto de nó: tudo que está num nó tem a mesma ligação elétrica.\n\nA abertura no meio da bancada corta cada coluna em duas. Por isso cada coluna tem DOIS nós: um em cima (socket A) e um embaixo (socket B). Toque nos furos abaixo e veja.',
         artNodes(),
         'nodes'
       ),
@@ -233,17 +246,48 @@ function lesson01(): Lesson[] {
     notes: L01_NOTES,
     tags: ['guiada', 'explicação', 'nós', 'exemplo'],
   });
+  const qColunas = quiz(
+    'q-colunas',
+    'Os furos A2 e A3 (mesmo socket, colunas vizinhas) estão ligados entre si?',
+    [
+      ['Sim, porque estão lado a lado.', 'Estar perto não liga: cada coluna é um nó só dela.'],
+      [
+        'Não. Cada coluna é um nó; só um jumper ou uma peça liga um nó ao outro.',
+        'Isso! Dentro da coluna os furos são o mesmo nó; entre colunas só existe ligação se algo for encaixado.',
+      ],
+      ['Sim, porque são do mesmo socket.', 'O socket só reúne as colunas; a ligação é dentro de cada coluna.'],
+    ],
+    1
+  );
+  const qBateria = quiz(
+    'q-bateria',
+    'A bateria está encaixada com o + em uma coluna e o − na coluna ao lado. O + e o − estão no mesmo nó?',
+    [
+      [
+        'Não. Estão em colunas diferentes, então são nós diferentes.',
+        'Isso! É por isso que a bateria não entra em curto: seus dois lados ficam em nós separados.',
+      ],
+      ['Sim, porque a bateria liga os dois.', 'A bateria cria a diferença entre os dois lados; ela não os une num nó só.'],
+      ['Sim, porque estão no mesmo socket.', 'O socket não liga as colunas entre si.'],
+    ],
+    0
+  );
   const challenge = lesson({
     id: `${SEED_PREFIX}01-desafio`,
     title: 'Lição 1 — Conhecendo a bancada (desafio)',
-    instruction: 'Encaixe a bateria com + e − em colunas diferentes. Observe o LED de status simulado e depois explique quais furos estão ligados.',
+    instruction:
+      'Encaixe a bateria na bancada e responda 3 perguntas sobre os nós. Quanto mais rápido você terminar, mais pontos ganha.',
     kind: 'challenge',
     board,
-    steps: [interact('i-nos', 'Agora confira o que você sabe sobre os dois bancos.', q1)],
-    quizzes: [q1],
+    steps: [
+      interact('i-nos', 'Pergunta 1 de 3: pense nos dois sockets da bancada.', q1),
+      interact('i-colunas', 'Pergunta 2 de 3: pense nas colunas vizinhas.', qColunas),
+      interact('i-bateria', 'Pergunta 3 de 3: pense nos dois lados da bateria.', qBateria),
+    ],
+    quizzes: [q1, qColunas, qBateria],
     settings: { statusLed: true, tray: KIT('bateria') },
-    notes: `${L01_NOTES}\nDesafio: encaixar a bateria, observar o LED de status simulado e responder sobre os nós.`,
-    tags: ['desafio', 'sem instruções', 'exemplo'],
+    notes: `${L01_NOTES}\nDesafio: encaixar a bateria e responder 3 perguntas que aplicam a ideia de nó (sockets A/B, colunas vizinhas e os dois lados da bateria). A pontuação mede a rapidez; errar uma pergunta só pede para tentar de novo.`,
+    tags: ['desafio', 'nós', 'exemplo'],
   });
   return [guided, challenge];
 }
@@ -254,7 +298,7 @@ const L02_NOTES = `Objetivo: o primeiro circuito fechado — a corrente só pass
 Como saber que deu certo: ao clicar em “Energizar” o LED acende e a tela mostra “circuito fechado ✓”.
 Simplificação didática: sem resistor nesta lição; o resistor entra na lição 3. A tela avisa que a simulação está limitando a corrente; com um LED real, sem resistor, ele poderia queimar.
 ${SIM}
-O circuito foi refeito para a bancada de 5 V.`;
+O circuito foi refeito para a bancada de 5 V. Um só jumper basta: o LED fica na mesma coluna do − da bateria (coluna 2), então falta apenas ligar o + ao lado “+” do LED.`;
 
 function lesson02(): Lesson[] {
   const board = circuitL02();
@@ -270,7 +314,7 @@ function lesson02(): Lesson[] {
   );
   const qFio = quiz(
     'q-fio',
-    'Por que a luz apaga quando falta um jumper?',
+    'Por que a luz apaga quando você tira o jumper?',
     [
       ['A bateria acabou.', 'A bateria continua boa — repare que ao recolocar o fio a luz volta.'],
       [
@@ -284,35 +328,39 @@ function lesson02(): Lesson[] {
   const guided = lesson({
     id: `${SEED_PREFIX}02-guiada`,
     title: 'Lição 2 — O primeiro circuito fechado (guiada)',
-    instruction: 'Ligue a bateria a um LED com dois jumpers e acenda a luz.',
+    instruction: 'Ligue a bateria a um LED com um jumper e acenda a luz.',
     kind: 'guided',
     board,
     steps: [
       explain(
         'e-loop',
         'A corrente anda em círculo',
-        'Para o LED acender, a corrente sai do + da bateria, passa pelo LED e volta ao − da bateria. Se o caminho tiver um buraco, a corrente para.\n\nNesta lição vamos fazer só isso: bateria + LED + dois jumpers. (Atenção: só aqui o resistor fica de fora. Na próxima lição você vai descobrir por que ele é importante.)',
+        'Para o LED acender, a corrente sai do + da bateria, passa pelo LED e volta ao − da bateria. Se o caminho tiver um buraco, a corrente para.\n\nNesta lição vamos fazer só isso: bateria + LED + um jumper. (Atenção: só aqui o resistor fica de fora. Na próxima lição você vai descobrir por que ele é importante.)',
         artLoop(false)
       ),
       ...build(
         board,
         [
           ['bat', 'Coloque a bateria na bancada.'],
-          ['led', 'Coloque o LED. O lado da barra é o −.'],
-          ['w1', 'Use um jumper para ligar o + da bateria ao lado “+” do LED.'],
-          ['w2', 'Use outro jumper para ligar o lado “−” do LED de volta ao − da bateria.'],
+          [
+            'led',
+            'Coloque o LED. O lado da barra é o −: encaixe esse lado na mesma coluna do − da bateria, assim o caminho de volta já fica pronto.',
+          ],
+          ['w1', 'Falta o caminho de ida: use um jumper para ligar o + da bateria ao lado “+” do LED.'],
         ],
-        'Confira o circuito inteiro. Faça sua previsão antes de energizar.'
+        'Confira o circuito inteiro. Faça sua previsão antes de energizar.',
+        undefined,
+        '+ da bateria → jumper → LED → − da bateria'
       ),
       interact('i-prev', 'Pense antes de testar.', qPrev),
       experiment(
         'x-fecha',
         'Feche o circuito e veja a luz',
-        'Clique em Energizar. Depois, tire um jumper (arraste para fora), energize de novo e veja o que muda.',
+        'Clique em Energizar. Depois, tire o jumper (arraste para fora), energize de novo e veja o que muda.',
         {
           goals: [
             { id: 'lit', label: 'Energize e observe o LED e o aviso da simulação.', seen: ['lit'] },
-            { id: 'open', label: 'Tire um jumper e veja a luz apagar.', seen: ['energized'], now: ['dark'] },
+            { id: 'open', label: 'Tire o jumper e veja a luz apagar.', seen: ['energized'], now: ['dark'] },
           ],
         }
       ),
@@ -333,7 +381,7 @@ function lesson02(): Lesson[] {
     instruction: 'O circuito está montado, mas a luz não acende. Descubra o que está desconectado e conserte.',
     kind: 'challenge',
     board,
-    start: { pieces: board, removeOneOf: ['w1', 'w2'] },
+    start: { pieces: board, removeOneOf: ['w1'] },
     steps: [interact('i-fio', 'O que faltava para a corrente dar a volta?', qFio)],
     quizzes: [qFio],
     settings: {
@@ -342,7 +390,7 @@ function lesson02(): Lesson[] {
       hintAfter: 2,
       tray: KIT('bateria', 'led', 'jumper_curto', 'jumper_longo', 'jumper_3'),
     },
-    notes: `${L02_NOTES}\nDesafio: o circuito começa montado, mas SEM um dos jumpers; a bancada sorteia qual (a cada vez). A dica só aparece depois que o aluno erra duas vezes seguidas, seja qual for o erro.`,
+    notes: `${L02_NOTES}\nDesafio: o circuito começa montado, mas SEM o jumper; o aluno precisa descobrir onde ele entra. A dica só aparece depois que o aluno erra duas vezes seguidas, seja qual for o erro.`,
     tags: ['desafio', 'bancada com defeito', 'exemplo'],
   });
   return [guided, challenge];
@@ -405,7 +453,8 @@ function lesson03(): Lesson[] {
           ['w2', 'Jumper do amperímetro de volta ao − da bateria.'],
         ],
         'Conecte tudo, confira o circuito e clique em Energizar.',
-        { matchValues: true, strictPositions: false }
+        { matchValues: true, strictPositions: false },
+        '+ da bateria → resistor → LED → cápsula do amperímetro → − da bateria'
       ),
       experiment(
         'x-ma',
@@ -537,7 +586,9 @@ function lesson04(): Lesson[] {
           ['w1', 'Jumper do + da bateria ao resistor.'],
           ['w2', 'Jumper do LED de volta ao − da bateria.'],
         ],
-        'Confira o circuito.'
+        'Confira o circuito.',
+        undefined,
+        '+ da bateria → resistor → LED → − da bateria'
       ),
       interact('i-prev', 'Faça sua aposta antes de testar.', qPrev),
       experiment(
@@ -634,7 +685,9 @@ function lesson05(): Lesson[] {
           ['w1', 'Jumper do + da bateria ao resistor.'],
           ['w2', 'Jumper do botão de volta ao − da bateria.'],
         ],
-        'Confira o circuito.'
+        'Confira o circuito.',
+        undefined,
+        '+ da bateria → resistor → LED → botão → − da bateria'
       ),
       interact('i-prev', 'Faça sua aposta antes de testar.', qPrev),
       experiment(
@@ -740,7 +793,9 @@ function lesson06(): Lesson[] {
           ['w1', 'Jumper do + da bateria ao potenciômetro.'],
           ['w2', 'Jumper do LED de volta ao − da bateria.'],
         ],
-        'Confira o circuito.'
+        'Confira o circuito.',
+        undefined,
+        '+ da bateria → potenciômetro → LED → − da bateria'
       ),
       experiment(
         'x-gira',
@@ -861,7 +916,9 @@ function lesson07(): Lesson[] {
           ['w1', 'Jumper do + da bateria ao resistor.'],
           ['w2', 'Jumper do LED de volta ao − da bateria.'],
         ],
-        'Confira o circuito.'
+        'Confira o circuito.',
+        undefined,
+        '+ da bateria → resistor → LED → − da bateria, com o capacitor ligado entre a coluna do + (onde chega o jumper do +) e o − da bateria'
       ),
       interact('i-prev', 'Faça sua aposta antes de testar.', qPrev),
       experiment(
@@ -981,12 +1038,14 @@ function lesson08(): Lesson[] {
         board,
         [
           ['bat', 'Coloque a bateria.'],
-          ['res', 'Coloque o resistor.'],
+          ['res', 'Coloque o resistor de 470 Ω.'],
           ['buz', 'Coloque o buzzer.'],
           ['w1', 'Jumper do + da bateria ao resistor.'],
           ['w2', 'Jumper do buzzer de volta ao − da bateria.'],
         ],
-        'Confira o circuito.'
+        'Confira o circuito.',
+        undefined,
+        '+ da bateria → resistor → buzzer → − da bateria'
       ),
       experiment(
         'x-troca',
@@ -1044,7 +1103,9 @@ function lesson08(): Lesson[] {
           ['w1', 'Jumper do + da bateria ao potenciômetro.'],
           ['w2', 'Jumper do buzzer de volta ao − da bateria.'],
         ],
-        'Confira o circuito.'
+        'Confira o circuito.',
+        undefined,
+        '+ da bateria → potenciômetro → buzzer → − da bateria'
       ),
       experiment(
         'x-pot',
@@ -1270,7 +1331,9 @@ function lesson10(): Lesson[] {
           ['w4', 'Jumper do buzzer à coluna do catodo (−) do LED: esse é o ponto de retorno comum.'],
           ['w2', 'Jumper dessa coluna de retorno (catodo do LED) ao − da bateria.'],
         ],
-        'Conecte os dois ramos e confira o circuito.'
+        'Conecte os dois ramos e confira o circuito.',
+        undefined,
+        '+ da bateria → botão → dois ramos ao mesmo tempo (resistor de 470 Ω → LED) e (resistor de 220 Ω → buzzer) → − da bateria'
       ),
       experiment('x-alarme', 'Teste o alarme', 'Energize e aperte o botão: o LED e o buzzer devem funcionar juntos.', {
         goals: [
