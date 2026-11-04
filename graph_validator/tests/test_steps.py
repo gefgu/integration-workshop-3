@@ -100,3 +100,19 @@ def test_n01_disconnected_jumper_is_not_praised():
     assert not result.approved
     assert result.message
     assert evaluate_step(l, 2, parts(3)).approved
+
+
+def test_build_step_may_place_several_pieces_and_connect_them():
+    from graph_validator.models import Lesson
+    from graph_validator.steps import lint
+
+    bat = {"id": "bat", "type": "bateria", "a": 1, "b": 2, "row": 1}
+    led = {"id": "led", "type": "led", "a": 3, "b": 2, "row": 2}
+    wire = {"id": "w1", "type": "jumper_longo", "a": 1, "b": 3, "row": 3}
+    lesson = Lesson.model_validate({"id": "g", "kind": "guided", "steps": [
+        {"id": "build", "action": "place_connection", "add": [bat, led, wire]},
+        {"id": "check", "action": "connect_circuit", "add": []},
+    ]})
+    assert lint(lesson) == []
+    lesson.steps[0].action = "place_component"
+    assert any("exactly one action" in m for m in lint(lesson))

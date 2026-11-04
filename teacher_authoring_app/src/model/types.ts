@@ -157,6 +157,11 @@ export interface LessonStep {
   id: string;
   action: StepAction;
   pieceId: string | null;
+  /**
+   * A build step: place all these pieces and connect them (action `place_connection`). `pieceId` is the first one.
+   * Absent on the classic one-piece steps.
+   */
+  pieceIds?: string[];
   quizId: string | null;
   text: string;
   options: StepOptions;

@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { validateStep } from '../api/validator.ts';
 import { TutorVoiceContext, useSay, useTutorVoice } from '../audio/useTutorVoice.ts';
 import Bubble from '../components/Bubble.tsx';
+import { groupChecklist } from '../curriculum/stepHints.ts';
+import { missingLink } from '../engine/linkHint.ts';
 import GoalBar from './GoalBar.tsx';
 import LabBoard from '../components/LabBoard.tsx';
 import { capsuleConfig, formatOhms, isCapsule, NOMES } from '../engine/sim.ts';
@@ -579,7 +581,10 @@ function BuildStep({
       setMisses(0);
       setShown({ tone: 'ok', msg: res.message });
     } else if (misses > 0) {
-      setShown({ tone: toneFor(res.category), msg: challengeHint(lesson, pieces, misses, res.hint || res.message, res.category) });
+      setShown({
+        tone: toneFor(res.category),
+        msg: challengeHint(lesson, pieces, misses, res.hint || res.message, res.category),
+      });
     }
   }, [res, misses, lesson, pieces]);
 
@@ -639,14 +644,40 @@ function BuildStep({
       (lesson.kind === 'challenge' ? lesson.board.pieces : cumulativeBoard(lesson, stepIdx)).map((p) => ({ ...p }))
     );
   useSay([msg]);
+  // After a deliberate mistake that is a missing connection, show where the component must be connected.
+  // A challenge waits for the same attempt that unlocks its verbal hint, so the line never comes before it.
+  const connectionMistake =
+    !!res &&
+    !res.approved &&
+    ['open_circuit', 'missing_connection', 'incorrect_connection', 'misconnected_component'].includes(res.category) &&
+    misses > 0 &&
+    (lesson.kind !== 'challenge' || misses >= (settings?.hintAfter ?? 1));
+  const linkHint = connectionMistake
+    ? missingLink(pieces, lesson.kind === 'challenge' ? lesson.board.pieces : cumulativeBoard(lesson, stepIdx))
+    : null;
   // What the step asks for stays pinned; the bubble above it is free to show hints and warnings.
   const goal =
     text ||
     (lesson.kind === 'challenge' ? lesson.instruction : '') ||
     (final ? 'Monte o circuito completo e confira se está certo.' : '');
+  // A build step with several pieces gets a live checklist: each piece on the bench, then "connected".
+  const buildStepDef = lesson.kind === 'guided' ? effectiveSteps(lesson)[stepIdx] : undefined;
+  const checklist =
+    buildStepDef?.pieceIds && buildStepDef.pieceIds.length > 0
+      ? (() => {
+          const group = new Set(buildStepDef.pieceIds);
+          const upTo = cumulativeBoard(lesson, stepIdx);
+          return groupChecklist(
+            upTo.filter((p) => group.has(p.id)),
+            upTo.filter((p) => !group.has(p.id)),
+            pieces,
+            built
+          );
+        })()
+      : [];
   return (
     <>
-      <GoalBar text={goal} />
+      <GoalBar text={goal} items={checklist} />
       <Bubble kind={mascotKind} tone={tone} message={msg} />
       {debugEnabled && (
         <ValidationDebug
@@ -684,6 +715,7 @@ function BuildStep({
         pieces={pieces}
         setPieces={setPieces}
         settings={settings}
+        linkHint={linkHint}
       />
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, flexWrap: 'wrap' }}>
         {!bench && (

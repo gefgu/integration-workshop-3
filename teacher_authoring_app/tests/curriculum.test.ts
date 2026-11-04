@@ -70,9 +70,11 @@ test('guided lessons build piece by piece into their target board', () => {
     const placed = [];
     for (const [i, s] of steps.entries()) {
       if (s.action !== 'place_component' && s.action !== 'place_connection') continue;
-      const piece = cumulativeBoard(l, i).at(-1);
-      assert.equal(placementError(placed, piece), null, `${l.id}: ${s.id}`);
-      placed.push(piece);
+      // A build step may place several pieces: each must fit on the bench in turn.
+      for (const piece of cumulativeBoard(l, i).slice(placed.length)) {
+        assert.equal(placementError(placed, piece), null, `${l.id}: ${s.id}`);
+        placed.push(piece);
+      }
     }
     assert.equal(placed.length, l.board.pieces.length, l.id);
   }

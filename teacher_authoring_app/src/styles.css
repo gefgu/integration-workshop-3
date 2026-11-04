@@ -1135,3 +1135,18 @@ a.dash-row:hover {
   display: grid;
   gap: 2px;
 }
+
+/* Pontilhado verde: de onde ligar até a coluna certa */
+@keyframes link-hint-march {
+  to {
+    stroke-dashoffset: -14.1;
+  }
+}
+.link-hint-line {
+  animation: link-hint-march 1.2s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .link-hint-line {
+    animation: none;
+  }
+}

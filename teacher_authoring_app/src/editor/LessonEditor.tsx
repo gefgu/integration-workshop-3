@@ -6,7 +6,7 @@ import { mergeTrails } from '../engine/capsules.ts';
 import { diagnose } from '../engine/diagnose.ts';
 import { TYPES } from '../engine/sim.ts';
 import { lessonProblems } from '../model/lesson.ts';
-import { refreshGeneratedText } from '../model/steps.ts';
+import { refreshGeneratedText, stepPieceIds } from '../model/steps.ts';
 import LessonOptions from './LessonOptions.tsx';
 import QuizEditor from './QuizEditor.tsx';
 import StepsEditor from './StepsEditor.tsx';
@@ -28,7 +28,7 @@ export default function LessonEditor({ lesson, setLesson, onSave, onExport, onTe
     if (next !== lesson) setLesson(next);
   }, [lesson, setLesson]);
   const selectedStep = selected != null ? lesson.steps[selected] : null;
-  const highlightIds = useMemo(() => new Set(selectedStep?.pieceId ? [selectedStep.pieceId] : []), [selectedStep]);
+  const highlightIds = useMemo(() => new Set(selectedStep ? stepPieceIds(selectedStep) : []), [selectedStep]);
 
   function guarded(action) {
     const p = lessonProblems(lesson);

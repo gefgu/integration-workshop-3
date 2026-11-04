@@ -131,3 +131,116 @@ export function circuitHints(loop: string, board: Piece[] = []): Overrides {
     reversed_polarity: REVERSED,
   };
 }
+
+// --- build steps: place several pieces and connect them -----------------------------------------------------
+
+const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
+
+/** "o + da bateria com o lado + (anodo) do LED": the connections that exist among `pieces` and involve a new piece. */
+export function connectionPairs(pieces: Piece[], newIds: Set<string>): string[] {
+  const parent = new Map<string, string>();
+  const find = (x: string): string => {
+    if (!parent.has(x)) parent.set(x, x);
+    let root = x;
+    while (parent.get(root) !== root) root = parent.get(root) as string;
+    parent.set(x, root);
+    return root;
+  };
+  const key = (col: number, row: number) => `${bank(row)}:${col}`;
+  for (const p of pieces) {
+    find(key(p.a, p.row));
+    find(key(p.b, p.row));
+    if (isJumper(p)) parent.set(find(key(p.a, p.row)), find(key(p.b, p.row)));
+  }
+  const nets = new Map<string, { piece: Piece; col: number }[]>();
+  const touchesNew = new Set<string>();
+  for (const p of pieces) {
+    const cols = isJumper(p) ? [p.a, p.b] : [p.a, p.b, ...(p.c != null ? [p.c] : [])];
+    for (const col of cols) {
+      const net = find(key(col, p.row));
+      if (newIds.has(p.id)) touchesNew.add(net);
+      if (isJumper(p)) continue;
+      if (!nets.has(net)) nets.set(net, []);
+      (nets.get(net) as { piece: Piece; col: number }[]).push({ piece: p, col });
+    }
+  }
+  const out: string[] = [];
+  for (const [net, members] of nets) {
+    if (!touchesNew.has(net) || new Set(members.map((m) => m.piece.id)).size < 2) continue;
+    const parts = [...new Set(members.map((m) => role(m.piece, m.col)))];
+    out.push(parts.length > 2 ? `${parts.slice(0, -1).join(', ')} e ${parts[parts.length - 1]}` : parts.join(' com '));
+  }
+  return out;
+}
+
+/** Hints for a build step that places `group` (after `before`) and connects it to what is already on the bench. */
+export function groupHints(group: Piece[], before: Piece[], done?: string): Overrides {
+  const all = [...before, ...group];
+  const onBench = all.filter((p) => !isJumper(p));
+  const newIds = new Set(group.map((p) => p.id));
+  const fresh = group.filter((p) => !isJumper(p));
+  const pairs = connectionPairs(all, newIds);
+  const names = fresh.map(nameOf);
+  const intro =
+    names.length === 2
+      ? `${cap(names[0])} e ${names[1]} ainda não estão conectados.`
+      : names.length === 1
+        ? `${cap(names[0])} ainda não está conectado${names[0].startsWith('a ') ? 'a' : ''} ao resto do circuito.`
+        : 'As peças desta etapa ainda não estão todas conectadas.';
+  const how = pairs.length
+    ? ` Conecte: ${pairs.join('; ')}. Encaixe um terminal de cada peça na mesma coluna, ou use um jumper.`
+    : ' Encaixe um terminal de cada peça na mesma coluna, ou use um jumper.';
+  const notConnected = `${intro}${how}`;
+  const wrongLinks = `As ligações não são as pedidas nesta etapa.${pairs.length ? ` Aqui a ligação é: ${pairs.join('; ')} (só isso por enquanto).` : ''}`;
+
+  // One "Falta ..." per family on the bench so far; a family with two parts (two resistors) names both.
+  const missing: Record<string, string> = {};
+  for (const p of onBench) {
+    const fam = family(p.type);
+    missing[fam] = missing[fam] ? `${missing[fam].replace(/\. .*$/, '')} e ${nameOf(p)}` : nameOf(p);
+  }
+  const missingText = Object.fromEntries(
+    Object.entries(missing).map(([fam, name]) => [fam, `Falta ${name}. Pegue na bandeja e encaixe na bancada.`])
+  );
+  const values = onBench.filter((p) => p.type.startsWith('resistor')).map((p) => OHMS[p.type]);
+  const list = onBench.map(nameOf).join(', ');
+  const out: Overrides = {
+    missing_component: missingText,
+    wrong_component: { '*': `Alguma peça não é a pedida. Nesta etapa a bancada tem: ${list}.` },
+    excess_component: { '*': `Tem {nome} sobrando. Nesta etapa a bancada tem: ${list}.` },
+    open_circuit: { '*': notConnected },
+    missing_connection: { jumper: notConnected },
+    incorrect_connection: { '*': wrongLinks },
+    misconnected_component: { '*': wrongLinks },
+    short_circuit: {
+      '*': `Curto-circuito! Algum jumper liga os dois lados da bateria sem passar pelas peças.${pairs.length ? ` Ligue só: ${pairs.join('; ')}.` : ''}`,
+    },
+    reversed_polarity: REVERSED,
+  };
+  if (values.length) {
+    out.wrong_value = {
+      resistor: `O resistor está certo, mas o valor não. Aqui use ${values.length === 1 ? `o de ${values[0]}` : `os de ${values.join(' e ')}`}.`,
+    };
+  }
+  if (done) out.complete = { '*': done };
+  return out;
+}
+
+export interface ChecklistItem {
+  label: string;
+  done: boolean;
+}
+
+/** Live ticks for a build step: each new piece on the bench, then "connected" once the validator agrees. */
+export function groupChecklist(group: Piece[], before: Piece[], student: Piece[], connected: boolean): ChecklistItem[] {
+  const count = (pieces: Piece[], type: string) => pieces.filter((p) => p.type === type).length;
+  const upTo = [...before, ...group];
+  const items = group
+    .filter((p) => !isJumper(p))
+    .map((p) => {
+      const need = count(upTo.slice(0, upTo.findIndex((x) => x.id === p.id) + 1), p.type);
+      return { label: `${cap(nameOf(p))} na bancada`, done: count(student, p.type) >= need };
+    });
+  items.push({ label: 'Tudo conectado como pedido', done: connected });
+  return items;
+}

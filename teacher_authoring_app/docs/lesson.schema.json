@@ -54,6 +54,7 @@
         "id": { "type": "string", "minLength": 1 },
         "action": { "enum": ["place_component", "place_connection", "connect_circuit", "interact"] },
         "pieceId": { "type": ["string", "null"] },
+        "pieceIds": { "type": "array", "items": { "type": "string" } },
         "quizId": { "type": ["string", "null"] },
         "text": { "type": "string" },
         "options": {

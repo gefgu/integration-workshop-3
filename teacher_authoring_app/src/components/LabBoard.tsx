@@ -3,6 +3,7 @@ import { statusLedOn, buzzerSound } from '../engine/lab.ts';
 import { NOMES } from '../engine/sim.ts';
 import type { Lab } from '../player/useLab.ts';
 import type { LessonSettings, Piece } from '../model/types.ts';
+import type { LinkHint } from '../engine/linkHint.ts';
 import BoardWorkspace from './BoardWorkspace.tsx';
 import CapsuleLegend from './CapsuleLegend.tsx';
 
@@ -42,6 +43,7 @@ export default function LabBoard({
   settings,
   hideTray = false,
   extra,
+  linkHint = null,
 }: {
   lab: Lab;
   pieces: Piece[];
@@ -49,6 +51,7 @@ export default function LabBoard({
   settings?: LessonSettings;
   hideTray?: boolean;
   extra?: ReactNode;
+  linkHint?: LinkHint | null;
 }) {
   const buttons = pieces.filter((p) => p.type === 'botao');
   const loads = lab.diag.loadsLit;
@@ -93,6 +96,7 @@ export default function LabBoard({
         onPress={lab.press}
         onReseat={lab.onReseat}
         trayTypes={hideTray ? [] : (settings?.tray ?? null)}
+        linkHint={linkHint}
       />
       {extra}
       <CapsuleLegend pieces={pieces} readings={lab.cap.readings} />
