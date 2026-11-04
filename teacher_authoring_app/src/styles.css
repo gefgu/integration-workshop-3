@@ -1010,3 +1010,18 @@ a.dash-row:hover {
     padding: 12px;
   }
 }
+
+/* Lit board tracks (Breadboard): the dashed arrows flow along a track to show it is one connection. */
+.track-flow {
+  animation: track-flow 900ms linear infinite;
+}
+@keyframes track-flow {
+  to {
+    stroke-dashoffset: -14;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .track-flow {
+    animation: none;
+  }
+}

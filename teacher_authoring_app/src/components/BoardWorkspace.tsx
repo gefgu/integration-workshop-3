@@ -194,7 +194,13 @@ export default function BoardWorkspace({
         </div>
       )}
       <div className="board-workbench-column">
-        <Breadboard boardRef={boardRef} trail={trail} labels={!readOnly}>
+        <Breadboard
+          boardRef={boardRef}
+          trail={trail}
+          labels={!readOnly}
+          pieces={pieces}
+          preview={preview && !preview.err ? preview.piece : null}
+        >
           {[1, 2, 3, 4, 5, 6].map((slot) => {
             const { a, row } = slotAnchor(slot);
             return (
