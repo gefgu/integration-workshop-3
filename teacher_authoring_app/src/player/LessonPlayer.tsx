@@ -259,22 +259,22 @@ export default function LessonPlayer({
     <TutorVoiceContext.Provider value={voice}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14, alignItems: 'center', textAlign: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, flexWrap: 'wrap' }}>
-          <h2 style={{ fontFamily: 'var(--font-heading)', margin: 0, fontSize: 20 }}>
+          <h2 style={{ fontFamily: 'var(--font-heading)', margin: 0, fontSize: 'calc(20px * var(--text-scale, 1))' }}>
             {lesson.title || 'Lição sem título'}
           </h2>
-          <span style={{ fontSize: 13, color: 'var(--color-neutral-600)' }}>
+          <span style={{ fontSize: 'calc(13px * var(--text-scale, 1))', color: 'var(--color-neutral-600)' }}>
             {phase.type === 'done' ? 'Concluída' : `Etapa ${idx + 1} de ${steps}`}
           </span>
           <button type="button" className="btn-outline" onClick={onExit}>
             {exitLabel ?? 'Voltar ao editor'}
           </button>
           {!bench && (
-            <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13 }}>
+            <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 'calc(13px * var(--text-scale, 1))' }}>
               <input type="checkbox" checked={debugEnabled} onChange={(e) => setDebugEnabled(e.target.checked)} />
               Depurar validação
             </label>
           )}
-          <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13 }}>
+          <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 'calc(13px * var(--text-scale, 1))' }}>
             <input
               type="checkbox"
               checked={!muted}
@@ -288,7 +288,7 @@ export default function LessonPlayer({
           {!bench && <AudioStatus lesson={lesson} />}
         </div>
         {lesson.instruction && (
-          <p style={{ margin: 0, maxWidth: 720, fontSize: 14, lineHeight: 1.5 }}>{lesson.instruction}</p>
+          <p style={{ margin: 0, maxWidth: 720, fontSize: 'calc(14px * var(--text-scale, 1))', lineHeight: 1.5 }}>{lesson.instruction}</p>
         )}
 
         {phase.type === 'quiz' && (
@@ -377,7 +377,7 @@ function AudioStatus({ lesson }) {
   if (!audio) text = 'Sem áudio: salve a lição para gerar a voz.';
   else if (audio.status !== 'ok') text = 'Sem voz do tutor. Você pode ler os textos na tela.';
   if (!text) return null;
-  return <span style={{ fontSize: 12, color: 'var(--color-neutral-600)' }}>{text}</span>;
+  return <span style={{ fontSize: 'calc(12px * var(--text-scale, 1))', color: 'var(--color-neutral-600)' }}>{text}</span>;
 }
 
 /** `verify(optionId)` (optional): async server-side check returning { approved, message }. */
@@ -502,7 +502,7 @@ function InteractStep({ lesson, phase, pieces, onDone, mascotKind, onAnswer, onP
   }
   return (
     <>
-      {phase.step.text && <p style={{ margin: 0, maxWidth: 720, fontSize: 14 }}>{phase.step.text}</p>}
+      {phase.step.text && <p style={{ margin: 0, maxWidth: 720, fontSize: 'calc(14px * var(--text-scale, 1))' }}>{phase.step.text}</p>}
       <QuizStep quiz={quiz} onDone={onDone} mascotKind={mascotKind} verify={verify} onPrediction={onPrediction} />
     </>
   );
