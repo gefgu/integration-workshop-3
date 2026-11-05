@@ -100,6 +100,10 @@ class BenchStore:
         if kind not in EVENT_KINDS:
             raise ValueError(f"tipo de evento desconhecido: {kind}")
         package = self.package() or {}
+        if package.get("demo"):
+            # demo mode: progress is kept, but nothing is queued for the teacher's server
+            return {"event_id": str(uuid.uuid4()), "student_id": student["id"], "nfc_code": student["nfc_code"],
+                    "kind": kind, "seq": 0, "at": iso_now(), "demo": True, **fields}
         with self._lock, self._db:
             seq = int(self._db.execute("SELECT COALESCE(MAX(CAST(value AS INTEGER)), 0) FROM meta "
                                        "WHERE key = 'seq'").fetchone()[0]) + 1

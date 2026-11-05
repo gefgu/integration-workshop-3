@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useSay } from '../audio/useTutorVoice.ts';
 import { playClip } from '../audio/tone.ts';
+import { useSay } from '../audio/useTutorVoice.ts';
 import Bubble from '../components/Bubble.tsx';
 import LabBoard from '../components/LabBoard.tsx';
-import { detectEvents, goalDone, labStates, matchingPreset, buzzerMa, buzzerSound } from '../engine/lab.ts';
+import { buzzerMa, buzzerSound, detectEvents, goalDone, labStates, matchingPreset } from '../engine/lab.ts';
 import { formatOhms } from '../engine/sim.ts';
-import type { Lesson, LabEvent, LessonStep, Piece } from '../model/types.ts';
+import type { LabEvent, Lesson, LessonStep, Piece } from '../model/types.ts';
+import { useBenchMode } from './benchMode.ts';
 import { useLab } from './useLab.ts';
 
 const SLIDER_MIN = 220;
@@ -40,6 +41,9 @@ export default function ExperimentStep({
   const clips = spec?.clips && clipsSwapped ? { a: spec.clips.b, b: spec.clips.a } : spec?.clips;
   const settings = lesson.settings;
   const lab = useLab(pieces, settings);
+  // Bench: a briefing screen (what to do, the missions) comes before the lab screen.
+  const bench = useBenchMode();
+  const [briefed, setBriefed] = useState(!bench);
   const [events, setEvents] = useState<Set<LabEvent>>(() => new Set());
   const [presetsLit, setPresetsLit] = useState<Set<number>>(() => new Set());
   const [presetsFaded, setPresetsFaded] = useState<Set<number>>(() => new Set());
@@ -108,10 +112,36 @@ export default function ExperimentStep({
     setPlaying(null);
   }
 
+  if (!briefed) {
+    return (
+      <section className="panel bench-brief">
+        <span className="bench-intro-kind">Experimento</span>
+        {step.title && <h2>{step.title}</h2>}
+        <Bubble kind={mascotKind} tone="info" message={step.text || 'Faça o experimento e cumpra as missões.'} />
+        {prediction && <p className="bench-brief-note">Você previu: “{prediction}”</p>}
+        {spec?.goals?.length > 0 && (
+          <div className="bench-brief-goals">
+            <h3>Suas missões</h3>
+            <ul>
+              {spec.goals.map((g) => (
+                <li key={g.id}>
+                  <span aria-hidden="true">⬜</span> {g.label}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <button type="button" className="btn-primary bench-big-btn" onClick={() => setBriefed(true)}>
+          Ir para a bancada
+        </button>
+      </section>
+    );
+  }
+
   return (
     <div className="lab-step">
       <Bubble kind={mascotKind} tone={tone} message={msg} />
-      {prediction && (
+      {prediction && !bench && (
         <p>
           Você previu: “{prediction}”{' '}
           {allDone
@@ -119,7 +149,7 @@ export default function ExperimentStep({
             : 'Faça o experimento para conferir.'}
         </p>
       )}
-      {step.title && <h2 style={{ margin: 0, fontFamily: 'var(--font-heading)' }}>{step.title}</h2>}
+      {step.title && !bench && <h2 style={{ margin: 0, fontFamily: 'var(--font-heading)' }}>{step.title}</h2>}
       {spec?.clips ? null : <LabBoard lab={lab} pieces={pieces} setPieces={setPieces} settings={settings} />}
       {spec?.presets && (
         <div className="panel" style={{ maxWidth: 720, width: '100%' }}>
@@ -155,7 +185,9 @@ export default function ExperimentStep({
             }
             style={{ width: '100%' }}
           />
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'calc(12px * var(--text-scale, 1))' }}>
+          <div
+            style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'calc(12px * var(--text-scale, 1))' }}
+          >
             <span>menos resistência</span>
             <span>mais resistência</span>
           </div>
@@ -193,7 +225,13 @@ export default function ExperimentStep({
           <h3 style={{ margin: '0 0 6px', fontSize: 'calc(15px * var(--text-scale, 1))' }}>Missões</h3>
           <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 4 }}>
             {spec.goals.map((g, i) => (
-              <li key={g.id} style={{ fontSize: 'calc(14px * var(--text-scale, 1))', color: done[i] ? 'var(--color-accent-2-800)' : 'inherit' }}>
+              <li
+                key={g.id}
+                style={{
+                  fontSize: 'calc(14px * var(--text-scale, 1))',
+                  color: done[i] ? 'var(--color-accent-2-800)' : 'inherit',
+                }}
+              >
                 <span aria-hidden="true">{done[i] ? '✅' : '⬜'}</span> {g.label}
                 <span className="sr-only"> {done[i] ? '(feita)' : '(a fazer)'}</span>
               </li>

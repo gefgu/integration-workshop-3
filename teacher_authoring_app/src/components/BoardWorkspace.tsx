@@ -79,6 +79,7 @@ export default function BoardWorkspace({
   const columnRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
   // `fit`: the board takes whatever height its column has left after the header, never below half size.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: the column is a new element when it moves into `slot`
   useLayoutEffect(() => {
     const column = columnRef.current;
     if (!fit || !column) return undefined;

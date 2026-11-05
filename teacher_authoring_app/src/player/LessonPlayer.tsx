@@ -7,6 +7,7 @@ import Icon from '../components/Icon.tsx';
 import LabBoard from '../components/LabBoard.tsx';
 import { capsuleConfig, formatOhms, isCapsule, NOMES } from '../engine/sim.ts';
 import { cumulativeBoard, effectiveSteps, startPieces } from '../model/steps.ts';
+import { BenchModeContext, useBenchMode } from './benchMode.ts';
 import ExperimentStep from './ExperimentStep.tsx';
 import ExplainStep from './ExplainStep.tsx';
 import { challengeHint } from './hints.ts';
@@ -264,188 +265,198 @@ export default function LessonPlayer({
   const stepKey = 'step' in phase ? phase.step.id : 'challenge';
   const voice = useTutorVoice(lesson);
   const [muted, setMuted] = useState(false);
+  // Bench: the lesson opens on its own screen (title + what we will do) before the first step.
+  const [intro, setIntro] = useState(bench && first === 0);
   // teacher's validator: the board is drawn in a fixed left half (see BoardSlotContext)
   const [slot, setSlot] = useState<HTMLElement | null>(null);
   useSay([lesson.title, lesson.instruction], -1, idx === 0); // again on "Testar de novo"
 
   return (
     <TutorVoiceContext.Provider value={voice}>
-      <BoardSlotContext.Provider value={bench ? null : slot}>
-        <div
-          className={bench ? undefined : 'player-desk'}
-          style={
-            bench
-              ? { display: 'flex', flexDirection: 'column', gap: 14, alignItems: 'center', textAlign: 'center' }
-              : undefined
-          }
-        >
-          {bench ? (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, flexWrap: 'wrap' }}>
-              <h2
-                style={{ fontFamily: 'var(--font-heading)', margin: 0, fontSize: 'calc(20px * var(--text-scale, 1))' }}
-              >
-                {lesson.title || 'Lição sem título'}
-              </h2>
-              <span style={{ fontSize: 'calc(13px * var(--text-scale, 1))', color: 'var(--color-neutral-600)' }}>
-                {phase.type === 'done' ? 'Concluída' : `Etapa ${idx + 1} de ${steps}`}
-              </span>
-              <button type="button" className="btn-outline" onClick={onExit}>
-                {exitLabel ?? 'Voltar ao editor'}
-              </button>
-              <label
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  fontSize: 'calc(13px * var(--text-scale, 1))',
-                }}
-              >
-                <input
-                  type="checkbox"
-                  checked={!muted}
-                  onChange={(e) => {
-                    setMuted(!e.target.checked);
-                    voice.setMuted(!e.target.checked);
-                  }}
-                />
-                Voz do tutor
-              </label>
-            </div>
-          ) : (
-            <div className="board-slot" ref={setSlot} />
-          )}
+      <BenchModeContext.Provider value={bench}>
+        <BoardSlotContext.Provider value={bench ? null : slot}>
           <div
-            className={bench ? 'player-steps-bench' : 'player-right'}
-            style={bench ? { display: 'contents' } : undefined}
+            className={bench ? undefined : 'player-desk'}
+            style={
+              bench
+                ? { display: 'flex', flexDirection: 'column', gap: 14, alignItems: 'center', textAlign: 'center' }
+                : undefined
+            }
           >
-            {!bench && (
-              <div className="player-bar">
-                <section className="panel player-tools" aria-label="Controles do teste">
-                  {toolbar}
-                  <button type="button" className="btn-outline btn-icon" onClick={onExit}>
-                    <Icon name="edit" size={16} />
-                    {exitLabel ?? 'Voltar ao editor'}
-                  </button>
-                  <div className="player-switches">
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={debugEnabled}
-                        onChange={(e) => setDebugEnabled(e.target.checked)}
+            {bench ? (
+              <div className="bench-bar">
+                <button type="button" className="bench-bar-back" onClick={onExit} aria-label={exitLabel ?? 'Voltar'}>
+                  <Icon name="back" size={22} />
+                  Voltar
+                </button>
+                <span className="bench-bar-title">{intro ? '' : lesson.title || 'Lição sem título'}</span>
+                {!intro && phase.type !== 'done' && (
+                  <span className="bench-bar-steps" role="img" aria-label={`Etapa ${idx + 1} de ${steps}`}>
+                    {Array.from({ length: steps }, (_, i) => (
+                      <span
+                        // biome-ignore lint/suspicious/noArrayIndexKey: one dot per step, fixed for the lesson
+                        key={i}
+                        className={i === idx ? 'active' : i < idx ? 'done' : ''}
                       />
-                      Depurar validação
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={!muted}
-                        onChange={(e) => {
-                          setMuted(!e.target.checked);
-                          voice.setMuted(!e.target.checked);
-                        }}
-                      />
-                      Voz do tutor
-                    </label>
-                  </div>
-                  <AudioStatus lesson={lesson} />
-                </section>
-                <section className="panel player-info" aria-label="Lição em teste">
-                  <div className="player-info-head">
-                    <h2>{lesson.title || 'Lição sem título'}</h2>
-                    <span className="player-step-chip">
-                      {phase.type === 'done' ? 'Concluída' : `Etapa ${idx + 1} de ${steps}`}
-                    </span>
-                  </div>
-                  {lesson.instruction && <p className="player-instruction">{lesson.instruction}</p>}
-                  {notice && (
-                    <p role="status" className="player-notice">
-                      {notice}
-                    </p>
-                  )}
-                </section>
+                    ))}
+                  </span>
+                )}
+                <button
+                  type="button"
+                  className="bench-bar-sound"
+                  aria-pressed={!muted}
+                  aria-label={muted ? 'Ligar a voz do tutor' : 'Desligar a voz do tutor'}
+                  onClick={() => {
+                    setMuted(!muted);
+                    voice.setMuted(!muted);
+                  }}
+                >
+                  <Icon name={muted ? 'mute' : 'sound'} size={22} />
+                </button>
               </div>
-            )}
-            {lesson.instruction && bench && !['step', 'challenge', 'experiment'].includes(phase.type) && (
-              <p style={{ margin: 0, maxWidth: 720, fontSize: 'calc(14px * var(--text-scale, 1))', lineHeight: 1.5 }}>
-                {lesson.instruction}
-              </p>
+            ) : (
+              <div className="board-slot" ref={setSlot} />
             )}
             <div
-              className={bench ? 'player-steps-bench' : 'player-body'}
+              className={bench ? 'player-steps-bench' : 'player-right'}
               style={bench ? { display: 'contents' } : undefined}
             >
-              {phase.type === 'quiz' && (
-                <QuizStep
-                  key={phase.quiz.id}
-                  quiz={phase.quiz}
-                  onDone={next}
-                  mascotKind={mascotKind}
-                  onAnswer={(correct) => onEvent?.({ type: 'quiz', quizId: phase.quiz.id, correct })}
-                  onPrediction={setPrediction}
-                />
+              {!bench && (
+                <div className="player-bar">
+                  <section className="panel player-tools" aria-label="Controles do teste">
+                    {toolbar}
+                    <button type="button" className="btn-outline btn-icon" onClick={onExit}>
+                      <Icon name="edit" size={16} />
+                      {exitLabel ?? 'Voltar ao editor'}
+                    </button>
+                    <div className="player-switches">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={debugEnabled}
+                          onChange={(e) => setDebugEnabled(e.target.checked)}
+                        />
+                        Depurar validação
+                      </label>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={!muted}
+                          onChange={(e) => {
+                            setMuted(!e.target.checked);
+                            voice.setMuted(!e.target.checked);
+                          }}
+                        />
+                        Voz do tutor
+                      </label>
+                    </div>
+                    <AudioStatus lesson={lesson} />
+                  </section>
+                  <section className="panel player-info" aria-label="Lição em teste">
+                    <div className="player-info-head">
+                      <h2>{lesson.title || 'Lição sem título'}</h2>
+                      <span className="player-step-chip">
+                        {phase.type === 'done' ? 'Concluída' : `Etapa ${idx + 1} de ${steps}`}
+                      </span>
+                    </div>
+                    {lesson.instruction && <p className="player-instruction">{lesson.instruction}</p>}
+                    {notice && (
+                      <p role="status" className="player-notice">
+                        {notice}
+                      </p>
+                    )}
+                  </section>
+                </div>
               )}
-              {phase.type === 'explain' && <ExplainStep key={stepKey} step={phase.step} onDone={next} />}
-              {phase.type === 'experiment' && (
-                <ExperimentStep
-                  key={stepKey}
-                  lesson={lesson}
-                  step={phase.step}
-                  pieces={pieces}
-                  setPieces={setPieces}
-                  onDone={next}
-                  mascotKind={mascotKind}
-                  prediction={prediction}
-                  clipsSwapped={clipsSwapped}
-                />
-              )}
-              {phase.type === 'interact' && (
-                <InteractStep
-                  key={stepKey}
-                  lesson={lesson}
-                  phase={phase}
-                  pieces={pieces}
-                  onDone={next}
-                  mascotKind={mascotKind}
-                  onAnswer={(correct) => onEvent?.({ type: 'quiz', quizId: phase.quiz?.id, correct })}
-                  onPrediction={setPrediction}
-                  clipsSwapped={clipsSwapped}
-                />
-              )}
-              {(phase.type === 'step' || phase.type === 'challenge') && (
-                <BuildStep
-                  key={stepKey}
-                  lesson={lesson}
-                  stepIdx={phase.type === 'step' ? phase.idx : 0}
-                  final={phase.type === 'challenge' || phase.step.action === 'connect_circuit'}
-                  text={phase.type === 'step' ? phase.step.text : ''}
-                  pieces={pieces}
-                  setPieces={setPieces}
-                  debugEnabled={debug ?? debugEnabled}
-                  timeLimitS={phase.type === 'challenge' ? lesson.timeLimitS : null}
-                  onDone={next}
-                  onExpired={() => {
-                    outcome.current.expired = true;
-                  }}
-                  mascotKind={mascotKind}
-                  bench={bench}
-                />
-              )}
-              {phase.type === 'done' && !bench && (
-                <>
-                  <SpokenBubble
-                    kind={mascotKind}
-                    tone="ok"
-                    message="Lição concluída! É assim que o aluno vai passar por ela."
+              <div
+                className={bench ? 'player-steps-bench' : 'player-body'}
+                style={bench ? { display: 'contents' } : undefined}
+              >
+                {bench && intro && (
+                  <section className="bench-intro">
+                    <span className="bench-intro-kind">{lesson.kind === 'challenge' ? 'Desafio' : 'Lição guiada'}</span>
+                    <h1>{lesson.title || 'Lição sem título'}</h1>
+                    {lesson.instruction && <Bubble kind={mascotKind} tone="info" message={lesson.instruction} />}
+                    <button type="button" className="btn-primary bench-big-btn" onClick={() => setIntro(false)}>
+                      Começar
+                    </button>
+                  </section>
+                )}
+                {!(bench && intro) && phase.type === 'quiz' && (
+                  <QuizStep
+                    key={phase.quiz.id}
+                    quiz={phase.quiz}
+                    onDone={next}
+                    mascotKind={mascotKind}
+                    onAnswer={(correct) => onEvent?.({ type: 'quiz', quizId: phase.quiz.id, correct })}
+                    onPrediction={setPrediction}
                   />
-                  <button type="button" className="btn-primary" onClick={restart}>
-                    Testar de novo
-                  </button>
-                </>
-              )}
+                )}
+                {!(bench && intro) && phase.type === 'explain' && (
+                  <ExplainStep key={stepKey} step={phase.step} onDone={next} />
+                )}
+                {!(bench && intro) && phase.type === 'experiment' && (
+                  <ExperimentStep
+                    key={stepKey}
+                    lesson={lesson}
+                    step={phase.step}
+                    pieces={pieces}
+                    setPieces={setPieces}
+                    onDone={next}
+                    mascotKind={mascotKind}
+                    prediction={prediction}
+                    clipsSwapped={clipsSwapped}
+                  />
+                )}
+                {!(bench && intro) && phase.type === 'interact' && (
+                  <InteractStep
+                    key={stepKey}
+                    lesson={lesson}
+                    phase={phase}
+                    pieces={pieces}
+                    onDone={next}
+                    mascotKind={mascotKind}
+                    onAnswer={(correct) => onEvent?.({ type: 'quiz', quizId: phase.quiz?.id, correct })}
+                    onPrediction={setPrediction}
+                    clipsSwapped={clipsSwapped}
+                  />
+                )}
+                {!(bench && intro) && (phase.type === 'step' || phase.type === 'challenge') && (
+                  <BuildStep
+                    key={stepKey}
+                    lesson={lesson}
+                    stepIdx={phase.type === 'step' ? phase.idx : 0}
+                    final={phase.type === 'challenge' || phase.step.action === 'connect_circuit'}
+                    text={phase.type === 'step' ? phase.step.text : ''}
+                    pieces={pieces}
+                    setPieces={setPieces}
+                    debugEnabled={debug ?? debugEnabled}
+                    timeLimitS={phase.type === 'challenge' ? lesson.timeLimitS : null}
+                    onDone={next}
+                    onExpired={() => {
+                      outcome.current.expired = true;
+                    }}
+                    mascotKind={mascotKind}
+                    bench={bench}
+                  />
+                )}
+                {phase.type === 'done' && !bench && (
+                  <>
+                    <SpokenBubble
+                      kind={mascotKind}
+                      tone="ok"
+                      message="Lição concluída! É assim que o aluno vai passar por ela."
+                    />
+                    <button type="button" className="btn-primary" onClick={restart}>
+                      Testar de novo
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      </BoardSlotContext.Provider>
+        </BoardSlotContext.Provider>
+      </BenchModeContext.Provider>
     </TutorVoiceContext.Provider>
   );
 }
@@ -482,6 +493,7 @@ function QuizStep({
   onAnswer?: (correct: boolean) => void;
   onPrediction?: (text: string) => void;
 }) {
+  const bench = useBenchMode();
   const [picked, setPicked] = useState(null);
   const [verdict, setVerdict] = useState(null);
   const option = quiz.options.find((o) => o.id === picked);
@@ -507,16 +519,19 @@ function QuizStep({
       setVerdict(await verify(o.id));
     } else onAnswer?.(o.id === quiz.correctId);
   }
+  const bubble = (
+    <Bubble
+      kind={mascotKind}
+      tone={quiz.prediction || !option || (verify && !verdict) ? 'info' : correct ? 'ok' : 'erro'}
+      message={msg}
+    />
+  );
   return (
     <>
-      <Bubble
-        kind={mascotKind}
-        tone={quiz.prediction || !option || (verify && !verdict) ? 'info' : correct ? 'ok' : 'erro'}
-        message={msg}
-      />
-      <div className="panel" style={{ maxWidth: 720, width: '100%' }}>
+      {!bench && bubble}
+      <div className="panel quiz-card" style={{ maxWidth: 720, width: '100%' }}>
         <h2>{quiz.prompt}</h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div className="quiz-options" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {quiz.options.map((o) => (
             <button
               type="button"
@@ -534,6 +549,7 @@ function QuizStep({
             </button>
           ))}
         </div>
+        {bench && option && <div className="quiz-feedback">{bubble}</div>}
         {correct && (
           <button type="button" className="btn-primary" style={{ marginTop: 14 }} onClick={onDone}>
             Continuar
@@ -589,7 +605,9 @@ function InteractStep({ lesson, phase, pieces, onDone, mascotKind, onAnswer, onP
   return (
     <>
       {phase.step.text && (
-        <p style={{ margin: 0, maxWidth: 720, fontSize: 'calc(14px * var(--text-scale, 1))' }}>{phase.step.text}</p>
+        <p className="quiz-lead" style={{ margin: 0, maxWidth: 720, fontSize: 'calc(14px * var(--text-scale, 1))' }}>
+          {phase.step.text}
+        </p>
       )}
       <QuizStep quiz={quiz} onDone={onDone} mascotKind={mascotKind} verify={verify} onPrediction={onPrediction} />
     </>
