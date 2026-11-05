@@ -9,7 +9,9 @@ import { colors, fonts, ui } from '../theme';
 
 /** In development the API usually runs on the PC serving the bundle: Metro's host, port 8000. */
 function suggestedServer(): string {
-  const host = Constants.expoConfig?.hostUri?.split(':')[0];
+  // In the browser (expo start --web) the API is on the same machine as the page.
+  const web = Platform.OS === 'web' && typeof window !== 'undefined' ? window.location.hostname : '';
+  const host = web || Constants.expoConfig?.hostUri?.split(':')[0];
   return `http://${host || '192.168.0.10'}:8000`;
 }
 

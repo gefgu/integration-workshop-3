@@ -16,6 +16,7 @@ import {
   type SyncResult,
   type Teacher,
 } from './api.ts';
+import { buildDashboard, type ProgressRow } from './progress.ts';
 
 export interface NeonConfig {
   /** e.g. https://ep-xxx.neonauth.<region>.aws.neon.tech/neondb/auth */
@@ -54,7 +55,7 @@ export class NeonApi extends Api {
   constructor(
     store: KeyValueStore,
     private config: NeonConfig,
-    fetchImpl: Fetch = fetch,
+    fetchImpl: Fetch = (input, init) => fetch(input, init),
     timeoutMs = 10_000
   ) {
     super(store, fetchImpl, timeoutMs);
@@ -220,6 +221,24 @@ export class NeonApi extends Api {
       lesson_ids: [...module_lessons].sort((a, b) => a.position - b.position).map((row) => row.lesson_id),
       class_ids: class_modules.map((row) => row.class_id),
     }));
+  };
+
+  /** Needs migration 0004_phone_progress (read access to progress_events); without it this throws 403. */
+  override classDashboard = async (id: number) => {
+    const [detail, modules] = await Promise.all([this.classDetail(id), this.modules()]);
+    const lessonIds = [
+      ...new Set([
+        ...detail.lesson_ids,
+        ...modules.filter((m) => detail.module_ids.includes(m.id)).flatMap((m) => m.lesson_ids),
+      ]),
+    ];
+    const ids = detail.students.map((s) => s.id);
+    const events = ids.length
+      ? await this.rest<ProgressRow[]>(
+          `/progress_events?student_id=in.(${ids.join(',')})&select=student_id,lesson_id,kind,score,duration_s,at,seq`
+        )
+      : [];
+    return buildDashboard(detail, lessonIds, events);
   };
 
   override benchSession = () => this.rpc<{ token: string; expires_at: number }>('bench_session', {});
