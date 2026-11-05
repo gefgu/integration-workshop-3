@@ -29,7 +29,8 @@ export function boardBefore(lesson, phase: number) {
   for (const p of phases.slice(0, phase)) {
     if (p.type === 'step') board = cumulativeBoard(lesson, p.idx).map((x) => ({ ...x }));
     else if (p.type === 'challenge') board = lesson.board.pieces.map((x) => ({ ...x }));
-    else if (p.type === 'experiment' && p.step.experiment?.board) board = p.step.experiment.board.map((x) => ({ ...x }));
+    else if (p.type === 'experiment' && p.step.experiment?.board)
+      board = p.step.experiment.board.map((x) => ({ ...x }));
   }
   return board;
 }
@@ -54,10 +55,17 @@ export function buildPhases(lesson): Phase[] {
   if (lesson.kind === 'challenge') {
     if (needsBuild(lesson)) middle = [{ type: 'challenge' }];
     // Explanations, experiments and questions come after the build; the validator is not involved.
-    middle.push(...(lesson.steps || []).map((step, idx) => ({ step, idx })).filter(({ step }) => challengeSteps(lesson).includes(step)).map(({ step, idx }) => clientPhase(step, idx, true)));
+    middle.push(
+      ...(lesson.steps || [])
+        .map((step, idx) => ({ step, idx }))
+        .filter(({ step }) => challengeSteps(lesson).includes(step))
+        .map(({ step, idx }) => clientPhase(step, idx, true))
+    );
   } else {
     middle = effectiveSteps(lesson).map((step, idx) =>
-      ['interact', 'explain', 'experiment'].includes(step.action) ? clientPhase(step, idx, false) : { type: 'step', idx, step }
+      ['interact', 'explain', 'experiment'].includes(step.action)
+        ? clientPhase(step, idx, false)
+        : { type: 'step', idx, step }
     );
   }
   return [...quiz('before'), ...middle, ...quiz('after'), { type: 'done' }] as Phase[];

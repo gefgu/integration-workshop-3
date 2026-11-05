@@ -133,6 +133,23 @@ def create_app(store: BenchStore, dev_unlock: bool = False) -> FastAPI:
             store.unlock({"id": 0, "name": "Modo demonstração"}, time.time() + 3600)
             return store.status()
 
+        @app.post("/dev/demo")
+        def dev_demo_endpoint(package: dict[str, Any]) -> dict:
+            """Demo only: unlock and load a package built by the bench screen (curriculum + demo students).
+            It is marked `demo`, so its events are never queued for the teacher's server."""
+            import time
+            if not package.get("lessons") or not package.get("students") or not package.get("module"):
+                raise HTTPException(422, "Pacote de demonstração incompleto.")
+            store.load_package({
+                "teacher": {"id": 0, "name": "Modo demonstração"},
+                "class": {"id": 0, "name": "Turma de demonstração"},
+                "created_at": "",
+                **package,
+                "demo": True,
+            })
+            store.unlock({"id": 0, "name": "Modo demonstração"}, time.time() + 3 * 3600)
+            return store.status()
+
     @app.websocket("/ble")
     async def ble(socket: WebSocket) -> None:
         """Bluetooth simulator: the same frames the GATT RX/TX characteristics carry."""

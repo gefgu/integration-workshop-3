@@ -2,6 +2,7 @@ import { createContext, type ReactNode, useContext } from 'react';
 import { buzzerSound, statusLedOn } from '../engine/lab.ts';
 import { NOMES } from '../engine/sim.ts';
 import type { LessonSettings, Piece } from '../model/types.ts';
+import { useBenchMode } from '../player/benchMode.ts';
 import type { Lab } from '../player/useLab.ts';
 import BoardWorkspace from './BoardWorkspace.tsx';
 import CapsuleLegend from './CapsuleLegend.tsx';
@@ -25,6 +26,15 @@ const mA = (n: number) => n.toFixed(1).replace('.', ',');
 
 /** The bench's built-in status LED (lesson 1). Drawn by the software: no hardware was read. */
 function StatusLed({ on }: { on: boolean }) {
+  const bench = useBenchMode();
+  if (bench) {
+    return (
+      <div role="status" className="bench-status-led">
+        <span aria-hidden="true" className={on ? 'on' : ''} />
+        LED de status: <strong>{on ? 'aceso' : 'apagado'}</strong>
+      </div>
+    );
+  }
   return (
     <div role="status" style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 14 }}>
       <span
@@ -66,6 +76,7 @@ export default function LabBoard({
   extra?: ReactNode;
 }) {
   const fit = useContext(BoardFitContext);
+  const bench = useBenchMode();
   const Workspace = fit ? CircuitWorkspace : BoardWorkspace;
   const buttons = pieces.filter((p) => p.type === 'botao');
   const loads = lab.diag.loadsLit;
@@ -115,7 +126,7 @@ export default function LabBoard({
       />
       {extra}
       <CapsuleLegend pieces={pieces} readings={lab.cap.readings} />
-      <details className="panel lab-help" style={{ maxWidth: 720, width: '100%', textAlign: 'left' }}>
+      <details hidden={bench} className="panel lab-help" style={{ maxWidth: 720, width: '100%', textAlign: 'left' }}>
         <summary>Entenda a bancada e as telas</summary>
         <p>
           Cada coluna tem <strong>dois nós</strong>: um no banco de cima (A) e outro no de baixo (B). Os 6 furos da

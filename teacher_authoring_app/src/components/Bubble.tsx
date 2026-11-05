@@ -39,7 +39,7 @@ export default function Bubble({ kind = 'hamster', tone = 'info', message }) {
             color: TONE_INK[tone],
             borderRadius: 22,
             padding: '12px 18px',
-            fontSize: 'calc(14px * var(--text-scale, 1))',
+            fontSize: 'calc(var(--bubble-font, 14px) * var(--text-scale, 1))',
             lineHeight: 1.45,
             minHeight: 52,
           }}

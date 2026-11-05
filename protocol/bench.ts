@@ -38,6 +38,8 @@ export interface BenchPackage {
   // biome-ignore lint/suspicious/noExplicitAny: lesson documents are the teacher app's Lesson (v3) + lessonVersion
   lessons: any[];
   students: BenchStudent[];
+  /** demo mode (bench service with --dev): loaded by the bench itself, progress is never synced */
+  demo?: boolean;
 }
 
 export type BenchEventKind = 'session' | 'step_done' | 'lesson_done' | 'quiz_answer' | 'challenge_score';

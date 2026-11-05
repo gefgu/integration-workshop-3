@@ -134,3 +134,29 @@ def test_full_cycle(server, tmp_path):
 def test_validator_is_served_offline(tmp_path):
     bench = TestClient(create_app(BenchStore(tmp_path / "b.sqlite3")))
     assert bench.get("/validator/health").json() == {"status": "ok"}
+
+
+def test_dev_demo_loads_a_package_and_keeps_events_local(tmp_path):
+    store = BenchStore(tmp_path / "demo.sqlite3")
+    bench = TestClient(create_app(store, dev_unlock=True))
+    demo = {
+        "format": 1,
+        "version_id": "demo-1",
+        "module": {"id": 0, "title": "Currículo completo", "description": "", "lesson_ids": ["l1"]},
+        "lessons": [lesson("l1", "guided")],
+        "students": [{"id": 9001, "name": "Ana", "nickname": "ana", "nfc_code": "DEMO-1"}],
+    }
+    status = bench.post("/dev/demo", json=demo).json()
+    assert status["unlocked"] is True
+    assert bench.get("/package").json()["demo"] is True
+
+    login = bench.post("/login", json={"nfc_code": "DEMO-1"})
+    assert login.status_code == 200
+    saved = bench.post("/students/9001/step", json={"lesson_id": "l1", "step_idx": 0}).json()
+    assert saved["resume"]["step_idx"] == 1  # progress is kept on the bench
+    assert store.pending_count() == 0  # but nothing is queued for the teacher's server
+
+
+def test_dev_demo_needs_dev_mode(tmp_path):
+    bench = TestClient(create_app(BenchStore(tmp_path / "b.sqlite3")))
+    assert bench.post("/dev/demo", json={}).status_code == 404

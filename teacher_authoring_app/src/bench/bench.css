@@ -279,7 +279,7 @@
   justify-content: center;
   pointer-events: none;
 }
-.bench-shell .lab-step .board-actions [role='status']:not(:empty) {
+.bench-shell .lab-step .board-actions [role="status"]:not(:empty) {
   background: var(--color-accent-200);
   border: 2px solid var(--color-accent-700);
   border-radius: 12px;
@@ -328,4 +328,466 @@
 /* The bench clears the board by hand: no eraser row above it. */
 .bench-shell .board-header {
   display: none;
+}
+
+/* ---------- Lesson screens: less text, bigger controls ---------- */
+/* one slim bar instead of title + step + back + voice rows */
+.bench-shell .bench-bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 4px;
+}
+.bench-shell .bench-bar-back,
+.bench-shell .bench-bar-sound {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 2px solid var(--color-divider);
+  background: var(--color-neutral-100);
+  color: var(--color-text);
+  border-radius: 999px;
+  font: inherit;
+  font-family: var(--font-heading);
+  font-size: 18px;
+  padding: 8px 18px 8px 12px;
+  cursor: pointer;
+  flex: none;
+}
+.bench-shell .bench-bar-sound {
+  padding: 8px 12px;
+}
+.bench-shell .bench-bar-title {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  font-family: var(--font-heading);
+  font-size: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bench-shell .bench-bar-steps {
+  display: inline-flex;
+  gap: 7px;
+  flex: none;
+}
+.bench-shell .bench-bar-steps > span {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 2px solid var(--color-accent-600);
+}
+.bench-shell .bench-bar-steps > span.done {
+  background: var(--color-accent-300);
+}
+.bench-shell .bench-bar-steps > span.active {
+  width: 34px;
+  background: var(--color-accent);
+}
+
+/* opening screen of a lesson */
+.bench-shell .bench-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  padding-top: 24px;
+}
+.bench-shell .bench-intro h1 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 44px;
+  line-height: 1.1;
+  max-width: 900px;
+}
+.bench-shell .bench-intro-kind {
+  font-weight: 700;
+  font-size: 18px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: var(--color-accent-2-200);
+}
+.bench-shell .bench-big-btn {
+  font-size: 26px !important;
+  padding: 16px 48px !important;
+}
+
+/* reading: text on the left (2 short paragraphs at most), drawing or explorer on the right */
+.bench-shell .explain-card.bench-read {
+  max-width: none;
+  width: 100%;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
+  align-items: center;
+  text-align: left;
+  padding: 22px 28px;
+  min-height: 440px;
+}
+.bench-shell .explain-card.bench-read.with-figure {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+}
+.bench-shell .bench-read-text h2 {
+  margin: 0 0 14px;
+  font-size: 32px;
+}
+.bench-shell .bench-read-text p {
+  font-size: 24px;
+  line-height: 1.45;
+  margin: 0 0 14px;
+}
+.bench-shell .bench-read-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 10px;
+}
+.bench-shell .bench-read-count {
+  font-weight: 700;
+  color: var(--color-neutral-600);
+}
+.bench-shell .bench-read-figure {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 0;
+}
+.bench-shell .bench-read-figure > * {
+  max-width: 100%;
+}
+
+/* questions: big prompt, big answers; the tutor answers below */
+.bench-shell .quiz-card {
+  max-width: 900px !important;
+  box-sizing: border-box;
+  text-align: left;
+  padding: 22px 28px;
+}
+.bench-shell .quiz-card h2 {
+  font-size: 30px !important;
+  line-height: 1.25;
+  margin: 0 0 16px;
+}
+.bench-shell .quiz-options {
+  gap: 12px !important;
+}
+.bench-shell .quiz-options .btn-outline {
+  font-size: 23px;
+  padding: 16px 22px;
+  font-family: var(--font-body);
+  font-weight: 600;
+}
+.bench-shell .quiz-feedback {
+  margin-top: 14px;
+}
+.bench-shell .quiz-lead {
+  font-size: 22px !important;
+  max-width: 900px !important;
+}
+
+/* board screens: the status LED is a dot and a word; the tray has no caption */
+.bench-shell .bench-status-led {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+}
+.bench-shell .bench-status-led > span {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #59635a;
+  box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.5);
+}
+.bench-shell .bench-status-led > span.on {
+  background: #4fd36b;
+  box-shadow: 0 0 14px 4px rgba(79, 211, 107, 0.7);
+}
+.bench-shell .tray-box > p {
+  display: none;
+}
+.bench-shell {
+  --bubble-font: 16px;
+}
+/* the node explorer is a full-size board: draw it smaller so the screen keeps its large text */
+.bench-shell .bench-read.with-explorer .bench-read-figure {
+  zoom: 0.74;
+}
+/* experiment briefing: the missions first, then the lab */
+.bench-shell .bench-brief {
+  max-width: 900px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 30px;
+}
+.bench-shell .bench-brief h2 {
+  margin: 0;
+  font-size: 34px !important;
+}
+.bench-shell .bench-brief-note {
+  margin: 0;
+  font-size: 20px;
+  font-style: italic;
+}
+.bench-shell .bench-brief-goals {
+  align-self: stretch;
+  text-align: left;
+}
+.bench-shell .bench-brief-goals h3 {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+.bench-shell .bench-brief-goals ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 22px;
+}
+
+/* ---------- Entry screens: one big message, one action ---------- */
+.bench-shell .bench-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding-top: 20px;
+  text-align: center;
+}
+.bench-shell .bench-hero h1 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 46px;
+}
+.bench-shell .bench-hero > p {
+  margin: 0;
+  font-size: 26px;
+}
+.bench-shell .bench-hero-icon {
+  width: 120px;
+  height: 120px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-accent-200);
+  color: var(--color-accent-700);
+}
+.bench-shell .bench-hero-nfc {
+  animation: bench-nfc 1.8s ease-in-out infinite;
+}
+@keyframes bench-nfc {
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 14px rgba(198, 113, 57, 0.15);
+  }
+}
+.bench-shell .bench-chip {
+  font-weight: 700;
+  font-size: 18px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: var(--color-accent-2-200);
+}
+.bench-shell .bench-hero-foot {
+  margin-top: 20px;
+  font-size: 17px;
+}
+.bench-shell .bench-tag-form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.bench-shell .bench-tag-form .text-input {
+  width: 300px;
+  font-size: 18px;
+}
+.bench-shell .bench-foot {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  margin-top: 6px;
+}
+.bench-shell .bench-tile {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 110px;
+  padding: 10px 16px;
+  border-radius: 20px;
+  border: 2px solid var(--color-divider);
+  background: var(--color-neutral-100);
+  color: var(--color-text);
+  font: inherit;
+  font-family: var(--font-heading);
+  font-size: 18px;
+  cursor: pointer;
+}
+.bench-shell .bench-tile.small {
+  min-width: 0;
+  padding: 10px 14px;
+}
+.bench-shell .bench-tile:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* student's home: hello + the lesson to continue, then six lessons per page */
+.bench-shell .bench-student {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.bench-shell .bench-student-head {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.bench-shell .bench-student-head h1 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 38px;
+  flex: none;
+}
+.bench-shell .bench-continue {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  font-size: 24px !important;
+  padding: 14px 24px !important;
+  border-radius: 22px;
+}
+.bench-shell .bench-continue small {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 700;
+  opacity: 0.85;
+}
+.bench-shell .bench-student-done {
+  margin: 0;
+  font-size: 22px;
+}
+.bench-shell .bench-lessons {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.bench-shell .bench-lesson-tile {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 10px;
+  align-items: center;
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: 18px;
+  border: 2px solid var(--color-divider);
+  background: var(--color-neutral-100);
+  color: var(--color-text);
+  font: inherit;
+  cursor: pointer;
+}
+.bench-shell .bench-lesson-tile.done {
+  background: var(--color-accent-2-200);
+}
+.bench-shell .bench-lesson-tile:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.bench-shell .bench-lesson-num {
+  grid-row: 1 / 3;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-accent);
+  color: #fff;
+  font-family: var(--font-heading);
+  font-size: 20px;
+}
+.bench-shell .bench-lesson-title {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.bench-shell .bench-lesson-tile small {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-neutral-700);
+}
+.bench-shell .bench-pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  font-weight: 700;
+  font-size: 20px;
+}
+.bench-shell .bench-score {
+  line-height: 1;
+}
+.bench-shell .bench-score small {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 20px;
+  color: var(--color-neutral-700);
+  margin-top: 6px;
+}
+
+/* ---------- Demo mode ---------- */
+.bench-shell .bench-demo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
+.bench-shell .bench-demo h1 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 38px;
+}
+.bench-shell .bench-demo > p {
+  margin: 0;
+  font-size: 20px;
+}
+.bench-shell .bench-demo-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.bench-shell .bench-demo-tile {
+  grid-template-columns: 1fr;
+  align-content: start;
+  gap: 6px;
+  min-height: 120px;
+}
+.bench-shell .bench-demo-login {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-size: 17px;
+  font-weight: 600;
 }

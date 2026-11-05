@@ -4,13 +4,13 @@ import { useCapsules } from '../components/useCapsules.ts';
 import { mergeTrails } from '../engine/capsules.ts';
 import { diagnose } from '../engine/diagnose.ts';
 import {
+  buzzerSound,
   capacitanceUF,
   capDischarge,
   DARK_MA,
   type Discharge,
   dischargeMa,
   dischargeTau,
-  buzzerSound,
   type LabSnapshot,
 } from '../engine/lab.ts';
 import { branchCurrent } from '../engine/sim.ts';
@@ -100,7 +100,11 @@ export function useLab(pieces: Piece[], settings?: LessonSettings) {
   const blinkOff = looseActive && !flickerOn;
   const lit = (litSteady && !blinkOff) || fading;
   const fadeMa = fade ? dischargeMa(fade.startMa, (now - fade.start) / 1000, fade.tau) : 0;
-  const ledMa = fading ? fadeMa : lit ? Math.max(diag.code === 'valido' ? diag.currents?.led ?? diag.mA : 0, cap.drivenMa) : 0;
+  const ledMa = fading
+    ? fadeMa
+    : lit
+      ? Math.max(diag.code === 'valido' ? (diag.currents?.led ?? diag.mA) : 0, cap.drivenMa)
+      : 0;
   const trail = fading
     ? { edgeIds: fade.discharge.edgeIds, nodes: new Set<number>() }
     : lit

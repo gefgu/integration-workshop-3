@@ -144,6 +144,7 @@ export default function BenchPreview({
             const name = PHASE_NAMES[phase.type] ?? 'Tela';
             const label = `Tela ${i + 1}: ${name}`;
             return (
+              // biome-ignore lint/suspicious/noArrayIndexKey: one dot per screen, fixed for the lesson
               <li key={`${phase.type}-${i}`}>
                 <button
                   type="button"

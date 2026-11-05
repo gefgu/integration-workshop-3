@@ -71,6 +71,7 @@ export function benchApi(base: string, fetchImpl: typeof fetch = (input, init) =
     ranking: (lessonId?: string) =>
       call<RankRow[]>(`/ranking${lessonId ? `?lesson_id=${encodeURIComponent(lessonId)}` : ''}`),
     devUnlock: () => call<BenchStatus>('/dev/unlock', 'POST'),
+    devDemo: (pkg: BenchPackage) => call<BenchStatus>('/dev/demo', 'POST', pkg),
   };
 }
 
