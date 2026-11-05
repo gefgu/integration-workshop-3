@@ -5,6 +5,8 @@ import Button from '../../components/Button';
 import { Row, StateView } from '../../components/Kit';
 import type { Module, SchoolClass } from '../../lib/api';
 import { useApp } from '../../lib/AppContext';
+import { TourAnchor, useScreenTour } from '../../components/Tour';
+import { APP_TOURS } from '../../lib/tours';
 import { colors, ui } from '../../theme';
 
 /** The teacher's modules (made on the website); each one can be taken to the bench. */
@@ -16,6 +18,7 @@ export default function Modulos() {
   const [open, setOpen] = useState<number | null>(null);
   const [error, setError] = useState('');
   const [refreshing, setRefreshing] = useState(false);
+  const tour = useScreenTour('modulos', APP_TOURS.modulos);
 
   const load = useCallback(
     () =>
@@ -36,6 +39,7 @@ export default function Modulos() {
   if (error && !modules) return <StateView icon="cloud-offline-outline" title="Não deu para carregar" text={error} />;
   if (!modules) return <StateView loading text="Carregando módulos…" />;
   return (
+    <>
     <FlatList
       style={ui.screen}
       contentContainerStyle={ui.content}
@@ -60,10 +64,10 @@ export default function Modulos() {
       ListEmptyComponent={
         <StateView icon="albums-outline" title="Nenhum módulo" text="Crie módulos e atribua às turmas pelo site do professor." />
       }
-      renderItem={({ item }) => {
+      renderItem={({ item, index }) => {
         const classNames = classes.filter((c) => item.class_ids.includes(c.id)).map((c) => c.name);
         const onBench = bench?.package?.module_title === item.title;
-        return (
+        const row = (
           <Row
             icon={onBench ? 'hardware-chip' : 'albums-outline'}
             title={item.title}
@@ -83,7 +87,10 @@ export default function Modulos() {
             )}
           </Row>
         );
+        return index === 0 ? <TourAnchor id="modulos-first">{row}</TourAnchor> : row;
       }}
     />
+    {tour.overlay}
+    </>
   );
 }

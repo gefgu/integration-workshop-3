@@ -3,7 +3,9 @@ import type { BenchPackage, BenchStatus, BenchStudent } from '../../../protocol/
 import { setValidatorBase } from '../api/validator.ts';
 import Bubble from '../components/Bubble.tsx';
 import Icon from '../components/Icon.tsx';
+import Tour, { useFirstRunTour } from '../components/Tour.tsx';
 import LessonPlayer, { type PlayerEvent } from '../player/LessonPlayer.tsx';
+import { BENCH_TOURS } from '../tour/benchTours.ts';
 import { type BenchApi, benchApi, type LoginResult, type RankRow, serviceUrl, type VisionState } from './benchApi.ts';
 import CameraView from './CameraView.tsx';
 import { type DemoChoice, demoChoices, demoPackage } from './demo.ts';
@@ -29,6 +31,25 @@ export default function BenchApp() {
   const [error, setError] = useState('');
   const loginAt = useRef(0);
   const vision = useVision(api);
+  // Guided tours: the first time each screen appears on this bench, and again from the ? button.
+  const [labReady, setLabReady] = useState(false);
+  useEffect(() => {
+    if (screen.name !== 'lesson') {
+      setLabReady(false);
+      return undefined;
+    }
+    const timer = setInterval(() => setLabReady(!!document.querySelector('.bench-stage .lab-step')), 500);
+    return () => clearInterval(timer);
+  }, [screen.name]);
+  const tourKey =
+    screen.name === 'home' && pkg
+      ? 'bench-home'
+      : screen.name === 'student'
+        ? 'bench-student'
+        : screen.name === 'lesson' && labReady
+          ? 'bench-lesson'
+          : null;
+  const tour = useFirstRunTour(tourKey);
 
   useEffect(() => setValidatorBase(`${base}/validator`), [base]);
 
@@ -86,7 +107,7 @@ export default function BenchApp() {
       if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) return;
       const target = event.target as HTMLElement | null;
       if (target?.tagName === 'INPUT' && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) return;
-      const stage = document.querySelector('.bench-stage');
+      const stage = document.querySelector('.bench-shell');
       if (!stage) return;
       const controls = [
         ...stage.querySelectorAll<HTMLElement>('button:not(:disabled), input:not(:disabled), [tabindex="0"]'),
@@ -138,6 +159,11 @@ export default function BenchApp() {
           {status?.package ? ` · ${status.package.module_title}` : ''}
           {session ? ` · ${session.student.nickname}` : ''}
         </span>
+        {tourKey && (
+          <button type="button" className="bench-help" aria-label="Ajuda: tutorial desta tela" onClick={tour.start}>
+            ?
+          </button>
+        )}
       </header>
       <main className="bench-stage">
         <FitStage>
@@ -197,6 +223,9 @@ export default function BenchApp() {
           )}
         </FitStage>
       </main>
+      {tour.open && tourKey && (
+        <Tour key={tourKey} steps={BENCH_TOURS[tourKey]} onClose={tour.close} className="bench-tour" cardWidth={460} />
+      )}
     </div>
   );
 }

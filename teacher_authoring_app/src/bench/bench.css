@@ -911,3 +911,34 @@
   background: var(--color-neutral-200);
   color: var(--color-neutral-700);
 }
+
+/* ---------- Guided tour on the 7" screen ---------- */
+.bench-shell .bench-header {
+  gap: 14px;
+}
+.bench-shell .bench-header > span {
+  margin-left: auto;
+}
+.bench-shell .bench-help {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 2px solid var(--color-divider);
+  background: var(--color-neutral-100);
+  font-family: var(--font-heading);
+  font-size: 22px;
+  color: var(--color-text);
+  cursor: pointer;
+  flex: none;
+}
+.bench-shell .bench-tour .tour-card h2 {
+  font-size: 26px;
+}
+.bench-shell .bench-tour .tour-card p {
+  font-size: 20px;
+}
+.bench-shell .bench-tour .tour-actions .btn-primary,
+.bench-shell .bench-tour .tour-actions .btn-outline {
+  font-size: 18px;
+  padding: 10px 20px;
+}
