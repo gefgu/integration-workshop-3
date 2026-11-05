@@ -1,30 +1,33 @@
 import { useEffect, useState } from 'react';
 import {
   createBrowserRouter,
-  RouterProvider,
   Navigate,
   NavLink,
   Outlet,
   Route,
+  RouterProvider,
   Routes,
   useLocation,
   useNavigate,
   useParams,
 } from 'react-router-dom';
-import { workspace } from './api/workspace.ts';
+import { curriculumApi, workspace } from './api/workspace.ts';
 import { AuthProvider, useAuth } from './auth/AuthContext.tsx';
 import LoginScreen from './auth/LoginScreen.tsx';
 import Profile from './auth/Profile.tsx';
+import Icon from './components/Icon.tsx';
+import TipLayer from './components/TipLayer.tsx';
+import { hasCurriculum, syncCurriculum } from './curriculum/sync.ts';
 import Dashboard from './dashboard/Dashboard.tsx';
 import LessonEditor from './editor/LessonEditor.tsx';
 import Library from './editor/Library.tsx';
 import Sandbox from './editor/Sandbox.tsx';
 import { newLesson, slugify } from './model/lesson.ts';
 import { downloadBlob, downloadLesson, duplicateLesson, readLessonFile } from './storage/lessonStore.ts';
+import { useUnsavedChanges } from './useUnsavedChanges.ts';
 import Classes from './workspace/Classes.tsx';
 import Modules from './workspace/Modules.tsx';
 import Students from './workspace/Students.tsx';
-import { useUnsavedChanges } from './useUnsavedChanges.ts';
 
 function audioStatus(audio) {
   if (audio?.status === 'ok') return `Voz do tutor: ${Object.keys(audio.phrases).length} falas em áudio.`;
@@ -54,6 +57,7 @@ function AppRoutes() {
   const [lesson, setLesson] = useState(newLesson);
   const [loaded, setLoaded] = useState(false);
   const [status, setStatus] = useState('');
+  const [curriculumNote, setCurriculumNote] = useState('');
   const [error, setError] = useState('');
   const [pendingImport, setPendingImport] = useState(null);
   const [replaceImport, setReplaceImport] = useState(false);
@@ -66,7 +70,29 @@ function AppRoutes() {
     let active = true;
     setLoaded(false);
     workspace.listLessons().then(
-      (items) => {
+      async (items) => {
+        // Every teacher starts with the TedTronics curriculum: an account without it gets it once (per browser),
+        // so a teacher who later deletes those lessons is not refilled on every visit.
+        const offered = `tedtronics-curriculum-${teacherId}`;
+        let seen = true;
+        try {
+          seen = localStorage.getItem(offered) === '1';
+        } catch {
+          // storage blocked: skip the automatic import, the Modules page still offers it
+        }
+        if (!seen && !hasCurriculum(items)) {
+          try {
+            localStorage.setItem(offered, '1');
+            const report = await syncCurriculum(curriculumApi, { teacherId });
+            items = await workspace.listLessons();
+            if (active)
+              setCurriculumNote(
+                `Adicionamos o currículo TedTronics à sua conta: ${report.lessons.created} lições e ${report.modules.created} módulos prontos (veja em Módulos).`
+              );
+          } catch (cause) {
+            if (active) setCurriculumNote(`Não foi possível adicionar o currículo: ${(cause as Error).message}`);
+          }
+        }
         if (active) {
           setLessons(items);
           setError('');
@@ -133,8 +159,9 @@ function AppRoutes() {
     navigate(`/editor/${encodeURIComponent(copy.id)}`);
   };
 
-  const create = () => {
-    const freshLesson = newLesson();
+  /** New lesson from the "Nova lição" dialog: its basics (title, kind) come filled in. */
+  const create = (init = {}) => {
+    const freshLesson = { ...newLesson(), ...init };
     setLesson(freshLesson);
     setError('');
     navigate(`/editor/${encodeURIComponent(freshLesson.id)}`);
@@ -202,6 +229,14 @@ function AppRoutes() {
                 element={
                   <>
                     {error && <AppError message={error} />}
+                    {curriculumNote && (
+                      <p role="status" className="panel curriculum-note">
+                        {curriculumNote}{' '}
+                        <button type="button" className="pill-link-btn" onClick={() => setCurriculumNote('')}>
+                          Fechar
+                        </button>
+                      </p>
+                    )}
                     {pendingImport && (
                       <section className="panel" role="dialog" aria-label="Importar lição existente">
                         <p>Já existe uma lição com este id. Como deseja abrir o arquivo?</p>
@@ -321,13 +356,12 @@ function SandboxRoute({ lessons, lesson, setLesson, onExit, unsaved }) {
 
   return (
     <>
-      {testing && unsaved && (
-        <p role="status" className="problems" style={{ margin: '0 0 10px' }}>
-          Você está testando a versão aberta no editor, que ainda não foi salva. Volte ao editor e clique em Salvar para
-          guardá-la.
-        </p>
-      )}
       <Sandbox
+        notice={
+          testing && unsaved
+            ? 'Você está testando a versão aberta no editor, que ainda não foi salva. Volte ao editor e clique em Salvar para guardá-la.'
+            : undefined
+        }
         lesson={lesson}
         mode={testing ? 'lesson' : 'free'}
         onMode={(next) => navigate(next === 'lesson' ? lessonTestPath(lesson.id) : '/sandbox')}
@@ -346,9 +380,12 @@ function AppLayout({ lesson, teacherName, onSignOut }) {
   const section = (prefix: string) => () => (pathname.startsWith(prefix) ? 'active' : '');
   return (
     <div className="app-shell">
+      <TipLayer />
       <header className="header">
-        <h1>TedTronics</h1>
-        <span style={{ fontSize: 14, color: 'var(--color-neutral-600)' }}>Área do professor</span>
+        <div className="header-brand">
+          <h1>TedTronics</h1>
+          <span>Área do professor</span>
+        </div>
         <nav className="mode-toggle" aria-label="Navegação principal">
           <NavLink to="/home" className={({ isActive }) => (isActive ? 'active' : '')}>
             Lições
@@ -375,12 +412,15 @@ function AppLayout({ lesson, teacherName, onSignOut }) {
             Sandbox
           </NavLink>
         </nav>
-        <NavLink to="/perfil" className="pill-link-btn muted">
-          {teacherName ?? 'Perfil'}
-        </NavLink>
-        <button type="button" className="pill-link-btn muted" onClick={onSignOut}>
-          Sair
-        </button>
+        <div className="header-user">
+          <NavLink to="/perfil" className="header-profile" title="Meu perfil">
+            <Icon name="user" size={18} />
+            <span>{teacherName ?? 'Perfil'}</span>
+          </NavLink>
+          <button type="button" className="icon-btn has-tip" data-tip="Sair" aria-label="Sair" onClick={onSignOut}>
+            <Icon name="logout" size={18} />
+          </button>
+        </div>
       </header>
       <main className="mode-stage">
         <Outlet />

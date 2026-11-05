@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { feedbackCatalog, lintLesson } from '../api/validator.ts';
 import BoardWorkspace from '../components/BoardWorkspace.tsx';
+import Icon from '../components/Icon.tsx';
 import { BOARD_H, BOARD_W } from '../engine/board.ts';
 import { NOMES } from '../engine/sim.ts';
 import { newQuiz } from '../model/lesson.ts';
@@ -304,11 +305,12 @@ export default function StepsEditor({ lesson, setLesson, selected, setSelected }
                   </button>
                   <button
                     type="button"
-                    className="pill-link-btn muted"
+                    className="icon-btn icon-btn-quiet danger has-tip"
+                    data-tip="Remover passo"
                     onClick={() => remove(i)}
                     aria-label="Remover passo"
                   >
-                    ×
+                    <Icon name="trash" size={16} />
                   </button>
                 </span>
               </div>
@@ -329,7 +331,14 @@ export default function StepsEditor({ lesson, setLesson, selected, setSelected }
                   A peça deste passo não está mais na bancada. Exclua o passo.
                 </p>
               )}
-              {s.action === 'interact' && s.quizId && <QuizEditor quizzes={lesson.quizzes} onChange={(quizzes) => set({ quizzes })} only={['step']} onlyId={s.quizId} />}
+              {s.action === 'interact' && s.quizId && (
+                <QuizEditor
+                  quizzes={lesson.quizzes}
+                  onChange={(quizzes) => set({ quizzes })}
+                  only={['step']}
+                  onlyId={s.quizId}
+                />
+              )}
               {problems.map((m) => (
                 <p key={m} className="problems" style={{ margin: 0 }}>
                   {m}
@@ -362,11 +371,14 @@ export default function StepsEditor({ lesson, setLesson, selected, setSelected }
 
       {stepQuizzes.some((q) => !steps.some((s) => s.quizId === q.id)) && (
         <details open>
-          <summary style={{ fontSize: 13, cursor: 'pointer' }}>
-            Perguntas ainda sem passo
-          </summary>
+          <summary style={{ fontSize: 13, cursor: 'pointer' }}>Perguntas ainda sem passo</summary>
           <div style={{ marginTop: 8 }}>
-            <QuizEditor quizzes={lesson.quizzes} onChange={(quizzes) => set({ quizzes })} only={['step']} excludeIds={steps.map((s) => s.quizId)} />
+            <QuizEditor
+              quizzes={lesson.quizzes}
+              onChange={(quizzes) => set({ quizzes })}
+              only={['step']}
+              excludeIds={steps.map((s) => s.quizId)}
+            />
           </div>
         </details>
       )}
@@ -476,11 +488,12 @@ function StepDetails({ lesson, step, patch, catalog, stepQuizzes }) {
               </select>
               <button
                 type="button"
-                className="pill-link-btn muted"
+                className="icon-btn icon-btn-quiet danger has-tip"
+                data-tip="Remover mensagem"
                 onClick={() => setRows(rows.filter((_, k) => k !== i))}
                 aria-label="Remover mensagem"
               >
-                ×
+                <Icon name="trash" size={16} />
               </button>
             </div>
             <input

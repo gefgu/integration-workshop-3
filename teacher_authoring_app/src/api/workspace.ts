@@ -138,3 +138,14 @@ export function formatDuration(seconds: number): string {
   if (m) return `${m}min ${String(total % 60).padStart(2, '0')}s`;
   return `${total}s`;
 }
+
+/** The teacher API as the curriculum sync needs it (src/curriculum/sync.ts). */
+export const curriculumApi = {
+  listLessons: () => workspace.listLessons() as unknown as Promise<Record<string, unknown>[]>,
+  saveLesson: workspace.saveLesson,
+  deleteLesson: workspace.deleteLesson,
+  listModules: workspace.listModules,
+  createModule: (body: ModuleInput) => workspace.createModule(body),
+  updateModule: (moduleId: number, body: ModuleInput) => workspace.updateModule(moduleId, body),
+  deleteModule: workspace.deleteModule,
+};

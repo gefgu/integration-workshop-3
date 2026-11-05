@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import { useState } from 'react';
+import Icon from '../components/Icon.tsx';
 import Illustration from '../components/Illustration.tsx';
 import { newQuiz } from '../model/lesson.ts';
 import { newStep } from '../model/steps.ts';
@@ -187,10 +188,12 @@ function ExplainForm({ step, patch }) {
           />
           <button
             type="button"
-            className="pill-link-btn muted"
+            className="icon-btn icon-btn-quiet danger has-tip"
+            data-tip="Remover ilustração"
+            aria-label="Remover ilustração"
             onClick={() => patch((s) => ({ ...s, illustration: null }))}
           >
-            remover ilustração
+            <Icon name="trash" size={16} />
           </button>
         </>
       ) : null}
@@ -284,11 +287,12 @@ function ExperimentForm({ lesson, step, patch }) {
             />
             <button
               type="button"
-              className="pill-link-btn muted"
+              className="icon-btn icon-btn-quiet danger has-tip"
+              data-tip="Remover variação"
               aria-label="Remover variação"
               onClick={() => setSpec((x) => ({ ...x, presets: x.presets.filter((_, k) => k !== i) }))}
             >
-              ×
+              <Icon name="trash" size={16} />
             </button>
           </div>
         ))}
@@ -399,11 +403,12 @@ function ExperimentForm({ lesson, step, patch }) {
                 )}
                 <button
                   type="button"
-                  className="pill-link-btn muted"
+                  className="icon-btn icon-btn-quiet danger has-tip"
+                  data-tip="Remover missão"
                   aria-label="Remover missão"
                   onClick={() => setSpec((x) => ({ ...x, goals: x.goals.filter((_, k) => k !== i) }))}
                 >
-                  ×
+                  <Icon name="trash" size={16} />
                 </button>
               </div>
             </div>
@@ -527,11 +532,12 @@ export function ChallengeSteps({
               </button>
               <button
                 type="button"
-                className="pill-link-btn muted"
+                className="icon-btn icon-btn-quiet danger has-tip"
+                data-tip="Remover passo"
                 onClick={() => remove(i)}
                 aria-label="Remover passo"
               >
-                ×
+                <Icon name="trash" size={16} />
               </button>
             </span>
           </div>

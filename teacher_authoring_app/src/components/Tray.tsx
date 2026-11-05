@@ -1,16 +1,35 @@
+import { useState } from 'react';
 import { countByType, DEFS, isCapsule, KIT_LIMITS, NOMES, TYPES } from '../engine/sim.ts';
 import type { PieceType } from '../model/types.ts';
 import PieceView from './PieceView.tsx';
+import Tabs from './Tabs.tsx';
 
 /** Bandeja com os componentes do kit (limites do MFR8). `onDragStart(type, event)` inicia o arraste. */
-export default function Tray({ pieces, onDragStart, types = null }: { pieces: any[]; onDragStart: any; types?: PieceType[] | null }) {
+export default function Tray({
+  pieces,
+  onDragStart,
+  types = null,
+}: {
+  pieces: any[];
+  onDragStart: any;
+  types?: PieceType[] | null;
+}) {
   const used = countByType(pieces);
   // A lesson may offer only some parts (settings.tray); by default the whole kit.
   const offered = types ?? TYPES;
   const plain = offered.filter((t) => !isCapsule(t));
   const smart = offered.filter(isCapsule);
+  // Tabs keep the tray short: components, jumpers and smart capsules one group at a time.
+  const groups = [
+    { id: 'parts', label: 'Componentes', types: plain.filter((t) => !t.startsWith('jumper')) },
+    { id: 'jumpers', label: 'Jumpers', types: plain.filter((t) => t.startsWith('jumper')) },
+    { id: 'capsules', label: 'Cápsulas', types: smart },
+  ].filter((g) => g.types.length > 0);
+  const [group, setGroup] = useState('parts');
+  const current = groups.find((g) => g.id === group) ?? groups[0];
   return (
     <section
+      className="tray-box"
       style={{
         width: 340,
         flex: 'none',
@@ -26,17 +45,21 @@ export default function Tray({ pieces, onDragStart, types = null }: { pieces: an
       <p style={{ margin: '0 0 6px', fontSize: 12, color: 'var(--color-neutral-600)' }}>
         Arraste para a bancada. Clique numa peça para girar; arraste para fora para remover.
       </p>
-      <TrayGrid types={plain} used={used} onDragStart={onDragStart} />
-      {smart.length > 0 && (
-        <>
-      <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: 14, margin: '8px 0 0' }}>Cápsulas inteligentes</h3>
-      <p style={{ margin: 0, fontSize: 12, color: 'var(--color-neutral-600)' }}>
-        Cabem só nos 6 encaixes tracejados (E1–E6), com P1, P2 e P3 em 3 colunas. O amperímetro só funciona no E2.
-        Clique na cápsula para mudar o modo; no máximo 3 ao mesmo tempo.
-      </p>
-      <TrayGrid types={smart} used={used} onDragStart={onDragStart} />
-        </>
+      {groups.length > 1 && (
+        <Tabs
+          label="Grupos de peças"
+          value={current.id}
+          tabs={groups.map((g) => ({ id: g.id, label: g.label }))}
+          onChange={setGroup}
+        />
       )}
+      {current?.id === 'capsules' && (
+        <p style={{ margin: 0, fontSize: 12, color: 'var(--color-neutral-600)' }}>
+          Cabem só nos 6 encaixes tracejados (E1–E6), com P1, P2 e P3 em 3 colunas. O amperímetro só funciona no E2.
+          Clique na cápsula para mudar o modo; no máximo 3 ao mesmo tempo.
+        </p>
+      )}
+      {current && <TrayGrid types={current.types} used={used} onDragStart={onDragStart} />}
     </section>
   );
 }
@@ -68,7 +91,9 @@ function TrayGrid({ types, used, onDragStart }) {
             />
             <div>
               <div className="name">{NOMES[type]}</div>
-              {type.startsWith('jumper') && <div className="meta">Alcance: {DEFS[type].len + 1} colunas, de ponta a ponta</div>}
+              {type.startsWith('jumper') && (
+                <div className="meta">Alcance: {DEFS[type].len + 1} colunas, de ponta a ponta</div>
+              )}
               {type === 'potenciometro' && <div className="meta">100 Ω – 10 kΩ (−/+ em sete valores)</div>}
               <div className="meta">
                 {left} de {KIT_LIMITS[type]} no kit

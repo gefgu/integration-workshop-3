@@ -10,7 +10,8 @@
  *  - assigning modules to a class is opt-in (--assign-class) and only appends, in addition to what the class has.
  * Credentials: SEED_EMAIL / SEED_PASSWORD (default: the seeded demo teacher).
  */
-import { curriculumLessons, curriculumModules, RETIRED_LESSON_IDS, RETIRED_MODULE_TITLES, SEED_PREFIX } from '../src/curriculum/lessons.ts';
+import { curriculumLessons, curriculumModules } from '../src/curriculum/lessons.ts';
+import { syncCurriculum } from '../src/curriculum/sync.ts';
 import { lessonProblems, validateLesson } from '../src/model/lesson.ts';
 import { toValidatorLesson } from '../src/model/steps.ts';
 
@@ -40,14 +41,6 @@ async function call<T>(path: string, method = 'GET', body?: unknown): Promise<T>
   return json as T;
 }
 
-/** What identifies a lesson's content: everything the server does not stamp itself. */
-const content = (lesson: Record<string, unknown>) => {
-  const { updatedAt: _u, audio: _a, ...rest } = lesson;
-  return JSON.stringify(rest, (_k, v) =>
-    v && typeof v === 'object' && !Array.isArray(v) ? Object.fromEntries(Object.entries(v).sort(([a], [b]) => a.localeCompare(b))) : v
-  );
-};
-
 async function main() {
   const lessons = curriculumLessons();
   const modules = curriculumModules();
@@ -73,50 +66,23 @@ async function main() {
   }
   console.log('validator lint: every guided lesson is accepted');
 
-  // 4. Lessons: create or update only our own ids; leave identical ones untouched.
-  const existing = new Map((await call<Record<string, unknown>[]>('/workspace/lessons')).map((l) => [l.id as string, l]));
-  const tally = { created: 0, updated: 0, unchanged: 0 };
-  for (const lesson of lessons) {
-    if (!lesson.id.startsWith(SEED_PREFIX)) throw new Error(`refusing to write ${lesson.id}`);
-    const have = existing.get(lesson.id);
-    const same = have && content(have) === content(lesson as unknown as Record<string, unknown>);
-    if (same) {
-      tally.unchanged++;
-      continue;
-    }
-    tally[have ? 'updated' : 'created']++;
-    if (!dryRun) await call(`/workspace/lessons/${encodeURIComponent(lesson.id)}`, 'PUT', lesson);
-  }
-  console.log(`lessons: ${tally.created} created, ${tally.updated} updated, ${tally.unchanged} unchanged (other lessons untouched: ${[...existing.keys()].filter((id) => !id.startsWith(SEED_PREFIX)).length})`);
-
-  // 5. Modules: matched by title; only ours are touched.
-  const haveModules = await call<{ id: number; title: string; lesson_ids: string[] }[]>('/workspace/modules');
-  const moduleIds: number[] = [];
-  const mtally = { created: 0, updated: 0, unchanged: 0 };
-  for (const m of modules) {
-    const found = haveModules.find((x) => x.title === m.title);
-    if (found && JSON.stringify(found.lesson_ids) === JSON.stringify(m.lessonIds)) {
-      mtally.unchanged++;
-      moduleIds.push(found.id);
-      continue;
-    }
-    mtally[found ? 'updated' : 'created']++;
-    if (dryRun) continue;
-    const body = { title: m.title, description: m.description, lesson_ids: m.lessonIds };
-    const saved = found
-      ? await call<{ id: number }>(`/workspace/modules/${found.id}`, 'PUT', body)
-      : await call<{ id: number }>('/workspace/modules', 'POST', body);
-    moduleIds.push(saved.id);
-  }
-  console.log(`modules: ${mtally.created} created, ${mtally.updated} updated, ${mtally.unchanged} unchanged (other modules untouched: ${haveModules.filter((x) => !modules.some((m) => m.title === x.title)).length})`);
-
-  // 5b. Retire what the curriculum no longer has (only our own `curriculo-` ids and module titles). Modules go first,
-  // so no module still points at a lesson that is about to be deleted.
-  const retiredModules = haveModules.filter((x) => RETIRED_MODULE_TITLES.includes(x.title));
-  const retiredLessons = RETIRED_LESSON_IDS.filter((id) => id.startsWith(SEED_PREFIX) && existing.has(id));
-  for (const m of retiredModules) if (!dryRun) await call(`/workspace/modules/${m.id}`, 'DELETE');
-  for (const id of retiredLessons) if (!dryRun) await call(`/workspace/lessons/${encodeURIComponent(id)}`, 'DELETE');
-  console.log(`retired: ${retiredLessons.length} lessons, ${retiredModules.length} modules removed`);
+  // 4–5. Lessons and modules: the same non-destructive sync the website runs (src/curriculum/sync.ts).
+  const report = await syncCurriculum(
+    {
+      listLessons: () => call('/workspace/lessons'),
+      saveLesson: (lesson) => call(`/workspace/lessons/${encodeURIComponent(lesson.id)}`, 'PUT', lesson),
+      deleteLesson: (id) => call(`/workspace/lessons/${encodeURIComponent(id)}`, 'DELETE'),
+      listModules: () => call('/workspace/modules'),
+      createModule: (body) => call('/workspace/modules', 'POST', body),
+      updateModule: (id, body) => call(`/workspace/modules/${id}`, 'PUT', body),
+      deleteModule: (id) => call(`/workspace/modules/${id}`, 'DELETE'),
+    },
+    { dryRun }
+  );
+  const { lessons: lt, modules: mt, retired, moduleIds } = report;
+  console.log(`lessons: ${lt.created} created, ${lt.updated} updated, ${lt.unchanged} unchanged (other lessons untouched: ${lt.others})`);
+  console.log(`modules: ${mt.created} created, ${mt.updated} updated, ${mt.unchanged} unchanged (other modules untouched: ${mt.others})`);
+  console.log(`retired: ${retired.lessons} lessons, ${retired.modules} modules removed`);
 
   // 6. Optional, additive class assignment.
   if (assignClass && !dryRun) {

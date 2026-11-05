@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { TrashButton } from '../components/IconButton.tsx';
 
 export interface PickerOption<K extends string | number> {
   id: K;
@@ -7,7 +7,10 @@ export interface PickerOption<K extends string | number> {
   href?: string;
 }
 
-/** Ordered list with add / move up / move down / remove; `onChange` gets the new order. */
+/**
+ * Ordered list with add / move up / move down / remove; `onChange` gets the new order. Choosing an item in the
+ * "+ Adicionar…" box adds it at the end right away.
+ */
 export default function OrderedPicker<K extends string | number>({
   label,
   empty,
@@ -15,13 +18,13 @@ export default function OrderedPicker<K extends string | number>({
   options,
   onChange,
 }: {
+  /** what the add box says, e.g. "Adicionar lição ao módulo…" */
   label: string;
   empty: string;
   value: K[];
   options: PickerOption<K>[];
   onChange: (next: K[]) => void;
 }) {
-  const [selected, setSelected] = useState('');
   const available = options.filter((option) => !value.includes(option.id));
   const find = (id: K) => options.find((option) => option.id === id);
   const move = (index: number, delta: number) => {
@@ -32,45 +35,19 @@ export default function OrderedPicker<K extends string | number>({
 
   return (
     <>
-      <div className="workspace-actions">
-        <select
-          className="text-input"
-          aria-label={label}
-          value={selected}
-          onChange={(e) => setSelected(e.target.value)}
-        >
-          <option value="">{label}</option>
-          {available.map((option) => (
-            <option value={String(option.id)} key={option.id}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-        <button
-          type="button"
-          className="btn-primary"
-          disabled={!selected}
-          onClick={() => {
-            const option = available.find((item) => String(item.id) === selected);
-            if (option) onChange([...value, option.id]);
-            setSelected('');
-          }}
-        >
-          Adicionar
-        </button>
-      </div>
-      {value.length === 0 && <p>{empty}</p>}
-      <ol className="workspace-list">
+      {value.length === 0 && <p className="muted-line">{empty}</p>}
+      <ol className="workspace-list ordered-picker">
         {value.map((id, index) => {
           const option = find(id);
           const text = option?.label ?? String(id);
           return (
             <li key={id}>
+              <span className="ordered-picker-index">{index + 1}</span>
               {option?.href ? <Link to={option.href}>{text}</Link> : <span>{text}</span>}
-              <div className="workspace-actions">
+              <div className="workspace-actions ordered-picker-actions">
                 <button
                   type="button"
-                  className="btn-outline"
+                  className="icon-btn icon-btn-quiet"
                   disabled={index === 0}
                   aria-label={`Mover ${text} para cima`}
                   onClick={() => move(index, -1)}
@@ -79,25 +56,37 @@ export default function OrderedPicker<K extends string | number>({
                 </button>
                 <button
                   type="button"
-                  className="btn-outline"
+                  className="icon-btn icon-btn-quiet"
                   disabled={index === value.length - 1}
                   aria-label={`Mover ${text} para baixo`}
                   onClick={() => move(index, 1)}
                 >
                   ↓
                 </button>
-                <button
-                  type="button"
-                  className="pill-link-btn"
-                  onClick={() => onChange(value.filter((item) => item !== id))}
-                >
-                  Remover
-                </button>
+                <TrashButton label="Remover" onConfirm={() => onChange(value.filter((item) => item !== id))} />
               </div>
             </li>
           );
         })}
       </ol>
+      {available.length > 0 && (
+        <select
+          className="text-input ordered-picker-add"
+          aria-label={label}
+          value=""
+          onChange={(e) => {
+            const option = available.find((item) => String(item.id) === e.target.value);
+            if (option) onChange([...value, option.id]);
+          }}
+        >
+          <option value="">＋ {label}</option>
+          {available.map((option) => (
+            <option value={String(option.id)} key={option.id}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      )}
     </>
   );
 }

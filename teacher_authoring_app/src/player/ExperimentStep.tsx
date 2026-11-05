@@ -109,7 +109,7 @@ export default function ExperimentStep({
   }
 
   return (
-    <>
+    <div className="lab-step">
       <Bubble kind={mascotKind} tone={tone} message={msg} />
       {prediction && (
         <p>
@@ -206,6 +206,6 @@ export default function ExperimentStep({
           )}
         </section>
       )}
-    </>
+    </div>
   );
 }

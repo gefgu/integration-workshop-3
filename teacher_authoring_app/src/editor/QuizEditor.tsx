@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import Icon from '../components/Icon.tsx';
 import { newOption, newQuiz } from '../model/lesson.ts';
 
 const field: CSSProperties = {
@@ -21,14 +22,20 @@ const field: CSSProperties = {
 export default function QuizEditor({ quizzes, onChange, only = ['before', 'after'], onlyId = null, excludeIds = [] }) {
   const patch = (id, fn) => onChange(quizzes.map((q) => (q.id === id ? fn(q) : q)));
   const stepOnly = only.length === 1 && only[0] === 'step';
-  const shown = quizzes.filter((q) => only.includes(q.position) && (!onlyId || q.id === onlyId) && !excludeIds.includes(q.id));
+  const shown = quizzes.filter(
+    (q) => only.includes(q.position) && (!onlyId || q.id === onlyId) && !excludeIds.includes(q.id)
+  );
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
       {shown.length === 0 && (
         <p style={{ margin: 0, fontSize: 13, color: 'var(--color-neutral-600)' }}>Nenhuma pergunta ainda.</p>
       )}
-      {shown.length > 0 && <p style={{ margin: 0, fontSize: 13 }}>Marque o círculo ao lado da resposta correta. Use o retorno para explicar cada alternativa ao aluno.</p>}
+      {shown.length > 0 && (
+        <p style={{ margin: 0, fontSize: 13 }}>
+          Marque o círculo ao lado da resposta correta. Use o retorno para explicar cada alternativa ao aluno.
+        </p>
+      )}
       {shown.map((q) => (
         <div
           key={q.id}
@@ -41,9 +48,18 @@ export default function QuizEditor({ quizzes, onChange, only = ['before', 'after
             gap: 8,
           }}
         >
-          <label><input type="checkbox" checked={!!q.prediction} onChange={(e) => patch(q.id, (x) => ({ ...x, prediction: e.target.checked }))} /> Previsão: aceitar qualquer hipótese e conferir no experimento</label>
+          <label>
+            <input
+              type="checkbox"
+              checked={!!q.prediction}
+              onChange={(e) => patch(q.id, (x) => ({ ...x, prediction: e.target.checked }))}
+            />{' '}
+            Previsão: aceitar qualquer hipótese e conferir no experimento
+          </label>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <strong style={{ fontFamily: 'var(--font-heading)', fontSize: 14 }}>Pergunta {quizzes.indexOf(q) + 1}</strong>
+            <strong style={{ fontFamily: 'var(--font-heading)', fontSize: 14 }}>
+              Pergunta {quizzes.indexOf(q) + 1}
+            </strong>
             {!stepOnly && (
               <select
                 value={q.position}
@@ -57,10 +73,12 @@ export default function QuizEditor({ quizzes, onChange, only = ['before', 'after
             )}
             <button
               type="button"
-              className="pill-link-btn muted"
+              className="icon-btn icon-btn-quiet danger has-tip"
+              data-tip="Remover pergunta"
+              aria-label="Remover pergunta"
               onClick={() => onChange(quizzes.filter((x) => x.id !== q.id))}
             >
-              remover
+              <Icon name="trash" size={16} />
             </button>
           </div>
           <textarea
@@ -95,7 +113,8 @@ export default function QuizEditor({ quizzes, onChange, only = ['before', 'after
                 />
                 <button
                   type="button"
-                  className="pill-link-btn muted"
+                  className="icon-btn icon-btn-quiet danger has-tip"
+                  data-tip="Remover alternativa"
                   disabled={q.options.length <= 2}
                   onClick={() =>
                     patch(q.id, (x) => ({
@@ -106,7 +125,7 @@ export default function QuizEditor({ quizzes, onChange, only = ['before', 'after
                   }
                   aria-label="Remover alternativa"
                 >
-                  ×
+                  <Icon name="trash" size={16} />
                 </button>
               </div>
               <input

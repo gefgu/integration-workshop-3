@@ -5,6 +5,7 @@ import Bubble from '../components/Bubble.tsx';
 import LessonPlayer, { type PlayerEvent } from '../player/LessonPlayer.tsx';
 import { type BenchApi, benchApi, type LoginResult, type RankRow, serviceUrl } from './benchApi.ts';
 import CameraView from './CameraView.tsx';
+import FitStage from './FitStage.tsx';
 import { lessonStates, type Screen, screenAfterLesson } from './screens.ts';
 
 /**
@@ -109,6 +110,7 @@ export default function BenchApp() {
         </span>
       </header>
       <main className="bench-stage">
+        <FitStage>
         {error && <p className="app-error">{error}</p>}
         {screen.name === 'locked' && <Locked status={status} api={api} />}
         {screen.name === 'home' && (
@@ -161,6 +163,7 @@ export default function BenchApp() {
             onBack={() => setScreen(session ? { name: 'student' } : { name: 'home' })}
           />
         )}
+        </FitStage>
       </main>
     </div>
   );

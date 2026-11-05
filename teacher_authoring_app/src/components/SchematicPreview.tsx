@@ -17,7 +17,8 @@ function labelFor(piece: Piece) {
   return '';
 }
 
-function ComponentSymbol({
+/** One circuit symbol centred on (x, y), its terminals 20 units either side along its axis. */
+export function ComponentSymbol({
   piece,
   x,
   y,
@@ -244,6 +245,14 @@ function NetworkDiagram({ nodes, edges }: { nodes: number[]; edges: Piece[] }) {
       })}
     </svg>
   );
+}
+
+/** Just the drawing (no panel or heading): the lesson cards show the circuit this way. */
+export function SchematicDiagram({ pieces }: { pieces: Piece[] }) {
+  const layout = schematicLayout(pieces);
+  if (layout.kind === 'loop') return <LoopDiagram battery={layout.battery} path={layout.path} />;
+  if (layout.kind === 'network') return <NetworkDiagram nodes={layout.nodes} edges={layout.edges} />;
+  return <p className="schematic-empty">Sem circuito ainda.</p>;
 }
 
 export default function SchematicPreview({ pieces }: { pieces: Piece[] }) {
