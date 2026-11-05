@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { validateStep } from '../api/validator.ts';
 import { TutorVoiceContext, useSay, useTutorVoice } from '../audio/useTutorVoice.ts';
 import Bubble from '../components/Bubble.tsx';
@@ -7,7 +7,7 @@ import Icon from '../components/Icon.tsx';
 import LabBoard from '../components/LabBoard.tsx';
 import { capsuleConfig, formatOhms, isCapsule, NOMES } from '../engine/sim.ts';
 import { cumulativeBoard, effectiveSteps, startPieces } from '../model/steps.ts';
-import { BenchModeContext, useBenchMode } from './benchMode.ts';
+import { BenchLiveContext, BenchModeContext, StepPartsContext, useBenchMode } from './benchMode.ts';
 import ExperimentStep from './ExperimentStep.tsx';
 import ExplainStep from './ExplainStep.tsx';
 import { challengeHint } from './hints.ts';
@@ -202,6 +202,8 @@ export default function LessonPlayer({
   toolbar,
   notice,
   debug,
+  livePieces = null,
+  barExtra,
 }: {
   lesson: any;
   onExit: () => void;
@@ -216,6 +218,10 @@ export default function LessonPlayer({
   notice?: string;
   /** forces the validation details on or off (the bench preview has its own switch) */
   debug?: boolean;
+  /** bench with the camera on: what the camera sees on the real board (the screen board only mirrors it) */
+  livePieces?: any[] | null;
+  /** extra content in the bench's top bar (the camera status) */
+  barExtra?: ReactNode;
 }) {
   const phases = useMemo(() => buildPhases(lesson), [lesson]);
   const first = Math.min(Math.max(0, startPhase), phases.length - 1);
@@ -228,7 +234,11 @@ export default function LessonPlayer({
     return current;
   };
   const [idx, setIdx] = useState(first);
-  const [pieces, setPieces] = useState(() => boardFor(first, boardBefore(lesson, first))); // kept across steps
+  const [pieces, setPieces] = useState(() => livePieces ?? boardFor(first, boardBefore(lesson, first))); // kept across steps
+  // With the camera on, the real board is the truth: the screen follows it and never resets it.
+  useEffect(() => {
+    if (livePieces) setPieces(livePieces);
+  }, [livePieces]);
   const [debugEnabled, setDebugEnabled] = useState(false);
   const [prediction, setPrediction] = useState<string | null>(null);
   const [clipsSwapped, setClipsSwapped] = useState(() => Math.random() < 0.5);
@@ -236,6 +246,7 @@ export default function LessonPlayer({
   const outcome = useRef<{ expired: boolean }>({ expired: false });
   const phase = phases[idx];
   const steps = phases.length - 1;
+  const stepParts = useMemo(() => partsForPhase(lesson, phase), [lesson, phase]);
   const next = () => {
     const current = phases[idx];
     const nextIdx = Math.min(idx + 1, phases.length - 1);
@@ -251,11 +262,11 @@ export default function LessonPlayer({
         lesson.kind === 'challenge' ? challengeScore(durationS, lesson.timeLimitS, outcome.current.expired) : null;
       onEvent?.({ type: 'lesson_done', durationS, score });
     }
-    setPieces((cur) => boardFor(nextIdx, cur));
+    if (!livePieces) setPieces((cur) => boardFor(nextIdx, cur));
     setIdx(nextIdx);
   };
   const restart = () => {
-    setPieces(boardFor(0, boardBefore(lesson, 0)));
+    if (!livePieces) setPieces(boardFor(0, boardBefore(lesson, 0)));
     startedAt.current = Date.now();
     outcome.current.expired = false;
     setPrediction(null);
@@ -274,191 +285,222 @@ export default function LessonPlayer({
   return (
     <TutorVoiceContext.Provider value={voice}>
       <BenchModeContext.Provider value={bench}>
-        <BoardSlotContext.Provider value={bench ? null : slot}>
-          <div
-            className={bench ? undefined : 'player-desk'}
-            style={
-              bench
-                ? { display: 'flex', flexDirection: 'column', gap: 14, alignItems: 'center', textAlign: 'center' }
-                : undefined
-            }
-          >
-            {bench ? (
-              <div className="bench-bar">
-                <button type="button" className="bench-bar-back" onClick={onExit} aria-label={exitLabel ?? 'Voltar'}>
-                  <Icon name="back" size={22} />
-                  Voltar
-                </button>
-                <span className="bench-bar-title">{intro ? '' : lesson.title || 'Lição sem título'}</span>
-                {!intro && phase.type !== 'done' && (
-                  <span className="bench-bar-steps" role="img" aria-label={`Etapa ${idx + 1} de ${steps}`}>
-                    {Array.from({ length: steps }, (_, i) => (
-                      <span
-                        // biome-ignore lint/suspicious/noArrayIndexKey: one dot per step, fixed for the lesson
-                        key={i}
-                        className={i === idx ? 'active' : i < idx ? 'done' : ''}
-                      />
-                    ))}
-                  </span>
-                )}
-                <button
-                  type="button"
-                  className="bench-bar-sound"
-                  aria-pressed={!muted}
-                  aria-label={muted ? 'Ligar a voz do tutor' : 'Desligar a voz do tutor'}
-                  onClick={() => {
-                    setMuted(!muted);
-                    voice.setMuted(!muted);
-                  }}
-                >
-                  <Icon name={muted ? 'mute' : 'sound'} size={22} />
-                </button>
-              </div>
-            ) : (
-              <div className="board-slot" ref={setSlot} />
-            )}
-            <div
-              className={bench ? 'player-steps-bench' : 'player-right'}
-              style={bench ? { display: 'contents' } : undefined}
-            >
-              {!bench && (
-                <div className="player-bar">
-                  <section className="panel player-tools" aria-label="Controles do teste">
-                    {toolbar}
-                    <button type="button" className="btn-outline btn-icon" onClick={onExit}>
-                      <Icon name="edit" size={16} />
-                      {exitLabel ?? 'Voltar ao editor'}
-                    </button>
-                    <div className="player-switches">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={debugEnabled}
-                          onChange={(e) => setDebugEnabled(e.target.checked)}
-                        />
-                        Depurar validação
-                      </label>
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={!muted}
-                          onChange={(e) => {
-                            setMuted(!e.target.checked);
-                            voice.setMuted(!e.target.checked);
-                          }}
-                        />
-                        Voz do tutor
-                      </label>
-                    </div>
-                    <AudioStatus lesson={lesson} />
-                  </section>
-                  <section className="panel player-info" aria-label="Lição em teste">
-                    <div className="player-info-head">
-                      <h2>{lesson.title || 'Lição sem título'}</h2>
-                      <span className="player-step-chip">
-                        {phase.type === 'done' ? 'Concluída' : `Etapa ${idx + 1} de ${steps}`}
-                      </span>
-                    </div>
-                    {lesson.instruction && <p className="player-instruction">{lesson.instruction}</p>}
-                    {notice && (
-                      <p role="status" className="player-notice">
-                        {notice}
-                      </p>
-                    )}
-                  </section>
-                </div>
-              )}
+        <BenchLiveContext.Provider value={bench && !!livePieces}>
+          <StepPartsContext.Provider value={bench ? stepParts : null}>
+            <BoardSlotContext.Provider value={bench ? null : slot}>
               <div
-                className={bench ? 'player-steps-bench' : 'player-body'}
-                style={bench ? { display: 'contents' } : undefined}
+                className={bench ? undefined : 'player-desk'}
+                style={
+                  bench
+                    ? { display: 'flex', flexDirection: 'column', gap: 14, alignItems: 'center', textAlign: 'center' }
+                    : undefined
+                }
               >
-                {bench && intro && (
-                  <section className="bench-intro">
-                    <span className="bench-intro-kind">{lesson.kind === 'challenge' ? 'Desafio' : 'Lição guiada'}</span>
-                    <h1>{lesson.title || 'Lição sem título'}</h1>
-                    {lesson.instruction && <Bubble kind={mascotKind} tone="info" message={lesson.instruction} />}
-                    <button type="button" className="btn-primary bench-big-btn" onClick={() => setIntro(false)}>
-                      Começar
+                {bench ? (
+                  <div className="bench-bar">
+                    <button
+                      type="button"
+                      className="bench-bar-back"
+                      onClick={onExit}
+                      aria-label={exitLabel ?? 'Voltar'}
+                    >
+                      <Icon name="back" size={22} />
+                      Voltar
                     </button>
-                  </section>
-                )}
-                {!(bench && intro) && phase.type === 'quiz' && (
-                  <QuizStep
-                    key={phase.quiz.id}
-                    quiz={phase.quiz}
-                    onDone={next}
-                    mascotKind={mascotKind}
-                    onAnswer={(correct) => onEvent?.({ type: 'quiz', quizId: phase.quiz.id, correct })}
-                    onPrediction={setPrediction}
-                  />
-                )}
-                {!(bench && intro) && phase.type === 'explain' && (
-                  <ExplainStep key={stepKey} step={phase.step} onDone={next} />
-                )}
-                {!(bench && intro) && phase.type === 'experiment' && (
-                  <ExperimentStep
-                    key={stepKey}
-                    lesson={lesson}
-                    step={phase.step}
-                    pieces={pieces}
-                    setPieces={setPieces}
-                    onDone={next}
-                    mascotKind={mascotKind}
-                    prediction={prediction}
-                    clipsSwapped={clipsSwapped}
-                  />
-                )}
-                {!(bench && intro) && phase.type === 'interact' && (
-                  <InteractStep
-                    key={stepKey}
-                    lesson={lesson}
-                    phase={phase}
-                    pieces={pieces}
-                    onDone={next}
-                    mascotKind={mascotKind}
-                    onAnswer={(correct) => onEvent?.({ type: 'quiz', quizId: phase.quiz?.id, correct })}
-                    onPrediction={setPrediction}
-                    clipsSwapped={clipsSwapped}
-                  />
-                )}
-                {!(bench && intro) && (phase.type === 'step' || phase.type === 'challenge') && (
-                  <BuildStep
-                    key={stepKey}
-                    lesson={lesson}
-                    stepIdx={phase.type === 'step' ? phase.idx : 0}
-                    final={phase.type === 'challenge' || phase.step.action === 'connect_circuit'}
-                    text={phase.type === 'step' ? phase.step.text : ''}
-                    pieces={pieces}
-                    setPieces={setPieces}
-                    debugEnabled={debug ?? debugEnabled}
-                    timeLimitS={phase.type === 'challenge' ? lesson.timeLimitS : null}
-                    onDone={next}
-                    onExpired={() => {
-                      outcome.current.expired = true;
-                    }}
-                    mascotKind={mascotKind}
-                    bench={bench}
-                  />
-                )}
-                {phase.type === 'done' && !bench && (
-                  <>
-                    <SpokenBubble
-                      kind={mascotKind}
-                      tone="ok"
-                      message="Lição concluída! É assim que o aluno vai passar por ela."
-                    />
-                    <button type="button" className="btn-primary" onClick={restart}>
-                      Testar de novo
+                    <span className="bench-bar-title">{intro ? '' : lesson.title || 'Lição sem título'}</span>
+                    {!intro && phase.type !== 'done' && (
+                      <span className="bench-bar-steps" role="img" aria-label={`Etapa ${idx + 1} de ${steps}`}>
+                        {Array.from({ length: steps }, (_, i) => (
+                          <span
+                            // biome-ignore lint/suspicious/noArrayIndexKey: one dot per step, fixed for the lesson
+                            key={i}
+                            className={i === idx ? 'active' : i < idx ? 'done' : ''}
+                          />
+                        ))}
+                      </span>
+                    )}
+                    {barExtra}
+                    <button
+                      type="button"
+                      className="bench-bar-sound"
+                      aria-pressed={!muted}
+                      aria-label={muted ? 'Ligar a voz do tutor' : 'Desligar a voz do tutor'}
+                      onClick={() => {
+                        setMuted(!muted);
+                        voice.setMuted(!muted);
+                      }}
+                    >
+                      <Icon name={muted ? 'mute' : 'sound'} size={22} />
                     </button>
-                  </>
+                  </div>
+                ) : (
+                  <div className="board-slot" ref={setSlot} />
                 )}
+                <div
+                  className={bench ? 'player-steps-bench' : 'player-right'}
+                  style={bench ? { display: 'contents' } : undefined}
+                >
+                  {!bench && (
+                    <div className="player-bar">
+                      <section className="panel player-tools" aria-label="Controles do teste">
+                        {toolbar}
+                        <button type="button" className="btn-outline btn-icon" onClick={onExit}>
+                          <Icon name="edit" size={16} />
+                          {exitLabel ?? 'Voltar ao editor'}
+                        </button>
+                        <div className="player-switches">
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={debugEnabled}
+                              onChange={(e) => setDebugEnabled(e.target.checked)}
+                            />
+                            Depurar validação
+                          </label>
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={!muted}
+                              onChange={(e) => {
+                                setMuted(!e.target.checked);
+                                voice.setMuted(!e.target.checked);
+                              }}
+                            />
+                            Voz do tutor
+                          </label>
+                        </div>
+                        <AudioStatus lesson={lesson} />
+                      </section>
+                      <section className="panel player-info" aria-label="Lição em teste">
+                        <div className="player-info-head">
+                          <h2>{lesson.title || 'Lição sem título'}</h2>
+                          <span className="player-step-chip">
+                            {phase.type === 'done' ? 'Concluída' : `Etapa ${idx + 1} de ${steps}`}
+                          </span>
+                        </div>
+                        {lesson.instruction && <p className="player-instruction">{lesson.instruction}</p>}
+                        {notice && (
+                          <p role="status" className="player-notice">
+                            {notice}
+                          </p>
+                        )}
+                      </section>
+                    </div>
+                  )}
+                  <div
+                    className={bench ? 'player-steps-bench' : 'player-body'}
+                    style={bench ? { display: 'contents' } : undefined}
+                  >
+                    {bench && intro && (
+                      <section className="bench-intro">
+                        <span className="bench-intro-kind">
+                          {lesson.kind === 'challenge' ? 'Desafio' : 'Lição guiada'}
+                        </span>
+                        <h1>{lesson.title || 'Lição sem título'}</h1>
+                        {lesson.instruction && <Bubble kind={mascotKind} tone="info" message={lesson.instruction} />}
+                        <button type="button" className="btn-primary bench-big-btn" onClick={() => setIntro(false)}>
+                          Começar
+                        </button>
+                      </section>
+                    )}
+                    {!(bench && intro) && phase.type === 'quiz' && (
+                      <QuizStep
+                        key={phase.quiz.id}
+                        quiz={phase.quiz}
+                        onDone={next}
+                        mascotKind={mascotKind}
+                        onAnswer={(correct) => onEvent?.({ type: 'quiz', quizId: phase.quiz.id, correct })}
+                        onPrediction={setPrediction}
+                      />
+                    )}
+                    {!(bench && intro) && phase.type === 'explain' && (
+                      <ExplainStep key={stepKey} step={phase.step} onDone={next} />
+                    )}
+                    {!(bench && intro) && phase.type === 'experiment' && (
+                      <ExperimentStep
+                        key={stepKey}
+                        lesson={lesson}
+                        step={phase.step}
+                        pieces={pieces}
+                        setPieces={setPieces}
+                        onDone={next}
+                        mascotKind={mascotKind}
+                        prediction={prediction}
+                        clipsSwapped={clipsSwapped}
+                      />
+                    )}
+                    {!(bench && intro) && phase.type === 'interact' && (
+                      <InteractStep
+                        key={stepKey}
+                        lesson={lesson}
+                        phase={phase}
+                        pieces={pieces}
+                        onDone={next}
+                        mascotKind={mascotKind}
+                        onAnswer={(correct) => onEvent?.({ type: 'quiz', quizId: phase.quiz?.id, correct })}
+                        onPrediction={setPrediction}
+                        clipsSwapped={clipsSwapped}
+                      />
+                    )}
+                    {!(bench && intro) && (phase.type === 'step' || phase.type === 'challenge') && (
+                      <BuildStep
+                        key={stepKey}
+                        lesson={lesson}
+                        stepIdx={phase.type === 'step' ? phase.idx : 0}
+                        final={phase.type === 'challenge' || phase.step.action === 'connect_circuit'}
+                        text={phase.type === 'step' ? phase.step.text : ''}
+                        pieces={pieces}
+                        setPieces={setPieces}
+                        debugEnabled={debug ?? debugEnabled}
+                        timeLimitS={phase.type === 'challenge' ? lesson.timeLimitS : null}
+                        onDone={next}
+                        onExpired={() => {
+                          outcome.current.expired = true;
+                        }}
+                        mascotKind={mascotKind}
+                        bench={bench}
+                      />
+                    )}
+                    {phase.type === 'done' && !bench && (
+                      <>
+                        <SpokenBubble
+                          kind={mascotKind}
+                          tone="ok"
+                          message="Lição concluída! É assim que o aluno vai passar por ela."
+                        />
+                        <button type="button" className="btn-primary" onClick={restart}>
+                          Testar de novo
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </BoardSlotContext.Provider>
+            </BoardSlotContext.Provider>
+          </StepPartsContext.Provider>
+        </BenchLiveContext.Provider>
       </BenchModeContext.Provider>
     </TutorVoiceContext.Provider>
   );
+}
+
+/**
+ * The part types a step asks the student to take from the tray: the pieces this step adds to the board (a guided
+ * build step) or every part of the circuit (a challenge). null leaves the whole tray available.
+ */
+function partsForPhase(lesson: any, phase: any): Set<string> | null {
+  if (!phase) return null;
+  if (phase.type === 'challenge') {
+    const start = new Set(startPieces(lesson).map((p) => p.id));
+    const types = lesson.board.pieces.filter((p) => !start.has(p.id)).map((p) => p.type);
+    return types.length ? new Set(types) : null;
+  }
+  if (phase.type !== 'step') return null;
+  const before = new Set((phase.idx > 0 ? cumulativeBoard(lesson, phase.idx - 1) : []).map((p) => p.id));
+  const added = cumulativeBoard(lesson, phase.idx).filter((p) => !before.has(p.id));
+  if (added.length) return new Set(added.map((p) => p.type));
+  const own = phase.step.pieceId && lesson.board.pieces.find((p) => p.id === phase.step.pieceId);
+  return own ? new Set([own.type]) : null;
 }
 
 /** A tutor bubble whose message is also spoken (when its text has audio). */

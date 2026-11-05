@@ -1,8 +1,8 @@
-import { createContext, type ReactNode, useContext } from 'react';
+import { createContext, type ReactNode, useContext, useEffect, useRef } from 'react';
 import { buzzerSound, statusLedOn } from '../engine/lab.ts';
 import { NOMES } from '../engine/sim.ts';
 import type { LessonSettings, Piece } from '../model/types.ts';
-import { useBenchMode } from '../player/benchMode.ts';
+import { isEnergizeKey, useBenchMode, useLiveBoard } from '../player/benchMode.ts';
 import type { Lab } from '../player/useLab.ts';
 import BoardWorkspace from './BoardWorkspace.tsx';
 import CapsuleLegend from './CapsuleLegend.tsx';
@@ -11,6 +11,21 @@ import Icon from './Icon.tsx';
 
 /** True where the board should shrink to its box instead of making the page scroll (the teacher's validator). */
 export const BoardFitContext = createContext(false);
+
+/** Bench: the power switch is a physical button; the screen shows its state and where to press. */
+function PowerIndicator({ on }: { on: boolean }) {
+  return (
+    <div className={`power-indicator${on ? ' on' : ''}`} role="status">
+      <span className="power-indicator-dot" aria-hidden="true">
+        <Icon name="power" size={26} />
+      </span>
+      <span>
+        <strong>{on ? 'Energizada' : 'Desligada'}</strong>
+        <small>{on ? 'Aperte ENERGIZAR na bancada para desligar' : 'Aperte o botão ENERGIZAR da bancada'}</small>
+      </span>
+    </div>
+  );
+}
 
 /** The bench's power switch: the most visible control on a lab screen. */
 export function PowerButton({ on, onClick }: { on: boolean; onClick: () => void }) {
@@ -77,6 +92,18 @@ export default function LabBoard({
 }) {
   const fit = useContext(BoardFitContext);
   const bench = useBenchMode();
+  const live = useLiveBoard();
+  // The bench's physical Energizar button arrives as the "e" key.
+  const toggle = useRef(lab.toggle);
+  toggle.current = lab.toggle;
+  useEffect(() => {
+    if (!bench) return undefined;
+    const onKey = (event: KeyboardEvent) => {
+      if (isEnergizeKey(event) && !(event.target instanceof HTMLInputElement)) toggle.current();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [bench]);
   const Workspace = fit ? CircuitWorkspace : BoardWorkspace;
   const buttons = pieces.filter((p) => p.type === 'botao');
   const loads = lab.diag.loadsLit;
@@ -123,6 +150,8 @@ export default function LabBoard({
         onReseat={lab.onReseat}
         trayTypes={hideTray ? [] : (settings?.tray ?? null)}
         fit={fit}
+        readOnly={live}
+        guideTray={live && !hideTray}
       />
       {extra}
       <CapsuleLegend pieces={pieces} readings={lab.cap.readings} />
@@ -152,7 +181,7 @@ export default function LabBoard({
         className="power-row"
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, flexWrap: 'wrap' }}
       >
-        <PowerButton on={lab.energized} onClick={lab.toggle} />
+        {bench ? <PowerIndicator on={lab.energized} /> : <PowerButton on={lab.energized} onClick={lab.toggle} />}
         <span
           role="status"
           style={{

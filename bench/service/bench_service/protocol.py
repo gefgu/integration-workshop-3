@@ -67,6 +67,11 @@ class Session:
             claims = read_bench_token(str(message.get("token", "")))
             if claims is None:
                 return error(re, "bad_token", "Sessão do professor inválida ou expirada. Entre de novo no app.")
+            # Another teacher's module and students must not stay usable in this teacher's session: the bench
+            # waits for this teacher's package. Progress already recorded stays queued for its own teacher.
+            loaded = self.store.package()
+            if loaded and not loaded.get("demo") and (loaded.get("teacher") or {}).get("id") != claims["tid"]:
+                self.store.clear_package()
             self.store.unlock({"id": claims["tid"], "name": claims["name"]}, claims["exp"])
             return {"type": "WELCOME", "re": re, **self.status()}
         if not self.store.is_unlocked():

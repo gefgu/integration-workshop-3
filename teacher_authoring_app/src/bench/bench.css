@@ -791,3 +791,123 @@
   font-size: 17px;
   font-weight: 600;
 }
+
+/* ---------- Camera board (vision pipeline) ---------- */
+.bench-camera img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.bench-vision-list ul {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 4px;
+}
+.bench-vision-list small {
+  color: var(--color-neutral-600);
+}
+
+/* ---------- Board steps on the bench: the tutor fills the top of the left half, the tray sits below it, the
+   board (mirroring the camera) keeps the right half. Everything else (status, power, Continuar) follows. ---------- */
+.bench-shell .lab-step {
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 20px;
+}
+.bench-shell .lab-step > *,
+.bench-shell .lab-step .board-workspace > * {
+  order: 2;
+}
+.bench-shell .lab-step > :first-child {
+  order: 0;
+  min-height: 210px;
+  align-self: center;
+}
+.bench-shell .lab-step .board-tray-column {
+  order: 1;
+  grid-column: 1;
+  grid-row: auto;
+  width: auto;
+}
+.bench-shell .lab-step .board-workbench-column {
+  grid-column: 2;
+  grid-row: 1 / -1;
+}
+.bench-shell .lab-step > :first-child {
+  --bubble-font: 17px;
+}
+.bench-shell .lab-step .tray-box {
+  width: auto !important;
+  padding: 12px 14px !important;
+}
+.bench-shell .lab-step .tray-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.bench-shell .tray-item.needed {
+  outline: 3px solid var(--color-accent);
+  background: var(--color-accent-100);
+}
+.bench-shell .tray-item.off {
+  filter: grayscale(1);
+}
+
+/* the physical Energizar button: the screen shows its state */
+.bench-shell .power-indicator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 18px 10px 10px;
+  border-radius: 999px;
+  border: 2px solid var(--color-divider);
+  background: var(--color-neutral-100);
+}
+.bench-shell .power-indicator > span:last-child {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+.bench-shell .power-indicator strong {
+  font-family: var(--font-heading);
+  font-size: 22px;
+}
+.bench-shell .power-indicator small {
+  font-size: 16px;
+  color: var(--color-neutral-700);
+}
+.bench-shell .power-indicator-dot {
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-neutral-700);
+  color: #fff;
+}
+.bench-shell .power-indicator.on .power-indicator-dot {
+  background: #4fd36b;
+  box-shadow: 0 0 16px 4px rgba(79, 211, 107, 0.6);
+}
+
+/* camera status in the lesson bar */
+.bench-shell .bench-camera-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--color-accent-2-200);
+  color: var(--color-accent-2-800, #3d472b);
+}
+.bench-shell .bench-camera-chip.paused {
+  background: var(--color-accent-200);
+  color: var(--color-accent-800);
+}
+.bench-shell .bench-camera-chip.off {
+  background: var(--color-neutral-200);
+  color: var(--color-neutral-700);
+}

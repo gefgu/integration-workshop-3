@@ -56,6 +56,8 @@ interface BoardWorkspaceProps {
   onReseat?: (id: string) => void;
   /** Shrink the board to fit its column's height instead of making the column scroll (the lesson editor). */
   fit?: boolean;
+  /** with readOnly: still show the tray, as a guide of what to take (the bench, where the camera reads the board) */
+  guideTray?: boolean;
 }
 export default function BoardWorkspace({
   pieces,
@@ -73,6 +75,7 @@ export default function BoardWorkspace({
   trayTypes = null,
   onReseat,
   fit = false,
+  guideTray = false,
 }: BoardWorkspaceProps) {
   const boardRef = useRef(null);
   const slot = useContext(BoardSlotContext);
@@ -252,7 +255,7 @@ export default function BoardWorkspace({
           <Breadboard
             boardRef={boardRef}
             trail={trail}
-            labels={!readOnly}
+            labels={!readOnly || guideTray}
             pieces={pieces}
             preview={preview && !preview.err ? preview.piece : null}
           >
@@ -395,9 +398,9 @@ export default function BoardWorkspace({
       className="board-workspace"
       style={{ display: 'flex', gap: 18, alignItems: 'flex-start', justifyContent: 'center' }}
     >
-      {!readOnly && (
+      {(!readOnly || guideTray) && (
         <div className="board-tray-column">
-          <Tray pieces={pieces} onDragStart={startTrayDrag} types={trayTypes} />
+          <Tray pieces={pieces} onDragStart={readOnly ? () => undefined : startTrayDrag} types={trayTypes} />
         </div>
       )}
       {slot ? createPortal(workbench, slot) : workbench}

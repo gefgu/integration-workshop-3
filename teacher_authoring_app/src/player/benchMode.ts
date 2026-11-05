@@ -19,3 +19,17 @@ export function pageParagraphs(paragraphs: string[], maxChars = 300): string[][]
   }
   return pages;
 }
+
+/**
+ * On the bench the student builds on the real protoboard; the camera (vision pipeline) reports what is there and
+ * the screen's board only mirrors it. True while that mirror is on (no dragging on the screen).
+ */
+export const BenchLiveContext = createContext(false);
+export const useLiveBoard = () => useContext(BenchLiveContext);
+
+/** The part types the current step asks for; the tray greys out the rest. null = no limit. */
+export const StepPartsContext = createContext<Set<string> | null>(null);
+export const useStepParts = () => useContext(StepPartsContext);
+
+/** Physical controls on the bench: the joystick sends arrows + Enter, Back sends Escape, Energizar sends "e". */
+export const isEnergizeKey = (event: KeyboardEvent) => event.key === 'e' || event.key === 'E';
