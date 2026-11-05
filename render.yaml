@@ -1,0 +1,18 @@
+# Render Blueprint: New → Blueprint → pick this repository. One web service: the teacher website + API.
+# The database is the Neon project the phone app already uses: paste its connection string when Render asks.
+services:
+  - type: web
+    name: tedtronics
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    branch: bench_screens # switch to main after merging
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: TEDTRONICS_DATABASE_URL
+        sync: false # Neon → Connect → connection string (postgresql://…); kept secret in Render
+      - key: TEDTRONICS_BENCH_SECRET
+        sync: false # the same value must be set on every bench (it signs the bench unlock)
+      - key: TEDTRONICS_TTS
+        value: "off"
