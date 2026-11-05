@@ -17,6 +17,7 @@ import LoginScreen from './auth/LoginScreen.tsx';
 import Profile from './auth/Profile.tsx';
 import Icon from './components/Icon.tsx';
 import TipLayer from './components/TipLayer.tsx';
+import Tour, { useFirstRunTour } from './components/Tour.tsx';
 import { hasCurriculum, syncCurriculum } from './curriculum/sync.ts';
 import Dashboard from './dashboard/Dashboard.tsx';
 import LessonEditor from './editor/LessonEditor.tsx';
@@ -24,6 +25,7 @@ import Library from './editor/Library.tsx';
 import Sandbox from './editor/Sandbox.tsx';
 import { newLesson, slugify } from './model/lesson.ts';
 import { downloadBlob, downloadLesson, duplicateLesson, readLessonFile } from './storage/lessonStore.ts';
+import { SITE_TOURS, siteTourKey } from './tour/siteTours.ts';
 import { useUnsavedChanges } from './useUnsavedChanges.ts';
 import Classes from './workspace/Classes.tsx';
 import Modules from './workspace/Modules.tsx';
@@ -378,6 +380,9 @@ function RequireAuth({ signedIn }) {
 function AppLayout({ lesson, teacherName, onSignOut }) {
   const { pathname } = useLocation();
   const section = (prefix: string) => () => (pathname.startsWith(prefix) ? 'active' : '');
+  // Each page has a guided tour: it opens on the first visit, and the ? button opens it again.
+  const tourKey = siteTourKey(pathname);
+  const tour = useFirstRunTour(tourKey);
   return (
     <div className="app-shell">
       <TipLayer />
@@ -413,6 +418,17 @@ function AppLayout({ lesson, teacherName, onSignOut }) {
           </NavLink>
         </nav>
         <div className="header-user">
+          {tourKey && (
+            <button
+              type="button"
+              className="icon-btn icon-btn-outline has-tip help-btn"
+              data-tip="Ajuda: tutorial desta página"
+              aria-label="Ajuda: tutorial desta página"
+              onClick={tour.start}
+            >
+              ?
+            </button>
+          )}
           <NavLink to="/perfil" className="header-profile" title="Meu perfil">
             <Icon name="user" size={18} />
             <span>{teacherName ?? 'Perfil'}</span>
@@ -425,6 +441,7 @@ function AppLayout({ lesson, teacherName, onSignOut }) {
       <main className="mode-stage">
         <Outlet />
       </main>
+      {tour.open && tourKey && <Tour key={tourKey} steps={SITE_TOURS[tourKey]} onClose={tour.close} />}
     </div>
   );
 }

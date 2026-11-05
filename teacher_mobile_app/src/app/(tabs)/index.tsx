@@ -5,6 +5,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Button from '../../components/Button';
 import { Card, Icon, Pill } from '../../components/Kit';
 import { useApp } from '../../lib/AppContext';
+import { HelpButton, TourAnchor, useScreenTour } from '../../components/Tour';
+import { APP_TOURS } from '../../lib/tours';
 import { colors, fonts, ui } from '../../theme';
 
 const when = (iso: string) =>
@@ -16,6 +18,7 @@ export default function Home() {
   const { teacher, online, pending, syncMessage, lastSync, bench, benchLabel, logout, retryUpload, syncNow } = useApp();
   const [busy, setBusy] = useState(false);
   const [note, setNote] = useState('');
+  const tour = useScreenTour('home', APP_TOURS.home);
   const firstName = teacher?.name?.split(' ')[0] ?? 'professor';
   const waiting = pending + (bench?.pending_events ?? 0);
 
@@ -52,6 +55,9 @@ export default function Home() {
             <Text style={ui.h1}>Olá, {firstName}!</Text>
           </View>
           <Pill text={online ? 'Online' : 'Sem internet'} tone={online ? 'ok' : 'warn'} icon={online ? 'cloud-done' : 'cloud-offline'} />
+          <TourAnchor id="home-help">
+            <HelpButton onPress={tour.start} />
+          </TourAnchor>
           <Pressable
             accessibilityRole="button"
             accessibilityLabel="Sair da conta"
@@ -63,6 +69,7 @@ export default function Home() {
         </View>
 
         {/* main action */}
+        <TourAnchor id="home-cta">
         <Card tone="accent" icon="rocket-outline" title="Levar aula à bancada" onPress={() => router.push('/enviar')}>
           <Text style={[ui.text, { color: colors.white }]}>
             Conecte a bancada, escolha a turma e o módulo, e libere as lições para os alunos.
@@ -72,8 +79,10 @@ export default function Home() {
             <Icon name="arrow-forward" size={18} color={colors.white} />
           </View>
         </Card>
+        </TourAnchor>
 
         {/* bench */}
+        <TourAnchor id="home-bench">
         <Card
           icon="hardware-chip-outline"
           title="Bancada"
@@ -101,8 +110,10 @@ export default function Home() {
             onPress={() => router.push('/bancada')}
           />
         </Card>
+        </TourAnchor>
 
         {/* sync */}
+        <TourAnchor id="home-sync">
         <Card
           icon="sync-outline"
           title="Progresso dos alunos"
@@ -124,12 +135,14 @@ export default function Home() {
             onPress={sync}
           />
         </Card>
+        </TourAnchor>
 
         <Text style={[ui.muted, { textAlign: 'center' }]}>
           Lições, módulos e alunos são criados no site do professor.{'\n'}
           {teacher?.email}
         </Text>
       </ScrollView>
+      {tour.overlay}
     </SafeAreaView>
   );
 }

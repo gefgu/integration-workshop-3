@@ -6,6 +6,8 @@ import Button from '../components/Button';
 import { Card, Icon, Row, StateView } from '../components/Kit';
 import type { Module, SchoolClass } from '../lib/api';
 import { useApp } from '../lib/AppContext';
+import { TourAnchor, useScreenTour } from '../components/Tour';
+import { APP_TOURS } from '../lib/tours';
 import { colors, fonts, ui } from '../theme';
 
 const STEPS = ['Bancada', 'Turma', 'Módulo', 'Enviar'] as const;
@@ -25,6 +27,7 @@ export default function Enviar() {
   const [moduleId, setModuleId] = useState<number | null>(params.moduleId ? Number(params.moduleId) : null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const tour = useScreenTour('enviar', APP_TOURS.enviar);
 
   useEffect(() => {
     Promise.all([api.classes(), api.modules()]).then(
@@ -93,7 +96,10 @@ export default function Enviar() {
 
   return (
     <ScrollView style={ui.screen} contentContainerStyle={ui.content}>
-      <Stepper step={step} />
+      <TourAnchor id="enviar-stepper">
+        <Stepper step={step} />
+      </TourAnchor>
+      {tour.overlay}
       {error ? <Text style={ui.error}>{error}</Text> : null}
 
       {step === 0 && (

@@ -6,6 +6,7 @@ import { SimTransport } from '../lib/simTransport';
 import { colors, ui } from '../theme';
 import Button from './Button';
 import { Card, Icon } from './Kit';
+import { TourAnchor } from './Tour';
 
 interface Found {
   id: string;
@@ -71,6 +72,7 @@ export default function BenchConnect({ onConnected }: { onConnected?: (label: st
 
   return (
     <View style={{ gap: 12 }}>
+      <TourAnchor id="bench-modes">
       <View style={{ flexDirection: 'row', gap: 8 }}>
         {(['ble', 'sim'] as const).map((m) => (
           <Pressable
@@ -96,8 +98,10 @@ export default function BenchConnect({ onConnected }: { onConnected?: (label: st
           </Pressable>
         ))}
       </View>
+      </TourAnchor>
 
       {error ? <Text style={ui.error}>{error}</Text> : null}
+      <TourAnchor id="bench-connect">
 
       {mode === 'sim' ? (
         <Card icon="desktop-outline" title="Bancada simulada">
@@ -151,6 +155,7 @@ export default function BenchConnect({ onConnected }: { onConnected?: (label: st
           {!scanning && found.length === 0 && <Text style={ui.muted}>Nenhuma bancada encontrada ainda.</Text>}
         </Card>
       )}
+      </TourAnchor>
     </View>
   );
 }

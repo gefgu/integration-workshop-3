@@ -4,6 +4,8 @@ import { FlatList, RefreshControl } from 'react-native';
 import { Row, StateView } from '../../components/Kit';
 import type { SchoolClass } from '../../lib/api';
 import { useApp } from '../../lib/AppContext';
+import { TourAnchor, useScreenTour } from '../../components/Tour';
+import { APP_TOURS } from '../../lib/tours';
 import { colors, ui } from '../../theme';
 
 export default function Turmas() {
@@ -12,6 +14,7 @@ export default function Turmas() {
   const [items, setItems] = useState<SchoolClass[] | null>(null);
   const [error, setError] = useState('');
   const [refreshing, setRefreshing] = useState(false);
+  const tour = useScreenTour('turmas', APP_TOURS.turmas);
 
   const load = useCallback(
     () =>
@@ -31,6 +34,7 @@ export default function Turmas() {
   if (error && !items) return <StateView icon="cloud-offline-outline" title="Não deu para carregar" text={error} />;
   if (!items) return <StateView loading text="Carregando turmas…" />;
   return (
+    <>
     <FlatList
       style={ui.screen}
       contentContainerStyle={ui.content}
@@ -50,14 +54,19 @@ export default function Turmas() {
       ListEmptyComponent={
         <StateView icon="people-outline" title="Nenhuma turma" text="Crie turmas e alunos pelo site do professor." />
       }
-      renderItem={({ item }) => (
-        <Row
-          initial={item.name}
-          title={item.name}
-          detail={`${item.student_count ?? 0} aluno(s)${item.description ? ` · ${item.description}` : ''}`}
-          onPress={() => router.push({ pathname: '/turmas/[id]', params: { id: String(item.id), name: item.name } })}
-        />
-      )}
+      renderItem={({ item, index }) => {
+        const row = (
+          <Row
+            initial={item.name}
+            title={item.name}
+            detail={`${item.student_count ?? 0} aluno(s)${item.description ? ` · ${item.description}` : ''}`}
+            onPress={() => router.push({ pathname: '/turmas/[id]', params: { id: String(item.id), name: item.name } })}
+          />
+        );
+        return index === 0 ? <TourAnchor id="turmas-first">{row}</TourAnchor> : row;
+      }}
     />
+    {tour.overlay}
+    </>
   );
 }

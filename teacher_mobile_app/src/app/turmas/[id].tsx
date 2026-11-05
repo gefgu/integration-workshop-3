@@ -5,6 +5,8 @@ import Button from '../../components/Button';
 import { Card, Icon, Pill, ProgressBar, Row, StateView } from '../../components/Kit';
 import type { ClassDetail } from '../../lib/api';
 import { useApp } from '../../lib/AppContext';
+import { TourAnchor, useScreenTour } from '../../components/Tour';
+import { APP_TOURS } from '../../lib/tours';
 import { type ClassDashboard, formatDuration, type StudentProgress } from '../../lib/progress';
 import { colors, fonts, ui } from '../../theme';
 
@@ -22,6 +24,7 @@ export default function Turma() {
   const [open, setOpen] = useState<number | null>(null);
   const [error, setError] = useState('');
   const [refreshing, setRefreshing] = useState(false);
+  const tour = useScreenTour('turma', APP_TOURS.turma);
 
   const load = useCallback(
     () =>
@@ -89,6 +92,7 @@ export default function Turma() {
           }
           ListHeaderComponent={
             <View style={{ gap: 12 }}>
+              <TourAnchor id="turma-summary">
               <Card icon="people" title={detail.name}>
                 <View style={{ flexDirection: 'row', gap: 10 }}>
                   <Stat value={String(rows.length)} label="alunos" />
@@ -105,20 +109,19 @@ export default function Turma() {
                   <Pill text={`${withoutTag} aluno(s) sem tag: vincule pelo site`} tone="warn" icon="pricetag-outline" />
                 )}
               </Card>
+              </TourAnchor>
               {progressNote ? <Text style={ui.muted}>{progressNote}</Text> : null}
-              <Button
-                title="Levar aula para esta turma"
-                icon="rocket-outline"
-                onPress={() => router.push('/enviar')}
-              />
+              <TourAnchor id="turma-send">
+                <Button title="Levar aula para esta turma" icon="rocket-outline" onPress={() => router.push('/enviar')} />
+              </TourAnchor>
               <Text style={ui.label}>Alunos</Text>
             </View>
           }
           ListEmptyComponent={<StateView icon="person-add-outline" title="Nenhum aluno" text="Cadastre alunos pelo site do professor." />}
-          renderItem={({ item }) => {
+          renderItem={({ item, index }) => {
             const s = item.student;
             const expanded = open === s.id;
-            return (
+            const row = (
               <Row
                 initial={s.nickname || s.name}
                 title={s.name}
@@ -161,9 +164,11 @@ export default function Turma() {
                 )}
               </Row>
             );
+            return index === 0 ? <TourAnchor id="turma-student">{row}</TourAnchor> : row;
           }}
         />
       )}
+      {tour.overlay}
     </>
   );
 }
