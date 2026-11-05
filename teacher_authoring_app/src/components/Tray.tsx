@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { countByType, DEFS, isCapsule, KIT_LIMITS, NOMES, TYPES } from '../engine/sim.ts';
 import type { PieceType } from '../model/types.ts';
+import { useBenchMode, useLiveBoard, useStepParts } from '../player/benchMode.ts';
 import PieceView from './PieceView.tsx';
 import Tabs from './Tabs.tsx';
 
@@ -25,7 +26,13 @@ export default function Tray({
     { id: 'jumpers', label: 'Jumpers', types: plain.filter((t) => t.startsWith('jumper')) },
     { id: 'capsules', label: 'Cápsulas', types: smart },
   ].filter((g) => g.types.length > 0);
-  const [group, setGroup] = useState('parts');
+  const bench = useBenchMode();
+  const live = useLiveBoard();
+  const needed = useStepParts();
+  // Open on the group that has what this step asks for (the tray remounts with each step).
+  const [group, setGroup] = useState(
+    () => groups.find((g) => needed && g.types.some((t) => needed.has(t)))?.id ?? 'parts'
+  );
   const current = groups.find((g) => g.id === group) ?? groups[0];
   return (
     <section
@@ -41,7 +48,9 @@ export default function Tray({
         gap: 8,
       }}
     >
-      <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 17, margin: '0 0 2px' }}>Bandeja</h2>
+      <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 17, margin: '0 0 2px' }}>
+        {bench && needed ? 'Pegue na bandeja' : 'Bandeja'}
+      </h2>
       <p style={{ margin: '0 0 6px', fontSize: 12, color: 'var(--color-neutral-600)' }}>
         Arraste para a bancada. Clique numa peça para girar; arraste para fora para remover.
       </p>
@@ -59,21 +68,31 @@ export default function Tray({
           Clique na cápsula para mudar o modo; no máximo 3 ao mesmo tempo.
         </p>
       )}
-      {current && <TrayGrid types={current.types} used={used} onDragStart={onDragStart} />}
+      {current && (
+        <TrayGrid
+          types={current.types}
+          used={used}
+          onDragStart={onDragStart}
+          needed={bench ? needed : null}
+          dragging={!live}
+        />
+      )}
     </section>
   );
 }
 
-function TrayGrid({ types, used, onDragStart }) {
+function TrayGrid({ types, used, onDragStart, needed = null, dragging = true }) {
   return (
     <div className="tray-grid">
       {types.map((type) => {
-        const left = KIT_LIMITS[type] - (used[type] || 0);
+        // Bench: only the parts of this step are active; the camera reads the real board, so nothing is dragged.
+        const off = needed ? !needed.has(type) : false;
+        const left = off || !dragging ? 0 : KIT_LIMITS[type] - (used[type] || 0);
         return (
           // biome-ignore lint/a11y/useSemanticElements: This is a drag source with button semantics, not a form control.
           <div
             key={type}
-            className="tray-item"
+            className={`tray-item${needed && !off ? ' needed' : ''}${off ? ' off' : ''}`}
             onPointerDown={(e) => {
               if (left > 0) onDragStart(type, e);
             }}
@@ -81,7 +100,10 @@ function TrayGrid({ types, used, onDragStart }) {
             tabIndex={left > 0 ? 0 : -1}
             aria-disabled={left <= 0}
             aria-label={NOMES[type]}
-            style={{ opacity: left > 0 ? 1 : 0.4, cursor: left > 0 ? 'grab' : 'not-allowed' }}
+            style={{
+              opacity: off ? 0.3 : left > 0 || !dragging ? 1 : 0.4,
+              cursor: left > 0 ? 'grab' : dragging ? 'not-allowed' : 'default',
+            }}
           >
             <PieceView
               type={type}

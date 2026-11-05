@@ -35,6 +35,30 @@ python -m bench_service --db bench.sqlite3 --ble [--adapter hci0]
 Os dois transportes rodam no mesmo processo e usam o mesmo `BenchStore`. Um `HELLO` por Bluetooth libera a tela da bancada, e os eventos são os mesmos nos dois caminhos.
 Se o adaptador ou o BlueZ falharem, o serviço inteiro para com o erro, em vez de ficar no ar sem Bluetooth.
 
+## Câmera (visão computacional)
+
+O serviço também lê a placa pela câmera com o pacote [`visao/`](../visao/README.md) da Julia. A visão roda numa thread do próprio serviço, a 5 quadros por segundo:
+
+```
+pip install -e '.[vision]'
+python -m bench_service --db bench.sqlite3 --camera 0            # câmera real
+python -m bench_service --db bench.sqlite3 --vision-image foto.jpg  # demonstração com uma foto
+```
+
+| Rota | O que devolve |
+|---|---|
+| `GET /vision/state` | `available`, `valid`/`reason` (último quadro aproveitado ou por que foi descartado), `version` (sobe quando o circuito estável muda), `pieces` no formato de peças das lições e `unknown` (peças que a lição não consegue usar, com o motivo). |
+| `GET /vision/frame.jpg` | O quadro da câmera com o desenho de depuração da visão (grade encontrada e peças lidas). |
+| `POST /vision/recalibrate` | Recalibra a grade do zero. |
+
+Com a visão ligada, a tela da bancada usa a placa real: o tabuleiro da lição mostra o que a câmera vê, sem a bandeja de peças, e cada mudança é validada como antes.
+A tela **Câmera** mostra o quadro anotado e a lista de peças. Sem a visão, ela volta para a prévia da câmera do navegador.
+
+A conversão da visão para as peças das lições fica em [`bench_service/vision.py`](../bench/service/bench_service/vision.py) (`to_pieces`). Limitações atuais:
+- o resistor vira `resistor_220`, porque a câmera não lê o valor. Passos que conferem valores não passam;
+- a peça vermelha de 2 furos vira a bateria, com o `+` na coluna da esquerda, porque a câmera não lê a polaridade;
+- `led_ou_buzzer`, `resistor_ou_capacitor`, o potenciômetro de 3 furos e cores desconhecidas ficam em `unknown`.
+
 ## Quadros
 
 Uma mensagem JSON pode passar do MTU. Por isso ela é dividida em quadros de texto ASCII:
@@ -96,3 +120,21 @@ Todo evento leva `student_id` **e** `nfc_code` juntos, nunca só a tag (SNFR8).
 6. Sem internet, a fila fica marcada como "pendente" e o app tenta de novo quando a rede voltar (SFR45, SNFR9).
    A bancada só apaga um evento depois do `ACK_EVENTS`. Se a conexão cair no meio, o pior que acontece é reenviar eventos, e o servidor descarta as duplicatas pelo `event_id` (SFR59).
 7. Se quiser, o professor escolhe um módulo e uma turma, e o app envia `LOAD_PACKAGE`.
+
+## Physical controls on the bench screen
+
+The student never touches the 7" screen: they build on the real protoboard (read by the camera, see above) and use
+the bench's physical controls. The bench screen listens for these keys, so the Raspberry Pi input bridge only has to
+turn each physical control into a key press:
+
+| Physical control | Key | What it does on screen |
+|---|---|---|
+| Joystick up / left | `ArrowUp` / `ArrowLeft` | Focus the previous control (the main action is focused first) |
+| Joystick down / right | `ArrowDown` / `ArrowRight` | Focus the next control |
+| Joystick press (OK) | `Enter` | Press the focused control |
+| Back | `Escape` | Leave the lesson / screen |
+| Energizar | `e` | Power the board on or off (the screen shows the state) |
+
+With the camera on, the lesson board only mirrors the real board (no dragging) and the tray lists the parts the
+current step asks for; the other parts are greyed out. Without a camera the board falls back to on-screen dragging
+(demo mode).

@@ -1,4 +1,5 @@
-"""python -m bench_service [--db bench.sqlite3] [--port 8765] [--host 0.0.0.0] [--dev] [--ble [--adapter hci0]]"""
+"""python -m bench_service [--db bench.sqlite3] [--port 8765] [--host 0.0.0.0] [--dev] [--ble [--adapter hci0]]
+                           [--camera 0 | --vision-image foto.jpg]"""
 import argparse
 import asyncio
 import os
@@ -16,12 +17,19 @@ def main() -> None:
     parser.add_argument("--ble", action="store_true",
                         help="also run the BLE GATT peripheral (BlueZ, pip install -e '.[ble]')")
     parser.add_argument("--adapter", default=None, help="Bluetooth adapter for --ble, e.g. hci0")
+    parser.add_argument("--camera", type=int, default=None,
+                        help="read the board with the vision pipeline from this camera index (pip install -e '.[vision]')")
+    parser.add_argument("--vision-image", default=None, help="demo: run the vision pipeline on this photo in a loop")
     args = parser.parse_args()
     os.environ["TEDTRONICS_BENCH_DB"] = args.db
     if args.bench_id:
         os.environ["TEDTRONICS_BENCH_ID"] = args.bench_id
     if args.dev:
         os.environ["TEDTRONICS_BENCH_DEV"] = "1"
+    if args.camera is not None:
+        os.environ["TEDTRONICS_BENCH_CAMERA"] = str(args.camera)
+    if args.vision_image:
+        os.environ["TEDTRONICS_BENCH_VISION_IMAGE"] = os.path.abspath(args.vision_image)
     if not args.ble:
         uvicorn.run("bench_service.server:default_app", factory=True, host=args.host, port=args.port)
         return

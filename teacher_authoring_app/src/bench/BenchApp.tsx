@@ -4,11 +4,14 @@ import { setValidatorBase } from '../api/validator.ts';
 import Bubble from '../components/Bubble.tsx';
 import Icon from '../components/Icon.tsx';
 import LessonPlayer, { type PlayerEvent } from '../player/LessonPlayer.tsx';
-import { type BenchApi, benchApi, type LoginResult, type RankRow, serviceUrl } from './benchApi.ts';
+import { type BenchApi, benchApi, type LoginResult, type RankRow, serviceUrl, type VisionState } from './benchApi.ts';
 import CameraView from './CameraView.tsx';
 import { type DemoChoice, demoChoices, demoPackage } from './demo.ts';
 import FitStage from './FitStage.tsx';
 import { lessonStates, type Screen, screenAfterLesson } from './screens.ts';
+import { useVision } from './useVision.ts';
+
+const NO_PIECES: never[] = [];
 
 /**
  * The workbench's 7" screen. Exactly one screen is shown at a time (SFR17): locked (waiting for the
@@ -25,6 +28,7 @@ export default function BenchApp() {
   const [session, setSession] = useState<LoginResult | null>(null);
   const [error, setError] = useState('');
   const loginAt = useRef(0);
+  const vision = useVision(api);
 
   useEffect(() => setValidatorBase(`${base}/validator`), [base]);
 
@@ -75,6 +79,30 @@ export default function BenchApp() {
     setSession(null);
     setScreen({ name: 'home' });
   }, [api, session]);
+
+  // Joystick = arrow keys: move the focus between the controls on the screen (Enter presses the focused one).
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+      const target = event.target as HTMLElement | null;
+      if (target?.tagName === 'INPUT' && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) return;
+      const stage = document.querySelector('.bench-stage');
+      if (!stage) return;
+      const controls = [
+        ...stage.querySelectorAll<HTMLElement>('button:not(:disabled), input:not(:disabled), [tabindex="0"]'),
+      ].filter((el) => el.offsetParent !== null);
+      if (!controls.length) return;
+      event.preventDefault();
+      const at = controls.indexOf(document.activeElement as HTMLElement);
+      const forward = event.key === 'ArrowDown' || event.key === 'ArrowRight';
+      const preferred = stage.querySelector<HTMLElement>('.btn-primary:not(:disabled)');
+      const next =
+        at < 0 ? (preferred ?? controls[0]) : controls[(at + (forward ? 1 : -1) + controls.length) % controls.length];
+      next.focus();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
 
   // Esc = the Back/Cancel button on the right controller.
   useEffect(() => {
@@ -142,6 +170,7 @@ export default function BenchApp() {
               student={session.student}
               lesson={pkg.lessons.find((l) => l.id === screen.lessonId)}
               phase={screen.phase}
+              vision={vision}
               onExit={backToStudent}
               onFinished={async (result) => {
                 await backToStudent();
@@ -158,7 +187,7 @@ export default function BenchApp() {
               onBack={() => setScreen({ name: 'student' })}
             />
           )}
-          {screen.name === 'camera' && <CameraView onBack={() => setScreen(screen.back)} />}
+          {screen.name === 'camera' && <CameraView api={api} vision={vision} onBack={() => setScreen(screen.back)} />}
           {screen.name === 'ranking' && (
             <RankingScreen
               api={api}
@@ -464,6 +493,7 @@ function LessonScreen({
   student,
   lesson,
   phase,
+  vision,
   onExit,
   onFinished,
 }: {
@@ -471,6 +501,7 @@ function LessonScreen({
   student: BenchStudent;
   lesson: any;
   phase: number;
+  vision: VisionState;
   onExit: () => void;
   onFinished: (result: LessonResult) => void;
 }) {
@@ -518,8 +549,29 @@ function LessonScreen({
         onEvent={onEvent}
         onExit={onExit}
         exitLabel="Voltar (Esc)"
+        livePieces={vision.available ? (vision.pieces ?? NO_PIECES) : null}
+        barExtra={<CameraStatus vision={vision} />}
       />
     </section>
+  );
+}
+
+/** In the lesson bar: whether the camera is reading the real board (the screen board follows it). */
+function CameraStatus({ vision }: { vision: VisionState }) {
+  if (!vision.available) {
+    return (
+      <span className="bench-camera-chip off" title="Sem câmera: a placa da tela é uma simulação.">
+        <Icon name="camera" size={18} /> simulação
+      </span>
+    );
+  }
+  const unknown = vision.unknown?.length ?? 0;
+  return (
+    <span className={`bench-camera-chip${vision.valid ? '' : ' paused'}`} role="status">
+      <Icon name="camera" size={18} />
+      {vision.valid ? 'lendo a placa' : vision.reason || 'aguardando imagem'}
+      {unknown > 0 && ` · ${unknown} peça${unknown > 1 ? 's' : ''} não reconhecida${unknown > 1 ? 's' : ''}`}
+    </span>
   );
 }
 
