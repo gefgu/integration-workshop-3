@@ -1,4 +1,6 @@
-import { ActivityIndicator, Pressable, StyleSheet, Text } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import type { ComponentProps } from 'react';
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors, fonts } from '../theme';
 
 export default function Button({
@@ -7,14 +9,16 @@ export default function Button({
   variant = 'primary',
   busy = false,
   disabled = false,
+  icon,
 }: {
   title: string;
   onPress: () => void;
-  variant?: 'primary' | 'outline';
+  variant?: 'primary' | 'outline' | 'light';
   busy?: boolean;
   disabled?: boolean;
+  icon?: ComponentProps<typeof Ionicons>['name'];
 }) {
-  const outline = variant === 'outline';
+  const ink = variant === 'primary' ? colors.white : variant === 'light' ? colors.accentDark : colors.text;
   return (
     <Pressable
       accessibilityRole="button"
@@ -23,24 +27,36 @@ export default function Button({
       onPress={onPress}
       style={({ pressed }) => [
         styles.base,
-        outline ? styles.outline : styles.primary,
+        variant === 'primary' ? styles.primary : variant === 'light' ? styles.light : styles.outline,
         (disabled || busy) && styles.disabled,
         pressed && styles.pressed,
       ]}
     >
       {busy ? (
-        <ActivityIndicator color={outline ? colors.text : colors.bg} />
+        <ActivityIndicator color={ink} />
       ) : (
-        <Text style={[styles.text, { color: outline ? colors.text : colors.bg }]}>{title}</Text>
+        <View style={styles.inner}>
+          {icon && <Ionicons name={icon} size={18} color={ink} />}
+          <Text style={[styles.text, { color: ink }]}>{title}</Text>
+        </View>
       )}
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  base: { borderRadius: 999, paddingVertical: 13, paddingHorizontal: 20, alignItems: 'center', minHeight: 48 },
+  base: {
+    borderRadius: 999,
+    paddingVertical: 13,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 50,
+  },
+  inner: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   primary: { backgroundColor: colors.accent },
-  outline: { borderWidth: 1, borderColor: colors.divider },
+  light: { backgroundColor: colors.white },
+  outline: { borderWidth: 1.5, borderColor: colors.divider },
   disabled: { opacity: 0.45 },
   pressed: { opacity: 0.8 },
   text: { fontFamily: fonts.heading, fontSize: 15 },

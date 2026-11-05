@@ -1,5 +1,6 @@
 import { Caprasimo_400Regular } from '@expo-google-fonts/caprasimo';
 import { Figtree_400Regular, Figtree_700Bold } from '@expo-google-fonts/figtree';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -8,7 +9,7 @@ import { AppProvider, useApp } from '../lib/AppContext';
 import { colors, fonts } from '../theme';
 
 export default function RootLayout() {
-  const [loaded] = useFonts({ Caprasimo_400Regular, Figtree_400Regular, Figtree_700Bold });
+  const [loaded] = useFonts({ Caprasimo_400Regular, Figtree_400Regular, Figtree_700Bold, ...Ionicons.font });
   if (!loaded) return <Loading />;
   return (
     <AppProvider>
@@ -38,6 +39,7 @@ function Screens() {
         // SDK 58 / iOS 26 headers use system fonts unless set here.
         headerTitleStyle: { fontFamily: fonts.heading },
         headerBackTitleStyle: { fontFamily: fonts.body },
+        headerShadowVisible: false,
         headerTransparent: false,
         contentStyle: { backgroundColor: colors.bg },
       }}
@@ -46,11 +48,9 @@ function Screens() {
         <Stack.Screen name="login" options={{ headerShown: false }} />
       </Stack.Protected>
       <Stack.Protected guard={signedIn}>
-        <Stack.Screen name="index" options={{ title: 'TedTronics' }} />
-        <Stack.Screen name="bancada" options={{ title: 'Bancada' }} />
-        <Stack.Screen name="turmas/index" options={{ title: 'Turmas' }} />
-        <Stack.Screen name="turmas/[id]" options={{ title: 'Alunos' }} />
-        <Stack.Screen name="modulos" options={{ title: 'Enviar módulo' }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="turmas/[id]" options={{ title: 'Turma' }} />
+        <Stack.Screen name="enviar" options={{ title: 'Levar aula à bancada' }} />
       </Stack.Protected>
     </Stack>
   );

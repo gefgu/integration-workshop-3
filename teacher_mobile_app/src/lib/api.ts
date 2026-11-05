@@ -1,5 +1,6 @@
 /** TedTronics server API for the phone app. Pure TypeScript: the storage and fetch are injected. */
 import type { BenchEvent, BenchPackage } from '../../../protocol/bench.ts';
+import type { ClassDashboard } from './progress.ts';
 
 export interface KeyValueStore {
   getItem(key: string): Promise<string | null>;
@@ -66,7 +67,7 @@ export class Api {
 
   constructor(
     protected store: KeyValueStore,
-    protected fetchImpl: Fetch = fetch,
+    protected fetchImpl: Fetch = (input, init) => fetch(input, init),
     protected timeoutMs = 10_000
   ) {}
 
@@ -151,6 +152,7 @@ export class Api {
   classes = () => this.request<SchoolClass[]>('/workspace/classes');
   classDetail = (id: number) => this.request<ClassDetail>(`/workspace/classes/${id}`);
   modules = () => this.request<Module[]>('/workspace/modules');
+  classDashboard = (id: number) => this.request<ClassDashboard>(`/dashboard/classes/${id}`);
   benchSession = () => this.request<{ token: string; expires_at: number }>('/bench/session', 'POST');
   benchPackage = (moduleId: number, classId: number) =>
     this.request<BenchPackage>(`/bench/package/${moduleId}?class_id=${classId}`);
