@@ -425,12 +425,20 @@ button {
   width: 100% !important;
 }
 @media (min-width: 960px) {
-  .board-tray-column { width: 390px; }
-  .tray-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .board-tray-column {
+    width: 390px;
+  }
+  .tray-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 @media (min-width: 1200px) {
-  .board-tray-column { width: 480px; }
-  .tray-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .board-tray-column {
+    width: 480px;
+  }
+  .tray-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 .sandbox-page {
   display: flex;
@@ -504,9 +512,15 @@ button {
   background: var(--color-surface);
   box-shadow: var(--shadow-sm);
 }
-.sandbox-result.ok { border-left: 5px solid var(--color-accent-2-600); }
-.sandbox-result.erro { border-left: 5px solid var(--color-accent-700); }
-.sandbox-result.info { border-left: 5px solid var(--color-neutral-500); }
+.sandbox-result.ok {
+  border-left: 5px solid var(--color-accent-2-600);
+}
+.sandbox-result.erro {
+  border-left: 5px solid var(--color-accent-700);
+}
+.sandbox-result.info {
+  border-left: 5px solid var(--color-neutral-500);
+}
 .schematic-panel {
   background: var(--color-surface);
   border-radius: 24px;
@@ -548,7 +562,7 @@ button {
   text-align: center;
 }
 .header {
-  justify-content: center;
+  justify-content: space-between;
 }
 .panel {
   text-align: left;
@@ -1023,5 +1037,1163 @@ a.dash-row:hover {
 @media (prefers-reduced-motion: reduce) {
   .track-flow {
     animation: none;
+  }
+}
+
+/* Schematic mode of the lesson editor (SchematicEditor). */
+.sketch-mode-toggle {
+  margin: 0 0 10px;
+  border: 0;
+  min-inline-size: 0;
+  width: fit-content;
+}
+.sketch-editor {
+  display: grid;
+  gap: 10px;
+  width: 820px;
+  max-width: 100%;
+}
+.sketch-palette {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.sketch-palette .btn-outline {
+  padding: 7px 12px;
+  font-size: 13px;
+}
+.sketch-palette small {
+  font-family: var(--font-body);
+  color: var(--color-neutral-600);
+}
+.sketch-canvas {
+  background: var(--color-neutral-100);
+  border: 1px solid var(--color-divider);
+  border-radius: 18px;
+  overflow: auto;
+  outline: none;
+}
+.sketch-canvas svg {
+  display: block;
+  margin: 0 auto;
+  touch-action: none;
+}
+.sketch-col {
+  font-size: 7px;
+  font-weight: 700;
+  fill: var(--color-accent-700);
+}
+.sketch-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-height: 42px;
+}
+.sketch-status {
+  margin: 0;
+  font-size: 13px;
+  color: var(--color-accent-2-800);
+}
+.sketch-status.error {
+  color: var(--color-accent-800);
+}
+
+/* Build and experiment steps: a plain column everywhere except the bench, which lays them out side by side. */
+.lab-step {
+  display: contents;
+}
+
+.curriculum-note {
+  margin: 0 0 12px;
+  background: var(--color-accent-2-200);
+  color: var(--color-accent-2-800);
+}
+
+/* Header: brand on the far left, navigation in the middle, profile and logout on the right. */
+.header-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-right: auto;
+}
+.header-brand span {
+  font-size: 14px;
+  color: var(--color-neutral-600);
+}
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+.header-profile {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px 7px 10px;
+  border-radius: 999px;
+  background: var(--color-neutral-200);
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+.header-profile:hover,
+.header-profile.active {
+  background: var(--color-accent-200);
+  color: var(--color-accent-800);
+}
+
+/* Icons inside buttons and links. */
+.icon {
+  flex: none;
+  vertical-align: -0.15em;
+}
+.btn-icon,
+.pill-link-btn:has(> .icon) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+.pill-link-btn.danger:hover {
+  color: var(--color-accent-800);
+}
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 0;
+  background: var(--color-neutral-200);
+  color: var(--color-neutral-800);
+  cursor: pointer;
+}
+.icon-btn:hover {
+  background: var(--color-accent-200);
+  color: var(--color-accent-800);
+}
+.icon-btn-outline {
+  background: transparent;
+  border: 1px solid var(--color-divider);
+  width: 44px;
+  height: 44px;
+}
+
+/* Hover label for icon-only buttons (data-tip), shown below the button. */
+.has-tip {
+  position: relative;
+}
+.has-tip::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translate(-50%, -4px);
+  white-space: nowrap;
+  background: var(--color-neutral-900);
+  color: var(--color-bg);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 120ms,
+    transform 120ms;
+  z-index: 20;
+}
+.has-tip:hover::after,
+.has-tip:focus-visible::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* Library toolbar buttons. */
+.lesson-library-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Selects follow the theme: rounded, warm surface, custom chevron. */
+.mode-stage select {
+  appearance: none;
+  font: inherit;
+  color: var(--color-text);
+  background-color: var(--color-neutral-100);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23645c50' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  border: 1px solid var(--color-divider);
+  border-radius: 12px;
+  padding: 9px 34px 9px 12px;
+  cursor: pointer;
+}
+.mode-stage select:focus-visible {
+  outline: 3px solid var(--color-accent-300);
+  outline-offset: 1px;
+}
+.mode-stage select.select-pill {
+  border-radius: 999px;
+  background-color: transparent;
+  font-family: var(--font-heading);
+  font-size: 14px;
+  padding: 11px 38px 11px 20px;
+}
+
+/* Lesson cards: even vertical rhythm between kind, title, tags, counts and notes. */
+.lesson-card-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.lesson-card-tags span {
+  background: var(--color-neutral-200);
+  border-radius: 999px;
+  color: var(--color-neutral-700);
+  font-size: 11px;
+  padding: 3px 9px;
+}
+.lesson-card-meta {
+  margin-top: 12px;
+}
+
+/* Teacher notes: two-line preview with an ellipsis; opened, one paragraph per line. */
+.teacher-notes {
+  margin-top: 14px;
+  border-top: 1px solid var(--color-divider);
+  padding-top: 10px;
+}
+.teacher-notes-toggle {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text);
+  cursor: pointer;
+  text-align: left;
+}
+.teacher-notes-more {
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--color-accent-700);
+  text-decoration: underline;
+}
+.teacher-notes-preview {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-neutral-700);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.teacher-notes-full {
+  margin-top: 6px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--color-neutral-800);
+}
+.teacher-notes-full p {
+  margin: 0 0 7px;
+}
+
+/* Icon-only buttons inside cards: quiet until hovered; labels show above (cards clip what hangs below). */
+.icon-btn-quiet {
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  color: var(--color-accent-700);
+}
+.icon-btn.danger:hover {
+  background: var(--color-accent-200);
+  color: var(--color-accent-800);
+}
+.has-tip.tip-up::after {
+  top: auto;
+  bottom: calc(100% + 8px);
+  transform: translate(-50%, 4px);
+}
+.has-tip.tip-up:hover::after,
+.has-tip.tip-up:focus-visible::after {
+  transform: translate(-50%, 0);
+}
+.lesson-card-utilities {
+  gap: 6px;
+}
+
+/* Tag filters stay on one line and scroll sideways when they do not fit. */
+.lesson-tag-filter {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  margin: 4px 0 12px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  padding-bottom: 4px;
+}
+.lesson-tag-filter > * {
+  flex: none;
+  white-space: nowrap;
+}
+
+/* The Protoboard/Esquema switch sits at the top of the middle box. */
+.board-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 10px;
+}
+/* the eraser sits at the right end of the row (alone when there is no mode switch) */
+.board-header .board-clear {
+  margin-left: auto;
+}
+.board-header .box-tabs + .board-clear {
+  margin-left: 0;
+}
+.board-header:has(.box-tabs) {
+  justify-content: center;
+}
+.icon-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.board-header .sketch-mode-toggle,
+.sketch-editor .sketch-mode-toggle {
+  margin: 0;
+}
+.sketch-editor > .sketch-mode-toggle {
+  justify-self: center;
+}
+
+/* Editor on a desktop: the page itself does not scroll; the tray, the protoboard and the lesson panel each scroll
+   on their own. Narrow screens keep the ordinary page scroll. */
+@media (min-width: 1100px) {
+  .mode-stage:has(.lesson-editor-layout) {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 14px;
+  }
+  .lesson-editor-layout {
+    flex: 1;
+    min-height: 0;
+    flex-wrap: nowrap;
+    align-items: stretch;
+  }
+  .lesson-editor-workspace {
+    position: static;
+    align-self: stretch;
+    min-height: 0;
+    display: flex;
+  }
+  .lesson-editor-workspace .board-workspace {
+    height: 100%;
+    align-items: stretch !important;
+  }
+  .lesson-editor-workspace .board-tray-column,
+  .lesson-editor-workspace .board-workbench-column,
+  .lesson-editor-workspace .sketch-editor,
+  .lesson-editor-layout > .panel {
+    min-height: 0;
+    max-height: 100%;
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+  .lesson-editor-workspace .board-workbench-column {
+    padding: 0 6px 6px;
+    height: 100%;
+    overflow: hidden;
+    align-items: center;
+  }
+  /* scrolling columns must not squeeze their children (the board is absolutely laid out inside) */
+  .lesson-editor-workspace .board-tray-column > *,
+  .lesson-editor-workspace .board-workbench-column > * {
+    flex-shrink: 0;
+  }
+  .lesson-editor-workspace .sketch-editor {
+    align-content: start;
+  }
+}
+
+/* Tabs inside a box (lesson panel, middle box, tray): one section at a time. */
+.box-tabs {
+  width: fit-content;
+  max-width: 100%;
+  flex-wrap: wrap;
+  flex: none;
+}
+.box-tabs button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.board-header .box-tabs,
+.sketch-editor > .box-tabs {
+  margin: 0 auto;
+}
+.tray-box .box-tabs {
+  margin: 0 0 4px;
+}
+.lesson-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.lesson-panel-body h2:first-child {
+  margin-top: 0;
+}
+.lesson-panel-footer {
+  border-top: 1px solid var(--color-divider);
+  padding-top: 12px;
+}
+.lesson-panel-footer > div:first-of-type,
+.lesson-panel-footer > .problems + div {
+  margin-top: 0 !important;
+}
+@media (min-width: 1100px) {
+  .lesson-editor-layout > .lesson-panel {
+    overflow: hidden;
+  }
+  .lesson-panel-body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    padding-right: 4px;
+  }
+  .lesson-panel-footer {
+    flex: none;
+  }
+}
+
+/* Read-only schematic in the editor's Esquema tab: use the box's height. */
+.sketch-editor .schematic-viewport {
+  max-height: none;
+}
+.sketch-editor .schematic-viewport svg {
+  margin: 0 auto;
+}
+
+/* Lesson cards show the circuit as a schematic drawing. */
+.lesson-card-schematic {
+  height: 230px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 1px 1px, rgba(71, 66, 56, 0.12) 1px, transparent 0) 0 0 / 18px 18px,
+    var(--color-neutral-100);
+}
+.lesson-card-schematic svg {
+  max-width: 100%;
+  max-height: 100%;
+  height: auto;
+}
+
+/* Tag filters: one line, small chips, no scrollbar (the rest live under "Mais etiquetas"). */
+.lesson-tag-filter {
+  overflow: hidden;
+}
+.lesson-tag-filter .btn-outline,
+.lesson-tag-filter .btn-primary {
+  font-size: 12px;
+  padding: 7px 12px;
+}
+.lesson-tag-filter select.select-pill {
+  font-size: 12px;
+  padding: 7px 32px 7px 14px;
+}
+
+/* Create / edit dialogs. */
+.form-modal {
+  width: min(520px, 92vw);
+}
+.form-modal.wide {
+  width: min(760px, 94vw);
+}
+.form-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.modal-form {
+  margin: 0;
+  max-width: none;
+}
+
+/* Page title with its "+" (new item) button on the right. */
+.page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.page-head p {
+  margin: 4px 0 0;
+  color: var(--color-neutral-700);
+}
+/* Cards of modules and classes: the main button always sits at the bottom. */
+.workspace-card {
+  display: flex;
+  flex-direction: column;
+}
+.workspace-card-actions {
+  margin-top: auto;
+  padding-top: 12px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.workspace-card-actions .btn-outline,
+.workspace-card-actions .btn-primary {
+  text-decoration: none;
+  padding: 9px 16px;
+  font-size: 13px;
+}
+/* A module's or class's header: basics on the left, edit and delete icons on the right. */
+.item-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 14px 0;
+}
+.item-head h2 {
+  margin: 0 0 4px;
+}
+.item-head p {
+  margin: 0 0 4px;
+}
+/* Ordered lists (lessons of a module, modules of a class). */
+.ordered-picker {
+  padding-left: 0;
+  list-style: none;
+  margin: 6px 0 10px;
+}
+.ordered-picker li {
+  padding: 6px 0;
+  justify-content: flex-start;
+}
+.ordered-picker li > a,
+.ordered-picker li > span:not(.ordered-picker-index) {
+  flex: 1;
+}
+.ordered-picker-index {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-neutral-200);
+  font-size: 12px;
+  font-weight: 700;
+  flex: none;
+}
+.ordered-picker-actions {
+  flex-wrap: nowrap;
+  gap: 2px;
+}
+.ordered-picker-add {
+  max-width: 420px;
+}
+
+.section-head {
+  align-items: center;
+}
+.section-head h2 {
+  margin: 0;
+}
+.student-actions {
+  flex-wrap: nowrap;
+  gap: 2px;
+}
+/* Class page: what the class studies, side by side below the students. */
+.class-study {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 18px;
+}
+.class-study .workspace-section {
+  margin: 0;
+}
+
+/* One line of tag filters at any width: the chips shrink (with "…"), the "Mais etiquetas" box never leaves the row. */
+.lesson-tag-filter {
+  min-width: 0;
+  max-width: 100%;
+}
+.lesson-tag-filter > button {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lesson-tag-filter > button:first-child,
+.lesson-tag-filter > select {
+  flex: none;
+}
+
+/* Tips exist only while shown, so hidden tips never widen the page (no sideways scroll). */
+.has-tip::after {
+  display: none;
+}
+.has-tip:hover::after,
+.has-tip:focus-visible::after {
+  display: block;
+}
+/* Buttons at the right edge open their tip towards the left. */
+.page-head .has-tip::after,
+.item-head .has-tip::after,
+.workspace-actions > .has-tip:last-child::after,
+.lesson-library-buttons > .has-tip:last-child::after {
+  left: auto;
+  right: 0;
+  transform: none;
+}
+.page-head .has-tip:hover::after,
+.item-head .has-tip:hover::after,
+.workspace-actions > .has-tip:last-child:hover::after,
+.lesson-library-buttons > .has-tip:last-child:hover::after {
+  transform: none;
+}
+
+/* ---------- Students page and tag dialog ---------- */
+.section-head {
+  margin-bottom: 14px;
+}
+.student-list li {
+  padding: 12px 0;
+}
+.dialog-subtitle {
+  margin: 0 0 12px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-accent-700);
+}
+
+/* ---------- Power switch: the strongest button on a lab screen ---------- */
+.power-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--font-heading);
+  font-size: calc(18px * var(--text-scale, 1));
+  padding: 14px 30px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #e0894c, var(--color-accent) 55%, var(--color-accent-700));
+  color: #fff;
+  box-shadow:
+    0 0 0 4px var(--color-accent-200),
+    0 8px 20px rgba(198, 113, 57, 0.45);
+  transition:
+    transform 0.12s,
+    box-shadow 0.12s;
+  animation: power-pulse 2.2s ease-in-out infinite;
+}
+.power-btn:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 0 6px var(--color-accent-200),
+    0 10px 24px rgba(198, 113, 57, 0.55);
+}
+.power-btn:active {
+  transform: translateY(1px);
+}
+.power-btn.on {
+  background: linear-gradient(180deg, #6d776b, var(--color-neutral-800));
+  box-shadow:
+    0 0 0 4px rgba(122, 138, 94, 0.35),
+    0 6px 14px rgba(0, 0, 0, 0.25);
+  animation: none;
+}
+@keyframes power-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 4px var(--color-accent-200),
+      0 8px 20px rgba(198, 113, 57, 0.45);
+  }
+  50% {
+    box-shadow:
+      0 0 0 9px rgba(198, 113, 57, 0.18),
+      0 8px 22px rgba(198, 113, 57, 0.55);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .power-btn {
+    animation: none;
+  }
+}
+
+/* ---------- Sandbox: same layout as the editor (tray | protoboard | side box) ---------- */
+.board-title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 18px;
+}
+.sandbox-side {
+  gap: 14px;
+}
+.sandbox-side h2 {
+  margin: 0 0 4px;
+  font-family: var(--font-heading);
+}
+.sandbox-side .sandbox-result {
+  width: auto;
+}
+.lab-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 14px;
+  border-radius: 20px;
+  background: var(--color-surface);
+}
+.sandbox-lesson {
+  width: 100%;
+  flex-direction: column;
+}
+
+/* ---------- Lesson validator: info box and controls box on top, the step below ---------- */
+.player-desk {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+.player-bar {
+  display: flex;
+  gap: 14px;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+.player-info {
+  flex: 1 1 420px;
+  min-width: 0;
+  padding: 14px 20px;
+}
+.player-info-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.player-info-head h2 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 20px;
+}
+.player-step-chip {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--color-accent-2-200, #dfe6cf);
+  color: var(--color-accent-2-800, #4b5636);
+}
+.player-instruction {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-neutral-700);
+}
+.player-tools {
+  flex: 0 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 14px 20px;
+}
+.player-switches {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.player-switches label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+.player-audio-status {
+  font-size: 12px;
+  color: var(--color-neutral-600);
+  max-width: 320px;
+}
+.player-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
+
+/* ---------- Scrollbars in the theme's colours ---------- */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-accent-300) transparent;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent-300);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-500);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+.board-header:has(.board-title) {
+  align-self: stretch;
+  justify-content: space-between;
+}
+
+/* Hover tips are drawn by TipLayer on top of everything (a box with a scrollbar would cut a CSS tip). */
+.has-tip::after,
+.has-tip:hover::after,
+.has-tip:focus-visible::after {
+  display: none !important;
+}
+.tip-layer {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  white-space: nowrap;
+  background: var(--color-neutral-900);
+  color: var(--color-bg);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
+}
+
+/* ---------- Sandbox and validator: the protoboard stays put on the left half; the right half (controls, lesson,
+   tutor, power, parts) is the only part that scrolls. BoardWorkspace renders its board into the left slot
+   (BoardSlotContext), so the tray stays on the right. ---------- */
+.sandbox-side-head h2 {
+  margin: 0 0 4px;
+  font-family: var(--font-heading);
+}
+.sandbox-side-head p {
+  margin: 0;
+}
+.lab-box {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 14px;
+}
+.sandbox-mode-toggle {
+  flex: none;
+  align-self: flex-start;
+}
+.player-tools .sandbox-mode-toggle button {
+  padding: 7px 13px;
+  font-size: 13px;
+}
+.player-notice {
+  margin: 6px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-accent-700);
+}
+.lab-split,
+.player-desk {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+.lab-right,
+.player-right {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+.player-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.player-tools {
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  padding: 8px 14px;
+}
+.player-info {
+  padding: 10px 16px;
+}
+.board-slot:empty {
+  display: none;
+}
+/* the right half: tutor and status, power and checks, then the parts, then the explanations */
+.lab-right .lab-step,
+.player-right .lab-step {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+  align-items: stretch;
+}
+.lab-right .board-workspace,
+.player-right .board-workspace {
+  display: contents !important;
+}
+.lab-right .lab-step > *,
+.player-right .lab-step > * {
+  max-width: none !important;
+  margin: 0;
+}
+.lab-right .board-tray-column,
+.player-right .board-tray-column {
+  order: 3;
+  width: auto;
+}
+.lab-right .tray-grid,
+.player-right .tray-grid {
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+}
+.player-right .lab-help,
+.player-right .capsule-legend {
+  order: 4;
+}
+.player-right .power-row {
+  justify-content: flex-start !important;
+}
+/* the left half: the protoboard (or the drawing) in its own box */
+.board-slot > .board-workbench-column,
+.board-slot > .sketch-editor {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px 12px 6px;
+  border-radius: 24px;
+  background: var(--color-neutral-200);
+}
+.board-slot > .board-workbench-column {
+  align-items: center;
+}
+.board-slot .board-header {
+  align-self: stretch;
+}
+@media (min-width: 1100px) {
+  .mode-stage:has(.sandbox-page) {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 14px;
+  }
+  .sandbox-page {
+    flex: 1;
+    min-height: 0;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .sandbox-free,
+  .sandbox-lesson {
+    flex: 1;
+    min-height: 0;
+  }
+  .lab-split,
+  .player-desk:has(> .board-slot:not(:empty)) {
+    flex: 1;
+    min-height: 0;
+    height: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 22px;
+  }
+  .player-desk {
+    height: 100%;
+    min-height: 0;
+  }
+  .board-slot {
+    min-height: 0;
+    height: 100%;
+  }
+  .board-slot > .board-workbench-column,
+  .board-slot > .sketch-editor {
+    height: 100%;
+    overflow: hidden;
+  }
+  .board-slot > .sketch-editor {
+    overflow-y: auto;
+    align-content: start;
+  }
+  .board-slot > .board-workbench-column > * {
+    flex-shrink: 0;
+  }
+  /* only this half scrolls */
+  .lab-right,
+  .player-right {
+    min-height: 0;
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+  /* phases without a board (questions, readings): the controls keep the right half, the content goes below */
+  .player-desk:has(> .board-slot:empty) > .player-right > .player-bar {
+    align-self: flex-end;
+    width: calc(50% - 11px);
+  }
+  .player-instruction {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+.player-bar > * {
+  flex: none;
+}
+
+/* ---------- Lesson validator: the bench's own 1024×600 screens, scaled to fit, one at a time ---------- */
+.bench-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  min-height: 70vh;
+}
+.bench-preview-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px 16px;
+  flex-wrap: wrap;
+  padding: 8px 14px;
+  flex: none;
+}
+.bench-preview-title {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+.bench-preview-title strong {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bench-preview-title .player-notice {
+  margin: 0;
+}
+.bench-preview-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+.bench-preview-box {
+  flex: 1;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bench-preview-frame {
+  overflow: hidden;
+  border-radius: 14px;
+  /* the monitor's bezel */
+  box-shadow:
+    0 0 0 10px #2e2b25,
+    0 0 0 12px #59524a,
+    0 14px 30px rgba(0, 0, 0, 0.3);
+}
+.bench-preview-shell {
+  height: 100%;
+}
+.bench-carousel {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding-top: 6px;
+}
+.bench-carousel ol {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.bench-carousel .icon-btn {
+  font-size: 22px;
+  line-height: 1;
+}
+.bench-dot {
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  border-radius: 999px;
+  border: 2px solid var(--color-accent-500);
+  background: transparent;
+  cursor: pointer;
+  transition:
+    width 0.15s,
+    background 0.15s;
+}
+.bench-dot.done {
+  background: var(--color-accent-300);
+}
+.bench-dot.active {
+  width: 34px;
+  background: var(--color-accent);
+}
+@media (min-width: 1100px) {
+  .bench-preview {
+    height: 100%;
+    min-height: 0;
+  }
+  .bench-preview-box {
+    min-height: 0;
+  }
+}
+@media (min-width: 1100px) {
+  .sandbox-lesson > .bench-preview {
+    flex: 1;
+    height: auto;
+    min-height: 0;
   }
 }

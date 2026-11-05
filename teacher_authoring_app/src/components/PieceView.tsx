@@ -1,13 +1,6 @@
 import type { CSSProperties } from 'react';
 import { bandsText, ohmsBands } from '../engine/lab.ts';
-import {
-  CAPSULE,
-  DEFS,
-  formatOhms,
-  isCapsule,
-  POT_DEFAULT,
-  RESISTOR_OHMS,
-} from '../engine/sim.ts';
+import { CAPSULE, DEFS, formatOhms, isCapsule, POT_DEFAULT, RESISTOR_OHMS } from '../engine/sim.ts';
 import type { PieceType } from '../model/types.ts';
 
 /**
@@ -53,7 +46,8 @@ export default function PieceView({
   onButton,
   style,
 }: PieceViewProps) {
-  const d: { len: number; cor: string; text: string; dots?: number; stripe?: string; pinA?: string; pinB?: string } = DEFS[type];
+  const d: { len: number; cor: string; text: string; dots?: number; stripe?: string; pinA?: string; pinB?: string } =
+    DEFS[type];
   const c = CAPSULE[d.cor as keyof typeof CAPSULE];
   const isLed = type === 'led';
   const isJumper = type.startsWith('jumper');
@@ -91,7 +85,14 @@ export default function PieceView({
           role="img"
           aria-label={`Faixas do resistor de ${formatOhms(fixedOhms)}: ${bandsText(fixedOhms)} (ilustração do software)`}
           title={`Faixas: ${bandsText(fixedOhms)} = ${formatOhms(fixedOhms)} (ilustração; não é leitura da câmera)`}
-          style={{ position: 'absolute', inset: 0, display: 'flex', justifyContent: 'center', gap: 3, padding: '0 6px' }}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            justifyContent: 'center',
+            gap: 3,
+            padding: '0 6px',
+          }}
         >
           {bands.colors.map((color, i) => (
             <span
@@ -101,7 +102,9 @@ export default function PieceView({
             />
           ))}
         </span>
-      ) : d.stripe && !isJumper && <Stripe color={d.stripe} />}
+      ) : (
+        d.stripe && !isJumper && <Stripe color={d.stripe} />
+      )}
       {type === 'potenciometro' ? (
         <PotFace value={value || POT_DEFAULT} onStep={onPotStep} />
       ) : type === 'botao' ? (
@@ -273,7 +276,6 @@ function PotFace({ value, onStep }) {
     </span>
   );
 }
-
 
 /** Round cap: hold the pointer on it to press; releasing anywhere lets go. */
 function ButtonCap({ pressed, onChange }) {

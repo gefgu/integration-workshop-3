@@ -1,10 +1,25 @@
-import type { ReactNode } from 'react';
-import { statusLedOn, buzzerSound } from '../engine/lab.ts';
+import { createContext, type ReactNode, useContext } from 'react';
+import { buzzerSound, statusLedOn } from '../engine/lab.ts';
 import { NOMES } from '../engine/sim.ts';
-import type { Lab } from '../player/useLab.ts';
 import type { LessonSettings, Piece } from '../model/types.ts';
+import type { Lab } from '../player/useLab.ts';
 import BoardWorkspace from './BoardWorkspace.tsx';
 import CapsuleLegend from './CapsuleLegend.tsx';
+import CircuitWorkspace from './CircuitWorkspace.tsx';
+import Icon from './Icon.tsx';
+
+/** True where the board should shrink to its box instead of making the page scroll (the teacher's validator). */
+export const BoardFitContext = createContext(false);
+
+/** The bench's power switch: the most visible control on a lab screen. */
+export function PowerButton({ on, onClick }: { on: boolean; onClick: () => void }) {
+  return (
+    <button type="button" className={`power-btn${on ? ' on' : ''}`} aria-pressed={on} onClick={onClick}>
+      <Icon name="power" size={22} />
+      {on ? 'Desligar' : 'Energizar'}
+    </button>
+  );
+}
 
 const mA = (n: number) => n.toFixed(1).replace('.', ',');
 
@@ -50,6 +65,8 @@ export default function LabBoard({
   hideTray?: boolean;
   extra?: ReactNode;
 }) {
+  const fit = useContext(BoardFitContext);
+  const Workspace = fit ? CircuitWorkspace : BoardWorkspace;
   const buttons = pieces.filter((p) => p.type === 'botao');
   const loads = lab.diag.loadsLit;
   let readout = 'Bancada desligada';
@@ -57,9 +74,10 @@ export default function LabBoard({
   else if (lab.energized && lab.lit) {
     const where = loads[0] === 'buzzer' ? 'no buzzer' : 'no LED';
     const currents = lab.diag.currents;
-    readout = loads.length > 1 && currents
-      ? `LED: ${mA(currents.led ?? 0)} mA · buzzer: ${mA(currents.buzzer ?? 0)} mA · total da bateria: ${mA((currents.led ?? 0) + (currents.buzzer ?? 0))} mA`
-      : `${mA(lab.ledMa)} mA ${where}`;
+    readout =
+      loads.length > 1 && currents
+        ? `LED: ${mA(currents.led ?? 0)} mA · buzzer: ${mA(currents.buzzer ?? 0)} mA · total da bateria: ${mA((currents.led ?? 0) + (currents.buzzer ?? 0))} mA`
+        : `${mA(lab.ledMa)} mA ${where}`;
     // Without a resistor the real current would be far above this: say the bench is holding it back.
     if (lab.diag.limited) readout += ' (limite da simulação)';
   } else if (lab.energized && lab.blinkOff) readout = 'Contato instável: a luz pisca';
@@ -83,7 +101,7 @@ export default function LabBoard({
           ⚠ {lab.alarm}
         </div>
       )}
-      <BoardWorkspace
+      <Workspace
         pieces={pieces}
         onChange={setPieces}
         trail={lab.trail}
@@ -93,10 +111,11 @@ export default function LabBoard({
         onPress={lab.press}
         onReseat={lab.onReseat}
         trayTypes={hideTray ? [] : (settings?.tray ?? null)}
+        fit={fit}
       />
       {extra}
       <CapsuleLegend pieces={pieces} readings={lab.cap.readings} />
-      <details className="panel" style={{ maxWidth: 720, width: '100%', textAlign: 'left' }}>
+      <details className="panel lab-help" style={{ maxWidth: 720, width: '100%', textAlign: 'left' }}>
         <summary>Entenda a bancada e as telas</summary>
         <p>
           Cada coluna tem <strong>dois nós</strong>: um no banco de cima (A) e outro no de baixo (B). Os 6 furos da
@@ -118,24 +137,11 @@ export default function LabBoard({
           lições mais adiante.
         </p>
       </details>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, flexWrap: 'wrap' }}>
-        <button
-          type="button"
-          onClick={lab.toggle}
-          style={{
-            border: 0,
-            cursor: 'pointer',
-            fontFamily: 'var(--font-heading)',
-            fontSize: 16,
-            padding: '14px 30px',
-            borderRadius: 999,
-            background: lab.energized ? 'var(--color-neutral-700)' : 'var(--color-accent)',
-            color: 'var(--color-bg)',
-            boxShadow: 'var(--shadow-md)',
-          }}
-        >
-          {lab.energized ? 'Desligar' : 'Energizar'}
-        </button>
+      <div
+        className="power-row"
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, flexWrap: 'wrap' }}
+      >
+        <PowerButton on={lab.energized} onClick={lab.toggle} />
         <span
           role="status"
           style={{
@@ -148,7 +154,8 @@ export default function LabBoard({
         </span>
         {lab.diag.code === 'valido' && lab.energized && lab.diag.limited && (
           <span style={{ fontSize: 13 }}>
-            ⚠ resistência ausente ou pequena demais: o modelo simulado limita a corrente a 15 mA. Isso não comprova proteção na bancada física.
+            ⚠ resistência ausente ou pequena demais: o modelo simulado limita a corrente a 15 mA. Isso não comprova
+            proteção na bancada física.
           </span>
         )}
         {lab.diag.code === 'valido' && lab.energized && !lab.diag.limited && !pieces.some((p) => p.loose) && (
@@ -165,7 +172,12 @@ export default function LabBoard({
         )}
       </div>
       {pieces.some((p) => p.type === 'buzzer') && (
-        <p role="status">Som simulado: volume {Math.round(buzzerSound(lab.energized ? lab.diag.currents?.buzzer ?? 0 : 0).volume * 100)}% · tom {buzzerSound(lab.energized ? lab.diag.currents?.buzzer ?? 0 : 0).hz} Hz. O comportamento do buzzer físico ainda não foi medido.</p>
+        <p role="status">
+          Som simulado: volume{' '}
+          {Math.round(buzzerSound(lab.energized ? (lab.diag.currents?.buzzer ?? 0) : 0).volume * 100)}% · tom{' '}
+          {buzzerSound(lab.energized ? (lab.diag.currents?.buzzer ?? 0) : 0).hz} Hz. O comportamento do buzzer físico
+          ainda não foi medido.
+        </p>
       )}
       {pieces.some((p) => p.type === 'buzzer') && (
         <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13 }}>

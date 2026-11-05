@@ -2,14 +2,16 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { validateStep } from '../api/validator.ts';
 import { TutorVoiceContext, useSay, useTutorVoice } from '../audio/useTutorVoice.ts';
 import Bubble from '../components/Bubble.tsx';
+import { BoardSlotContext } from '../components/boardSlot.ts';
+import Icon from '../components/Icon.tsx';
 import LabBoard from '../components/LabBoard.tsx';
 import { capsuleConfig, formatOhms, isCapsule, NOMES } from '../engine/sim.ts';
 import { cumulativeBoard, effectiveSteps, startPieces } from '../model/steps.ts';
 import ExperimentStep from './ExperimentStep.tsx';
 import ExplainStep from './ExplainStep.tsx';
+import { challengeHint } from './hints.ts';
 import { boardBefore, buildPhases, challengeScore, type PlayerEvent } from './phases.ts';
 import { useLab } from './useLab.ts';
-import { challengeHint } from './hints.ts';
 
 export { boardBefore, buildPhases, challengeScore, type PlayerEvent };
 
@@ -196,6 +198,9 @@ export default function LessonPlayer({
   startPhase = 0,
   onEvent,
   exitLabel,
+  toolbar,
+  notice,
+  debug,
 }: {
   lesson: any;
   onExit: () => void;
@@ -204,6 +209,12 @@ export default function LessonPlayer({
   startPhase?: number;
   onEvent?: (event: PlayerEvent) => void;
   exitLabel?: string;
+  /** extra controls for the teacher's controls box (the Sandbox / Validator switch) */
+  toolbar?: React.ReactNode;
+  /** a warning shown in the lesson box (e.g. testing an unsaved version) */
+  notice?: string;
+  /** forces the validation details on or off (the bench preview has its own switch) */
+  debug?: boolean;
 }) {
   const phases = useMemo(() => buildPhases(lesson), [lesson]);
   const first = Math.min(Math.max(0, startPhase), phases.length - 1);
@@ -253,113 +264,188 @@ export default function LessonPlayer({
   const stepKey = 'step' in phase ? phase.step.id : 'challenge';
   const voice = useTutorVoice(lesson);
   const [muted, setMuted] = useState(false);
+  // teacher's validator: the board is drawn in a fixed left half (see BoardSlotContext)
+  const [slot, setSlot] = useState<HTMLElement | null>(null);
   useSay([lesson.title, lesson.instruction], -1, idx === 0); // again on "Testar de novo"
 
   return (
     <TutorVoiceContext.Provider value={voice}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 14, alignItems: 'center', textAlign: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, flexWrap: 'wrap' }}>
-          <h2 style={{ fontFamily: 'var(--font-heading)', margin: 0, fontSize: 'calc(20px * var(--text-scale, 1))' }}>
-            {lesson.title || 'Lição sem título'}
-          </h2>
-          <span style={{ fontSize: 'calc(13px * var(--text-scale, 1))', color: 'var(--color-neutral-600)' }}>
-            {phase.type === 'done' ? 'Concluída' : `Etapa ${idx + 1} de ${steps}`}
-          </span>
-          <button type="button" className="btn-outline" onClick={onExit}>
-            {exitLabel ?? 'Voltar ao editor'}
-          </button>
-          {!bench && (
-            <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 'calc(13px * var(--text-scale, 1))' }}>
-              <input type="checkbox" checked={debugEnabled} onChange={(e) => setDebugEnabled(e.target.checked)} />
-              Depurar validação
-            </label>
+      <BoardSlotContext.Provider value={bench ? null : slot}>
+        <div
+          className={bench ? undefined : 'player-desk'}
+          style={
+            bench
+              ? { display: 'flex', flexDirection: 'column', gap: 14, alignItems: 'center', textAlign: 'center' }
+              : undefined
+          }
+        >
+          {bench ? (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, flexWrap: 'wrap' }}>
+              <h2
+                style={{ fontFamily: 'var(--font-heading)', margin: 0, fontSize: 'calc(20px * var(--text-scale, 1))' }}
+              >
+                {lesson.title || 'Lição sem título'}
+              </h2>
+              <span style={{ fontSize: 'calc(13px * var(--text-scale, 1))', color: 'var(--color-neutral-600)' }}>
+                {phase.type === 'done' ? 'Concluída' : `Etapa ${idx + 1} de ${steps}`}
+              </span>
+              <button type="button" className="btn-outline" onClick={onExit}>
+                {exitLabel ?? 'Voltar ao editor'}
+              </button>
+              <label
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  fontSize: 'calc(13px * var(--text-scale, 1))',
+                }}
+              >
+                <input
+                  type="checkbox"
+                  checked={!muted}
+                  onChange={(e) => {
+                    setMuted(!e.target.checked);
+                    voice.setMuted(!e.target.checked);
+                  }}
+                />
+                Voz do tutor
+              </label>
+            </div>
+          ) : (
+            <div className="board-slot" ref={setSlot} />
           )}
-          <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 'calc(13px * var(--text-scale, 1))' }}>
-            <input
-              type="checkbox"
-              checked={!muted}
-              onChange={(e) => {
-                setMuted(!e.target.checked);
-                voice.setMuted(!e.target.checked);
-              }}
-            />
-            Voz do tutor
-          </label>
-          {!bench && <AudioStatus lesson={lesson} />}
+          <div
+            className={bench ? 'player-steps-bench' : 'player-right'}
+            style={bench ? { display: 'contents' } : undefined}
+          >
+            {!bench && (
+              <div className="player-bar">
+                <section className="panel player-tools" aria-label="Controles do teste">
+                  {toolbar}
+                  <button type="button" className="btn-outline btn-icon" onClick={onExit}>
+                    <Icon name="edit" size={16} />
+                    {exitLabel ?? 'Voltar ao editor'}
+                  </button>
+                  <div className="player-switches">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={debugEnabled}
+                        onChange={(e) => setDebugEnabled(e.target.checked)}
+                      />
+                      Depurar validação
+                    </label>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={!muted}
+                        onChange={(e) => {
+                          setMuted(!e.target.checked);
+                          voice.setMuted(!e.target.checked);
+                        }}
+                      />
+                      Voz do tutor
+                    </label>
+                  </div>
+                  <AudioStatus lesson={lesson} />
+                </section>
+                <section className="panel player-info" aria-label="Lição em teste">
+                  <div className="player-info-head">
+                    <h2>{lesson.title || 'Lição sem título'}</h2>
+                    <span className="player-step-chip">
+                      {phase.type === 'done' ? 'Concluída' : `Etapa ${idx + 1} de ${steps}`}
+                    </span>
+                  </div>
+                  {lesson.instruction && <p className="player-instruction">{lesson.instruction}</p>}
+                  {notice && (
+                    <p role="status" className="player-notice">
+                      {notice}
+                    </p>
+                  )}
+                </section>
+              </div>
+            )}
+            {lesson.instruction && bench && !['step', 'challenge', 'experiment'].includes(phase.type) && (
+              <p style={{ margin: 0, maxWidth: 720, fontSize: 'calc(14px * var(--text-scale, 1))', lineHeight: 1.5 }}>
+                {lesson.instruction}
+              </p>
+            )}
+            <div
+              className={bench ? 'player-steps-bench' : 'player-body'}
+              style={bench ? { display: 'contents' } : undefined}
+            >
+              {phase.type === 'quiz' && (
+                <QuizStep
+                  key={phase.quiz.id}
+                  quiz={phase.quiz}
+                  onDone={next}
+                  mascotKind={mascotKind}
+                  onAnswer={(correct) => onEvent?.({ type: 'quiz', quizId: phase.quiz.id, correct })}
+                  onPrediction={setPrediction}
+                />
+              )}
+              {phase.type === 'explain' && <ExplainStep key={stepKey} step={phase.step} onDone={next} />}
+              {phase.type === 'experiment' && (
+                <ExperimentStep
+                  key={stepKey}
+                  lesson={lesson}
+                  step={phase.step}
+                  pieces={pieces}
+                  setPieces={setPieces}
+                  onDone={next}
+                  mascotKind={mascotKind}
+                  prediction={prediction}
+                  clipsSwapped={clipsSwapped}
+                />
+              )}
+              {phase.type === 'interact' && (
+                <InteractStep
+                  key={stepKey}
+                  lesson={lesson}
+                  phase={phase}
+                  pieces={pieces}
+                  onDone={next}
+                  mascotKind={mascotKind}
+                  onAnswer={(correct) => onEvent?.({ type: 'quiz', quizId: phase.quiz?.id, correct })}
+                  onPrediction={setPrediction}
+                  clipsSwapped={clipsSwapped}
+                />
+              )}
+              {(phase.type === 'step' || phase.type === 'challenge') && (
+                <BuildStep
+                  key={stepKey}
+                  lesson={lesson}
+                  stepIdx={phase.type === 'step' ? phase.idx : 0}
+                  final={phase.type === 'challenge' || phase.step.action === 'connect_circuit'}
+                  text={phase.type === 'step' ? phase.step.text : ''}
+                  pieces={pieces}
+                  setPieces={setPieces}
+                  debugEnabled={debug ?? debugEnabled}
+                  timeLimitS={phase.type === 'challenge' ? lesson.timeLimitS : null}
+                  onDone={next}
+                  onExpired={() => {
+                    outcome.current.expired = true;
+                  }}
+                  mascotKind={mascotKind}
+                  bench={bench}
+                />
+              )}
+              {phase.type === 'done' && !bench && (
+                <>
+                  <SpokenBubble
+                    kind={mascotKind}
+                    tone="ok"
+                    message="Lição concluída! É assim que o aluno vai passar por ela."
+                  />
+                  <button type="button" className="btn-primary" onClick={restart}>
+                    Testar de novo
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
         </div>
-        {lesson.instruction && (
-          <p style={{ margin: 0, maxWidth: 720, fontSize: 'calc(14px * var(--text-scale, 1))', lineHeight: 1.5 }}>{lesson.instruction}</p>
-        )}
-
-        {phase.type === 'quiz' && (
-          <QuizStep
-            key={phase.quiz.id}
-            quiz={phase.quiz}
-            onDone={next}
-            mascotKind={mascotKind}
-            onAnswer={(correct) => onEvent?.({ type: 'quiz', quizId: phase.quiz.id, correct })}
-            onPrediction={setPrediction}
-          />
-        )}
-        {phase.type === 'explain' && <ExplainStep key={stepKey} step={phase.step} onDone={next} />}
-        {phase.type === 'experiment' && (
-          <ExperimentStep
-            key={stepKey}
-            lesson={lesson}
-            step={phase.step}
-            pieces={pieces}
-            setPieces={setPieces}
-            onDone={next}
-            mascotKind={mascotKind}
-            prediction={prediction}
-            clipsSwapped={clipsSwapped}
-          />
-        )}
-        {phase.type === 'interact' && (
-          <InteractStep
-            key={stepKey}
-            lesson={lesson}
-            phase={phase}
-            pieces={pieces}
-            onDone={next}
-            mascotKind={mascotKind}
-            onAnswer={(correct) => onEvent?.({ type: 'quiz', quizId: phase.quiz?.id, correct })}
-            onPrediction={setPrediction}
-            clipsSwapped={clipsSwapped}
-          />
-        )}
-        {(phase.type === 'step' || phase.type === 'challenge') && (
-          <BuildStep
-            key={stepKey}
-            lesson={lesson}
-            stepIdx={phase.type === 'step' ? phase.idx : 0}
-            final={phase.type === 'challenge' || phase.step.action === 'connect_circuit'}
-            text={phase.type === 'step' ? phase.step.text : ''}
-            pieces={pieces}
-            setPieces={setPieces}
-            debugEnabled={debugEnabled}
-            timeLimitS={phase.type === 'challenge' ? lesson.timeLimitS : null}
-            onDone={next}
-            onExpired={() => {
-              outcome.current.expired = true;
-            }}
-            mascotKind={mascotKind}
-            bench={bench}
-          />
-        )}
-        {phase.type === 'done' && !bench && (
-          <>
-            <SpokenBubble
-              kind={mascotKind}
-              tone="ok"
-              message="Lição concluída! É assim que o aluno vai passar por ela."
-            />
-            <button type="button" className="btn-primary" onClick={restart}>
-              Testar de novo
-            </button>
-          </>
-        )}
-      </div>
+      </BoardSlotContext.Provider>
     </TutorVoiceContext.Provider>
   );
 }
@@ -377,7 +463,7 @@ function AudioStatus({ lesson }) {
   if (!audio) text = 'Sem áudio: salve a lição para gerar a voz.';
   else if (audio.status !== 'ok') text = 'Sem voz do tutor. Você pode ler os textos na tela.';
   if (!text) return null;
-  return <span style={{ fontSize: 'calc(12px * var(--text-scale, 1))', color: 'var(--color-neutral-600)' }}>{text}</span>;
+  return <span className="player-audio-status">{text}</span>;
 }
 
 /** `verify(optionId)` (optional): async server-side check returning { approved, message }. */
@@ -502,7 +588,9 @@ function InteractStep({ lesson, phase, pieces, onDone, mascotKind, onAnswer, onP
   }
   return (
     <>
-      {phase.step.text && <p style={{ margin: 0, maxWidth: 720, fontSize: 'calc(14px * var(--text-scale, 1))' }}>{phase.step.text}</p>}
+      {phase.step.text && (
+        <p style={{ margin: 0, maxWidth: 720, fontSize: 'calc(14px * var(--text-scale, 1))' }}>{phase.step.text}</p>
+      )}
       <QuizStep quiz={quiz} onDone={onDone} mascotKind={mascotKind} verify={verify} onPrediction={onPrediction} />
     </>
   );
@@ -634,7 +722,7 @@ function BuildStep({
     );
   useSay([msg]);
   return (
-    <>
+    <div className="lab-step">
       <Bubble kind={mascotKind} tone={tone} message={msg} />
       {debugEnabled && (
         <ValidationDebug
@@ -685,6 +773,6 @@ function BuildStep({
           </button>
         )}
       </div>
-    </>
+    </div>
   );
 }

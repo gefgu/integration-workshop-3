@@ -16,7 +16,9 @@ const TONE_INK = {
 /** Mascote + balão de fala colorido pelo tom da mensagem. */
 export default function Bubble({ kind = 'hamster', tone = 'info', message }) {
   return (
-    <div style={{ width: '100%', maxWidth: 'var(--bubble-width, 720px)', display: 'flex', alignItems: 'center', gap: 16 }}>
+    <div
+      style={{ width: '100%', maxWidth: 'var(--bubble-width, 720px)', display: 'flex', alignItems: 'center', gap: 16 }}
+    >
       <Mascot kind={kind} message={message} size={80} />
       <div style={{ position: 'relative', flex: 1 }}>
         <div

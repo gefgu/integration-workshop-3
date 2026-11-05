@@ -1,6 +1,9 @@
 import type { ReactNode } from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import {
+  BOARD_H,
+  BOARD_W,
   buildPiece,
   colX,
   flip,
@@ -15,6 +18,8 @@ import { AMMETER_SLOT, slotAnchor } from '../engine/nodes.ts';
 import { CAPSULE, DEFS, isCapsule, NOMES, nextConfig, POT_DEFAULT, POT_VALUES } from '../engine/sim.ts';
 import type { CapsuleReading, CircuitTrail, Piece, PieceType } from '../model/types.ts';
 import Breadboard from './Breadboard.tsx';
+import { BoardSlotContext } from './boardSlot.ts';
+import Icon from './Icon.tsx';
 import PieceView from './PieceView.tsx';
 import Tray from './Tray.tsx';
 
@@ -29,6 +34,7 @@ const BODY_PAD = SOCKET / 2;
  *  - readings: OLED text and output level per smart-capsule id (click a capsule to change its setting)
  *  - readOnly: a preview — no tray, no dragging, no clearing
  *  - highlightIds: Set of piece ids drawn with an accent outline (e.g. the current step's piece)
+ *  - boardHeader: content shown above the workbench (the editor's Protoboard/Esquema switch)
  *  - boardFooter: extra content shown below the workbench
  */
 interface BoardWorkspaceProps {
@@ -42,11 +48,14 @@ interface BoardWorkspaceProps {
   readings?: Record<string, CapsuleReading> | null;
   readOnly?: boolean;
   highlightIds?: Set<string> | null;
+  boardHeader?: ReactNode;
   boardFooter?: ReactNode;
   /** Parts offered in the tray (default: the kit without the color-code capsule). */
   trayTypes?: PieceType[] | null;
   /** A loose piece was clicked and is now seated. */
   onReseat?: (id: string) => void;
+  /** Shrink the board to fit its column's height instead of making the column scroll (the lesson editor). */
+  fit?: boolean;
 }
 export default function BoardWorkspace({
   pieces,
@@ -59,11 +68,37 @@ export default function BoardWorkspace({
   readings = null,
   readOnly = false,
   highlightIds = null,
+  boardHeader,
   boardFooter,
   trayTypes = null,
   onReseat,
+  fit = false,
 }: BoardWorkspaceProps) {
   const boardRef = useRef(null);
+  const slot = useContext(BoardSlotContext);
+  const columnRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+  // `fit`: the board takes whatever height its column has left after the header, never below half size.
+  useLayoutEffect(() => {
+    const column = columnRef.current;
+    if (!fit || !column) return undefined;
+    const measure = () => {
+      const others = [...column.children].filter((c) => !c.classList.contains('board-fit'));
+      const used = others.reduce((sum, c) => sum + (c as HTMLElement).offsetHeight, 0);
+      const style = getComputedStyle(column);
+      const padY = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom) + 12;
+      const padX = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+      const next = Math.max(
+        0.35,
+        Math.min(1, (column.clientHeight - used - padY) / BOARD_H, (column.clientWidth - padX) / BOARD_W)
+      );
+      setScale((prev) => (Math.abs(prev - next) < 0.005 ? prev : next));
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(column);
+    return () => observer.disconnect();
+  }, [fit, slot]);
   const [drag, setDrag] = useState(null);
   const [notice, setNotice] = useState(null);
   const dragRef = useRef(null);
@@ -80,7 +115,8 @@ export default function BoardWorkspace({
 
   const holeAt = useCallback((clientX, clientY) => {
     const r = boardRef.current.getBoundingClientRect();
-    return nearestHole(clientX - r.left, clientY - r.top);
+    const k = r.width / BOARD_W || 1; // the board may be drawn scaled (fit)
+    return nearestHole((clientX - r.left) / k, (clientY - r.top) / k);
   }, []);
 
   const begin = useCallback((next) => {
@@ -172,7 +208,6 @@ export default function BoardWorkspace({
     onChange(piecesRef.current.map((x) => (x.id === p.id ? { ...x, value: next } : x)));
   }
 
-
   // Snap preview while dragging over the board.
   let preview = null;
   if (drag?.moved && boardRef.current) {
@@ -186,161 +221,185 @@ export default function BoardWorkspace({
   const energizedIds = trail ? trail.edgeIds : new Set();
   const brilho = Math.min(1, ledMa / 8);
 
-  return (
-    <div style={{ display: 'flex', gap: 18, alignItems: 'flex-start', justifyContent: 'center' }}>
-      {!readOnly && (
-        <div className="board-tray-column">
-          <Tray pieces={pieces} onDragStart={startTrayDrag} types={trayTypes} />
-        </div>
-      )}
-      <div className="board-workbench-column">
-        <Breadboard
-          boardRef={boardRef}
-          trail={trail}
-          labels={!readOnly}
-          pieces={pieces}
-          preview={preview && !preview.err ? preview.piece : null}
-        >
-          {[1, 2, 3, 4, 5, 6].map((slot) => {
-            const { a, row } = slotAnchor(slot);
-            return (
-              <div
-                key={`slot-${slot}`}
-                aria-hidden="true"
-                title={
-                  slot === AMMETER_SLOT ? 'Encaixe 2: único com amperímetro' : `Encaixe ${slot} de cápsula inteligente`
-                }
-                style={{
-                  position: 'absolute',
-                  left: colX(a) - BODY_PAD - 3,
-                  top: rowY(row) - 20,
-                  width: colX(a + 2) - colX(a) + 2 * BODY_PAD + 6,
-                  height: 40,
-                  borderRadius: 10,
-                  border: '1.5px dashed var(--color-neutral-500)',
-                  opacity: 0.55,
-                  pointerEvents: 'none',
-                  fontSize: 9,
-                  fontWeight: 700,
-                  color: 'var(--color-neutral-600)',
-                  display: 'flex',
-                  alignItems: 'flex-end',
-                  justifyContent: 'flex-end',
-                  padding: '0 5px 1px',
-                  boxSizing: 'border-box',
-                }}
-              >
-                {slot === AMMETER_SLOT ? `E${slot} · A` : `E${slot}`}
-              </div>
-            );
-          })}
-          {preview && (
-            <div
-              style={{
-                position: 'absolute',
-                left: colX(span(preview.piece)[0]) - BODY_PAD,
-                top: rowY(preview.piece.row) - 16,
-                width: colX(span(preview.piece)[1]) - colX(span(preview.piece)[0]) + 2 * BODY_PAD,
-                height: 32,
-                borderRadius: 8,
-                border: `2px dashed ${preview.err ? 'var(--color-accent-700)' : 'var(--color-accent-2-600)'}`,
-                background: preview.err ? 'rgba(198,113,57,.15)' : 'rgba(143,160,115,.18)',
-                zIndex: 1,
-              }}
-            />
-          )}
-
-          {pieces.map((p) => {
-            const [lo, hi] = span(p);
-            const hidden = drag && drag.id === p.id && drag.moved;
-            const glow = energizedIds.has(p.id);
-            return (
-              <div
-                key={p.id}
-                onPointerDown={readOnly ? undefined : (e) => startPieceDrag(p, e)}
-                title={
-                  p.loose
-                    ? `${NOMES[p.type]} — mal encaixado: clique para encaixar de verdade`
-                    : isCapsule(p.type)
-                      ? `${NOMES[p.type]} — clique para mudar (Shift: ciclo)`
-                      : NOMES[p.type]
-                }
-                style={{
-                  position: 'absolute',
-                  left: colX(lo) - BODY_PAD,
-                  top: rowY(p.row) - (p.type.startsWith('jumper') ? SOCKET / 2 : 14),
-                  width: colX(hi) - colX(lo) + 2 * BODY_PAD,
-                  zIndex: 3,
-                  cursor: readOnly ? 'default' : 'grab',
-                  opacity: hidden ? 0.25 : 1,
-                  outline: highlightIds?.has(p.id) ? '3px solid var(--color-accent)' : 'none',
-                  outlineOffset: 2,
-                  borderRadius: 8,
-                  transform: p.loose ? 'translateY(-6px) rotate(-5deg)' : undefined,
-                  transition: 'transform .15s',
-                  filter:
-                    glow && p.type !== 'led' && p.type !== 'buzzer'
-                      ? 'drop-shadow(0 0 6px rgba(143,160,115,.9))'
-                      : 'none',
-                }}
-              >
-                {p.loose && (
-                  <span
-                    aria-hidden="true"
-                    style={{
-                      position: 'absolute',
-                      top: -17,
-                      left: 0,
-                      fontSize: 9,
-                      fontWeight: 700,
-                      padding: '1px 5px',
-                      borderRadius: 6,
-                      background: 'var(--color-accent-700)',
-                      color: '#fff',
-                    }}
-                  >
-                    solto
-                  </span>
-                )}
-                <PieceView
-                  type={p.type}
-                  width={colX(hi) - colX(lo) + 2 * BODY_PAD}
-                  height={p.type.startsWith('jumper') ? SOCKET : 28}
-                  fill
-                  reversed={p.a > p.b}
-                  lit={glow && (p.type === 'led' || p.type === 'buzzer')}
-                  brilho={brilho}
-                  value={p.value}
-                  oled={readings?.[p.id]?.lines}
-                  fault={readings?.[p.id]?.fault}
-                  onPotStep={!readOnly && p.type === 'potenciometro' ? (dir) => stepPot(p, dir) : undefined}
-                  pressed={!!pressed && pressed.has(p.id)}
-                  onButton={p.type === 'botao' && onPress ? (down) => onPress(p.id, down) : undefined}
-                />
-              </div>
-            );
-          })}
-        </Breadboard>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, minHeight: 36, marginTop: 8 }}>
+  const workbench = (
+    <div className="board-workbench-column" ref={columnRef}>
+      {(boardHeader || !readOnly) && (
+        <div className="board-header">
+          {boardHeader}
           {!readOnly && (
             <button
               type="button"
-              className="btn-outline"
+              className="icon-btn icon-btn-outline board-clear has-tip"
+              data-tip="Limpar protoboard"
+              aria-label="Limpar protoboard"
               disabled={pieces.length === 0}
               onClick={() => {
                 setNotice(null);
                 onChange([]);
               }}
             >
-              Limpar bancada
+              <Icon name="eraser" size={18} />
             </button>
           )}
-          <div style={{ fontSize: 13, color: 'var(--color-accent-800)' }} role="status">
-            {notice}
-          </div>
         </div>
-        {boardFooter && <div className="board-footer">{boardFooter}</div>}
+      )}
+      <div
+        className="board-fit"
+        style={fit ? { width: BOARD_W * scale, height: BOARD_H * scale, flex: 'none' } : undefined}
+      >
+        <div style={fit && scale !== 1 ? { transform: `scale(${scale})`, transformOrigin: 'top left' } : undefined}>
+          <Breadboard
+            boardRef={boardRef}
+            trail={trail}
+            labels={!readOnly}
+            pieces={pieces}
+            preview={preview && !preview.err ? preview.piece : null}
+          >
+            {[1, 2, 3, 4, 5, 6].map((slot) => {
+              const { a, row } = slotAnchor(slot);
+              return (
+                <div
+                  key={`slot-${slot}`}
+                  aria-hidden="true"
+                  title={
+                    slot === AMMETER_SLOT
+                      ? 'Encaixe 2: único com amperímetro'
+                      : `Encaixe ${slot} de cápsula inteligente`
+                  }
+                  style={{
+                    position: 'absolute',
+                    left: colX(a) - BODY_PAD - 3,
+                    top: rowY(row) - 20,
+                    width: colX(a + 2) - colX(a) + 2 * BODY_PAD + 6,
+                    height: 40,
+                    borderRadius: 10,
+                    border: '1.5px dashed var(--color-neutral-500)',
+                    opacity: 0.55,
+                    pointerEvents: 'none',
+                    fontSize: 9,
+                    fontWeight: 700,
+                    color: 'var(--color-neutral-600)',
+                    display: 'flex',
+                    alignItems: 'flex-end',
+                    justifyContent: 'flex-end',
+                    padding: '0 5px 1px',
+                    boxSizing: 'border-box',
+                  }}
+                >
+                  {slot === AMMETER_SLOT ? `E${slot} · A` : `E${slot}`}
+                </div>
+              );
+            })}
+            {preview && (
+              <div
+                style={{
+                  position: 'absolute',
+                  left: colX(span(preview.piece)[0]) - BODY_PAD,
+                  top: rowY(preview.piece.row) - 16,
+                  width: colX(span(preview.piece)[1]) - colX(span(preview.piece)[0]) + 2 * BODY_PAD,
+                  height: 32,
+                  borderRadius: 8,
+                  border: `2px dashed ${preview.err ? 'var(--color-accent-700)' : 'var(--color-accent-2-600)'}`,
+                  background: preview.err ? 'rgba(198,113,57,.15)' : 'rgba(143,160,115,.18)',
+                  zIndex: 1,
+                }}
+              />
+            )}
+
+            {pieces.map((p) => {
+              const [lo, hi] = span(p);
+              const hidden = drag && drag.id === p.id && drag.moved;
+              const glow = energizedIds.has(p.id);
+              return (
+                <div
+                  key={p.id}
+                  onPointerDown={readOnly ? undefined : (e) => startPieceDrag(p, e)}
+                  title={
+                    p.loose
+                      ? `${NOMES[p.type]} — mal encaixado: clique para encaixar de verdade`
+                      : isCapsule(p.type)
+                        ? `${NOMES[p.type]} — clique para mudar (Shift: ciclo)`
+                        : NOMES[p.type]
+                  }
+                  style={{
+                    position: 'absolute',
+                    left: colX(lo) - BODY_PAD,
+                    top: rowY(p.row) - (p.type.startsWith('jumper') ? SOCKET / 2 : 14),
+                    width: colX(hi) - colX(lo) + 2 * BODY_PAD,
+                    zIndex: 3,
+                    cursor: readOnly ? 'default' : 'grab',
+                    opacity: hidden ? 0.25 : 1,
+                    outline: highlightIds?.has(p.id) ? '3px solid var(--color-accent)' : 'none',
+                    outlineOffset: 2,
+                    borderRadius: 8,
+                    transform: p.loose ? 'translateY(-6px) rotate(-5deg)' : undefined,
+                    transition: 'transform .15s',
+                    filter:
+                      glow && p.type !== 'led' && p.type !== 'buzzer'
+                        ? 'drop-shadow(0 0 6px rgba(143,160,115,.9))'
+                        : 'none',
+                  }}
+                >
+                  {p.loose && (
+                    <span
+                      aria-hidden="true"
+                      style={{
+                        position: 'absolute',
+                        top: -17,
+                        left: 0,
+                        fontSize: 9,
+                        fontWeight: 700,
+                        padding: '1px 5px',
+                        borderRadius: 6,
+                        background: 'var(--color-accent-700)',
+                        color: '#fff',
+                      }}
+                    >
+                      solto
+                    </span>
+                  )}
+                  <PieceView
+                    type={p.type}
+                    width={colX(hi) - colX(lo) + 2 * BODY_PAD}
+                    height={p.type.startsWith('jumper') ? SOCKET : 28}
+                    fill
+                    reversed={p.a > p.b}
+                    lit={glow && (p.type === 'led' || p.type === 'buzzer')}
+                    brilho={brilho}
+                    value={p.value}
+                    oled={readings?.[p.id]?.lines}
+                    fault={readings?.[p.id]?.fault}
+                    onPotStep={!readOnly && p.type === 'potenciometro' ? (dir) => stepPot(p, dir) : undefined}
+                    pressed={!!pressed && pressed.has(p.id)}
+                    onButton={p.type === 'botao' && onPress ? (down) => onPress(p.id, down) : undefined}
+                  />
+                </div>
+              );
+            })}
+          </Breadboard>
+        </div>
       </div>
+      {/* placement notices ("já existe uma peça…") show only when there is one */}
+      <div className="board-actions" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{ fontSize: 13, color: 'var(--color-accent-800)', marginTop: notice ? 8 : 0 }} role="status">
+          {notice}
+        </div>
+      </div>
+      {boardFooter && <div className="board-footer">{boardFooter}</div>}
+    </div>
+  );
+
+  return (
+    <div
+      className="board-workspace"
+      style={{ display: 'flex', gap: 18, alignItems: 'flex-start', justifyContent: 'center' }}
+    >
+      {!readOnly && (
+        <div className="board-tray-column">
+          <Tray pieces={pieces} onDragStart={startTrayDrag} types={trayTypes} />
+        </div>
+      )}
+      {slot ? createPortal(workbench, slot) : workbench}
 
       {drag?.moved && (
         <div

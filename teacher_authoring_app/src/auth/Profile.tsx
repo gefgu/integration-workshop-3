@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { auth } from '../api/auth.ts';
+import Icon from '../components/Icon.tsx';
 import { useAuth } from './AuthContext.tsx';
 
 export default function Profile() {
@@ -118,8 +119,13 @@ export default function Profile() {
           value={deletePassword}
           onChange={(e) => setDeletePassword(e.target.value)}
         />
-        <button className="btn-outline" type="submit">
-          Excluir minha conta
+        <button
+          className="icon-btn icon-btn-outline danger has-tip"
+          type="submit"
+          data-tip="Excluir minha conta"
+          aria-label="Excluir minha conta"
+        >
+          <Icon name="trash" size={16} />
         </button>
       </form>
     </div>

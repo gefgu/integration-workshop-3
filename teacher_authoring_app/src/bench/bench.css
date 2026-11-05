@@ -17,8 +17,9 @@
   --color-accent-200: #ffd2b8;
   --color-divider: color-mix(in srgb, #120f0d 38%, transparent);
   height: 100vh;
+  overflow: hidden;
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto minmax(0, 1fr);
   background: var(--color-bg);
   color: var(--color-text);
   font-size: 19px;
@@ -70,9 +71,19 @@
   color: var(--color-text);
 }
 .bench-stage {
-  overflow: auto;
-  padding: 8px 20px 24px;
-  touch-action: pan-y;
+  /* 1024×600 touch monitor: screens never scroll; FitStage scales a screen down when it is too big. */
+  overflow: hidden;
+  padding: 8px 16px 10px;
+  min-height: 0;
+  touch-action: none;
+}
+.fit-stage {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+.fit-stage-inner {
+  transform-origin: top left;
 }
 .bench-center {
   display: flex;
@@ -211,4 +222,110 @@
   place-items: center;
   margin: 0;
   color: var(--color-bg);
+}
+
+/* Steps with a board on the 1024×600 monitor: board on the right, everything else stacked on the left, so the
+   screen fits without scrolling (FitStage scales the rest). */
+.bench-shell .lab-step {
+  display: grid;
+  /* column 1: one stack with the bubble, title, legend, explanations, Energizar, missions and Continuar;
+     column 2: the tray; column 3: the board. Tray and board span every row, so only column 1 sets row heights. */
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-rows: repeat(16, auto) minmax(0, 1fr);
+  column-gap: 18px;
+  /* no row-gap: the template has spare empty rows; items carry their own spacing */
+  width: 100%;
+  align-items: start;
+  text-align: left;
+}
+.bench-shell .lab-step > *,
+.bench-shell .lab-step .board-workspace > * {
+  grid-column: 1;
+  max-width: none;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+.bench-shell .lab-step .board-workspace {
+  /* BoardWorkspace sets display inline */
+  display: contents !important;
+}
+.bench-shell .lab-step .board-workbench-column {
+  grid-column: 3;
+  grid-row: 1 / -1;
+}
+.bench-shell .lab-step .board-tray-column {
+  grid-column: 2;
+  grid-row: 1 / -1;
+  width: 320px;
+}
+.bench-shell .lab-step .tray-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* The bench clears its board by hand (or by dragging pieces off); placement notices float over the board's foot. */
+.bench-shell .lab-step .board-workbench-column {
+  position: relative;
+}
+.bench-shell .board-clear {
+  display: none;
+}
+.bench-shell .lab-step .board-actions {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 26px;
+  min-height: 0 !important;
+  margin: 0 !important;
+  justify-content: center;
+  pointer-events: none;
+}
+.bench-shell .lab-step .board-actions [role='status']:not(:empty) {
+  background: var(--color-accent-200);
+  border: 2px solid var(--color-accent-700);
+  border-radius: 12px;
+  padding: 6px 12px;
+  font-size: 17px !important;
+  font-weight: 700;
+}
+
+/* Reading cards with a drawing: drawing on the left, text and button on the right, so they fit the 600 px height. */
+.bench-shell .explain-card:has(> figure) {
+  max-width: none !important;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  column-gap: 22px;
+  align-items: start;
+}
+.bench-shell .explain-card:has(> figure) > * {
+  grid-column: 2;
+}
+.bench-shell .explain-card:has(> figure) > h2 {
+  grid-column: 1 / -1;
+}
+.bench-shell .explain-card > figure {
+  grid-column: 1;
+  grid-row: 2 / span 8;
+}
+.bench-shell .explain-card:has(> figure) > p:first-of-type {
+  margin-top: 0;
+}
+.bench-shell .explain-card:has(> figure) > button {
+  justify-self: start;
+}
+
+/* The student's lesson list grows with the module (up to 20 lessons): two columns on a wider card. */
+.bench-card:has(.bench-lessons) {
+  width: min(100%, 980px);
+}
+.bench-shell .bench-lessons {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.bench-shell .bench-lessons button {
+  height: 100%;
+  align-items: center;
+}
+
+/* The bench clears the board by hand: no eraser row above it. */
+.bench-shell .board-header {
+  display: none;
 }

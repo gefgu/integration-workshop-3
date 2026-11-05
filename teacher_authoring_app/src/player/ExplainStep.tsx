@@ -8,7 +8,7 @@ export default function ExplainStep({ step, onDone }: { step: LessonStep; onDone
   const paragraphs = step.text.split(/\n{2,}/).filter((t) => t.trim());
   useSay([step.title, ...paragraphs]);
   return (
-    <section className="panel" style={{ maxWidth: 720, width: '100%', textAlign: 'left' }}>
+    <section className="panel explain-card" style={{ maxWidth: 720, width: '100%', textAlign: 'left' }}>
       {step.title && <h2 style={{ marginTop: 0 }}>{step.title}</h2>}
       {step.illustration && <Illustration art={step.illustration} />}
       {paragraphs.map((t) => (

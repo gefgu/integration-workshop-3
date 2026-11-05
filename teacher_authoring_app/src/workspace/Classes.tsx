@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
-import { orderLessons, lessonLabel } from '../model/library.ts';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import type { ClassDetail, Module, SchoolClass } from '../api/workspace.ts';
 import { workspace } from '../api/workspace.ts';
+import Icon from '../components/Icon.tsx';
+import { IconButton, TrashButton } from '../components/IconButton.tsx';
+import NameDialog from '../components/NameDialog.tsx';
+import { lessonLabel, orderLessons } from '../model/library.ts';
 import type { Lesson } from '../model/types.ts';
 import OrderedPicker from './OrderedPicker.tsx';
 import { StudentManager } from './Students.tsx';
@@ -15,88 +18,82 @@ export default function Classes({ lessons }: { lessons: Lesson[] }) {
 function ClassList() {
   const navigate = useNavigate();
   const [items, setItems] = useState<SchoolClass[]>([]);
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const [creating, setCreating] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
     workspace.listClasses().then(setItems, (cause) => setError(cause.message));
   }, []);
 
-  async function create(event: React.FormEvent) {
-    event.preventDefault();
+  async function create({ name, description }: { name: string; description: string }) {
     try {
       const item = await workspace.createClass({ name, description });
-      setItems((current) => [...current, item]);
-      setError('');
       navigate(`/turmas/${item.id}`);
+      return true;
     } catch (cause) {
       setError((cause as Error).message);
+      return false;
     }
   }
 
   return (
     <div className="workspace-page">
-      <h2>Turmas</h2>
-      <p>Organize alunos e módulos por turma.</p>
+      <div className="page-head">
+        <div>
+          <h2>Turmas</h2>
+          <p>Organize alunos e módulos por turma.</p>
+        </div>
+        <IconButton icon="plus" label="Nova turma" outline onClick={() => setCreating(true)} />
+      </div>
       {error && (
         <p className="app-error" role="alert">
           {error}
         </p>
       )}
-      <form className="panel workspace-form" onSubmit={create}>
-        <h3>Nova turma</h3>
-        <label className="field-label" htmlFor="class-name">
-          Nome
-        </label>
-        <input
-          id="class-name"
-          className="text-input"
-          required
-          maxLength={255}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Ex.: 7º ano A"
-        />
-        <label className="field-label" htmlFor="class-description">
-          Descrição
-        </label>
-        <textarea
-          id="class-description"
-          className="text-input"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <button className="btn-primary" type="submit">
-          Criar turma
-        </button>
-      </form>
+      {items.length === 0 && !error && (
+        <p className="muted-line">Nenhuma turma ainda. Use o + para criar a primeira.</p>
+      )}
       <div className="workspace-cards">
         {items.map((item) => (
-          <article className="panel" key={item.id}>
+          <article className="panel workspace-card" key={item.id}>
             <h3>{item.name}</h3>
             <p>{item.description || 'Sem descrição'}</p>
             <p className="muted-line">
               {item.student_count ?? 0} {item.student_count === 1 ? 'aluno' : 'alunos'}
             </p>
-            <div className="workspace-actions">
-              <Link to={`/turmas/${item.id}`}>Abrir turma</Link>
-              <Link to={`/painel/${item.id}`}>Ver desempenho</Link>
+            <div className="workspace-card-actions">
+              <Link className="btn-outline btn-icon" to={`/turmas/${item.id}`}>
+                <Icon name="edit" />
+                Abrir turma
+              </Link>
+              <Link className="btn-outline btn-icon" to={`/painel/${item.id}`}>
+                <Icon name="chart" />
+                Desempenho
+              </Link>
             </div>
           </article>
         ))}
       </div>
+      {creating && (
+        <NameDialog
+          title="Nova turma"
+          placeholder="Ex.: 7º ano A"
+          submitLabel="Criar turma"
+          onSubmit={create}
+          onClose={() => setCreating(false)}
+        />
+      )}
     </div>
   );
 }
 
+/** A class: its basics in a small header, then the students first, then what the class studies. */
 function ClassPage({ classId, lessons }: { classId: number; lessons: Lesson[] }) {
   const navigate = useNavigate();
   const [detail, setDetail] = useState<ClassDetail | null>(null);
   const [classes, setClasses] = useState<SchoolClass[]>([]);
   const [modules, setModules] = useState<Module[]>([]);
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const [editing, setEditing] = useState(false);
   const [error, setError] = useState('');
   const [status, setStatus] = useState('');
 
@@ -104,8 +101,6 @@ function ClassPage({ classId, lessons }: { classId: number; lessons: Lesson[] })
     Promise.all([workspace.getClass(classId), workspace.listClasses(), workspace.listModules()]).then(
       ([item, allClasses, allModules]) => {
         setDetail(item);
-        setName(item.name);
-        setDescription(item.description);
         setClasses(allClasses);
         setModules(allModules);
         setError('');
@@ -124,18 +119,14 @@ function ClassPage({ classId, lessons }: { classId: number; lessons: Lesson[] })
       await refresh();
       setError('');
       setStatus(message);
+      return true;
     } catch (cause) {
       setError((cause as Error).message);
+      return false;
     }
   }
 
-  async function saveClass(event: React.FormEvent) {
-    event.preventDefault();
-    await run(() => workspace.updateClass(classId, { name, description }), 'Turma atualizada.');
-  }
-
   async function removeClass() {
-    if (!confirm('Excluir esta turma, seus alunos e o histórico deles? Módulos e lições serão preservados.')) return;
     try {
       await workspace.deleteClass(classId);
       navigate('/turmas');
@@ -146,87 +137,90 @@ function ClassPage({ classId, lessons }: { classId: number; lessons: Lesson[] })
 
   return (
     <div className="workspace-page">
-      <div className="workspace-actions">
-        <Link to="/turmas">← Todas as turmas</Link>
-        <Link to={`/painel/${classId}`}>Ver desempenho da turma →</Link>
-      </div>
+      <Link to="/turmas">← Todas as turmas</Link>
       {error && (
         <p className="app-error" role="alert">
           {error}
         </p>
       )}
-      {status && <p role="status">{status}</p>}
+      {status && (
+        <p role="status" className="muted-line">
+          {status}
+        </p>
+      )}
       {!detail ? (
         !error && <p>Carregando turma…</p>
       ) : (
         <>
-          <form className="panel workspace-form" onSubmit={saveClass}>
-            <h2>Turma {detail.name}</h2>
-            <label className="field-label" htmlFor="edit-class-name">
-              Nome
-            </label>
-            <input
-              id="edit-class-name"
-              className="text-input"
-              required
-              maxLength={255}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <label className="field-label" htmlFor="edit-class-description">
-              Descrição
-            </label>
-            <textarea
-              id="edit-class-description"
-              className="text-input"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            <div className="workspace-actions">
-              <button className="btn-primary" type="submit">
-                Salvar turma
-              </button>
-              <button className="btn-outline" type="button" onClick={removeClass}>
-                Excluir turma
-              </button>
+          <section className="panel item-head">
+            <div>
+              <h2>Turma {detail.name}</h2>
+              {detail.description && <p>{detail.description}</p>}
+              <p className="muted-line">
+                {detail.students.length} {detail.students.length === 1 ? 'aluno' : 'alunos'} ·{' '}
+                {detail.module_ids.length} {detail.module_ids.length === 1 ? 'módulo' : 'módulos'}
+              </p>
             </div>
-          </form>
-
-          <section className="panel workspace-section">
-            <h2>Módulos da turma</h2>
-            <p>
-              Os módulos definem o que a turma estuda e o que conta no progresso.{' '}
-              <Link to="/modulos">Gerenciar módulos</Link>
-            </p>
-            <OrderedPicker
-              label="Selecione um módulo"
-              empty="Nenhum módulo atribuído."
-              value={detail.module_ids}
-              options={modules.map((item) => ({ id: item.id, label: item.title, href: `/modulos/${item.id}` }))}
-              onChange={(next) => void run(() => workspace.setClassModules(classId, next), 'Módulos atualizados.')}
-            />
+            <div className="workspace-actions">
+              <Link className="btn-outline btn-icon" to={`/painel/${classId}`}>
+                <Icon name="chart" />
+                Desempenho
+              </Link>
+              <IconButton icon="edit" label="Editar nome e descrição" onClick={() => setEditing(true)} />
+              <TrashButton
+                label="Excluir turma"
+                confirm="Excluir esta turma, seus alunos e o histórico deles? Módulos e lições serão preservados."
+                onConfirm={() => void removeClass()}
+              />
+            </div>
           </section>
-
-          <section className="panel workspace-section">
-            <h2>Lições avulsas</h2>
-            <p>Lições fora de um módulo que também contam no progresso da turma.</p>
-            <OrderedPicker
-              label="Selecione uma lição"
-              empty="Nenhuma lição avulsa."
-              value={detail.lesson_ids}
-              options={orderLessons(lessons).map((item) => ({
-                id: item.id,
-                label: lessonLabel(item),
-                href: `/editor/${encodeURIComponent(item.id)}`,
-              }))}
-              onChange={(next) => void run(() => workspace.setClassLessons(classId, next), 'Lições atualizadas.')}
+          {editing && (
+            <NameDialog
+              title="Editar turma"
+              initial={{ name: detail.name, description: detail.description }}
+              submitLabel="Salvar turma"
+              onSubmit={({ name, description }) =>
+                run(() => workspace.updateClass(classId, { name, description }), 'Turma atualizada.')
+              }
+              onClose={() => setEditing(false)}
             />
-          </section>
+          )}
 
           <section className="panel workspace-section">
-            <h2>Alunos ({detail.students.length})</h2>
             <StudentManager classes={classes} classId={classId} onChange={() => void refresh()} />
           </section>
+
+          <div className="class-study">
+            <section className="panel workspace-section">
+              <h2>Módulos da turma</h2>
+              <p className="muted-line">
+                O que a turma estuda e o que conta no progresso. <Link to="/modulos">Gerenciar módulos</Link>
+              </p>
+              <OrderedPicker
+                label="Adicionar módulo à turma…"
+                empty="Nenhum módulo atribuído."
+                value={detail.module_ids}
+                options={modules.map((item) => ({ id: item.id, label: item.title, href: `/modulos/${item.id}` }))}
+                onChange={(next) => void run(() => workspace.setClassModules(classId, next), 'Módulos atualizados.')}
+              />
+            </section>
+
+            <section className="panel workspace-section">
+              <h2>Lições avulsas</h2>
+              <p className="muted-line">Lições fora de um módulo que também contam no progresso da turma.</p>
+              <OrderedPicker
+                label="Adicionar lição avulsa…"
+                empty="Nenhuma lição avulsa."
+                value={detail.lesson_ids}
+                options={orderLessons(lessons).map((item) => ({
+                  id: item.id,
+                  label: lessonLabel(item),
+                  href: `/editor/${encodeURIComponent(item.id)}`,
+                }))}
+                onChange={(next) => void run(() => workspace.setClassLessons(classId, next), 'Lições atualizadas.')}
+              />
+            </section>
+          </div>
         </>
       )}
     </div>
