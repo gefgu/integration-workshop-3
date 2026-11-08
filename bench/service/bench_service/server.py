@@ -14,6 +14,7 @@ from pydantic import BaseModel, Field
 
 from graph_validator.service.app import app as validator_app
 
+from .controls import KEYS, ControlsHub, SerialControls
 from .protocol import FrameAssembler, Session, encode_frames
 from .store import BenchStore
 from .vision import VisionSource
@@ -49,12 +50,15 @@ class LogoutInput(BaseModel):
     duration_s: float = Field(ge=0)
 
 
-def create_app(store: BenchStore, dev_unlock: bool = False, vision: VisionSource | None = None) -> FastAPI:
+def create_app(store: BenchStore, dev_unlock: bool = False, vision: VisionSource | None = None,
+               controls: ControlsHub | None = None) -> FastAPI:
     app = FastAPI(title="TedTronics bench")
     app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
     app.mount("/validator", validator_app)  # /validator/validate/step works offline on the bench
+    controls = controls or ControlsHub()
     app.state.store = store
     app.state.vision = vision
+    app.state.controls = controls
 
     def student(student_id: int) -> dict[str, Any]:
         package = store.package()
@@ -123,6 +127,11 @@ def create_app(store: BenchStore, dev_unlock: bool = False, vision: VisionSource
         store.record("session", student(student_id), duration_s=body.duration_s)
         return {"ok": True}
 
+    @app.get("/ranking/overall")
+    def ranking_overall() -> list[dict]:
+        """SFR40 for the whole module: best score per challenge, added up per student."""
+        return store.overall_ranking()
+
     @app.get("/ranking")
     def ranking(lesson_id: str | None = None) -> list[dict]:
         return store.ranking(lesson_id)
@@ -148,7 +157,35 @@ def create_app(store: BenchStore, dev_unlock: bool = False, vision: VisionSource
         vision.recalibrate()
         return {"ok": True}
 
+    # Physical controls (ESP32 joystick + Energizar over the GPIO serial port, bench_service/controls.py).
+    @app.get("/controls/state")
+    def controls_state() -> dict:
+        return controls.state()
+
+    @app.websocket("/controls")
+    async def controls_socket(socket: WebSocket) -> None:
+        """Pushes {seq, key} for every physical press; the bench screen turns it into a key press."""
+        import asyncio
+
+        await socket.accept()
+        seq = controls.seq  # only presses from now on
+        try:
+            while True:
+                for event in controls.since(seq):
+                    seq = event["seq"]
+                    await socket.send_json({"seq": seq, "key": event["key"]})
+                await asyncio.sleep(0.02)
+        except (WebSocketDisconnect, RuntimeError):
+            return
+
     if dev_unlock:
+        @app.post("/dev/controls/{name}")
+        def dev_controls_press(name: str) -> dict:
+            """Demo only: simulate an ESP32 line (UP, DOWN, LEFT, RIGHT, OK, VOLTAR, ENERGIZAR)."""
+            if name.upper() not in KEYS:
+                raise HTTPException(422, f"Use um destes: {', '.join(KEYS)}")
+            return controls.push(KEYS[name.upper()])
+
         @app.post("/dev/unlock")
         def dev_unlock_endpoint() -> dict:
             """Demo only (TEDTRONICS_BENCH_DEV=1): unlock without the phone."""
@@ -205,4 +242,9 @@ def default_app() -> FastAPI:
     store = BenchStore(os.getenv("TEDTRONICS_BENCH_DB", "bench.sqlite3"), os.getenv("TEDTRONICS_BENCH_ID"))
     camera, image = os.getenv("TEDTRONICS_BENCH_CAMERA"), os.getenv("TEDTRONICS_BENCH_VISION_IMAGE")
     vision = VisionSource(int(camera) if camera else None, image).start() if camera or image else None
-    return create_app(store, dev_unlock=os.getenv("TEDTRONICS_BENCH_DEV") == "1", vision=vision)
+    controls = ControlsHub()
+    port = os.getenv("TEDTRONICS_BENCH_CONTROLS")  # e.g. /dev/serial0 on the Pi
+    if port:
+        SerialControls(port, controls).start()
+    return create_app(store, dev_unlock=os.getenv("TEDTRONICS_BENCH_DEV") == "1", vision=vision,
+                      controls=controls)

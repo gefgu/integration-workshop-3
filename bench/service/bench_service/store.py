@@ -195,3 +195,23 @@ class BenchStore:
         for row in rows:
             best.setdefault(row["student_id"], dict(row))
         return list(best.values())[:limit]
+
+    def overall_ranking(self, limit: int = 3) -> list[dict[str, Any]]:
+        """The module's overall ranking: each student's best score on every challenge, added up (ties: less
+        total time first). A student who skipped a challenge simply has fewer points."""
+        rows = self._db.execute(
+            "SELECT student_id, nickname, lesson_id, score, duration_s, at FROM scores "
+            "ORDER BY score DESC, duration_s ASC, at ASC").fetchall()
+        best: dict[tuple[int, str], dict[str, Any]] = {}
+        for row in rows:
+            best.setdefault((row["student_id"], row["lesson_id"]), dict(row))
+        totals: dict[int, dict[str, Any]] = {}
+        for row in best.values():
+            total = totals.setdefault(row["student_id"], {
+                "student_id": row["student_id"], "nickname": row["nickname"], "score": 0, "duration_s": 0.0,
+                "challenges": 0})
+            total["score"] += row["score"]
+            total["duration_s"] += row["duration_s"]
+            total["challenges"] += 1
+        ranked = sorted(totals.values(), key=lambda t: (-t["score"], t["duration_s"]))
+        return ranked[:limit]

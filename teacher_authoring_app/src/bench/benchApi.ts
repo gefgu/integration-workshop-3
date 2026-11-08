@@ -88,6 +88,8 @@ export function benchApi(base: string, fetchImpl: typeof fetch = (input, init) =
     score: (studentId: number, body: { lesson_id: string; score: number; duration_s: number }) =>
       call<{ ranking: RankRow[] }>(`/students/${studentId}/score`, 'POST', body),
     logout: (studentId: number, duration_s: number) => call(`/students/${studentId}/logout`, 'POST', { duration_s }),
+    /** the module's overall ranking: best score per challenge, added up */
+    overallRanking: () => call<RankRow[]>('/ranking/overall'),
     ranking: (lessonId?: string) =>
       call<RankRow[]>(`/ranking${lessonId ? `?lesson_id=${encodeURIComponent(lessonId)}` : ''}`),
     devUnlock: () => call<BenchStatus>('/dev/unlock', 'POST'),

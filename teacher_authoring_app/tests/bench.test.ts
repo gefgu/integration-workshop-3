@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { serviceUrl } from '../src/bench/benchApi.ts';
 import { cameraErrorMessage, gridLines } from '../src/bench/camera.ts';
-import { lessonStates, screenAfterLesson } from '../src/bench/screens.ts';
+import { lessonStates, nextLessonId, screenAfterLesson } from '../src/bench/screens.ts';
 import { mergeVision } from '../src/bench/useVision.ts';
 import { newLesson } from '../src/model/lesson.ts';
 import { boardBefore, buildPhases, challengeScore } from '../src/player/phases.ts';
@@ -29,6 +29,16 @@ test('depois do desafio vem a pontuação; depois da guiada, a tela do aluno', (
   const ranking = [{ student_id: 1, nickname: 'ana', score: 90, duration_s: 30 }];
   assert.equal(screenAfterLesson('x', { kind: 'challenge', score: 90, durationS: 30, ranking }).name, 'score');
   assert.equal(screenAfterLesson('x', { kind: 'guided', score: null, durationS: 30, ranking: [] }).name, 'student');
+  // Finishing a lesson opens the next one in the module; the challenge's score screen leads there too.
+  assert.deepEqual(screenAfterLesson('a', { kind: 'guided', score: null, durationS: 30, ranking: [] }, 'b'), {
+    name: 'lesson',
+    lessonId: 'b',
+    phase: 0,
+  });
+  const score = screenAfterLesson('a', { kind: 'challenge', score: 80, durationS: 30, ranking }, 'b');
+  assert.equal(score.name === 'score' && score.next, 'b');
+  assert.equal(nextLessonId(pkg(['a', 'b', 'c']), 'b'), 'c');
+  assert.equal(nextLessonId(pkg(['a', 'b', 'c']), 'c'), null);
 });
 
 test('pontuação do desafio: rápido vale mais, tempo esgotado vale zero', () => {

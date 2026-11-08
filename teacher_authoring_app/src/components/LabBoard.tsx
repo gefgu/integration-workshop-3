@@ -13,15 +13,28 @@ import Icon from './Icon.tsx';
 export const BoardFitContext = createContext(false);
 
 /** Bench: the power switch is a physical button; the screen shows its state and where to press. */
-function PowerIndicator({ on }: { on: boolean }) {
+function PowerIndicator({ on, locked = false }: { on: boolean; locked?: boolean }) {
+  if (locked) {
+    return (
+      <div className="power-indicator locked" role="status">
+        <span className="power-indicator-dot" aria-hidden="true">
+          <Icon name="lock" size={24} />
+        </span>
+        <span>
+          <strong>Energizar bloqueado</strong>
+          <small>Libera quando a montagem estiver completa</small>
+        </span>
+      </div>
+    );
+  }
   return (
-    <div className={`power-indicator${on ? ' on' : ''}`} role="status">
+    <div className={`power-indicator${on ? ' on' : ''}`} role="status" data-pad="energize">
       <span className="power-indicator-dot" aria-hidden="true">
         <Icon name="power" size={26} />
       </span>
       <span>
         <strong>{on ? 'Energizada' : 'Desligada'}</strong>
-        <small>{on ? 'Aperte ENERGIZAR na bancada para desligar' : 'Aperte o botão ENERGIZAR da bancada'}</small>
+        <small>{on ? 'Aperte ENERGIZAR (Enter) para desligar' : 'Aperte ENERGIZAR (Enter)'}</small>
       </span>
     </div>
   );
@@ -82,6 +95,7 @@ export default function LabBoard({
   settings,
   hideTray = false,
   extra,
+  energizeLocked = false,
 }: {
   lab: Lab;
   pieces: Piece[];
@@ -89,6 +103,8 @@ export default function LabBoard({
   settings?: LessonSettings;
   hideTray?: boolean;
   extra?: ReactNode;
+  /** bench, guided assembly steps: the board is only powered on the step that closes the circuit */
+  energizeLocked?: boolean;
 }) {
   const fit = useContext(BoardFitContext);
   const bench = useBenchMode();
@@ -97,13 +113,13 @@ export default function LabBoard({
   const toggle = useRef(lab.toggle);
   toggle.current = lab.toggle;
   useEffect(() => {
-    if (!bench) return undefined;
+    if (!bench || energizeLocked) return undefined;
     const onKey = (event: KeyboardEvent) => {
       if (isEnergizeKey(event) && !(event.target instanceof HTMLInputElement)) toggle.current();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [bench]);
+  }, [bench, energizeLocked]);
   const Workspace = fit ? CircuitWorkspace : BoardWorkspace;
   const buttons = pieces.filter((p) => p.type === 'botao');
   const loads = lab.diag.loadsLit;
@@ -181,7 +197,11 @@ export default function LabBoard({
         className="power-row"
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, flexWrap: 'wrap' }}
       >
-        {bench ? <PowerIndicator on={lab.energized} /> : <PowerButton on={lab.energized} onClick={lab.toggle} />}
+        {bench ? (
+          <PowerIndicator on={lab.energized} locked={energizeLocked} />
+        ) : (
+          <PowerButton on={lab.energized} onClick={lab.toggle} />
+        )}
         <span
           role="status"
           style={{

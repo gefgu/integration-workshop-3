@@ -1,5 +1,5 @@
 """python -m bench_service [--db bench.sqlite3] [--port 8765] [--host 0.0.0.0] [--dev] [--ble [--adapter hci0]]
-                           [--camera 0 | --vision-image foto.jpg]"""
+                           [--camera 0 | --vision-image foto.jpg] [--controls /dev/serial0]"""
 import argparse
 import asyncio
 import os
@@ -20,6 +20,8 @@ def main() -> None:
     parser.add_argument("--camera", type=int, default=None,
                         help="read the board with the vision pipeline from this camera index (pip install -e '.[vision]')")
     parser.add_argument("--vision-image", default=None, help="demo: run the vision pipeline on this photo in a loop")
+    parser.add_argument("--controls", default=None,
+                        help="serial port of the ESP32 controls, e.g. /dev/serial0 (pip install -e '.[controls]')")
     args = parser.parse_args()
     os.environ["TEDTRONICS_BENCH_DB"] = args.db
     if args.bench_id:
@@ -30,6 +32,8 @@ def main() -> None:
         os.environ["TEDTRONICS_BENCH_CAMERA"] = str(args.camera)
     if args.vision_image:
         os.environ["TEDTRONICS_BENCH_VISION_IMAGE"] = os.path.abspath(args.vision_image)
+    if args.controls:
+        os.environ["TEDTRONICS_BENCH_CONTROLS"] = args.controls
     if not args.ble:
         uvicorn.run("bench_service.server:default_app", factory=True, host=args.host, port=args.port)
         return

@@ -269,3 +269,18 @@ def test_vision_source_reads_a_real_photo():
     assert state["available"] and state["valid"], state["reason"]
     assert ("bateria", 1, 2, 0) in [(p["type"], p["a"], p["b"], p["row"]) for p in state["pieces"]]
     assert source.frame()[:2] == b"\xff\xd8"
+
+
+def test_overall_ranking_adds_each_students_best_per_challenge(tmp_path):
+    store = BenchStore(str(tmp_path / "rank.sqlite3"))
+    ana = {"id": 1, "nickname": "ana"}
+    bia = {"id": 2, "nickname": "bia"}
+    store.add_score(ana, "c1", 60, 30)
+    store.add_score(ana, "c1", 90, 40)   # her best on c1 counts, not both
+    store.add_score(ana, "c2", 50, 20)
+    store.add_score(bia, "c1", 99, 10)
+    store.add_score(bia, "c2", 41, 60)
+    bench = TestClient(create_app(store))
+    overall = bench.get("/ranking/overall").json()
+    # tie on 140 points: ana's total time (40 + 20 s) beats bia's (10 + 60 s)
+    assert [(r["nickname"], r["score"], r["challenges"]) for r in overall] == [("ana", 140, 2), ("bia", 140, 2)]

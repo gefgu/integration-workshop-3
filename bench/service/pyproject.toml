@@ -13,6 +13,8 @@ dependencies = ["graph-validator", "fastapi>=0.110", "uvicorn>=0.27", "websocket
 [project.optional-dependencies]
 dev = ["pytest>=8", "httpx>=0.27"]
 ble = ["bless>=0.2"]
+# physical controls: ESP32 joystick + Energizar on the GPIO serial port (bench_service/controls.py)
+controls = ["pyserial>=3.5"]
 # camera board: the vision package lives at the repo root (visao/), see bench_service/vision.py
 vision = ["opencv-python-headless>=4.8", "numpy>=1.24", "networkx>=3"]
 

@@ -32,11 +32,14 @@ export default function Tour({
   onClose,
   className = '',
   cardWidth = CARD_W,
+  gamePad = false,
 }: {
   steps: TourStep[];
   onClose: () => void;
   className?: string;
   cardWidth?: number;
+  /** the bench's joystick: ↑ goes forward and ↓ back, and its click (Space) is Próximo */
+  gamePad?: boolean;
 }) {
   // Decide once, when the tour opens, which steps apply to this page.
   const usable = useMemo(() => steps.filter((s) => !s.target || visible(s.target)), [steps]);
@@ -85,10 +88,11 @@ export default function Tour({
       const keys: Record<string, () => void> = {
         Escape: onClose,
         ArrowRight: next,
-        ArrowDown: next,
+        ArrowDown: gamePad ? back : next,
         Enter: next,
+        ...(gamePad ? { ' ': next } : {}),
         ArrowLeft: back,
-        ArrowUp: back,
+        ArrowUp: gamePad ? next : back,
       };
       const action = keys[event.key];
       if (!action) return;
@@ -98,7 +102,7 @@ export default function Tour({
     };
     window.addEventListener('keydown', onKey, true);
     return () => window.removeEventListener('keydown', onKey, true);
-  }, [next, back, onClose]);
+  }, [next, back, onClose, gamePad]);
 
   // The card's real height decides where it fits.
   // biome-ignore lint/correctness/useExhaustiveDependencies: re-measure for each step
