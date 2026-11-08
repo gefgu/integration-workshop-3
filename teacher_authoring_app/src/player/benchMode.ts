@@ -27,8 +27,8 @@ export function pageParagraphs(paragraphs: string[], maxChars = 300): string[][]
 export const BenchLiveContext = createContext(false);
 export const useLiveBoard = () => useContext(BenchLiveContext);
 
-/** The part types the current step asks for; the tray greys out the rest. null = no limit. */
-export const StepPartsContext = createContext<Set<string> | null>(null);
+/** The part types the current step asks for, with how many of each; the tray shows only those. null = no limit. */
+export const StepPartsContext = createContext<Map<string, number> | null>(null);
 export const useStepParts = () => useContext(StepPartsContext);
 
 /** Physical controls on the bench: the joystick sends arrows + Enter, Back sends Escape, Energizar sends "e". */

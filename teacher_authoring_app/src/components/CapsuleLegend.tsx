@@ -14,11 +14,13 @@ export default function CapsuleLegend({
   if (!caps.length) return null;
   return (
     <section
-      className="panel"
+      className="panel capsule-legend"
       style={{ maxWidth: 720, width: '100%', textAlign: 'left' }}
       aria-label="O que a tela mostra"
     >
-      <h3 style={{ margin: '0 0 6px', fontSize: 15 }}>O que a tela da cápsula mostra</h3>
+      <h3 className="capsule-legend-title" style={{ margin: '0 0 6px', fontSize: 15 }}>
+        O que a tela da cápsula mostra
+      </h3>
       {caps.map((p) => {
         const info = explainReading(p, readings?.[p.id]);
         return (

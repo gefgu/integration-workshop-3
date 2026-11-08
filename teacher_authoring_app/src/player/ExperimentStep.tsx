@@ -131,7 +131,7 @@ export default function ExperimentStep({
             </ul>
           </div>
         )}
-        <button type="button" className="btn-primary bench-big-btn" onClick={() => setBriefed(true)}>
+        <button type="button" className="btn-primary bench-big-btn" data-pad="next" onClick={() => setBriefed(true)}>
           Ir para a bancada
         </button>
       </section>
@@ -153,13 +153,16 @@ export default function ExperimentStep({
       {spec?.clips ? null : <LabBoard lab={lab} pieces={pieces} setPieces={setPieces} settings={settings} />}
       {spec?.presets && (
         <div className="panel" style={{ maxWidth: 720, width: '100%' }}>
-          <h3 style={{ margin: '0 0 6px', fontSize: 'calc(15px * var(--text-scale, 1))' }}>Troque a peça e compare</h3>
+          <h3 style={{ margin: '0 0 6px', fontSize: 'calc(15px * var(--text-scale, 1))' }}>
+            Troque a peça e compare{bench ? ': ↑/↓ escolhe, clique troca' : ''}
+          </h3>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             {spec.presets.map((p, i) => (
               <button
                 key={p.label}
                 type="button"
                 className={matched === i ? 'btn-primary' : 'btn-outline'}
+                data-pad="item"
                 aria-pressed={matched === i}
                 onClick={() => setPieces(p.pieces.map((x) => ({ ...x })))}
               >
@@ -177,6 +180,7 @@ export default function ExperimentStep({
           <input
             id="pot-slider"
             type="range"
+            data-pad="item"
             min={0}
             max={100}
             value={toSlider(pot.value ?? 1000)}
@@ -202,7 +206,14 @@ export default function ExperimentStep({
           </p>
           <div style={{ display: 'flex', gap: 10 }}>
             {(['a', 'b'] as const).map((w) => (
-              <button key={w} type="button" className="btn-primary" disabled={!!playing} onClick={() => play(w)}>
+              <button
+                key={w}
+                type="button"
+                className="btn-primary"
+                data-pad="item"
+                disabled={!!playing}
+                onClick={() => play(w)}
+              >
                 {playing === w ? 'Tocando…' : `▶ Clipe ${w.toUpperCase()}`}
               </button>
             ))}
@@ -238,7 +249,7 @@ export default function ExperimentStep({
             ))}
           </ul>
           {allDone && (
-            <button type="button" className="btn-primary" style={{ marginTop: 12 }} onClick={onDone}>
+            <button type="button" className="btn-primary" data-pad="next" style={{ marginTop: 12 }} onClick={onDone}>
               Continuar
             </button>
           )}

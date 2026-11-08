@@ -7,7 +7,7 @@ import Icon from '../components/Icon.tsx';
 import LabBoard from '../components/LabBoard.tsx';
 import { capsuleConfig, formatOhms, isCapsule, NOMES } from '../engine/sim.ts';
 import { cumulativeBoard, effectiveSteps, startPieces } from '../model/steps.ts';
-import { BenchLiveContext, BenchModeContext, StepPartsContext, useBenchMode } from './benchMode.ts';
+import { BenchLiveContext, BenchModeContext, StepPartsContext, useBenchMode, useStepParts } from './benchMode.ts';
 import ExperimentStep from './ExperimentStep.tsx';
 import ExplainStep from './ExplainStep.tsx';
 import { challengeHint } from './hints.ts';
@@ -204,6 +204,7 @@ export default function LessonPlayer({
   debug,
   livePieces = null,
   barExtra,
+  voiceMuted,
 }: {
   lesson: any;
   onExit: () => void;
@@ -222,6 +223,8 @@ export default function LessonPlayer({
   livePieces?: any[] | null;
   /** extra content in the bench's top bar (the camera status) */
   barExtra?: ReactNode;
+  /** the bench's sound switch (in its game menu); the teacher's player keeps its own checkbox */
+  voiceMuted?: boolean;
 }) {
   const phases = useMemo(() => buildPhases(lesson), [lesson]);
   const first = Math.min(Math.max(0, startPhase), phases.length - 1);
@@ -275,9 +278,23 @@ export default function LessonPlayer({
   };
   const stepKey = 'step' in phase ? phase.step.id : 'challenge';
   const voice = useTutorVoice(lesson);
-  const [muted, setMuted] = useState(false);
+  const [muted, setMuted] = useState(!!voiceMuted);
+  // The bench's game menu owns the sound switch: follow it.
+  useEffect(() => {
+    if (voiceMuted === undefined) return;
+    setMuted(voiceMuted);
+    voice.setMuted(voiceMuted);
+  }, [voiceMuted, voice]);
   // Bench: the lesson opens on its own screen (title + what we will do) before the first step.
   const [intro, setIntro] = useState(bench && first === 0);
+  /** Bench joystick ←: the previous step; from the first step back to the lesson's opening; from there, leave. */
+  const prev = () => {
+    if (intro) return onExit?.();
+    if (idx === 0) return setIntro(true);
+    const prevIdx = idx - 1;
+    if (!livePieces) setPieces((cur) => boardFor(prevIdx, cur));
+    setIdx(prevIdx);
+  };
   // teacher's validator: the board is drawn in a fixed left half (see BoardSlotContext)
   const [slot, setSlot] = useState<HTMLElement | null>(null);
   useSay([lesson.title, lesson.instruction], -1, idx === 0); // again on "Testar de novo"
@@ -301,8 +318,9 @@ export default function LessonPlayer({
                     <button
                       type="button"
                       className="bench-bar-back"
-                      onClick={onExit}
-                      aria-label={exitLabel ?? 'Voltar'}
+                      data-pad="step-back"
+                      onClick={prev}
+                      aria-label={intro ? (exitLabel ?? 'Sair da lição') : 'Voltar ao passo anterior'}
                     >
                       <Icon name="back" size={22} />
                       Voltar
@@ -320,18 +338,6 @@ export default function LessonPlayer({
                       </span>
                     )}
                     {barExtra}
-                    <button
-                      type="button"
-                      className="bench-bar-sound"
-                      aria-pressed={!muted}
-                      aria-label={muted ? 'Ligar a voz do tutor' : 'Desligar a voz do tutor'}
-                      onClick={() => {
-                        setMuted(!muted);
-                        voice.setMuted(!muted);
-                      }}
-                    >
-                      <Icon name={muted ? 'mute' : 'sound'} size={22} />
-                    </button>
                   </div>
                 ) : (
                   <div className="board-slot" ref={setSlot} />
@@ -398,7 +404,12 @@ export default function LessonPlayer({
                         </span>
                         <h1>{lesson.title || 'Lição sem título'}</h1>
                         {lesson.instruction && <Bubble kind={mascotKind} tone="info" message={lesson.instruction} />}
-                        <button type="button" className="btn-primary bench-big-btn" onClick={() => setIntro(false)}>
+                        <button
+                          type="button"
+                          className="btn-primary bench-big-btn"
+                          data-pad="next"
+                          onClick={() => setIntro(false)}
+                        >
                           Começar
                         </button>
                       </section>
@@ -459,6 +470,7 @@ export default function LessonPlayer({
                         }}
                         mascotKind={mascotKind}
                         bench={bench}
+                        autoBuild={bench && !livePieces && lesson.kind !== 'challenge' && phase.type === 'step'}
                       />
                     )}
                     {phase.type === 'done' && !bench && (
@@ -488,19 +500,36 @@ export default function LessonPlayer({
  * The part types a step asks the student to take from the tray: the pieces this step adds to the board (a guided
  * build step) or every part of the circuit (a challenge). null leaves the whole tray available.
  */
-function partsForPhase(lesson: any, phase: any): Set<string> | null {
+function partsForPhase(lesson: any, phase: any): Map<string, number> | null {
+  const count = (types: string[]) => {
+    const counts = new Map<string, number>();
+    for (const t of types) counts.set(t, (counts.get(t) ?? 0) + 1);
+    return counts.size ? counts : null;
+  };
   if (!phase) return null;
   if (phase.type === 'challenge') {
     const start = new Set(startPieces(lesson).map((p) => p.id));
-    const types = lesson.board.pieces.filter((p) => !start.has(p.id)).map((p) => p.type);
-    return types.length ? new Set(types) : null;
+    return count(lesson.board.pieces.filter((p) => !start.has(p.id)).map((p) => p.type));
+  }
+  if (phase.type === 'experiment') {
+    // An experiment comes with its board: parts are swapped by its own buttons (presets), so the tray shows
+    // nothing, except the short-circuit one, which asks for a short jumper.
+    const spec = phase.step.experiment;
+    const shorts = spec?.goals?.some((g) => g.seen?.includes('short_cut'));
+    return new Map(shorts && !spec?.presets?.length ? [['jumper_curto', 1]] : []);
   }
   if (phase.type !== 'step') return null;
   const before = new Set((phase.idx > 0 ? cumulativeBoard(lesson, phase.idx - 1) : []).map((p) => p.id));
   const added = cumulativeBoard(lesson, phase.idx).filter((p) => !before.has(p.id));
-  if (added.length) return new Set(added.map((p) => p.type));
+  if (added.length) return count(added.map((p) => p.type));
   const own = phase.step.pieceId && lesson.board.pieces.find((p) => p.id === phase.step.pieceId);
-  return own ? new Set([own.type]) : null;
+  return own ? count([own.type]) : null;
+}
+
+/** "o LED", "a bateria": the article for a part's name in the tutor's sentences. */
+function withArticle(type: string, name: string) {
+  const feminine = /^(bateria|capsula|chave)/.test(type) || /^(Bateria|Cápsula|Chave)/.test(name);
+  return `${feminine ? 'a' : 'o'} ${name.charAt(0) === name.charAt(0).toUpperCase() && !/^[A-Z]{2}/.test(name) ? name.charAt(0).toLowerCase() + name.slice(1) : name}`;
 }
 
 /** A tutor bubble whose message is also spoken (when its text has audio). */
@@ -579,6 +608,7 @@ function QuizStep({
               type="button"
               key={o.id}
               className="btn-outline"
+              data-pad="item"
               disabled={correct}
               style={{
                 textAlign: 'left',
@@ -593,7 +623,7 @@ function QuizStep({
         </div>
         {bench && option && <div className="quiz-feedback">{bubble}</div>}
         {correct && (
-          <button type="button" className="btn-primary" style={{ marginTop: 14 }} onClick={onDone}>
+          <button type="button" className="btn-primary" data-pad="next" style={{ marginTop: 14 }} onClick={onDone}>
             Continuar
           </button>
         )}
@@ -623,7 +653,7 @@ function InteractStep({ lesson, phase, pieces, onDone, mascotKind, onAnswer, onP
           tone="erro"
           message="Este passo de interação ainda não tem pergunta. Volte ao editor e escolha uma."
         />
-        <button type="button" className="btn-outline" onClick={onDone}>
+        <button type="button" className="btn-outline" data-pad="next" onClick={onDone}>
           Pular passo
         </button>
       </>
@@ -697,13 +727,51 @@ function BuildStep({
   onExpired = undefined,
   mascotKind,
   bench = false,
+  autoBuild = false,
 }) {
   const settings = lesson.settings;
   const [expired, setExpired] = useState(false);
+  // Bench simulation of a guided lesson: the screen builds the step itself, one part at a time, announcing each
+  // ("Vamos colocar o LED…") and waiting before it appears, so the student follows along. Challenges are by hand.
+  const [placing, setPlacing] = useState<string | null>(null);
+  const [autoDone, setAutoDone] = useState(!autoBuild);
+  const [placedNames, setPlacedNames] = useState<string[]>([]);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: runs once per step (the step remounts BuildStep)
+  useEffect(() => {
+    if (!autoBuild) return undefined;
+    const have = new Set(pieces.map((p) => p.id));
+    const missing = cumulativeBoard(lesson, stepIdx).filter((p) => !have.has(p.id));
+    if (!missing.length) {
+      setAutoDone(true);
+      return undefined;
+    }
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    const ANNOUNCE_MS = 2600; // the announcement stays this long before the part appears
+    const EACH_MS = 4200; // one part every this many ms
+    missing.forEach((piece, i) => {
+      const name = NOMES[piece.type] ?? piece.type;
+      timers.push(
+        setTimeout(() => setPlacing(`${i === 0 ? 'Vamos colocar' : 'Agora vamos colocar'} ${withArticle(piece.type, name)} na bancada…`), i * EACH_MS),
+        setTimeout(() => {
+          setPieces((cur) => [...cur.filter((p) => p.id !== piece.id), { ...piece }]);
+          setPlacedNames((names) => [...names, name]);
+        }, i * EACH_MS + ANNOUNCE_MS)
+      );
+    });
+    timers.push(
+      setTimeout(() => {
+        setPlacing(null);
+        setAutoDone(true);
+      }, (missing.length - 1) * EACH_MS + ANNOUNCE_MS + 1200)
+    );
+    return () => timers.forEach(clearTimeout);
+  }, []);
   const initial = useRef(pieces);
   const touched = pieces !== initial.current;
   const v = useStepValidation({ lesson, pieces, stepIdx, debug: debugEnabled });
   const lab = useLab(pieces, settings);
+  // Bench: a step that adds no part (e.g. closing the circuit with everything already placed) needs no tray.
+  const stepNeeds = useStepParts();
   const { diag, cap } = lab;
 
   // Count deliberate board changes and power-on attempts, not responses or the starting board.
@@ -774,8 +842,19 @@ function BuildStep({
         : (shown?.msg ?? 'Muito bem!') + (working && !diag.limited ? ' Circuito fechado ✓' : '');
   } else if (shown && (touched || misses > 0 || res?.approved)) ({ tone, msg } = { tone: shown.tone, msg: shown.msg });
 
+  if (autoBuild && placing) {
+    tone = 'info';
+    msg = placing;
+  } else if (autoBuild && !autoDone) {
+    tone = 'info';
+    msg = text || msg;
+  } else if (autoBuild && ready && placedNames.length) {
+    tone = 'ok';
+    msg = `Pronto! ${placedNames.join(' e ')} ${placedNames.length > 1 ? 'estão' : 'está'} no lugar. Vamos em frente ▶`;
+  }
+
   // A timeout scores zero and permits continuing to the explanation in both player modes.
-  const approved = ready && (bench || !expired);
+  const approved = ready && (bench || !expired) && autoDone;
   const fillAnswer = () =>
     setPieces(
       (lesson.kind === 'challenge' ? lesson.board.pieces : cumulativeBoard(lesson, stepIdx)).map((p) => ({ ...p }))
@@ -820,6 +899,8 @@ function BuildStep({
         pieces={pieces}
         setPieces={setPieces}
         settings={settings}
+        energizeLocked={bench && !final}
+        hideTray={bench && (approved || !stepNeeds || autoBuild)}
       />
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, flexWrap: 'wrap' }}>
         {!bench && (
@@ -828,7 +909,7 @@ function BuildStep({
           </button>
         )}
         {(approved || expired) && (
-          <button type="button" className="btn-primary" onClick={onDone}>
+          <button type="button" className="btn-primary" data-pad="next" onClick={onDone}>
             Continuar
           </button>
         )}

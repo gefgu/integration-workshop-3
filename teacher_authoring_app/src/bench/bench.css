@@ -942,3 +942,368 @@
   font-size: 18px;
   padding: 10px 20px;
 }
+
+/* ---------- Game pad: the selected choice and the game menu ---------- */
+/* The joystick selects one choice at a time: make it obvious, like a game cursor. */
+.bench-shell [data-pad="item"]:focus {
+  outline: none;
+}
+.bench-shell .pad-selected {
+  outline: 5px solid var(--color-accent-500) !important;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 9px color-mix(in srgb, var(--color-accent-500) 25%, transparent) !important;
+  position: relative;
+  z-index: 1;
+}
+/* Room around every list for the selection ring: the stage clips at its edges. */
+.bench-shell .bench-lessons,
+.bench-shell .bench-title-menu,
+.bench-shell .bench-demo-grid,
+.bench-shell .bench-demo-login,
+.bench-shell .quiz-options {
+  padding: 16px;
+}
+/* Inside a lesson: no Voltar / Próximo buttons on screen; the hint bar says what the joystick does. */
+.bench-shell .bench-lesson [data-pad="next"],
+.bench-shell .bench-lesson [data-pad="back"],
+.bench-shell .bench-lesson [data-pad="step-back"] {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+}
+.bench-shell .bench-pad-hints {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: auto;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--color-neutral-100);
+  border: 2px solid var(--color-divider);
+  font-family: var(--font-heading);
+  font-size: 20px;
+}
+.bench-shell .bench-pad-hints span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: opacity 0.2s;
+}
+.bench-shell .bench-pad-hints .off {
+  opacity: 0.3;
+}
+.bench-shell .bench-pad-hints .ready {
+  color: var(--color-accent-500);
+}
+.bench-shell .bench-pad-hints .dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--color-neutral-300, #cfc6bb);
+}
+.bench-shell .bench-pad-hints .dot.on {
+  background: #f2c230;
+  box-shadow: 0 0 10px #f2c230;
+}
+/* Student's title screen: Começar / Continuar / Sair, like a game. */
+.bench-shell .bench-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  padding-top: 20px;
+}
+.bench-shell .bench-title h1 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 46px;
+}
+.bench-shell .bench-title-menu {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  width: 100%;
+}
+.bench-shell .bench-title-tile {
+  flex: 1 1 0;
+  max-width: 280px;
+  min-height: 190px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px;
+  border-radius: 26px;
+  border: 3px solid var(--color-divider);
+  background: var(--color-neutral-100);
+  color: var(--color-text);
+  font: inherit;
+  font-family: var(--font-heading);
+  font-size: 28px;
+  cursor: pointer;
+}
+.bench-shell .bench-title-tile small {
+  font-family: var(--font-body, inherit);
+  font-size: 16px;
+  opacity: 0.8;
+  text-align: center;
+}
+.bench-shell .bench-title-tile:disabled {
+  opacity: 0.35;
+}
+.bench-shell .bench-title-tile.primary {
+  background: var(--color-accent-500);
+  color: #fff;
+  border-color: transparent;
+}
+.bench-shell .bench-menu-hint-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  color: var(--color-text-muted, #6b625a);
+  flex: none;
+}
+.bench-shell .bench-menu-hint-bar kbd {
+  font: inherit;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 2px solid var(--color-divider);
+  background: var(--color-neutral-100);
+}
+.bench-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: color-mix(in srgb, #201e1d 55%, transparent);
+  backdrop-filter: blur(3px);
+}
+.bench-menu-card {
+  width: min(760px, 100%);
+  padding: 22px 26px 18px;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+}
+.bench-menu-card h2 {
+  margin: 0 0 14px;
+  font-family: var(--font-heading);
+  font-size: 34px;
+}
+.bench-menu-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+}
+.bench-menu-tile {
+  flex: 0 0 calc((100% - 28px) / 3);
+  min-height: 116px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 22px;
+  border: 3px solid var(--color-divider);
+  background: var(--color-neutral-100);
+  color: var(--color-text);
+  font: inherit;
+  font-family: var(--font-heading);
+  font-size: 21px;
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+.bench-menu-tile:focus {
+  outline: none;
+}
+.bench-menu-tile.is-selected {
+  border-color: var(--color-accent-500);
+  background: color-mix(in srgb, var(--color-accent-500) 16%, var(--color-neutral-100));
+  transform: scale(1.04);
+}
+.bench-menu-glyph {
+  font-family: var(--font-heading);
+  font-size: 34px;
+  line-height: 34px;
+}
+.bench-menu-hint {
+  margin: 14px 0 0;
+  font-size: 15px;
+  opacity: 0.75;
+}
+.bench-shell .bench-ranking-pick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+.bench-shell p.bench-pager {
+  margin: 4px 0 0;
+  font-size: 16px;
+  opacity: 0.75;
+}
+/* Locked lessons can be browsed with the joystick (to see what comes next) but not opened. */
+.bench-shell .bench-lesson-tile.locked {
+  opacity: 0.45;
+  cursor: default;
+}
+.bench-shell .bench-lesson-tile.locked.pad-selected {
+  opacity: 0.8;
+}
+/* Lesson list: Voltar + page count sit at the foot of the screen. */
+.bench-shell .fit-stage-inner:has(.bench-student) {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.bench-shell .fit-stage-inner:has(.bench-student) > .bench-student {
+  flex: 1;
+}
+.bench-shell .bench-student > .bench-pager {
+  margin-top: auto;
+  padding-bottom: 4px;
+}
+/* The lesson to do now: warm orange, apart from the green done ones and the faded locked ones. */
+.bench-shell .bench-lesson-tile.current {
+  background: var(--color-accent-200);
+  border-color: var(--color-accent-500);
+}
+.bench-shell .bench-lesson-tile.current small {
+  color: var(--color-accent-800, #7a3b14);
+}
+/* Lesson title a bit bigger. */
+.bench-shell .bench-bar-title {
+  font-size: 26px;
+}
+/* Energizar sits in a card under the tray, the same width, instead of floating in the middle. */
+.bench-shell .lab-step .power-row {
+  justify-content: flex-start !important;
+  flex-wrap: nowrap !important;
+  gap: 16px !important;
+  padding: 10px 14px;
+  border-radius: 22px;
+  background: var(--color-surface);
+}
+.bench-shell .lab-step .power-row .power-indicator {
+  flex: none;
+  background: var(--color-neutral-100);
+}
+.bench-shell .lab-step .power-row > [role="status"] {
+  font-size: 17px !important;
+}
+/* "Use 1 peça": what this step needs, in the tray. */
+.bench-shell .tray-item .tray-need {
+  font-weight: 800;
+  color: var(--color-accent-700, #a4532a);
+  font-size: 15px;
+}
+/* Energizar locked during a guided lesson's assembly steps. */
+.bench-shell .power-indicator.locked {
+  opacity: 0.6;
+  border-style: dashed;
+}
+.bench-shell .power-indicator.locked .power-indicator-dot {
+  background: var(--color-neutral-300);
+  color: var(--color-neutral-700);
+}
+/* The smart capsule's explanation, readable on the 7" screen. */
+.bench-shell .capsule-legend {
+  padding: 14px 18px !important;
+}
+.bench-shell .capsule-legend .capsule-legend-title {
+  font-family: var(--font-heading);
+  font-size: 22px !important;
+}
+.bench-shell .capsule-legend strong {
+  font-size: 18px !important;
+}
+.bench-shell .capsule-legend ul {
+  font-size: 18px !important;
+  line-height: 1.4 !important;
+}
+.bench-shell .capsule-legend p {
+  font-size: 15px !important;
+}
+/* While Energizar is locked the board is off anyway: no "Bancada desligada" beside it. */
+.bench-shell .power-row:has(.power-indicator.locked) > span[role="status"] {
+  display: none;
+}
+/* The capsule explanation spans the whole left column, with bigger text. */
+.bench-shell .lab-step .capsule-legend {
+  max-width: none !important;
+  width: 100% !important;
+  box-sizing: border-box;
+}
+.bench-shell .capsule-legend .capsule-legend-title {
+  font-size: 24px !important;
+}
+.bench-shell .capsule-legend strong {
+  font-size: 20px !important;
+}
+.bench-shell .capsule-legend ul {
+  font-size: 20px !important;
+}
+.bench-shell .capsule-legend p {
+  font-size: 16px !important;
+}
+/* Left column of a lesson screen: shrinks to the board's height (FitLeftColumn sets --left-zoom). */
+.bench-shell .lab-step > :not(.board-workspace),
+.bench-shell .lab-step .board-workspace > :not(.board-workbench-column) {
+  zoom: var(--left-zoom, 1);
+}
+.bench-shell .lab-step > :first-child {
+  min-height: 0 !important;
+}
+/* Room between the lesson's content and the hint bar at the foot. */
+.bench-shell .bench-lesson .bench-pad-hints {
+  margin-top: 18px;
+}
+/* Ranking: one at a time, switched with the joystick. */
+.bench-shell .bench-ranking {
+  width: min(100%, 640px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.bench-shell .bench-ranking-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+}
+.bench-shell .bench-ranking-head h2 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 30px;
+}
+.bench-shell .bench-ranking-head small {
+  font-size: 15px;
+  opacity: 0.7;
+}
+.bench-shell .bench-ranking-arrow {
+  color: var(--color-accent-500);
+  font-size: 16px;
+  line-height: 1;
+}
+.bench-shell .bench-ranking-note {
+  margin: -6px 0 0;
+  text-align: center;
+  font-size: 16px;
+  opacity: 0.8;
+}

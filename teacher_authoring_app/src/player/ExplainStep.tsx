@@ -66,11 +66,16 @@ function BenchExplain({ step, paragraphs, onDone }: { step: LessonStep; paragrap
         ))}
         <div className="bench-read-actions">
           {index > 0 && (
-            <button type="button" className="btn-outline" onClick={() => setIndex(index - 1)}>
+            <button type="button" className="btn-outline" data-pad="back" onClick={() => setIndex(index - 1)}>
               Voltar
             </button>
           )}
-          <button type="button" className="btn-primary" onClick={() => (last ? onDone() : setIndex(index + 1))}>
+          <button
+            type="button"
+            className="btn-primary"
+            data-pad="next"
+            onClick={() => (last ? onDone() : setIndex(index + 1))}
+          >
             {last ? 'Entendi, continuar' : 'Próximo'}
           </button>
           {pages.length > 1 && (

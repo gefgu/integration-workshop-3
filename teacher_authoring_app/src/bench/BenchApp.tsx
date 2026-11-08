@@ -7,10 +7,13 @@ import Tour, { useFirstRunTour } from '../components/Tour.tsx';
 import LessonPlayer, { type PlayerEvent } from '../player/LessonPlayer.tsx';
 import { BENCH_TOURS } from '../tour/benchTours.ts';
 import { type BenchApi, benchApi, type LoginResult, type RankRow, serviceUrl, type VisionState } from './benchApi.ts';
+import BenchMenu, { type MenuOption } from './BenchMenu.tsx';
 import CameraView from './CameraView.tsx';
 import { type DemoChoice, demoChoices, demoPackage } from './demo.ts';
 import FitStage from './FitStage.tsx';
-import { lessonStates, type Screen, screenAfterLesson } from './screens.ts';
+import { ensureSelection, handlePadKey, padElements, selectedItem, selectElement } from './pad.ts';
+import { lessonStates, nextLessonId, type Screen, screenAfterLesson } from './screens.ts';
+import { useHardwareControls } from './useHardwareControls.ts';
 import { useVision } from './useVision.ts';
 
 const NO_PIECES: never[] = [];
@@ -19,16 +22,19 @@ const NO_PIECES: never[] = [];
  * The workbench's 7" screen. Exactly one screen is shown at a time (SFR17): locked (waiting for the
  * teacher's app), home (tap your tag), the student's lessons, a running lesson, the score, the ranking and the
  * camera board view.
- * Keyboard stands in for the hardware: arrows/Tab + Enter = joystick, Esc = Voltar.
+ * Played like a game console (see pad.ts): joystick = arrows, its click = Enter, a long press = Escape (menu).
  */
 export default function BenchApp() {
   const base = useMemo(() => serviceUrl(), []);
   const api = useMemo(() => benchApi(base), [base]);
+  useHardwareControls(base); // ESP32 joystick + Energizar, through the bench service
   const [status, setStatus] = useState<BenchStatus | null>(null);
   const [pkg, setPkg] = useState<BenchPackage | null>(null);
   const [screen, setScreen] = useState<Screen>({ name: 'locked' });
   const [session, setSession] = useState<LoginResult | null>(null);
   const [error, setError] = useState('');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [muted, setMuted] = useState(false);
   const loginAt = useRef(0);
   const vision = useVision(api);
   // Guided tours: the first time each screen appears on this bench, and again from the ? button.
@@ -101,42 +107,58 @@ export default function BenchApp() {
     setScreen({ name: 'home' });
   }, [api, session]);
 
-  // Joystick = arrow keys: move the focus between the controls on the screen (Enter presses the focused one).
+  // The joystick acts on what the controls mean (pad.ts), not on every button in a row.
   useEffect(() => {
+    const energize = () => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'e' }));
     const onKey = (event: KeyboardEvent) => {
-      if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) return;
-      const target = event.target as HTMLElement | null;
-      if (target?.tagName === 'INPUT' && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) return;
-      const stage = document.querySelector('.bench-shell');
-      if (!stage) return;
-      const controls = [
-        ...stage.querySelectorAll<HTMLElement>('button:not(:disabled), input:not(:disabled), [tabindex="0"]'),
-      ].filter((el) => el.offsetParent !== null);
-      if (!controls.length) return;
-      event.preventDefault();
-      const at = controls.indexOf(document.activeElement as HTMLElement);
-      const forward = event.key === 'ArrowDown' || event.key === 'ArrowRight';
-      const preferred = stage.querySelector<HTMLElement>('.btn-primary:not(:disabled)');
-      const next =
-        at < 0 ? (preferred ?? controls[0]) : controls[(at + (forward ? 1 : -1) + controls.length) % controls.length];
-      next.focus();
+      if (event.defaultPrevented || menuOpen) return;
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        setMenuOpen(true);
+        return;
+      }
+      const target = event.target as HTMLInputElement | null;
+      const typing = target?.tagName === 'INPUT' && target.type === 'text';
+      if (typing && ['ArrowLeft', 'ArrowRight', 'Enter', ' '].includes(event.key)) return;
+      const stage = document.querySelector('.bench-stage');
+      if (stage && handlePadKey(event.key, stage, energize)) event.preventDefault();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, []);
+  }, [menuOpen]);
 
-  // Esc = the Back/Cancel button on the right controller.
+  // Every screen with choices shows one selected, as soon as it appears (and again after it changes).
   useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key !== 'Escape') return;
-      if (screen.name === 'lesson' || screen.name === 'score') void backToStudent();
-      else if (screen.name === 'ranking') setScreen(session ? { name: 'student' } : { name: 'home' });
-      else if (screen.name === 'camera') setScreen(screen.back);
-      else if (screen.name === 'student') void logout();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [screen, session, logout, backToStudent]);
+    if (menuOpen) return undefined;
+    const timer = setInterval(() => {
+      const stage = document.querySelector('.bench-stage');
+      if (stage) ensureSelection(stage);
+    }, 150);
+    return () => clearInterval(timer);
+  }, [menuOpen]);
+
+  // The game menu: what used to be extra buttons on every screen.
+  const menuOptions: MenuOption[] = [
+    { id: 'resume', label: 'Continuar', icon: 'resume', onSelect: () => undefined },
+    {
+      id: 'sound',
+      label: muted ? 'Ligar o som' : 'Desligar o som',
+      icon: muted ? 'mute' : 'sound',
+      onSelect: () => setMuted(!muted),
+    },
+  ];
+  if (tourKey) menuOptions.push({ id: 'help', label: 'Ajuda', icon: 'help', onSelect: tour.start });
+  if (pkg && (screen.name === 'home' || screen.name === 'student')) {
+    menuOptions.push({ id: 'ranking', label: 'Ranking', icon: 'trophy', onSelect: () => setScreen({ name: 'ranking' }) });
+    const back: Screen = screen.name === 'student' ? { name: 'student' } : { name: 'home' };
+    menuOptions.push({ id: 'camera', label: 'Câmera', icon: 'camera', onSelect: () => setScreen({ name: 'camera', back }) });
+  }
+  if (screen.name === 'lesson') {
+    menuOptions.push({ id: 'leave', label: 'Sair da lição', icon: 'back', onSelect: () => void backToStudent() });
+  }
+  if (session && screen.name !== 'lesson') {
+    menuOptions.push({ id: 'logout', label: 'Trocar de aluno', icon: 'logout', onSelect: () => void logout() });
+  }
 
   async function login(code: string) {
     try {
@@ -159,11 +181,9 @@ export default function BenchApp() {
           {status?.package ? ` · ${status.package.module_title}` : ''}
           {session ? ` · ${session.student.nickname}` : ''}
         </span>
-        {tourKey && (
-          <button type="button" className="bench-help" aria-label="Ajuda: tutorial desta tela" onClick={tour.start}>
-            ?
-          </button>
-        )}
+        <span className="bench-menu-hint-bar">
+          <kbd>segure</kbd> o joystick: menu
+        </span>
       </header>
       <main className="bench-stage">
         <FitStage>
@@ -175,8 +195,6 @@ export default function BenchApp() {
               pkg={pkg}
               notice={screen.notice}
               onTag={login}
-              onRanking={() => setScreen({ name: 'ranking' })}
-              onCamera={() => setScreen({ name: 'camera', back: { name: 'home' } })}
             />
           )}
           {screen.name === 'student' && session && pkg && (
@@ -184,9 +202,7 @@ export default function BenchApp() {
               session={session}
               pkg={pkg}
               onOpen={(lessonId, phase) => setScreen({ name: 'lesson', lessonId, phase })}
-              onRanking={() => setScreen({ name: 'ranking' })}
-              onCamera={() => setScreen({ name: 'camera', back: { name: 'student' } })}
-              onLogout={logout}
+              onLogout={() => void logout()}
             />
           )}
           {screen.name === 'lesson' && session && pkg && (
@@ -197,10 +213,11 @@ export default function BenchApp() {
               lesson={pkg.lessons.find((l) => l.id === screen.lessonId)}
               phase={screen.phase}
               vision={vision}
+              muted={muted}
               onExit={backToStudent}
               onFinished={async (result) => {
                 await backToStudent();
-                setScreen(screenAfterLesson(screen.lessonId, result));
+                setScreen(screenAfterLesson(screen.lessonId, result, nextLessonId(pkg, screen.lessonId)));
               }}
             />
           )}
@@ -210,7 +227,9 @@ export default function BenchApp() {
               durationS={screen.durationS}
               ranking={screen.ranking}
               nickname={session?.student.nickname}
-              onBack={() => setScreen({ name: 'student' })}
+              onBack={() =>
+                setScreen(screen.next ? { name: 'lesson', lessonId: screen.next, phase: 0 } : { name: 'student' })
+              }
             />
           )}
           {screen.name === 'camera' && <CameraView api={api} vision={vision} onBack={() => setScreen(screen.back)} />}
@@ -223,8 +242,16 @@ export default function BenchApp() {
           )}
         </FitStage>
       </main>
+      {menuOpen && <BenchMenu options={menuOptions} onClose={() => setMenuOpen(false)} />}
       {tour.open && tourKey && (
-        <Tour key={tourKey} steps={BENCH_TOURS[tourKey]} onClose={tour.close} className="bench-tour" cardWidth={460} />
+        <Tour
+          key={tourKey}
+          steps={BENCH_TOURS[tourKey]}
+          onClose={tour.close}
+          className="bench-tour"
+          cardWidth={460}
+          gamePad
+        />
       )}
     </div>
   );
@@ -241,7 +268,12 @@ function Locked({ status, api }: { status: BenchStatus | null; api: BenchApi }) 
       <h1>Bancada bloqueada</h1>
       <p>Peça ao professor para conectar o app.</p>
       {status?.bench_id && <span className="bench-chip">{status.bench_id}</span>}
-      <button type="button" className="pill-link-btn muted bench-hero-foot" onClick={() => setPicking(true)}>
+      <button
+        type="button"
+        className="pill-link-btn muted bench-hero-foot"
+        data-pad="item"
+        onClick={() => setPicking(true)}
+      >
         Modo demonstração
       </button>
     </section>
@@ -284,6 +316,7 @@ function DemoPicker({ api, onCancel }: { api: BenchApi; onCancel?: () => void })
             key={choice.key}
             type="button"
             className="bench-lesson-tile bench-demo-tile"
+            data-pad="item"
             disabled={busy}
             onClick={() => void start(choice)}
           >
@@ -293,42 +326,12 @@ function DemoPicker({ api, onCancel }: { api: BenchApi; onCancel?: () => void })
         ))}
       </div>
       {onCancel && (
-        <button type="button" className="bench-tile small" onClick={onCancel}>
+        <button type="button" className="bench-tile small" data-pad="back" onClick={onCancel}>
           <Icon name="back" size={24} />
           Voltar
         </button>
       )}
     </section>
-  );
-}
-
-/** Ranking, camera and logout: big icon buttons at the foot of the home screens. */
-function BenchFooter({
-  onRanking,
-  onCamera,
-  onLogout,
-}: {
-  onRanking: () => void;
-  onCamera: () => void;
-  onLogout?: () => void;
-}) {
-  return (
-    <nav className="bench-foot" aria-label="Mais opções">
-      <button type="button" className="bench-tile" onClick={onRanking}>
-        <Icon name="trophy" size={30} />
-        Ranking
-      </button>
-      <button type="button" className="bench-tile" onClick={onCamera}>
-        <Icon name="camera" size={30} />
-        Câmera
-      </button>
-      {onLogout && (
-        <button type="button" className="bench-tile" onClick={onLogout}>
-          <Icon name="logout" size={30} />
-          Sair
-        </button>
-      )}
-    </nav>
   );
 }
 
@@ -338,15 +341,11 @@ function Home({
   pkg,
   notice,
   onTag,
-  onRanking,
-  onCamera,
 }: {
   api: BenchApi;
   pkg: BenchPackage | null;
   notice?: string;
   onTag: (code: string) => void;
-  onRanking: () => void;
-  onCamera: () => void;
 }) {
   const [picking, setPicking] = useState(false);
   const [code, setCode] = useState('');
@@ -377,11 +376,17 @@ function Home({
         <div className="bench-demo-login" aria-label="Alunos de demonstração">
           <span>Demonstração: entrar como</span>
           {pkg.students.map((s) => (
-            <button key={s.id} type="button" className="bench-tile small" onClick={() => onTag(s.nfc_code)}>
+            <button
+              key={s.id}
+              type="button"
+              className="bench-tile small"
+              data-pad="item"
+              onClick={() => onTag(s.nfc_code)}
+            >
               {s.nickname}
             </button>
           ))}
-          <button type="button" className="pill-link-btn muted" onClick={() => setPicking(true)}>
+          <button type="button" className="pill-link-btn muted" data-pad="item" onClick={() => setPicking(true)}>
             Trocar módulo
           </button>
         </div>
@@ -408,7 +413,6 @@ function Home({
           Entrar
         </button>
       </form>
-      <BenchFooter onRanking={onRanking} onCamera={onCamera} />
     </section>
   );
 }
@@ -419,56 +423,126 @@ function StudentHome({
   session,
   pkg,
   onOpen,
-  onRanking,
-  onCamera,
   onLogout,
 }: {
   session: LoginResult;
   pkg: BenchPackage;
   onOpen: (lessonId: string, phase: number) => void;
-  onRanking: () => void;
-  onCamera: () => void;
   onLogout: () => void;
 }) {
-  const lessons = lessonStates(pkg, session.progress);
+  // Like a game's title screen: Começar (pick a lesson), Continuar (where you stopped) or Sair.
+  const [view, setView] = useState<'title' | 'lessons'>('title');
   const resume = session.resume;
   const resumeLesson = pkg.lessons.find((l) => l.id === resume.lesson_id);
-  const first = useRef<HTMLButtonElement>(null);
-  useEffect(() => first.current?.focus(), []);
-  // The module may have 20 lessons: show them six at a time, starting on the page of the lesson to continue.
-  const pages = Math.max(1, Math.ceil(lessons.length / LESSONS_PER_PAGE));
+  if (view === 'lessons') return <LessonPicker session={session} pkg={pkg} onOpen={onOpen} onBack={() => setView('title')} />;
+  return (
+    <section className="bench-title">
+      <h1>Oi, {session.student.nickname}!</h1>
+      <div className="bench-title-menu">
+        <button
+          type="button"
+          className="bench-title-tile"
+          data-pad="item"
+          data-pad-default={resumeLesson ? undefined : ''}
+          onClick={() => setView('lessons')}
+        >
+          <Icon name="play" size={44} />
+          Começar
+          <small>Escolher uma lição</small>
+        </button>
+        <button
+          type="button"
+          className="bench-title-tile primary"
+          data-pad="item"
+          data-pad-default={resumeLesson ? '' : undefined}
+          disabled={!resumeLesson}
+          onClick={() => resumeLesson && onOpen(resumeLesson.id, resume.step_idx)}
+        >
+          <Icon name="next" size={44} />
+          Continuar
+          <small>{resumeLesson ? resumeLesson.title : 'Você concluiu o módulo!'}</small>
+        </button>
+        <button type="button" className="bench-title-tile" data-pad="item" onClick={onLogout}>
+          <Icon name="logout" size={44} />
+          Sair
+          <small>Trocar de aluno</small>
+        </button>
+      </div>
+    </section>
+  );
+}
+
+/** The module's lessons, six at a time: ↓ on the last one turns the page, ← goes back to the title screen. */
+function LessonPicker({
+  session,
+  pkg,
+  onOpen,
+  onBack,
+}: {
+  session: LoginResult;
+  pkg: BenchPackage;
+  onOpen: (lessonId: string, phase: number) => void;
+  onBack: () => void;
+}) {
+  const lessons = lessonStates(pkg, session.progress);
   const resumeIndex = Math.max(
     0,
-    lessons.findIndex((item) => item.lesson.id === resumeLesson?.id)
+    lessons.findIndex((item) => item.lesson.id === session.resume.lesson_id)
   );
+  const list = useRef<HTMLOListElement>(null);
+  const pages = Math.max(1, Math.ceil(lessons.length / LESSONS_PER_PAGE));
   const [page, setPage] = useState(Math.floor(resumeIndex / LESSONS_PER_PAGE));
+  const pendingSelect = useRef<'first' | 'last' | null>(null);
   const shown = lessons.slice(page * LESSONS_PER_PAGE, (page + 1) * LESSONS_PER_PAGE);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: select on the new page once it renders
+  useEffect(() => {
+    const stage = document.querySelector('.bench-stage');
+    if (!pendingSelect.current || !list.current || !stage) return;
+    const tiles = padElements(list.current, 'item');
+    selectElement(stage, pendingSelect.current === 'first' ? tiles[0] : tiles[tiles.length - 1]);
+    pendingSelect.current = null;
+  }, [page]);
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      // ↑ and → go forward through the lessons, ↓ and ← go back (← on the very first one is Voltar).
+      const forward = event.key === 'ArrowUp' || event.key === 'ArrowRight';
+      if (!forward && event.key !== 'ArrowDown' && event.key !== 'ArrowLeft') return;
+      const stage = document.querySelector('.bench-stage');
+      if (!stage || !list.current) return;
+      const tiles = padElements(list.current, 'item');
+      const at = tiles.indexOf(selectedItem(stage) as HTMLElement);
+      if (at < 0) return;
+      if (forward && at === tiles.length - 1 && page < pages - 1) {
+        pendingSelect.current = 'first';
+        setPage(page + 1);
+      } else if (!forward && at === 0 && page > 0) {
+        pendingSelect.current = 'last';
+        setPage(page - 1);
+      } else {
+        return;
+      }
+      event.preventDefault();
+    };
+    window.addEventListener('keydown', onKey, true);
+    return () => window.removeEventListener('keydown', onKey, true);
+  }, [page, pages]);
   return (
     <section className="bench-student">
       <div className="bench-student-head">
-        <h1>Oi, {session.student.nickname}!</h1>
-        {resumeLesson ? (
-          <button
-            ref={first}
-            type="button"
-            className="btn-primary bench-continue"
-            onClick={() => onOpen(resumeLesson.id, resume.step_idx)}
-          >
-            <small>{resume.step_idx > 0 ? 'Continuar de onde parei' : 'Próxima lição'}</small>
-            {resumeLesson.title}
-          </button>
-        ) : (
-          <p className="bench-student-done">Você concluiu o módulo! Que tal refazer um desafio?</p>
-        )}
+        <h1>Escolha a lição</h1>
       </div>
-      <ol className="bench-lessons">
+      <ol className="bench-lessons" ref={list}>
         {shown.map((item, i) => (
           <li key={item.lesson.id}>
             <button
               type="button"
-              className={`bench-lesson-tile${item.done ? ' done' : ''}`}
-              disabled={item.locked}
-              onClick={() => onOpen(item.lesson.id, item.done ? 0 : item.phase)}
+              className={`bench-lesson-tile${item.done ? ' done' : ''}${item.locked ? ' locked' : ''}${
+                page * LESSONS_PER_PAGE + i === resumeIndex && !item.done && !item.locked ? ' current' : ''
+              }`}
+              data-pad="item"
+              data-pad-default={page * LESSONS_PER_PAGE + i === resumeIndex ? '' : undefined}
+              aria-disabled={item.locked}
+              onClick={() => !item.locked && onOpen(item.lesson.id, item.done ? 0 : item.phase)}
             >
               <span className="bench-lesson-num">{page * LESSONS_PER_PAGE + i + 1}</span>
               <span className="bench-lesson-title">{item.lesson.title}</span>
@@ -480,32 +554,17 @@ function StudentHome({
           </li>
         ))}
       </ol>
-      {pages > 1 && (
-        <div className="bench-pager">
-          <button
-            type="button"
-            className="bench-tile small"
-            disabled={page === 0}
-            aria-label="Lições anteriores"
-            onClick={() => setPage(page - 1)}
-          >
-            <Icon name="back" size={26} />
-          </button>
-          <span>
-            {page + 1} / {pages}
+      <div className="bench-pager">
+        <button type="button" className="bench-tile small" data-pad="back" onClick={onBack}>
+          <Icon name="back" size={24} />
+          Voltar
+        </button>
+        {pages > 1 && (
+          <span aria-live="polite">
+            Página {page + 1} de {pages}
           </span>
-          <button
-            type="button"
-            className="bench-tile small"
-            disabled={page >= pages - 1}
-            aria-label="Próximas lições"
-            onClick={() => setPage(page + 1)}
-          >
-            <Icon name="next" size={26} />
-          </button>
-        </div>
-      )}
-      <BenchFooter onRanking={onRanking} onCamera={onCamera} onLogout={onLogout} />
+        )}
+      </div>
     </section>
   );
 }
@@ -523,6 +582,7 @@ function LessonScreen({
   lesson,
   phase,
   vision,
+  muted,
   onExit,
   onFinished,
 }: {
@@ -531,6 +591,7 @@ function LessonScreen({
   lesson: any;
   phase: number;
   vision: VisionState;
+  muted: boolean;
   onExit: () => void;
   onFinished: (result: LessonResult) => void;
 }) {
@@ -577,11 +638,80 @@ function LessonScreen({
         startPhase={phase}
         onEvent={onEvent}
         onExit={onExit}
-        exitLabel="Voltar (Esc)"
+        exitLabel="Sair da lição"
+        voiceMuted={muted}
         livePieces={vision.available ? (vision.pieces ?? NO_PIECES) : null}
         barExtra={<CameraStatus vision={vision} />}
       />
+      <PadHints />
+      <FitLeftColumn />
     </section>
+  );
+}
+
+/**
+ * The board sets the lesson screen's size: the left column (tutor, tray, explanations, Energizar) shrinks to the
+ * board's height, so the whole screen is not scaled down for it and the board stays as big as the 7" allows.
+ */
+function FitLeftColumn() {
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const lab = document.querySelector<HTMLElement>('.bench-lesson .lab-step');
+      const board = lab?.querySelector<HTMLElement>('.board-workbench-column');
+      if (!lab || !board) return;
+      // Each step is a new lab-step element: its own zoom, starting at 1.
+      const zoom = Number.parseFloat(lab.style.getPropertyValue('--left-zoom')) || 1;
+      const rects = [...lab.querySelectorAll<HTMLElement>(':scope > *, :scope > .board-workspace > *')]
+        .filter((el) => !el.contains(board) && getComputedStyle(el).display !== 'contents')
+        .map((el) => el.getBoundingClientRect())
+        .filter((r) => r.height > 0); // hidden panels report a 0×0 box at the page's top
+      if (!rects.length) return;
+      const top = Math.min(...rects.map((r) => r.top));
+      const bottom = Math.max(...rects.map((r) => r.bottom));
+      const left = bottom - top;
+      const boardH = board.getBoundingClientRect().height;
+      if (!left || !boardH) return;
+      const next = Math.max(0.55, Math.min(1, (zoom * boardH) / left));
+      if (Math.abs(next - zoom) < 0.02) return;
+      lab.style.setProperty('--left-zoom', next.toFixed(3));
+    }, 250);
+    return () => clearInterval(timer);
+  }, []);
+  return null;
+}
+
+/**
+ * Inside a lesson the joystick only goes back (←), forward (→) or energizes (click). This bar says which of the
+ * three works right now; the real controls stay in the page for the joystick, out of sight.
+ */
+function PadHints() {
+  const [state, setState] = useState({ back: false, next: false, energize: false, on: false, choices: false });
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const stage = document.querySelector('.bench-lesson');
+      if (!stage) return;
+      const next = {
+        back: padElements(stage, 'back').length + padElements(stage, 'step-back').length > 0,
+        next: padElements(stage, 'next').length > 0,
+        energize: padElements(stage, 'energize').length > 0,
+        on: !!stage.querySelector('.power-indicator.on'),
+        choices: padElements(stage, 'item').length > 0,
+      };
+      setState((cur) => (JSON.stringify(cur) === JSON.stringify(next) ? cur : next));
+    }, 200);
+    return () => clearInterval(timer);
+  }, []);
+  return (
+    <div className="bench-pad-hints" aria-hidden="true">
+      <span className={state.back ? '' : 'off'}>◀ Voltar</span>
+      {state.choices && <span>↑↓ escolher · clique: confirmar</span>}
+      {state.energize && (
+        <span>
+          <i className={`dot${state.on ? ' on' : ''}`} /> Enter: {state.on ? 'desligar' : 'energizar'}
+        </span>
+      )}
+      <span className={state.next ? 'ready' : 'off'}>Próximo ▶</span>
+    </div>
   );
 }
 
@@ -632,7 +762,7 @@ function ScoreScreen({
           <small>pontos · {Math.round(durationS)} s</small>
         </div>
         <Podium ranking={ranking} />
-        <button ref={back} type="button" className="btn-primary" onClick={onBack}>
+        <button ref={back} type="button" className="btn-primary" data-pad="next" onClick={onBack}>
           Continuar
         </button>
       </div>
@@ -657,36 +787,49 @@ function Podium({ ranking }: { ranking: RankRow[] }) {
   );
 }
 
-/** SFR40: top 3 (score, then time) for each challenge of the module. */
+/**
+ * SFR40: one ranking on screen at a time. It opens on the module's overall ranking (best score per challenge,
+ * added up); ↑/↓ go through each challenge's own top 3. ← is Voltar.
+ */
 function RankingScreen({ api, pkg, onBack }: { api: BenchApi; pkg: BenchPackage | null; onBack: () => void }) {
   const challenges = (pkg?.lessons ?? []).filter((l) => l.kind === 'challenge');
-  const [lessonId, setLessonId] = useState<string | undefined>(challenges[0]?.id);
+  const views = [{ id: null as string | null, title: 'Ranking geral' }, ...challenges.map((l) => ({ id: l.id, title: l.title }))];
+  const [at, setAt] = useState(0);
   const [rows, setRows] = useState<RankRow[]>([]);
+  const view = views[Math.min(at, views.length - 1)];
   useEffect(() => {
-    api.ranking(lessonId).then(setRows, () => setRows([]));
-  }, [api, lessonId]);
+    const load = view.id ? api.ranking(view.id) : api.overallRanking();
+    load.then(setRows, () => setRows([]));
+  }, [api, view.id]);
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return;
+      event.preventDefault();
+      const step = event.key === 'ArrowUp' ? 1 : -1;
+      setAt((i) => (i + step + views.length) % views.length);
+    };
+    window.addEventListener('keydown', onKey, true);
+    return () => window.removeEventListener('keydown', onKey, true);
+  }, [views.length]);
   return (
     <section className="bench-center">
-      <div className="panel bench-card">
-        <h2>Ranking</h2>
-        {challenges.length > 1 && (
-          <select
-            className="text-input"
-            aria-label="Desafio"
-            value={lessonId}
-            onChange={(e) => setLessonId(e.target.value)}
-          >
-            {challenges.map((l) => (
-              <option key={l.id} value={l.id}>
-                {l.title}
-              </option>
-            ))}
-          </select>
-        )}
-        {challenges.length === 1 && <p>{challenges[0].title}</p>}
+      <div className="panel bench-card bench-ranking">
+        <div className="bench-ranking-head">
+          <span className="bench-ranking-arrow" aria-hidden="true">
+            ▲
+          </span>
+          <h2>{view.title}</h2>
+          <span className="bench-ranking-arrow" aria-hidden="true">
+            ▼
+          </span>
+          <small>
+            {at + 1} de {views.length} · mova o joystick ↑↓ para trocar
+          </small>
+        </div>
+        {view.id === null && <p className="bench-ranking-note">Soma da melhor pontuação de cada desafio</p>}
         <Podium ranking={rows} />
-        <button type="button" className="btn-outline" onClick={onBack}>
-          Voltar (Esc)
+        <button type="button" className="btn-outline" data-pad="back" onClick={onBack}>
+          Voltar
         </button>
       </div>
     </section>

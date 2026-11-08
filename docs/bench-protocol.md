@@ -124,16 +124,28 @@ Todo evento leva `student_id` **e** `nfc_code` juntos, nunca só a tag (SNFR8).
 ## Physical controls on the bench screen
 
 The student never touches the 7" screen: they build on the real protoboard (read by the camera, see above) and use
-the bench's physical controls. The bench screen listens for these keys, so the Raspberry Pi input bridge only has to
-turn each physical control into a key press:
+the bench's physical controls: an analog joystick (KY-023) and an Energizar push button, both on an ESP32 that talks
+to the Pi over the GPIO serial port (`/dev/serial0`, 115200 8N1). The firmware is
+[`firmware/esp32/bench_controls`](../firmware/esp32/bench_controls/README.md); the bench service reads the port
+(`--controls /dev/serial0`, `bench_service/controls.py`) and pushes each press to the screen on
+`ws://<bench>:8765/controls`, where it is replayed as a key press:
 
-| Physical control | Key | What it does on screen |
-|---|---|---|
-| Joystick up / left | `ArrowUp` / `ArrowLeft` | Focus the previous control (the main action is focused first) |
-| Joystick down / right | `ArrowDown` / `ArrowRight` | Focus the next control |
-| Joystick press (OK) | `Enter` | Press the focused control |
-| Back | `Escape` | Leave the lesson / screen |
-| Energizar | `e` | Power the board on or off (the screen shows the state) |
+The screen is played like a game console (`teacher_authoring_app/src/bench/pad.ts`): each control is tagged
+with what it means (`data-pad="item" | "next" | "back" | "step-back" | "energize"`), and the joystick acts on that
+meaning instead of walking through every button. Screens only show Voltar, Próximo/Continuar, Pular and their
+choices; sound, help, ranking, camera and leaving live in a game menu.
+
+| Physical control | Serial line | Key | What it does on screen |
+|---|---|---|---|
+| Joystick right / up | `KEY <id> RIGHT` / `UP` | `ArrowRight` / `ArrowUp` | Forward: next step, or the next choice in a list |
+| Joystick left / down | `KEY <id> LEFT` / `DOWN` | `ArrowLeft` / `ArrowDown` | Back: previous step (left also leaves the screen), or the previous choice |
+| Joystick click | `KEY <id> OK` | Space | Confirm the selected choice (inside a lesson only the quiz uses it) |
+| Joystick click held 0.8 s | `KEY <id> MENU` | `Escape` | Open / close the game menu (sound, help, ranking, camera, leave) |
+| Energizar button | `KEY <id> ENERGIZAR` | `Enter` | Power the board on or off; for now the PC keyboard's Enter |
+
+The Pi answers every `KEY` with `ACK <id>` and checks the link with `PING <n>` / `PONG <n>` every 2 s. A keyboard
+still works the same way, so the screen can be tested without the hardware (`POST /dev/controls/<name>` in demo mode
+simulates a serial line).
 
 With the camera on, the lesson board only mirrors the real board (no dragging) and the tray lists the parts the
 current step asks for; the other parts are greyed out. Without a camera the board falls back to on-screen dragging

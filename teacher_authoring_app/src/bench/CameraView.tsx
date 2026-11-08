@@ -97,12 +97,13 @@ function VisionFeed({ api, vision, onBack }: { api: BenchApi; vision: VisionStat
         )}
       </div>
       <div className="workspace-actions">
-        <button ref={back} type="button" className="btn-outline" onClick={onBack}>
-          Voltar (Esc)
+        <button ref={back} type="button" className="btn-outline" data-pad="back" onClick={onBack}>
+          Voltar
         </button>
         <button
           type="button"
           className="btn-outline"
+          data-pad="item"
           onClick={() => void api.visionRecalibrate().catch(() => undefined)}
         >
           Recalibrar câmera
@@ -185,10 +186,16 @@ function BrowserPreview({ onBack }: { onBack: () => void }) {
         {!live && !error && <p className="bench-camera-status">Ligando a câmera…</p>}
       </div>
       <div className="workspace-actions">
-        <button ref={back} type="button" className="btn-outline" onClick={onBack}>
-          Voltar (Esc)
+        <button ref={back} type="button" className="btn-outline" data-pad="back" onClick={onBack}>
+          Voltar
         </button>
-        <button type="button" className="btn-outline" disabled={!live} onClick={() => setShowGrid((v) => !v)}>
+        <button
+          type="button"
+          className="btn-outline"
+          data-pad="item"
+          disabled={!live}
+          onClick={() => setShowGrid((v) => !v)}
+        >
           {showGrid ? 'Esconder grade' : 'Mostrar grade'}
         </button>
         {devices.length > 1 && (
