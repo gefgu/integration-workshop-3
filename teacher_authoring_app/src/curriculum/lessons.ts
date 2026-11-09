@@ -482,6 +482,74 @@ function lesson03(): Lesson[] {
   return [guided, challenge];
 }
 
+// --- Lesson 3 (extra): the same loop with the 1 kΩ resistor -------------------------------------------
+
+const L03_1K_NOTES = `Objetivo: montar o circuito mais simples com resistor — bateria, resistor de 1 kΩ e LED — e ver que um resistor maior deixa o LED mais fraco.
+Como saber que deu certo: LED aceso na simulação; a pergunta final compara a corrente com a do resistor de 470 Ω (cerca de 3 mA contra 6 mA).
+Esta é a lição indicada para testar a câmera da bancada com a peça branca de 1 kΩ do kit: são só três peças e dois jumpers.
+${SIM} A corrente vem de (5 V − 2 V do LED) ÷ 1000 Ω ≈ 3 mA. O valor do resistor é uma configuração do kit; a câmera não mede a resistência.`;
+
+function lesson03Resistor1k(): Lesson[] {
+  const board = circuitL04('resistor_1k');
+  const qPrev = quiz(
+    'q-prev',
+    'Antes de testar: com um resistor de 1 kΩ (1000 Ω), o LED vai acender?',
+    [
+      ['Sim, mas mais fraco do que com um resistor menor.', 'Boa previsão! Resistência maior deixa passar menos corrente, mas ainda o suficiente para acender.'],
+      ['Não, 1 kΩ é demais e bloqueia a corrente.', 'Um resistor não bloqueia: ele só limita. Teste e veja o LED aceso.'],
+      ['Vai acender igual a qualquer outro resistor.', 'O valor importa: quanto maior, menos corrente. Compare com a lição anterior.'],
+    ],
+    0
+  );
+  const qCompare = quiz(
+    'q-compara',
+    'Com 1 kΩ passam cerca de 3 mA. Com 470 Ω passavam cerca de 6 mA. O que isso diz?',
+    [
+      ['Dobrar o valor do resistor corta a corrente quase pela metade.', 'Isso! Resistência e corrente andam em sentidos opostos.'],
+      ['Resistor maior deixa passar mais corrente.', 'É o contrário: maior resistência, menos corrente.'],
+      ['O valor do resistor não muda a corrente.', 'Muda sim: compare os dois números.'],
+    ],
+    0
+  );
+  return [
+    lesson({
+      id: `${SEED_PREFIX}03-guiada-1k`,
+      title: 'Lição 3 — Bateria, resistor de 1 kΩ e LED (guiada)',
+      instruction: 'Monte bateria + resistor de 1 kΩ + LED e acenda a luz.',
+      kind: 'guided',
+      board,
+      steps: [
+        explain(
+          'e-1k',
+          'O circuito mais simples com resistor',
+          'São só três peças: a bateria, um resistor de 1 kΩ (1000 Ω) e o LED, ligados em círculo por dois jumpers. A corrente sai do + da bateria, passa pelo resistor, pelo LED e volta ao −.\n\nO resistor protege o LED: com 1 kΩ passam cerca de 3 mA, bem menos que com o resistor de 470 Ω.'
+        ),
+        ...build(
+          board,
+          [
+            ['bat', 'Coloque a bateria na bancada.'],
+            ['res', 'Coloque o resistor de 1 kΩ.'],
+            ['led', 'Coloque o LED, depois do resistor. O lado da barra é o −.'],
+            ['w1', 'Jumper do + da bateria ao resistor.'],
+            ['w2', 'Jumper do LED de volta ao − da bateria.'],
+          ],
+          'Confira o circuito inteiro e faça sua previsão antes de energizar.',
+          { matchValues: true, strictPositions: false }
+        ),
+        interact('i-prev', 'Pense antes de testar.', qPrev),
+        experiment('x-lit', 'Energize e veja o LED', 'Clique em Energizar e observe o LED.', {
+          goals: [{ id: 'lit', label: 'Energize e veja o LED acender.', seen: ['lit'] }],
+        }),
+        interact('i-compara', 'Compare com o resistor de 470 Ω.', qCompare),
+      ],
+      quizzes: [qPrev, qCompare],
+      settings: { requireLit: true, tray: KIT('bateria', 'resistor_1k', 'led', 'jumper_longo', 'jumper_3') },
+      notes: L03_1K_NOTES,
+      tags: ['guiada', 'resistor', 'câmera', 'exemplo'],
+    }),
+  ];
+}
+
 // --- Lesson 4 ------------------------------------------------------------------------------------
 
 const L04_NOTES = `Objetivo: o LED só acende em um sentido (polaridade).
@@ -1312,6 +1380,7 @@ export function curriculumLessons(): Lesson[] {
     ...lesson01(),
     ...lesson02(),
     ...lesson03(),
+    ...lesson03Resistor1k(),
     ...lesson04(),
     ...lesson05(),
     ...lesson06(),
@@ -1335,7 +1404,7 @@ export function curriculumModules(): CurriculumModule[] {
     {
       title: 'Trilha 1 — Primeiros circuitos (lições 1 a 3)',
       description: 'Bancada e nós, primeiro circuito fechado e o resistor. Cada lição tem versão guiada e desafio.',
-      lessonIds: track('01-guiada', '01-desafio', '02-guiada', '02-desafio', '03-guiada', '03-desafio'),
+      lessonIds: track('01-guiada', '01-desafio', '02-guiada', '02-desafio', '03-guiada', '03-guiada-1k', '03-desafio'),
     },
     {
       title: 'Trilha 2 — Sentido do LED e botão (lições 4 e 5)',
@@ -1370,6 +1439,7 @@ export function curriculumModules(): CurriculumModule[] {
         '02-guiada',
         '02-desafio',
         '03-guiada',
+        '03-guiada-1k',
         '03-desafio',
         '04-guiada',
         '04-desafio',

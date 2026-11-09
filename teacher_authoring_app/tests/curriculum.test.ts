@@ -17,7 +17,8 @@ test('the curriculum has every Notion lesson, guided and challenge', () => {
   for (const id of ['08-guiada', '08-potenciometro', '08-desafio', '10-guiada'])
     assert.ok(ids.includes(`${SEED_PREFIX}${id}`), id);
   assert.equal(new Set(ids).size, ids.length);
-  assert.equal(lessons.length, 20);
+  assert.ok(ids.includes(`${SEED_PREFIX}03-guiada-1k`));
+  assert.equal(lessons.length, 21);
 });
 
 test('every lesson survives the same validation as an imported file and has nothing left to fix', () => {
