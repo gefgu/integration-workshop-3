@@ -42,6 +42,7 @@ Comandos úteis:
      journalctl -u tedtronics-bancada -f          ver o que o serviço está fazendo
      sudo systemctl restart tedtronics-bancada    reiniciar o serviço
      tedtronics-tela --janela                     abrir a tela numa janela 1024x600
+     http://localhost:8765/camera-debug         diagnóstico da câmera, sem entrar na lição
      curl -s localhost:8765/controls/state        a bancada achou a ESP32? (connected: true)
      sudo nano /etc/tedtronics-bancada.env        segredo da bancada e nome fixo
 

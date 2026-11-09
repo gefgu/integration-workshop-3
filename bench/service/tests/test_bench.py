@@ -242,6 +242,9 @@ class FakeVision:
 
 def test_vision_endpoints(tmp_path):
     off = TestClient(create_app(BenchStore(str(tmp_path / "a.sqlite3"))))
+    debug = off.get("/camera-debug")
+    assert debug.status_code == 200 and "Diagnóstico da câmera" in debug.text
+    assert debug.headers["cache-control"] == "no-store"
     assert off.get("/vision/state").json()["available"] is False
     assert off.get("/vision/frame.jpg").status_code == 404
     fake = FakeVision()
