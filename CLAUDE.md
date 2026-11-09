@@ -97,6 +97,6 @@ The color-code resistor (the three-disc "resistor de código de cores", piece ty
 **fully removed from the project**; do not bring it back or design around it. It is gone from the teacher app
 (types, simulator, board, tray, editor options, the `ccLimited`/`hideColorKey` lesson settings), the validator
 (catalog, models, feedback, TTS phrases), the vision config (the pink `rosa` band) and the curriculum (the resistor-color
-bonus lessons; the curriculum is now 20 lessons). Ordinary 220 Ω, 470 Ω and 1 kΩ resistors stay, and the app still
+bonus lessons; the curriculum is now 21 lessons (incl. the extra battery + 1 kΩ + LED guided lesson `03-guiada-1k`)). Ordinary 220 Ω, 470 Ω and 1 kΩ resistors stay, and the app still
 draws their bands from the value. Lessons saved earlier with a `resistor_cc` piece are no longer valid. `circuito.json`
 is a captured vision output from before the removal and still lists one such piece.

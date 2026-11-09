@@ -10,7 +10,7 @@ database, and do not edit any repository file** — you are a reviewer. Write no
 | Bench service (simulated bench, loaded with the full curriculum) | http://127.0.0.1:8766 |
 | Teacher login | `professor@tedtronics.local` / `tedtronics` (isolated database only) |
 
-The isolated database holds the 22 curriculum lessons (ids `curriculo-…`) and 5 modules. A class
+The isolated database holds the 20 curriculum lessons (ids `curriculo-…`) and 5 modules. A class
 “E2E currículo” with one student (NFC tag `E2E-TAG-1`) is assigned all modules.
 
 ## How to drive the UI
@@ -45,3 +45,19 @@ open with the Read tool. In the lesson test page, “preencher com o gabarito”
   camera and hardware were not used. Flag any text, screen or label that could make a user believe otherwise.
 * Report in pt-BR terms the user would see; write your report in English.
 * Finish with: a ranked findings table, a list of what you verified works, and “Not verified”.
+
+## Round 2 additions
+
+* Write findings to your report file **as you go** (append after every few findings), not only at the end: a session can be
+  interrupted. The report path is given in your task; it is the only repository file you may write.
+* Never use `pkill`/`killall`; other reviewers run Chrome at the same time. The driver gives each Chrome its own port.
+* Round 1 reports are in `AI/reviews/round1-*.md`. Round 2 must (a) re-check each round-1 *Major* finding and say
+  FIXED / NOT FIXED with evidence, then (b) look for new problems, especially in what you did not reach in round 1.
+* Changes since round 1: jumper step text uses tray names and follows swapped pieces; unsaved-changes banner; duplicate
+  drops the `exemplo`/`currículo` tags; library lists own lessons first, then the curriculum in order; teacher notes
+  rewritten; time-out in a timed challenge now offers Continue (to the explanation); prediction questions added before the
+  experiment in guided lessons 2, 4, 5, 7; LED arrow flips when rotated; column numbers drawn on the board; units/slots in
+  the help panel; challenge hints count consecutive misses of any kind; no resistor in lesson 2 shows a "limited by the
+  bench" warning. The colour-coded resistor and the bonus lessons were removed from the project (20 lessons now).
+* Known and accepted, do not report again unless it got worse: capacitor fade is 1.7 s with no replay; no L10 challenge
+  version; sound cannot be judged headless.
