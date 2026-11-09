@@ -17,5 +17,5 @@ if [ -z "$BROWSER" ]; then
   exit 1
 fi
 exec "$BROWSER" "$MODE" --app="$URL" --noerrdialogs --disable-infobars --disable-session-crashed-bubble \
-  --check-for-update-interval=31536000 --autoplay-policy=no-user-gesture-required \
+  --check-for-update-interval=31536000 --autoplay-policy=no-user-gesture-required --password-store=basic \
   --user-data-dir="$HOME/.config/tedtronics-tela"

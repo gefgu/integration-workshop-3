@@ -130,7 +130,8 @@ def main() -> None:
         profile = data / "tela"
         proc = subprocess.Popen(
             [browser, f"--app={url}/", *flags, f"--user-data-dir={profile}", "--no-first-run",
-             "--disable-features=Translate", "--autoplay-policy=no-user-gesture-required"]
+             "--disable-features=Translate", "--autoplay-policy=no-user-gesture-required",
+             "--password-store=basic"]
         )
         try:
             proc.wait()  # the bench screen's window closed: stop the bench
