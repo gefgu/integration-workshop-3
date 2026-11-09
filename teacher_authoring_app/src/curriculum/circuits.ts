@@ -40,10 +40,10 @@ export const circuitL03 = (resistor: PieceType = 'resistor_470'): Piece[] => [
   P('w2', 'jumper_4', 6, 2, 5),
 ];
 
-/** Lessons 4, 9 and the base of 5/7: battery, 470 Ω, LED, two jumpers (schematic _04). */
-export const circuitL04 = (): Piece[] => [
+/** Lessons 4, 9 and the base of 5/7: battery, 470 Ω, LED, two jumpers (schematic _04). The 1 kΩ lesson reuses it. */
+export const circuitL04 = (resistor: PieceType = 'resistor_470'): Piece[] => [
   battery(),
-  P('res', 'resistor_470', 3, 4, 2),
+  P('res', resistor, 3, 4, 2),
   P('led', 'led', 4, 5, 3),
   P('w1', 'jumper_longo', 1, 3, 4),
   P('w2', 'jumper_3', 5, 2, 5),
