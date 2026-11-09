@@ -70,6 +70,9 @@ def main() -> None:
     camera.add_argument("--camera", type=int, default=0, help="camera index for the vision pipeline (default 0)")
     camera.add_argument("--no-camera", action="store_true", help="no camera: the board is simulated on screen")
     camera.add_argument("--vision-image", help="demo: run the vision pipeline on this photo in a loop")
+    camera.add_argument("--vision-profile", choices=("current", "legacy"), default=None,
+                        help="board profile: current (default) or legacy (full board)")
+    camera.add_argument("--calibration", help="manual calibration file from `python -m visao --calibrate FILE`")
     parser.add_argument("--no-demo", action="store_true", help="hide the demo mode (the teacher app must unlock)")
     parser.add_argument("--kiosk", action="store_true", help="full screen (the real bench's 7\" monitor)")
     parser.add_argument("--no-browser", action="store_true", help="only run the service")
@@ -86,6 +89,10 @@ def main() -> None:
         os.environ["TEDTRONICS_BENCH_DEV"] = "1"
     if args.controls:
         os.environ["TEDTRONICS_BENCH_CONTROLS"] = args.controls
+    if args.vision_profile:
+        os.environ["TEDTRONICS_BENCH_VISION_PROFILE"] = args.vision_profile
+    if args.calibration:
+        os.environ["TEDTRONICS_BENCH_CALIBRATION"] = os.path.abspath(args.calibration)
     if args.vision_image:
         os.environ["TEDTRONICS_BENCH_VISION_IMAGE"] = os.path.abspath(args.vision_image)
     elif not args.no_camera:

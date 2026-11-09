@@ -1,43 +1,87 @@
-# visao — protoboard → grafo do circuito
+# Visão — câmera da bancada
 
-```
-frame → registro do grid (furos + homografia RANSAC) → imagem retificada
-      → cor de cada socket e de cada "ponte" entre colunas vizinhas
-      → filtro temporal (3 frames) → componentes → grafo
-```
+O perfil padrão `current` lê a metade montada da bancada: 6 linhas por 11
+colunas, chamada `C`. As coordenadas da saída são baseadas em zero (`C0` a
+`C10`, linhas `0` a `5`). A metade `B` permanece desconhecida nesta montagem.
+O perfil `legacy` mantém o leitor anterior de duas metades e suas regras de
+cor; ele pode ser selecionado explicitamente para as imagens antigas.
 
-| arquivo | o que faz |
-|---|---|
-| `config.py` | **todos os parâmetros** (geometria, faixas HSV, tabela de componentes, limiares) |
-| `registro.py` | acha os furos e calcula a homografia modelo → imagem; rastreia entre frames e recalibra sozinho |
-| `sockets.py` | retifica a placa e classifica a cor de cada socket/ponte |
-| `componentes.py` | agrupa sockets da mesma cor ligados por ponte → componente (2 ou 3 sockets) |
-| `temporal.py` | só aceita mudança depois de N frames iguais |
-| `circuito.py` | grafo bipartido (redes × componentes) e versão com os jumpers contraídos |
-| `pipeline.py` | junta tudo; descarta frames com mão na frente / movimento |
-| `debug.py` | desenhos de depuração |
+## Executar
 
-## Uso
+Da raiz do projeto, usando o ambiente Python instalado em `.venv`:
 
 ```bash
-python3 -m visao real_img/pecas2.jpeg --debug saida/   # imagens soltas
-python3 -m visao --camera 0 --mostrar --json circuito.json --travar-camera   # tempo real
-python3 -m unittest discover tests -v
+# Imagem capturada, com JSON e arquivos de diagnóstico
+.venv/bin/python -m visao visao/fixtures/current/frame-00.jpg --json --debug /tmp/visao-debug
+
+# Câmera: altere 1 para o índice da câmera conectada
+.venv/bin/python -m visao --camera 1 --mostrar --json /tmp/circuito-camera.json
+
+# Fotos do sistema anterior
+.venv/bin/python -m visao --profile legacy real_img/pecas2.jpeg --debug /tmp/visao-legacy
 ```
 
-No modo câmera: `r` recalibra, `s` salva imagens de depuração, `q` sai.
+No modo câmera, `r` reinicia o rastreamento, `s` salva diagnósticos e `q`
+encerra. `s` salva o frame original sem anotações em PNG, as imagens de
+diagnóstico e uma tabela CSV, usando nomes únicos; `--debug` escolhe a pasta
+(padrão `debug/`). `--json -` envia objetos JSON para stdout; com um caminho, grava o
+arquivo de forma atômica. O estado é publicado quando muda e pelo menos uma vez
+por segundo enquanto os frames são processados. `gerado_em_unix` é o instante
+de publicação em segundos Unix. Se a câmera não abrir, parar ou perder o grid,
+a saída indica `valido: false`; consumidores também devem aplicar timeout para
+falhas abruptas do processo.
 
-## Modelo elétrico
+## Calibração
 
-- cada coluna de 6 sockets de cada metade é um nó (`C0..C10` em cima, `B0..B10` embaixo);
-- um componente ocupa 2 ou 3 sockets vizinhos na mesma linha; todos são terminais, exceto no
-  `jumper_longo`, que liga só a 1ª e a 3ª coluna;
-- `grafo` mantém os jumpers como componentes; `grafo_eletrico` funde as redes ligadas por jumper.
+O perfil atual tenta registrar a grade automaticamente quando há evidência das
+quatro bordas. Sem evidência suficiente para numerar a grade, a leitura é
+rejeitada. Também é possível selecionar os quatro cantos manualmente:
 
-## Calibrar com as peças reais
+```bash
+.venv/bin/python -m visao --camera 1 --calibrate /tmp/minha-calibracao.json --mostrar
+# Depois, reutilize o arquivo com a mesma resolução e posição da câmera:
+.venv/bin/python -m visao --camera 1 --calibration /tmp/minha-calibracao.json --mostrar
+```
 
-1. Trave exposição e balanço de branco da câmera (`--travar-camera`, ou `v4l2-ctl`).
-2. Fotografe as peças na placa e rode `python3 -m visao foto.jpg --cores`: ele imprime o HSV
-   mediano de cada socket ocupado. Ajuste `CORES` em `config.py`.
-3. Ajuste a tabela `COMPONENTES` (cor, nº de sockets) → tipo, e o desempate por nº de pontos pretos.
-4. Se a placa real tiver outra proporção, ajuste `GAP` (distância entre as metades, em linhas).
+Clique nos centros dos sockets dos cantos superior esquerdo, superior direito,
+inferior direito e inferior esquerdo. Pressione Enter, confira a grade numerada
+e pressione Enter novamente para salvar. `r` reinicia a seleção e Escape cancela.
+O arquivo indicado deve ser novo. O rastreamento valida o ajuste contra a imagem;
+recalibre se a posição da câmera mudar e a grade não puder ser rastreada.
+O campo `motivo` distingue origem ambígua, mudança de resolução, movimento
+excessivo, falta de sockets distribuídos, erro de ajuste e ausência de leitura
+local confiável. Esses diagnósticos também aparecem com `--verbose`.
+
+## Interpretação e limites
+
+- O resistor branco com três marcas é reconhecido como `resistor_1k` por ser o
+  valor disponível informado para esta montagem. A câmera não mede resistência.
+- Corpos azuis reconhecidos aparecem em `pecas_sem_tipo` e nas posições ocupadas,
+  mas ainda não entram no grafo elétrico: suas identidades não estão confirmadas.
+- `observacoes` distingue `empty`, `occupied` e `unknown`; `atualidade` distingue
+  `fresh`, `stale` e `unknown`. Leituras precisam de três frames consecutivos no
+  modo câmera. Resultados anteriores ficam `stale` por até dois segundos, mas
+  componentes não confirmados no frame atual saem do grafo imediatamente.
+- `valido` significa que houve registro utilizável e pelo menos uma observação
+  local confiável no frame; não significa que a placa
+  inteira foi reconhecida. `completo` só fica `true` em modo temporal quando
+  todas as posições ativas `C` estão atualizadas e nenhuma peça tem tipo
+  desconhecido. Ele não afirma que a metade `B` foi lida. Uma imagem isolada
+  nunca é completa. Não valide o circuito inteiro a partir de uma leitura
+  incompleta. Em particular,
+  passar apenas o objeto `circuito` ao validador descarta os campos de cobertura.
+- O perfil atual foi desenvolvido com cinco fotos próximas da mesma montagem e
+  transformações dessas fotos. Outras peças, luz, movimentos e a bancada
+  remontada ainda precisam de verificação ao vivo. Veja as fotos e anotações em
+  [fixtures/current](fixtures/current/README.md).
+
+## Testes
+
+```bash
+.venv/bin/python -m unittest discover -s tests -p 'test_calibracao.py'
+.venv/bin/python -m unittest discover -s tests -p 'test_resistor_atual.py'
+.venv/bin/python -m unittest discover -s tests -p 'test_visao.py'
+```
+
+As imagens geradas são diagnósticos de software; os testes com fotos não
+estabelecem a resposta de uma bancada física em todas as condições.
