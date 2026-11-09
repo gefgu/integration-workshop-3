@@ -1,0 +1,418 @@
+[
+  {
+    "id": "JP01",
+    "net": "LATCH5",
+    "a": "U5.12",
+    "b": "U_LEVEL.6",
+    "d": 17.424709466731436,
+    "originalConnection": "C094"
+  },
+  {
+    "id": "JP02",
+    "net": "GPIO22",
+    "a": "R_PD_22.1",
+    "b": "U_LEVEL.5",
+    "d": 18.79498869379814,
+    "originalConnection": "C044"
+  },
+  {
+    "id": "JP03",
+    "net": "SER5",
+    "a": "U5.14",
+    "b": "U_LEVEL.2",
+    "d": 20.313475822714338,
+    "originalConnection": "C098"
+  },
+  {
+    "id": "JP04",
+    "net": "GPIO23",
+    "a": "J_ESP_L.15",
+    "b": "R_PD_23.1",
+    "d": 20.428423825640582,
+    "originalConnection": "C046"
+  },
+  {
+    "id": "JP05",
+    "net": "GPIO21",
+    "a": "U_LEVEL.11",
+    "b": "R_PD_21.1",
+    "d": 21.893935233301484,
+    "originalConnection": "C042"
+  },
+  {
+    "id": "JP06",
+    "net": "V5",
+    "a": "U5.16",
+    "b": "C_BULK5.1",
+    "d": 23.901851392726883,
+    "originalConnection": "C081"
+  },
+  {
+    "id": "JP07",
+    "net": "OE_N5",
+    "a": "U5.13",
+    "b": "U_LEVEL.10",
+    "d": 24.41466977044744,
+    "originalConnection": "C096"
+  },
+  {
+    "id": "JP08",
+    "net": "OE_N5",
+    "a": "U_LEVEL.10",
+    "b": "U6.13",
+    "d": 24.41466977044744,
+    "originalConnection": "C097"
+  },
+  {
+    "id": "JP09",
+    "net": "V5",
+    "a": "U5.16",
+    "b": "U_LEVEL.14",
+    "d": 25.379773442645227,
+    "originalConnection": "C082"
+  },
+  {
+    "id": "JP10",
+    "net": "LOW_C",
+    "a": "Q11.1",
+    "b": "R_LOW_LIMIT.2",
+    "d": 25.491308322642052,
+    "originalConnection": "C144"
+  },
+  {
+    "id": "JP11",
+    "net": "V12",
+    "a": "C1.1",
+    "b": "U2.40",
+    "d": 27.235344682966655,
+    "originalConnection": "C062"
+  },
+  {
+    "id": "JP12",
+    "net": "GPIO21",
+    "a": "J_ESP_L.11",
+    "b": "U_LEVEL.11",
+    "d": 30.277458611977323,
+    "originalConnection": "C041"
+  },
+  {
+    "id": "JP13",
+    "net": "GPIO19",
+    "a": "J_ESP_L.10",
+    "b": "R_PD_19.1",
+    "d": 31.692877748793972,
+    "originalConnection": "C039"
+  },
+  {
+    "id": "JP14",
+    "net": "LATCH5",
+    "a": "U_LEVEL.6",
+    "b": "U6.12",
+    "d": 31.696379919479764,
+    "originalConnection": "C095"
+  },
+  {
+    "id": "JP15",
+    "net": "AX1",
+    "a": "U1.22",
+    "b": "U2.22",
+    "d": 32,
+    "originalConnection": "C065"
+  },
+  {
+    "id": "JP16",
+    "net": "AX2",
+    "a": "U1.23",
+    "b": "U2.23",
+    "d": 32,
+    "originalConnection": "C067"
+  },
+  {
+    "id": "JP17",
+    "net": "AX3",
+    "a": "U1.4",
+    "b": "U2.4",
+    "d": 32,
+    "originalConnection": "C069"
+  },
+  {
+    "id": "JP18",
+    "net": "AY0",
+    "a": "U1.24",
+    "b": "U2.24",
+    "d": 32,
+    "originalConnection": "C071"
+  },
+  {
+    "id": "JP19",
+    "net": "AY1",
+    "a": "U1.25",
+    "b": "U2.25",
+    "d": 32,
+    "originalConnection": "C073"
+  },
+  {
+    "id": "JP20",
+    "net": "DATA",
+    "a": "U1.38",
+    "b": "U2.38",
+    "d": 32,
+    "originalConnection": "C077"
+  },
+  {
+    "id": "JP21",
+    "net": "AX0",
+    "a": "U1.5",
+    "b": "U2.5",
+    "d": 32,
+    "originalConnection": "C100"
+  },
+  {
+    "id": "JP22",
+    "net": "STROBE5",
+    "a": "U1.18",
+    "b": "U2.18",
+    "d": 32,
+    "originalConnection": "C112"
+  },
+  {
+    "id": "JP23",
+    "net": "SENSE_B",
+    "a": "U1.21",
+    "b": "U2.21",
+    "d": 32,
+    "originalConnection": "C114"
+  },
+  {
+    "id": "JP24",
+    "net": "PULSE_BUS",
+    "a": "U1.37",
+    "b": "U2.37",
+    "d": 32,
+    "originalConnection": "C122"
+  },
+  {
+    "id": "JP25",
+    "net": "TEST_BUS",
+    "a": "U1.39",
+    "b": "U2.39",
+    "d": 32,
+    "originalConnection": "C125"
+  },
+  {
+    "id": "JP26",
+    "net": "AY2",
+    "a": "U5.6",
+    "b": "U1.2",
+    "d": 32.23545408397406,
+    "originalConnection": "C074"
+  },
+  {
+    "id": "JP27",
+    "net": "CLK5",
+    "a": "U_LEVEL.4",
+    "b": "U6.11",
+    "d": 34.46070951097786,
+    "originalConnection": "C093"
+  },
+  {
+    "id": "JP28",
+    "net": "V12",
+    "a": "R7.1",
+    "b": "C_BULK12.1",
+    "d": 36.118228084998854,
+    "originalConnection": "C058"
+  },
+  {
+    "id": "JP29",
+    "net": "AX3",
+    "a": "U5.3",
+    "b": "U1.4",
+    "d": 40.75309681484341,
+    "originalConnection": "C068"
+  },
+  {
+    "id": "JP30",
+    "net": "CS_A",
+    "a": "U6.15",
+    "b": "R8.1",
+    "d": 41.21367370181891,
+    "originalConnection": "C103"
+  },
+  {
+    "id": "JP31",
+    "net": "AX0",
+    "a": "U5.15",
+    "b": "U1.5",
+    "d": 42.293371821125824,
+    "originalConnection": "C099"
+  },
+  {
+    "id": "JP32",
+    "net": "STROBE5",
+    "a": "U1.18",
+    "b": "U_LEVEL.8",
+    "d": 42.804878226669445,
+    "originalConnection": "C113"
+  },
+  {
+    "id": "JP33",
+    "net": "GPIO25",
+    "a": "J_ESP_R.8",
+    "b": "R6.1",
+    "d": 44.06676865848006,
+    "originalConnection": "C050"
+  },
+  {
+    "id": "JP34",
+    "net": "AY1",
+    "a": "U5.5",
+    "b": "U1.25",
+    "d": 45.03554707117479,
+    "originalConnection": "C072"
+  },
+  {
+    "id": "JP35",
+    "net": "CHAIN",
+    "a": "U5.9",
+    "b": "U6.14",
+    "d": 47.720959755646156,
+    "originalConnection": "C078"
+  },
+  {
+    "id": "JP36",
+    "net": "AY0",
+    "a": "U5.4",
+    "b": "U1.24",
+    "d": 48.42876108264591,
+    "originalConnection": "C070"
+  },
+  {
+    "id": "JP37",
+    "net": "CS_B",
+    "a": "R9.1",
+    "b": "U2.36",
+    "d": 51.10743585819973,
+    "originalConnection": "C102"
+  },
+  {
+    "id": "JP38",
+    "net": "AX2",
+    "a": "U5.2",
+    "b": "U1.23",
+    "d": 53.08137620672622,
+    "originalConnection": "C066"
+  },
+  {
+    "id": "JP39",
+    "net": "V12",
+    "a": "R7.1",
+    "b": "C2.1",
+    "d": 55.05861967031139,
+    "originalConnection": "C059"
+  },
+  {
+    "id": "JP40",
+    "net": "V12",
+    "a": "U2.40",
+    "b": "H2.1",
+    "d": 56.424400750030124,
+    "originalConnection": "C063"
+  },
+  {
+    "id": "JP41",
+    "net": "AX1",
+    "a": "U5.1",
+    "b": "U1.22",
+    "d": 56.562292209563076,
+    "originalConnection": "C064"
+  },
+  {
+    "id": "JP42",
+    "net": "V12",
+    "a": "R7.1",
+    "b": "U1.40",
+    "d": 57.41817482296002,
+    "originalConnection": "C060"
+  },
+  {
+    "id": "JP43",
+    "net": "PULSE_BUS",
+    "a": "R17.2",
+    "b": "R_LOW_LIMIT.1",
+    "d": 60.38,
+    "originalConnection": "C124"
+  },
+  {
+    "id": "JP44",
+    "net": "SENSE_B",
+    "a": "U2.21",
+    "b": "J_SMART.3",
+    "d": 61.205138673153904,
+    "originalConnection": "C115"
+  },
+  {
+    "id": "JP45",
+    "net": "RESET12",
+    "a": "R7.2",
+    "b": "U1.3",
+    "d": 65.46269166479485,
+    "originalConnection": "C054"
+  },
+  {
+    "id": "JP46",
+    "net": "PULSE_BUS",
+    "a": "U2.37",
+    "b": "R17.2",
+    "d": 71.93279363405817,
+    "originalConnection": "C123"
+  },
+  {
+    "id": "JP47",
+    "net": "TEST_BUS",
+    "a": "U2.39",
+    "b": "R18.2",
+    "d": 73.79122170014534,
+    "originalConnection": "C126"
+  },
+  {
+    "id": "JP48",
+    "net": "SENSE_A",
+    "a": "U2.1",
+    "b": "J_SMART.1",
+    "d": 77.8023251580568,
+    "originalConnection": "C106"
+  },
+  {
+    "id": "JP49",
+    "net": "V5",
+    "a": "C5.1",
+    "b": "Q9.3",
+    "d": 92.5080104639593,
+    "originalConnection": "C087"
+  },
+  {
+    "id": "JP50",
+    "net": "GPIO27",
+    "a": "J_ESP_R.6",
+    "b": "R_LOW_BASE.1",
+    "d": 158.0507086349188,
+    "originalConnection": "C048"
+  },
+  {
+    "id": "JP51",
+    "net": "GPIO26",
+    "a": "J_ESP_R.7",
+    "b": "R13.1",
+    "d": 165.0875031612024,
+    "originalConnection": "C049"
+  },
+  {
+    "id": "JP52",
+    "net": "GPIO14",
+    "a": "J_ESP_R.5",
+    "b": "R15.1",
+    "d": 167.62367523712157,
+    "originalConnection": "C047"
+  }
+]

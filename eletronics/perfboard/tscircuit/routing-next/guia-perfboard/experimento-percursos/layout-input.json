@@ -1,0 +1,3198 @@
+{
+  "pins": {
+    "J_ESP_L.1": {
+      "pin": 1,
+      "net": null,
+      "label": "3V3",
+      "ref": "J_ESP_L",
+      "c": 14,
+      "r": 3
+    },
+    "J_ESP_L.2": {
+      "pin": 2,
+      "net": "GND",
+      "label": "GND",
+      "ref": "J_ESP_L",
+      "c": 14,
+      "r": 4
+    },
+    "J_ESP_L.3": {
+      "pin": 3,
+      "net": null,
+      "label": "GPIO15",
+      "ref": "J_ESP_L",
+      "c": 14,
+      "r": 5
+    },
+    "J_ESP_L.4": {
+      "pin": 4,
+      "net": null,
+      "label": "GPIO2",
+      "ref": "J_ESP_L",
+      "c": 14,
+      "r": 6
+    },
+    "J_ESP_L.5": {
+      "pin": 5,
+      "net": null,
+      "label": "GPIO4",
+      "ref": "J_ESP_L",
+      "c": 14,
+      "r": 7
+    },
+    "J_ESP_L.6": {
+      "pin": 6,
+      "net": null,
+      "label": "GPIO16",
+      "ref": "J_ESP_L",
+      "c": 14,
+      "r": 8
+    },
+    "J_ESP_L.7": {
+      "pin": 7,
+      "net": null,
+      "label": "GPIO17",
+      "ref": "J_ESP_L",
+      "c": 14,
+      "r": 9
+    },
+    "J_ESP_L.8": {
+      "pin": 8,
+      "net": null,
+      "label": "GPIO5",
+      "ref": "J_ESP_L",
+      "c": 14,
+      "r": 10
+    },
+    "J_ESP_L.9": {
+      "pin": 9,
+      "net": "GPIO18",
+      "label": "GPIO18",
+      "ref": "J_ESP_L",
+      "c": 14,
+      "r": 11
+    },
+    "J_ESP_L.10": {
+      "pin": 10,
+      "net": "GPIO19",
+      "label": "GPIO19",
+      "ref": "J_ESP_L",
+      "c": 14,
+      "r": 12
+    },
+    "J_ESP_L.11": {
+      "pin": 11,
+      "net": "GPIO21",
+      "label": "GPIO21",
+      "ref": "J_ESP_L",
+      "c": 14,
+      "r": 13
+    },
+    "J_ESP_L.12": {
+      "pin": 12,
+      "net": null,
+      "label": "GPIO3_RX0",
+      "ref": "J_ESP_L",
+      "c": 14,
+      "r": 14
+    },
+    "J_ESP_L.13": {
+      "pin": 13,
+      "net": null,
+      "label": "GPIO1_TX0",
+      "ref": "J_ESP_L",
+      "c": 14,
+      "r": 15
+    },
+    "J_ESP_L.14": {
+      "pin": 14,
+      "net": "GPIO22",
+      "label": "GPIO22",
+      "ref": "J_ESP_L",
+      "c": 14,
+      "r": 16
+    },
+    "J_ESP_L.15": {
+      "pin": 15,
+      "net": "GPIO23",
+      "label": "GPIO23",
+      "ref": "J_ESP_L",
+      "c": 14,
+      "r": 17
+    },
+    "J_ESP_R.1": {
+      "pin": 1,
+      "net": null,
+      "label": "VIN",
+      "ref": "J_ESP_R",
+      "c": 24,
+      "r": 3
+    },
+    "J_ESP_R.2": {
+      "pin": 2,
+      "net": "GND",
+      "label": "GND",
+      "ref": "J_ESP_R",
+      "c": 24,
+      "r": 4
+    },
+    "J_ESP_R.3": {
+      "pin": 3,
+      "net": null,
+      "label": "GPIO13",
+      "ref": "J_ESP_R",
+      "c": 24,
+      "r": 5
+    },
+    "J_ESP_R.4": {
+      "pin": 4,
+      "net": null,
+      "label": "GPIO12",
+      "ref": "J_ESP_R",
+      "c": 24,
+      "r": 6
+    },
+    "J_ESP_R.5": {
+      "pin": 5,
+      "net": "GPIO14",
+      "label": "GPIO14",
+      "ref": "J_ESP_R",
+      "c": 24,
+      "r": 7
+    },
+    "J_ESP_R.6": {
+      "pin": 6,
+      "net": "GPIO27",
+      "label": "GPIO27",
+      "ref": "J_ESP_R",
+      "c": 24,
+      "r": 8
+    },
+    "J_ESP_R.7": {
+      "pin": 7,
+      "net": "GPIO26",
+      "label": "GPIO26",
+      "ref": "J_ESP_R",
+      "c": 24,
+      "r": 9
+    },
+    "J_ESP_R.8": {
+      "pin": 8,
+      "net": "GPIO25",
+      "label": "GPIO25",
+      "ref": "J_ESP_R",
+      "c": 24,
+      "r": 10
+    },
+    "J_ESP_R.9": {
+      "pin": 9,
+      "net": null,
+      "label": "GPIO33",
+      "ref": "J_ESP_R",
+      "c": 24,
+      "r": 11
+    },
+    "J_ESP_R.10": {
+      "pin": 10,
+      "net": null,
+      "label": "GPIO32",
+      "ref": "J_ESP_R",
+      "c": 24,
+      "r": 12
+    },
+    "J_ESP_R.11": {
+      "pin": 11,
+      "net": null,
+      "label": "GPIO35",
+      "ref": "J_ESP_R",
+      "c": 24,
+      "r": 13
+    },
+    "J_ESP_R.12": {
+      "pin": 12,
+      "net": "GPIO34",
+      "label": "GPIO34",
+      "ref": "J_ESP_R",
+      "c": 24,
+      "r": 14
+    },
+    "J_ESP_R.13": {
+      "pin": 13,
+      "net": null,
+      "label": "GPIO39_VN",
+      "ref": "J_ESP_R",
+      "c": 24,
+      "r": 15
+    },
+    "J_ESP_R.14": {
+      "pin": 14,
+      "net": null,
+      "label": "GPIO36_VP",
+      "ref": "J_ESP_R",
+      "c": 24,
+      "r": 16
+    },
+    "J_ESP_R.15": {
+      "pin": 15,
+      "net": null,
+      "label": "EN",
+      "ref": "J_ESP_R",
+      "c": 24,
+      "r": 17
+    },
+    "H2.1": {
+      "pin": 1,
+      "net": "V12",
+      "label": "V12",
+      "ref": "H2",
+      "c": 3,
+      "r": 3
+    },
+    "H2.2": {
+      "pin": 2,
+      "net": "V5",
+      "label": "V5",
+      "ref": "H2",
+      "c": 4,
+      "r": 3
+    },
+    "H2.3": {
+      "pin": 3,
+      "net": null,
+      "label": "NC",
+      "ref": "H2",
+      "c": 5,
+      "r": 3
+    },
+    "H2.4": {
+      "pin": 4,
+      "net": "GND",
+      "label": "GND",
+      "ref": "H2",
+      "c": 6,
+      "r": 3
+    },
+    "J_SMART.1": {
+      "pin": 1,
+      "net": "SENSE_A",
+      "label": "SENSE_A",
+      "ref": "J_SMART",
+      "c": 31,
+      "r": 3
+    },
+    "J_SMART.2": {
+      "pin": 2,
+      "net": "GND",
+      "label": "GND",
+      "ref": "J_SMART",
+      "c": 32,
+      "r": 3
+    },
+    "J_SMART.3": {
+      "pin": 3,
+      "net": "SENSE_B",
+      "label": "SENSE_B",
+      "ref": "J_SMART",
+      "c": 33,
+      "r": 3
+    },
+    "J_SMART.4": {
+      "pin": 4,
+      "net": "GPIO34",
+      "label": "GPIO34",
+      "ref": "J_SMART",
+      "c": 34,
+      "r": 3
+    },
+    "H1.1": {
+      "pin": 1,
+      "net": "NODE00",
+      "label": "NODE00",
+      "ref": "H1",
+      "c": 2,
+      "r": 47
+    },
+    "H1.2": {
+      "pin": 2,
+      "net": "NODE01",
+      "label": "NODE01",
+      "ref": "H1",
+      "c": 2,
+      "r": 48
+    },
+    "H1.3": {
+      "pin": 3,
+      "net": "NODE02",
+      "label": "NODE02",
+      "ref": "H1",
+      "c": 2,
+      "r": 49
+    },
+    "H1.4": {
+      "pin": 4,
+      "net": "NODE03",
+      "label": "NODE03",
+      "ref": "H1",
+      "c": 2,
+      "r": 50
+    },
+    "H1.5": {
+      "pin": 5,
+      "net": "NODE04",
+      "label": "NODE04",
+      "ref": "H1",
+      "c": 2,
+      "r": 51
+    },
+    "H1.6": {
+      "pin": 6,
+      "net": "NODE05",
+      "label": "NODE05",
+      "ref": "H1",
+      "c": 2,
+      "r": 52
+    },
+    "H1.7": {
+      "pin": 7,
+      "net": "NODE06",
+      "label": "NODE06",
+      "ref": "H1",
+      "c": 2,
+      "r": 53
+    },
+    "H1.8": {
+      "pin": 8,
+      "net": "NODE07",
+      "label": "NODE07",
+      "ref": "H1",
+      "c": 2,
+      "r": 54
+    },
+    "H1.9": {
+      "pin": 9,
+      "net": "NODE08",
+      "label": "NODE08",
+      "ref": "H1",
+      "c": 2,
+      "r": 55
+    },
+    "H1.10": {
+      "pin": 10,
+      "net": "NODE09",
+      "label": "NODE09",
+      "ref": "H1",
+      "c": 2,
+      "r": 56
+    },
+    "H1.11": {
+      "pin": 11,
+      "net": "NODE10",
+      "label": "NODE10",
+      "ref": "H1",
+      "c": 2,
+      "r": 57
+    },
+    "H3.1": {
+      "pin": 1,
+      "net": "NODE11",
+      "label": "NODE11",
+      "ref": "H3",
+      "c": 36,
+      "r": 47
+    },
+    "H3.2": {
+      "pin": 2,
+      "net": "NODE12",
+      "label": "NODE12",
+      "ref": "H3",
+      "c": 36,
+      "r": 48
+    },
+    "H3.3": {
+      "pin": 3,
+      "net": "NODE13",
+      "label": "NODE13",
+      "ref": "H3",
+      "c": 36,
+      "r": 49
+    },
+    "H3.4": {
+      "pin": 4,
+      "net": "NODE14",
+      "label": "NODE14",
+      "ref": "H3",
+      "c": 36,
+      "r": 50
+    },
+    "H3.5": {
+      "pin": 5,
+      "net": "NODE15",
+      "label": "NODE15",
+      "ref": "H3",
+      "c": 36,
+      "r": 51
+    },
+    "H3.6": {
+      "pin": 6,
+      "net": "NODE16",
+      "label": "NODE16",
+      "ref": "H3",
+      "c": 36,
+      "r": 52
+    },
+    "H3.7": {
+      "pin": 7,
+      "net": "NODE17",
+      "label": "NODE17",
+      "ref": "H3",
+      "c": 36,
+      "r": 53
+    },
+    "H3.8": {
+      "pin": 8,
+      "net": "NODE18",
+      "label": "NODE18",
+      "ref": "H3",
+      "c": 36,
+      "r": 54
+    },
+    "H3.9": {
+      "pin": 9,
+      "net": "NODE19",
+      "label": "NODE19",
+      "ref": "H3",
+      "c": 36,
+      "r": 55
+    },
+    "H3.10": {
+      "pin": 10,
+      "net": "NODE20",
+      "label": "NODE20",
+      "ref": "H3",
+      "c": 36,
+      "r": 56
+    },
+    "H3.11": {
+      "pin": 11,
+      "net": "NODE21",
+      "label": "NODE21",
+      "ref": "H3",
+      "c": 36,
+      "r": 57
+    },
+    "U_LEVEL.1": {
+      "pin": 1,
+      "label": "1A",
+      "net": "GPIO23",
+      "ref": "U_LEVEL",
+      "c": 18,
+      "r": 23
+    },
+    "U_LEVEL.2": {
+      "pin": 2,
+      "label": "1Y",
+      "net": "SER5",
+      "ref": "U_LEVEL",
+      "c": 18,
+      "r": 24
+    },
+    "U_LEVEL.3": {
+      "pin": 3,
+      "label": "2A",
+      "net": "GPIO18",
+      "ref": "U_LEVEL",
+      "c": 18,
+      "r": 25
+    },
+    "U_LEVEL.4": {
+      "pin": 4,
+      "label": "2Y",
+      "net": "CLK5",
+      "ref": "U_LEVEL",
+      "c": 18,
+      "r": 26
+    },
+    "U_LEVEL.5": {
+      "pin": 5,
+      "label": "3A",
+      "net": "GPIO22",
+      "ref": "U_LEVEL",
+      "c": 18,
+      "r": 27
+    },
+    "U_LEVEL.6": {
+      "pin": 6,
+      "label": "3Y",
+      "net": "LATCH5",
+      "ref": "U_LEVEL",
+      "c": 18,
+      "r": 28
+    },
+    "U_LEVEL.7": {
+      "pin": 7,
+      "label": "GND",
+      "net": "GND",
+      "ref": "U_LEVEL",
+      "c": 18,
+      "r": 29
+    },
+    "U_LEVEL.8": {
+      "pin": 8,
+      "label": "4Y",
+      "net": "STROBE5",
+      "ref": "U_LEVEL",
+      "c": 21,
+      "r": 29
+    },
+    "U_LEVEL.9": {
+      "pin": 9,
+      "label": "4A",
+      "net": "GPIO19",
+      "ref": "U_LEVEL",
+      "c": 21,
+      "r": 28
+    },
+    "U_LEVEL.10": {
+      "pin": 10,
+      "label": "5Y",
+      "net": "OE_N5",
+      "ref": "U_LEVEL",
+      "c": 21,
+      "r": 27
+    },
+    "U_LEVEL.11": {
+      "pin": 11,
+      "label": "5A",
+      "net": "GPIO21",
+      "ref": "U_LEVEL",
+      "c": 21,
+      "r": 26
+    },
+    "U_LEVEL.12": {
+      "pin": 12,
+      "label": "6Y",
+      "net": null,
+      "ref": "U_LEVEL",
+      "c": 21,
+      "r": 25
+    },
+    "U_LEVEL.13": {
+      "pin": 13,
+      "label": "6A",
+      "net": "GND",
+      "ref": "U_LEVEL",
+      "c": 21,
+      "r": 24
+    },
+    "U_LEVEL.14": {
+      "pin": 14,
+      "label": "VCC",
+      "net": "V5",
+      "ref": "U_LEVEL",
+      "c": 21,
+      "r": 23
+    },
+    "U5.1": {
+      "pin": 1,
+      "net": "AX1",
+      "label": "QB",
+      "ref": "U5",
+      "c": 6,
+      "r": 33
+    },
+    "U5.2": {
+      "pin": 2,
+      "net": "AX2",
+      "label": "QC",
+      "ref": "U5",
+      "c": 6,
+      "r": 34
+    },
+    "U5.3": {
+      "pin": 3,
+      "net": "AX3",
+      "label": "QD",
+      "ref": "U5",
+      "c": 6,
+      "r": 35
+    },
+    "U5.4": {
+      "pin": 4,
+      "net": "AY0",
+      "label": "QE",
+      "ref": "U5",
+      "c": 6,
+      "r": 36
+    },
+    "U5.5": {
+      "pin": 5,
+      "net": "AY1",
+      "label": "QF",
+      "ref": "U5",
+      "c": 6,
+      "r": 37
+    },
+    "U5.6": {
+      "pin": 6,
+      "net": "AY2",
+      "label": "QG",
+      "ref": "U5",
+      "c": 6,
+      "r": 38
+    },
+    "U5.7": {
+      "pin": 7,
+      "net": "DATA",
+      "label": "QH",
+      "ref": "U5",
+      "c": 6,
+      "r": 39
+    },
+    "U5.8": {
+      "pin": 8,
+      "net": "GND",
+      "label": "GND",
+      "ref": "U5",
+      "c": 6,
+      "r": 40
+    },
+    "U5.9": {
+      "pin": 9,
+      "net": "CHAIN",
+      "label": "QH_SER",
+      "ref": "U5",
+      "c": 9,
+      "r": 40
+    },
+    "U5.10": {
+      "pin": 10,
+      "net": "V5",
+      "label": "SRCLR_N",
+      "ref": "U5",
+      "c": 9,
+      "r": 39
+    },
+    "U5.11": {
+      "pin": 11,
+      "net": "CLK5",
+      "label": "SRCLK",
+      "ref": "U5",
+      "c": 9,
+      "r": 38
+    },
+    "U5.12": {
+      "pin": 12,
+      "net": "LATCH5",
+      "label": "RCLK",
+      "ref": "U5",
+      "c": 9,
+      "r": 37
+    },
+    "U5.13": {
+      "pin": 13,
+      "net": "OE_N5",
+      "label": "OE_N",
+      "ref": "U5",
+      "c": 9,
+      "r": 36
+    },
+    "U5.14": {
+      "pin": 14,
+      "net": "SER5",
+      "label": "SER",
+      "ref": "U5",
+      "c": 9,
+      "r": 35
+    },
+    "U5.15": {
+      "pin": 15,
+      "net": "AX0",
+      "label": "QA",
+      "ref": "U5",
+      "c": 9,
+      "r": 34
+    },
+    "U5.16": {
+      "pin": 16,
+      "net": "V5",
+      "label": "VCC",
+      "ref": "U5",
+      "c": 9,
+      "r": 33
+    },
+    "U6.1": {
+      "pin": 1,
+      "net": "CS_B",
+      "label": "QB",
+      "ref": "U6",
+      "c": 24,
+      "r": 33
+    },
+    "U6.2": {
+      "pin": 2,
+      "net": null,
+      "label": "QC",
+      "ref": "U6",
+      "c": 24,
+      "r": 34
+    },
+    "U6.3": {
+      "pin": 3,
+      "net": null,
+      "label": "QD",
+      "ref": "U6",
+      "c": 24,
+      "r": 35
+    },
+    "U6.4": {
+      "pin": 4,
+      "net": null,
+      "label": "QE",
+      "ref": "U6",
+      "c": 24,
+      "r": 36
+    },
+    "U6.5": {
+      "pin": 5,
+      "net": null,
+      "label": "QF",
+      "ref": "U6",
+      "c": 24,
+      "r": 37
+    },
+    "U6.6": {
+      "pin": 6,
+      "net": null,
+      "label": "QG",
+      "ref": "U6",
+      "c": 24,
+      "r": 38
+    },
+    "U6.7": {
+      "pin": 7,
+      "net": null,
+      "label": "QH",
+      "ref": "U6",
+      "c": 24,
+      "r": 39
+    },
+    "U6.8": {
+      "pin": 8,
+      "net": "GND",
+      "label": "GND",
+      "ref": "U6",
+      "c": 24,
+      "r": 40
+    },
+    "U6.9": {
+      "pin": 9,
+      "net": null,
+      "label": "QH_SER",
+      "ref": "U6",
+      "c": 27,
+      "r": 40
+    },
+    "U6.10": {
+      "pin": 10,
+      "net": "V5",
+      "label": "SRCLR_N",
+      "ref": "U6",
+      "c": 27,
+      "r": 39
+    },
+    "U6.11": {
+      "pin": 11,
+      "net": "CLK5",
+      "label": "SRCLK",
+      "ref": "U6",
+      "c": 27,
+      "r": 38
+    },
+    "U6.12": {
+      "pin": 12,
+      "net": "LATCH5",
+      "label": "RCLK",
+      "ref": "U6",
+      "c": 27,
+      "r": 37
+    },
+    "U6.13": {
+      "pin": 13,
+      "net": "OE_N5",
+      "label": "OE_N",
+      "ref": "U6",
+      "c": 27,
+      "r": 36
+    },
+    "U6.14": {
+      "pin": 14,
+      "net": "CHAIN",
+      "label": "SER",
+      "ref": "U6",
+      "c": 27,
+      "r": 35
+    },
+    "U6.15": {
+      "pin": 15,
+      "net": "CS_A",
+      "label": "QA",
+      "ref": "U6",
+      "c": 27,
+      "r": 34
+    },
+    "U6.16": {
+      "pin": 16,
+      "net": "V5",
+      "label": "VCC",
+      "ref": "U6",
+      "c": 27,
+      "r": 33
+    },
+    "U1.1": {
+      "pin": 1,
+      "net": "SENSE_A",
+      "label": "Y3",
+      "ref": "U1",
+      "c": 6,
+      "r": 45
+    },
+    "U1.2": {
+      "pin": 2,
+      "net": "AY2",
+      "label": "AY2",
+      "ref": "U1",
+      "c": 6,
+      "r": 46
+    },
+    "U1.3": {
+      "pin": 3,
+      "net": "RESET12",
+      "label": "RESET",
+      "ref": "U1",
+      "c": 6,
+      "r": 47
+    },
+    "U1.4": {
+      "pin": 4,
+      "net": "AX3",
+      "label": "AX3",
+      "ref": "U1",
+      "c": 6,
+      "r": 48
+    },
+    "U1.5": {
+      "pin": 5,
+      "net": "AX0",
+      "label": "AX0",
+      "ref": "U1",
+      "c": 6,
+      "r": 49
+    },
+    "U1.6": {
+      "pin": 6,
+      "net": null,
+      "label": "X14",
+      "ref": "U1",
+      "c": 6,
+      "r": 50
+    },
+    "U1.7": {
+      "pin": 7,
+      "net": null,
+      "label": "X15",
+      "ref": "U1",
+      "c": 6,
+      "r": 51
+    },
+    "U1.8": {
+      "pin": 8,
+      "net": "NODE06",
+      "label": "X6",
+      "ref": "U1",
+      "c": 6,
+      "r": 52
+    },
+    "U1.9": {
+      "pin": 9,
+      "net": "NODE07",
+      "label": "X7",
+      "ref": "U1",
+      "c": 6,
+      "r": 53
+    },
+    "U1.10": {
+      "pin": 10,
+      "net": "NODE08",
+      "label": "X8",
+      "ref": "U1",
+      "c": 6,
+      "r": 54
+    },
+    "U1.11": {
+      "pin": 11,
+      "net": "NODE09",
+      "label": "X9",
+      "ref": "U1",
+      "c": 6,
+      "r": 55
+    },
+    "U1.12": {
+      "pin": 12,
+      "net": "NODE10",
+      "label": "X10",
+      "ref": "U1",
+      "c": 6,
+      "r": 56
+    },
+    "U1.13": {
+      "pin": 13,
+      "net": null,
+      "label": "X11",
+      "ref": "U1",
+      "c": 6,
+      "r": 57
+    },
+    "U1.14": {
+      "pin": 14,
+      "net": null,
+      "label": "NC",
+      "ref": "U1",
+      "c": 6,
+      "r": 58
+    },
+    "U1.15": {
+      "pin": 15,
+      "net": "BUS_A7",
+      "label": "Y7",
+      "ref": "U1",
+      "c": 6,
+      "r": 59
+    },
+    "U1.16": {
+      "pin": 16,
+      "net": "GND",
+      "label": "VSS",
+      "ref": "U1",
+      "c": 6,
+      "r": 60
+    },
+    "U1.17": {
+      "pin": 17,
+      "net": "BUS_A6",
+      "label": "Y6",
+      "ref": "U1",
+      "c": 6,
+      "r": 61
+    },
+    "U1.18": {
+      "pin": 18,
+      "net": "STROBE5",
+      "label": "STROBE",
+      "ref": "U1",
+      "c": 6,
+      "r": 62
+    },
+    "U1.19": {
+      "pin": 19,
+      "net": "BUS_A5",
+      "label": "Y5",
+      "ref": "U1",
+      "c": 6,
+      "r": 63
+    },
+    "U1.20": {
+      "pin": 20,
+      "net": "GND",
+      "label": "VEE",
+      "ref": "U1",
+      "c": 6,
+      "r": 64
+    },
+    "U1.21": {
+      "pin": 21,
+      "net": "SENSE_B",
+      "label": "Y4",
+      "ref": "U1",
+      "c": 12,
+      "r": 64
+    },
+    "U1.22": {
+      "pin": 22,
+      "net": "AX1",
+      "label": "AX1",
+      "ref": "U1",
+      "c": 12,
+      "r": 63
+    },
+    "U1.23": {
+      "pin": 23,
+      "net": "AX2",
+      "label": "AX2",
+      "ref": "U1",
+      "c": 12,
+      "r": 62
+    },
+    "U1.24": {
+      "pin": 24,
+      "net": "AY0",
+      "label": "AY0",
+      "ref": "U1",
+      "c": 12,
+      "r": 61
+    },
+    "U1.25": {
+      "pin": 25,
+      "net": "AY1",
+      "label": "AY1",
+      "ref": "U1",
+      "c": 12,
+      "r": 60
+    },
+    "U1.26": {
+      "pin": 26,
+      "net": null,
+      "label": "X13",
+      "ref": "U1",
+      "c": 12,
+      "r": 59
+    },
+    "U1.27": {
+      "pin": 27,
+      "net": null,
+      "label": "X12",
+      "ref": "U1",
+      "c": 12,
+      "r": 58
+    },
+    "U1.28": {
+      "pin": 28,
+      "net": "NODE05",
+      "label": "X5",
+      "ref": "U1",
+      "c": 12,
+      "r": 57
+    },
+    "U1.29": {
+      "pin": 29,
+      "net": "NODE04",
+      "label": "X4",
+      "ref": "U1",
+      "c": 12,
+      "r": 56
+    },
+    "U1.30": {
+      "pin": 30,
+      "net": "NODE03",
+      "label": "X3",
+      "ref": "U1",
+      "c": 12,
+      "r": 55
+    },
+    "U1.31": {
+      "pin": 31,
+      "net": "NODE02",
+      "label": "X2",
+      "ref": "U1",
+      "c": 12,
+      "r": 54
+    },
+    "U1.32": {
+      "pin": 32,
+      "net": "NODE01",
+      "label": "X1",
+      "ref": "U1",
+      "c": 12,
+      "r": 53
+    },
+    "U1.33": {
+      "pin": 33,
+      "net": "NODE00",
+      "label": "X0",
+      "ref": "U1",
+      "c": 12,
+      "r": 52
+    },
+    "U1.34": {
+      "pin": 34,
+      "net": null,
+      "label": "NC",
+      "ref": "U1",
+      "c": 12,
+      "r": 51
+    },
+    "U1.35": {
+      "pin": 35,
+      "net": "GND",
+      "label": "Y0",
+      "ref": "U1",
+      "c": 12,
+      "r": 50
+    },
+    "U1.36": {
+      "pin": 36,
+      "net": "CS_A",
+      "label": "CS",
+      "ref": "U1",
+      "c": 12,
+      "r": 49
+    },
+    "U1.37": {
+      "pin": 37,
+      "net": "PULSE_BUS",
+      "label": "Y1",
+      "ref": "U1",
+      "c": 12,
+      "r": 48
+    },
+    "U1.38": {
+      "pin": 38,
+      "net": "DATA",
+      "label": "DATA",
+      "ref": "U1",
+      "c": 12,
+      "r": 47
+    },
+    "U1.39": {
+      "pin": 39,
+      "net": "TEST_BUS",
+      "label": "Y2",
+      "ref": "U1",
+      "c": 12,
+      "r": 46
+    },
+    "U1.40": {
+      "pin": 40,
+      "net": "V12",
+      "label": "VDD",
+      "ref": "U1",
+      "c": 12,
+      "r": 45
+    },
+    "U2.1": {
+      "pin": 1,
+      "net": "SENSE_A",
+      "label": "Y3",
+      "ref": "U2",
+      "c": 26,
+      "r": 45
+    },
+    "U2.2": {
+      "pin": 2,
+      "net": "AY2",
+      "label": "AY2",
+      "ref": "U2",
+      "c": 26,
+      "r": 46
+    },
+    "U2.3": {
+      "pin": 3,
+      "net": "RESET12",
+      "label": "RESET",
+      "ref": "U2",
+      "c": 26,
+      "r": 47
+    },
+    "U2.4": {
+      "pin": 4,
+      "net": "AX3",
+      "label": "AX3",
+      "ref": "U2",
+      "c": 26,
+      "r": 48
+    },
+    "U2.5": {
+      "pin": 5,
+      "net": "AX0",
+      "label": "AX0",
+      "ref": "U2",
+      "c": 26,
+      "r": 49
+    },
+    "U2.6": {
+      "pin": 6,
+      "net": null,
+      "label": "X14",
+      "ref": "U2",
+      "c": 26,
+      "r": 50
+    },
+    "U2.7": {
+      "pin": 7,
+      "net": null,
+      "label": "X15",
+      "ref": "U2",
+      "c": 26,
+      "r": 51
+    },
+    "U2.8": {
+      "pin": 8,
+      "net": "NODE17",
+      "label": "X6",
+      "ref": "U2",
+      "c": 26,
+      "r": 52
+    },
+    "U2.9": {
+      "pin": 9,
+      "net": "NODE18",
+      "label": "X7",
+      "ref": "U2",
+      "c": 26,
+      "r": 53
+    },
+    "U2.10": {
+      "pin": 10,
+      "net": "NODE19",
+      "label": "X8",
+      "ref": "U2",
+      "c": 26,
+      "r": 54
+    },
+    "U2.11": {
+      "pin": 11,
+      "net": "NODE20",
+      "label": "X9",
+      "ref": "U2",
+      "c": 26,
+      "r": 55
+    },
+    "U2.12": {
+      "pin": 12,
+      "net": "NODE21",
+      "label": "X10",
+      "ref": "U2",
+      "c": 26,
+      "r": 56
+    },
+    "U2.13": {
+      "pin": 13,
+      "net": null,
+      "label": "X11",
+      "ref": "U2",
+      "c": 26,
+      "r": 57
+    },
+    "U2.14": {
+      "pin": 14,
+      "net": null,
+      "label": "NC",
+      "ref": "U2",
+      "c": 26,
+      "r": 58
+    },
+    "U2.15": {
+      "pin": 15,
+      "net": "BUS_B7",
+      "label": "Y7",
+      "ref": "U2",
+      "c": 26,
+      "r": 59
+    },
+    "U2.16": {
+      "pin": 16,
+      "net": "GND",
+      "label": "VSS",
+      "ref": "U2",
+      "c": 26,
+      "r": 60
+    },
+    "U2.17": {
+      "pin": 17,
+      "net": "BUS_B6",
+      "label": "Y6",
+      "ref": "U2",
+      "c": 26,
+      "r": 61
+    },
+    "U2.18": {
+      "pin": 18,
+      "net": "STROBE5",
+      "label": "STROBE",
+      "ref": "U2",
+      "c": 26,
+      "r": 62
+    },
+    "U2.19": {
+      "pin": 19,
+      "net": "BUS_B5",
+      "label": "Y5",
+      "ref": "U2",
+      "c": 26,
+      "r": 63
+    },
+    "U2.20": {
+      "pin": 20,
+      "net": "GND",
+      "label": "VEE",
+      "ref": "U2",
+      "c": 26,
+      "r": 64
+    },
+    "U2.21": {
+      "pin": 21,
+      "net": "SENSE_B",
+      "label": "Y4",
+      "ref": "U2",
+      "c": 32,
+      "r": 64
+    },
+    "U2.22": {
+      "pin": 22,
+      "net": "AX1",
+      "label": "AX1",
+      "ref": "U2",
+      "c": 32,
+      "r": 63
+    },
+    "U2.23": {
+      "pin": 23,
+      "net": "AX2",
+      "label": "AX2",
+      "ref": "U2",
+      "c": 32,
+      "r": 62
+    },
+    "U2.24": {
+      "pin": 24,
+      "net": "AY0",
+      "label": "AY0",
+      "ref": "U2",
+      "c": 32,
+      "r": 61
+    },
+    "U2.25": {
+      "pin": 25,
+      "net": "AY1",
+      "label": "AY1",
+      "ref": "U2",
+      "c": 32,
+      "r": 60
+    },
+    "U2.26": {
+      "pin": 26,
+      "net": null,
+      "label": "X13",
+      "ref": "U2",
+      "c": 32,
+      "r": 59
+    },
+    "U2.27": {
+      "pin": 27,
+      "net": null,
+      "label": "X12",
+      "ref": "U2",
+      "c": 32,
+      "r": 58
+    },
+    "U2.28": {
+      "pin": 28,
+      "net": "NODE16",
+      "label": "X5",
+      "ref": "U2",
+      "c": 32,
+      "r": 57
+    },
+    "U2.29": {
+      "pin": 29,
+      "net": "NODE15",
+      "label": "X4",
+      "ref": "U2",
+      "c": 32,
+      "r": 56
+    },
+    "U2.30": {
+      "pin": 30,
+      "net": "NODE14",
+      "label": "X3",
+      "ref": "U2",
+      "c": 32,
+      "r": 55
+    },
+    "U2.31": {
+      "pin": 31,
+      "net": "NODE13",
+      "label": "X2",
+      "ref": "U2",
+      "c": 32,
+      "r": 54
+    },
+    "U2.32": {
+      "pin": 32,
+      "net": "NODE12",
+      "label": "X1",
+      "ref": "U2",
+      "c": 32,
+      "r": 53
+    },
+    "U2.33": {
+      "pin": 33,
+      "net": "NODE11",
+      "label": "X0",
+      "ref": "U2",
+      "c": 32,
+      "r": 52
+    },
+    "U2.34": {
+      "pin": 34,
+      "net": null,
+      "label": "NC",
+      "ref": "U2",
+      "c": 32,
+      "r": 51
+    },
+    "U2.35": {
+      "pin": 35,
+      "net": "GND",
+      "label": "Y0",
+      "ref": "U2",
+      "c": 32,
+      "r": 50
+    },
+    "U2.36": {
+      "pin": 36,
+      "net": "CS_B",
+      "label": "CS",
+      "ref": "U2",
+      "c": 32,
+      "r": 49
+    },
+    "U2.37": {
+      "pin": 37,
+      "net": "PULSE_BUS",
+      "label": "Y1",
+      "ref": "U2",
+      "c": 32,
+      "r": 48
+    },
+    "U2.38": {
+      "pin": 38,
+      "net": "DATA",
+      "label": "DATA",
+      "ref": "U2",
+      "c": 32,
+      "r": 47
+    },
+    "U2.39": {
+      "pin": 39,
+      "net": "TEST_BUS",
+      "label": "Y2",
+      "ref": "U2",
+      "c": 32,
+      "r": 46
+    },
+    "U2.40": {
+      "pin": 40,
+      "net": "V12",
+      "label": "VDD",
+      "ref": "U2",
+      "c": 32,
+      "r": 45
+    },
+    "Q6.1": {
+      "pin": 1,
+      "net": "RESET12",
+      "label": "C",
+      "ref": "Q6",
+      "c": 31,
+      "r": 31
+    },
+    "Q6.2": {
+      "pin": 2,
+      "net": "Q6_B",
+      "label": "B",
+      "ref": "Q6",
+      "c": 32,
+      "r": 31
+    },
+    "Q6.3": {
+      "pin": 3,
+      "net": "GND",
+      "label": "E",
+      "ref": "Q6",
+      "c": 33,
+      "r": 31
+    },
+    "Q7.1": {
+      "pin": 1,
+      "net": "HIGH_C",
+      "label": "C",
+      "ref": "Q7",
+      "c": 16,
+      "r": 45
+    },
+    "Q7.2": {
+      "pin": 2,
+      "net": "HIGH_B",
+      "label": "B",
+      "ref": "Q7",
+      "c": 17,
+      "r": 45
+    },
+    "Q7.3": {
+      "pin": 3,
+      "net": "V5",
+      "label": "E",
+      "ref": "Q7",
+      "c": 18,
+      "r": 45
+    },
+    "Q8.1": {
+      "pin": 1,
+      "net": "HIGH_DRV",
+      "label": "C",
+      "ref": "Q8",
+      "c": 21,
+      "r": 45
+    },
+    "Q8.2": {
+      "pin": 2,
+      "net": "Q8_B",
+      "label": "B",
+      "ref": "Q8",
+      "c": 22,
+      "r": 45
+    },
+    "Q8.3": {
+      "pin": 3,
+      "net": "GND",
+      "label": "E",
+      "ref": "Q8",
+      "c": 23,
+      "r": 45
+    },
+    "Q11.1": {
+      "pin": 1,
+      "net": "LOW_C",
+      "label": "C",
+      "ref": "Q11",
+      "c": 16,
+      "r": 61
+    },
+    "Q11.2": {
+      "pin": 2,
+      "net": "Q11_B",
+      "label": "B",
+      "ref": "Q11",
+      "c": 17,
+      "r": 61
+    },
+    "Q11.3": {
+      "pin": 3,
+      "net": "GND",
+      "label": "E",
+      "ref": "Q11",
+      "c": 18,
+      "r": 61
+    },
+    "Q9.1": {
+      "pin": 1,
+      "net": "TEST_C",
+      "label": "C",
+      "ref": "Q9",
+      "c": 16,
+      "r": 69
+    },
+    "Q9.2": {
+      "pin": 2,
+      "net": "TEST_B",
+      "label": "B",
+      "ref": "Q9",
+      "c": 17,
+      "r": 69
+    },
+    "Q9.3": {
+      "pin": 3,
+      "net": "V5",
+      "label": "E",
+      "ref": "Q9",
+      "c": 18,
+      "r": 69
+    },
+    "Q10.1": {
+      "pin": 1,
+      "net": "TEST_DRV",
+      "label": "C",
+      "ref": "Q10",
+      "c": 21,
+      "r": 69
+    },
+    "Q10.2": {
+      "pin": 2,
+      "net": "Q10_B",
+      "label": "B",
+      "ref": "Q10",
+      "c": 22,
+      "r": 69
+    },
+    "Q10.3": {
+      "pin": 3,
+      "net": "GND",
+      "label": "E",
+      "ref": "Q10",
+      "c": 23,
+      "r": 69
+    },
+    "R6.1": {
+      "pin": 1,
+      "net": "GPIO25",
+      "label": "A",
+      "ref": "R6",
+      "c": 29,
+      "r": 33
+    },
+    "R6.2": {
+      "pin": 2,
+      "net": "Q6_B",
+      "label": "B",
+      "ref": "R6",
+      "c": 32,
+      "r": 33
+    },
+    "R12.1": {
+      "pin": 1,
+      "net": "Q6_B",
+      "label": "A",
+      "ref": "R12",
+      "c": 31,
+      "r": 35
+    },
+    "R12.2": {
+      "pin": 2,
+      "net": "GND",
+      "label": "B",
+      "ref": "R12",
+      "c": 34,
+      "r": 35
+    },
+    "R7.1": {
+      "pin": 1,
+      "net": "V12",
+      "label": "A",
+      "ref": "R7",
+      "c": 31,
+      "r": 37
+    },
+    "R7.2": {
+      "pin": 2,
+      "net": "RESET12",
+      "label": "B",
+      "ref": "R7",
+      "c": 34,
+      "r": 37
+    },
+    "R8.1": {
+      "pin": 1,
+      "net": "CS_A",
+      "label": "A",
+      "ref": "R8",
+      "c": 12,
+      "r": 35
+    },
+    "R8.2": {
+      "pin": 2,
+      "net": "GND",
+      "label": "B",
+      "ref": "R8",
+      "c": 15,
+      "r": 35
+    },
+    "R9.1": {
+      "pin": 1,
+      "net": "CS_B",
+      "label": "A",
+      "ref": "R9",
+      "c": 12,
+      "r": 38
+    },
+    "R9.2": {
+      "pin": 2,
+      "net": "GND",
+      "label": "B",
+      "ref": "R9",
+      "c": 15,
+      "r": 38
+    },
+    "R21.1": {
+      "pin": 1,
+      "net": "V5",
+      "label": "A",
+      "ref": "R21",
+      "c": 15,
+      "r": 48
+    },
+    "R21.2": {
+      "pin": 2,
+      "net": "HIGH_B",
+      "label": "B",
+      "ref": "R21",
+      "c": 18,
+      "r": 48
+    },
+    "R30.1": {
+      "pin": 1,
+      "net": "HIGH_B",
+      "label": "A",
+      "ref": "R30",
+      "c": 20,
+      "r": 48
+    },
+    "R30.2": {
+      "pin": 2,
+      "net": "HIGH_DRV",
+      "label": "B",
+      "ref": "R30",
+      "c": 23,
+      "r": 48
+    },
+    "R13.1": {
+      "pin": 1,
+      "net": "GPIO26",
+      "label": "A",
+      "ref": "R13",
+      "c": 20,
+      "r": 51
+    },
+    "R13.2": {
+      "pin": 2,
+      "net": "Q8_B",
+      "label": "B",
+      "ref": "R13",
+      "c": 23,
+      "r": 51
+    },
+    "R14.1": {
+      "pin": 1,
+      "net": "Q8_B",
+      "label": "A",
+      "ref": "R14",
+      "c": 20,
+      "r": 54
+    },
+    "R14.2": {
+      "pin": 2,
+      "net": "GND",
+      "label": "B",
+      "ref": "R14",
+      "c": 23,
+      "r": 54
+    },
+    "R17.1": {
+      "pin": 1,
+      "net": "HIGH_C",
+      "label": "A",
+      "ref": "R17",
+      "c": 15,
+      "r": 54
+    },
+    "R17.2": {
+      "pin": 2,
+      "net": "PULSE_BUS",
+      "label": "B",
+      "ref": "R17",
+      "c": 18,
+      "r": 54
+    },
+    "R_LOW_BASE.1": {
+      "pin": 1,
+      "net": "GPIO27",
+      "label": "A",
+      "ref": "R_LOW_BASE",
+      "c": 20,
+      "r": 59
+    },
+    "R_LOW_BASE.2": {
+      "pin": 2,
+      "net": "Q11_B",
+      "label": "B",
+      "ref": "R_LOW_BASE",
+      "c": 23,
+      "r": 59
+    },
+    "R_LOW_PD.1": {
+      "pin": 1,
+      "net": "Q11_B",
+      "label": "A",
+      "ref": "R_LOW_PD",
+      "c": 20,
+      "r": 62
+    },
+    "R_LOW_PD.2": {
+      "pin": 2,
+      "net": "GND",
+      "label": "B",
+      "ref": "R_LOW_PD",
+      "c": 23,
+      "r": 62
+    },
+    "R_LOW_LIMIT.1": {
+      "pin": 1,
+      "net": "PULSE_BUS",
+      "label": "A",
+      "ref": "R_LOW_LIMIT",
+      "c": 15,
+      "r": 64
+    },
+    "R_LOW_LIMIT.2": {
+      "pin": 2,
+      "net": "LOW_C",
+      "label": "B",
+      "ref": "R_LOW_LIMIT",
+      "c": 18,
+      "r": 64
+    },
+    "R24.1": {
+      "pin": 1,
+      "net": "V5",
+      "label": "A",
+      "ref": "R24",
+      "c": 14,
+      "r": 72
+    },
+    "R24.2": {
+      "pin": 2,
+      "net": "TEST_B",
+      "label": "B",
+      "ref": "R24",
+      "c": 17,
+      "r": 72
+    },
+    "R27.1": {
+      "pin": 1,
+      "net": "TEST_B",
+      "label": "A",
+      "ref": "R27",
+      "c": 21,
+      "r": 72
+    },
+    "R27.2": {
+      "pin": 2,
+      "net": "TEST_DRV",
+      "label": "B",
+      "ref": "R27",
+      "c": 24,
+      "r": 72
+    },
+    "R15.1": {
+      "pin": 1,
+      "net": "GPIO14",
+      "label": "A",
+      "ref": "R15",
+      "c": 21,
+      "r": 74
+    },
+    "R15.2": {
+      "pin": 2,
+      "net": "Q10_B",
+      "label": "B",
+      "ref": "R15",
+      "c": 24,
+      "r": 74
+    },
+    "R16.1": {
+      "pin": 1,
+      "net": "Q10_B",
+      "label": "A",
+      "ref": "R16",
+      "c": 26,
+      "r": 72
+    },
+    "R16.2": {
+      "pin": 2,
+      "net": "GND",
+      "label": "B",
+      "ref": "R16",
+      "c": 29,
+      "r": 72
+    },
+    "R18.1": {
+      "pin": 1,
+      "net": "TEST_C",
+      "label": "A",
+      "ref": "R18",
+      "c": 8,
+      "r": 72
+    },
+    "R18.2": {
+      "pin": 2,
+      "net": "TEST_BUS",
+      "label": "B",
+      "ref": "R18",
+      "c": 11,
+      "r": 72
+    },
+    "R_PULSE_IN.1": {
+      "pin": 1,
+      "net": "GPIO34",
+      "label": "A",
+      "ref": "R_PULSE_IN",
+      "c": 31,
+      "r": 7
+    },
+    "R_PULSE_IN.2": {
+      "pin": 2,
+      "net": "GND",
+      "label": "B",
+      "ref": "R_PULSE_IN",
+      "c": 34,
+      "r": 7
+    },
+    "R_PD_23.1": {
+      "pin": 1,
+      "label": "A",
+      "net": "GPIO23",
+      "ref": "R_PD_23",
+      "c": 2,
+      "r": 24
+    },
+    "R_PD_23.2": {
+      "pin": 2,
+      "label": "B",
+      "net": "GND",
+      "ref": "R_PD_23",
+      "c": 5,
+      "r": 24
+    },
+    "R_PD_18.1": {
+      "pin": 1,
+      "label": "A",
+      "net": "GPIO18",
+      "ref": "R_PD_18",
+      "c": 2,
+      "r": 26
+    },
+    "R_PD_18.2": {
+      "pin": 2,
+      "label": "B",
+      "net": "GND",
+      "ref": "R_PD_18",
+      "c": 5,
+      "r": 26
+    },
+    "R_PD_22.1": {
+      "pin": 1,
+      "label": "A",
+      "net": "GPIO22",
+      "ref": "R_PD_22",
+      "c": 2,
+      "r": 28
+    },
+    "R_PD_22.2": {
+      "pin": 2,
+      "label": "B",
+      "net": "GND",
+      "ref": "R_PD_22",
+      "c": 5,
+      "r": 28
+    },
+    "R_PD_19.1": {
+      "pin": 1,
+      "label": "A",
+      "net": "GPIO19",
+      "ref": "R_PD_19",
+      "c": 32,
+      "r": 24
+    },
+    "R_PD_19.2": {
+      "pin": 2,
+      "label": "B",
+      "net": "GND",
+      "ref": "R_PD_19",
+      "c": 35,
+      "r": 24
+    },
+    "R_PD_21.1": {
+      "pin": 1,
+      "label": "A",
+      "net": "GPIO21",
+      "ref": "R_PD_21",
+      "c": 32,
+      "r": 26
+    },
+    "R_PD_21.2": {
+      "pin": 2,
+      "label": "B",
+      "net": "GND",
+      "ref": "R_PD_21",
+      "c": 35,
+      "r": 26
+    },
+    "C_BULK5.1": {
+      "pin": 1,
+      "net": "V5",
+      "label": "+",
+      "ref": "C_BULK5",
+      "c": 6,
+      "r": 20
+    },
+    "C_BULK5.2": {
+      "pin": 2,
+      "net": "GND",
+      "label": "-",
+      "ref": "C_BULK5",
+      "c": 7,
+      "r": 20
+    },
+    "C_BULK12.1": {
+      "pin": 1,
+      "net": "V12",
+      "label": "+",
+      "ref": "C_BULK12",
+      "c": 31,
+      "r": 20
+    },
+    "C_BULK12.2": {
+      "pin": 2,
+      "net": "GND",
+      "label": "-",
+      "ref": "C_BULK12",
+      "c": 32,
+      "r": 20
+    },
+    "C_LEVEL.1": {
+      "pin": 1,
+      "label": "A",
+      "net": "V5",
+      "ref": "C_LEVEL",
+      "c": 23,
+      "r": 26
+    },
+    "C_LEVEL.2": {
+      "pin": 2,
+      "label": "B",
+      "net": "GND",
+      "ref": "C_LEVEL",
+      "c": 24,
+      "r": 26
+    },
+    "C4.1": {
+      "pin": 1,
+      "net": "V5",
+      "label": "A",
+      "ref": "C4",
+      "c": 3,
+      "r": 34
+    },
+    "C4.2": {
+      "pin": 2,
+      "net": "GND",
+      "label": "B",
+      "ref": "C4",
+      "c": 4,
+      "r": 34
+    },
+    "C5.1": {
+      "pin": 1,
+      "net": "V5",
+      "label": "A",
+      "ref": "C5",
+      "c": 29,
+      "r": 39
+    },
+    "C5.2": {
+      "pin": 2,
+      "net": "GND",
+      "label": "B",
+      "ref": "C5",
+      "c": 30,
+      "r": 39
+    },
+    "C1.1": {
+      "pin": 1,
+      "net": "V12",
+      "label": "A",
+      "ref": "C1",
+      "c": 8,
+      "r": 42
+    },
+    "C1.2": {
+      "pin": 2,
+      "net": "GND",
+      "label": "B",
+      "ref": "C1",
+      "c": 9,
+      "r": 42
+    },
+    "C2.1": {
+      "pin": 1,
+      "net": "V12",
+      "label": "A",
+      "ref": "C2",
+      "c": 28,
+      "r": 42
+    },
+    "C2.2": {
+      "pin": 2,
+      "net": "GND",
+      "label": "B",
+      "ref": "C2",
+      "c": 29,
+      "r": 42
+    }
+  },
+  "wires": [
+    {
+      "id": "W001",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "J_ESP_L.2",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W002",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "J_ESP_R.2",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W003",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "J_SMART.2",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W004",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "U_LEVEL.7",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W005",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "U_LEVEL.13",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W006",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "U5.8",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W007",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "U6.8",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W008",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "U1.16",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W009",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "U1.20",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W010",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "U1.35",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W011",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "U2.16",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W012",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "U2.20",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W013",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "U2.35",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W014",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "Q6.3",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W015",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "Q8.3",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W016",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "Q11.3",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W017",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "Q10.3",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W018",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "R12.2",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W019",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "R8.2",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W020",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "R9.2",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W021",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "R14.2",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W022",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "R_LOW_PD.2",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W023",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "R16.2",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W024",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "R_PULSE_IN.2",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W025",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "R_PD_23.2",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W026",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "R_PD_18.2",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W027",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "R_PD_22.2",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W028",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "R_PD_19.2",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W029",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "R_PD_21.2",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W030",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "C_BULK5.2",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W031",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "C_BULK12.2",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W032",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "C_LEVEL.2",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W033",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "C4.2",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W034",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "C5.2",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W035",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "C1.2",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W036",
+      "net": "GND",
+      "from": "H2.4",
+      "to": "C2.2",
+      "function": "Refer\u00eancia e retorno comum. N\u00e3o unir a 5 V ou 12 V."
+    },
+    {
+      "id": "W037",
+      "net": "V5",
+      "from": "H2.2",
+      "to": "U_LEVEL.14",
+      "function": "Alimenta\u00e7\u00e3o de controle/sa\u00eddas em 5 V; n\u00e3o \u00e9 sa\u00edda limitada do experimento."
+    },
+    {
+      "id": "W038",
+      "net": "V5",
+      "from": "H2.2",
+      "to": "U5.10",
+      "function": "Alimenta\u00e7\u00e3o de controle/sa\u00eddas em 5 V; n\u00e3o \u00e9 sa\u00edda limitada do experimento."
+    },
+    {
+      "id": "W039",
+      "net": "V5",
+      "from": "H2.2",
+      "to": "U5.16",
+      "function": "Alimenta\u00e7\u00e3o de controle/sa\u00eddas em 5 V; n\u00e3o \u00e9 sa\u00edda limitada do experimento."
+    },
+    {
+      "id": "W040",
+      "net": "V5",
+      "from": "H2.2",
+      "to": "U6.10",
+      "function": "Alimenta\u00e7\u00e3o de controle/sa\u00eddas em 5 V; n\u00e3o \u00e9 sa\u00edda limitada do experimento."
+    },
+    {
+      "id": "W041",
+      "net": "V5",
+      "from": "H2.2",
+      "to": "U6.16",
+      "function": "Alimenta\u00e7\u00e3o de controle/sa\u00eddas em 5 V; n\u00e3o \u00e9 sa\u00edda limitada do experimento."
+    },
+    {
+      "id": "W042",
+      "net": "V5",
+      "from": "H2.2",
+      "to": "Q7.3",
+      "function": "Alimenta\u00e7\u00e3o de controle/sa\u00eddas em 5 V; n\u00e3o \u00e9 sa\u00edda limitada do experimento."
+    },
+    {
+      "id": "W043",
+      "net": "V5",
+      "from": "H2.2",
+      "to": "Q9.3",
+      "function": "Alimenta\u00e7\u00e3o de controle/sa\u00eddas em 5 V; n\u00e3o \u00e9 sa\u00edda limitada do experimento."
+    },
+    {
+      "id": "W044",
+      "net": "V5",
+      "from": "H2.2",
+      "to": "R21.1",
+      "function": "Alimenta\u00e7\u00e3o de controle/sa\u00eddas em 5 V; n\u00e3o \u00e9 sa\u00edda limitada do experimento."
+    },
+    {
+      "id": "W045",
+      "net": "V5",
+      "from": "H2.2",
+      "to": "R24.1",
+      "function": "Alimenta\u00e7\u00e3o de controle/sa\u00eddas em 5 V; n\u00e3o \u00e9 sa\u00edda limitada do experimento."
+    },
+    {
+      "id": "W046",
+      "net": "V5",
+      "from": "H2.2",
+      "to": "C_BULK5.1",
+      "function": "Alimenta\u00e7\u00e3o de controle/sa\u00eddas em 5 V; n\u00e3o \u00e9 sa\u00edda limitada do experimento."
+    },
+    {
+      "id": "W047",
+      "net": "V5",
+      "from": "H2.2",
+      "to": "C_LEVEL.1",
+      "function": "Alimenta\u00e7\u00e3o de controle/sa\u00eddas em 5 V; n\u00e3o \u00e9 sa\u00edda limitada do experimento."
+    },
+    {
+      "id": "W048",
+      "net": "V5",
+      "from": "H2.2",
+      "to": "C4.1",
+      "function": "Alimenta\u00e7\u00e3o de controle/sa\u00eddas em 5 V; n\u00e3o \u00e9 sa\u00edda limitada do experimento."
+    },
+    {
+      "id": "W049",
+      "net": "V5",
+      "from": "H2.2",
+      "to": "C5.1",
+      "function": "Alimenta\u00e7\u00e3o de controle/sa\u00eddas em 5 V; n\u00e3o \u00e9 sa\u00edda limitada do experimento."
+    },
+    {
+      "id": "W050",
+      "net": "V12",
+      "from": "H2.1",
+      "to": "U1.40",
+      "function": "Alimenta\u00e7\u00e3o dos MT8816 e pull-up do RESET; nunca levar a um GPIO."
+    },
+    {
+      "id": "W051",
+      "net": "V12",
+      "from": "H2.1",
+      "to": "U2.40",
+      "function": "Alimenta\u00e7\u00e3o dos MT8816 e pull-up do RESET; nunca levar a um GPIO."
+    },
+    {
+      "id": "W052",
+      "net": "V12",
+      "from": "H2.1",
+      "to": "R7.1",
+      "function": "Alimenta\u00e7\u00e3o dos MT8816 e pull-up do RESET; nunca levar a um GPIO."
+    },
+    {
+      "id": "W053",
+      "net": "V12",
+      "from": "H2.1",
+      "to": "C_BULK12.1",
+      "function": "Alimenta\u00e7\u00e3o dos MT8816 e pull-up do RESET; nunca levar a um GPIO."
+    },
+    {
+      "id": "W054",
+      "net": "V12",
+      "from": "H2.1",
+      "to": "C1.1",
+      "function": "Alimenta\u00e7\u00e3o dos MT8816 e pull-up do RESET; nunca levar a um GPIO."
+    },
+    {
+      "id": "W055",
+      "net": "V12",
+      "from": "H2.1",
+      "to": "C2.1",
+      "function": "Alimenta\u00e7\u00e3o dos MT8816 e pull-up do RESET; nunca levar a um GPIO."
+    },
+    {
+      "id": "W056",
+      "net": "AX0",
+      "from": "U5.15",
+      "to": "U1.5",
+      "function": "Bit de endere\u00e7o X compartilhado entre as duas matrizes."
+    },
+    {
+      "id": "W057",
+      "net": "AX0",
+      "from": "U5.15",
+      "to": "U2.5",
+      "function": "Bit de endere\u00e7o X compartilhado entre as duas matrizes."
+    },
+    {
+      "id": "W058",
+      "net": "AX1",
+      "from": "U5.1",
+      "to": "U1.22",
+      "function": "Bit de endere\u00e7o X compartilhado entre as duas matrizes."
+    },
+    {
+      "id": "W059",
+      "net": "AX1",
+      "from": "U5.1",
+      "to": "U2.22",
+      "function": "Bit de endere\u00e7o X compartilhado entre as duas matrizes."
+    },
+    {
+      "id": "W060",
+      "net": "AX2",
+      "from": "U5.2",
+      "to": "U1.23",
+      "function": "Bit de endere\u00e7o X compartilhado entre as duas matrizes."
+    },
+    {
+      "id": "W061",
+      "net": "AX2",
+      "from": "U5.2",
+      "to": "U2.23",
+      "function": "Bit de endere\u00e7o X compartilhado entre as duas matrizes."
+    },
+    {
+      "id": "W062",
+      "net": "AX3",
+      "from": "U5.3",
+      "to": "U1.4",
+      "function": "Bit de endere\u00e7o X compartilhado entre as duas matrizes."
+    },
+    {
+      "id": "W063",
+      "net": "AX3",
+      "from": "U5.3",
+      "to": "U2.4",
+      "function": "Bit de endere\u00e7o X compartilhado entre as duas matrizes."
+    },
+    {
+      "id": "W064",
+      "net": "AY0",
+      "from": "U5.4",
+      "to": "U1.24",
+      "function": "Bit de endere\u00e7o Y compartilhado entre as duas matrizes."
+    },
+    {
+      "id": "W065",
+      "net": "AY0",
+      "from": "U5.4",
+      "to": "U2.24",
+      "function": "Bit de endere\u00e7o Y compartilhado entre as duas matrizes."
+    },
+    {
+      "id": "W066",
+      "net": "AY1",
+      "from": "U5.5",
+      "to": "U1.25",
+      "function": "Bit de endere\u00e7o Y compartilhado entre as duas matrizes."
+    },
+    {
+      "id": "W067",
+      "net": "AY1",
+      "from": "U5.5",
+      "to": "U2.25",
+      "function": "Bit de endere\u00e7o Y compartilhado entre as duas matrizes."
+    },
+    {
+      "id": "W068",
+      "net": "AY2",
+      "from": "U5.6",
+      "to": "U1.2",
+      "function": "Bit de endere\u00e7o Y compartilhado entre as duas matrizes."
+    },
+    {
+      "id": "W069",
+      "net": "AY2",
+      "from": "U5.6",
+      "to": "U2.2",
+      "function": "Bit de endere\u00e7o Y compartilhado entre as duas matrizes."
+    },
+    {
+      "id": "W070",
+      "net": "CHAIN",
+      "from": "U5.9",
+      "to": "U6.14",
+      "function": "Encadeamento serial QH_SER de U5 \u2192 SER de U6."
+    },
+    {
+      "id": "W071",
+      "net": "CLK5",
+      "from": "U_LEVEL.4",
+      "to": "U5.11",
+      "function": "Clock serial invertido; o firmware compensa a polaridade."
+    },
+    {
+      "id": "W072",
+      "net": "CLK5",
+      "from": "U_LEVEL.4",
+      "to": "U6.11",
+      "function": "Clock serial invertido; o firmware compensa a polaridade."
+    },
+    {
+      "id": "W073",
+      "net": "CS_A",
+      "from": "U6.15",
+      "to": "U1.36",
+      "function": "Sele\u00e7\u00e3o ativa alta do MT8816 A; pull-down mant\u00e9m inativo."
+    },
+    {
+      "id": "W074",
+      "net": "CS_A",
+      "from": "U6.15",
+      "to": "R8.1",
+      "function": "Sele\u00e7\u00e3o ativa alta do MT8816 A; pull-down mant\u00e9m inativo."
+    },
+    {
+      "id": "W075",
+      "net": "CS_B",
+      "from": "U6.1",
+      "to": "U2.36",
+      "function": "Sele\u00e7\u00e3o ativa alta do MT8816 B; pull-down mant\u00e9m inativo."
+    },
+    {
+      "id": "W076",
+      "net": "CS_B",
+      "from": "U6.1",
+      "to": "R9.1",
+      "function": "Sele\u00e7\u00e3o ativa alta do MT8816 B; pull-down mant\u00e9m inativo."
+    },
+    {
+      "id": "W077",
+      "net": "DATA",
+      "from": "U5.7",
+      "to": "U1.38",
+      "function": "Valor escrito no crosspoint: conectar ou desconectar."
+    },
+    {
+      "id": "W078",
+      "net": "DATA",
+      "from": "U5.7",
+      "to": "U2.38",
+      "function": "Valor escrito no crosspoint: conectar ou desconectar."
+    },
+    {
+      "id": "W079",
+      "net": "GPIO14",
+      "from": "J_ESP_R.5",
+      "to": "R15.1",
+      "function": "Comando l\u00f3gico de 3,3 V do ESP32; n\u00e3o ligar diretamente a 5 V/12 V."
+    },
+    {
+      "id": "W080",
+      "net": "GPIO18",
+      "from": "J_ESP_L.9",
+      "to": "U_LEVEL.3",
+      "function": "Comando l\u00f3gico de 3,3 V do ESP32; n\u00e3o ligar diretamente a 5 V/12 V."
+    },
+    {
+      "id": "W081",
+      "net": "GPIO18",
+      "from": "J_ESP_L.9",
+      "to": "R_PD_18.1",
+      "function": "Comando l\u00f3gico de 3,3 V do ESP32; n\u00e3o ligar diretamente a 5 V/12 V."
+    },
+    {
+      "id": "W082",
+      "net": "GPIO19",
+      "from": "J_ESP_L.10",
+      "to": "U_LEVEL.9",
+      "function": "Comando l\u00f3gico de 3,3 V do ESP32; n\u00e3o ligar diretamente a 5 V/12 V."
+    },
+    {
+      "id": "W083",
+      "net": "GPIO19",
+      "from": "J_ESP_L.10",
+      "to": "R_PD_19.1",
+      "function": "Comando l\u00f3gico de 3,3 V do ESP32; n\u00e3o ligar diretamente a 5 V/12 V."
+    },
+    {
+      "id": "W084",
+      "net": "GPIO21",
+      "from": "J_ESP_L.11",
+      "to": "U_LEVEL.11",
+      "function": "Comando l\u00f3gico de 3,3 V do ESP32; n\u00e3o ligar diretamente a 5 V/12 V."
+    },
+    {
+      "id": "W085",
+      "net": "GPIO21",
+      "from": "J_ESP_L.11",
+      "to": "R_PD_21.1",
+      "function": "Comando l\u00f3gico de 3,3 V do ESP32; n\u00e3o ligar diretamente a 5 V/12 V."
+    },
+    {
+      "id": "W086",
+      "net": "GPIO22",
+      "from": "J_ESP_L.14",
+      "to": "U_LEVEL.5",
+      "function": "Comando l\u00f3gico de 3,3 V do ESP32; n\u00e3o ligar diretamente a 5 V/12 V."
+    },
+    {
+      "id": "W087",
+      "net": "GPIO22",
+      "from": "J_ESP_L.14",
+      "to": "R_PD_22.1",
+      "function": "Comando l\u00f3gico de 3,3 V do ESP32; n\u00e3o ligar diretamente a 5 V/12 V."
+    },
+    {
+      "id": "W088",
+      "net": "GPIO23",
+      "from": "J_ESP_L.15",
+      "to": "U_LEVEL.1",
+      "function": "Comando l\u00f3gico de 3,3 V do ESP32; n\u00e3o ligar diretamente a 5 V/12 V."
+    },
+    {
+      "id": "W089",
+      "net": "GPIO23",
+      "from": "J_ESP_L.15",
+      "to": "R_PD_23.1",
+      "function": "Comando l\u00f3gico de 3,3 V do ESP32; n\u00e3o ligar diretamente a 5 V/12 V."
+    },
+    {
+      "id": "W090",
+      "net": "GPIO25",
+      "from": "J_ESP_R.8",
+      "to": "R6.1",
+      "function": "Comando l\u00f3gico de 3,3 V do ESP32; n\u00e3o ligar diretamente a 5 V/12 V."
+    },
+    {
+      "id": "W091",
+      "net": "GPIO26",
+      "from": "J_ESP_R.7",
+      "to": "R13.1",
+      "function": "Comando l\u00f3gico de 3,3 V do ESP32; n\u00e3o ligar diretamente a 5 V/12 V."
+    },
+    {
+      "id": "W092",
+      "net": "GPIO27",
+      "from": "J_ESP_R.6",
+      "to": "R_LOW_BASE.1",
+      "function": "Comando l\u00f3gico de 3,3 V do ESP32; n\u00e3o ligar diretamente a 5 V/12 V."
+    },
+    {
+      "id": "W093",
+      "net": "GPIO34",
+      "from": "J_ESP_R.12",
+      "to": "J_SMART.4",
+      "function": "Comando l\u00f3gico de 3,3 V do ESP32; n\u00e3o ligar diretamente a 5 V/12 V."
+    },
+    {
+      "id": "W094",
+      "net": "GPIO34",
+      "from": "J_ESP_R.12",
+      "to": "R_PULSE_IN.1",
+      "function": "Comando l\u00f3gico de 3,3 V do ESP32; n\u00e3o ligar diretamente a 5 V/12 V."
+    },
+    {
+      "id": "W095",
+      "net": "HIGH_B",
+      "from": "Q7.2",
+      "to": "R21.2",
+      "function": "Liga\u00e7\u00e3o local do est\u00e1gio discreto; respeitar base, coletor e emissor conforme esquema."
+    },
+    {
+      "id": "W096",
+      "net": "HIGH_B",
+      "from": "Q7.2",
+      "to": "R30.1",
+      "function": "Liga\u00e7\u00e3o local do est\u00e1gio discreto; respeitar base, coletor e emissor conforme esquema."
+    },
+    {
+      "id": "W097",
+      "net": "HIGH_C",
+      "from": "Q7.1",
+      "to": "R17.1",
+      "function": "Liga\u00e7\u00e3o local do est\u00e1gio discreto; respeitar base, coletor e emissor conforme esquema."
+    },
+    {
+      "id": "W098",
+      "net": "HIGH_DRV",
+      "from": "Q8.1",
+      "to": "R30.2",
+      "function": "Liga\u00e7\u00e3o local do est\u00e1gio discreto; respeitar base, coletor e emissor conforme esquema."
+    },
+    {
+      "id": "W099",
+      "net": "LATCH5",
+      "from": "U_LEVEL.6",
+      "to": "U5.12",
+      "function": "Latch dos registradores, invertido pelo HCT14."
+    },
+    {
+      "id": "W100",
+      "net": "LATCH5",
+      "from": "U_LEVEL.6",
+      "to": "U6.12",
+      "function": "Latch dos registradores, invertido pelo HCT14."
+    },
+    {
+      "id": "W101",
+      "net": "LOW_C",
+      "from": "Q11.1",
+      "to": "R_LOW_LIMIT.2",
+      "function": "Liga\u00e7\u00e3o local do est\u00e1gio discreto; respeitar base, coletor e emissor conforme esquema."
+    },
+    {
+      "id": "W102",
+      "net": "NODE00",
+      "from": "H1.1",
+      "to": "U1.33",
+      "function": "Liga um n\u00f3 f\u00edsico ao X correspondente da matriz; manter sua identidade no cabo."
+    },
+    {
+      "id": "W103",
+      "net": "NODE01",
+      "from": "H1.2",
+      "to": "U1.32",
+      "function": "Liga um n\u00f3 f\u00edsico ao X correspondente da matriz; manter sua identidade no cabo."
+    },
+    {
+      "id": "W104",
+      "net": "NODE02",
+      "from": "H1.3",
+      "to": "U1.31",
+      "function": "Liga um n\u00f3 f\u00edsico ao X correspondente da matriz; manter sua identidade no cabo."
+    },
+    {
+      "id": "W105",
+      "net": "NODE03",
+      "from": "H1.4",
+      "to": "U1.30",
+      "function": "Liga um n\u00f3 f\u00edsico ao X correspondente da matriz; manter sua identidade no cabo."
+    },
+    {
+      "id": "W106",
+      "net": "NODE04",
+      "from": "H1.5",
+      "to": "U1.29",
+      "function": "Liga um n\u00f3 f\u00edsico ao X correspondente da matriz; manter sua identidade no cabo."
+    },
+    {
+      "id": "W107",
+      "net": "NODE05",
+      "from": "H1.6",
+      "to": "U1.28",
+      "function": "Liga um n\u00f3 f\u00edsico ao X correspondente da matriz; manter sua identidade no cabo."
+    },
+    {
+      "id": "W108",
+      "net": "NODE06",
+      "from": "H1.7",
+      "to": "U1.8",
+      "function": "Liga um n\u00f3 f\u00edsico ao X correspondente da matriz; manter sua identidade no cabo."
+    },
+    {
+      "id": "W109",
+      "net": "NODE07",
+      "from": "H1.8",
+      "to": "U1.9",
+      "function": "Liga um n\u00f3 f\u00edsico ao X correspondente da matriz; manter sua identidade no cabo."
+    },
+    {
+      "id": "W110",
+      "net": "NODE08",
+      "from": "H1.9",
+      "to": "U1.10",
+      "function": "Liga um n\u00f3 f\u00edsico ao X correspondente da matriz; manter sua identidade no cabo."
+    },
+    {
+      "id": "W111",
+      "net": "NODE09",
+      "from": "H1.10",
+      "to": "U1.11",
+      "function": "Liga um n\u00f3 f\u00edsico ao X correspondente da matriz; manter sua identidade no cabo."
+    },
+    {
+      "id": "W112",
+      "net": "NODE10",
+      "from": "H1.11",
+      "to": "U1.12",
+      "function": "Liga um n\u00f3 f\u00edsico ao X correspondente da matriz; manter sua identidade no cabo."
+    },
+    {
+      "id": "W113",
+      "net": "NODE11",
+      "from": "H3.1",
+      "to": "U2.33",
+      "function": "Liga um n\u00f3 f\u00edsico ao X correspondente da matriz; manter sua identidade no cabo."
+    },
+    {
+      "id": "W114",
+      "net": "NODE12",
+      "from": "H3.2",
+      "to": "U2.32",
+      "function": "Liga um n\u00f3 f\u00edsico ao X correspondente da matriz; manter sua identidade no cabo."
+    },
+    {
+      "id": "W115",
+      "net": "NODE13",
+      "from": "H3.3",
+      "to": "U2.31",
+      "function": "Liga um n\u00f3 f\u00edsico ao X correspondente da matriz; manter sua identidade no cabo."
+    },
+    {
+      "id": "W116",
+      "net": "NODE14",
+      "from": "H3.4",
+      "to": "U2.30",
+      "function": "Liga um n\u00f3 f\u00edsico ao X correspondente da matriz; manter sua identidade no cabo."
+    },
+    {
+      "id": "W117",
+      "net": "NODE15",
+      "from": "H3.5",
+      "to": "U2.29",
+      "function": "Liga um n\u00f3 f\u00edsico ao X correspondente da matriz; manter sua identidade no cabo."
+    },
+    {
+      "id": "W118",
+      "net": "NODE16",
+      "from": "H3.6",
+      "to": "U2.28",
+      "function": "Liga um n\u00f3 f\u00edsico ao X correspondente da matriz; manter sua identidade no cabo."
+    },
+    {
+      "id": "W119",
+      "net": "NODE17",
+      "from": "H3.7",
+      "to": "U2.8",
+      "function": "Liga um n\u00f3 f\u00edsico ao X correspondente da matriz; manter sua identidade no cabo."
+    },
+    {
+      "id": "W120",
+      "net": "NODE18",
+      "from": "H3.8",
+      "to": "U2.9",
+      "function": "Liga um n\u00f3 f\u00edsico ao X correspondente da matriz; manter sua identidade no cabo."
+    },
+    {
+      "id": "W121",
+      "net": "NODE19",
+      "from": "H3.9",
+      "to": "U2.10",
+      "function": "Liga um n\u00f3 f\u00edsico ao X correspondente da matriz; manter sua identidade no cabo."
+    },
+    {
+      "id": "W122",
+      "net": "NODE20",
+      "from": "H3.10",
+      "to": "U2.11",
+      "function": "Liga um n\u00f3 f\u00edsico ao X correspondente da matriz; manter sua identidade no cabo."
+    },
+    {
+      "id": "W123",
+      "net": "NODE21",
+      "from": "H3.11",
+      "to": "U2.12",
+      "function": "Liga um n\u00f3 f\u00edsico ao X correspondente da matriz; manter sua identidade no cabo."
+    },
+    {
+      "id": "W124",
+      "net": "OE_N5",
+      "from": "U_LEVEL.10",
+      "to": "U5.13",
+      "function": "Habilita\u00e7\u00e3o ativa baixa das sa\u00eddas dos registradores."
+    },
+    {
+      "id": "W125",
+      "net": "OE_N5",
+      "from": "U_LEVEL.10",
+      "to": "U6.13",
+      "function": "Habilita\u00e7\u00e3o ativa baixa das sa\u00eddas dos registradores."
+    },
+    {
+      "id": "W126",
+      "net": "PULSE_BUS",
+      "from": "U1.37",
+      "to": "U2.37",
+      "function": "Servi\u00e7o de sa\u00edda ALTO/BAIXO; sempre ap\u00f3s os resistores de 470 \u03a9."
+    },
+    {
+      "id": "W127",
+      "net": "PULSE_BUS",
+      "from": "U1.37",
+      "to": "R17.2",
+      "function": "Servi\u00e7o de sa\u00edda ALTO/BAIXO; sempre ap\u00f3s os resistores de 470 \u03a9."
+    },
+    {
+      "id": "W128",
+      "net": "PULSE_BUS",
+      "from": "U1.37",
+      "to": "R_LOW_LIMIT.1",
+      "function": "Servi\u00e7o de sa\u00edda ALTO/BAIXO; sempre ap\u00f3s os resistores de 470 \u03a9."
+    },
+    {
+      "id": "W129",
+      "net": "Q10_B",
+      "from": "Q10.2",
+      "to": "R15.2",
+      "function": "Liga\u00e7\u00e3o local do est\u00e1gio discreto; respeitar base, coletor e emissor conforme esquema."
+    },
+    {
+      "id": "W130",
+      "net": "Q10_B",
+      "from": "Q10.2",
+      "to": "R16.1",
+      "function": "Liga\u00e7\u00e3o local do est\u00e1gio discreto; respeitar base, coletor e emissor conforme esquema."
+    },
+    {
+      "id": "W131",
+      "net": "Q11_B",
+      "from": "Q11.2",
+      "to": "R_LOW_BASE.2",
+      "function": "Liga\u00e7\u00e3o local do est\u00e1gio discreto; respeitar base, coletor e emissor conforme esquema."
+    },
+    {
+      "id": "W132",
+      "net": "Q11_B",
+      "from": "Q11.2",
+      "to": "R_LOW_PD.1",
+      "function": "Liga\u00e7\u00e3o local do est\u00e1gio discreto; respeitar base, coletor e emissor conforme esquema."
+    },
+    {
+      "id": "W133",
+      "net": "Q6_B",
+      "from": "Q6.2",
+      "to": "R6.2",
+      "function": "Liga\u00e7\u00e3o local do est\u00e1gio discreto; respeitar base, coletor e emissor conforme esquema."
+    },
+    {
+      "id": "W134",
+      "net": "Q6_B",
+      "from": "Q6.2",
+      "to": "R12.1",
+      "function": "Liga\u00e7\u00e3o local do est\u00e1gio discreto; respeitar base, coletor e emissor conforme esquema."
+    },
+    {
+      "id": "W135",
+      "net": "Q8_B",
+      "from": "Q8.2",
+      "to": "R13.2",
+      "function": "Liga\u00e7\u00e3o local do est\u00e1gio discreto; respeitar base, coletor e emissor conforme esquema."
+    },
+    {
+      "id": "W136",
+      "net": "Q8_B",
+      "from": "Q8.2",
+      "to": "R14.1",
+      "function": "Liga\u00e7\u00e3o local do est\u00e1gio discreto; respeitar base, coletor e emissor conforme esquema."
+    },
+    {
+      "id": "W137",
+      "net": "RESET12",
+      "from": "U1.3",
+      "to": "U2.3",
+      "function": "RESET ativo alto da matriz; Q6 libera ao puxar para GND."
+    },
+    {
+      "id": "W138",
+      "net": "RESET12",
+      "from": "U1.3",
+      "to": "Q6.1",
+      "function": "RESET ativo alto da matriz; Q6 libera ao puxar para GND."
+    },
+    {
+      "id": "W139",
+      "net": "RESET12",
+      "from": "U1.3",
+      "to": "R7.2",
+      "function": "RESET ativo alto da matriz; Q6 libera ao puxar para GND."
+    },
+    {
+      "id": "W140",
+      "net": "SENSE_A",
+      "from": "J_SMART.1",
+      "to": "U1.1",
+      "function": "Primeiro n\u00f3 selecionado para medi\u00e7\u00e3o externa com divisor."
+    },
+    {
+      "id": "W141",
+      "net": "SENSE_A",
+      "from": "J_SMART.1",
+      "to": "U2.1",
+      "function": "Primeiro n\u00f3 selecionado para medi\u00e7\u00e3o externa com divisor."
+    },
+    {
+      "id": "W142",
+      "net": "SENSE_B",
+      "from": "J_SMART.3",
+      "to": "U1.21",
+      "function": "Segundo n\u00f3 selecionado para medi\u00e7\u00e3o externa com divisor."
+    },
+    {
+      "id": "W143",
+      "net": "SENSE_B",
+      "from": "J_SMART.3",
+      "to": "U2.21",
+      "function": "Segundo n\u00f3 selecionado para medi\u00e7\u00e3o externa com divisor."
+    },
+    {
+      "id": "W144",
+      "net": "SER5",
+      "from": "U_LEVEL.2",
+      "to": "U5.14",
+      "function": "Dados seriais invertidos pelo HCT14 para o primeiro registrador."
+    },
+    {
+      "id": "W145",
+      "net": "STROBE5",
+      "from": "U_LEVEL.8",
+      "to": "U1.18",
+      "function": "Escrita da matriz, compartilhada; CS escolhe o chip."
+    },
+    {
+      "id": "W146",
+      "net": "STROBE5",
+      "from": "U_LEVEL.8",
+      "to": "U2.18",
+      "function": "Escrita da matriz, compartilhada; CS escolhe o chip."
+    },
+    {
+      "id": "W147",
+      "net": "TEST_B",
+      "from": "Q9.2",
+      "to": "R24.2",
+      "function": "Liga\u00e7\u00e3o local do est\u00e1gio discreto; respeitar base, coletor e emissor conforme esquema."
+    },
+    {
+      "id": "W148",
+      "net": "TEST_B",
+      "from": "Q9.2",
+      "to": "R27.1",
+      "function": "Liga\u00e7\u00e3o local do est\u00e1gio discreto; respeitar base, coletor e emissor conforme esquema."
+    },
+    {
+      "id": "W149",
+      "net": "TEST_BUS",
+      "from": "U1.39",
+      "to": "U2.39",
+      "function": "Est\u00edmulo de continuidade ap\u00f3s resistor de 10 k\u03a9."
+    },
+    {
+      "id": "W150",
+      "net": "TEST_BUS",
+      "from": "U1.39",
+      "to": "R18.2",
+      "function": "Est\u00edmulo de continuidade ap\u00f3s resistor de 10 k\u03a9."
+    },
+    {
+      "id": "W151",
+      "net": "TEST_C",
+      "from": "Q9.1",
+      "to": "R18.1",
+      "function": "Liga\u00e7\u00e3o local do est\u00e1gio discreto; respeitar base, coletor e emissor conforme esquema."
+    },
+    {
+      "id": "W152",
+      "net": "TEST_DRV",
+      "from": "Q10.1",
+      "to": "R27.2",
+      "function": "Liga\u00e7\u00e3o local do est\u00e1gio discreto; respeitar base, coletor e emissor conforme esquema."
+    }
+  ]
+}

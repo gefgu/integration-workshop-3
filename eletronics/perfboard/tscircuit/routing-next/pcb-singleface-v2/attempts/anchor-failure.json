@@ -1,0 +1,2651 @@
+{
+  "endpoint": "R6.1",
+  "anchors": [
+    {
+      "x": -7,
+      "y": 52,
+      "name": "WP001",
+      "endpoint": "U_LEVEL.2",
+      "net": "SER5",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -7,
+      "y": 47,
+      "name": "WP002",
+      "endpoint": "U_LEVEL.4",
+      "net": "CLK5",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -7,
+      "y": 44.4,
+      "name": "WP003",
+      "endpoint": "U_LEVEL.5",
+      "net": "GPIO22",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -7,
+      "y": 42,
+      "name": "WP004",
+      "endpoint": "U_LEVEL.6",
+      "net": "LATCH5",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 7,
+      "y": 39.4,
+      "name": "WP005",
+      "endpoint": "U_LEVEL.8",
+      "net": "STROBE5",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 7,
+      "y": 44.4,
+      "name": "WP006",
+      "endpoint": "U_LEVEL.10",
+      "net": "OE_N5",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 7,
+      "y": 47,
+      "name": "WP007",
+      "endpoint": "U_LEVEL.11",
+      "net": "GPIO21",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 7,
+      "y": 54.6,
+      "name": "WP008",
+      "endpoint": "U_LEVEL.14",
+      "net": "V5",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -21.6,
+      "y": -3.8,
+      "name": "WP009",
+      "endpoint": "U1.2",
+      "net": "AY2",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -19,
+      "y": -3.8,
+      "name": "WP010",
+      "endpoint": "U1.3",
+      "net": "RESET12",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -16.6,
+      "y": -3.8,
+      "name": "WP011",
+      "endpoint": "U1.4",
+      "net": "AX3",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -14,
+      "y": -3.8,
+      "name": "WP012",
+      "endpoint": "U1.5",
+      "net": "AX0",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 19,
+      "y": -3.8,
+      "name": "WP013",
+      "endpoint": "U1.18",
+      "net": "STROBE5",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 24.2,
+      "y": 17.8,
+      "name": "WP014",
+      "endpoint": "U1.21",
+      "net": "SENSE_B",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 21.6,
+      "y": 17.8,
+      "name": "WP015",
+      "endpoint": "U1.22",
+      "net": "AX1",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 19,
+      "y": 17.8,
+      "name": "WP016",
+      "endpoint": "U1.23",
+      "net": "AX2",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 16.6,
+      "y": 17.8,
+      "name": "WP017",
+      "endpoint": "U1.24",
+      "net": "AY0",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 14,
+      "y": 17.8,
+      "name": "WP018",
+      "endpoint": "U1.25",
+      "net": "AY1",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -16.6,
+      "y": 17.8,
+      "name": "WP019",
+      "endpoint": "U1.37",
+      "net": "PULSE_BUS",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -19,
+      "y": 17.8,
+      "name": "WP020",
+      "endpoint": "U1.38",
+      "net": "DATA",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -21.6,
+      "y": 17.8,
+      "name": "WP021",
+      "endpoint": "U1.39",
+      "net": "TEST_BUS",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -24.2,
+      "y": 17.8,
+      "name": "WP022",
+      "endpoint": "U1.40",
+      "net": "V12",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -24.2,
+      "y": -35.8,
+      "name": "WP023",
+      "endpoint": "U2.1",
+      "net": "SENSE_A",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -16.6,
+      "y": -35.8,
+      "name": "WP024",
+      "endpoint": "U2.4",
+      "net": "AX3",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -14,
+      "y": -35.8,
+      "name": "WP025",
+      "endpoint": "U2.5",
+      "net": "AX0",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 19,
+      "y": -35.8,
+      "name": "WP026",
+      "endpoint": "U2.18",
+      "net": "STROBE5",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 24.2,
+      "y": -14.2,
+      "name": "WP027",
+      "endpoint": "U2.21",
+      "net": "SENSE_B",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 21.6,
+      "y": -14.2,
+      "name": "WP028",
+      "endpoint": "U2.22",
+      "net": "AX1",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 19,
+      "y": -14.2,
+      "name": "WP029",
+      "endpoint": "U2.23",
+      "net": "AX2",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 16.6,
+      "y": -14.2,
+      "name": "WP030",
+      "endpoint": "U2.24",
+      "net": "AY0",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 14,
+      "y": -14.2,
+      "name": "WP031",
+      "endpoint": "U2.25",
+      "net": "AY1",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -14,
+      "y": -14.2,
+      "name": "WP032",
+      "endpoint": "U2.36",
+      "net": "CS_B",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -16.6,
+      "y": -14.2,
+      "name": "WP033",
+      "endpoint": "U2.37",
+      "net": "PULSE_BUS",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -19,
+      "y": -14.2,
+      "name": "WP034",
+      "endpoint": "U2.38",
+      "net": "DATA",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -21.6,
+      "y": -14.2,
+      "name": "WP035",
+      "endpoint": "U2.39",
+      "net": "TEST_BUS",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -24.2,
+      "y": -14.2,
+      "name": "WP036",
+      "endpoint": "U2.40",
+      "net": "V12",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -30,
+      "y": 43.8,
+      "name": "WP037",
+      "endpoint": "U5.1",
+      "net": "AX1",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -30,
+      "y": 41.4,
+      "name": "WP038",
+      "endpoint": "U5.2",
+      "net": "AX2",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -30,
+      "y": 38.8,
+      "name": "WP039",
+      "endpoint": "U5.3",
+      "net": "AX3",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -30,
+      "y": 36.2,
+      "name": "WP040",
+      "endpoint": "U5.4",
+      "net": "AY0",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -30,
+      "y": 33.8,
+      "name": "WP041",
+      "endpoint": "U5.5",
+      "net": "AY1",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -30,
+      "y": 31.2,
+      "name": "WP042",
+      "endpoint": "U5.6",
+      "net": "AY2",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -16,
+      "y": 26.2,
+      "name": "WP043",
+      "endpoint": "U5.9",
+      "net": "CHAIN",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -16,
+      "y": 33.8,
+      "name": "WP044",
+      "endpoint": "U5.12",
+      "net": "LATCH5",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -16,
+      "y": 36.2,
+      "name": "WP045",
+      "endpoint": "U5.13",
+      "net": "OE_N5",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -16,
+      "y": 38.8,
+      "name": "WP046",
+      "endpoint": "U5.14",
+      "net": "SER5",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -16,
+      "y": 41.4,
+      "name": "WP047",
+      "endpoint": "U5.15",
+      "net": "AX0",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -16,
+      "y": 43.8,
+      "name": "WP048",
+      "endpoint": "U5.16",
+      "net": "V5",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 42.8,
+      "y": 31.2,
+      "name": "WP049",
+      "endpoint": "U6.11",
+      "net": "CLK5",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 42.8,
+      "y": 33.8,
+      "name": "WP050",
+      "endpoint": "U6.12",
+      "net": "LATCH5",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 42.8,
+      "y": 36.2,
+      "name": "WP051",
+      "endpoint": "U6.13",
+      "net": "OE_N5",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 42.8,
+      "y": 38.8,
+      "name": "WP052",
+      "endpoint": "U6.14",
+      "net": "CHAIN",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 42.8,
+      "y": 41.4,
+      "name": "WP053",
+      "endpoint": "U6.15",
+      "net": "CS_A",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -17.8,
+      "y": 75,
+      "name": "WP054",
+      "endpoint": "J_ESP_L.10",
+      "net": "GPIO19",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -17.8,
+      "y": 72.4,
+      "name": "WP055",
+      "endpoint": "J_ESP_L.11",
+      "net": "GPIO21",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -17.8,
+      "y": 62.2,
+      "name": "WP056",
+      "endpoint": "J_ESP_L.15",
+      "net": "GPIO23",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 17.8,
+      "y": 87.6,
+      "name": "WP057",
+      "endpoint": "J_ESP_R.5",
+      "net": "GPIO14",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 17.8,
+      "y": 85,
+      "name": "WP058",
+      "endpoint": "J_ESP_R.6",
+      "net": "GPIO27",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 17.8,
+      "y": 82.6,
+      "name": "WP059",
+      "endpoint": "J_ESP_R.7",
+      "net": "GPIO26",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 17.8,
+      "y": 80,
+      "name": "WP060",
+      "endpoint": "J_ESP_R.8",
+      "net": "GPIO25",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 28.2,
+      "y": 69.2,
+      "name": "WP061",
+      "endpoint": "C_BULK12.1",
+      "net": "V12",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -28.2,
+      "y": 69.2,
+      "name": "WP062",
+      "endpoint": "C_BULK5.1",
+      "net": "V5",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -36.2,
+      "y": 10.2,
+      "name": "WP063",
+      "endpoint": "C1.1",
+      "net": "V12",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 33.8,
+      "y": -21.8,
+      "name": "WP064",
+      "endpoint": "C2.1",
+      "net": "V12",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 33.8,
+      "y": 25.2,
+      "name": "WP065",
+      "endpoint": "C5.1",
+      "net": "V5",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -40.8,
+      "y": -70.2,
+      "name": "WP066",
+      "endpoint": "H2.1",
+      "net": "V12",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 40.8,
+      "y": -70.2,
+      "name": "WP067",
+      "endpoint": "J_SMART.1",
+      "net": "SENSE_A",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 40.8,
+      "y": -75.2,
+      "name": "WP068",
+      "endpoint": "J_SMART.3",
+      "net": "SENSE_B",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 32.8,
+      "y": -66.2,
+      "name": "WP069",
+      "endpoint": "Q11.1",
+      "net": "LOW_C",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -2.8,
+      "y": -66.2,
+      "name": "WP070",
+      "endpoint": "Q9.3",
+      "net": "V5",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 30.2,
+      "y": -68.8,
+      "name": "WP071",
+      "endpoint": "R_LOW_BASE.1",
+      "net": "GPIO27",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 30.2,
+      "y": -84.8,
+      "name": "WP072",
+      "endpoint": "R_LOW_LIMIT.1",
+      "net": "PULSE_BUS",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 37.8,
+      "y": -84.8,
+      "name": "WP073",
+      "endpoint": "R_LOW_LIMIT.2",
+      "net": "LOW_C",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 10.2,
+      "y": 56.2,
+      "name": "WP074",
+      "endpoint": "R_PD_19.1",
+      "net": "GPIO19",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 24.2,
+      "y": 58.2,
+      "name": "WP075",
+      "endpoint": "R_PD_21.1",
+      "net": "GPIO21",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -17.8,
+      "y": 65,
+      "name": "WP076",
+      "endpoint": "R_PD_22.1",
+      "net": "GPIO22",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -31.8,
+      "y": 58.2,
+      "name": "WP077",
+      "endpoint": "R_PD_23.1",
+      "net": "GPIO23",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -16.2,
+      "y": -76.8,
+      "name": "WP078",
+      "endpoint": "R13.1",
+      "net": "GPIO26",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": 13.8,
+      "y": -76.8,
+      "name": "WP079",
+      "endpoint": "R15.1",
+      "net": "GPIO14",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -30.2,
+      "y": -84.8,
+      "name": "WP080",
+      "endpoint": "R17.2",
+      "net": "PULSE_BUS",
+      "diameter": 1.8,
+      "drill": 0.8
+    },
+    {
+      "x": -0.2,
+      "y": -84.8,
+      "name": "WP081",
+      "endpoint": "R18.2",
+      "net": "TEST_BUS",
+      "diameter": 1.8,
+      "drill": 0.8
+    }
+  ],
+  "traces": [
+    {
+      "id": "WP001_STUB",
+      "net": "SER5",
+      "a": "U_LEVEL.2",
+      "b": "WP001",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -3.8,
+          "y": 52,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -7,
+          "y": 52,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP002_STUB",
+      "net": "CLK5",
+      "a": "U_LEVEL.4",
+      "b": "WP002",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -3.8,
+          "y": 47,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -7,
+          "y": 47,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP003_STUB",
+      "net": "GPIO22",
+      "a": "U_LEVEL.5",
+      "b": "WP003",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -3.8,
+          "y": 44.4,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -7,
+          "y": 44.4,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP004_STUB",
+      "net": "LATCH5",
+      "a": "U_LEVEL.6",
+      "b": "WP004",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -3.8,
+          "y": 42,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -7,
+          "y": 42,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP005_STUB",
+      "net": "STROBE5",
+      "a": "U_LEVEL.8",
+      "b": "WP005",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 3.8,
+          "y": 39.4,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 7,
+          "y": 39.4,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP006_STUB",
+      "net": "OE_N5",
+      "a": "U_LEVEL.10",
+      "b": "WP006",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 3.8,
+          "y": 44.4,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 7,
+          "y": 44.4,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP007_STUB",
+      "net": "GPIO21",
+      "a": "U_LEVEL.11",
+      "b": "WP007",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 3.8,
+          "y": 47,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 7,
+          "y": 47,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP008_STUB",
+      "net": "V5",
+      "a": "U_LEVEL.14",
+      "b": "WP008",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 3.8,
+          "y": 54.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 7,
+          "y": 54.6,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP009_STUB",
+      "net": "AY2",
+      "a": "U1.2",
+      "b": "WP009",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -21.6,
+          "y": -0.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -21.6,
+          "y": -3.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP010_STUB",
+      "net": "RESET12",
+      "a": "U1.3",
+      "b": "WP010",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -19,
+          "y": -0.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -19,
+          "y": -3.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP011_STUB",
+      "net": "AX3",
+      "a": "U1.4",
+      "b": "WP011",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -16.6,
+          "y": -0.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -16.6,
+          "y": -3.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP012_STUB",
+      "net": "AX0",
+      "a": "U1.5",
+      "b": "WP012",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -14,
+          "y": -0.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -14,
+          "y": -3.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP013_STUB",
+      "net": "STROBE5",
+      "a": "U1.18",
+      "b": "WP013",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 19,
+          "y": -0.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 19,
+          "y": -3.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP014_STUB",
+      "net": "SENSE_B",
+      "a": "U1.21",
+      "b": "WP014",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 24.2,
+          "y": 14.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 24.2,
+          "y": 17.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP015_STUB",
+      "net": "AX1",
+      "a": "U1.22",
+      "b": "WP015",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 21.6,
+          "y": 14.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 21.6,
+          "y": 17.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP016_STUB",
+      "net": "AX2",
+      "a": "U1.23",
+      "b": "WP016",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 19,
+          "y": 14.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 19,
+          "y": 17.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP017_STUB",
+      "net": "AY0",
+      "a": "U1.24",
+      "b": "WP017",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 16.6,
+          "y": 14.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 16.6,
+          "y": 17.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP018_STUB",
+      "net": "AY1",
+      "a": "U1.25",
+      "b": "WP018",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 14,
+          "y": 14.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 14,
+          "y": 17.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP019_STUB",
+      "net": "PULSE_BUS",
+      "a": "U1.37",
+      "b": "WP019",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -16.6,
+          "y": 14.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -16.6,
+          "y": 17.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP020_STUB",
+      "net": "DATA",
+      "a": "U1.38",
+      "b": "WP020",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -19,
+          "y": 14.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -19,
+          "y": 17.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP021_STUB",
+      "net": "TEST_BUS",
+      "a": "U1.39",
+      "b": "WP021",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -21.6,
+          "y": 14.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -21.6,
+          "y": 17.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP022_STUB",
+      "net": "V12",
+      "a": "U1.40",
+      "b": "WP022",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -24.2,
+          "y": 14.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -24.2,
+          "y": 17.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP023_STUB",
+      "net": "SENSE_A",
+      "a": "U2.1",
+      "b": "WP023",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -24.2,
+          "y": -32.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -24.2,
+          "y": -35.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP024_STUB",
+      "net": "AX3",
+      "a": "U2.4",
+      "b": "WP024",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -16.6,
+          "y": -32.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -16.6,
+          "y": -35.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP025_STUB",
+      "net": "AX0",
+      "a": "U2.5",
+      "b": "WP025",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -14,
+          "y": -32.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -14,
+          "y": -35.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP026_STUB",
+      "net": "STROBE5",
+      "a": "U2.18",
+      "b": "WP026",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 19,
+          "y": -32.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 19,
+          "y": -35.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP027_STUB",
+      "net": "SENSE_B",
+      "a": "U2.21",
+      "b": "WP027",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 24.2,
+          "y": -17.4,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 24.2,
+          "y": -14.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP028_STUB",
+      "net": "AX1",
+      "a": "U2.22",
+      "b": "WP028",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 21.6,
+          "y": -17.4,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 21.6,
+          "y": -14.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP029_STUB",
+      "net": "AX2",
+      "a": "U2.23",
+      "b": "WP029",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 19,
+          "y": -17.4,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 19,
+          "y": -14.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP030_STUB",
+      "net": "AY0",
+      "a": "U2.24",
+      "b": "WP030",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 16.6,
+          "y": -17.4,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 16.6,
+          "y": -14.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP031_STUB",
+      "net": "AY1",
+      "a": "U2.25",
+      "b": "WP031",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 14,
+          "y": -17.4,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 14,
+          "y": -14.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP032_STUB",
+      "net": "CS_B",
+      "a": "U2.36",
+      "b": "WP032",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -14,
+          "y": -17.4,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -14,
+          "y": -14.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP033_STUB",
+      "net": "PULSE_BUS",
+      "a": "U2.37",
+      "b": "WP033",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -16.6,
+          "y": -17.4,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -16.6,
+          "y": -14.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP034_STUB",
+      "net": "DATA",
+      "a": "U2.38",
+      "b": "WP034",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -19,
+          "y": -17.4,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -19,
+          "y": -14.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP035_STUB",
+      "net": "TEST_BUS",
+      "a": "U2.39",
+      "b": "WP035",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -21.6,
+          "y": -17.4,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -21.6,
+          "y": -14.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP036_STUB",
+      "net": "V12",
+      "a": "U2.40",
+      "b": "WP036",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -24.2,
+          "y": -17.4,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -24.2,
+          "y": -14.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP037_STUB",
+      "net": "AX1",
+      "a": "U5.1",
+      "b": "WP037",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -26.8,
+          "y": 43.8,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -30,
+          "y": 43.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP038_STUB",
+      "net": "AX2",
+      "a": "U5.2",
+      "b": "WP038",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -26.8,
+          "y": 41.4,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -30,
+          "y": 41.4,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP039_STUB",
+      "net": "AX3",
+      "a": "U5.3",
+      "b": "WP039",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -26.8,
+          "y": 38.8,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -30,
+          "y": 38.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP040_STUB",
+      "net": "AY0",
+      "a": "U5.4",
+      "b": "WP040",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -26.8,
+          "y": 36.2,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -30,
+          "y": 36.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP041_STUB",
+      "net": "AY1",
+      "a": "U5.5",
+      "b": "WP041",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -26.8,
+          "y": 33.8,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -30,
+          "y": 33.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP042_STUB",
+      "net": "AY2",
+      "a": "U5.6",
+      "b": "WP042",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -26.8,
+          "y": 31.2,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -30,
+          "y": 31.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP043_STUB",
+      "net": "CHAIN",
+      "a": "U5.9",
+      "b": "WP043",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -19.2,
+          "y": 26.2,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -16,
+          "y": 26.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP044_STUB",
+      "net": "LATCH5",
+      "a": "U5.12",
+      "b": "WP044",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -19.2,
+          "y": 33.8,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -16,
+          "y": 33.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP045_STUB",
+      "net": "OE_N5",
+      "a": "U5.13",
+      "b": "WP045",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -19.2,
+          "y": 36.2,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -16,
+          "y": 36.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP046_STUB",
+      "net": "SER5",
+      "a": "U5.14",
+      "b": "WP046",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -19.2,
+          "y": 38.8,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -16,
+          "y": 38.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP047_STUB",
+      "net": "AX0",
+      "a": "U5.15",
+      "b": "WP047",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -19.2,
+          "y": 41.4,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -16,
+          "y": 41.4,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP048_STUB",
+      "net": "V5",
+      "a": "U5.16",
+      "b": "WP048",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -19.2,
+          "y": 43.8,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -16,
+          "y": 43.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP049_STUB",
+      "net": "CLK5",
+      "a": "U6.11",
+      "b": "WP049",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 26.8,
+          "y": 31.2,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 29.4,
+          "y": 31.2,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 29.8,
+          "y": 31.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 42.4,
+          "y": 31.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 42.8,
+          "y": 31.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP050_STUB",
+      "net": "LATCH5",
+      "a": "U6.12",
+      "b": "WP050",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 26.8,
+          "y": 33.8,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 29.4,
+          "y": 33.8,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 29.8,
+          "y": 33.4,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 42.4,
+          "y": 33.4,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 42.8,
+          "y": 33.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP051_STUB",
+      "net": "OE_N5",
+      "a": "U6.13",
+      "b": "WP051",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 26.8,
+          "y": 36.2,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 29.4,
+          "y": 36.2,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 29.8,
+          "y": 36.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 42.4,
+          "y": 36.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 42.8,
+          "y": 36.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP052_STUB",
+      "net": "CHAIN",
+      "a": "U6.14",
+      "b": "WP052",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 26.8,
+          "y": 38.8,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 29.4,
+          "y": 38.8,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 29.8,
+          "y": 38.4,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 42.4,
+          "y": 38.4,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 42.8,
+          "y": 38.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP053_STUB",
+      "net": "CS_A",
+      "a": "U6.15",
+      "b": "WP053",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 26.8,
+          "y": 41.4,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 29.6,
+          "y": 41.4,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 29.8,
+          "y": 41.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 42.6,
+          "y": 41.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 42.8,
+          "y": 41.4,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP054_STUB",
+      "net": "GPIO19",
+      "a": "J_ESP_L.10",
+      "b": "WP054",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -12.8,
+          "y": 75,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -17.8,
+          "y": 75,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP055_STUB",
+      "net": "GPIO21",
+      "a": "J_ESP_L.11",
+      "b": "WP055",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -12.8,
+          "y": 72.4,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -17.8,
+          "y": 72.4,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP056_STUB",
+      "net": "GPIO23",
+      "a": "J_ESP_L.15",
+      "b": "WP056",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -12.8,
+          "y": 62.2,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -17.8,
+          "y": 62.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP057_STUB",
+      "net": "GPIO14",
+      "a": "J_ESP_R.5",
+      "b": "WP057",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 12.8,
+          "y": 87.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 17.8,
+          "y": 87.6,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP058_STUB",
+      "net": "GPIO27",
+      "a": "J_ESP_R.6",
+      "b": "WP058",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 12.8,
+          "y": 85,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 17.8,
+          "y": 85,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP059_STUB",
+      "net": "GPIO26",
+      "a": "J_ESP_R.7",
+      "b": "WP059",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 12.6,
+          "y": 82.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 17.8,
+          "y": 82.6,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP060_STUB",
+      "net": "GPIO25",
+      "a": "J_ESP_R.8",
+      "b": "WP060",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 12.6,
+          "y": 80,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 17.8,
+          "y": 80,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP061_STUB",
+      "net": "V12",
+      "a": "C_BULK12.1",
+      "b": "WP061",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 28.2,
+          "y": 66,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 28.2,
+          "y": 69.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP062_STUB",
+      "net": "V5",
+      "a": "C_BULK5.1",
+      "b": "WP062",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -28.2,
+          "y": 66,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -28.2,
+          "y": 69.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP063_STUB",
+      "net": "V12",
+      "a": "C1.1",
+      "b": "WP063",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -36.2,
+          "y": 7,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -36.2,
+          "y": 10.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP064_STUB",
+      "net": "V12",
+      "a": "C2.1",
+      "b": "WP064",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 33.8,
+          "y": -25,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 33.8,
+          "y": -21.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP065_STUB",
+      "net": "V5",
+      "a": "C5.1",
+      "b": "WP065",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 33.8,
+          "y": 22,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 33.8,
+          "y": 25.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP066_STUB",
+      "net": "V12",
+      "a": "H2.1",
+      "b": "WP066",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -44,
+          "y": -70.2,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -40.8,
+          "y": -70.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP067_STUB",
+      "net": "SENSE_A",
+      "a": "J_SMART.1",
+      "b": "WP067",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 44,
+          "y": -70.2,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 40.8,
+          "y": -70.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP068_STUB",
+      "net": "SENSE_B",
+      "a": "J_SMART.3",
+      "b": "WP068",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 44,
+          "y": -75.2,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 40.8,
+          "y": -75.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP069_STUB",
+      "net": "LOW_C",
+      "a": "Q11.1",
+      "b": "WP069",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 32.8,
+          "y": -63,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 32.8,
+          "y": -66.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP070_STUB",
+      "net": "V5",
+      "a": "Q9.3",
+      "b": "WP070",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -2.8,
+          "y": -63,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -2.8,
+          "y": -66.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP071_STUB",
+      "net": "GPIO27",
+      "a": "R_LOW_BASE.1",
+      "b": "WP071",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 30.2,
+          "y": -72,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 30.2,
+          "y": -68.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP072_STUB",
+      "net": "PULSE_BUS",
+      "a": "R_LOW_LIMIT.1",
+      "b": "WP072",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 30.2,
+          "y": -88,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 30.2,
+          "y": -84.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP073_STUB",
+      "net": "LOW_C",
+      "a": "R_LOW_LIMIT.2",
+      "b": "WP073",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 37.8,
+          "y": -88,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 37.8,
+          "y": -84.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP074_STUB",
+      "net": "GPIO19",
+      "a": "R_PD_19.1",
+      "b": "WP074",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 10.2,
+          "y": 53,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 10.2,
+          "y": 56.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP075_STUB",
+      "net": "GPIO21",
+      "a": "R_PD_21.1",
+      "b": "WP075",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 24.2,
+          "y": 55,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 24.2,
+          "y": 58.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP076_STUB",
+      "net": "GPIO22",
+      "a": "R_PD_22.1",
+      "b": "WP076",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -17.8,
+          "y": 57,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -17.8,
+          "y": 58.8,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -19.6,
+          "y": 60.6,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -19.6,
+          "y": 63.8,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -18.4,
+          "y": 65,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -17.8,
+          "y": 65,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP077_STUB",
+      "net": "GPIO23",
+      "a": "R_PD_23.1",
+      "b": "WP077",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -31.8,
+          "y": 55,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -31.8,
+          "y": 58.2,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP078_STUB",
+      "net": "GPIO26",
+      "a": "R13.1",
+      "b": "WP078",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -16.2,
+          "y": -80,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -16.2,
+          "y": -76.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP079_STUB",
+      "net": "GPIO14",
+      "a": "R15.1",
+      "b": "WP079",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": 13.8,
+          "y": -80,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": 13.8,
+          "y": -76.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP080_STUB",
+      "net": "PULSE_BUS",
+      "a": "R17.2",
+      "b": "WP080",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -30.2,
+          "y": -88,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -30.2,
+          "y": -84.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "WP081_STUB",
+      "net": "TEST_BUS",
+      "a": "R18.2",
+      "b": "WP081",
+      "route": [
+        {
+          "route_type": "wire",
+          "x": -0.2,
+          "y": -88,
+          "layer": "top",
+          "width": 0.5
+        },
+        {
+          "route_type": "wire",
+          "x": -0.2,
+          "y": -84.8,
+          "layer": "top",
+          "width": 0.5
+        }
+      ]
+    }
+  ]
+}

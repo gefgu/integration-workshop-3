@@ -1,0 +1,23 @@
+{
+  "paths": 152,
+  "differentNetCrossingEvents": 685,
+  "differentNetCrossingLocations": 645,
+  "differentNetParallelOverlapRuns": 11,
+  "sameNetCrossingEvents": 24,
+  "sameNetParallelRuns": 21,
+  "maxWiresAtCrossingLocation": 3,
+  "baselineStraightStarCrossings": 1693,
+  "baselineStraightStarIsBuildable": false,
+  "reductionOfGraphicalCrossingsPercent": 59.5,
+  "totalPlanLengthM": 6.97,
+  "baselineStraightLengthM": 9.89,
+  "maxWiresAtTerminal": 3,
+  "otherPadKeepoutConflicts": [],
+  "endpointGeometryVerified": true,
+  "boardBoundsVerified": true,
+  "outerJacketAssumedMm": 0.8,
+  "padDiameterAssumedMm": 1.6,
+  "physicalMeasurementsVerified": false,
+  "wirePaths3dClearanceVerified": false,
+  "crossingsRequireInsulation": true
+}

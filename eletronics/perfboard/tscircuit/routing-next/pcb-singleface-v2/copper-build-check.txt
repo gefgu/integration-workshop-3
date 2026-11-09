@@ -1,0 +1,25 @@
+{
+  "status": "GEOMETRY_CANDIDATE_NEEDS_INDEPENDENT_SHORTS_AND_PHYSICAL_FIT",
+  "functionalComponents": 50,
+  "copperTraces": 198,
+  "wireBridges": 59,
+  "dedicatedWirePads": 106,
+  "copperLayers": 1,
+  "copperCrossingsPermitted": false,
+  "sourceNetConnectivityVerified": true,
+  "assembledConnectivityVerified": true,
+  "wireRouteFailures": 0,
+  "checks": {
+    "netlist": 0,
+    "pins": 0,
+    "placement": 0,
+    "padTrace": 0,
+    "padPad": 0,
+    "traceOverlap": 0,
+    "holeTrace": 0,
+    "boardBounds": 0,
+    "contiguity": 0
+  },
+  "measuredFit": false,
+  "manufacturingRelease": false
+}

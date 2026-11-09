@@ -1,0 +1,153 @@
+ID,Rede,Origem,Destino,Funcao
+W001,GND,H2.4,J_ESP_L.2,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W002,GND,H2.4,J_ESP_R.2,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W003,GND,H2.4,J_SMART.2,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W004,GND,H2.4,U_LEVEL.7,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W005,GND,H2.4,U_LEVEL.13,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W006,GND,H2.4,U5.8,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W007,GND,H2.4,U6.8,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W008,GND,H2.4,U1.16,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W009,GND,H2.4,U1.20,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W010,GND,H2.4,U1.35,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W011,GND,H2.4,U2.16,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W012,GND,H2.4,U2.20,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W013,GND,H2.4,U2.35,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W014,GND,H2.4,Q6.3,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W015,GND,H2.4,Q8.3,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W016,GND,H2.4,Q11.3,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W017,GND,H2.4,Q10.3,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W018,GND,H2.4,R12.2,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W019,GND,H2.4,R8.2,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W020,GND,H2.4,R9.2,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W021,GND,H2.4,R14.2,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W022,GND,H2.4,R_LOW_PD.2,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W023,GND,H2.4,R16.2,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W024,GND,H2.4,R_PULSE_IN.2,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W025,GND,H2.4,R_PD_23.2,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W026,GND,H2.4,R_PD_18.2,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W027,GND,H2.4,R_PD_22.2,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W028,GND,H2.4,R_PD_19.2,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W029,GND,H2.4,R_PD_21.2,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W030,GND,H2.4,C_BULK5.2,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W031,GND,H2.4,C_BULK12.2,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W032,GND,H2.4,C_LEVEL.2,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W033,GND,H2.4,C4.2,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W034,GND,H2.4,C5.2,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W035,GND,H2.4,C1.2,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W036,GND,H2.4,C2.2,Referência e retorno comum. Não unir a 5 V ou 12 V.
+W037,V5,H2.2,U_LEVEL.14,Alimentação de controle/saídas em 5 V; não é saída limitada do experimento.
+W038,V5,H2.2,U5.10,Alimentação de controle/saídas em 5 V; não é saída limitada do experimento.
+W039,V5,H2.2,U5.16,Alimentação de controle/saídas em 5 V; não é saída limitada do experimento.
+W040,V5,H2.2,U6.10,Alimentação de controle/saídas em 5 V; não é saída limitada do experimento.
+W041,V5,H2.2,U6.16,Alimentação de controle/saídas em 5 V; não é saída limitada do experimento.
+W042,V5,H2.2,Q7.3,Alimentação de controle/saídas em 5 V; não é saída limitada do experimento.
+W043,V5,H2.2,Q9.3,Alimentação de controle/saídas em 5 V; não é saída limitada do experimento.
+W044,V5,H2.2,R21.1,Alimentação de controle/saídas em 5 V; não é saída limitada do experimento.
+W045,V5,H2.2,R24.1,Alimentação de controle/saídas em 5 V; não é saída limitada do experimento.
+W046,V5,H2.2,C_BULK5.1,Alimentação de controle/saídas em 5 V; não é saída limitada do experimento.
+W047,V5,H2.2,C_LEVEL.1,Alimentação de controle/saídas em 5 V; não é saída limitada do experimento.
+W048,V5,H2.2,C4.1,Alimentação de controle/saídas em 5 V; não é saída limitada do experimento.
+W049,V5,H2.2,C5.1,Alimentação de controle/saídas em 5 V; não é saída limitada do experimento.
+W050,V12,H2.1,U1.40,Alimentação dos MT8816 e pull-up do RESET; nunca levar a um GPIO.
+W051,V12,H2.1,U2.40,Alimentação dos MT8816 e pull-up do RESET; nunca levar a um GPIO.
+W052,V12,H2.1,R7.1,Alimentação dos MT8816 e pull-up do RESET; nunca levar a um GPIO.
+W053,V12,H2.1,C_BULK12.1,Alimentação dos MT8816 e pull-up do RESET; nunca levar a um GPIO.
+W054,V12,H2.1,C1.1,Alimentação dos MT8816 e pull-up do RESET; nunca levar a um GPIO.
+W055,V12,H2.1,C2.1,Alimentação dos MT8816 e pull-up do RESET; nunca levar a um GPIO.
+W056,AX0,U5.15,U1.5,Bit de endereço X compartilhado entre as duas matrizes.
+W057,AX0,U5.15,U2.5,Bit de endereço X compartilhado entre as duas matrizes.
+W058,AX1,U5.1,U1.22,Bit de endereço X compartilhado entre as duas matrizes.
+W059,AX1,U5.1,U2.22,Bit de endereço X compartilhado entre as duas matrizes.
+W060,AX2,U5.2,U1.23,Bit de endereço X compartilhado entre as duas matrizes.
+W061,AX2,U5.2,U2.23,Bit de endereço X compartilhado entre as duas matrizes.
+W062,AX3,U5.3,U1.4,Bit de endereço X compartilhado entre as duas matrizes.
+W063,AX3,U5.3,U2.4,Bit de endereço X compartilhado entre as duas matrizes.
+W064,AY0,U5.4,U1.24,Bit de endereço Y compartilhado entre as duas matrizes.
+W065,AY0,U5.4,U2.24,Bit de endereço Y compartilhado entre as duas matrizes.
+W066,AY1,U5.5,U1.25,Bit de endereço Y compartilhado entre as duas matrizes.
+W067,AY1,U5.5,U2.25,Bit de endereço Y compartilhado entre as duas matrizes.
+W068,AY2,U5.6,U1.2,Bit de endereço Y compartilhado entre as duas matrizes.
+W069,AY2,U5.6,U2.2,Bit de endereço Y compartilhado entre as duas matrizes.
+W070,CHAIN,U5.9,U6.14,Encadeamento serial QH_SER de U5 → SER de U6.
+W071,CLK5,U_LEVEL.4,U5.11,Clock serial invertido; o firmware compensa a polaridade.
+W072,CLK5,U_LEVEL.4,U6.11,Clock serial invertido; o firmware compensa a polaridade.
+W073,CS_A,U6.15,U1.36,Seleção ativa alta do MT8816 A; pull-down mantém inativo.
+W074,CS_A,U6.15,R8.1,Seleção ativa alta do MT8816 A; pull-down mantém inativo.
+W075,CS_B,U6.1,U2.36,Seleção ativa alta do MT8816 B; pull-down mantém inativo.
+W076,CS_B,U6.1,R9.1,Seleção ativa alta do MT8816 B; pull-down mantém inativo.
+W077,DATA,U5.7,U1.38,Valor escrito no crosspoint: conectar ou desconectar.
+W078,DATA,U5.7,U2.38,Valor escrito no crosspoint: conectar ou desconectar.
+W079,GPIO14,J_ESP_R.5,R15.1,"Comando lógico de 3,3 V do ESP32; não ligar diretamente a 5 V/12 V."
+W080,GPIO18,J_ESP_L.9,U_LEVEL.3,"Comando lógico de 3,3 V do ESP32; não ligar diretamente a 5 V/12 V."
+W081,GPIO18,J_ESP_L.9,R_PD_18.1,"Comando lógico de 3,3 V do ESP32; não ligar diretamente a 5 V/12 V."
+W082,GPIO19,J_ESP_L.10,U_LEVEL.9,"Comando lógico de 3,3 V do ESP32; não ligar diretamente a 5 V/12 V."
+W083,GPIO19,J_ESP_L.10,R_PD_19.1,"Comando lógico de 3,3 V do ESP32; não ligar diretamente a 5 V/12 V."
+W084,GPIO21,J_ESP_L.11,U_LEVEL.11,"Comando lógico de 3,3 V do ESP32; não ligar diretamente a 5 V/12 V."
+W085,GPIO21,J_ESP_L.11,R_PD_21.1,"Comando lógico de 3,3 V do ESP32; não ligar diretamente a 5 V/12 V."
+W086,GPIO22,J_ESP_L.14,U_LEVEL.5,"Comando lógico de 3,3 V do ESP32; não ligar diretamente a 5 V/12 V."
+W087,GPIO22,J_ESP_L.14,R_PD_22.1,"Comando lógico de 3,3 V do ESP32; não ligar diretamente a 5 V/12 V."
+W088,GPIO23,J_ESP_L.15,U_LEVEL.1,"Comando lógico de 3,3 V do ESP32; não ligar diretamente a 5 V/12 V."
+W089,GPIO23,J_ESP_L.15,R_PD_23.1,"Comando lógico de 3,3 V do ESP32; não ligar diretamente a 5 V/12 V."
+W090,GPIO25,J_ESP_R.8,R6.1,"Comando lógico de 3,3 V do ESP32; não ligar diretamente a 5 V/12 V."
+W091,GPIO26,J_ESP_R.7,R13.1,"Comando lógico de 3,3 V do ESP32; não ligar diretamente a 5 V/12 V."
+W092,GPIO27,J_ESP_R.6,R_LOW_BASE.1,"Comando lógico de 3,3 V do ESP32; não ligar diretamente a 5 V/12 V."
+W093,GPIO34,J_ESP_R.12,J_SMART.4,"Comando lógico de 3,3 V do ESP32; não ligar diretamente a 5 V/12 V."
+W094,GPIO34,J_ESP_R.12,R_PULSE_IN.1,"Comando lógico de 3,3 V do ESP32; não ligar diretamente a 5 V/12 V."
+W095,HIGH_B,Q7.2,R21.2,"Ligação local do estágio discreto; respeitar base, coletor e emissor conforme esquema."
+W096,HIGH_B,Q7.2,R30.1,"Ligação local do estágio discreto; respeitar base, coletor e emissor conforme esquema."
+W097,HIGH_C,Q7.1,R17.1,"Ligação local do estágio discreto; respeitar base, coletor e emissor conforme esquema."
+W098,HIGH_DRV,Q8.1,R30.2,"Ligação local do estágio discreto; respeitar base, coletor e emissor conforme esquema."
+W099,LATCH5,U_LEVEL.6,U5.12,"Latch dos registradores, invertido pelo HCT14."
+W100,LATCH5,U_LEVEL.6,U6.12,"Latch dos registradores, invertido pelo HCT14."
+W101,LOW_C,Q11.1,R_LOW_LIMIT.2,"Ligação local do estágio discreto; respeitar base, coletor e emissor conforme esquema."
+W102,NODE00,H1.1,U1.33,Liga um nó físico ao X correspondente da matriz; manter sua identidade no cabo.
+W103,NODE01,H1.2,U1.32,Liga um nó físico ao X correspondente da matriz; manter sua identidade no cabo.
+W104,NODE02,H1.3,U1.31,Liga um nó físico ao X correspondente da matriz; manter sua identidade no cabo.
+W105,NODE03,H1.4,U1.30,Liga um nó físico ao X correspondente da matriz; manter sua identidade no cabo.
+W106,NODE04,H1.5,U1.29,Liga um nó físico ao X correspondente da matriz; manter sua identidade no cabo.
+W107,NODE05,H1.6,U1.28,Liga um nó físico ao X correspondente da matriz; manter sua identidade no cabo.
+W108,NODE06,H1.7,U1.8,Liga um nó físico ao X correspondente da matriz; manter sua identidade no cabo.
+W109,NODE07,H1.8,U1.9,Liga um nó físico ao X correspondente da matriz; manter sua identidade no cabo.
+W110,NODE08,H1.9,U1.10,Liga um nó físico ao X correspondente da matriz; manter sua identidade no cabo.
+W111,NODE09,H1.10,U1.11,Liga um nó físico ao X correspondente da matriz; manter sua identidade no cabo.
+W112,NODE10,H1.11,U1.12,Liga um nó físico ao X correspondente da matriz; manter sua identidade no cabo.
+W113,NODE11,H3.1,U2.33,Liga um nó físico ao X correspondente da matriz; manter sua identidade no cabo.
+W114,NODE12,H3.2,U2.32,Liga um nó físico ao X correspondente da matriz; manter sua identidade no cabo.
+W115,NODE13,H3.3,U2.31,Liga um nó físico ao X correspondente da matriz; manter sua identidade no cabo.
+W116,NODE14,H3.4,U2.30,Liga um nó físico ao X correspondente da matriz; manter sua identidade no cabo.
+W117,NODE15,H3.5,U2.29,Liga um nó físico ao X correspondente da matriz; manter sua identidade no cabo.
+W118,NODE16,H3.6,U2.28,Liga um nó físico ao X correspondente da matriz; manter sua identidade no cabo.
+W119,NODE17,H3.7,U2.8,Liga um nó físico ao X correspondente da matriz; manter sua identidade no cabo.
+W120,NODE18,H3.8,U2.9,Liga um nó físico ao X correspondente da matriz; manter sua identidade no cabo.
+W121,NODE19,H3.9,U2.10,Liga um nó físico ao X correspondente da matriz; manter sua identidade no cabo.
+W122,NODE20,H3.10,U2.11,Liga um nó físico ao X correspondente da matriz; manter sua identidade no cabo.
+W123,NODE21,H3.11,U2.12,Liga um nó físico ao X correspondente da matriz; manter sua identidade no cabo.
+W124,OE_N5,U_LEVEL.10,U5.13,Habilitação ativa baixa das saídas dos registradores.
+W125,OE_N5,U_LEVEL.10,U6.13,Habilitação ativa baixa das saídas dos registradores.
+W126,PULSE_BUS,U1.37,U2.37,Serviço de saída ALTO/BAIXO; sempre após os resistores de 470 Ω.
+W127,PULSE_BUS,U1.37,R17.2,Serviço de saída ALTO/BAIXO; sempre após os resistores de 470 Ω.
+W128,PULSE_BUS,U1.37,R_LOW_LIMIT.1,Serviço de saída ALTO/BAIXO; sempre após os resistores de 470 Ω.
+W129,Q10_B,Q10.2,R15.2,"Ligação local do estágio discreto; respeitar base, coletor e emissor conforme esquema."
+W130,Q10_B,Q10.2,R16.1,"Ligação local do estágio discreto; respeitar base, coletor e emissor conforme esquema."
+W131,Q11_B,Q11.2,R_LOW_BASE.2,"Ligação local do estágio discreto; respeitar base, coletor e emissor conforme esquema."
+W132,Q11_B,Q11.2,R_LOW_PD.1,"Ligação local do estágio discreto; respeitar base, coletor e emissor conforme esquema."
+W133,Q6_B,Q6.2,R6.2,"Ligação local do estágio discreto; respeitar base, coletor e emissor conforme esquema."
+W134,Q6_B,Q6.2,R12.1,"Ligação local do estágio discreto; respeitar base, coletor e emissor conforme esquema."
+W135,Q8_B,Q8.2,R13.2,"Ligação local do estágio discreto; respeitar base, coletor e emissor conforme esquema."
+W136,Q8_B,Q8.2,R14.1,"Ligação local do estágio discreto; respeitar base, coletor e emissor conforme esquema."
+W137,RESET12,U1.3,U2.3,RESET ativo alto da matriz; Q6 libera ao puxar para GND.
+W138,RESET12,U1.3,Q6.1,RESET ativo alto da matriz; Q6 libera ao puxar para GND.
+W139,RESET12,U1.3,R7.2,RESET ativo alto da matriz; Q6 libera ao puxar para GND.
+W140,SENSE_A,J_SMART.1,U1.1,Primeiro nó selecionado para medição externa com divisor.
+W141,SENSE_A,J_SMART.1,U2.1,Primeiro nó selecionado para medição externa com divisor.
+W142,SENSE_B,J_SMART.3,U1.21,Segundo nó selecionado para medição externa com divisor.
+W143,SENSE_B,J_SMART.3,U2.21,Segundo nó selecionado para medição externa com divisor.
+W144,SER5,U_LEVEL.2,U5.14,Dados seriais invertidos pelo HCT14 para o primeiro registrador.
+W145,STROBE5,U_LEVEL.8,U1.18,"Escrita da matriz, compartilhada; CS escolhe o chip."
+W146,STROBE5,U_LEVEL.8,U2.18,"Escrita da matriz, compartilhada; CS escolhe o chip."
+W147,TEST_B,Q9.2,R24.2,"Ligação local do estágio discreto; respeitar base, coletor e emissor conforme esquema."
+W148,TEST_B,Q9.2,R27.1,"Ligação local do estágio discreto; respeitar base, coletor e emissor conforme esquema."
+W149,TEST_BUS,U1.39,U2.39,Estímulo de continuidade após resistor de 10 kΩ.
+W150,TEST_BUS,U1.39,R18.2,Estímulo de continuidade após resistor de 10 kΩ.
+W151,TEST_C,Q9.1,R18.1,"Ligação local do estágio discreto; respeitar base, coletor e emissor conforme esquema."
+W152,TEST_DRV,Q10.1,R27.2,"Ligação local do estágio discreto; respeitar base, coletor e emissor conforme esquema."

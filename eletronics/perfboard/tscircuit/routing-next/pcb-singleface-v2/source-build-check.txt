@@ -1,0 +1,4 @@
+Built-in line renderer honors automatic labels off.
+schematic-placement 0
+placement 0
+{"source":0,"pins":0,"netlist":0,"placement":0,"netEquivalence":0}
