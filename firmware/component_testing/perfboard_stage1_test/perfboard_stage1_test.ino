@@ -4,9 +4,12 @@
 #include <Adafruit_SSD1306.h>
 #include <stdio.h>
 #include <string.h>
+#include "LineReader.h"
 
 // Standalone classic 30-pin ESP32 stage 1. No Wi-Fi, sensing, or output driver.
-constexpr uint8_t SDA_PINS[] = {4, 21, 19, 18, 17, 16};
+// Indexed by the OLED number on the soldered board, not ESP32 header order.
+// OLED0=D4, OLED1=RX2, OLED2=D18, OLED3=TX2, OLED4=D19, OLED5=D21.
+constexpr uint8_t SDA_PINS[] = {4, 16, 18, 17, 19, 21};
 constexpr uint8_t SCL_PIN = 22, JOY_X = 36, JOY_Y = 39;
 constexpr uint8_t PI_RX = 32, PI_TX = 33;
 constexpr uint32_t BAUD = 115200, I2C_HZ = 100000;
@@ -157,7 +160,7 @@ void updateJoystick(uint32_t now) {
 }
 
 // Fixed-size, newline-delimited command buffers; discard an entire malformed line.
-struct LineReader { char data[96]; size_t length = 0; bool discard = false; } usbLine, piLine;
+LineReader usbLine, piLine;
 
 void handlePi(const char* line) {
   Serial.printf("Pi RX: %s\n", line);
@@ -181,6 +184,15 @@ void help() {
   Serial.println("status | help  show mapping/state or this list");
 }
 
+void printPinMap() {
+  Serial.printf("SCL=GPIO%u; SDA:", SCL_PIN);
+  for (unsigned i = 0; i < sizeof(SDA_PINS) / sizeof(SDA_PINS[0]); ++i)
+    Serial.printf(" OLED%u=GPIO%u", i, SDA_PINS[i]);
+  Serial.println();
+  Serial.printf("JOY X=GPIO%u Y=GPIO%u; UART RX=GPIO%u TX=GPIO%u\n",
+                JOY_X, JOY_Y, PI_RX, PI_TX);
+}
+
 void handleUsb(const char* line) {
   if (!strcmp(line, "help") || !strcmp(line, "?")) help();
   else if (!strcmp(line, "scan")) scanScreens();
@@ -196,7 +208,7 @@ void handleUsb(const char* line) {
     piLink.printf("LOOP %lu\n", loopId);
     Serial.println("Waiting up to 2 s for TX33 -> RX32 jumper echo; Pi must be disconnected.");
   } else if (!strcmp(line, "status")) {
-    Serial.println("SCL22 SDA[0..5]=4,21,19,18,17,16; JOY X36 Y39; UART RX32 TX33");
+    printPinMap();
     Serial.printf("JOY=%s calibrated=%s; enabled slots:", joystickOn ? "ON" : "OFF", calibrated ? "YES" : "NO");
     for (int i = 0; i < 6; ++i) if (enabled[i]) Serial.printf(" %d", i);
     Serial.println();
@@ -246,6 +258,7 @@ void setup() {
   delay(500);
   Serial.println("Perfboard stage 1: OLED traffic and joystick sampling OFF at startup.");
   Serial.println("No ADC34/35 sensing, SW button, Wi-Fi, pulse or output-driver code.");
+  printPinMap();
   help();
 }
 

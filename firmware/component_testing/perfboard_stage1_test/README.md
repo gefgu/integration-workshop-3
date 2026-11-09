@@ -7,9 +7,25 @@ Sketch independente para ESP32 clássico de 30 pinos. Testa seis portas OLED ind
 | Função | GPIO ESP32 |
 |---|---|
 | SCL compartilhado | 22 |
-| SDA das portas 0, 1, 2, 3, 4, 5 | 4, 21, 19, 18, 17, 16 |
+| SDA das portas 0, 1, 2, 3, 4, 5 | 4, 16, 18, 17, 19, 21 |
 | Joystick X / Y | 36 (VP) / 39 (VN) |
 | UART RX / TX | 32 / 33 |
+
+Mapa atualizado conforme a fiação informada da placa soldada:
+
+| Porta / comando | Identificação na ESP32 | GPIO SDA |
+|---|---|---|
+| OLED0 / `screens 0` | D4 | 4 |
+| OLED1 / `screens 1` | RX2 | 16 |
+| OLED2 / `screens 2` | D18 | 18 |
+| OLED3 / `screens 3` | TX2 | 17 |
+| OLED4 / `screens 4` | D19 | 19 |
+| OLED5 / `screens 5` | D21 | 21 |
+
+Essa numeração substitui o mapa antigo deste teste. Os PDFs e outros sketches
+anteriores podem mostrar a ordem antiga; para este teste da placa soldada, use
+a tabela acima. A mensagem de inicialização e `status` imprimem o mapa usado
+pelo próprio código.
 
 Não usar RX16/TX17 do teste UART antigo: esses pinos agora são SDA. Não conectar SW do joystick a GPIO35. Alimentação/sinais de 3,3 V, GND comum. O conector OLED da placa é 3V3/GND/SCL/SDA; conferir os nomes no módulo, pois sua ordem pode diferir.
 
