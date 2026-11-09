@@ -13,6 +13,7 @@ import logging
 import sys
 import threading
 import time
+from collections import deque
 from pathlib import Path
 from typing import Any
 
@@ -94,6 +95,13 @@ def _import_visao(profile: str = "current", calibration: str | None = None):
 SETTLE_S = 2.0
 
 
+def fps_from(times: "deque[float] | list[float]") -> float | None:
+    """Frames per second over the timestamps of the most recent processed frames (None until two exist)."""
+    if len(times) < 2 or times[-1] <= times[0]:
+        return None
+    return round((len(times) - 1) / (times[-1] - times[0]), 1)
+
+
 def open_camera(cv: Any, index: int) -> Any:
     """Same opening as `python -m visao --camera`: V4L2 + MJPG, so a USB camera gives 1280x720, not 640x480."""
     from visao.__main__ import abre_camera
@@ -124,6 +132,8 @@ class VisionSource:
         self._stop = threading.Event()
         self._state: dict[str, Any] = {"available": True, "running": False, "valid": False,
                                        "reason": "Ligando a câmera…", "version": 0, "profile": profile, "partial": profile == "current", "recalibrating": False, "pieces": [], "unknown": [],
+                                       "fps": None, "frame_size": None, "confirming": 0, "stable_frames": None,
+                                       "calibration": "manual" if calibration else "automatic",
                                        "updated_at": None}
         self._jpeg: bytes | None = None
         self._thread = threading.Thread(target=self._run, name="vision", daemon=True)
@@ -142,7 +152,10 @@ class VisionSource:
 
     def state(self) -> dict[str, Any]:
         with self._lock:
-            return dict(self._state)
+            out = dict(self._state)
+        # Seconds since the last processed frame, computed here so it needs no shared clock with the screen.
+        out["age_s"] = None if out["updated_at"] is None else round(max(0.0, time.time() - out["updated_at"]), 1)
+        return out
 
     def frame(self) -> bytes | None:
         with self._lock:
@@ -173,7 +186,10 @@ class VisionSource:
             self._set(reason="Ajustando a luz da câmera…")
             settle_and_lock(cv, cap)
         pipeline = make_pipeline()
+        from visao import config as vision_config
+        self._set(stable_frames=vision_config.FRAMES_ESTAVEIS)
         period = 1.0 / 5
+        times: deque[float] = deque(maxlen=25)
         self._set(running=True)
         try:
             while not self._stop.is_set():
@@ -191,9 +207,15 @@ class VisionSource:
                         continue
                 result = pipeline.processa(frame)
                 recalibrating = False
+                times.append(time.monotonic())
+                # Candidates seen for fewer than `stable_frames` frames in a row are still being confirmed.
+                confirming = sum(1 for counts in (getattr(pipeline, "counts", {}), getattr(pipeline, "blue_counts", {}))
+                                 for n in counts.values() if n < vision_config.FRAMES_ESTAVEIS)
                 ok, jpeg = cv.imencode(".jpg", debug.desenha_frame(frame, result), [cv.IMWRITE_JPEG_QUALITY, 70])
                 changes: dict[str, Any] = {"valid": result.valido, "reason": result.motivo,
-                                           "updated_at": time.time(), "recalibrating": recalibrating}
+                                           "updated_at": time.time(), "recalibrating": recalibrating,
+                                           "fps": fps_from(times), "frame_size": list(frame.shape[1::-1]),
+                                           "confirming": confirming}
                 if result.mudou:
                     pieces, unknown = to_pieces(para_dict(result.grafo))
                     unknown += unknown_from_partial(getattr(result, "pecas_sem_tipo", []))
