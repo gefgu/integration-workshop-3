@@ -103,7 +103,8 @@ test('login guarda o cookie de sessão e o professor; a senha errada vira mensag
 test('login recusa e-mail sem professor correspondente (RLS devolve zero linhas)', async () => {
   const neon = fakeNeon({ 'GET /teachers?select=id,name,email': () => ({ json: [] }) });
   const api = new NeonApi(new MemoryStore(), config, neon.fetchImpl);
-  await assert.rejects(api.login('x@y.z', 'good'), (e: ApiError) => e.status === 403);
+  // The message must point at the real cause: the account is missing from Neon (e.g. created on a local SQLite site).
+  await assert.rejects(api.login('x@y.z', 'good'), (e: ApiError) => e.status === 403 && /Neon/.test(e.message));
   assert.equal(api.token, null);
 });
 

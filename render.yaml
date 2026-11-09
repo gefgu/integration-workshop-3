@@ -14,5 +14,7 @@ services:
         sync: false # Neon → Connect → connection string (postgresql://…); kept secret in Render
       - key: TEDTRONICS_BENCH_SECRET
         sync: false # the same value must be set on every bench (it signs the bench unlock)
+      - key: TEDTRONICS_NEON_AUTH_URL
+        sync: false # Neon → Auth → the auth URL (…/neondb/auth): one password for the site and the phone app
       - key: TEDTRONICS_TTS
         value: "off"

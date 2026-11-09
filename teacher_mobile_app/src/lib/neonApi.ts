@@ -92,7 +92,13 @@ export class NeonApi extends Api {
     }
     if (!teacher) {
       await this.forget();
-      throw new ApiError('Este e-mail não corresponde a um professor cadastrado no site.', 403);
+      // Neon Auth accepted the password, but public.teachers in Neon has no row with this e-mail. Usually the site
+      // account was created on a local site, whose API keeps its accounts in SQLite and never reaches Neon.
+      throw new ApiError(
+        'Este e-mail não corresponde a um professor no banco online (Neon). Crie a conta no site publicado ' +
+          '(ou no site local ligado ao Neon); contas do site local em SQLite não chegam ao celular.',
+        403
+      );
     }
     this.teacher = teacher;
     await this.store.setItem(TOKEN_KEY, cookie);

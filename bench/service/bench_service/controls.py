@@ -6,10 +6,16 @@
 115200 8N1, ASCII lines ending in "\\n" (firmware/esp32/bench_controls). Each KEY becomes a key name the bench
 screen already understands (arrows, Enter, Escape, "e"); the screen receives them on the /controls WebSocket.
 The serial thread reconnects on its own, so unplugging the ESP32 never stops the bench.
+
+Port "auto" finds the ESP32 by itself: the USB cable (/dev/ttyUSB*, /dev/ttyACM*, COMx) or the GPIO UART
+(/dev/serial0). Each candidate is opened in turn and kept only if it answers like the controls firmware.
 """
 from __future__ import annotations
 
+import glob
 import logging
+import os
+import sys
 import threading
 import time
 from collections import deque
@@ -31,6 +37,32 @@ KEYS = {
 MAX_LINE = 63
 PING_EVERY_S = 2.0
 LINK_TIMEOUT_S = 5.0
+AUTO = "auto"
+PROBE_S = 4.0  # auto mode: a port that says nothing like the controls firmware in this time is not the ESP32
+
+
+class NotTheControls(Exception):
+    """Auto mode: the open port never answered like the ESP32 controls."""
+
+
+def candidate_ports() -> list[str]:
+    """Serial ports the ESP32 may be on: USB first (the usual cable), then the Pi's GPIO UART."""
+    found: list[str] = []
+    try:
+        from serial.tools import list_ports
+
+        found += [info.device for info in list_ports.comports() if info.vid is not None]  # USB adapters only
+    except Exception:  # pyserial missing or no enumeration on this system
+        pass
+    if sys.platform != "win32":
+        found += sorted(glob.glob("/dev/ttyUSB*")) + sorted(glob.glob("/dev/ttyACM*"))
+        if os.path.exists("/dev/serial0"):
+            found.append("/dev/serial0")
+    unique: list[str] = []
+    for port in found:
+        if port not in unique:
+            unique.append(port)
+    return unique
 
 
 def parse_line(line: str) -> tuple[str, ...] | None:
@@ -80,13 +112,17 @@ class SerialControls:
     """Reads the ESP32 on `port` in a daemon thread and feeds `hub`. Needs pyserial (extra `controls`)."""
 
     def __init__(self, port: str, hub: ControlsHub, baud: int = 115200,
-                 opener: Callable[..., object] | None = None) -> None:
+                 opener: Callable[..., object] | None = None,
+                 scanner: Callable[[], list[str]] = candidate_ports) -> None:
+        self.auto = port.strip().lower() == AUTO
         self.port = port
         self.hub = hub
         self.baud = baud
         self._opener = opener
+        self._scanner = scanner
         self._stop = threading.Event()
-        hub.port = port
+        self._current: str | None = None
+        hub.port = None if self.auto else port
 
     def start(self) -> "SerialControls":
         threading.Thread(target=self._run, name="bench-controls", daemon=True).start()
@@ -95,46 +131,71 @@ class SerialControls:
     def stop(self) -> None:
         self._stop.set()
 
-    def _open(self):
+    def _open(self, port: str):
         if self._opener:
-            return self._opener(self.port, self.baud)
+            return self._opener(port, self.baud)
         import serial  # pyserial
 
         # DTR/RTS stay low: on a USB ESP32 board they are wired to reset/boot, so toggling them reboots it.
         link = serial.Serial(None, self.baud, timeout=0.1, write_timeout=1)
-        link.port = self.port
+        link.port = port
         link.dtr = False
         link.rts = False
         link.open()
         return link
 
     def _run(self) -> None:
+        warned: set[str] = set()
         while not self._stop.is_set():
-            try:
-                with self._open() as link:
-                    log.info("controls: %s open", self.port)
-                    self._serve(link)
-            except Exception as error:  # unplugged, permission, port missing: retry quietly
-                if self.hub.connected:
-                    log.warning("controls: %s lost (%s)", self.port, error)
+            ports = self._scanner() if self.auto else [self.port]
+            if self.auto and not ports and "" not in warned:
+                log.warning("controls: no serial port found yet; plug the ESP32 into USB")
+                warned.add("")
+            for port in ports:
+                if self._stop.is_set():
+                    return
+                try:
+                    with self._open(port) as link:
+                        log.info("controls: %s open", port)
+                        self._serve(link, port)
+                except NotTheControls:
+                    log.info("controls: %s is not the ESP32 controls", port)
+                except Exception as error:  # unplugged, permission, port missing: retry quietly
+                    if self.hub.connected:
+                        log.warning("controls: %s lost (%s)", port, error)
+                    elif port not in warned:
+                        log.warning("controls: cannot open %s (%s)", port, error)
+                        warned.add(port)
                 self.hub.connected = False
-                self._stop.wait(2.0)
+            self._stop.wait(2.0)
 
-    def _serve(self, link) -> None:
+    def _serve(self, link, port: str | None = None) -> None:
+        port = port or self.port
+        self._current = port
         buffer = bytearray()
         discarding = False
         ping = 0
         next_ping = 0.0
+        opened = time.monotonic()
+        heard = False
         link.write(b"HELLO?\n")
         while not self._stop.is_set():
             now = time.monotonic()
+            if self.auto and not heard:
+                if self.hub.last_seen > opened:
+                    heard = True
+                    log.warning("controls: ESP32 found on %s", port)
+                elif now - opened > PROBE_S:
+                    raise NotTheControls(port)
+            if self.auto and heard and not self.hub.connected:
+                raise NotTheControls(port)  # went quiet: scan again (it may be on another port now)
             if now >= next_ping:
                 ping += 1
                 link.write(f"PING {ping}\n".encode("ascii"))
                 next_ping = now + PING_EVERY_S
             if self.hub.connected and now - self.hub.last_seen > LINK_TIMEOUT_S:
                 self.hub.connected = False
-                log.warning("controls: no reply from the ESP32 on %s", self.port)
+                log.warning("controls: no reply from the ESP32 on %s", port)
             for byte in link.read(64) or b"":
                 if byte == 0x0A:  # newline
                     if not discarding and buffer:
@@ -154,6 +215,8 @@ class SerialControls:
             return
         self.hub.last_seen = time.monotonic()
         self.hub.connected = True
+        if self.auto:
+            self.hub.port = self._current
         if message[0] == "key":
             link.write(f"ACK {message[1]}\n".encode("ascii"))
             self.hub.push(message[2])

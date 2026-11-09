@@ -6,10 +6,14 @@ Run on the Raspberry Pi (or a laptop for the demo):
 from __future__ import annotations
 
 import os
+import sys
+from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, HTTPException, Response, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from graph_validator.service.app import app as validator_app
@@ -51,7 +55,7 @@ class LogoutInput(BaseModel):
 
 
 def create_app(store: BenchStore, dev_unlock: bool = False, vision: VisionSource | None = None,
-               controls: ControlsHub | None = None) -> FastAPI:
+               controls: ControlsHub | None = None, ui_dir: Path | None = None) -> FastAPI:
     app = FastAPI(title="TedTronics bench")
     app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
     app.mount("/validator", validator_app)  # /validator/validate/step works offline on the bench
@@ -235,7 +239,28 @@ def create_app(store: BenchStore, dev_unlock: bool = False, vision: VisionSource
         except WebSocketDisconnect:
             return
 
+    # The bench screen itself (the built bench.html + assets), so one program runs the whole bench.
+    if ui_dir and (ui_dir / "bench.html").is_file():
+        if (ui_dir / "assets").is_dir():
+            app.mount("/assets", StaticFiles(directory=ui_dir / "assets"), name="assets")
+
+        @app.get("/", include_in_schema=False)
+        def bench_screen() -> FileResponse:
+            return FileResponse(ui_dir / "bench.html", headers={"Cache-Control": "no-cache"})
+
     return app
+
+
+def find_ui_dir() -> Path | None:
+    """The built bench screen: TEDTRONICS_BENCH_UI, the folder bundled in an executable, or the site's dist/."""
+    candidates = [os.getenv("TEDTRONICS_BENCH_UI")]
+    if getattr(sys, "frozen", False):
+        candidates.append(str(Path(getattr(sys, "_MEIPASS", Path(sys.executable).parent)) / "bench_ui"))
+    candidates.append(str(Path(__file__).resolve().parents[3] / "teacher_authoring_app" / "dist"))
+    for candidate in candidates:
+        if candidate and (Path(candidate) / "bench.html").is_file():
+            return Path(candidate)
+    return None
 
 
 def default_app() -> FastAPI:
@@ -243,8 +268,8 @@ def default_app() -> FastAPI:
     camera, image = os.getenv("TEDTRONICS_BENCH_CAMERA"), os.getenv("TEDTRONICS_BENCH_VISION_IMAGE")
     vision = VisionSource(int(camera) if camera else None, image).start() if camera or image else None
     controls = ControlsHub()
-    port = os.getenv("TEDTRONICS_BENCH_CONTROLS")  # e.g. /dev/serial0 on the Pi
+    port = os.getenv("TEDTRONICS_BENCH_CONTROLS")  # "auto" (USB or GPIO), /dev/ttyUSB0, /dev/serial0, COM4
     if port:
         SerialControls(port, controls).start()
     return create_app(store, dev_unlock=os.getenv("TEDTRONICS_BENCH_DEV") == "1", vision=vision,
-                      controls=controls)
+                      controls=controls, ui_dir=find_ui_dir())

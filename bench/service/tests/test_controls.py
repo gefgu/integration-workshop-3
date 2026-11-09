@@ -89,3 +89,34 @@ def test_controls_websocket_streams_new_presses(tmp_path):
 def test_dev_controls_need_dev_mode(tmp_path):
     bench = TestClient(create_app(BenchStore(str(tmp_path / "b.sqlite3"))))
     assert bench.post("/dev/controls/ok").status_code in (404, 405)
+
+
+def test_auto_mode_skips_ports_that_are_not_the_esp32(monkeypatch):
+    import bench_service.controls as controls_module
+
+    monkeypatch.setattr(controls_module, "PROBE_S", 0.2)
+    hub = ControlsHub()
+    esp = FakeLink(b"HELLO controles 1\nKEY 1 UP\n")
+    links = {"/dev/ttyUSB0": FakeLink(b"lixo de outro aparelho\n"), "/dev/ttyACM0": esp}
+    opened = []
+
+    def opener(port, baud):
+        opened.append(port)
+        return links[port]
+
+    controls = SerialControls("auto", hub, opener=opener, scanner=lambda: list(links)).start()
+    deadline = time.time() + 3
+    while hub.seq < 1 and time.time() < deadline:
+        time.sleep(0.01)
+    controls.stop()
+    assert opened[:2] == ["/dev/ttyUSB0", "/dev/ttyACM0"]
+    assert [event["key"] for event in hub.since(0)] == ["ArrowUp"]
+    assert hub.state() == {"port": "/dev/ttyACM0", "connected": True, "seq": 1}
+
+
+def test_auto_mode_waits_for_the_esp32_to_be_plugged_in():
+    hub = ControlsHub()
+    controls = SerialControls("auto", hub, opener=lambda port, baud: None, scanner=lambda: []).start()
+    time.sleep(0.05)
+    controls.stop()
+    assert hub.state() == {"port": None, "connected": False, "seq": 0}

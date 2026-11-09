@@ -284,3 +284,14 @@ def test_overall_ranking_adds_each_students_best_per_challenge(tmp_path):
     overall = bench.get("/ranking/overall").json()
     # tie on 140 points: ana's total time (40 + 20 s) beats bia's (10 + 60 s)
     assert [(r["nickname"], r["score"], r["challenges"]) for r in overall] == [("ana", 140, 2), ("bia", 140, 2)]
+
+
+def test_service_serves_the_bench_screen(tmp_path):
+    ui = tmp_path / "ui"
+    (ui / "assets").mkdir(parents=True)
+    (ui / "bench.html").write_text("<html>bancada</html>", encoding="utf-8")
+    (ui / "assets" / "app.js").write_text("console.log(1)", encoding="utf-8")
+    bench = TestClient(create_app(BenchStore(str(tmp_path / "b.sqlite3")), ui_dir=ui))
+    assert "bancada" in bench.get("/").text
+    assert bench.get("/assets/app.js").status_code == 200
+    assert bench.get("/status").status_code == 200  # the API still answers next to the screen
