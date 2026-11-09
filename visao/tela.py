@@ -98,6 +98,24 @@ def desenha_tela(res):
                 cx, cy = p(_x(c)), p(_y(m, l))
                 meio = p(SOCKET / 2)
                 _retangulo(img, cx - meio, cy - meio, cx + meio, cy + meio, p(6), FURO)
+                if hasattr(res, 'atualidade'):
+                    atualidade = res.atualidade[m, l, c]
+                    if atualidade == 'unknown':
+                        _texto(img, '?', cx, cy, 0.43 * s, NUMERO, 1)
+                    elif atualidade == 'stale':
+                        _texto(img, '~', cx, cy, 0.43 * s, _bgr('#c57c00'), 1)
+
+    for peca in getattr(res, 'pecas_sem_tipo', []):
+        m = cfg.METADES.index(peca['metade'])
+        c0, c1 = peca['colunas'][0], peca['colunas'][-1]
+        y = _y(m, peca['linha'])
+        x0, x1 = p(_x(c0) - SOCKET / 2), p(_x(c1) + SOCKET / 2)
+        y0, y1 = p(y - 14), p(y + 14)
+        stale = peca['atualidade'] == 'stale'
+        fundo = _bgr('#bca98e') if stale else CAPSULA['azul'][0]
+        _retangulo(img, x0, y0, x1, y1, p(8), fundo)
+        _texto(img, '? ~' if stale else '?', (x0 + x1) // 2, (y0 + y1) // 2,
+               0.42 * s, _bgr('#ffffff'), 1)
 
     grafo = res.grafo
     n = 0
@@ -138,7 +156,7 @@ def desenha_tela(res):
             xt = x0 + (x1 - x0) * 0.27 if faixa else (x0 + x1) / 2
             _texto(img, rotulo, xt, (y0 + y1) / 2, 0.42 * s, tinta, 1)
 
-    estado = 'ok' if res.valido else f'aguardando: {res.motivo}'
+    estado = ('parcial' if getattr(res, 'perfil', None) == 'current' else 'ok') if res.valido else f'aguardando: {res.motivo}'
     cv.putText(img, f'{n} componente(s)  |  {estado}', (p(20), p(ALTURA + 30)),
                cv.FONT_HERSHEY_SIMPLEX, 0.5 * s, TINTA, 1, cv.LINE_AA)
     return img

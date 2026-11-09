@@ -257,7 +257,7 @@ def test_vision_source_reads_a_real_photo():
     photo = REPO / "real_img" / "pecas2.jpeg"
     if not photo.exists():
         pytest.skip("photo not in this checkout")
-    source = VisionSource(image=str(photo)).start()
+    source = VisionSource(image=str(photo), profile="legacy").start()
     try:
         import time
         deadline = time.time() + 20

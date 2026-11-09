@@ -30,6 +30,9 @@ export interface VisionState {
   /** last frame was usable (grid found, no hand in front, scene still) */
   valid?: boolean;
   reason?: string;
+  /** "current" reads the half-populated kit board: unlisted positions are unknown, not empty */
+  profile?: string;
+  partial?: boolean;
   /** bumps each time the stable circuit changes */
   version?: number;
   pieces?: VisionPiece[];

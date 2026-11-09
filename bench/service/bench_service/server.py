@@ -266,7 +266,10 @@ def find_ui_dir() -> Path | None:
 def default_app() -> FastAPI:
     store = BenchStore(os.getenv("TEDTRONICS_BENCH_DB", "bench.sqlite3"), os.getenv("TEDTRONICS_BENCH_ID"))
     camera, image = os.getenv("TEDTRONICS_BENCH_CAMERA"), os.getenv("TEDTRONICS_BENCH_VISION_IMAGE")
-    vision = VisionSource(int(camera) if camera else None, image).start() if camera or image else None
+    profile = os.getenv("TEDTRONICS_BENCH_VISION_PROFILE", "current")
+    calibration = os.getenv("TEDTRONICS_BENCH_CALIBRATION") or None
+    vision = (VisionSource(int(camera) if camera else None, image, profile, calibration).start()
+              if camera or image else None)
     controls = ControlsHub()
     port = os.getenv("TEDTRONICS_BENCH_CONTROLS")  # "auto" (USB or GPIO), /dev/ttyUSB0, /dev/serial0, COM4
     if port:

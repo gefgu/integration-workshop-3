@@ -59,16 +59,36 @@ def to_pieces(circuit: dict[str, Any]) -> tuple[list[dict[str, Any]], list[dict[
     return pieces, unknown
 
 
-def _import_visao():
-    """`visao` lives at the repository root, next to bench/; make it importable without installing it."""
+def unknown_from_partial(unlabeled: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """`PipelineAtual.pecas_sem_tipo` → the same shape as `to_pieces` unknowns (pt-BR reason)."""
+    out = []
+    for item in unlabeled:
+        cols = item["colunas"]
+        row = item["linha"] + (BANK_ROWS if item["metade"] == "B" else 0)
+        stale = item["atualidade"] == "stale"
+        out.append({"id": f"sem_tipo_{item['metade']}{item['linha']}_{cols[0]}", "type": "peca_sem_tipo",
+                    "row": row, "a": cols[0] + 1, "b": cols[-1] + 1,
+                    "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é"
+                              + (" (última leitura, agora fora de vista)." if stale else ".")})
+    return out
+
+
+def _import_visao(profile: str = "current", calibration: str | None = None):
+    """`visao` lives at the repository root, next to bench/; make it importable without installing it.
+
+    Returns (make_pipeline, para_dict, debug). `current` is the half-populated board the kit has today
+    (conservative: unrecognised positions are unknown, not empty); `legacy` is the full-board reader."""
     try:
         import visao  # noqa: F401
     except ImportError:
         sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
     from visao import debug
     from visao.circuito import para_dict
-    from visao.pipeline import Pipeline
-    return Pipeline, para_dict, debug
+    if profile == "legacy":
+        from visao.pipeline import Pipeline
+        return (lambda: Pipeline()), para_dict, debug
+    from visao.pipeline_atual import PipelineAtual
+    return (lambda: PipelineAtual(calibration)), para_dict, debug
 
 
 SETTLE_S = 2.0
@@ -93,13 +113,17 @@ def settle_and_lock(cv: Any, cap: Any, seconds: float = SETTLE_S) -> None:
 class VisionSource:
     """Runs the vision pipeline on a camera index or a still image in a daemon thread."""
 
-    def __init__(self, camera: int | None = None, image: str | None = None) -> None:
+    def __init__(self, camera: int | None = None, image: str | None = None,
+                 profile: str = "current", calibration: str | None = None) -> None:
+        if profile not in ("current", "legacy"):
+            raise ValueError(f"unknown vision profile {profile!r}")
         self.camera, self.image = camera, image
+        self.profile, self.calibration = profile, calibration
         self._lock = threading.Lock()
         self._recalibrate = threading.Event()
         self._stop = threading.Event()
         self._state: dict[str, Any] = {"available": True, "running": False, "valid": False,
-                                       "reason": "Ligando a câmera…", "version": 0, "pieces": [], "unknown": [],
+                                       "reason": "Ligando a câmera…", "version": 0, "profile": profile, "partial": profile == "current", "pieces": [], "unknown": [],
                                        "updated_at": None}
         self._jpeg: bytes | None = None
         self._thread = threading.Thread(target=self._run, name="vision", daemon=True)
@@ -129,7 +153,7 @@ class VisionSource:
     def _run(self) -> None:
         try:
             import cv2 as cv
-            Pipeline, para_dict, debug = _import_visao()
+            make_pipeline, para_dict, debug = _import_visao(self.profile, self.calibration)
         except Exception as error:  # OpenCV or the vision package missing
             log.exception("vision unavailable")
             self._set(available=False, reason=f"Visão indisponível: {error}")
@@ -146,7 +170,7 @@ class VisionSource:
                 return
             self._set(reason="Ajustando a luz da câmera…")
             settle_and_lock(cv, cap)
-        pipeline = Pipeline()
+        pipeline = make_pipeline()
         period = 1.0 / 5
         self._set(running=True)
         try:
@@ -169,6 +193,7 @@ class VisionSource:
                                            "updated_at": time.time()}
                 if result.mudou:
                     pieces, unknown = to_pieces(para_dict(result.grafo))
+                    unknown += unknown_from_partial(getattr(result, "pecas_sem_tipo", []))
                     changes.update(pieces=pieces, unknown=unknown, version=self.state()["version"] + 1)
                 with self._lock:
                     self._state.update(changes)

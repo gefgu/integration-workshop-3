@@ -20,6 +20,10 @@ def main() -> None:
     parser.add_argument("--camera", type=int, default=None,
                         help="read the board with the vision pipeline from this camera index (pip install -e '.[vision]')")
     parser.add_argument("--vision-image", default=None, help="demo: run the vision pipeline on this photo in a loop")
+    parser.add_argument("--vision-profile", choices=("current", "legacy"), default=None,
+                        help="board profile: current (default, half-populated kit board) or legacy (full board)")
+    parser.add_argument("--calibration", default=None,
+                        help="manual calibration file made with `python -m visao --calibrate FILE` (current profile)")
     parser.add_argument("--controls", default=None,
                         help="serial port of the ESP32 controls, e.g. /dev/serial0 (pip install -e '.[controls]')")
     args = parser.parse_args()
@@ -32,6 +36,10 @@ def main() -> None:
         os.environ["TEDTRONICS_BENCH_CAMERA"] = str(args.camera)
     if args.vision_image:
         os.environ["TEDTRONICS_BENCH_VISION_IMAGE"] = os.path.abspath(args.vision_image)
+    if args.vision_profile:
+        os.environ["TEDTRONICS_BENCH_VISION_PROFILE"] = args.vision_profile
+    if args.calibration:
+        os.environ["TEDTRONICS_BENCH_CALIBRATION"] = os.path.abspath(args.calibration)
     if args.controls:
         os.environ["TEDTRONICS_BENCH_CONTROLS"] = args.controls
     if not args.ble:
