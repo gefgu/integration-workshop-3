@@ -96,6 +96,9 @@ test('visão: mantém o mesmo estado enquanto o circuito não muda e troca quand
   const paused = mergeVision(a, { ...a, valid: false, reason: 'movimento' });
   assert.equal(paused.pieces, a.pieces);
   assert.equal(paused.valid, false);
+  const recal = mergeVision(a, { ...a, recalibrating: true, reason: 'Recalibrando' });
+  assert.equal(recal.recalibrating, true);
+  assert.equal(mergeVision(recal, { ...a, recalibrating: false, reason: 'Recalibrando' }).recalibrating, false);
   const changed = { ...a, version: 2, pieces: [] };
   assert.equal(mergeVision(a, changed), changed);
   const off = { available: false };

@@ -3,6 +3,7 @@ import Bubble from '../components/Bubble.tsx';
 import { BANK_ROWS, COLS } from '../engine/board.ts';
 import type { BenchApi, VisionState } from './benchApi.ts';
 import { cameraErrorMessage, gridLines } from './camera.ts';
+import { useVisionLive } from './useVision.ts';
 
 const GRID = gridLines(COLS, BANK_ROWS);
 
@@ -43,10 +44,47 @@ function where(p: { a: number; b: number; row: number }) {
   return `${bank}, linha ${(p.row % BANK_ROWS) + 1}, colunas ${p.a}–${p.b}`;
 }
 
+/** Plain-language camera health: how fresh the picture is, how fast it runs, how it was calibrated. */
+function Diagnostics({ live, vision }: { live: VisionState | null; vision: VisionState }) {
+  if (!live) return <p className="bench-camera-diag">Sem resposta do serviço da câmera.</p>;
+  const age = live.age_s;
+  const stale = age == null || age > 3;
+  const fps = live.fps;
+  const need = live.stable_frames ?? vision.stable_frames;
+  const confirming = live.confirming ?? 0;
+  return (
+    <ul className="bench-camera-diag" aria-label="Diagnóstico da câmera">
+      <li className={stale ? 'bad' : ''}>
+        Imagem:{' '}
+        {age == null
+          ? 'ainda sem quadro'
+          : stale
+            ? `parada há ${Math.round(age)} s`
+            : `atualizada há ${age.toFixed(1)} s`}
+      </li>
+      <li className={fps != null && fps < 2 ? 'bad' : ''}>
+        Velocidade: {fps != null ? `${fps.toFixed(1)} quadros/s` : 'medindo…'}
+      </li>
+      <li>
+        Calibração: {live.calibration === 'manual' ? 'manual (arquivo)' : 'automática'}
+        {live.frame_size ? ` · ${live.frame_size[0]}×${live.frame_size[1]}` : ''}
+      </li>
+      {need != null && (
+        <li>
+          Estabilidade: a peça precisa aparecer em {need} quadros seguidos
+          {fps ? ` (~${(need / fps).toFixed(1)} s)` : ''}
+          {confirming > 0 ? ` · ${confirming} confirmando` : ''}
+        </li>
+      )}
+    </ul>
+  );
+}
+
 function VisionFeed({ api, vision, onBack }: { api: BenchApi; vision: VisionState; onBack: () => void }) {
   const back = useRef<HTMLButtonElement>(null);
   const [stamp, setStamp] = useState(() => Date.now());
   const [frameError, setFrameError] = useState(false);
+  const live = useVisionLive(api);
   useEffect(() => back.current?.focus(), []);
   // Next frame only after the previous one loaded, so slow links never pile up requests.
   const nextFrame = (failed: boolean) => {
@@ -58,10 +96,10 @@ function VisionFeed({ api, vision, onBack }: { api: BenchApi; vision: VisionStat
   const message = vision.recalibrating
     ? 'Recalibrando a câmera… isso pode levar alguns segundos.'
     : vision.valid
-    ? pieces.length
-      ? 'Assim a bancada vê a sua placa. As peças reconhecidas aparecem na lição.'
-      : 'Estou vendo a placa, mas nenhuma peça ainda.'
-    : `Não consegui ler a placa agora: ${vision.reason || 'aguardando imagem'}.`;
+      ? pieces.length
+        ? 'Assim a bancada vê a sua placa. As peças reconhecidas aparecem na lição.'
+        : 'Estou vendo a placa, mas nenhuma peça ainda.'
+      : `Não consegui ler a placa agora: ${vision.reason || 'aguardando imagem'}.`;
   return (
     <section className="bench-center">
       <Bubble kind="hamster" tone={vision.valid ? 'info' : 'obs'} message={message} />
@@ -73,6 +111,10 @@ function VisionFeed({ api, vision, onBack }: { api: BenchApi; vision: VisionStat
           onError={() => nextFrame(true)}
         />
         {frameError && <p className="bench-camera-status">Ligando a câmera…</p>}
+      </div>
+      <div className="panel bench-card">
+        <strong>Diagnóstico</strong>
+        <Diagnostics live={live} vision={vision} />
       </div>
       <div className="panel bench-card bench-vision-list">
         <strong>Peças reconhecidas ({pieces.length})</strong>

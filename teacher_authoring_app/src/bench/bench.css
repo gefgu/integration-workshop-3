@@ -805,6 +805,16 @@
   display: grid;
   gap: 4px;
 }
+.bench-camera-diag {
+  margin: 4px 0 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 4px;
+}
+.bench-camera-diag .bad {
+  color: var(--color-error-700, #b42318);
+  font-weight: 600;
+}
 .bench-vision-list small {
   color: var(--color-neutral-600);
 }

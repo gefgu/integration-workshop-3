@@ -35,6 +35,16 @@ export interface VisionState {
   partial?: boolean;
   /** a recalibration was requested and the service is still searching for the grid */
   recalibrating?: boolean;
+  /** diagnostics for the camera screen */
+  fps?: number | null;
+  /** seconds since the last processed frame (computed by the service) */
+  age_s?: number | null;
+  frame_size?: [number, number] | null;
+  calibration?: 'manual' | 'automatic';
+  /** frames in a row a piece must be seen before it is published */
+  stable_frames?: number | null;
+  /** candidates seen but not yet stable */
+  confirming?: number;
   /** bumps each time the stable circuit changes */
   version?: number;
   pieces?: VisionPiece[];

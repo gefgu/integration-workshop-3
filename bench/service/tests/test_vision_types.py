@@ -89,3 +89,16 @@ def test_recalibrate_reports_progress_at_once():
     source.recalibrate()
     state = source.state()
     assert state["recalibrating"] is True and "Recalibrando" in state["reason"]
+
+
+def test_fps_and_frame_age_are_reported():
+    from collections import deque
+
+    from bench_service.vision import VisionSource, fps_from
+    assert fps_from(deque([1.0])) is None
+    assert fps_from(deque([10.0, 10.2, 10.4, 10.6, 10.8])) == 5.0
+    source = VisionSource(image="x.jpg")
+    assert source.state()["age_s"] is None and source.state()["calibration"] == "automatic"
+    source._set(updated_at=__import__("time").time() - 3)
+    assert 2.5 <= source.state()["age_s"] <= 4
+    assert VisionSource(image="x.jpg", calibration="cal.json").state()["calibration"] == "manual"
