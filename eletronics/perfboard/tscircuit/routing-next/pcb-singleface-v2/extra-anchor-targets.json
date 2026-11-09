@@ -1,0 +1,77 @@
+[
+  {
+    "net": "GND",
+    "a": "J_ESP_L.2",
+    "b": "R8.2"
+  },
+  {
+    "net": "GND",
+    "a": "R8.2",
+    "b": "J_ESP_L.2"
+  },
+  {
+    "net": "GPIO18",
+    "a": "J_ESP_L.9",
+    "b": "U_LEVEL.3"
+  },
+  {
+    "net": "GPIO18",
+    "a": "U_LEVEL.3",
+    "b": "J_ESP_L.9"
+  },
+  {
+    "net": "GPIO19",
+    "a": "U_LEVEL.9",
+    "b": "J_ESP_L.10"
+  },
+  {
+    "net": "GPIO34",
+    "a": "J_ESP_R.12",
+    "b": "J_SMART.4"
+  },
+  {
+    "net": "GPIO34",
+    "a": "J_SMART.4",
+    "b": "J_ESP_R.12"
+  },
+  {
+    "net": "GPIO34",
+    "a": "R_PULSE_IN.1",
+    "b": "J_ESP_R.12"
+  },
+  {
+    "net": "RESET12",
+    "a": "Q6.1",
+    "b": "R7.2"
+  },
+  {
+    "net": "AY2",
+    "a": "U2.2",
+    "b": "U5.6"
+  },
+  {
+    "net": "DATA",
+    "a": "U5.7",
+    "b": "U1.38"
+  },
+  {
+    "net": "CLK5",
+    "a": "U5.11",
+    "b": "U6.11"
+  },
+  {
+    "net": "CS_B",
+    "a": "U6.1",
+    "b": "R9.1"
+  },
+  {
+    "net": "CS_A",
+    "a": "U1.36",
+    "b": "U6.15"
+  },
+  {
+    "net": "SENSE_A",
+    "a": "U1.1",
+    "b": "U2.1"
+  }
+]

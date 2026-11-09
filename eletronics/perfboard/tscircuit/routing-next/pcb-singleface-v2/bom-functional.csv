@@ -1,0 +1,51 @@
+Ref,Valor,Tipo,X_CAD_mm,Y_CAD_mm,Rotacao
+J_ESP_L,Conector sem modelo comprado,J,-12.7,80,270
+J_ESP_R,Conector sem modelo comprado,J,12.7,80,270
+Q6,BC548B,Q,35,82,0
+R6,10k,R,35,77,0
+R12,100k,R,35,72,0
+R7,47k,R,38,67,0
+U5,74HC595,IC,-23,35,0
+U6,74HC595,IC,23,35,0
+C4,100nF,C,-35,35,0
+C5,100nF,C,35,22,0
+R8,10k,R,-9,30,0
+R9,10k,R,9,30,0
+U1,MT8816AE1,IC,0,7,90
+C1,100nF,C,-35,7,0
+H1,Conector sem modelo comprado,J,0,20,0
+U2,MT8816AE1,IC,0,-25,90
+C2,100nF,C,35,-25,0
+H3,Conector sem modelo comprado,J,0,-12,0
+Q7,BC557B,Q,-34,-64,0
+Q8,BC548B,Q,-20,-64,0
+R21,47k,R,-34,-72,0
+R30,4.7k,R,-20,-72,0
+R13,10k,R,-20,-80,180
+R14,100k,R,-20,-88,0
+R17,470,R,-34,-88,0
+Q11,BC548B,Q,34,-64,0
+R_LOW_BASE,4.7k,R,34,-72,0
+R_LOW_PD,100k,R,34,-80,0
+R_LOW_LIMIT,470,R,34,-88,0
+Q9,BC557B,Q,-4,-64,0
+Q10,BC548B,Q,10,-64,0
+R24,47k,R,-4,-72,0
+R27,10k,R,10,-72,0
+R15,10k,R,10,-80,180
+R16,100k,R,10,-88,0
+R18,10k,R,-4,-88,0
+H2,Conector sem modelo comprado,J,-44,-74,270
+J_SMART,Conector sem modelo comprado,J,44,-74,270
+R_PULSE_IN,47k,R,0,-51,0
+C_BULK5,47uF,C,-27,66,0
+C_BULK12,47uF,C,27,66,180
+U_LEVEL,74HCT14,IC,0,47,0
+R_PD_23,47k,R,-28,55,0
+R_PD_18,47k,R,-14,53,0
+R_PD_22,47k,R,-14,57,0
+R_PD_19,47k,R,14,53,0
+R_PD_21,47k,R,28,55,0
+C_LEVEL,100nF,C,12,47,0
+H1B,Conector sem modelo comprado,J,-1.27,-6,0
+H3B,Conector sem modelo comprado,J,-1.27,-38,0

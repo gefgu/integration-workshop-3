@@ -1,0 +1,49 @@
+Ref,Valor,Tipo,Secao
+J_ESP_L,Conector sem modelo comprado,J,ESP32
+J_ESP_R,Conector sem modelo comprado,J,ESP32
+Q6,BC548B,Q,AdaptacaoControle
+R6,10k,R,AdaptacaoControle
+R12,100k,R,AdaptacaoControle
+R7,47k,R,AdaptacaoControle
+U5,74HC595,IC,Registros
+U6,74HC595,IC,Registros
+C4,100nF,C,Registros
+C5,100nF,C,Registros
+R8,10k,R,Registros
+R9,10k,R,Registros
+U1,MT8816AE1,IC,MatrizA
+C1,100nF,C,MatrizA
+H1,Conector sem modelo comprado,J,MatrizA
+U2,MT8816AE1,IC,MatrizB
+C2,100nF,C,MatrizB
+H3,Conector sem modelo comprado,J,MatrizB
+Q7,BC557B,Q,Pulso
+Q8,BC548B,Q,Pulso
+R21,47k,R,Pulso
+R30,4.7k,R,Pulso
+R13,10k,R,Pulso
+R14,100k,R,Pulso
+R17,470,R,Pulso
+Q11,BC548B,Q,Pulso
+R_LOW_BASE,4.7k,R,Pulso
+R_LOW_PD,100k,R,Pulso
+R_LOW_LIMIT,470,R,Pulso
+Q9,BC557B,Q,Continuidade
+Q10,BC548B,Q,Continuidade
+R24,47k,R,Continuidade
+R27,10k,R,Continuidade
+R15,10k,R,Continuidade
+R16,100k,R,Continuidade
+R18,10k,R,Continuidade
+H2,Conector sem modelo comprado,J,Interfaces
+J_SMART,Conector sem modelo comprado,J,Interfaces
+R_PULSE_IN,47k,R,Interfaces
+C_BULK5,47uF,C,Interfaces
+C_BULK12,47uF,C,Interfaces
+U_LEVEL,74HCT14,IC,AdaptadorHCT
+R_PD_23,47k,R,AdaptadorHCT
+R_PD_18,47k,R,AdaptadorHCT
+R_PD_22,47k,R,AdaptadorHCT
+R_PD_19,47k,R,AdaptadorHCT
+R_PD_21,47k,R,AdaptadorHCT
+C_LEVEL,100nF,C,AdaptadorHCT

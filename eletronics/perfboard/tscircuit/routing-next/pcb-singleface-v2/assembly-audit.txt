@@ -1,0 +1,13 @@
+{
+  "independentOfSourceTraceMetadata": true,
+  "checkedPthPads": 372,
+  "checkedCopperTraces": 198,
+  "checkedInsulatedWireBridges": 59,
+  "unintendedNetMerges": [],
+  "openNetsAfterBridges": {},
+  "oneCopperFaceOnly": true,
+  "pcbVias": 0,
+  "missingBridgeMutationDetected": "JP01",
+  "wrongNetBridgeMutationDetected": true,
+  "hardwareMeasured": false
+}

@@ -1,0 +1,64 @@
+placement summary: no placement issues
+
+board top-layer utilization:
+- occupied: 18.035% (3607.028mm^2 of 20000mm^2)
+- empty spaces over 5% of board area:
+  - 11.027% (2205.46mm^2); bounds=(minX=-50mm, maxX=-36.905mm, minY=-68.42mm, maxY=100mm)
+  - 8.798% (1759.575mm^2); bounds=(minX=36.905mm, maxX=50mm, minY=-68.42mm, maxY=65.95mm)
+  - 5.475% (1095mm^2); bounds=(minX=-50mm, maxX=50mm, minY=-100mm, maxY=-89.05mm)
+
+board-edge status:
+- J_ESP_L: 1.47mm inside bottom edge
+- J_ESP_R: 1.47mm inside bottom edge
+- Q6: 13.255mm inside right edge
+- R6: 10.49mm inside right edge
+- R12: 10.49mm inside right edge
+- R7: 7.49mm inside right edge
+- U5: 22.39mm inside left edge
+- U6: 22.39mm inside right edge
+- C4: 13.095mm inside left edge
+- C5: 13.095mm inside right edge
+- R8: 36.49mm inside left edge
+- R9: 36.49mm inside right edge
+- U1: 25.07mm inside left edge
+- C1: 13.095mm inside left edge
+- H1: 42.9mm inside left edge
+- H1B: 42.9mm inside left edge
+- U2: 25.07mm inside left edge
+- C2: 13.095mm inside right edge
+- H3: 42.9mm inside left edge
+- H3B: 42.9mm inside left edge
+- Q7: 14.255mm inside left edge
+- Q8: 28.255mm inside left edge
+- R21: 11.49mm inside left edge
+- R30: 25.49mm inside left edge
+- R13: 19.3mm inside top edge
+- R14: 11.3mm inside top edge
+- R17: 11.3mm inside top edge
+- Q11: 14.255mm inside right edge
+- R_LOW_BASE: 11.49mm inside right edge
+- R_LOW_PD: 11.49mm inside right edge
+- R_LOW_LIMIT: 11.3mm inside top edge
+- Q9: 36.505mm inside top edge
+- Q10: 36.505mm inside top edge
+- R24: 27.3mm inside top edge
+- R27: 27.3mm inside top edge
+- R15: 19.3mm inside top edge
+- R16: 11.3mm inside top edge
+- R18: 11.3mm inside top edge
+- H2: 5.25mm inside left edge
+- J_SMART: 5.25mm inside right edge
+- R_PULSE_IN: 45.49mm inside left edge
+- C_BULK5: 20.73mm inside left edge
+- C_BULK12: 20.73mm inside right edge
+- U_LEVEL: 44.58mm inside bottom edge
+- R_PD_23: 17.49mm inside left edge
+- R_PD_18: 31.49mm inside left edge
+- R_PD_22: 31.49mm inside left edge
+- R_PD_19: 31.49mm inside right edge
+- R_PD_21: 17.49mm inside right edge
+- C_LEVEL: 36.095mm inside right edge
+
+placement drc:
+Errors: 0
+Warnings: 0

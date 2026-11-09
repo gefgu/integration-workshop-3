@@ -1,0 +1,18 @@
+{
+  "parts": 48,
+  "pins": 266,
+  "wires": 152,
+  "grid": {
+    "columns": 37,
+    "rows": 75,
+    "pitchMm": 2.54,
+    "measured": false
+  },
+  "uniqueTerminalHoles": true,
+  "endpointNetEquivalence": true,
+  "wirePathRoutingVerified": false,
+  "bodyFitMeasured": false,
+  "poweredTestsPassed": false,
+  "manufacturingRelease": false,
+  "sourcePartsSha256": "f144c351216dfe8669685e149adda48e9596fdf042dd56c4806b7850714ecffe"
+}

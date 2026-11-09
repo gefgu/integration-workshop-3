@@ -45,3 +45,7 @@ Usuário aceitou somente um gerador ativo por vez. Não unir P3: selecionar e is
 ## Candidato atual: dois MT8816, registradores e transistores
 
 O planejamento de PCB de face única 100 × 200 mm está em [pcb-2mt-595/README.md](pcb-2mt-595/README.md), com [PDF em pt-BR](pcb-2mt-595/planejamento-pcb-2mt-595.pdf). Mantém dois 74HC595 e os estágios discretos. Esquema e posicionamento passaram nas verificações; cobre e tabela final de pontes ainda não foram fechados. Não é um fotolito liberado para corrosão. As propostas v01–v04 e simplificacao-direta permanecem históricas.
+
+## PCB de uma face — candidato V2 (30/10/2026)
+
+[PDF e verificações](pcb-singleface-v2/README.md): 100 × 200 mm, dois MT8816 horizontais, dois 74HC595, HCT14 e 59 pontes isoladas com ilhas próprias. Uma face de cobre, sem curtos nos checks independentes e conectividade montada conferida por geometria. Chicote de nós dividido em quatro conectores de 6/5 pinos. Encaixe medido, processo de transferência e bancada permanecem pendentes; não é liberação de corrosão.

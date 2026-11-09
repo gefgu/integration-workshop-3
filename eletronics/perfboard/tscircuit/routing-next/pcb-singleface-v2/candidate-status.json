@@ -1,0 +1,41 @@
+{
+  "status": "SOFTWARE_VERIFIED_SINGLE_COPPER_FACE_WITH_INSULATED_WIRE_BRIDGES",
+  "functionalComponents": 50,
+  "copperTraces": 198,
+  "wireBridges": 59,
+  "dedicatedWirePads": 106,
+  "copperLayers": 1,
+  "copperCrossingsPermitted": false,
+  "sourceNetConnectivityVerified": true,
+  "assembledConnectivityVerified": true,
+  "wireRouteFailures": 0,
+  "checks": {
+    "netlist": 0,
+    "pins": 0,
+    "placement": 0,
+    "padTrace": 0,
+    "padPad": 0,
+    "traceOverlap": 0,
+    "holeTrace": 0,
+    "boardBounds": 0,
+    "contiguity": 0
+  },
+  "measuredFit": false,
+  "manufacturingRelease": false,
+  "independentCopperShortsCheck": "PASS; native Gerber copper check at 20 pixels/mm",
+  "independentPcbStyleCheck": "PASS",
+  "independentGeometryConnectivity": {
+    "independentOfSourceTraceMetadata": true,
+    "checkedPthPads": 372,
+    "checkedCopperTraces": 198,
+    "checkedInsulatedWireBridges": 59,
+    "unintendedNetMerges": [],
+    "openNetsAfterBridges": {},
+    "oneCopperFaceOnly": true,
+    "pcbVias": 0,
+    "missingBridgeMutationDetected": "JP01",
+    "wrongNetBridgeMutationDetected": true,
+    "hardwareMeasured": false
+  },
+  "hardwareAcceptance": "PENDING"
+}
