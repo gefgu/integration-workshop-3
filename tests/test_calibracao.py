@@ -27,6 +27,25 @@ class TestPartialCalibration(unittest.TestCase):
             self.assertFalse(size_mismatch['valido'])
             self.assertIn('resolução', size_mismatch['motivo'])
 
+    def test_failed_automatic_search_is_not_repeated_every_frame(self):
+        now = [100.0]
+        tracker = RegistradorParcial(clock=lambda: now[0])
+        blank = np.zeros((720, 1280, 3), np.uint8)
+        with mock.patch('visao.calibracao.calibra_automaticamente', return_value=None) as search:
+            first = tracker.atualiza(blank)
+            for _ in range(5):
+                now[0] += .2
+                throttled = tracker.atualiza(blank)
+            self.assertEqual(search.call_count, 1)
+            self.assertFalse(throttled['valido'])
+            self.assertEqual(throttled['motivo'], first['motivo'])
+            now[0] += 2
+            tracker.atualiza(blank)
+            self.assertEqual(search.call_count, 2)
+            tracker.recalibrar()  # explicit request searches again at once
+            tracker.atualiza(blank)
+            self.assertEqual(search.call_count, 3)
+
     def test_invalid_corner_selection(self):
         with tempfile.TemporaryDirectory() as folder:
             with self.assertRaises(ValueError):

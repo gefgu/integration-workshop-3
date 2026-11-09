@@ -15,7 +15,7 @@ from .sockets import le_placa, retifica
 
 class PipelineAtual:
     def __init__(self, calibracao=None, temporal=True, clock=time.monotonic):
-        self.registrador = RegistradorParcial(calibracao)
+        self.registrador = RegistradorParcial(calibracao, clock=clock)
         self.temporal = temporal
         self.counts = {}
         self.previous = None

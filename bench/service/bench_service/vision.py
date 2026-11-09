@@ -123,7 +123,7 @@ class VisionSource:
         self._recalibrate = threading.Event()
         self._stop = threading.Event()
         self._state: dict[str, Any] = {"available": True, "running": False, "valid": False,
-                                       "reason": "Ligando a câmera…", "version": 0, "profile": profile, "partial": profile == "current", "pieces": [], "unknown": [],
+                                       "reason": "Ligando a câmera…", "version": 0, "profile": profile, "partial": profile == "current", "recalibrating": False, "pieces": [], "unknown": [],
                                        "updated_at": None}
         self._jpeg: bytes | None = None
         self._thread = threading.Thread(target=self._run, name="vision", daemon=True)
@@ -136,6 +136,8 @@ class VisionSource:
         self._stop.set()
 
     def recalibrate(self) -> None:
+        # Instant feedback: the search itself can take seconds on a Raspberry Pi.
+        self._set(recalibrating=True, reason="Recalibrando a câmera… isso pode levar alguns segundos.")
         self._recalibrate.set()
 
     def state(self) -> dict[str, Any]:
@@ -188,9 +190,10 @@ class VisionSource:
                         time.sleep(period)
                         continue
                 result = pipeline.processa(frame)
+                recalibrating = False
                 ok, jpeg = cv.imencode(".jpg", debug.desenha_frame(frame, result), [cv.IMWRITE_JPEG_QUALITY, 70])
                 changes: dict[str, Any] = {"valid": result.valido, "reason": result.motivo,
-                                           "updated_at": time.time()}
+                                           "updated_at": time.time(), "recalibrating": recalibrating}
                 if result.mudou:
                     pieces, unknown = to_pieces(para_dict(result.grafo))
                     unknown += unknown_from_partial(getattr(result, "pecas_sem_tipo", []))
