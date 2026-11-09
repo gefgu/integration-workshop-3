@@ -12,12 +12,13 @@ from typing import Any
 
 from fastapi import FastAPI, HTTPException, Response, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from graph_validator.service.app import app as validator_app
 
+from .camera_debug import CAMERA_DEBUG_HTML
 from .controls import KEYS, ControlsHub, SerialControls
 from .protocol import FrameAssembler, Session, encode_frames
 from .store import BenchStore
@@ -141,6 +142,10 @@ def create_app(store: BenchStore, dev_unlock: bool = False, vision: VisionSource
         return store.ranking(lesson_id)
 
     # Camera board (SFR17.1): pieces the vision pipeline sees, for the lesson and the camera screen.
+    @app.get("/camera-debug", response_class=HTMLResponse, include_in_schema=False)
+    def camera_debug() -> HTMLResponse:
+        return HTMLResponse(CAMERA_DEBUG_HTML, headers={"Cache-Control": "no-store"})
+
     @app.get("/vision/state")
     def vision_state() -> dict:
         if vision is None:
