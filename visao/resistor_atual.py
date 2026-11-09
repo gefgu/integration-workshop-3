@@ -43,7 +43,7 @@ def resistor_branco(ret_bgr, metade, linha, coluna):
     marks = ((v < white - 25) | ((h < 25) & (s > 20))).astype(np.uint8)[None, :]
     _, _, stats, _ = cv.connectedComponentsWithStats(marks)
     runs = [(int(row[cv.CC_STAT_LEFT]), int(row[cv.CC_STAT_WIDTH])) for row in stats[1:]
-            if 2 <= row[cv.CC_STAT_WIDTH] <= 9]
+            if 2 <= row[cv.CC_STAT_WIDTH] <= 12]
     if len(runs) != 3:
         return False
     centers = [left + width / 2 for left, width in runs]
