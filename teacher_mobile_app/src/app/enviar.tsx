@@ -6,6 +6,7 @@ import Button from '../components/Button';
 import { Card, Icon, Row, StateView } from '../components/Kit';
 import type { Module, SchoolClass } from '../lib/api';
 import { useApp } from '../lib/AppContext';
+import type { SendProgress } from '../lib/sync';
 import { TourAnchor, useScreenTour } from '../components/Tour';
 import { APP_TOURS } from '../lib/tours';
 import { colors, fonts, ui } from '../theme';
@@ -26,6 +27,7 @@ export default function Enviar() {
   const [classId, setClassId] = useState<number | null>(null);
   const [moduleId, setModuleId] = useState<number | null>(params.moduleId ? Number(params.moduleId) : null);
   const [busy, setBusy] = useState(false);
+  const [progress, setProgress] = useState<SendProgress | null>(null);
   const [error, setError] = useState('');
   const tour = useScreenTour('enviar', APP_TOURS.enviar);
 
@@ -48,13 +50,22 @@ export default function Enviar() {
     if (moduleId == null || classId == null) return;
     setBusy(true);
     setError('');
+    let shown = '';
     try {
-      await sendModuleToBench(moduleId, classId);
+      await sendModuleToBench(moduleId, classId, (next) => {
+        // Hundreds of frames: re-render only when the whole percent (or the phase) changes.
+        const key =
+          next.phase === 'send' ? `send${Math.floor((100 * next.sent) / next.total)}r${next.retry ?? 0}` : next.phase;
+        if (key === shown) return;
+        shown = key;
+        setProgress(next);
+      });
       setStep(4);
     } catch (cause) {
       setError((cause as Error).message);
     } finally {
       setBusy(false);
+      setProgress(null);
     }
   }
 
@@ -175,8 +186,9 @@ export default function Enviar() {
               A bancada está com “{bench.package.module_title}”. Ele será trocado; o progresso já salvo continua.
             </Text>
           )}
+          {progress && <SendBar progress={progress} />}
           <Button title="Enviar para a bancada" icon="send" busy={busy} onPress={send} />
-          <Button title="Voltar" icon="arrow-back" variant="outline" onPress={() => setStep(2)} />
+          <Button title="Voltar" icon="arrow-back" variant="outline" disabled={busy} onPress={() => setStep(2)} />
         </>
       )}
     </ScrollView>
@@ -224,6 +236,37 @@ function Stepper({ step }: { step: Step }) {
         );
       })}
     </View>
+  );
+}
+
+/** Download → writing the frames (percent) → the bench confirming; the send can take a minute over Bluetooth. */
+function SendBar({ progress }: { progress: SendProgress }) {
+  const percent =
+    progress.phase === 'download' ? 0 : progress.phase === 'confirm' ? 100 : Math.floor((100 * progress.sent) / progress.total);
+  const label =
+    progress.phase === 'download'
+      ? 'Baixando o módulo do servidor…'
+      : progress.phase === 'confirm'
+        ? 'Enviado. Esperando a bancada confirmar…'
+        : progress.retry
+          ? `O Bluetooth travou em ${percent}%. Reconectando e continuando de onde parou (tentativa ${progress.retry})…`
+          : `Enviando para a bancada… ${percent}%`;
+  return (
+    <Card>
+      <Text style={ui.text} accessibilityLiveRegion="polite">
+        {label}
+      </Text>
+      <View
+        accessibilityRole="progressbar"
+        accessibilityValue={{ min: 0, max: 100, now: percent }}
+        style={{ height: 10, borderRadius: 5, backgroundColor: colors.divider, overflow: 'hidden', marginTop: 8 }}
+      >
+        <View style={{ width: `${percent}%`, height: '100%', backgroundColor: colors.accent }} />
+      </View>
+      {progress.phase === 'send' && (
+        <Text style={[ui.muted, { marginTop: 6 }]}>Mantenha o celular perto da bancada até terminar.</Text>
+      )}
+    </Card>
   );
 }
 

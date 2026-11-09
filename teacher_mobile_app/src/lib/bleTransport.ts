@@ -3,10 +3,16 @@
  * Needs a development build (`npx expo run:android`), not Expo Go.
  */
 import { PermissionsAndroid, Platform } from 'react-native';
-import { BleManager, type Device, type Subscription } from 'react-native-ble-plx';
+import { BleManager, ConnectionPriority, type Device, type Subscription } from 'react-native-ble-plx';
 import { BENCH_BLE } from '../../../protocol/bench.ts';
 import { base64ToUtf8, utf8ToBase64 } from './base64.ts';
 import type { BenchTransport } from './benchClient.ts';
+import { writeWithResume } from './resume.ts';
+
+const REQUESTED_MTU = 517;
+/** A healthy acknowledged write takes tens of ms; past this the link is taken as stalled and reconnected. */
+const WRITE_TIMEOUT_MS = 8_000;
+const RESUME_ATTEMPTS = 3;
 
 let manager: BleManager | null = null;
 const ble = () => {
@@ -44,6 +50,10 @@ export class BleTransport implements BenchTransport {
   private disconnect: Subscription | null = null;
   private frameListeners: ((frame: string) => void)[] = [];
   private closeListeners: (() => void)[] = [];
+  maxFrameBytes: number | undefined;
+  private reconnecting = false;
+  private closed = false;
+  private writes = 0;
 
   constructor(
     private deviceId: string,
@@ -57,9 +67,16 @@ export class BleTransport implements BenchTransport {
   async connect(): Promise<void> {
     ble().stopDeviceScan();
     let device = await ble().connectToDevice(this.deviceId);
-    if (Platform.OS === 'android') device = await device.requestMTU(185);
+    if (Platform.OS === 'android') {
+      // A module is ~140 kB of ASCII JSON. Larger writes and a short connection interval cut the hundreds of
+      // acknowledged writes it takes (BlueZ accepts up to 517). Either request may be refused; keep defaults then.
+      device = await device.requestMTU(REQUESTED_MTU).catch(() => device);
+      await device.requestConnectionPriority(ConnectionPriority.High).catch(() => undefined);
+    }
     await device.discoverAllServicesAndCharacteristics();
     this.device = device;
+    // One ATT write carries MTU - 3 bytes; bless ignores long-write offsets, so a frame must fit in one write.
+    this.maxFrameBytes = device.mtu && device.mtu > 23 ? Math.min(device.mtu, REQUESTED_MTU) - 3 : undefined;
     this.monitor = device.monitorCharacteristicForService(BENCH_BLE.service, BENCH_BLE.tx, (error, characteristic) => {
       if (error || !characteristic?.value) return;
       const frame = base64ToUtf8(characteristic.value);
@@ -67,13 +84,46 @@ export class BleTransport implements BenchTransport {
     });
     this.disconnect = ble().onDeviceDisconnected(this.deviceId, () => {
       this.device = null;
+      if (this.reconnecting) return; // send() is bringing the link back; the session goes on
       for (const listener of this.closeListeners) listener();
     });
   }
 
+  /**
+   * Writes one frame. The Pi's radio sometimes stops acknowledging in the middle of a module (hundreds of
+   * writes): after WRITE_TIMEOUT_MS the phone reconnects and writes the same frame again, and the bench, which
+   * kept the frames it already had, goes on from there.
+   */
   async send(frame: string): Promise<void> {
-    if (!this.device) throw new Error('Bancada desconectada.');
-    await this.device.writeCharacteristicWithResponseForService(BENCH_BLE.service, BENCH_BLE.rx, utf8ToBase64(frame));
+    const value = utf8ToBase64(frame);
+    await writeWithResume(
+      async (onTimeout) => {
+        if (!this.device) throw new Error('Bancada desconectada.');
+        const transaction = `w${++this.writes}`;
+        onTimeout(() => void ble().cancelTransaction(transaction));
+        await this.device.writeCharacteristicWithResponseForService(BENCH_BLE.service, BENCH_BLE.rx, value, transaction);
+      },
+      () => this.reconnect(),
+      { writeTimeoutMs: WRITE_TIMEOUT_MS, attempts: RESUME_ATTEMPTS, onRetry: (n) => this.onRetry?.(n) }
+    );
+  }
+
+  /** Set by the screen during a send: called before each reconnection (1-based). */
+  onRetry: ((attempt: number) => void) | null = null;
+
+  async reconnect(): Promise<void> {
+    if (this.closed) throw new Error('Bancada desconectada.');
+    this.reconnecting = true;
+    try {
+      this.monitor?.remove();
+      this.disconnect?.remove();
+      await ble().cancelDeviceConnection(this.deviceId).catch(() => undefined);
+      this.device = null;
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // let BlueZ drop the old link first
+      await this.connect();
+    } finally {
+      this.reconnecting = false;
+    }
   }
 
   onFrame(listener: (frame: string) => void): void {
@@ -85,6 +135,7 @@ export class BleTransport implements BenchTransport {
   }
 
   async close(): Promise<void> {
+    this.closed = true;
     this.monitor?.remove();
     this.disconnect?.remove();
     if (this.device) await ble().cancelDeviceConnection(this.deviceId).catch(() => undefined);

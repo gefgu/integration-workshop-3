@@ -6,7 +6,7 @@ import { Api, type Teacher } from './api';
 import { NeonApi } from './neonApi';
 import { neonConfig } from './neonConfig';
 import { BenchClient, type BenchTransport } from './benchClient';
-import { type SyncReport, SyncQueue, sendModule, syncBench } from './sync';
+import { type SendProgress, type SyncReport, SyncQueue, sendModule, syncBench } from './sync';
 
 interface AppState {
   ready: boolean;
@@ -25,7 +25,7 @@ interface AppState {
   connectBench: (transport: BenchTransport) => Promise<BenchStatus>;
   disconnectBench: () => Promise<void>;
   syncNow: () => Promise<SyncReport | null>;
-  sendModuleToBench: (moduleId: number, classId: number) => Promise<string>;
+  sendModuleToBench: (moduleId: number, classId: number, onProgress?: (progress: SendProgress) => void) => Promise<string>;
   retryUpload: () => Promise<void>;
 }
 
@@ -131,9 +131,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }, [api, queue]);
 
   const sendModuleToBench = useCallback(
-    async (moduleId: number, classId: number) => {
+    async (moduleId: number, classId: number, onProgress?: (progress: SendProgress) => void) => {
       if (!client.current) throw new Error('Conecte uma bancada primeiro.');
-      const pkg = await sendModule(client.current, api, moduleId, classId);
+      const pkg = await sendModule(client.current, api, moduleId, classId, onProgress);
       setBench(client.current.status);
       return pkg.version_id;
     },

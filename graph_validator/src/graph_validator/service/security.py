@@ -40,7 +40,7 @@ def token_digest(token: str) -> str:
 
 def bench_secret() -> bytes:
     """Shared with the bench (TEDTRONICS_BENCH_SECRET) so it can check a phone's session offline (SFR57)."""
-    return os.getenv("TEDTRONICS_BENCH_SECRET", "tedtronics-dev-bench-secret").encode()
+    return (os.getenv("TEDTRONICS_BENCH_SECRET") or DEV_BENCH_SECRET).encode()
 
 
 def _b64(data: bytes) -> str:
@@ -58,14 +58,32 @@ def sign_bench_token(teacher_id: int, teacher_name: str, ttl_s: int = 12 * 3600,
     return {"token": f"{payload}.{signature}", "expires_at": expires}
 
 
-def read_bench_token(token: str, now: float | None = None) -> dict | None:
-    """The payload if the signature is valid and the token has not expired, else None."""
+DEV_BENCH_SECRET = "tedtronics-dev-bench-secret"
+
+
+def bench_secret_is_default() -> bool:
+    """True when TEDTRONICS_BENCH_SECRET is unset, so tokens signed with a real server secret cannot verify."""
+    return bench_secret() == DEV_BENCH_SECRET.encode()
+
+
+def check_bench_token(token: str, now: float | None = None) -> tuple[dict | None, str | None]:
+    """(payload, None) for a good token, else (None, reason) with reason "malformed", "signature" or "expired"."""
     try:
         payload, signature = token.split(".")
     except ValueError:
-        return None
+        return None, "malformed"
     expected = _b64(hmac.new(bench_secret(), payload.encode(), hashlib.sha256).digest())
     if not hmac.compare_digest(expected, signature):
-        return None
-    data = json.loads(_unb64(payload))
-    return data if data.get("exp", 0) > (now or time.time()) else None
+        return None, "signature"
+    try:
+        data = json.loads(_unb64(payload))
+    except ValueError:
+        return None, "malformed"
+    if not isinstance(data, dict):
+        return None, "malformed"
+    return (data, None) if data.get("exp", 0) > (now or time.time()) else (None, "expired")
+
+
+def read_bench_token(token: str, now: float | None = None) -> dict | None:
+    """The payload if the signature is valid and the token has not expired, else None."""
+    return check_bench_token(token, now)[0]
