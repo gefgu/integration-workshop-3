@@ -1,6 +1,4 @@
-.env
-.env.*
-!.env.example
+
 AGENTS.md
 __pycache__
 color_analysis_output
@@ -79,3 +77,6 @@ bench/service/*.sqlite3*
 # headless browser driver profile and test servers
 graph_validator/.cdp-profile*/
 graph_validator/*.log
+
+# Raspberry Pi bench bundle (built by bench/raspberry-pi/build_bundle.py)
+bench/raspberry-pi/dist/

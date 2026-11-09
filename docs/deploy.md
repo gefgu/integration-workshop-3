@@ -43,6 +43,30 @@ Free plan: the service sleeps after 15 minutes without visits; the first visit a
   online and the curriculum comes back by itself; classes and students are created again.
 - **Updates**: every push to the branch in `render.yaml` deploys again (`autoDeploy`).
 
+## One teacher account for the site and the phone
+
+Neon is the single source of truth for teachers. The phone app (Neon build) only sees teachers in Neon's
+`public.teachers`, so a site that runs on the local SQLite file creates accounts the phone can never find
+("não corresponde a um professor"). The site's login screen and `run.ps1` say which database is in use.
+
+1. Neon console → project → **Connect** → copy the connection string (pooled and, if offered, direct).
+2. Create `.env.local` at the repository root (git-ignored; never commit it or paste it anywhere):
+   `DATABASE_URL=<pooled string>`, `DATABASE_URL_UNPOOLED=<direct string>`, `TEDTRONICS_BENCH_SECRET=<bench secret>`.
+   `neon link` writes the same file. `run.ps1` and `run-local.sh` load it, run the migrations and start the API on Neon.
+3. Bring the local teachers (with their lessons, modules, classes, students and progress) into Neon:
+   `graph_validator/.venv/Scripts/python graph_validator/tools/sync_sqlite_to_neon.py` prints what it would add
+   (nothing is written); add `--apply` to write, `--email teacher@tedtronics.com` to copy only one teacher.
+   It never updates or deletes Neon rows: a teacher already in Neon is reported and skipped (`--into-existing` adds
+   only the items that teacher lacks). Running it again adds nothing. Passwords keep working (same hash).
+4. Set `TEDTRONICS_NEON_AUTH_URL` (the same Neon Auth URL as the phone's `EXPO_PUBLIC_NEON_AUTH_URL`) in
+   `.env.local` and on Render. Then the site checks passwords in Neon Auth too: **one e-mail and one password**
+   for the site and the phone. Signing up on the site creates the phone account; an account made on the phone
+   signs in on the site; changing the password in the site's profile changes it on the phone. An old site password
+   moves to Neon Auth on the next sign-in, unless the phone already has its own password: then that one is used.
+   Passwords need 8+ characters. The e-mail cannot be changed while Neon Auth is on.
+
+`tools/sqlite_to_postgres.py` is different: it **empties** the target first. Use it only for a brand-new database.
+
 ## Run the production server locally
 
 ```bash

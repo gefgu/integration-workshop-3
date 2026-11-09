@@ -1,0 +1,53 @@
+TedTronics Bancada - instalação na Raspberry Pi
+================================================
+
+Requisitos: Raspberry Pi 4 ou 5 com Raspberry Pi OS (Bookworm, 64 bits, com área de trabalho),
+internet durante a instalação, a câmera da bancada conectada e o monitor de 7".
+
+1) Copie este arquivo para a Pi (pendrive ou rede) e, num terminal da Pi:
+
+     tar xzf tedtronics-bancada-pi.tar.gz
+     cd tedtronics-bancada
+     sudo ./install.sh
+
+   A instalação demora alguns minutos (baixa o OpenCV e as bibliotecas do Python).
+
+2) Pronto:
+   - O serviço da bancada liga sozinho sempre que a Pi ligar (e reinicia se cair).
+   - A tela da bancada abre sozinha em tela cheia depois do login.
+   - O ícone "TedTronics Bancada" na área de trabalho abre a tela de novo.
+   - Para sair da tela cheia: Alt+F4.
+
+3) App do professor: na aba Bancada, escolha "Simulador (Wi-Fi)" e digite o IP que a
+   instalação mostrou no final (porta 8765). Celular e Pi precisam estar na mesma rede.
+
+Opções do instalador (pode rodar de novo para mudar):
+     (joystick + Energizar: ligue a ESP32 no USB da Pi; a bancada acha a porta sozinha)
+     sudo ./install.sh --controls /dev/serial0   fixa a ESP32 na porta serial dos pinos GPIO
+     sudo ./install.sh --no-controls             sem os controles físicos
+     sudo ./install.sh --no-ble        sem o Bluetooth (o app conecta só pelo Wi-Fi)
+     sudo ./install.sh --no-demo       esconde o "Modo demonstração" (bancada real em aula)
+     sudo ./install.sh --camera 1      usa outra câmera (índice 1)
+     sudo ./install.sh --no-camera     sem câmera: a protoboard é simulada na tela
+     sudo ./install.sh --no-autostart  não abre a tela sozinha ao ligar
+
+Bluetooth (já vem ligado):
+   - A bancada aparece no app como "TedTronics-bancada-...". No app: Bancada > Bluetooth >
+     Procurar bancadas, e toque nela.
+   - O app só libera a bancada se ela tiver o mesmo segredo do servidor. O instalador pergunta;
+     para pôr depois: sudo nano /etc/tedtronics-bancada.env  (linha TEDTRONICS_BENCH_SECRET=...)
+     e depois: sudo systemctl restart tedtronics-bancada
+
+Comandos úteis:
+     journalctl -u tedtronics-bancada -f          ver o que o serviço está fazendo
+     sudo systemctl restart tedtronics-bancada    reiniciar o serviço
+     tedtronics-tela --janela                     abrir a tela numa janela 1024x600
+     curl -s localhost:8765/controls/state        a bancada achou a ESP32? (connected: true)
+     sudo nano /etc/tedtronics-bancada.env        segredo da bancada e nome fixo
+
+Desinstalar:
+     sudo /opt/tedtronics-bancada/uninstall.sh          (mantém os dados)
+     sudo /opt/tedtronics-bancada/uninstall.sh --tudo   (apaga também os dados)
+
+Teclas da bancada (joystick e botões físicos chegam como teclas):
+     setas = joystick · Enter = OK · Esc = Voltar · E = Energizar

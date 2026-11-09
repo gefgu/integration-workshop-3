@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Opens the TedTronics bench screen full screen (kiosk) once the bench service answers.
+#   tedtronics-tela            full screen (the bench's 7" monitor)
+#   tedtronics-tela --janela   a 1024x600 window instead
+URL="http://127.0.0.1:8765/"
+MODE="--kiosk"
+if [ "${1:-}" = "--janela" ]; then MODE="--window-size=1024,600"; fi
+
+for _ in $(seq 1 90); do
+  curl -fs "${URL}status" >/dev/null && break
+  sleep 1
+done
+
+BROWSER="$(command -v chromium-browser || command -v chromium)"
+if [ -z "$BROWSER" ]; then
+  echo "Chromium não encontrado."
+  exit 1
+fi
+exec "$BROWSER" "$MODE" --app="$URL" --noerrdialogs --disable-infobars --disable-session-crashed-bubble \
+  --check-for-update-interval=31536000 --autoplay-policy=no-user-gesture-required \
+  --user-data-dir="$HOME/.config/tedtronics-tela"

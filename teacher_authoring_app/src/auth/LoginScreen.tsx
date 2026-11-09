@@ -1,8 +1,25 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from './AuthContext.tsx';
+
+/** True when the API keeps its accounts in the local SQLite file (no Neon): the phone app cannot see them. */
+function useLocalDatabase(): boolean {
+  const [local, setLocal] = useState(false);
+  useEffect(() => {
+    let alive = true;
+    fetch('/api/auth/config')
+      .then((response) => (response.ok ? response.json() : null))
+      .then((body) => alive && setLocal(body?.database === 'sqlite'))
+      .catch(() => undefined);
+    return () => {
+      alive = false;
+    };
+  }, []);
+  return local;
+}
 
 export default function LoginScreen() {
   const { signIn, signUp } = useAuth();
+  const localDatabase = useLocalDatabase();
   const [mode, setMode] = useState<'login' | 'signup'>('login');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -34,6 +51,12 @@ export default function LoginScreen() {
             ? 'Cadastre-se para montar módulos, turmas e acompanhar seus alunos.'
             : 'Entre para organizar módulos, turmas e alunos.'}
         </p>
+        {localDatabase && (
+          <p className="login-db-warning" role="status">
+            Este site está usando o banco local (SQLite). Contas e turmas criadas aqui não aparecem no app do celular.
+            Para usar a mesma conta nos dois, ligue o site ao Neon com o arquivo .env.local.
+          </p>
+        )}
         {signingUp && (
           <>
             <label className="field-label" htmlFor="login-name">
@@ -70,7 +93,7 @@ export default function LoginScreen() {
           className="text-input"
           type="password"
           autoComplete={signingUp ? 'new-password' : 'current-password'}
-          minLength={signingUp ? 6 : undefined}
+          minLength={signingUp ? 8 : undefined}
           required
           value={password}
           onChange={(event) => setPassword(event.target.value)}
