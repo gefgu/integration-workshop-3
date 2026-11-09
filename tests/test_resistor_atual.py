@@ -24,6 +24,36 @@ from visao.tela import desenha_tela
 
 
 class TestCurrentResistor(unittest.TestCase):
+    def test_new_camera_frame_recognizes_first_row_blue_piece(self):
+        image = cv.imread(str(Path(__file__).resolve().parents[1] /
+                              'visao/fixtures/current/live-2026-11-09/frame-00.png'))
+        with tempfile.TemporaryDirectory() as tmp:
+            path = str(Path(tmp) / 'cal.json')
+            salva(path, image, [[240, 420], [1020, 420], [1040, 681], [235, 681]])
+            result = PipelineAtual(path, temporal=False).processa(image)
+        self.assertTrue(result.valido)
+        self.assertEqual({(p['linha'], tuple(p['colunas'])) for p in result.pecas_sem_tipo},
+                         {(0, (1, 2)), (4, (2, 3))})
+        self.assertEqual([(c.tipo, c.linha, c.colunas) for c in result.componentes],
+                         [('resistor_1k', 2, [5, 6])])
+
+    def test_new_camera_frames_register_automatically(self):
+        folder = Path(__file__).resolve().parents[1] / 'visao/fixtures/current/live-2026-11-09'
+        for path in sorted(folder.glob('frame-*.png')):
+            with self.subTest(frame=path.name):
+                result = PipelineAtual(temporal=False).processa(cv.imread(str(path)))
+                self.assertTrue(result.valido, result.motivo)
+                self.assertEqual([(c.tipo, c.linha, c.colunas) for c in result.componentes],
+                                 [('resistor_1k', 2, [5, 6])])
+                self.assertEqual({(p['linha'], tuple(p['colunas'])) for p in result.pecas_sem_tipo},
+                                 {(0, (1, 2)), (4, (2, 3))})
+
+    def test_live_frame_with_wider_resistor_mark(self):
+        path = Path(__file__).resolve().parents[1] / 'visao/fixtures/current/live-2026-11-09/frame-later.png'
+        result = PipelineAtual(temporal=False).processa(cv.imread(str(path)))
+        self.assertTrue(result.valido, result.motivo)
+        self.assertEqual([c.id for c in result.componentes], ['resistor_1k@C2:5-6'])
+
     def test_captured_piece_is_the_only_matching_footprint(self):
         folder = Path(__file__).resolve().parents[1] / 'visao/fixtures/current'
         frames = sorted(folder.glob('frame-*.jpg'))

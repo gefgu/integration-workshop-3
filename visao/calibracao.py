@@ -1,11 +1,63 @@
 """Explicit upper-grid calibration and contrast-independent socket tracking."""
 import json
 import time
+from functools import lru_cache
+from pathlib import Path
 import cv2 as cv
 import numpy as np
 from . import config as cfg
 
 CANTOS = np.float32([[0, 0], [10, 0], [10, 5], [0, 5]])
+
+# Reference of this board with its C grid established by the four-edge fit.
+_REFERENCE_H = np.array([[75.4142064, -7.3069687, 265.4040750],
+                         [2.3364109, 44.3020119, 377.0355578],
+                         [-.0014676733, -.0097659579, 1.]])
+
+
+@lru_cache(maxsize=1)
+def _reference_features():
+    path = Path(__file__).parent / 'fixtures/current/frame-00.jpg'
+    image = cv.imread(str(path))
+    if image is None or not hasattr(cv, 'SIFT_create'):
+        return None
+    points, descriptors = cv.SIFT_create().detectAndCompute(cv.cvtColor(image, cv.COLOR_BGR2GRAY), None)
+    return points, descriptors
+
+
+def calibra_por_referencia(image):
+    """Anchor the grid using distributed, distinctive features of the board.
+
+    The resulting mapping is only a proposal: normal socket matching and
+    tracking validation must still accept it before any position is reported.
+    """
+    reference = _reference_features()
+    if reference is None or reference[1] is None:
+        return None
+    points, descriptors = cv.SIFT_create().detectAndCompute(cv.cvtColor(image, cv.COLOR_BGR2GRAY), None)
+    if descriptors is None or len(descriptors) < 2:
+        return None
+    matches = cv.BFMatcher().knnMatch(reference[1], descriptors, k=2)
+    good = [pair[0] for pair in matches if len(pair) == 2 and pair[0].distance < .7 * pair[1].distance]
+    if len(good) < 20:
+        return None
+    source = np.float32([reference[0][m.queryIdx].pt for m in good])
+    target = np.float32([points[m.trainIdx].pt for m in good])
+    H, mask = cv.findHomography(source, target, cv.RANSAC, 3.0)
+    if H is None or mask is None or not np.isfinite(H).all():
+        return None
+    accepted = mask.ravel().astype(bool)
+    if accepted.sum() < 20:
+        return None
+    locations = cv.perspectiveTransform(source[accepted][None], np.linalg.inv(_REFERENCE_H))[0]
+    # A cluster on one movable component cannot establish board geometry.
+    if np.ptp(locations[:, 0]) < 5.5 or np.ptp(locations[:, 1]) < 4:
+        return None
+    candidate = H @ _REFERENCE_H
+    projected = cv.perspectiveTransform(CANTOS[None], candidate)[0]
+    if not np.isfinite(projected).all() or not cv.isContourConvex(projected.reshape(-1, 1, 2)):
+        return None
+    return candidate
 
 
 def calibra_automaticamente(image, points=None):
@@ -225,6 +277,8 @@ class RegistradorParcial:
         points = candidatos(image)
         if self.H is None:
             self.H = calibra_automaticamente(image, points)
+            if self.H is None:
+                self.H = calibra_por_referencia(image)
             # Remember only failed searches; losing a good grid must be reacquired at once.
             self.ultima_busca = agora if self.H is None else None
             if self.H is not None:

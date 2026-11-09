@@ -41,7 +41,7 @@ ITER_RASTREIO = 2
 PX_X = 68
 PX_Y = 40
 MARGEM_X = 0.7
-MARGEM_Y = 1.0
+MARGEM_Y = 2.0  # include the full body of pieces on the first row
 LARGURA_RET = int((N_COLUNAS - 1 + 2 * MARGEM_X) * PX_X)
 ALTURA_RET = int((GAP + N_LINHAS_METADE - 1 + 2 * MARGEM_Y) * PX_Y)
 

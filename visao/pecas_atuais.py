@@ -26,16 +26,17 @@ def suporte_local(vistos, linha, coluna_inicial, coluna_final):
 def corpos_azuis(ret_bgr):
     hsv = cv.cvtColor(ret_bgr, cv.COLOR_BGR2HSV)
     mask = cv.inRange(hsv, (85, 80, 150), (130, 255, 255))
-    mask = cv.morphologyEx(mask, cv.MORPH_CLOSE, np.ones((7, 20), np.uint8))
-    _, _, stats, _ = cv.connectedComponentsWithStats(mask)
+    masks = [cv.morphologyEx(mask, cv.MORPH_CLOSE, np.ones((7, width), np.uint8))
+             for width in (20, 35)]
     found = set()
-    for x, y, width, height, area in stats[1:]:
+    for x, y, width, height, area in (stat for image in masks
+                                      for stat in cv.connectedComponentsWithStats(image)[2][1:]):
         # Current printed pieces bridge two sockets; clipping, glare or a
         # fragmented body is deliberately left unknown.
-        if not (90 <= width <= 165 and 25 <= height <= 60 and area >= 1900):
+        if not (90 <= width <= 165 and 25 <= height <= 70 and area >= 1900):
             continue
         center_x = x + width / 2
-        center_y = y + height / 2 + 18
+        center_y = y + height - 3
         col = round(center_x / cfg.PX_X - cfg.MARGEM_X - .5)
         row = round(center_y / cfg.PX_Y - cfg.MARGEM_Y)
         if not (0 <= col < cfg.N_COLUNAS - 1 and 0 <= row < cfg.N_LINHAS_METADE):

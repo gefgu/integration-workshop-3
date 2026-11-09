@@ -34,8 +34,12 @@ falhas abruptas do processo.
 ## Calibração
 
 O perfil atual tenta registrar a grade automaticamente quando há evidência das
-quatro bordas. Sem evidência suficiente para numerar a grade, a leitura é
-rejeitada. Também é possível selecionar os quatro cantos manualmente:
+quatro bordas. Caso falte uma borda, também tenta comparar características da
+bancada com a foto de referência `fixtures/current/frame-00.jpg`; a proposta
+precisa passar pela validação dos sockets visíveis antes de produzir posições.
+A comparação depende da foto de referência e do suporte SIFT do OpenCV. Sem
+evidência suficiente para numerar a grade, a leitura é rejeitada. Também é
+possível selecionar os quatro cantos manualmente:
 
 ```bash
 .venv/bin/python -m visao --camera 1 --calibrate /tmp/minha-calibracao.json --mostrar

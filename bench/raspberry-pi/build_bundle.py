@@ -26,6 +26,9 @@ SCRIPTS = {"install.sh", "uninstall.sh", "tedtronics-tela"}
 TEXT = {".sh", ".txt", ".py", ".toml", ".md", ".html", ".js", ".css", ".json", ""}
 SKIP_DIRS = {"__pycache__", "tests", ".pytest_cache", "images", "fixtures"}
 SKIP_SUFFIXES = {".pyc", ".sqlite3"}
+# Test photos are left out, except the reference photo that visao/calibracao.py matches features against
+# (calibra_por_referencia) when the grid edges are not all visible.
+KEEP_FILES = {"visao/fixtures/current/frame-00.jpg"}
 
 
 def build_ui() -> None:
@@ -36,6 +39,8 @@ def build_ui() -> None:
 
 
 def wanted(path: Path) -> bool:
+    if path.as_posix() in KEEP_FILES:
+        return True
     return not any(part in SKIP_DIRS or part.endswith(".egg-info") for part in path.parts) and path.suffix not in SKIP_SUFFIXES
 
 
