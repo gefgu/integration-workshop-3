@@ -3,6 +3,7 @@ import {
   type AppMessage,
   type BenchMessage,
   type BenchStatus,
+  DEFAULT_CHUNK,
   encodeFrames,
   FrameAssembler,
   nextMsgId,
@@ -12,6 +13,12 @@ import {
 /** Moves text frames; implementations: BleTransport (react-native-ble-plx) and SimTransport (WebSocket). */
 export interface BenchTransport {
   readonly label: string;
+  /** Largest frame (bytes) one write can carry, known after connect(); frames default to DEFAULT_CHUNK. */
+  readonly maxFrameBytes?: number;
+  /** BLE only: called before the transport reconnects to resume a stalled send (1-based attempt). */
+  onRetry?: ((attempt: number) => void) | null;
+  /** BLE only: drops and re-opens the link (notifications re-subscribed) without ending the session. */
+  reconnect?(): Promise<void>;
   connect(): Promise<void>;
   send(frame: string): Promise<void>;
   onFrame(listener: (frame: string) => void): void;
@@ -26,6 +33,19 @@ export class BenchError extends Error {
   ) {
     super(message);
   }
+}
+
+/** Room for the "msgId|index|total|" header in front of each chunk (msg ids are ~13 chars). */
+export const FRAME_HEADER_ROOM = 32;
+
+/** The phone's BLE stack reports write failures in English ("Operation timed out"); say what it means. */
+function sendFailure(cause: unknown): string {
+  const text = cause instanceof Error ? cause.message : String(cause);
+  if (/timed out|timeout/i.test(text)) {
+    return 'A bancada parou de confirmar o envio pelo Bluetooth (tempo esgotado). Chegue o celular mais perto, reconecte e tente de novo.';
+  }
+  if (/disconnect/i.test(text)) return 'Conexão com a bancada perdida durante o envio.';
+  return `Falha ao enviar para a bancada: ${text}`;
 }
 
 type Distribute<T> = T extends unknown ? Omit<T, 'id'> : never;
@@ -55,13 +75,22 @@ export class BenchClient {
     });
   }
 
-  async request<T extends BenchMessage['type']>(message: Outgoing): Promise<Extract<BenchMessage, { type: T }>> {
+  /** Payload characters per frame: the transport's write size minus room for the "id|i|n|" header. */
+  frameChunk(): number {
+    const max = this.transport.maxFrameBytes;
+    return max ? Math.max(DEFAULT_CHUNK, max - FRAME_HEADER_ROOM) : DEFAULT_CHUNK;
+  }
+
+  /** `onFrame(sent, total)` is called after each frame is written, so a long send can show its progress. */
+  async request<T extends BenchMessage['type']>(
+    message: Outgoing,
+    onFrame?: (sent: number, total: number) => void
+  ): Promise<Extract<BenchMessage, { type: T }>> {
     const id = nextMsgId('q');
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let fail: (e: Error) => void = () => undefined;
     const reply = new Promise<BenchMessage>((resolve, reject) => {
-      const timer = setTimeout(() => {
-        this.waiting.delete(id);
-        reject(new BenchError('A bancada não respondeu.', 'timeout'));
-      }, this.timeoutMs);
+      fail = reject;
       this.waiting.set(id, {
         resolve: (m) => {
           clearTimeout(timer);
@@ -73,7 +102,22 @@ export class BenchClient {
         },
       });
     });
-    for (const frame of encodeFrames({ ...message, id }, nextMsgId('f'))) await this.transport.send(frame);
+    reply.catch(() => undefined); // a rejection while frames are still going out is read by the await below
+    try {
+      // A module is hundreds of frames over BLE: the reply deadline starts once the last one is written.
+      const frames = encodeFrames({ ...message, id }, nextMsgId('f'), this.frameChunk());
+      for (const [i, frame] of frames.entries()) {
+        await this.transport.send(frame);
+        onFrame?.(i + 1, frames.length);
+      }
+    } catch (cause) {
+      this.waiting.delete(id);
+      throw new BenchError(sendFailure(cause), 'send');
+    }
+    timer = setTimeout(() => {
+      this.waiting.delete(id);
+      fail(new BenchError('A bancada não respondeu.', 'timeout'));
+    }, this.timeoutMs);
     const answer = await reply;
     if (answer.type === 'ERROR') throw new BenchError(answer.message, answer.code);
     return answer as Extract<BenchMessage, { type: T }>;

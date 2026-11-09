@@ -20,10 +20,12 @@ log = logging.getLogger(__name__)
 
 BANK_ROWS = 6
 # Vision types the lesson editor knows under the same name.
-SAME_TYPE = {"led", "buzzer", "capacitor", "botao", "jumper_curto", "jumper_longo"}
+# The resistor values come from the colored stripe on the blue pieces (visao/config.py FAIXAS).
+SAME_TYPE = {"led", "buzzer", "capacitor", "botao", "jumper_curto", "jumper_longo",
+             "resistor_220", "resistor_470", "resistor_1k"}
 # Vision types that need a choice the camera cannot make (value, polarity), mapped to the editor type.
 ASSUMED_TYPE = {
-    # The camera does not read a resistor's value: steps that check values (matchValues) cannot pass.
+    # A blue piece whose stripe was not read (1 black dot): taken as 220 Ω, so value checks may fail.
     "resistor": "resistor_220",
     # The red two-socket piece is the battery in the kit; the left column is taken as "+".
     "vermelho_2": "bateria",
@@ -67,6 +69,25 @@ def _import_visao():
     from visao.circuito import para_dict
     from visao.pipeline import Pipeline
     return Pipeline, para_dict, debug
+
+
+SETTLE_S = 2.0
+
+
+def open_camera(cv: Any, index: int) -> Any:
+    """Same opening as `python -m visao --camera`: V4L2 + MJPG, so a USB camera gives 1280x720, not 640x480."""
+    from visao.__main__ import abre_camera
+    return abre_camera(index, False)
+
+
+def settle_and_lock(cv: Any, cap: Any, seconds: float = SETTLE_S) -> None:
+    """Lets auto exposure / white balance adapt to the room, then locks them (as `--travar-camera`): the stripe
+    and piece colors in visao/config.py were measured with a locked camera, and auto changes shift them."""
+    deadline = time.monotonic() + seconds
+    while time.monotonic() < deadline:
+        cap.read()
+    cap.set(cv.CAP_PROP_AUTO_WB, 0)
+    cap.set(cv.CAP_PROP_AUTO_EXPOSURE, 1)  # V4L2: 1 = manual
 
 
 class VisionSource:
@@ -119,13 +140,12 @@ class VisionSource:
             return
         cap = None
         if still is None:
-            cap = cv.VideoCapture(self.camera or 0)
-            cap.set(cv.CAP_PROP_FRAME_WIDTH, 1280)
-            cap.set(cv.CAP_PROP_FRAME_HEIGHT, 720)
-            cap.set(cv.CAP_PROP_BUFFERSIZE, 1)
+            cap = open_camera(cv, self.camera or 0)
             if not cap.isOpened():
                 self._set(available=False, reason="Nenhuma câmera encontrada. Confira o cabo da câmera.")
                 return
+            self._set(reason="Ajustando a luz da câmera…")
+            settle_and_lock(cv, cap)
         pipeline = Pipeline()
         period = 1.0 / 5
         self._set(running=True)

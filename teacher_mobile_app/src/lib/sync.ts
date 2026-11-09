@@ -5,9 +5,9 @@
  * acks them, and the bench deletes them only after that (ACK_EVENTS), so a dropped connection at any
  * point only causes a re-upload, which the server ignores by event_id (SFR59).
  */
-import type { BenchEvent, BenchPackage } from '../../../protocol/bench.ts';
+import type { BenchEvent, BenchPackage, BenchStatus } from '../../../protocol/bench.ts';
 import { type Api, type KeyValueStore, OfflineError } from './api.ts';
-import type { BenchClient } from './benchClient.ts';
+import { type BenchClient, BenchError } from './benchClient.ts';
 
 const KEY = 'tedtronics.sync';
 
@@ -115,10 +115,57 @@ export async function syncBench(bench: BenchClient, queue: SyncQueue, api: Api, 
   return { pulled, uploaded, benchDeleted };
 }
 
+/** Where a module send is: downloading it, writing its frames to the bench, or waiting for the bench to confirm. */
+export type SendProgress =
+  | { phase: 'download' }
+  | { phase: 'send'; sent: number; total: number; retry?: number }
+  | { phase: 'confirm' };
+
 /** Downloads the module package for a class and loads it on the bench (SFR43, SFR58). */
-export async function sendModule(bench: BenchClient, api: Api, moduleId: number, classId: number): Promise<BenchPackage> {
+export async function sendModule(
+  bench: BenchClient,
+  api: Api,
+  moduleId: number,
+  classId: number,
+  onProgress?: (progress: SendProgress) => void
+): Promise<BenchPackage> {
+  onProgress?.({ phase: 'download' });
   const pkg = await api.benchPackage(moduleId, classId);
-  await bench.request<'PACKAGE_OK'>({ type: 'LOAD_PACKAGE', package: pkg });
+  let last = { sent: 0, total: 1 };
+  const transport = bench.transport;
+  if (transport.onRetry !== undefined) transport.onRetry = (retry) => onProgress?.({ phase: 'send', ...last, retry });
+  try {
+    await bench.request<'PACKAGE_OK'>({ type: 'LOAD_PACKAGE', package: pkg }, (sent, total) => {
+      last = { sent, total };
+      onProgress?.(sent < total ? { phase: 'send', sent, total } : { phase: 'confirm' });
+    });
+  } catch (cause) {
+    if (!(cause instanceof BenchError && cause.code === 'timeout')) throw cause;
+    // Every frame went out but PACKAGE_OK never came back: over BLE the reply notification can be lost.
+    // Ask the bench which module it holds instead of failing a send that may have worked.
+    await confirmLoaded(bench, pkg.version_id);
+    return pkg;
+  } finally {
+    if (transport.onRetry !== undefined) transport.onRetry = null;
+  }
   await bench.refresh();
   return pkg;
+}
+
+/** STATUS says whether the bench loaded this version; a silent link is reconnected once before asking again. */
+async function confirmLoaded(bench: BenchClient, versionId: string): Promise<void> {
+  let status: BenchStatus;
+  try {
+    status = await bench.refresh();
+  } catch (cause) {
+    if (!(cause instanceof BenchError && cause.code === 'timeout') || !bench.transport.reconnect) throw cause;
+    await bench.transport.reconnect();
+    status = await bench.refresh();
+  }
+  if (status.package?.version_id !== versionId) {
+    throw new BenchError(
+      'A bancada recebeu o envio, mas não carregou a aula (algum pedaço se perdeu). Envie de novo.',
+      'not_loaded'
+    );
+  }
 }

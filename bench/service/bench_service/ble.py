@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import time
 from typing import Any, Callable
 
 from .protocol import BLE_RX, BLE_SERVICE, BLE_TX, FrameAssembler, Session, encode_frames, error
@@ -26,21 +27,45 @@ class BleBridge:
     def __init__(self, store: BenchStore, notify: Callable[[bytes], None]) -> None:
         self.session, self.assembler, self.notify = Session(store), FrameAssembler(), notify
         self.counter = 0
+        self.tracing, self.trace_started, self.trace_count = "", 0.0, 0
 
     def on_write(self, value: bytes | bytearray) -> None:
+        text = bytes(value).decode("utf-8", errors="replace")
+        self.trace(text)
         try:
-            message = self.assembler.push(bytes(value).decode("utf-8"))
-        except ValueError as problem:  # also UnicodeDecodeError and bad JSON
+            message = self.assembler.push(text)
+        except ValueError as problem:  # also bad JSON
             self.reply(error(None, "bad_message", str(problem)))
             return
         if message is None:
             return
+        started = time.monotonic()
         try:
             reply = self.session.handle(message)
         except Exception as problem:  # never let a bad message break the D-Bus handler
             log.exception("BLE message failed")
             reply = error(message.get("id") if isinstance(message, dict) else None, "bad_message", str(problem))
+        log.info("BLE: %s tratado em %.2f s -> %s", message.get("type") if isinstance(message, dict) else "?",
+                 time.monotonic() - started, reply.get("type"))
         self.reply(reply)
+
+    def trace(self, frame: str) -> None:
+        """Logs a long message's frames as they arrive (journalctl shows where a stalled send stopped)."""
+        msg_id, _, rest = frame.partition("|")
+        idx, _, rest = rest.partition("|")
+        total = rest.partition("|")[0]
+        if not (idx.isdigit() and total.isdigit()):
+            return
+        i, n = int(idx), int(total)
+        now = time.monotonic()
+        if i == 0 or msg_id != self.tracing:
+            self.tracing, self.trace_started, self.trace_count = msg_id, now, 0
+            if n > 1:
+                log.info("BLE: recebendo mensagem %s em %d quadros", msg_id, n)
+        self.trace_count += 1
+        if n > 1 and (self.trace_count % 50 == 0 or i == n - 1):
+            log.info("BLE: %s quadro %d/%d (%d recebidos em %.1f s)", msg_id, i + 1, n, self.trace_count,
+                     now - self.trace_started)
 
     def reply(self, message: dict[str, Any]) -> None:
         self.counter += 1
@@ -78,6 +103,17 @@ def gatt_flags() -> tuple[int, int, int, int]:
     return prop.write, prop.notify, perm.writeable, perm.readable
 
 
+def show_bench_logs() -> None:
+    """Sends bench_service INFO lines to stderr (journalctl on the Pi); nothing configured logging before."""
+    package = logging.getLogger("bench_service")
+    if not package.handlers:
+        handler = logging.StreamHandler()
+        handler.setFormatter(logging.Formatter("%(name)s: %(message)s"))
+        package.addHandler(handler)
+        package.setLevel(logging.INFO)
+        package.propagate = False
+
+
 def advertised_name(store: BenchStore) -> str:
     return f"TedTronics-{store.bench_id}"
 
@@ -89,6 +125,7 @@ async def serve(store: BenchStore, adapter: str | None = None) -> None:  # pragm
     except ImportError as problem:
         raise SystemExit("Instale o extra BLE: pip install -e '.[ble]'") from problem
 
+    show_bench_logs()
     kwargs = {"adapter": adapter} if adapter else {}
     server = BlessServer(name=advertised_name(store), loop=asyncio.get_running_loop(), **kwargs)
     await attach(server, store)

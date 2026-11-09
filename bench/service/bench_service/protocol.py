@@ -9,7 +9,9 @@ import json
 import time
 from typing import Any
 
-from graph_validator.service.security import read_bench_token
+import logging
+
+from graph_validator.service.security import bench_secret_is_default, check_bench_token
 
 from .store import BenchStore
 
@@ -64,9 +66,9 @@ class Session:
         re = message.get("id") if isinstance(message, dict) else None
         kind = message.get("type") if isinstance(message, dict) else None
         if kind == "HELLO":
-            claims = read_bench_token(str(message.get("token", "")))
+            claims, problem = check_bench_token(str(message.get("token", "")))
             if claims is None:
-                return error(re, "bad_token", "Sessão do professor inválida ou expirada. Entre de novo no app.")
+                return error(re, "bad_token", bad_token_message(problem))
             # Another teacher's module and students must not stay usable in this teacher's session: the bench
             # waits for this teacher's package. Progress already recorded stays queued for its own teacher.
             loaded = self.store.package()
@@ -95,6 +97,24 @@ class Session:
             deleted = self.store.ack_events([str(i) for i in message.get("event_ids") or []])
             return {"type": "ACKED", "re": re, "deleted": deleted, "pending_events": self.store.pending_count()}
         return error(re, "bad_message", f"Mensagem desconhecida: {kind}")
+
+
+def bad_token_message(problem: str | None) -> str:
+    """Why the bench refused the teacher's token, in words that point at the fix (logged on the bench too)."""
+    if problem == "signature":
+        if bench_secret_is_default():
+            text = ("A bancada está sem o segredo configurado (TEDTRONICS_BENCH_SECRET), então não reconhece a "
+                    "sessão do professor. Coloque na bancada o mesmo segredo do servidor e reinicie o serviço.")
+        else:
+            text = ("O segredo da bancada (TEDTRONICS_BENCH_SECRET) é diferente do segredo do servidor, então ela "
+                    "não reconhece a sessão do professor. Use o mesmo valor nos dois e reinicie o serviço da bancada.")
+    elif problem == "expired":
+        text = ("A sessão do professor chegou vencida na bancada. Confira se o relógio da bancada está certo "
+                "(data e hora) e tente conectar de novo.")
+    else:
+        text = "Sessão do professor inválida. Entre de novo no app."
+    logging.getLogger(__name__).warning("HELLO recusado (%s): %s", problem, text)
+    return text
 
 
 def error(re: str | None, code: str, text: str) -> dict[str, Any]:
