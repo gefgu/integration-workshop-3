@@ -55,7 +55,9 @@ function VisionFeed({ api, vision, onBack }: { api: BenchApi; vision: VisionStat
   };
   const pieces = vision.pieces ?? [];
   const unknown = vision.unknown ?? [];
-  const message = vision.valid
+  const message = vision.recalibrating
+    ? 'Recalibrando a câmera… isso pode levar alguns segundos.'
+    : vision.valid
     ? pieces.length
       ? 'Assim a bancada vê a sua placa. As peças reconhecidas aparecem na lição.'
       : 'Estou vendo a placa, mas nenhuma peça ainda.'
@@ -104,9 +106,10 @@ function VisionFeed({ api, vision, onBack }: { api: BenchApi; vision: VisionStat
           type="button"
           className="btn-outline"
           data-pad="item"
+          disabled={vision.recalibrating}
           onClick={() => void api.visionRecalibrate().catch(() => undefined)}
         >
-          Recalibrar câmera
+          {vision.recalibrating ? 'Recalibrando…' : 'Recalibrar câmera'}
         </button>
       </div>
     </section>

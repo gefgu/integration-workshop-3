@@ -1,5 +1,6 @@
 """Explicit upper-grid calibration and contrast-independent socket tracking."""
 import json
+import time
 import cv2 as cv
 import numpy as np
 from . import config as cfg
@@ -165,8 +166,16 @@ def calibra_interativa(image, path):
         cv.destroyWindow(window)
 
 
+# The automatic grid search is expensive (seconds on a Raspberry Pi). When it fails, retry only this
+# often instead of on every frame; an explicit recalibrar() searches again at once.
+INTERVALO_BUSCA_S = 2.0
+
+
 class RegistradorParcial:
-    def __init__(self, path=None):
+    def __init__(self, path=None, clock=time.monotonic):
+        self.clock = clock
+        self.ultima_busca = None
+        self.ultimo_motivo = ''
         self.auto = path is None
         self.generation = 0
         self.last_gray = None
@@ -191,11 +200,13 @@ class RegistradorParcial:
         self.H = None if self.auto else self.anchor.copy()
         self.generation += 1
         self.last_gray = None
+        self.ultima_busca = None
         if self.auto:
             self.size = None
 
     def _falhou(self, result, motivo):
         result['motivo'] = motivo
+        self.ultimo_motivo = motivo
         if self.auto:
             self.H = None
             self.size = None
@@ -203,10 +214,19 @@ class RegistradorParcial:
         return result
 
     def atualiza(self, image):
-        points = candidatos(image)
         seen = np.zeros(len(cfg.MODELO), bool)
+        agora = self.clock()
+        if (self.H is None and self.ultima_busca is not None
+                and agora - self.ultima_busca < INTERVALO_BUSCA_S):
+            # Too soon to repeat a search that just failed: skip the expensive work.
+            return dict(H=None, valido=False, n_furos=0, furos=np.zeros((0, 2), np.float32),
+                        inliers=0, erro=None, furos_vistos=seen, generation=self.generation,
+                        motivo=self.ultimo_motivo or 'grade incompleta ou origem ambígua; use calibração manual')
+        points = candidatos(image)
         if self.H is None:
             self.H = calibra_automaticamente(image, points)
+            # Remember only failed searches; losing a good grid must be reacquired at once.
+            self.ultima_busca = agora if self.H is None else None
             if self.H is not None:
                 self.size = list(image.shape[1::-1])
                 self.generation += 1

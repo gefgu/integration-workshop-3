@@ -80,3 +80,12 @@ def test_vision_source_reads_the_current_profile_fixture():
     assert state["profile"] == "current" and state["partial"] and state["valid"], state["reason"]
     assert [(p["type"], p["a"], p["b"], p["row"]) for p in state["pieces"]] == [("resistor_1k", 5, 6, 2)]
     assert state["unknown"], "blue bodies are located but not identified"
+
+
+def test_recalibrate_reports_progress_at_once():
+    from bench_service.vision import VisionSource
+    source = VisionSource(image="x.jpg")  # thread not started: only the state is exercised
+    assert source.state()["recalibrating"] is False
+    source.recalibrate()
+    state = source.state()
+    assert state["recalibrating"] is True and "Recalibrando" in state["reason"]

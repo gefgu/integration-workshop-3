@@ -33,6 +33,8 @@ export interface VisionState {
   /** "current" reads the half-populated kit board: unlisted positions are unknown, not empty */
   profile?: string;
   partial?: boolean;
+  /** a recalibration was requested and the service is still searching for the grid */
+  recalibrating?: boolean;
   /** bumps each time the stable circuit changes */
   version?: number;
   pieces?: VisionPiece[];
