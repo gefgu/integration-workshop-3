@@ -24,7 +24,7 @@ OUT = HERE / "dist" / "tedtronics-bancada-pi.tar.gz"
 TOP = "tedtronics-bancada"
 SCRIPTS = {"install.sh", "uninstall.sh", "tedtronics-tela"}
 TEXT = {".sh", ".txt", ".py", ".toml", ".md", ".html", ".js", ".css", ".json", ""}
-SKIP_DIRS = {"__pycache__", "tests", ".pytest_cache", "images"}
+SKIP_DIRS = {"__pycache__", "tests", ".pytest_cache", "images", "fixtures"}
 SKIP_SUFFIXES = {".pyc", ".sqlite3"}
 
 
