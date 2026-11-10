@@ -19,6 +19,20 @@ The older single-stripe reader returns no recognized stripe for the five blue
 pieces in these captures, so their physical identity cannot be recovered from
 that historical mapping alone.
 
+Additional captures from November 10, 2026, are available for detector and
+performance work:
+
+- `kit-test-2026-11-10.jpg`: the four-piece test circuit.
+- `kit-test-moved-2026-11-10.jpg` and `kit-test-locked-2026-11-10.jpg`:
+  the battery and resistor after moving the pieces, under two camera settings.
+- `kit-test-overlap-2026-11-10.jpg` and `kit-test-overlap-locked-2026-11-10.jpg`:
+  the four pieces with reflections joining the apparent LED and jumper shapes.
+- `reference-completed.jpg`: the later board configuration with the four-piece
+  circuit; the first column of the active lower bank is unpopulated.
+
+These are camera images, not measured electrical verification. Resistor value
+and polarity were provided for the test rather than measured by the camera.
+
 The current profile is the default and attempts automatic calibration when
 the entire active grid has enough visible edge sockets. An ambiguous crop is
 rejected; it does not infer a grid origin. Manual calibration is available:
