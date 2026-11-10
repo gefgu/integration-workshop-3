@@ -68,8 +68,9 @@ export class BleTransport implements BenchTransport {
     ble().stopDeviceScan();
     let device = await ble().connectToDevice(this.deviceId);
     if (Platform.OS === 'android') {
-      // A module is ~140 kB of ASCII JSON. Larger writes and a short connection interval cut the hundreds of
-      // acknowledged writes it takes (BlueZ accepts up to 517). Either request may be refused; keep defaults then.
+      // A module is ~140 kB of ASCII JSON in ~1000 acknowledged writes; a short connection interval speeds them
+      // up. The MTU only has to fit DEFAULT_CHUNK + header (frames never grow past that, see BenchClient).
+      // Either request may be refused; keep defaults then.
       device = await device.requestMTU(REQUESTED_MTU).catch(() => device);
       await device.requestConnectionPriority(ConnectionPriority.High).catch(() => undefined);
     }
@@ -95,6 +96,11 @@ export class BleTransport implements BenchTransport {
    * kept the frames it already had, goes on from there.
    */
   async send(frame: string): Promise<void> {
+    if (this.maxFrameBytes && frame.length > this.maxFrameBytes) {
+      // Frames are ASCII (one byte per char). A reconnection may have negotiated a smaller MTU than the frames
+      // were cut for; sending would make a long write that the bench cannot rebuild.
+      throw new Error(`Pacote Bluetooth grande demais (${frame.length} > ${this.maxFrameBytes} bytes). Reconecte e envie de novo.`);
+    }
     const value = utf8ToBase64(frame);
     await writeWithResume(
       async (onTimeout) => {

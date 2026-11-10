@@ -40,13 +40,20 @@ test('the reply deadline starts after the last frame, so a long send over BLE do
   assert.ok(transport.frames.length * 2 > 20, 'sending took longer than the reply timeout');
 });
 
-test('frames grow to the negotiated BLE write size', async () => {
-  const small = new SlowTransport(0);
+test('frames never grow past the default chunk (long writes break bless) and shrink to a small MTU', async () => {
+  const plain = new SlowTransport(0);
   const large = new SlowTransport(0, 514);
-  await new BenchClient(small).request(bigPackage);
-  await new BenchClient(large).request(bigPackage);
-  assert.ok(large.frames.length * 3 <= small.frames.length);
-  assert.ok(large.frames.every((frame) => frame.length <= 514));
+  const small = new SlowTransport(0, 100);
+  for (const transport of [plain, large, small]) await new BenchClient(transport).request(bigPackage);
+  assert.equal(large.frames.length, plain.frames.length);
+  assert.ok(small.frames.every((frame) => frame.length <= 100));
+  assert.ok(small.frames.length > plain.frames.length);
+});
+
+test('an MTU too small for any frame is refused before sending', async () => {
+  const tiny = new SlowTransport(0, 20);
+  await assert.rejects(new BenchClient(tiny).request(bigPackage), (error: BenchError) => error.code === 'mtu');
+  assert.equal(tiny.frames.length, 0);
 });
 
 test('progress reports every written frame, ending at the total', async () => {

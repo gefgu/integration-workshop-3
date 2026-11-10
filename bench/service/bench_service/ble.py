@@ -25,18 +25,24 @@ class BleBridge:
     """Feeds RX frames to a Session and hands each reply frame to `notify`, in order."""
 
     def __init__(self, store: BenchStore, notify: Callable[[bytes], None]) -> None:
-        self.session, self.assembler, self.notify = Session(store), FrameAssembler(), notify
+        self.session, self.assembler, self.notify = Session(store), FrameAssembler(join_continuations=True), notify
         self.counter = 0
         self.tracing, self.trace_started, self.trace_count = "", 0.0, 0
 
     def on_write(self, value: bytes | bytearray) -> None:
         text = bytes(value).decode("utf-8", errors="replace")
         self.trace(text)
+        joined = self.assembler.joined
         try:
             message = self.assembler.push(text)
         except ValueError as problem:  # also bad JSON
+            log.warning("BLE: quadro inválido (%d bytes, começa com %r): %s", len(value), text[:24], problem)
             self.reply(error(None, "bad_message", str(problem)))
             return
+        if self.assembler.joined > joined and self.assembler.joined in (1, 10, 100, 1000):
+            # A frame bigger than the MTU arrived as a long write in pieces: joined, but worth knowing.
+            log.warning("BLE: %d pedaço(s) de escrita longa juntados ao quadro anterior (MTU menor que o quadro)",
+                        self.assembler.joined)
         if message is None:
             return
         started = time.monotonic()

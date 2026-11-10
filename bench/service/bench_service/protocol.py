@@ -6,6 +6,7 @@ BLE peripheral (ble.py) feed it the same frames.
 from __future__ import annotations
 
 import json
+import re
 import time
 from typing import Any
 
@@ -31,26 +32,56 @@ def encode_frames(message: dict[str, Any], msg_id: str, chunk: int = DEFAULT_CHU
     return [f"{msg_id}|{i}|{total}|{text[i * chunk:(i + 1) * chunk]}" for i in range(total)]
 
 
+FRAME_HEADER = re.compile(r"([^|]+)\|(\d+)\|(\d+)\|")
+
+
 class FrameAssembler:
-    def __init__(self) -> None:
+    """Rebuilds messages from `msgId|i|n|payload` frames.
+
+    `join_continuations` (BLE): a frame larger than the link's MTU goes out as a long (prepared) write, and bless
+    hands each piece to the bench as if it were a whole value, ignoring its offset. Writes on one link arrive in
+    order, so a piece without a header is the rest of the previous frame: it is appended, and a message whose
+    JSON is still cut stays pending for the next piece instead of being dropped.
+    """
+
+    def __init__(self, join_continuations: bool = False) -> None:
         self._partial: dict[str, dict[str, Any]] = {}
+        self.join_continuations = join_continuations
+        self._last: tuple[str, int] | None = None
+        self.joined = 0  # continuation pieces appended (logged by ble.py)
 
     def push(self, frame: str) -> dict[str, Any] | None:
-        try:
-            msg_id, idx, total, payload = frame.split("|", 3)
-            i, n = int(idx), int(total)
-        except ValueError as error:
-            raise ValueError(f"Quadro inválido: {frame[:40]}") from error
-        if not msg_id or n < 1 or not 0 <= i < n:
+        header = FRAME_HEADER.match(frame)
+        if header is None:
+            if self.join_continuations and self._last and self._last[0] in self._partial:
+                msg_id, i = self._last
+                self._partial[msg_id]["parts"][i] += frame
+                self.joined += 1
+                return self._complete(msg_id)
+            raise ValueError(f"Quadro inválido: {frame[:40]}")
+        msg_id, i, n = header[1], int(header[2]), int(header[3])
+        if n < 1 or not 0 <= i < n:
             raise ValueError(f"Quadro inválido: {frame[:40]}")
         entry = self._partial.get(msg_id)
         if entry is None or entry["total"] != n:
             entry = self._partial[msg_id] = {"total": n, "parts": [None] * n}
-        entry["parts"][i] = payload
+        entry["parts"][i] = frame[header.end():]
+        self._last = (msg_id, i)
+        return self._complete(msg_id)
+
+    def _complete(self, msg_id: str) -> dict[str, Any] | None:
+        entry = self._partial[msg_id]
         if any(part is None for part in entry["parts"]):
             return None
+        try:
+            message = json.loads("".join(entry["parts"]))
+        except ValueError:
+            if self.join_continuations:
+                return None  # the last frame's next long-write piece is still to come
+            del self._partial[msg_id]
+            raise
         del self._partial[msg_id]
-        return json.loads("".join(entry["parts"]))
+        return message
 
 
 class Session:
