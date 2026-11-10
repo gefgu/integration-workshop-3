@@ -569,6 +569,8 @@ function QuizStep({
   const [verdict, setVerdict] = useState(null);
   const option = quiz.options.find((o) => o.id === picked);
   const correct = quiz.prediction ? !!option : verify ? !!verdict?.approved : picked === quiz.correctId;
+  // While the validator checks the answer there is no verdict yet: the pick is neither right nor wrong.
+  const checking = !!option && !quiz.prediction && !!verify && !verdict;
   let msg: string;
   if (!option) msg = 'Escolha uma alternativa.';
   else if (quiz.prediction) msg = 'Hipótese anotada! Continue para testar e comparar com o resultado.';
@@ -609,11 +611,18 @@ function QuizStep({
               key={o.id}
               className="btn-outline"
               data-pad="item"
-              disabled={correct}
+              disabled={correct || checking}
+              aria-busy={checking && picked === o.id}
               style={{
                 textAlign: 'left',
                 background:
-                  picked === o.id ? (correct ? 'var(--color-accent-2-200)' : 'var(--color-accent-200)') : 'transparent',
+                  picked !== o.id
+                    ? 'transparent'
+                    : checking
+                      ? 'var(--color-neutral-200)'
+                      : correct
+                        ? 'var(--color-accent-2-200)'
+                        : 'var(--color-accent-200)',
               }}
               onClick={() => pick(o)}
             >

@@ -176,6 +176,7 @@ export default function ExperimentStep({
         <div className="panel" style={{ maxWidth: 720, width: '100%' }}>
           <label htmlFor="pot-slider" style={{ fontWeight: 700, fontSize: 'calc(14px * var(--text-scale, 1))' }}>
             {spec.slider.label}: {formatOhms(pot.value ?? 1000)}
+            {bench ? ' (joystick: ↑ seleciona a barra, ←/→ ajusta)' : ''}
           </label>
           <input
             id="pot-slider"
