@@ -2,7 +2,8 @@
  * The bench is played like a game console: a joystick (arrows), its click (Enter) and a long press (Escape).
  * Screens do not list their controls here; they tag them with `data-pad`:
  *
- *   data-pad="item"       a choice (modules, students, lessons, quiz options): ↑/↓ move the selection
+ *   data-pad="item"       a choice (modules, students, lessons, quiz options): ↑/↓ move the selection;
+ *                         a selected slider (`<input type="range">`) takes ←/→ to change its value
  *   data-pad="next"       Próximo / Continuar / Começar: →
  *   data-pad="back"       Voltar inside the screen (previous page, leave this screen): ←
  *   data-pad="step-back"  the lesson's previous step, used by ← when the screen has no "back" of its own
@@ -69,6 +70,37 @@ export function pressRole(root: ParentNode, ...roles: string[]): boolean {
   return false;
 }
 
+/** Joystick presses from one end of a slider to the other (the potentiometer bar: 0..100 in 10 presses). */
+export const SLIDER_PRESSES = 10;
+
+/** The value a slider takes after one joystick press (dir -1 = ←, +1 = →), clamped to its range. */
+export function nudgeValue(value: number, min: number, max: number, dir: 1 | -1, presses = SLIDER_PRESSES): number {
+  const step = (max - min) / presses;
+  return Math.min(max, Math.max(min, Math.round((value + dir * step) * 1000) / 1000));
+}
+
+const isSlider = (el: HTMLElement | null): el is HTMLInputElement =>
+  !!el && el.tagName === 'INPUT' && (el as HTMLInputElement).type === 'range';
+
+/**
+ * Moves a selected `<input type="range">` one notch. React only sees a change through the native value setter
+ * plus an `input` event (setting `.value` directly is swallowed by its value tracker).
+ */
+function nudgeSlider(el: HTMLInputElement, dir: 1 | -1): true {
+  const min = Number(el.min || 0);
+  const max = Number(el.max || 100);
+  const next = nudgeValue(Number(el.value), min, max, dir);
+  const setValue =
+    typeof HTMLInputElement === 'undefined'
+      ? undefined
+      : Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set;
+  if (setValue) setValue.call(el, String(next));
+  else el.value = String(next);
+  el.dispatchEvent(new Event('input', { bubbles: true }));
+  el.dispatchEvent(new Event('change', { bubbles: true }));
+  return true;
+}
+
 const hasChoices = (root: ParentNode) => padElements(root, 'item').length > 0;
 /** A screen of choices outside a lesson (inside one, ←/→ are always the steps). */
 const listScreen = (root: ParentNode) => hasChoices(root) && !root.querySelector('.bench-lesson');
@@ -82,6 +114,10 @@ const listScreen = (root: ParentNode) => hasChoices(root) && !root.querySelector
  */
 export function handlePadKey(key: string, root: ParentNode, energize: () => void): boolean {
   const selected = selectedItem(root);
+  // A selected slider (the potentiometer's resistance bar) takes ← / →: less / more, instead of changing step.
+  if (isSlider(selected) && (key === 'ArrowLeft' || key === 'ArrowRight')) {
+    return nudgeSlider(selected, key === 'ArrowRight' ? 1 : -1);
+  }
   switch (key) {
     case 'ArrowUp':
       return hasChoices(root) ? moveSelection(root, 1) !== null : pressRole(root, 'next');
