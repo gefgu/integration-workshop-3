@@ -164,7 +164,8 @@ def test_bad_frames_get_an_error_instead_of_breaking_the_link(tmp_path):
     bridge = BleBridge(BenchStore(tmp_path / "b.sqlite3"), sent.append)
     bridge.on_write(b"sem-cabecalho")
     bridge.on_write(b"\xff\xfe")
+    # Cut JSON waits for the rest of a long write (FrameAssembler join_continuations), so it gets no error.
     bridge.on_write(b"f1|0|1|{nao e json")
     bridge.on_write(b'f2|0|1|{"id":"q2","type":"HELLO","token":"x"}')
     replies = [FrameAssembler().push(frame.decode()) for frame in sent]
-    assert [(r["code"], r["re"]) for r in replies] == [("bad_message", None)] * 3 + [("bad_token", "q2")]
+    assert [(r["code"], r["re"]) for r in replies] == [("bad_message", None)] * 2 + [("bad_token", "q2")]

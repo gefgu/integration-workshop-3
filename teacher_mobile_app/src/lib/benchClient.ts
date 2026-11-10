@@ -37,6 +37,7 @@ export class BenchError extends Error {
 
 /** Room for the "msgId|index|total|" header in front of each chunk (msg ids are ~13 chars). */
 export const FRAME_HEADER_ROOM = 32;
+const MIN_CHUNK = 40;
 
 /** The phone's BLE stack reports write failures in English ("Operation timed out"); say what it means. */
 function sendFailure(cause: unknown): string {
@@ -75,10 +76,17 @@ export class BenchClient {
     });
   }
 
-  /** Payload characters per frame: the transport's write size minus room for the "id|i|n|" header. */
+  /**
+   * Payload characters per frame. Never above DEFAULT_CHUNK: frames larger than the link really carries become
+   * long (prepared) writes, which bless on the Pi splits into garbage, so the bench silently never completes the
+   * message. A smaller negotiated MTU shrinks frames further.
+   */
   frameChunk(): number {
     const max = this.transport.maxFrameBytes;
-    return max ? Math.max(DEFAULT_CHUNK, max - FRAME_HEADER_ROOM) : DEFAULT_CHUNK;
+    if (!max) return DEFAULT_CHUNK;
+    const chunk = Math.min(DEFAULT_CHUNK, max - FRAME_HEADER_ROOM);
+    if (chunk < MIN_CHUNK) throw new BenchError('O Bluetooth deste celular combinou pacotes pequenos demais. Reconecte a bancada.', 'mtu');
+    return chunk;
   }
 
   /** `onFrame(sent, total)` is called after each frame is written, so a long send can show its progress. */
@@ -103,9 +111,16 @@ export class BenchClient {
       });
     });
     reply.catch(() => undefined); // a rejection while frames are still going out is read by the await below
+    let chunk: number;
+    try {
+      chunk = this.frameChunk();
+    } catch (cause) {
+      this.waiting.delete(id);
+      throw cause;
+    }
     try {
       // A module is hundreds of frames over BLE: the reply deadline starts once the last one is written.
-      const frames = encodeFrames({ ...message, id }, nextMsgId('f'), this.frameChunk());
+      const frames = encodeFrames({ ...message, id }, nextMsgId('f'), chunk);
       for (const [i, frame] of frames.entries()) {
         await this.transport.send(frame);
         onFrame?.(i + 1, frames.length);
