@@ -107,12 +107,13 @@ class PipelineBandsTest(unittest.TestCase):
     def test_failed_readings_back_off_and_a_new_body_resets_the_wait(self):
         self.pipeline.registra_bandas([load('exp800'), load('exp1000')])
         self.assertFalse(self.pipeline.precisa_bandas())
-        self.now[0] += 5
+        for _ in range(5):
+            self.pipeline.processa(self.normal)
         self.assertFalse(self.pipeline.precisa_bandas())
-        self.now[0] += 2  # the capacitor is retried after 6 s
+        self.pipeline.processa(self.normal)  # retry after six processed frames
         self.assertTrue(self.pipeline.precisa_bandas())
         self.pipeline.registra_bandas([load('exp800'), load('exp1000')])
-        self.assertEqual(self.pipeline.tentativa_bandas[CAPACITOR]['intervalo'], 12.0)
+        self.assertEqual(self.pipeline.tentativa_bandas[CAPACITOR]['intervalo'], 12)
         self.pipeline.tentativa_bandas[CAPACITOR]['assinatura'] = -self.pipeline.assinaturas[CAPACITOR]
         self.pipeline.processa(self.normal)
         self.assertNotIn(CAPACITOR, self.pipeline.tentativa_bandas)
@@ -121,8 +122,25 @@ class PipelineBandsTest(unittest.TestCase):
     def test_values_are_reverified_periodically(self):
         self.pipeline.registra_bandas([load('exp800'), load('exp1000')])
         self.pipeline.tentativa_bandas.clear()
-        self.now[0] += 21
+        for _ in range(20):
+            self.pipeline.processa(self.normal)
         self.assertTrue(self.pipeline.precisa_bandas())
+
+    def test_same_frames_and_band_reads_ignore_processing_speed(self):
+        from visao.circuito import para_dict
+        outputs = []
+        for interval in (.2, 5.0):
+            now = [0.0]
+            pipeline = PipelineAtual(temporal=False, clock=lambda: now[0])
+            frames = []
+            for index in range(8):
+                now[0] += interval
+                result = pipeline.processa(self.normal)
+                frames.append((para_dict(result.grafo), pipeline.precisa_bandas()))
+                if index == 0:
+                    pipeline.registra_bandas([load('exp800'), load('exp1000')])
+            outputs.append(frames)
+        self.assertEqual(outputs[0], outputs[1])
 
     def test_a_different_body_at_the_same_position_loses_the_value_at_once(self):
         self.pipeline.registra_bandas([load('exp800'), load('exp1000')])

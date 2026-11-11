@@ -1,6 +1,4 @@
 """Conservative reader for the currently assembled half of the board."""
-import time
-
 import cv2 as cv
 import numpy as np
 
@@ -15,11 +13,12 @@ from .sockets import retifica
 
 
 # Band readings: refreshed periodically, failed ones retried later, and a value is
-# forgotten once its body has been out of view this long (swap or removal).
-REVERIFICA_BANDAS_S = 20.0
-RETENTA_BANDAS_S = 6.0
-MAX_RETENTA_BANDAS_S = 60.0
-ESQUECE_VALOR_S = 3.0
+# forgotten once its body has been out of view for this many processed frames.
+REVERIFICA_BANDAS_FRAMES = 20
+RETENTA_BANDAS_FRAMES = 6
+MAX_RETENTA_BANDAS_FRAMES = 60
+ESQUECE_VALOR_FRAMES = 3
+MAX_ESTADO_OBSERVACAO_FRAMES = 1
 
 
 # A read value belongs to the physical body that was read. Its look at normal
@@ -42,12 +41,14 @@ def assinatura_corpo(retificada, linha, coluna):
 
 
 class PipelineAtual:
-    def __init__(self, calibracao=None, temporal=True, clock=time.monotonic):
-        self.registrador = RegistradorParcial(calibracao, clock=clock)
+    def __init__(self, calibracao=None, temporal=True, clock=None):
+        # `clock` is kept for callers from earlier versions. Decisions in this
+        # profile advance with processed frames, not with processing speed.
+        self.frame_index = 0
+        self.registrador = RegistradorParcial(calibracao, clock=lambda: self.frame_index / 5)
         self.temporal = temporal
         self.counts = {}
         self.previous = None
-        self.clock = clock
         self.last_seen = {}
         self.kit_counts = {}
         self.kit_last_seen = {}
@@ -79,15 +80,15 @@ class PipelineAtual:
     def precisa_bandas(self):
         """True when a visible blue body has no recent band reading (the caller then
         lowers the exposure and calls `registra_bandas`). Failed readings are retried
-        only after RETENTA_BANDAS_S, so a body without bands (the capacitor) does not
+        only after RETENTA_BANDAS_FRAMES, so a body without bands (the capacitor) does not
         keep stalling the camera."""
         if not (self.geracao_valida and self.corpos_visiveis):
             return False
-        now = self.clock()
+        now = self.frame_index
         for pos in sorted(self.corpos_visiveis):
             value = self.valores_resistor.get(pos)
             if value is not None:
-                if now - value['lido_em'] >= REVERIFICA_BANDAS_S:
+                if now - value['lido_em'] >= REVERIFICA_BANDAS_FRAMES:
                     return True
             else:
                 attempt = self.tentativa_bandas.get(pos)
@@ -96,14 +97,14 @@ class PipelineAtual:
         return False
 
     def _falhou_bandas(self, pos, now):
-        """Back off for a body that could not be read: 6 s, then doubling up to a minute."""
+        """Back off for a body that could not be read, measured in frames."""
         attempt = self.tentativa_bandas.get(pos)
-        interval = RETENTA_BANDAS_S if attempt is None else min(MAX_RETENTA_BANDAS_S, attempt['intervalo'] * 2)
+        interval = RETENTA_BANDAS_FRAMES if attempt is None else min(MAX_RETENTA_BANDAS_FRAMES, attempt['intervalo'] * 2)
         self.tentativa_bandas[pos] = {'em': now, 'intervalo': interval, 'assinatura': self.assinaturas.get(pos)}
 
     def adia_bandas(self):
         """A reading could not be attempted (the exposure did not take); retry later."""
-        now = self.clock()
+        now = self.frame_index
         for pos in sorted(self.corpos_visiveis):
             if pos not in self.valores_resistor:
                 self._falhou_bandas(pos, now)
@@ -115,7 +116,7 @@ class PipelineAtual:
         decodes agrees. A conflicting reading removes the value instead of keeping the
         old one. Returns {position: ohms or None}."""
         H = self.registrador.H
-        now = self.clock()
+        now = self.frame_index
         if H is None or not self.geracao_valida or not frames:
             return {}
         out = {}
@@ -140,6 +141,7 @@ class PipelineAtual:
         return out
 
     def processa(self, frame):
+        self.frame_index += 1
         registration = self.registrador.atualiza(frame)
         self.geracao_valida = bool(registration['valido'])
         if registration['valido'] and registration['generation'] != self.generation:
@@ -162,7 +164,7 @@ class PipelineAtual:
         result.observacoes = np.full((2, 6, 11), 'unknown', dtype=object)
         result.atualidade = np.full((2, 6, 11), 'unknown', dtype=object)
         result.visiveis = np.zeros((2, 6, 11), dtype=bool)
-        now = self.clock()
+        now = self.frame_index
         if not registration['valido']:
             self.counts.clear()
             self.kit_counts.clear()
@@ -189,7 +191,7 @@ class PipelineAtual:
                         self.tentativa_bandas.pop(pos, None)
                         continue
                     self.valores_resistor[pos]['visto_em'] = now
-                elif now - self.valores_resistor[pos]['visto_em'] > ESQUECE_VALOR_S:
+                elif now - self.valores_resistor[pos]['visto_em'] > ESQUECE_VALOR_FRAMES:
                     del self.valores_resistor[pos]
             # A body whose bands were read keeps its value (the reading is position
             # based and expires if the body leaves); the rest stay unknown.
@@ -292,9 +294,9 @@ class PipelineAtual:
                     self.last_seen[(row, col)] = now
             result.grafo = monta_grafo(result.componentes)
             result.grafo_eletrico = contrai_jumpers(result.grafo)
-        self.last_seen = {key: when for key, when in self.last_seen.items() if now - when <= 2.0}
-        self.empty_last_seen = {key: when for key, when in self.empty_last_seen.items() if now - when <= 2.0}
-        self.kit_last_seen = {key: when for key, when in self.kit_last_seen.items() if now - when <= 2.0}
+        self.last_seen = {key: when for key, when in self.last_seen.items() if now - when <= MAX_ESTADO_OBSERVACAO_FRAMES}
+        self.empty_last_seen = {key: when for key, when in self.empty_last_seen.items() if now - when <= MAX_ESTADO_OBSERVACAO_FRAMES}
+        self.kit_last_seen = {key: when for key, when in self.kit_last_seen.items() if now - when <= MAX_ESTADO_OBSERVACAO_FRAMES}
         for (_, _, row, first, last), _ in self.kit_last_seen.items():
             for col in range(first, last + 1):
                 if result.atualidade[0, row, col] == 'unknown':

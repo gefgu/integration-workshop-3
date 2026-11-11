@@ -409,7 +409,7 @@
     "available": true,
     "calibration": "automatic",
     "confirming": 0,
-    "fps": 5.8,
+    "fps": 7.0,
     "frame_size": [
       1280,
       720
@@ -450,7 +450,7 @@
     "recalibrating": false,
     "running": true,
     "stable_frames": 3,
-    "uncertain": true,
+    "uncertain": false,
     "unknown": [
       {
         "a": 5,
@@ -469,8 +469,8 @@
         "type": "peca_sem_tipo"
       }
     ],
-    "updated_at": 1700000001.2,
+    "updated_at": 1700000001.0,
     "valid": true,
-    "version": 6
+    "version": 5
   }
 ]
