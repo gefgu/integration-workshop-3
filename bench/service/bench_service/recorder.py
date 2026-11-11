@@ -47,6 +47,10 @@ class RecordingCamera:
     def get(self, prop):
         return self.camera.get(prop)
 
+    def note_control(self, name, value):
+        """Record a successful control command issued outside OpenCV."""
+        self.commands[name] = float(value)
+
     def read(self):
         ok, packet = self.camera.read()
         if not ok:

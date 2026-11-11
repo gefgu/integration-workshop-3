@@ -42,6 +42,7 @@ def test_original_jpeg_bytes_and_per_frame_commands_are_recorded(tmp_path):
     fake = FakeCapture(np.frombuffer(original, dtype=np.uint8).reshape(1, -1))
     camera = RecordingCamera(cv, fake, tmp_path, clock=lambda: 123.0)
     camera.set(cv.CAP_PROP_EXPOSURE, 1000)
+    camera.note_control('power_line_frequency', 2)
     ok, first = camera.read()
     camera.set(cv.CAP_PROP_EXPOSURE, 1300)
     camera.read()
@@ -53,6 +54,7 @@ def test_original_jpeg_bytes_and_per_frame_commands_are_recorded(tmp_path):
     assert [r['index'] for r in records] == [0, 1]
     assert [r['commanded_exposure'] for r in records] == [1000, 1300]
     assert records[0]['commanded_controls']['exposure'] == 1000
+    assert records[0]['commanded_controls']['power_line_frequency'] == 2
     assert all(r['timestamp'] == 123.0 and r['format'] == 'MJPEG' for r in records)
     assert fake.released
 

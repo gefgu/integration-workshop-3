@@ -145,3 +145,22 @@ adicione seu próprio `expected.json` e passe o diretório ao comando de replay.
 Os controles registrados são comandos, não confirmação de leitura da câmera;
 o suporte do backend e o resultado da gravação ainda precisam ser verificados
 na bancada e no Raspberry Pi.
+
+Para a calibração futura, forneça um JSON de controles iniciais explicitamente
+escolhidos para a câmera. Os campos numéricos obrigatórios são `gain`,
+`white_balance_temperature`, `brightness`, `contrast`, `saturation`, `gamma`
+e `power_line_frequency` (menu V4L2: 0 desativado, 1 50 Hz, 2 60 Hz, 3 auto).
+`focus` pode ser `null` se a câmera não tiver foco manual. Não há valores
+medidos desses controles no repositório. Na bancada, com a luz e o enquadramento
+definitivos, use:
+
+```bash
+python -m bench_service.calibrate_camera --camera 0 --base-settings controles-base.json --output controles-calibrados.json
+python -m bench_service --camera 0 --camera-settings controles-calibrados.json --record GRAVACAO_NOVA
+```
+
+A varredura usa o brilho médio do centro do quadro e desempata pela menor
+exposição. A seleção e as configurações ainda precisam de verificação ao vivo;
+se o backend recusar um controle, o serviço não inicia a leitura. Sem arquivo
+de controles, a exposição 1300 é apenas uma configuração provisória de software,
+e os demais controles não foram fixados por esta configuração padrão.

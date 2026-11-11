@@ -10,11 +10,13 @@ picture annotated by the vision debug drawing (SFR17.1).
 from __future__ import annotations
 
 import logging
+import json
+import math
 import sys
 import threading
 import time
 from collections import deque
-from dataclasses import dataclass
+from dataclasses import dataclass, fields
 from pathlib import Path
 from typing import Any
 
@@ -96,6 +98,8 @@ def _import_visao(profile: str = "current", calibration: str | None = None):
 # Provisional saved-picture setting, in V4L2 100 µs units. The physical
 # camera's controls still need a later on-bench calibration.
 DEFAULT_EXPOSURE = 1300.0
+REQUIRED_CAMERA_CONTROLS = ('gain', 'white_balance_temperature', 'brightness', 'contrast',
+                            'saturation', 'gamma', 'power_line_frequency')
 # At 0.7 fps a frame normally takes about 1.4 seconds; allow several slow
 # frames but never expose a frozen camera image as an up-to-date circuit.
 MAX_FRAME_AGE_S = 8.0
@@ -157,13 +161,50 @@ def open_camera(cv: Any, index: int) -> Any:
 
 @dataclass(frozen=True)
 class CameraSettings:
-    """A commanded exposure, independent of possibly stale V4L2 readback."""
+    """Explicit commanded controls; readback is diagnostic and may be stale."""
 
     exposure: float = DEFAULT_EXPOSURE
+    gain: float | None = None
+    white_balance_temperature: float | None = None
+    brightness: float | None = None
+    contrast: float | None = None
+    saturation: float | None = None
+    gamma: float | None = None
+    power_line_frequency: int | None = None
+    focus: float | None = None
 
-    def apply(self, cv: Any, cap: Any) -> None:
-        for prop, value in ((cv.CAP_PROP_AUTO_WB, 0), (cv.CAP_PROP_AUTO_EXPOSURE, 1),
-                            (cv.CAP_PROP_EXPOSURE, self.exposure)):
+    @classmethod
+    def from_file(cls, path: str | Path) -> 'CameraSettings':
+        values = json.loads(Path(path).read_text(encoding='utf-8'))
+        names = {field.name for field in fields(cls)}
+        if not isinstance(values, dict) or set(values) - names:
+            raise ValueError('camera settings must be an object with known control names')
+        missing = [name for name in REQUIRED_CAMERA_CONTROLS if values.get(name) is None]
+        if missing:
+            raise ValueError('camera settings missing explicit controls: ' + ', '.join(missing))
+        for name, value in values.items():
+            if value is not None and (isinstance(value, bool) or not isinstance(value, (int, float))
+                                      or not math.isfinite(value)):
+                raise ValueError(f'invalid camera control {name}')
+        if values.get('exposure', DEFAULT_EXPOSURE) is None or values.get('exposure', DEFAULT_EXPOSURE) <= 0:
+            raise ValueError('camera exposure must be positive')
+        if values.get('power_line_frequency') not in (None, 0, 1, 2, 3):
+            raise ValueError('power_line_frequency must be a V4L2 menu value 0–3')
+        return cls(**values)
+
+    def apply(self, cv: Any, cap: Any, set_power_line=None) -> None:
+        controls = [('CAP_PROP_AUTO_WB', 0), ('CAP_PROP_AUTO_EXPOSURE', 1)]
+        controls += [(prop, value) for prop, value in (
+            ('CAP_PROP_EXPOSURE', self.exposure), ('CAP_PROP_GAIN', self.gain),
+            ('CAP_PROP_WB_TEMPERATURE', self.white_balance_temperature),
+            ('CAP_PROP_BRIGHTNESS', self.brightness), ('CAP_PROP_CONTRAST', self.contrast),
+            ('CAP_PROP_SATURATION', self.saturation), ('CAP_PROP_GAMMA', self.gamma)) if value is not None]
+        if self.focus is not None:
+            controls += [('CAP_PROP_AUTOFOCUS', 0), ('CAP_PROP_FOCUS', self.focus)]
+        for name, value in controls:
+            if not hasattr(cv, name):
+                raise RuntimeError(f'OpenCV does not provide {name}')
+            prop = getattr(cv, name)
             accepted = cap.set(prop, value)
             try:
                 readback = cap.get(prop)
@@ -173,6 +214,12 @@ class CameraSettings:
                      prop, value, accepted, readback)
             if not accepted:
                 raise RuntimeError(f'camera rejected control {prop}={value}')
+        if self.power_line_frequency is not None:
+            if set_power_line is None:
+                raise RuntimeError('power-line control requires V4L2 access')
+            readback = set_power_line(self.power_line_frequency)
+            log.info('camera power-line frequency: requested %s, readback %s',
+                     self.power_line_frequency, readback)
 
 
 class ExposureRestoreError(RuntimeError):
@@ -232,7 +279,7 @@ class VisionSource:
 
     def __init__(self, camera: int | None = None, image: str | None = None,
                  profile: str = "current", calibration: str | None = None,
-                 record: str | None = None) -> None:
+                 record: str | None = None, camera_settings: str | None = None) -> None:
         if profile not in ("current", "legacy"):
             raise ValueError(f"unknown vision profile {profile!r}")
         if record and image:
@@ -240,6 +287,7 @@ class VisionSource:
         self.camera, self.image = camera, image
         self.profile, self.calibration = profile, calibration
         self.record = record
+        self.camera_settings = camera_settings
         self._lock = threading.Lock()
         self._recalibrate = threading.Event()
         self._stop = threading.Event()
@@ -308,10 +356,18 @@ class VisionSource:
                     self._set(valid=False, reason=f"Não consegui gravar a câmera: {error}")
                     return
             self._set(reason="Configurando a câmera…")
-            settings = CameraSettings()
             try:
-                settings.apply(cv, cap)
-            except RuntimeError as error:
+                if not self.camera_settings:
+                    log.warning('camera controls are provisional: no camera settings file was supplied')
+                settings = CameraSettings.from_file(self.camera_settings) if self.camera_settings else CameraSettings()
+                power_line = None
+                if settings.power_line_frequency is not None:
+                    from .v4l2_controls import set_power_line_frequency
+                    power_line = lambda value: set_power_line_frequency(self.camera or 0, value)
+                settings.apply(cv, cap, power_line)
+                if settings.power_line_frequency is not None and hasattr(cap, 'note_control'):
+                    cap.note_control('power_line_frequency', settings.power_line_frequency)
+            except (OSError, ValueError, RuntimeError) as error:
                 cap.release()
                 self._set(valid=False, reason=f"Não consegui configurar a câmera: {error}")
                 return

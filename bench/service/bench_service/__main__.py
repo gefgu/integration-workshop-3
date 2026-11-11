@@ -22,6 +22,8 @@ def main() -> None:
     parser.add_argument("--vision-image", default=None, help="demo: run the vision pipeline on this photo in a loop")
     parser.add_argument("--record", default=None, metavar="DIR",
                         help="record original MJPEG camera frames and control commands for later replay")
+    parser.add_argument("--camera-settings", default=None, metavar="FILE",
+                        help="JSON file of explicitly commanded camera controls")
     parser.add_argument("--vision-profile", choices=("current", "legacy"), default=None,
                         help="board profile: current (default, half-populated kit board) or legacy (full board)")
     parser.add_argument("--calibration", default=None,
@@ -46,6 +48,8 @@ def main() -> None:
         os.environ["TEDTRONICS_BENCH_CALIBRATION"] = os.path.abspath(args.calibration)
     if args.record:
         os.environ["TEDTRONICS_BENCH_RECORD"] = os.path.abspath(args.record)
+    if args.camera_settings:
+        os.environ["TEDTRONICS_BENCH_CAMERA_SETTINGS"] = os.path.abspath(args.camera_settings)
     if args.controls:
         os.environ["TEDTRONICS_BENCH_CONTROLS"] = args.controls
     if not args.ble:
