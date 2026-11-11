@@ -135,6 +135,8 @@ O JSON inclui cada publicação, erros contra `expected.json`, maior sequência
 correta, valores incorretos, corpos desconhecidos e origem de cada quadro.
 As variações e exposições interpoladas são sintéticas; `--no-perturb` desliga
 as variações. A exposição das fotos `normal-*` é uma hipótese de replay.
+Acrescente `--determinism` para comparar bytes de 20 execuções no mesmo
+processo e duas em processos separados; essa verificação pode demorar bastante.
 
 Quando a bancada estiver disponível, `python -m bench_service --camera 0
 --record DIRETORIO` solicita os quadros MJPEG originais e grava os bytes e um

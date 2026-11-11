@@ -5,7 +5,7 @@ import json
 import cv2 as cv
 import numpy as np
 
-from bench_service.replay import ReplayCamera, replay, score
+from bench_service.replay import ReplayCamera, check_determinism, replay, score
 
 FIXTURES = Path(__file__).resolve().parents[3] / 'visao/fixtures/current/bench-2026-11-11'
 
@@ -91,3 +91,11 @@ def test_service_loop_does_not_consult_public_timeout_view(monkeypatch):
     result = replay(FIXTURES, frames=3, width=1280, height=720, perturb=False)
     assert len(result['frames']) == 3
     assert all(frame['valid'] for frame in result['frames'])
+
+
+def test_saved_picture_replay_is_byte_identical_across_processes():
+    expected = json.loads((FIXTURES / 'expected.json').read_text())
+    result = check_determinism(FIXTURES, expected, frames=1, warmup=0, perturb=True,
+                               runs=20, subprocesses=2)
+    assert result == {'identical': True, 'in_process_runs': 20, 'subprocess_runs': 2,
+                      'different_in_process': [], 'different_subprocesses': []}

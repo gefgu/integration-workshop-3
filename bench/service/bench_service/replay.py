@@ -13,7 +13,10 @@ from __future__ import annotations
 import argparse
 import copy
 import json
+import os
 import re
+import subprocess
+import sys
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -221,6 +224,39 @@ def score(frames, expected, warmup=0):
             'unknown_bodies': unknown_bodies}
 
 
+def canonical_result(directory, expected, frames, width, height, seed, series, perturb, warmup):
+    result = replay(directory, frames, width, height, seed, series, perturb)
+    return json.dumps({'score': score(result['frames'], expected, warmup), **result},
+                      ensure_ascii=False, sort_keys=True, separators=(',', ':')).encode('utf-8')
+
+
+def check_determinism(directory, expected, frames=35, width=1280, height=720, seed=0,
+                      series='a', perturb=True, warmup=5, runs=20, subprocesses=2):
+    """Compare complete canonical replay output in-process and in fresh interpreters."""
+    if runs < 1 or subprocesses < 0:
+        raise ValueError('invalid replay repetition counts')
+    reference = canonical_result(directory, expected, frames, width, height, seed, series, perturb, warmup)
+    different_in_process = []
+    for index in range(1, runs):
+        if canonical_result(directory, expected, frames, width, height, seed, series, perturb, warmup) != reference:
+            different_in_process.append(index)
+    different_subprocesses = []
+    for index in range(subprocesses):
+        command = [sys.executable, '-m', 'bench_service.replay', str(directory), '--frames', str(frames),
+                   '--width', str(width), '--height', str(height), '--seed', str(seed), '--series', series,
+                   '--warmup', str(warmup)]
+        if not perturb:
+            command.append('--no-perturb')
+        env = os.environ.copy()
+        env['PYTHONHASHSEED'] = str(index + 1)
+        process = subprocess.run(command, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+        if process.stdout.rstrip(b'\n') != reference:
+            different_subprocesses.append(index)
+    return {'identical': not different_in_process and not different_subprocesses,
+            'in_process_runs': runs, 'subprocess_runs': subprocesses,
+            'different_in_process': different_in_process, 'different_subprocesses': different_subprocesses}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('directory', type=Path)
@@ -231,13 +267,19 @@ def main():
     parser.add_argument('--seed', type=int, default=0)
     parser.add_argument('--series', choices=('a', 'b'), default='a')
     parser.add_argument('--no-perturb', action='store_true')
+    parser.add_argument('--determinism', action='store_true',
+                        help='compare 20 in-process replays and two subprocess replays')
     args = parser.parse_args()
     if args.frames < 1 or not 0 <= args.warmup < args.frames:
         parser.error('frames must be positive and warmup must be less than frames')
     expected = json.loads((args.directory / 'expected.json').read_text())
-    result = replay(args.directory, args.frames, args.width, args.height, args.seed, args.series, not args.no_perturb)
-    print(json.dumps({'score': score(result['frames'], expected, args.warmup), **result},
-                     ensure_ascii=False, sort_keys=True, separators=(',', ':')))
+    if args.determinism:
+        result = check_determinism(args.directory, expected, args.frames, args.width, args.height, args.seed,
+                                   args.series, not args.no_perturb, args.warmup)
+        print(json.dumps(result, ensure_ascii=False, sort_keys=True, separators=(',', ':')))
+    else:
+        print(canonical_result(args.directory, expected, args.frames, args.width, args.height, args.seed,
+                               args.series, not args.no_perturb, args.warmup).decode('utf-8'))
 
 
 if __name__ == '__main__':
