@@ -1,0 +1,476 @@
+[
+  {
+    "available": true,
+    "calibration": "automatic",
+    "confirming": 2,
+    "fps": null,
+    "frame_size": [
+      1280,
+      720
+    ],
+    "partial": true,
+    "pieces": [],
+    "profile": "current",
+    "reason": "",
+    "recalibrating": false,
+    "running": true,
+    "stable_frames": 3,
+    "uncertain": false,
+    "unknown": [
+      {
+        "a": 2,
+        "b": 3,
+        "id": "sem_tipo_C1_1",
+        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "row": 1,
+        "type": "peca_sem_tipo"
+      },
+      {
+        "a": 5,
+        "b": 6,
+        "id": "sem_tipo_C1_4",
+        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "row": 1,
+        "type": "peca_sem_tipo"
+      },
+      {
+        "a": 9,
+        "b": 10,
+        "id": "sem_tipo_C1_8",
+        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "row": 1,
+        "type": "peca_sem_tipo"
+      },
+      {
+        "a": 3,
+        "b": 4,
+        "id": "sem_tipo_C3_2",
+        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "row": 3,
+        "type": "peca_sem_tipo"
+      }
+    ],
+    "updated_at": 1700000000.0,
+    "valid": true,
+    "version": 1
+  },
+  {
+    "available": true,
+    "calibration": "automatic",
+    "confirming": 3,
+    "fps": null,
+    "frame_size": [
+      1280,
+      720
+    ],
+    "partial": true,
+    "pieces": [],
+    "profile": "current",
+    "reason": "",
+    "recalibrating": false,
+    "running": true,
+    "stable_frames": 3,
+    "uncertain": false,
+    "unknown": [
+      {
+        "a": 5,
+        "b": 6,
+        "id": "sem_tipo_C1_4",
+        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "row": 1,
+        "type": "peca_sem_tipo"
+      },
+      {
+        "a": 9,
+        "b": 10,
+        "id": "sem_tipo_C1_8",
+        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "row": 1,
+        "type": "peca_sem_tipo"
+      }
+    ],
+    "updated_at": 1700000000.0,
+    "valid": true,
+    "version": 2
+  },
+  {
+    "available": true,
+    "calibration": "automatic",
+    "confirming": 4,
+    "fps": 10.0,
+    "frame_size": [
+      1280,
+      720
+    ],
+    "partial": true,
+    "pieces": [
+      {
+        "a": 10,
+        "b": 11,
+        "id": "vermelho_2@C5:9-10",
+        "row": 5,
+        "type": "bateria"
+      }
+    ],
+    "profile": "current",
+    "reason": "",
+    "recalibrating": false,
+    "running": true,
+    "stable_frames": 3,
+    "uncertain": false,
+    "unknown": [
+      {
+        "a": 5,
+        "b": 6,
+        "id": "sem_tipo_C1_4",
+        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "row": 1,
+        "type": "peca_sem_tipo"
+      },
+      {
+        "a": 9,
+        "b": 10,
+        "id": "sem_tipo_C1_8",
+        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "row": 1,
+        "type": "peca_sem_tipo"
+      }
+    ],
+    "updated_at": 1700000000.2,
+    "valid": true,
+    "version": 3
+  },
+  {
+    "available": true,
+    "calibration": "automatic",
+    "confirming": 1,
+    "fps": 7.5,
+    "frame_size": [
+      1280,
+      720
+    ],
+    "partial": true,
+    "pieces": [
+      {
+        "a": 10,
+        "b": 11,
+        "id": "vermelho_2@C5:9-10",
+        "row": 5,
+        "type": "bateria"
+      },
+      {
+        "a": 2,
+        "b": 3,
+        "id": "resistor_220@C1:1-2",
+        "row": 1,
+        "type": "resistor_220"
+      },
+      {
+        "a": 3,
+        "b": 4,
+        "id": "resistor_470@C3:2-3",
+        "row": 3,
+        "type": "resistor_470"
+      }
+    ],
+    "profile": "current",
+    "reason": "",
+    "recalibrating": false,
+    "running": true,
+    "stable_frames": 3,
+    "uncertain": false,
+    "unknown": [
+      {
+        "a": 5,
+        "b": 6,
+        "id": "sem_tipo_C1_4",
+        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "row": 1,
+        "type": "peca_sem_tipo"
+      },
+      {
+        "a": 9,
+        "b": 10,
+        "id": "sem_tipo_C1_8",
+        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "row": 1,
+        "type": "peca_sem_tipo"
+      }
+    ],
+    "updated_at": 1700000000.4,
+    "valid": true,
+    "version": 4
+  },
+  {
+    "available": true,
+    "calibration": "automatic",
+    "confirming": 0,
+    "fps": 6.7,
+    "frame_size": [
+      1280,
+      720
+    ],
+    "partial": true,
+    "pieces": [
+      {
+        "a": 10,
+        "b": 11,
+        "id": "vermelho_2@C5:9-10",
+        "row": 5,
+        "type": "bateria"
+      },
+      {
+        "a": 2,
+        "b": 3,
+        "id": "resistor_220@C1:1-2",
+        "row": 1,
+        "type": "resistor_220"
+      },
+      {
+        "a": 3,
+        "b": 4,
+        "id": "resistor_470@C3:2-3",
+        "row": 3,
+        "type": "resistor_470"
+      },
+      {
+        "a": 8,
+        "b": 9,
+        "id": "led@C3:7-8",
+        "row": 3,
+        "type": "led"
+      }
+    ],
+    "profile": "current",
+    "reason": "",
+    "recalibrating": false,
+    "running": true,
+    "stable_frames": 3,
+    "uncertain": false,
+    "unknown": [
+      {
+        "a": 5,
+        "b": 6,
+        "id": "sem_tipo_C1_4",
+        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "row": 1,
+        "type": "peca_sem_tipo"
+      },
+      {
+        "a": 9,
+        "b": 10,
+        "id": "sem_tipo_C1_8",
+        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "row": 1,
+        "type": "peca_sem_tipo"
+      }
+    ],
+    "updated_at": 1700000000.6,
+    "valid": true,
+    "version": 5
+  },
+  {
+    "available": true,
+    "calibration": "automatic",
+    "confirming": 0,
+    "fps": 6.2,
+    "frame_size": [
+      1280,
+      720
+    ],
+    "partial": true,
+    "pieces": [
+      {
+        "a": 10,
+        "b": 11,
+        "id": "vermelho_2@C5:9-10",
+        "row": 5,
+        "type": "bateria"
+      },
+      {
+        "a": 2,
+        "b": 3,
+        "id": "resistor_220@C1:1-2",
+        "row": 1,
+        "type": "resistor_220"
+      },
+      {
+        "a": 3,
+        "b": 4,
+        "id": "resistor_470@C3:2-3",
+        "row": 3,
+        "type": "resistor_470"
+      },
+      {
+        "a": 8,
+        "b": 9,
+        "id": "led@C3:7-8",
+        "row": 3,
+        "type": "led"
+      }
+    ],
+    "profile": "current",
+    "reason": "",
+    "recalibrating": false,
+    "running": true,
+    "stable_frames": 3,
+    "uncertain": false,
+    "unknown": [
+      {
+        "a": 5,
+        "b": 6,
+        "id": "sem_tipo_C1_4",
+        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "row": 1,
+        "type": "peca_sem_tipo"
+      },
+      {
+        "a": 9,
+        "b": 10,
+        "id": "sem_tipo_C1_8",
+        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "row": 1,
+        "type": "peca_sem_tipo"
+      }
+    ],
+    "updated_at": 1700000000.8,
+    "valid": true,
+    "version": 5
+  },
+  {
+    "available": true,
+    "calibration": "automatic",
+    "confirming": 0,
+    "fps": 6.0,
+    "frame_size": [
+      1280,
+      720
+    ],
+    "partial": true,
+    "pieces": [
+      {
+        "a": 10,
+        "b": 11,
+        "id": "vermelho_2@C5:9-10",
+        "row": 5,
+        "type": "bateria"
+      },
+      {
+        "a": 2,
+        "b": 3,
+        "id": "resistor_220@C1:1-2",
+        "row": 1,
+        "type": "resistor_220"
+      },
+      {
+        "a": 3,
+        "b": 4,
+        "id": "resistor_470@C3:2-3",
+        "row": 3,
+        "type": "resistor_470"
+      },
+      {
+        "a": 8,
+        "b": 9,
+        "id": "led@C3:7-8",
+        "row": 3,
+        "type": "led"
+      }
+    ],
+    "profile": "current",
+    "reason": "",
+    "recalibrating": false,
+    "running": true,
+    "stable_frames": 3,
+    "uncertain": false,
+    "unknown": [
+      {
+        "a": 5,
+        "b": 6,
+        "id": "sem_tipo_C1_4",
+        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "row": 1,
+        "type": "peca_sem_tipo"
+      },
+      {
+        "a": 9,
+        "b": 10,
+        "id": "sem_tipo_C1_8",
+        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "row": 1,
+        "type": "peca_sem_tipo"
+      }
+    ],
+    "updated_at": 1700000001.0,
+    "valid": true,
+    "version": 5
+  },
+  {
+    "available": true,
+    "calibration": "automatic",
+    "confirming": 0,
+    "fps": 5.8,
+    "frame_size": [
+      1280,
+      720
+    ],
+    "partial": true,
+    "pieces": [
+      {
+        "a": 10,
+        "b": 11,
+        "id": "vermelho_2@C5:9-10",
+        "row": 5,
+        "type": "bateria"
+      },
+      {
+        "a": 2,
+        "b": 3,
+        "id": "resistor_220@C1:1-2",
+        "row": 1,
+        "type": "resistor_220"
+      },
+      {
+        "a": 3,
+        "b": 4,
+        "id": "resistor_470@C3:2-3",
+        "row": 3,
+        "type": "resistor_470"
+      },
+      {
+        "a": 8,
+        "b": 9,
+        "id": "led@C3:7-8",
+        "row": 3,
+        "type": "led"
+      }
+    ],
+    "profile": "current",
+    "reason": "",
+    "recalibrating": false,
+    "running": true,
+    "stable_frames": 3,
+    "uncertain": true,
+    "unknown": [
+      {
+        "a": 5,
+        "b": 6,
+        "id": "sem_tipo_C1_4",
+        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "row": 1,
+        "type": "peca_sem_tipo"
+      },
+      {
+        "a": 9,
+        "b": 10,
+        "id": "sem_tipo_C1_8",
+        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "row": 1,
+        "type": "peca_sem_tipo"
+      }
+    ],
+    "updated_at": 1700000001.2,
+    "valid": true,
+    "version": 6
+  }
+]
