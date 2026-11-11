@@ -154,7 +154,6 @@ def replay(directory, frames=35, width=1280, height=720, seed=0, series='a', per
     fake_time = SimpleNamespace(monotonic=clock.monotonic, time=clock.time, sleep=clock.sleep)
     make_pipeline = lambda: PipelineAtual(clock=clock.monotonic)
     with patch.object(vision, 'time', fake_time), patch.object(vision, 'open_camera', return_value=camera), \
-            patch.object(vision, 'settle_and_lock'), \
             patch.object(vision, '_import_visao', return_value=(make_pipeline, para_dict, debug)):
         source._run()
     return {'frames': state.published, 'reads': camera.read_log}

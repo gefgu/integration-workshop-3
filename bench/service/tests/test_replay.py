@@ -71,3 +71,11 @@ def test_normal_saved_picture_publication_snapshot():
     expected = json.loads((FIXTURES / 'snapshot-normal.json').read_text())
     actual = replay(FIXTURES, frames=len(expected), width=1280, height=720, perturb=False)
     assert actual['frames'] == expected
+
+
+def test_service_replay_does_not_use_stale_exposure_readback(monkeypatch):
+    monkeypatch.setattr(ReplayCamera, 'get', lambda self, prop: 9999.0)
+    expected = json.loads((FIXTURES / 'snapshot-normal.json').read_text())[:3]
+    actual = replay(FIXTURES, frames=3, width=1280, height=720, perturb=False)
+    assert actual['frames'] == expected
+    assert {read['requested_exposure'] for read in actual['reads']} >= {1000, 1100, 1300}

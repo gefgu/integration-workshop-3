@@ -14,6 +14,7 @@ import sys
 import threading
 import time
 from collections import deque
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -92,7 +93,9 @@ def _import_visao(profile: str = "current", calibration: str | None = None):
     return (lambda: PipelineAtual(calibration)), para_dict, debug
 
 
-SETTLE_S = 2.0
+# Provisional saved-picture setting, in V4L2 100 µs units. The physical
+# camera's controls still need a later on-bench calibration.
+DEFAULT_EXPOSURE = 1300.0
 # At 0.7 fps a frame normally takes about 1.4 seconds; allow several slow
 # frames but never expose a frozen camera image as an up-to-date circuit.
 MAX_FRAME_AGE_S = 8.0
@@ -152,14 +155,28 @@ def open_camera(cv: Any, index: int) -> Any:
     return abre_camera(index, False)
 
 
-def settle_and_lock(cv: Any, cap: Any, seconds: float = SETTLE_S) -> None:
-    """Lets auto exposure / white balance adapt to the room, then locks them (as `--travar-camera`): the stripe
-    and piece colors in visao/config.py were measured with a locked camera, and auto changes shift them."""
-    deadline = time.monotonic() + seconds
-    while time.monotonic() < deadline:
-        cap.read()
-    cap.set(cv.CAP_PROP_AUTO_WB, 0)
-    cap.set(cv.CAP_PROP_AUTO_EXPOSURE, 1)  # V4L2: 1 = manual
+@dataclass(frozen=True)
+class CameraSettings:
+    """A commanded exposure, independent of possibly stale V4L2 readback."""
+
+    exposure: float = DEFAULT_EXPOSURE
+
+    def apply(self, cv: Any, cap: Any) -> None:
+        for prop, value in ((cv.CAP_PROP_AUTO_WB, 0), (cv.CAP_PROP_AUTO_EXPOSURE, 1),
+                            (cv.CAP_PROP_EXPOSURE, self.exposure)):
+            accepted = cap.set(prop, value)
+            try:
+                readback = cap.get(prop)
+            except Exception as error:
+                readback = f'unavailable: {error}'
+            log.info('camera control %s: requested %s, accepted %s, readback %s',
+                     prop, value, accepted, readback)
+            if not accepted:
+                raise RuntimeError(f'camera rejected control {prop}={value}')
+
+
+class ExposureRestoreError(RuntimeError):
+    """The commanded normal exposure could not be confirmed by frame brightness."""
 
 
 # Resistor bands wash out at the normal exposure (glare turns red, brown and orange into one
@@ -169,7 +186,6 @@ BAND_EXPOSURES = (1000, 1100)
 BAND_FRAMES = 2
 BAND_DARKER = .8            # a band frame must be at least this much darker than the normal one
 RESTORE_TOLERANCE = .12     # the restored frame must match the normal brightness within this
-V4L2_AUTO_EXPOSURE = 3      # V4L2 aperture-priority (auto) value, for the fallback re-lock
 
 
 def _wait_for_brightness(cap: Any, accept, limit: int = 45) -> Any:
@@ -189,8 +205,9 @@ def _wait_for_brightness(cap: Any, accept, limit: int = 45) -> Any:
 def read_bands_frames(cv: Any, cap: Any, locked: float, reference: float) -> tuple[list[Any], float]:
     """Lowers the exposure, collects frames for the band reader, restores the exposure.
 
-    Returns (frames, exposure to use as the locked value afterwards). If the exposure does not take
-    or cannot be restored exactly, the camera is re-locked from auto exposure as at start-up."""
+    Returns (frames, commanded normal exposure). Refuse further processing if
+    the normal image brightness cannot be restored; never re-lock from auto or
+    substitute a camera readback for the commanded value."""
     frames: list[Any] = []
     try:
         for exposure in BAND_EXPOSURES:
@@ -206,11 +223,7 @@ def read_bands_frames(cv: Any, cap: Any, locked: float, reference: float) -> tup
         cap.set(cv.CAP_PROP_EXPOSURE, locked)
         restored = _wait_for_brightness(cap, lambda mean: abs(mean - reference) <= reference * RESTORE_TOLERANCE)
         if restored is None:
-            log.warning("band read: exposure %s did not restore; re-locking from auto", locked)
-            cap.set(cv.CAP_PROP_AUTO_EXPOSURE, V4L2_AUTO_EXPOSURE)
-            cap.set(cv.CAP_PROP_AUTO_WB, 1)
-            settle_and_lock(cv, cap)
-            locked = cap.get(cv.CAP_PROP_EXPOSURE)
+            raise ExposureRestoreError(f'normal exposure {locked} did not restore')
     return frames, locked
 
 
@@ -282,9 +295,15 @@ class VisionSource:
             if not cap.isOpened():
                 self._set(available=False, reason="Nenhuma câmera encontrada. Confira o cabo da câmera.")
                 return
-            self._set(reason="Ajustando a luz da câmera…")
-            settle_and_lock(cv, cap)
-            locked_exposure = cap.get(cv.CAP_PROP_EXPOSURE)
+            self._set(reason="Configurando a câmera…")
+            settings = CameraSettings()
+            try:
+                settings.apply(cv, cap)
+            except RuntimeError as error:
+                cap.release()
+                self._set(valid=False, reason=f"Não consegui configurar a câmera: {error}")
+                return
+            locked_exposure = settings.exposure
         pipeline = make_pipeline()
         held = PieceHold()
         from visao import config as vision_config
@@ -335,7 +354,12 @@ class VisionSource:
                         self._jpeg = jpeg.tobytes()
                 if cap is not None and hasattr(pipeline, "precisa_bandas") and pipeline.precisa_bandas():
                     # Needs a camera, not a still: the bands are read at a lower exposure for a moment.
-                    band_frames, locked_exposure = read_bands_frames(cv, cap, locked_exposure, float(frame.mean()))
+                    try:
+                        band_frames, locked_exposure = read_bands_frames(cv, cap, locked_exposure, float(frame.mean()))
+                    except ExposureRestoreError as error:
+                        log.warning('band read: %s', error)
+                        self._set(valid=False, reason='A exposição normal não foi restaurada.', pieces=[], unknown=[])
+                        break
                     if band_frames:
                         log.info("band read: %s", pipeline.registra_bandas(band_frames))
                     else:

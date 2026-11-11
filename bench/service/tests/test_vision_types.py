@@ -37,29 +37,6 @@ def test_generic_resistor_is_never_given_an_assumed_value():
     assert "valor não foi identificado" in unknown[0]["reason"]
 
 
-def test_camera_colors_are_locked_after_auto_exposure_settles():
-    from bench_service.vision import settle_and_lock
-
-    class Cv:
-        CAP_PROP_AUTO_WB, CAP_PROP_AUTO_EXPOSURE = "wb", "exposure"
-
-    class Cap:
-        reads, settings = 0, []
-
-        def read(self):
-            self.reads += 1
-            return True, None
-
-        def set(self, prop, value):
-            self.settings.append((prop, value, self.reads))
-
-    cap = Cap()
-    settle_and_lock(Cv, cap, seconds=0.05)
-    assert cap.reads >= 1
-    assert [(p, v) for p, v, _ in cap.settings] == [("wb", 0), ("exposure", 1)]
-    assert all(reads == cap.reads for _, _, reads in cap.settings)  # locked only after the reads
-
-
 def test_every_vision_type_is_mapped_or_explained():
     import sys
     from pathlib import Path

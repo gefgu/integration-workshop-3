@@ -1,5 +1,6 @@
 """The exposure switch used to read resistor bands: lower the exposure, collect frames, restore it."""
 import numpy as np
+import pytest
 
 import bench_service.vision as vision
 
@@ -24,9 +25,6 @@ class FakeCamera:
         if prop == FakeCv.CAP_PROP_EXPOSURE:
             self.exposure = value
             self.pending = [value] * self.delay
-        elif prop == FakeCv.CAP_PROP_AUTO_EXPOSURE and value == vision.V4L2_AUTO_EXPOSURE:
-            self.exposure = 1500.0
-            self.pending = [1500.0] * self.delay
         return True
 
     def get(self, prop):
@@ -63,24 +61,41 @@ def test_exposure_that_does_not_take_aborts_the_read_and_still_restores():
     assert cap.exposure == 1500.0 and locked == 1500.0
 
 
-def test_exposure_that_cannot_be_restored_is_relocked_from_auto(monkeypatch):
+def test_exposure_that_cannot_be_restored_fails_closed_without_auto_relock():
     class NoRestore(FakeCamera):
         def set(self, prop, value):
-            if prop == FakeCv.CAP_PROP_EXPOSURE and value == 1500.0 and not self.relock:
+            if prop == FakeCv.CAP_PROP_EXPOSURE and value == 1500.0:
                 self.sets.append((prop, value))
                 return True  # the locked value does not come back
             return super().set(prop, value)
 
-        relock = False
-
     cap = NoRestore()
-    relocked = []
+    with pytest.raises(vision.ExposureRestoreError):
+        vision.read_bands_frames(FakeCv, cap, 1500.0, 100.0)
+    assert (FakeCv.CAP_PROP_EXPOSURE, 1500.0) in cap.sets
+    assert not any(prop in (FakeCv.CAP_PROP_AUTO_EXPOSURE, FakeCv.CAP_PROP_AUTO_WB) for prop, _ in cap.sets)
 
-    def settle(cv, camera, seconds=0):
-        cap.relock = True
-        relocked.append(True)
-    monkeypatch.setattr(vision, 'settle_and_lock', settle)
-    frames, locked = vision.read_bands_frames(FakeCv, cap, 1500.0, 100.0)
+
+def test_settings_and_restore_use_commanded_value_when_readback_is_stale():
+    class StaleReadback(FakeCamera):
+        def get(self, prop):
+            return 1300.0  # stale for every setting, including exposure
+
+    cap = StaleReadback()
+    settings = vision.CameraSettings(exposure=1500.0)
+    settings.apply(FakeCv, cap)
+    frames, locked = vision.read_bands_frames(FakeCv, cap, settings.exposure, 100.0)
     assert len(frames) == len(vision.BAND_EXPOSURES) * vision.BAND_FRAMES
-    assert relocked == [True]
-    assert (FakeCv.CAP_PROP_AUTO_EXPOSURE, vision.V4L2_AUTO_EXPOSURE) in cap.sets
+    assert locked == cap.exposure == 1500.0
+    assert [value for prop, value in cap.sets if prop == FakeCv.CAP_PROP_EXPOSURE] == [1500.0, 1000, 1100, 1500.0]
+
+
+def test_unavailable_readback_does_not_change_commanded_settings():
+    class NoReadback(FakeCamera):
+        def get(self, prop):
+            raise OSError('readback unsupported')
+
+    cap = NoReadback()
+    settings = vision.CameraSettings(exposure=1500.0)
+    settings.apply(FakeCv, cap)
+    assert cap.exposure == settings.exposure
