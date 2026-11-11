@@ -83,6 +83,34 @@ class PipelineBandsTest(unittest.TestCase):
         self.assertTrue({(1, (1, 2)), (1, (4, 5)), (3, (2, 3)), (1, (8, 9))} <= self.unknown(self.result))
         self.assertTrue(self.pipeline.precisa_bandas())
 
+    def test_stationary_reference_supports_occluded_resistor_after_band_read(self):
+        folder = FIXTURES / 'bench-2026-11-11'
+        def picture(name):
+            return cv.resize(cv.imread(str(folder / name)), (1280, 720), interpolation=cv.INTER_AREA)
+        pipeline = PipelineAtual(temporal=False)
+        normal = picture('normal-1.jpg')
+        result = pipeline.processa(normal)
+        self.assertTrue(result.valido, result.motivo)
+        self.assertTrue(pipeline.registrador.fixed_reference_active)
+        self.assertGreaterEqual(result.registro['inliers'], 17)
+        self.assertEqual(pipeline.registra_bandas([picture('bands-a-exp1000.jpg'),
+                                                   picture('bands-a-exp1100.jpg')])[(1, 4)], 1000)
+        result = pipeline.processa(normal)
+        self.assertIn(('resistor_1k', 1, (4, 5)), self.kinds(result))
+        original = pipeline.registrador.atualiza
+
+        def insufficient_support(frame):
+            registration = original(frame)
+            registration['inliers'] = 16
+            return registration
+
+        with mock.patch.object(pipeline.registrador, 'atualiza', side_effect=insufficient_support), \
+             mock.patch('visao.pipeline_atual.suporte_local', return_value=False), \
+             mock.patch('visao.pipeline_atual.suporte_smart', return_value=False):
+            rejected = pipeline.processa(normal)
+        self.assertNotIn(('resistor_1k', 1, (4, 5)), self.kinds(rejected))
+        self.assertIn((1, (4, 5)), self.unknown(rejected))
+
     def test_read_bands_publish_three_distinct_resistors_and_leave_the_capacitor_unknown(self):
         read = self.pipeline.registra_bandas([load('exp800'), load('exp1000')])
         self.assertEqual(read, {(1, 1): 220, (1, 4): 1000, (1, 8): None, (3, 2): 470})

@@ -219,6 +219,13 @@ class PipelineAtual:
                      if not any(abs(p[2] - row) <= 1 and p[3] <= col + 1 and col <= p[4]
                                 for row, col in resistor_blue_raw)]
             kit_raw = standard_kit + buzzers + smart
+            # The same distributed-socket evidence used for marker-anchored
+            # pieces can also be used when a separately revalidated stationary
+            # case reference establishes the grid. The reference does not
+            # bypass the minimum grid inliers or the local socket check.
+            fixed_support = lambda row, first, last: (self.registrador.fixed_reference_active
+                                                       and registration['inliers'] >= 17
+                                                       and suporte_marcado(seen[0], row, first, last))
             ambiguous_blue = visible_blue - found_raw
             for row, col in sorted(ambiguous_blue):
                 result.pecas_sem_tipo.append({'metade': 'C', 'linha': row,
@@ -230,6 +237,7 @@ class PipelineAtual:
                 (suporte_smart if p[0] == 'capsula_smart' or
                  (p[0] == 'vermelho_2' and (p[2] in (0, 5) or p[3] == 0 or p[4] == 10))
                  else suporte_local)(seen[0], p[2], p[3], p[4])
+                or fixed_support(p[2], p[3], p[4])
                 or (self.registrador.marker_active and registration['inliers'] >= 17
                     and ((p[0] == 'vermelho_2' and p[3:5] == (9, 10))
                          or suporte_marcado(seen[0], p[2], p[3], p[4]))))}
@@ -242,6 +250,7 @@ class PipelineAtual:
             footprint.update((row, col) for _, _, row, first, last in kit_raw for col in range(first, last + 1))
             found = {(row, col) for row, col in found_raw
                      if suporte_local(seen[0], row, col, col + 1)
+                     or fixed_support(row, col, col + 1)
                      or (self.registrador.marker_active and registration['inliers'] >= 17
                          and suporte_marcado(seen[0], row, col, col + 1))}
             # A read resistor that lacks distributed socket support is not published

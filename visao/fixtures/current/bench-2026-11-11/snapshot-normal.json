@@ -2,7 +2,7 @@
   {
     "available": true,
     "calibration": "automatic",
-    "confirming": 3,
+    "confirming": 5,
     "fps": null,
     "frame_size": [
       1280,
@@ -57,7 +57,7 @@
   {
     "available": true,
     "calibration": "automatic",
-    "confirming": 4,
+    "confirming": 7,
     "fps": null,
     "frame_size": [
       1280,
@@ -72,14 +72,6 @@
     "stable_frames": 3,
     "uncertain": false,
     "unknown": [
-      {
-        "a": 5,
-        "b": 6,
-        "id": "sem_tipo_C1_4",
-        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
-        "row": 1,
-        "type": "peca_sem_tipo"
-      },
       {
         "a": 9,
         "b": 10,
@@ -96,7 +88,7 @@
   {
     "available": true,
     "calibration": "automatic",
-    "confirming": 3,
+    "confirming": 4,
     "fps": 10.0,
     "frame_size": [
       1280,
@@ -104,6 +96,13 @@
     ],
     "partial": true,
     "pieces": [
+      {
+        "a": 5,
+        "b": 8,
+        "id": "jumper_3@C0:4-7",
+        "row": 0,
+        "type": "jumper_3"
+      },
       {
         "a": 3,
         "b": 6,
@@ -126,14 +125,6 @@
     "stable_frames": 3,
     "uncertain": false,
     "unknown": [
-      {
-        "a": 5,
-        "b": 6,
-        "id": "sem_tipo_C1_4",
-        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
-        "row": 1,
-        "type": "peca_sem_tipo"
-      },
       {
         "a": 9,
         "b": 10,
@@ -159,11 +150,25 @@
     "partial": true,
     "pieces": [
       {
+        "a": 5,
+        "b": 8,
+        "id": "jumper_3@C0:4-7",
+        "row": 0,
+        "type": "jumper_3"
+      },
+      {
         "a": 3,
         "b": 6,
         "id": "jumper_3@C2:2-5",
         "row": 2,
         "type": "jumper_3"
+      },
+      {
+        "a": 5,
+        "b": 6,
+        "id": "resistor_1k@C1:4-5",
+        "row": 1,
+        "type": "resistor_1k"
       },
       {
         "a": 2,
@@ -194,14 +199,6 @@
     "stable_frames": 3,
     "uncertain": false,
     "unknown": [
-      {
-        "a": 5,
-        "b": 6,
-        "id": "sem_tipo_C1_4",
-        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
-        "row": 1,
-        "type": "peca_sem_tipo"
-      },
       {
         "a": 9,
         "b": 10,
@@ -218,7 +215,7 @@
   {
     "available": true,
     "calibration": "automatic",
-    "confirming": 0,
+    "confirming": 1,
     "fps": 6.7,
     "frame_size": [
       1280,
@@ -226,6 +223,13 @@
     ],
     "partial": true,
     "pieces": [
+      {
+        "a": 5,
+        "b": 8,
+        "id": "jumper_3@C0:4-7",
+        "row": 0,
+        "type": "jumper_3"
+      },
       {
         "a": 3,
         "b": 6,
@@ -239,6 +243,13 @@
         "id": "led@C3:7-8",
         "row": 3,
         "type": "led"
+      },
+      {
+        "a": 5,
+        "b": 6,
+        "id": "resistor_1k@C1:4-5",
+        "row": 1,
+        "type": "resistor_1k"
       },
       {
         "a": 2,
@@ -269,14 +280,6 @@
     "stable_frames": 3,
     "uncertain": false,
     "unknown": [
-      {
-        "a": 5,
-        "b": 6,
-        "id": "sem_tipo_C1_4",
-        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
-        "row": 1,
-        "type": "peca_sem_tipo"
-      },
       {
         "a": 9,
         "b": 10,
@@ -302,6 +305,13 @@
     "partial": true,
     "pieces": [
       {
+        "a": 5,
+        "b": 8,
+        "id": "jumper_3@C0:4-7",
+        "row": 0,
+        "type": "jumper_3"
+      },
+      {
         "a": 3,
         "b": 6,
         "id": "jumper_3@C2:2-5",
@@ -314,6 +324,13 @@
         "id": "led@C3:7-8",
         "row": 3,
         "type": "led"
+      },
+      {
+        "a": 5,
+        "b": 6,
+        "id": "resistor_1k@C1:4-5",
+        "row": 1,
+        "type": "resistor_1k"
       },
       {
         "a": 2,
@@ -344,14 +361,6 @@
     "stable_frames": 3,
     "uncertain": false,
     "unknown": [
-      {
-        "a": 5,
-        "b": 6,
-        "id": "sem_tipo_C1_4",
-        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
-        "row": 1,
-        "type": "peca_sem_tipo"
-      },
       {
         "a": 9,
         "b": 10,
@@ -377,6 +386,13 @@
     "partial": true,
     "pieces": [
       {
+        "a": 5,
+        "b": 8,
+        "id": "jumper_3@C0:4-7",
+        "row": 0,
+        "type": "jumper_3"
+      },
+      {
         "a": 3,
         "b": 6,
         "id": "jumper_3@C2:2-5",
@@ -389,6 +405,13 @@
         "id": "led@C3:7-8",
         "row": 3,
         "type": "led"
+      },
+      {
+        "a": 5,
+        "b": 6,
+        "id": "resistor_1k@C1:4-5",
+        "row": 1,
+        "type": "resistor_1k"
       },
       {
         "a": 2,
@@ -417,16 +440,8 @@
     "recalibrating": false,
     "running": true,
     "stable_frames": 3,
-    "uncertain": false,
+    "uncertain": true,
     "unknown": [
-      {
-        "a": 5,
-        "b": 6,
-        "id": "sem_tipo_C1_4",
-        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
-        "row": 1,
-        "type": "peca_sem_tipo"
-      },
       {
         "a": 9,
         "b": 10,
@@ -438,12 +453,12 @@
     ],
     "updated_at": 1700000001.0,
     "valid": true,
-    "version": 5
+    "version": 6
   },
   {
     "available": true,
     "calibration": "automatic",
-    "confirming": 0,
+    "confirming": 1,
     "fps": 7.0,
     "frame_size": [
       1280,
@@ -452,6 +467,13 @@
     "partial": true,
     "pieces": [
       {
+        "a": 5,
+        "b": 8,
+        "id": "jumper_3@C0:4-7",
+        "row": 0,
+        "type": "jumper_3"
+      },
+      {
         "a": 3,
         "b": 6,
         "id": "jumper_3@C2:2-5",
@@ -464,6 +486,13 @@
         "id": "led@C3:7-8",
         "row": 3,
         "type": "led"
+      },
+      {
+        "a": 5,
+        "b": 6,
+        "id": "resistor_1k@C1:4-5",
+        "row": 1,
+        "type": "resistor_1k"
       },
       {
         "a": 2,
@@ -492,16 +521,8 @@
     "recalibrating": false,
     "running": true,
     "stable_frames": 3,
-    "uncertain": false,
+    "uncertain": true,
     "unknown": [
-      {
-        "a": 5,
-        "b": 6,
-        "id": "sem_tipo_C1_4",
-        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
-        "row": 1,
-        "type": "peca_sem_tipo"
-      },
       {
         "a": 9,
         "b": 10,
@@ -513,6 +534,6 @@
     ],
     "updated_at": 1700000001.0,
     "valid": true,
-    "version": 5
+    "version": 6
   }
 ]
