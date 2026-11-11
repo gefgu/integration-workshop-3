@@ -17,6 +17,24 @@ def test_slow_camera_allowed_but_frozen_camera_clears_circuit(monkeypatch):
     assert recovered['valid'] is True and recovered['version'] == 7
 
 
+def test_stop_waits_for_the_worker_to_finish():
+    import threading
+    from bench_service.vision import VisionSource
+
+    source = VisionSource(image='unused')
+    finished = threading.Event()
+
+    def worker():
+        source._stop.wait()
+        finished.set()
+
+    source._thread = threading.Thread(target=worker)
+    source._thread.start()
+    source.stop()
+    assert finished.is_set()
+    assert not source._thread.is_alive()
+
+
 def comp(tipo, colunas, cor="azul"):
     return {"id": tipo, "tipo": tipo, "cor": cor, "posicao": {"metade": "C", "linha": 0, "colunas": colunas}}
 

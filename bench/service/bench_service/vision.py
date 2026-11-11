@@ -305,6 +305,10 @@ class VisionSource:
 
     def stop(self) -> None:
         self._stop.set()
+        # Avoid leaving an OpenCV worker active during interpreter shutdown.
+        # A self-stop (used by the replay loop) must never join itself.
+        if self._thread.is_alive() and threading.current_thread() is not self._thread:
+            self._thread.join(timeout=10.0)
 
     def recalibrate(self) -> None:
         # Instant feedback: the search itself can take seconds on a Raspberry Pi.
