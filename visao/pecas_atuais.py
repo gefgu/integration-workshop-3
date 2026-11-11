@@ -79,7 +79,8 @@ def pecas_kit(ret_bgr):
                 continue
             if kind != 'jumper' and width > 165:
                 continue
-            # Printed bodies project slightly to the right of their socket centers.
+            # The colored holders project to the right of their socket centers;
+            # the long white jumpers are centered on their terminals.
             span = 1 if width < 170 else round((width - 60) / cfg.PX_X)
             # Short pale bodies can be resistors. Four-gap recognition is
             # supported by a synthetic shape test, but needs a live check.
@@ -87,12 +88,13 @@ def pecas_kit(ret_bgr):
                 continue
             if kind != 'jumper' and span != 1 or not 1 <= span <= 4:
                 continue
-            first = round((x + width / 2 - 20) / cfg.PX_X - cfg.MARGEM_X - span / 2)
+            offset = 0 if kind == 'jumper' else 20
+            first = round((x + width / 2 - offset) / cfg.PX_X - cfg.MARGEM_X - span / 2)
             row = round((y + height - 3) / cfg.PX_Y - cfg.MARGEM_Y)
             if not (0 <= row < cfg.N_LINHAS_METADE and 0 <= first < first + span < cfg.N_COLUNAS):
                 continue
             expected_x, expected_y = cfg.para_retificada(first + span / 2, row)
-            if abs(x + width / 2 - 20 - expected_x) > 24 or abs(y + height - 3 - expected_y) > 18:
+            if abs(x + width / 2 - offset - expected_x) > 24 or abs(y + height - 3 - expected_y) > 18:
                 continue
             piece_type = kind if kind != 'jumper' else {3: 'jumper_3', 4: 'jumper_4'}[span]
             found.append((piece_type, colour, row, first, first + span))

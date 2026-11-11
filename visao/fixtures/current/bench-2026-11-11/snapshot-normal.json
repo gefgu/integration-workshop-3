@@ -2,7 +2,7 @@
   {
     "available": true,
     "calibration": "automatic",
-    "confirming": 2,
+    "confirming": 3,
     "fps": null,
     "frame_size": [
       1280,
@@ -57,7 +57,7 @@
   {
     "available": true,
     "calibration": "automatic",
-    "confirming": 3,
+    "confirming": 4,
     "fps": null,
     "frame_size": [
       1280,
@@ -105,6 +105,13 @@
     "partial": true,
     "pieces": [
       {
+        "a": 3,
+        "b": 6,
+        "id": "jumper_3@C2:2-5",
+        "row": 2,
+        "type": "jumper_3"
+      },
+      {
         "a": 10,
         "b": 11,
         "id": "vermelho_2@C5:9-10",
@@ -151,6 +158,13 @@
     ],
     "partial": true,
     "pieces": [
+      {
+        "a": 3,
+        "b": 6,
+        "id": "jumper_3@C2:2-5",
+        "row": 2,
+        "type": "jumper_3"
+      },
       {
         "a": 2,
         "b": 3,
@@ -212,6 +226,13 @@
     ],
     "partial": true,
     "pieces": [
+      {
+        "a": 3,
+        "b": 6,
+        "id": "jumper_3@C2:2-5",
+        "row": 2,
+        "type": "jumper_3"
+      },
       {
         "a": 8,
         "b": 9,
@@ -281,6 +302,13 @@
     "partial": true,
     "pieces": [
       {
+        "a": 3,
+        "b": 6,
+        "id": "jumper_3@C2:2-5",
+        "row": 2,
+        "type": "jumper_3"
+      },
+      {
         "a": 8,
         "b": 9,
         "id": "led@C3:7-8",
@@ -349,6 +377,13 @@
     "partial": true,
     "pieces": [
       {
+        "a": 3,
+        "b": 6,
+        "id": "jumper_3@C2:2-5",
+        "row": 2,
+        "type": "jumper_3"
+      },
+      {
         "a": 8,
         "b": 9,
         "id": "led@C3:7-8",
@@ -416,6 +451,13 @@
     ],
     "partial": true,
     "pieces": [
+      {
+        "a": 3,
+        "b": 6,
+        "id": "jumper_3@C2:2-5",
+        "row": 2,
+        "type": "jumper_3"
+      },
       {
         "a": 8,
         "b": 9,
