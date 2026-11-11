@@ -389,6 +389,7 @@ class RegistradorParcial:
         self.generation = 0
         self.last_gray = None
         self.marker_active = False
+        self.fixed_reference_active = False
         if self.auto:
             self.size = None
             self.H = None
@@ -412,6 +413,7 @@ class RegistradorParcial:
         self.last_gray = None
         self.ultima_busca = None
         self.marker_active = False
+        self.fixed_reference_active = False
         if self.auto:
             self.size = None
 
@@ -426,14 +428,16 @@ class RegistradorParcial:
 
     def atualiza(self, image):
         result = self._atualiza(image)
-        if not result['valido'] and self.marker_active:
-            # Never let a marker proposal block the original automatic search.
+        if not result['valido'] and (self.marker_active or self.fixed_reference_active):
+            # A rejected anchor must not block the original automatic search.
+            skip_markers, skip_fixed = self.marker_active, self.fixed_reference_active
             self.marker_active = False
+            self.fixed_reference_active = False
             self.ultima_busca = None
-            return self._atualiza(image, skip_markers=True)
+            return self._atualiza(image, skip_markers=skip_markers, skip_fixed=skip_fixed)
         return result
 
-    def _atualiza(self, image, skip_markers=False):
+    def _atualiza(self, image, skip_markers=False, skip_fixed=False):
         seen = np.zeros(len(cfg.MODELO), bool)
         agora = self.clock()
         if (self.H is None and self.ultima_busca is not None
@@ -462,12 +466,29 @@ class RegistradorParcial:
                 self.H = marker_h
         marker_search = marker_h is not None and (self.H is None or self.marker_active)
         points = candidatos(cv.LUT(image, _MARKER_LUT) if marker_search else image)
+        if self.auto and self.fixed_reference_active and self.H is not None:
+            fixed = calibra_por_referencia_fixa(image)
+            if fixed is None:
+                return self._falhou(dict(H=None, valido=False, n_furos=len(points), furos=points,
+                                         inliers=0, erro=None, furos_vistos=seen, generation=self.generation),
+                                    'referência fixa sem suporte suficiente')
+            actual = cv.perspectiveTransform(CANTOS[None], self.H)[0]
+            proposed = cv.perspectiveTransform(CANTOS[None], fixed)[0]
+            spacing = np.linalg.norm(proposed[1] - proposed[0]) / 10
+            if np.max(np.linalg.norm(actual - proposed, axis=1)) > spacing * .35:
+                return self._falhou(dict(H=None, valido=False, n_furos=len(points), furos=points,
+                                         inliers=0, erro=None, furos_vistos=seen, generation=self.generation),
+                                    'referência fixa se moveu')
+            self.H = fixed
         if self.H is None:
             # The completed bench has two similar grids; a lattice-only fit can
             # span their gap and assign the wrong row numbers. Prefer the
             # board-specific reference when it has enough distributed matches.
             self.H = marker_h
             self.marker_active = self.H is not None
+            if self.H is None and not skip_fixed:
+                self.H = calibra_por_referencia_fixa(image)
+                self.fixed_reference_active = self.H is not None
             if self.H is None:
                 self.H = calibra_por_referencia(image)
             if self.H is None:
@@ -515,7 +536,7 @@ class RegistradorParcial:
         src = np.float32([model[j] for _,j in matches])
         dst = np.float32([points[i] for i,_ in matches])
         cv.setRNGSeed(0)
-        if self.marker_active:
+        if self.marker_active or self.fixed_reference_active:
             # A free projective fit can swing the hidden top edge by a whole
             # socket when the lower rows dominate. Keep the marker geometry
             # and fit only a small translation/rotation/scale correction.

@@ -23,6 +23,28 @@ class TestPartialCalibration(unittest.TestCase):
         for index in range(6):
             self.assertIsNone(calibra_por_referencia_fixa(cv.imread(str(folder / f'crowded-cropped-{index}.jpg'))), index)
 
+    def test_stationary_reference_still_requires_socket_validation(self):
+        image = np.zeros((720, 1280, 3), np.uint8)
+        proposal = np.array([[60., 0, 250], [0, 38., 350], [0, 0, 1.]])
+        with mock.patch('visao.calibracao.calibra_por_marcadores', return_value=None), \
+             mock.patch('visao.calibracao.calibra_por_referencia_fixa', return_value=proposal), \
+             mock.patch('visao.calibracao.candidatos', return_value=np.empty((0, 2), np.float32)), \
+             mock.patch('visao.calibracao.calibra_por_referencia', return_value=None), \
+             mock.patch('visao.calibracao.calibra_automaticamente', return_value=None):
+            result = RegistradorParcial().atualiza(image)
+        self.assertFalse(result['valido'])
+        self.assertEqual(result['inliers'], 0)
+
+    def test_stationary_reference_tracks_november_11_grid(self):
+        folder = Path(__file__).resolve().parents[1] / 'visao/fixtures/current/bench-2026-11-11'
+        tracker = RegistradorParcial()
+        for index in (1, 2, 3):
+            image = cv.imread(str(folder / f'normal-{index}.jpg'))
+            result = tracker.atualiza(image)
+            self.assertTrue(result['valido'], (index, result['motivo']))
+            self.assertTrue(tracker.fixed_reference_active)
+            self.assertGreaterEqual(result['inliers'], 12)
+
     def test_saved_picture_registration_ignores_prior_opencv_rng_state(self):
         image = cv.imread(str(Path(__file__).resolve().parents[1]
                               / 'visao/fixtures/current/bench-2026-11-11/normal-1.jpg'))

@@ -96,7 +96,7 @@
   {
     "available": true,
     "calibration": "automatic",
-    "confirming": 4,
+    "confirming": 3,
     "fps": 10.0,
     "frame_size": [
       1280,
