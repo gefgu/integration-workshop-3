@@ -79,3 +79,15 @@ def test_service_replay_does_not_use_stale_exposure_readback(monkeypatch):
     actual = replay(FIXTURES, frames=3, width=1280, height=720, perturb=False)
     assert actual['frames'] == expected
     assert {read['requested_exposure'] for read in actual['reads']} >= {1000, 1100, 1300}
+
+
+def test_service_loop_does_not_consult_public_timeout_view(monkeypatch):
+    from bench_service.vision import VisionSource
+
+    def forbidden(_source):
+        raise AssertionError('public timeout view must not drive frame processing')
+
+    monkeypatch.setattr(VisionSource, 'state', forbidden)
+    result = replay(FIXTURES, frames=3, width=1280, height=720, perturb=False)
+    assert len(result['frames']) == 3
+    assert all(frame['valid'] for frame in result['frames'])

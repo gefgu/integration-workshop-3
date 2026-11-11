@@ -344,7 +344,11 @@ class VisionSource:
                 else:
                     uncertain = not result.valido
                 unknown += unknown_from_partial(getattr(result, "pecas_sem_tipo", []))
-                old = self.state()
+                # Compare with the stored publication, not the public stale-frame
+                # view: a slow processed frame must not change versioning or
+                # piece decisions merely because state() would time it out.
+                with self._lock:
+                    old = dict(self._state)
                 changes['uncertain'] = uncertain
                 if pieces != old.get('pieces') or unknown != old.get('unknown') or uncertain != old.get('uncertain'):
                     changes.update(pieces=pieces, unknown=unknown, version=old['version'] + 1)
