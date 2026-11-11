@@ -35,13 +35,13 @@ class CurrentKitTest(unittest.TestCase):
     def test_centered_white_jumpers_on_november_11_pictures(self):
         from visao.pecas_atuais import pecas_kit
         folder = FIXTURES / 'bench-2026-11-11'
-        lower = ('jumper_3', 'branco', 2, 2, 5)
-        for filename in ('normal-1.jpg', 'bands-b-exp1000.jpg'):
+        expected = {('jumper_3', 'branco', 0, 4, 7), ('jumper_3', 'branco', 2, 2, 5)}
+        for filename in ('normal-1.jpg', 'bands-a-exp1000.jpg', 'bands-b-exp1000.jpg'):
             with self.subTest(filename=filename):
                 image = cv.resize(cv.imread(str(folder / filename)), (1280, 720), interpolation=cv.INTER_AREA)
                 result = PipelineAtual(temporal=False).processa(image)
                 self.assertTrue(result.valido, result.motivo)
-                self.assertIn(lower, pecas_kit(result.retificada))
+                self.assertTrue(expected <= set(pecas_kit(result.retificada)))
 
     def test_photographed_buzzer_and_smart_presence(self):
         for index in (1, 2, 3):

@@ -54,11 +54,23 @@ def pecas_kit(ret_bgr):
     fragments are rejected by requiring a substantial, horizontally aligned body.
     """
     hsv = cv.cvtColor(ret_bgr, cv.COLOR_BGR2HSV)
+    # Estimate neutral contact brightness from socket locations. A white
+    # jumper can be darker than an absolute HSV cutoff when exposure changes.
+    contacts = []
+    for row in range(cfg.N_LINHAS_METADE):
+        for col in range(cfg.N_COLUNAS):
+            sx, sy = (int(round(v)) for v in cfg.para_retificada(col, row))
+            roi = hsv[sy - 5:sy + 6, sx - 5:sx + 6]
+            neutral = roi[:, :, 2][roi[:, :, 1] < 60]
+            if neutral.size >= 30:
+                contacts.append(float(np.median(neutral)))
+    reference = float(np.median(contacts)) if len(contacts) >= 20 else 0.0
+    white_min = int(min(180, max(120, reference * .8))) if reference >= 150 else 180
     red = cv.inRange(hsv, (0, 80, 70), (8, 255, 255)) | cv.inRange(hsv, (165, 80, 70), (179, 255, 255))
     masks = [
         ('vermelho_2', 'vermelho', red),
         ('led', 'verde', cv.inRange(hsv, (55, 55, 80), (90, 255, 255))),
-        ('jumper', 'branco', cv.inRange(hsv, (0, 0, 180), (179, 55, 255))),
+        ('jumper', 'branco', cv.inRange(hsv, (0, 0, white_min), (179, 55, 255))),
     ]
     found = []
     for kind, colour, mask in masks:
@@ -68,7 +80,8 @@ def pecas_kit(ret_bgr):
             # Reflections on a neighboring piece can connect to the body and
             # extend its bounding box into the next row. Keep the horizontal
             # core instead of treating that sparse tail as part of the piece.
-            if kind in ('jumper', 'led') and 85 <= width <= 370 and area >= 1500:
+            if (kind in ('jumper', 'led') and 85 <= width <= 370 and area >= 1500
+                    and (kind != 'jumper' or height > 75)):
                 component = labels[y:y + height, x:x + width] == label
                 minimum = width * (.60 if kind == 'jumper' else .20)
                 dense = np.flatnonzero(np.count_nonzero(component, axis=1) >= minimum)
