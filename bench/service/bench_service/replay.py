@@ -50,16 +50,26 @@ class ReplayCamera:
         self.read_count = 0
         self.normal_count = 0
         self.read_log = []
-        self.normal = sorted(self.directory.glob('normal-*.jpg'))
+        self.exposures: dict[int, list[Path]] = {}
+        manifest = self.directory / 'frames.jsonl'
+        if manifest.exists():
+            for line in manifest.read_text(encoding='utf-8').splitlines():
+                entry = json.loads(line)
+                exposure = entry.get('commanded_exposure')
+                if exposure is not None:
+                    self.exposures.setdefault(int(exposure), []).append(self.directory / entry['file'])
+            self.normal = self.exposures.get(normal_exposure, [])
+        else:
+            self.normal = sorted(self.directory.glob('normal-*.jpg'))
+            for path in sorted(self.directory.glob(f'bands-{series}-exp*.jpg')):
+                match = re.search(r'exp(\d+)\.jpg$', path.name)
+                if match:
+                    self.exposures.setdefault(int(match.group(1)), []).append(path)
         if not self.normal:
-            raise ValueError(f'no normal-*.jpg pictures in {directory}')
-        self.exposures = {}
-        for path in sorted(self.directory.glob(f'bands-{series}-exp*.jpg')):
-            match = re.search(r'exp(\d+)\.jpg$', path.name)
-            if match:
-                self.exposures[int(match.group(1))] = path
+            raise ValueError(f'no normal frames for exposure {normal_exposure} in {directory}')
         if not self.exposures:
             raise ValueError(f'no exposure series {series!r} in {directory}')
+        self.exposure_counts: dict[int, int] = {}
         self._images = {}
 
     def isOpened(self):
@@ -84,7 +94,10 @@ class ReplayCamera:
             actual, synthetic_exposure = None, False
         else:
             actual = min(self.exposures, key=lambda x: (abs(x - requested), x))
-            path = self.exposures[actual]
+            paths = self.exposures[actual]
+            count = self.exposure_counts.get(actual, 0)
+            path = paths[count % len(paths)]
+            self.exposure_counts[actual] = count + 1
             synthetic_exposure = actual != requested
         if path not in self._images:
             image = cv.imread(str(path))

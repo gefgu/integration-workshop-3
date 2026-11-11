@@ -73,6 +73,7 @@ def main() -> None:
     camera.add_argument("--vision-profile", choices=("current", "legacy"), default=None,
                         help="board profile: current (default) or legacy (full board)")
     camera.add_argument("--calibration", help="manual calibration file from `python -m visao --calibrate FILE`")
+    parser.add_argument("--record", metavar="DIR", help="record original MJPEG camera frames for later replay")
     parser.add_argument("--no-demo", action="store_true", help="hide the demo mode (the teacher app must unlock)")
     parser.add_argument("--kiosk", action="store_true", help="full screen (the real bench's 7\" monitor)")
     parser.add_argument("--no-browser", action="store_true", help="only run the service")
@@ -82,6 +83,8 @@ def main() -> None:
     parser.add_argument("--controls", default=None,
                         help="serial port of the ESP32 joystick + Energizar: auto (USB or GPIO), /dev/ttyUSB0, /dev/serial0, COM4")
     args = parser.parse_args()
+    if args.record and (args.no_camera or args.vision_image):
+        parser.error('--record requires a camera')
 
     data = data_dir()
     os.environ["TEDTRONICS_BENCH_DB"] = args.db or str(data / "bench.sqlite3")
@@ -93,6 +96,8 @@ def main() -> None:
         os.environ["TEDTRONICS_BENCH_VISION_PROFILE"] = args.vision_profile
     if args.calibration:
         os.environ["TEDTRONICS_BENCH_CALIBRATION"] = os.path.abspath(args.calibration)
+    if args.record:
+        os.environ["TEDTRONICS_BENCH_RECORD"] = os.path.abspath(args.record)
     if args.vision_image:
         os.environ["TEDTRONICS_BENCH_VISION_IMAGE"] = os.path.abspath(args.vision_image)
     elif not args.no_camera:

@@ -231,11 +231,15 @@ class VisionSource:
     """Runs the vision pipeline on a camera index or a still image in a daemon thread."""
 
     def __init__(self, camera: int | None = None, image: str | None = None,
-                 profile: str = "current", calibration: str | None = None) -> None:
+                 profile: str = "current", calibration: str | None = None,
+                 record: str | None = None) -> None:
         if profile not in ("current", "legacy"):
             raise ValueError(f"unknown vision profile {profile!r}")
+        if record and image:
+            raise ValueError('recording requires a camera, not a still picture')
         self.camera, self.image = camera, image
         self.profile, self.calibration = profile, calibration
+        self.record = record
         self._lock = threading.Lock()
         self._recalibrate = threading.Event()
         self._stop = threading.Event()
@@ -295,6 +299,14 @@ class VisionSource:
             if not cap.isOpened():
                 self._set(available=False, reason="Nenhuma câmera encontrada. Confira o cabo da câmera.")
                 return
+            if self.record:
+                from .recorder import RecordingCamera
+                try:
+                    cap = RecordingCamera(cv, cap, self.record)
+                except (OSError, RuntimeError) as error:
+                    cap.release()
+                    self._set(valid=False, reason=f"Não consegui gravar a câmera: {error}")
+                    return
             self._set(reason="Configurando a câmera…")
             settings = CameraSettings()
             try:
@@ -370,6 +382,9 @@ class VisionSource:
                         pipeline.adia_bandas()  # the exposure did not take: back off before retrying
                     continue
                 time.sleep(max(0.0, period - (time.monotonic() - started)))
+        except (OSError, RuntimeError) as error:
+            log.exception('vision capture failed')
+            self._set(valid=False, reason=f'Falha na captura: {error}', pieces=[], unknown=[])
         finally:
             if cap is not None:
                 cap.release()

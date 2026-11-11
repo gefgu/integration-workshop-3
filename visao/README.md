@@ -121,3 +121,27 @@ marcadores físicos e sua geometria ainda precisam ser testados.
 
 As imagens geradas são diagnósticos de software; os testes com fotos não
 estabelecem a resposta de uma bancada física em todas as condições.
+
+### Replay e gravação futura
+
+O replay não abre câmera. A partir da raiz do repositório:
+
+```bash
+PYTHONPATH=bench/service .venv/bin/python -m bench_service.replay \
+  visao/fixtures/current/bench-2026-11-11 --frames 35 --warmup 5
+```
+
+O JSON inclui cada publicação, erros contra `expected.json`, maior sequência
+correta, valores incorretos, corpos desconhecidos e origem de cada quadro.
+As variações e exposições interpoladas são sintéticas; `--no-perturb` desliga
+as variações. A exposição das fotos `normal-*` é uma hipótese de replay.
+
+Quando a bancada estiver disponível, `python -m bench_service --camera 0
+--record DIRETORIO` solicita os quadros MJPEG originais e grava os bytes e um
+`frames.jsonl` com índice, horário e controles comandados. Se o backend não
+entregar JPEG original, a captura falha em vez de salvar imagens recomprimidas.
+O diretório não pode conter um `frames.jsonl` anterior. Para pontuar uma gravação,
+adicione seu próprio `expected.json` e passe o diretório ao comando de replay.
+Os controles registrados são comandos, não confirmação de leitura da câmera;
+o suporte do backend e o resultado da gravação ainda precisam ser verificados
+na bancada e no Raspberry Pi.

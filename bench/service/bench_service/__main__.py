@@ -20,6 +20,8 @@ def main() -> None:
     parser.add_argument("--camera", type=int, default=None,
                         help="read the board with the vision pipeline from this camera index (pip install -e '.[vision]')")
     parser.add_argument("--vision-image", default=None, help="demo: run the vision pipeline on this photo in a loop")
+    parser.add_argument("--record", default=None, metavar="DIR",
+                        help="record original MJPEG camera frames and control commands for later replay")
     parser.add_argument("--vision-profile", choices=("current", "legacy"), default=None,
                         help="board profile: current (default, half-populated kit board) or legacy (full board)")
     parser.add_argument("--calibration", default=None,
@@ -27,6 +29,8 @@ def main() -> None:
     parser.add_argument("--controls", default=None,
                         help="serial port of the ESP32 controls, e.g. /dev/serial0 (pip install -e '.[controls]')")
     args = parser.parse_args()
+    if args.record and (args.camera is None or args.vision_image):
+        parser.error('--record requires --camera and cannot be used with --vision-image')
     os.environ["TEDTRONICS_BENCH_DB"] = args.db
     if args.bench_id:
         os.environ["TEDTRONICS_BENCH_ID"] = args.bench_id
@@ -40,6 +44,8 @@ def main() -> None:
         os.environ["TEDTRONICS_BENCH_VISION_PROFILE"] = args.vision_profile
     if args.calibration:
         os.environ["TEDTRONICS_BENCH_CALIBRATION"] = os.path.abspath(args.calibration)
+    if args.record:
+        os.environ["TEDTRONICS_BENCH_RECORD"] = os.path.abspath(args.record)
     if args.controls:
         os.environ["TEDTRONICS_BENCH_CONTROLS"] = args.controls
     if not args.ble:
