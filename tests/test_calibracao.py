@@ -8,6 +8,21 @@ from visao.calibracao import salva, RegistradorParcial, calibra_automaticamente,
 
 
 class TestPartialCalibration(unittest.TestCase):
+    def test_stationary_reference_requires_distributed_case_features(self):
+        from visao.calibracao import calibra_por_referencia_fixa
+        folder = Path(__file__).resolve().parents[1] / 'visao/fixtures/current'
+        scene = folder / 'bench-2026-11-11'
+        for name in ('normal-1.jpg', 'normal-6.jpg', 'bands-a-exp1000.jpg', 'bands-b-exp1000.jpg'):
+            image = cv.imread(str(scene / name))
+            for width, height in ((1920, 1080), (1280, 720)):
+                sample = cv.resize(image, (width, height), interpolation=cv.INTER_AREA)
+                self.assertIsNotNone(calibra_por_referencia_fixa(sample), (name, width))
+        image = cv.imread(str(scene / 'normal-1.jpg'))
+        self.assertIsNone(calibra_por_referencia_fixa(cv.rotate(image, cv.ROTATE_180)))
+        self.assertIsNone(calibra_por_referencia_fixa(np.zeros_like(image)))
+        for index in range(6):
+            self.assertIsNone(calibra_por_referencia_fixa(cv.imread(str(folder / f'crowded-cropped-{index}.jpg'))), index)
+
     def test_saved_picture_registration_ignores_prior_opencv_rng_state(self):
         image = cv.imread(str(Path(__file__).resolve().parents[1]
                               / 'visao/fixtures/current/bench-2026-11-11/normal-1.jpg'))

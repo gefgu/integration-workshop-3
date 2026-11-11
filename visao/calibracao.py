@@ -28,6 +28,71 @@ _MARKER_GRID = np.float32([[167.618, 409.969], [895.826, 393.541],
                            [926.305, 637.397], [157.438, 662.056]])
 _MARKER_LUT = np.uint8((np.arange(256) / 255.0) ** .4 * 255)
 
+# A separate stationary-feature proposal for the Nov 11 framing. The reference
+# is a saved photograph; the active component grid is excluded from matching.
+# The proposal is always subject to the normal socket and clipping checks.
+_BENCH_REFERENCE_H = np.array([[59.855571336984774, -2.4434258390818075, 248.18968877464633],
+                               [-1.44300102546927, 37.483681457179316, 350.66134901000135],
+                               [-.0010956473792979274, -.0051348480569679555, 1.]])
+
+
+@lru_cache(maxsize=1)
+def _bench_stationary_features():
+    path = Path(__file__).parent / 'fixtures/current/bench-2026-11-11/normal-1.jpg'
+    image = cv.imread(str(path))
+    if image is None or not hasattr(cv, 'SIFT_create'):
+        return None
+    image = cv.resize(image, (1280, 720), interpolation=cv.INTER_AREA)
+    points, descriptors = cv.SIFT_create().detectAndCompute(cv.cvtColor(image, cv.COLOR_BGR2GRAY), None)
+    if descriptors is None:
+        return None
+    # Keep the fixed case and unused bank; never anchor on movable pieces in C.
+    indices = [i for i, p in enumerate(points) if 35 <= p.pt[0] <= 1050 and 5 <= p.pt[1] <= 645
+               and not (225 <= p.pt[0] <= 880 and 305 <= p.pt[1] <= 600)]
+    return [points[i] for i in indices], descriptors[indices]
+
+
+def calibra_por_referencia_fixa(image):
+    """Propose a grid from distributed stationary case features, or None."""
+    reference = _bench_stationary_features()
+    height, width = image.shape[:2]
+    if reference is None or width < 640 or height < 360 or abs(width / height - 16 / 9) > .03:
+        return None
+    scaled = cv.resize(image, (1280, 720), interpolation=cv.INTER_AREA)
+    points, descriptors = cv.SIFT_create().detectAndCompute(cv.cvtColor(scaled, cv.COLOR_BGR2GRAY), None)
+    if descriptors is None or len(descriptors) < 2:
+        return None
+    pairs = cv.BFMatcher().knnMatch(reference[1], descriptors, k=2)
+    good = [pair[0] for pair in pairs if len(pair) == 2 and pair[0].distance < .7 * pair[1].distance]
+    if len(good) < 20:
+        return None
+    source = np.float32([reference[0][m.queryIdx].pt for m in good])
+    target = np.float32([points[m.trainIdx].pt for m in good])
+    cv.setRNGSeed(0)
+    transform, mask = cv.findHomography(source, target, cv.RANSAC, 3.0)
+    if transform is None or mask is None or not np.isfinite(transform).all():
+        return None
+    accepted = mask.ravel().astype(bool)
+    anchors = source[accepted]
+    if len(anchors) < 20 or len({(int(x // 10), int(y // 10)) for x, y in anchors}) < 20:
+        return None
+    if np.ptp(anchors[:, 0]) < 600 or np.ptp(anchors[:, 1]) < 450:
+        return None
+    if any(np.sum(((anchors[:, 0] < 550) == left) & ((anchors[:, 1] < 300) == top)) < 2
+           for left in (False, True) for top in (False, True)):
+        return None
+    error = np.linalg.norm(cv.perspectiveTransform(source[None], transform)[0] - target, axis=1)[accepted]
+    if np.median(error) > 2:
+        return None
+    probe = np.float32([[[640, 360], [740, 360], [640, 460]]])
+    mapped = cv.perspectiveTransform(probe, transform)[0]
+    axes = mapped[1:] - mapped[0]
+    if (np.linalg.norm(mapped[0] - probe[0, 0]) > 30
+            or not (90 <= np.linalg.norm(axes[0]) <= 110 and 90 <= np.linalg.norm(axes[1]) <= 110)
+            or abs(np.arctan2(axes[0, 1], axes[0, 0])) > np.deg2rad(4)):
+        return None
+    return np.diag([width / 1280, height / 720, 1.0]) @ transform @ _BENCH_REFERENCE_H
+
 
 def calibra_por_marcadores(image):
     """Propose the current board's grid from green stickers, or return None.
