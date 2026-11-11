@@ -87,16 +87,18 @@ def test_vision_source_reads_the_current_profile_fixture():
     source = VisionSource(image=str(photo)).start()  # default profile is "current"
     try:
         deadline = time.time() + 30
-        while time.time() < deadline and len(source.state()["pieces"]) < 4:
+        while time.time() < deadline and len(source.state()["pieces"]) < 3:
             time.sleep(0.2)
         state = source.state()
     finally:
         source.stop()
     assert state["profile"] == "current" and state["partial"] and state["valid"], state["reason"]
+    # The resistor's value is never assumed; its body is listed as an unidentified piece.
     assert {(p["type"], p["a"], p["b"], p["row"]) for p in state["pieces"]} == {
-        ("jumper_3", 8, 11, 0), ("led", 8, 9, 2),
-        ("resistor_1k", 9, 10, 3), ("bateria", 10, 11, 4),
+        ("jumper_3", 8, 11, 0), ("led", 8, 9, 2), ("bateria", 10, 11, 4),
     }
+    assert any(u["type"] == "peca_sem_tipo" and u["row"] == 3 and (u["a"], u["b"]) == (9, 10)
+               for u in state["unknown"])
 
 
 def test_recalibrate_reports_progress_at_once():

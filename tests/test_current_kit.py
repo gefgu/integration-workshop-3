@@ -12,13 +12,15 @@ FIXTURES = Path(__file__).resolve().parents[1] / 'visao' / 'fixtures' / 'current
 
 class CurrentKitTest(unittest.TestCase):
     def test_edge_battery_remains_recognized_across_real_frames(self):
-        expected = {'buzzer', 'jumper_4', 'led', 'vermelho_2', 'resistor_1k'}
+        # The blue resistor body is visible but its value is unknown until its bands are read.
+        expected = {'buzzer', 'jumper_4', 'led', 'vermelho_2'}
         for prefix in ('edge-test', 'edge-occluded'):
             for index in range(8):
                 image = cv.imread(str(FIXTURES / f'{prefix}-{index}.jpg'))
                 result = PipelineAtual(temporal=False).processa(image)
                 self.assertTrue(result.valido, (prefix, index, result.motivo))
                 self.assertEqual({part.tipo for part in result.componentes}, expected, (prefix, index))
+                self.assertTrue(result.pecas_sem_tipo, (prefix, index))
 
     def test_four_gap_white_jumper_shape(self):
         import numpy as np
@@ -37,7 +39,8 @@ class CurrentKitTest(unittest.TestCase):
             pieces = {(c.tipo, c.linha, tuple(c.colunas)) for c in result.componentes}
             self.assertIn(('buzzer', 2, (6, 7)), pieces)
             self.assertIn(('capsula_smart', 5, (4, 5, 6)), pieces)
-            self.assertIn(('resistor_1k', 3, (8, 9)), pieces)
+            self.assertNotIn('resistor_1k', {piece[0] for piece in pieces})
+            self.assertIn((3, [8, 9]), [(q['linha'], q['colunas']) for q in result.pecas_sem_tipo])
 
     def test_smart_component_is_not_assumed_to_have_a_mode(self):
         from bench_service.vision import to_pieces
@@ -88,7 +91,8 @@ class CurrentKitTest(unittest.TestCase):
         self.assertIn(('vermelho_2', 4, (9, 10)), pieces)
         self.assertIn(('led', 2, (7, 8)), pieces)
         self.assertIn(('jumper_3', 1, (7, 8, 9, 10)), pieces)
-        self.assertIn(('resistor_1k', 3, (8, 9)), pieces)
+        self.assertNotIn('resistor_1k', {piece[0] for piece in pieces})
+        self.assertIn((3, [8, 9]), [(q['linha'], q['colunas']) for q in result.pecas_sem_tipo])
 
     def test_completed_board_reacquires_four_pieces(self):
         image = cv.imread(str(FIXTURES / 'reference-completed.jpg'))
@@ -96,8 +100,9 @@ class CurrentKitTest(unittest.TestCase):
         self.assertTrue(result.valido, result.motivo)
         self.assertEqual({(c.tipo, c.linha, tuple(c.colunas)) for c in result.componentes}, {
             ('jumper_3', 0, (7, 8, 9, 10)), ('led', 2, (7, 8)),
-            ('vermelho_2', 4, (9, 10)), ('resistor_1k', 3, (8, 9)),
+            ('vermelho_2', 4, (9, 10)),
         })
+        self.assertIn((3, [8, 9]), [(q['linha'], q['colunas']) for q in result.pecas_sem_tipo])
 
     def test_nearby_led_and_jumper_remain_separate(self):
         for filename in ('kit-test-overlap-2026-11-10.jpg', 'kit-test-overlap-locked-2026-11-10.jpg'):
@@ -107,8 +112,9 @@ class CurrentKitTest(unittest.TestCase):
                 self.assertTrue(result.valido, result.motivo)
                 self.assertEqual({(c.tipo, c.linha, tuple(c.colunas)) for c in result.componentes}, {
                     ('jumper_3', 1, (6, 7, 8, 9)), ('led', 2, (6, 7)),
-                    ('vermelho_2', 4, (8, 9)), ('resistor_1k', 3, (7, 8)),
+                    ('vermelho_2', 4, (8, 9)),
                 })
+                self.assertIn((3, [7, 8]), [(q['linha'], q['colunas']) for q in result.pecas_sem_tipo])
 
     def test_lattice_fit_does_not_span_the_gap_between_banks(self):
         from visao.calibracao import calibra_automaticamente
@@ -140,10 +146,11 @@ class CurrentKitTest(unittest.TestCase):
                     results.append(pipeline.processa(image))
                     now[0] += 1 / .7
                 self.assertTrue(all(r.valido for r in results))
-                self.assertFalse(any(c.tipo == 'resistor_1k' for c in results[1].componentes))
+                for result in results:
+                    # Never a guessed value: the body stays an unknown, visible piece.
+                    self.assertFalse(any(c.tipo.startswith('resistor') for c in result.componentes))
                 for result in results[2:]:
-                    self.assertIn(('resistor_1k', 1, (5, 6)),
-                                  {(c.tipo, c.linha, tuple(c.colunas)) for c in result.componentes})
+                    self.assertIn((1, [5, 6]), [(q['linha'], q['colunas']) for q in result.pecas_sem_tipo])
 
 
 if __name__ == '__main__':

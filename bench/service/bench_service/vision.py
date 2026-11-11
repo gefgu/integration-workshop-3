@@ -22,7 +22,7 @@ log = logging.getLogger(__name__)
 BANK_ROWS = 6
 # Vision types the lesson editor knows under the same name.
 # The resistor values come from the colored stripe on the blue pieces (visao/config.py FAIXAS).
-SAME_TYPE = {"led", "buzzer", "capacitor", "botao", "jumper_curto", "jumper_longo", "jumper_3",
+SAME_TYPE = {"led", "buzzer", "capacitor", "botao", "jumper_curto", "jumper_longo", "jumper_3", "jumper_4",
              "resistor_220", "resistor_470", "resistor_1k"}
 # Vision types that need a choice the camera cannot make (value, polarity), mapped to the editor type.
 ASSUMED_TYPE = {
@@ -32,6 +32,7 @@ ASSUMED_TYPE = {
     "vermelho_2": "bateria",
 }
 UNSUPPORTED = {
+    "capsula_smart": "Componente inteligente detectado; a câmera não identifica sua função ou configuração.",
     "potenciometro": "O potenciômetro da câmera ocupa 3 furos; nas lições ele ainda tem 2.",
     "led_ou_buzzer": "Não deu para saber se é LED ou buzzer (pontos pretos não lidos).",
     "resistor_ou_capacitor": "Não deu para saber se é resistor ou capacitor (pontos pretos não lidos).",
@@ -96,6 +97,47 @@ SETTLE_S = 2.0
 # At 0.7 fps a frame normally takes about 1.4 seconds; allow several slow
 # frames but never expose a frozen camera image as an up-to-date circuit.
 MAX_FRAME_AGE_S = 8.0
+REMOVAL_CONFIRM_S = 1.0
+
+
+class PieceHold:
+    """Keep confirmed pieces on the display until their location is visibly empty."""
+
+    def __init__(self) -> None:
+        self.pieces: dict[str, dict[str, Any]] = {}
+        self.empty_since: dict[str, float] = {}
+        self.generation = None
+
+    def update(self, pieces: list[dict[str, Any]], result: Any, now: float) -> tuple[list[dict[str, Any]], bool]:
+        generation = result.registro.get('generation') if result.registro.get('valido') else None
+        if generation is not None and self.generation is not None and generation != self.generation:
+            self.pieces.clear()
+            self.empty_since.clear()
+        if generation is not None:
+            self.generation = generation
+        fresh = {piece['id']: piece for piece in pieces} if result.valido else {}
+        self.pieces.update(fresh)
+        uncertain = not result.valido
+        for ident, piece in list(self.pieces.items()):
+            if ident in fresh:
+                self.empty_since.pop(ident, None)
+                continue
+            bank, row = divmod(piece['row'], BANK_ROWS)
+            cols = (piece['a'] - 1, piece['b'] - 1)
+            visible_empty = result.valido and all(
+                result.atualidade[bank, row, col] == 'fresh' and result.observacoes[bank, row, col] == 'empty'
+                for col in cols
+            )
+            if visible_empty:
+                start = self.empty_since.setdefault(ident, now)
+                if now - start >= REMOVAL_CONFIRM_S:
+                    del self.pieces[ident]
+                    del self.empty_since[ident]
+                    continue
+            else:
+                self.empty_since.pop(ident, None)
+            uncertain = True
+        return list(self.pieces.values()), uncertain
 
 
 def fps_from(times: "deque[float] | list[float]") -> float | None:
@@ -119,6 +161,58 @@ def settle_and_lock(cv: Any, cap: Any, seconds: float = SETTLE_S) -> None:
         cap.read()
     cap.set(cv.CAP_PROP_AUTO_WB, 0)
     cap.set(cv.CAP_PROP_AUTO_EXPOSURE, 1)  # V4L2: 1 = manual
+
+
+# Resistor bands wash out at the normal exposure (glare turns red, brown and orange into one
+# clipped salmon). The bands are read from a few frames at two lower exposures (V4L2 units of
+# 100 µs; the camera's useful range was 600-1300 under the bench lamp) and the exposure is then put back.
+BAND_EXPOSURES = (1000, 1100)
+BAND_FRAMES = 2
+BAND_DARKER = .8            # a band frame must be at least this much darker than the normal one
+RESTORE_TOLERANCE = .12     # the restored frame must match the normal brightness within this
+V4L2_AUTO_EXPOSURE = 3      # V4L2 aperture-priority (auto) value, for the fallback re-lock
+
+
+def _wait_for_brightness(cap: Any, accept, limit: int = 45) -> Any:
+    """Reads frames until `accept(mean)` holds for two frames in a row; returns the last frame or None."""
+    good, frame = 0, None
+    for _ in range(limit):
+        ok, current = cap.read()
+        if not ok:
+            continue
+        good = good + 1 if accept(float(current.mean())) else 0
+        frame = current
+        if good >= 2:
+            return frame
+    return None
+
+
+def read_bands_frames(cv: Any, cap: Any, locked: float, reference: float) -> tuple[list[Any], float]:
+    """Lowers the exposure, collects frames for the band reader, restores the exposure.
+
+    Returns (frames, exposure to use as the locked value afterwards). If the exposure does not take
+    or cannot be restored exactly, the camera is re-locked from auto exposure as at start-up."""
+    frames: list[Any] = []
+    try:
+        for exposure in BAND_EXPOSURES:
+            cap.set(cv.CAP_PROP_EXPOSURE, exposure)
+            if _wait_for_brightness(cap, lambda mean: mean <= reference * BAND_DARKER) is None:
+                log.warning("band read: exposure %s did not darken the frame", exposure)
+                break
+            for _ in range(BAND_FRAMES):
+                ok, frame = cap.read()
+                if ok:
+                    frames.append(frame)
+    finally:
+        cap.set(cv.CAP_PROP_EXPOSURE, locked)
+        restored = _wait_for_brightness(cap, lambda mean: abs(mean - reference) <= reference * RESTORE_TOLERANCE)
+        if restored is None:
+            log.warning("band read: exposure %s did not restore; re-locking from auto", locked)
+            cap.set(cv.CAP_PROP_AUTO_EXPOSURE, V4L2_AUTO_EXPOSURE)
+            cap.set(cv.CAP_PROP_AUTO_WB, 1)
+            settle_and_lock(cv, cap)
+            locked = cap.get(cv.CAP_PROP_EXPOSURE)
+    return frames, locked
 
 
 class VisionSource:
@@ -191,7 +285,9 @@ class VisionSource:
                 return
             self._set(reason="Ajustando a luz da câmera…")
             settle_and_lock(cv, cap)
+            locked_exposure = cap.get(cv.CAP_PROP_EXPOSURE)
         pipeline = make_pipeline()
+        held = PieceHold()
         from visao import config as vision_config
         self._set(stable_frames=vision_config.FRAMES_ESTAVEIS)
         period = 1.0 / 5
@@ -203,6 +299,7 @@ class VisionSource:
                 if self._recalibrate.is_set():
                     self._recalibrate.clear()
                     pipeline.recalibrar()
+                    held = PieceHold()
                 if still is not None:
                     frame = still.copy()
                 else:
@@ -223,14 +320,28 @@ class VisionSource:
                                            "updated_at": time.time(), "recalibrating": recalibrating,
                                            "fps": fps_from(times), "frame_size": list(frame.shape[1::-1]),
                                            "confirming": confirming}
-                if result.mudou:
-                    pieces, unknown = to_pieces(para_dict(result.grafo))
-                    unknown += unknown_from_partial(getattr(result, "pecas_sem_tipo", []))
-                    changes.update(pieces=pieces, unknown=unknown, version=self.state()["version"] + 1)
+                pieces, unknown = to_pieces(para_dict(result.grafo))
+                if self.profile == 'current':
+                    pieces, uncertain = held.update(pieces, result, time.monotonic())
+                else:
+                    uncertain = not result.valido
+                unknown += unknown_from_partial(getattr(result, "pecas_sem_tipo", []))
+                old = self.state()
+                changes['uncertain'] = uncertain
+                if pieces != old.get('pieces') or unknown != old.get('unknown') or uncertain != old.get('uncertain'):
+                    changes.update(pieces=pieces, unknown=unknown, version=old['version'] + 1)
                 with self._lock:
                     self._state.update(changes)
                     if ok:
                         self._jpeg = jpeg.tobytes()
+                if cap is not None and hasattr(pipeline, "precisa_bandas") and pipeline.precisa_bandas():
+                    # Needs a camera, not a still: the bands are read at a lower exposure for a moment.
+                    band_frames, locked_exposure = read_bands_frames(cv, cap, locked_exposure, float(frame.mean()))
+                    if band_frames:
+                        log.info("band read: %s", pipeline.registra_bandas(band_frames))
+                    else:
+                        pipeline.adia_bandas()  # the exposure did not take: back off before retrying
+                    continue
                 time.sleep(max(0.0, period - (time.monotonic() - started)))
         finally:
             if cap is not None:

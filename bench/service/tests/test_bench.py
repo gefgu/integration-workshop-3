@@ -264,7 +264,7 @@ def test_vision_source_reads_a_real_photo():
     try:
         import time
         deadline = time.time() + 20
-        while time.time() < deadline and source.state()["version"] == 0:
+        while time.time() < deadline and not source.state()["pieces"]:
             time.sleep(0.2)
         state = source.state()
     finally:

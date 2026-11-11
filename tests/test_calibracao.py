@@ -57,8 +57,8 @@ class TestPartialCalibration(unittest.TestCase):
         from visao.pipeline_atual import PipelineAtual
 
         root = Path(__file__).resolve().parents[1] / 'visao/fixtures/current'
-        expected = {('jumper_3', 1, (7, 8, 9, 10)), ('led', 2, (7, 8)),
-                    ('resistor_1k', 3, (8, 9)), ('vermelho_2', 4, (9, 10))}
+        # The resistor's value is not assumed; its body must remain a visible unknown.
+        expected = {('jumper_3', 1, (7, 8, 9, 10)), ('led', 2, (7, 8)), ('vermelho_2', 4, (9, 10))}
         for index in range(1, 4):
             image = cv.imread(str(root / f'marked-test-still-{index}.jpg'))
             pipeline = PipelineAtual(temporal=False)
@@ -66,6 +66,7 @@ class TestPartialCalibration(unittest.TestCase):
                 result = pipeline.processa(image)
                 self.assertTrue(result.valido, result.motivo)
                 self.assertEqual({(part.tipo, part.linha, tuple(part.colunas)) for part in result.componentes}, expected)
+                self.assertIn((3, [8, 9]), [(q['linha'], q['colunas']) for q in result.pecas_sem_tipo])
 
     def test_saved_frames_and_empty_image(self):
         root = Path(__file__).resolve().parents[1]
