@@ -73,6 +73,13 @@ def le_placa(ret_bgr):
     return cores, pontes
 
 
+def assegura_cores(resultado):
+    """Compute legacy socket colours only when a diagnostic requests them."""
+    if resultado.cores is None and resultado.retificada is not None:
+        resultado.cores, resultado.pontes = le_placa(resultado.retificada)
+    return resultado.cores
+
+
 def hsv_ocupados(ret_bgr, cores):
     """ para calibração: HSV mediano dos pixels saturados/claros de cada socket ocupado."""
     hsv, _ = mascaras_cores(ret_bgr)

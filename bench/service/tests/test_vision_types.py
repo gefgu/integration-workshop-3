@@ -2,6 +2,21 @@
 from bench_service.vision import ASSUMED_TYPE, SAME_TYPE, UNSUPPORTED, to_pieces
 
 
+def test_slow_camera_allowed_but_frozen_camera_clears_circuit(monkeypatch):
+    from bench_service.vision import VisionSource
+    import bench_service.vision as vision
+    source = VisionSource(image='unused')
+    source._set(valid=True, updated_at=100.0, version=7, pieces=[{'id': 'battery'}])
+    monkeypatch.setattr(vision.time, 'time', lambda: 102.9)
+    assert source.state()['valid'] is True
+    monkeypatch.setattr(vision.time, 'time', lambda: 109.0)
+    stale = source.state()
+    assert stale['valid'] is False and stale['pieces'] == [] and stale['version'] < 0
+    source._set(updated_at=109.0)
+    recovered = source.state()
+    assert recovered['valid'] is True and recovered['version'] == 7
+
+
 def comp(tipo, colunas, cor="azul"):
     return {"id": tipo, "tipo": tipo, "cor": cor, "posicao": {"metade": "C", "linha": 0, "colunas": colunas}}
 

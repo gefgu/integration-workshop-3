@@ -6,9 +6,35 @@ import { diagnose } from '../src/engine/diagnose.ts';
 import { lessonProblems, validateLesson } from '../src/model/lesson.ts';
 import { challengeSteps, cumulativeBoard, effectiveSteps, needsBuild, startPieces } from '../src/model/steps.ts';
 import { buildPhases } from '../src/player/phases.ts';
+import { demoChoices, demoPackage } from '../src/bench/demo.ts';
+import { cameraLessonPieces } from '../src/player/cameraPolarity.ts';
 
 const lessons = curriculumLessons();
 const roundTrip = (l) => validateLesson(JSON.parse(JSON.stringify(l)));
+
+test('the bench demo offers the one-jumper 1 kΩ lesson as a standalone module', async () => {
+  const id = `${SEED_PREFIX}03-guiada-1k`;
+  const choice = (await demoChoices()).find((c) => c.lessonIds?.length === 1 && c.lessonIds[0] === id);
+  assert.ok(choice);
+  const pkg = await demoPackage(choice);
+  assert.deepEqual(pkg.module.lesson_ids, [id]);
+  assert.deepEqual(pkg.lessons[0].board.pieces.map((p) => p.type), ['bateria', 'resistor_1k', 'led', 'jumper_3']);
+  assert.equal(diagnose(pkg.lessons[0].board.pieces, new Set()).code, 'valido');
+});
+
+test('the camera lesson uses the confirmed LED orientation for the live test circuit only', () => {
+  const lesson = lessons.find((l) => l.id === `${SEED_PREFIX}03-guiada-1k`)!;
+  const pieces = [
+    { id: 'bat', type: 'bateria', a: 10, b: 11, row: 4 },
+    { id: 'res', type: 'resistor_1k', a: 9, b: 10, row: 3 },
+    { id: 'led', type: 'led', a: 8, b: 9, row: 2 },
+    { id: 'w', type: 'jumper_3', a: 8, b: 11, row: 1 },
+  ] as const;
+  const adjusted = cameraLessonPieces(lesson, [...pieces]);
+  assert.equal(diagnose(adjusted!, new Set()).code, 'valido');
+  assert.equal(diagnose([...pieces], new Set()).code, 'led_invertido');
+  assert.deepEqual(cameraLessonPieces(lessons[0], [...pieces]), [...pieces]);
+});
 
 test('the curriculum has every Notion lesson, guided and challenge', () => {
   const ids = lessons.map((l) => l.id);

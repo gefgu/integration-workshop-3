@@ -58,10 +58,18 @@ local confiável. Esses diagnósticos também aparecem com `--verbose`.
 
 ## Interpretação e limites
 
-- O resistor branco com três marcas é reconhecido como `resistor_1k` por ser o
-  valor disponível informado para esta montagem. A câmera não mede resistência.
-- Corpos azuis reconhecidos aparecem em `pecas_sem_tipo` e nas posições ocupadas,
-  mas ainda não entram no grafo elétrico: suas identidades não estão confirmadas.
+- No arranjo experimental do teste, corpos vermelhos são interpretados como bateria,
+  verdes como LED e o jumper branco de três espaços como `jumper_3`. A cor não
+  distingue LED de buzzer, e a câmera não determina a polaridade: a integração
+  assume o primeiro terminal (à esquerda) como positivo/ânodo, exceto na lição
+  `03-guiada-1k`: nela a tela usa ânodo à direita para a montagem de teste
+  confirmada. Confira fisicamente esses pressupostos; a identificação não é uma medição elétrica. A identificação
+  foi conferida em uma montagem e depende de iluminação e posição.
+- O perfil atual não identifica mais o resistor branco nem publica corpos azuis
+  desconhecidos; não interprete a ausência dessas peças como prova de bancada vazia.
+- Um suporte azul com resistor axial visível também é interpretado como `resistor_1k`
+  nesta montagem de teste, usando o valor informado para o kit. Não use essa
+  identificação como leitura das faixas nem para distinguir outros valores.
 - `observacoes` distingue `empty`, `occupied` e `unknown`; `atualidade` distingue
   `fresh`, `stale` e `unknown`. Leituras precisam de três frames consecutivos no
   modo câmera. Resultados anteriores ficam `stale` por até dois segundos, mas
@@ -80,6 +88,18 @@ local confiável. Esses diagnósticos também aparecem com `--verbose`.
   [fixtures/current](fixtures/current/README.md).
 
 ## Testes
+
+Para medir a referência estática após aquecimento (tempo de calibração inicial,
+tempo por quadro e peças reportadas):
+
+```bash
+.venv/bin/python -m visao.benchmark visao/fixtures/current/reference-completed.jpg --frames 90
+```
+
+`visao.markers.marker_homography` é um protótipo independente de calibração
+ArUco: recebe quatro IDs e suas coordenadas conhecidas e retorna uma proposta
+de homografia. Não está ligado à bancada nem substitui a validação da grade;
+marcadores físicos e sua geometria ainda precisam ser testados.
 
 ```bash
 .venv/bin/python -m unittest discover -s tests -p 'test_calibracao.py'

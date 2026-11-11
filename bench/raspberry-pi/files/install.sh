@@ -65,6 +65,7 @@ echo "==> 2/6  Copiando a bancada para $PREFIX"
 mkdir -p "$PREFIX"
 rm -rf "$PREFIX/app" "$PREFIX/ui"
 cp -r "$HERE/app" "$HERE/ui" "$PREFIX/"
+chown -R "$USER_NAME": "$PREFIX/app/graph_validator/audio"
 install -m 644 "$HERE/tedtronics-bancada.png" "$PREFIX/tedtronics-bancada.png"
 install -m 755 "$HERE/tedtronics-tela" /usr/local/bin/tedtronics-tela
 install -m 755 "$HERE/uninstall.sh" "$PREFIX/uninstall.sh"
@@ -75,7 +76,7 @@ python3 -m venv "$PREFIX/venv"
 EXTRAS="vision"
 if [ "$BLE" = 1 ]; then EXTRAS="$EXTRAS,ble"; fi
 if [ -n "$CONTROLS" ]; then EXTRAS="$EXTRAS,controls"; fi
-"$PREFIX/venv/bin/pip" install "$PREFIX/app/graph_validator" "$PREFIX/app/bench_service[$EXTRAS]"
+"$PREFIX/venv/bin/pip" install "$PREFIX/app/graph_validator[tts]" "$PREFIX/app/bench_service[$EXTRAS]"
 
 echo "==> 4/6  Serviço da bancada (liga sozinho com a Pi)"
 ARGS="--no-browser"
@@ -116,6 +117,8 @@ User=$USER_NAME
 WorkingDirectory=$PREFIX
 Environment=PYTHONPATH=$PREFIX/app
 Environment=TEDTRONICS_BENCH_UI=$PREFIX/ui
+Environment=TEDTRONICS_AUDIO_DIR=$PREFIX/app/graph_validator/audio
+Environment=TEDTRONICS_PIPER_VOICE=$PREFIX/app/graph_validator/voices/pt_BR-cadu-medium.onnx
 EnvironmentFile=-/etc/tedtronics-bancada.env
 ExecStart=$PREFIX/venv/bin/python -m bench_service.launcher $ARGS
 Restart=always

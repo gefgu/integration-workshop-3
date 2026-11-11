@@ -23,6 +23,10 @@ def resistor_branco(ret_bgr, metade, linha, coluna):
     if cy < 36 or cx < 28 or cy - 10 >= ret_bgr.shape[0] or cx + 29 > ret_bgr.shape[1]:
         return False
     patch = ret_bgr[cy - 36:cy - 10, cx - 28:cx + 29]
+    # The white-body test below requires V >= 140. A dark patch cannot
+    # satisfy it, so skip the HSV conversion and percentile calculations.
+    if patch.max() < 140:
+        return False
     hsv = cv.cvtColor(patch, cv.COLOR_BGR2HSV)
     h, s, v = np.median(hsv, axis=0).T
     # White plastic dominates the bridge; blue parts and bare dark dividers

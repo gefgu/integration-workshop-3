@@ -13,11 +13,15 @@ CANTOS = np.float32([[0, 0], [10, 0], [10, 5], [0, 5]])
 _REFERENCE_H = np.array([[75.4142064, -7.3069687, 265.4040750],
                          [2.3364109, 44.3020119, 377.0355578],
                          [-.0014676733, -.0097659579, 1.]])
+_COMPLETED_H = np.array([[73.8337295, -4.9540240, 227.165260],
+                         [-3.3460936, 44.2486666, 456.072131],
+                         [-.00362749906, -.00895937683, 1.]])
+REFERENCES = (('frame-00.jpg', _REFERENCE_H), ('reference-completed.jpg', _COMPLETED_H))
 
 
-@lru_cache(maxsize=1)
-def _reference_features():
-    path = Path(__file__).parent / 'fixtures/current/frame-00.jpg'
+@lru_cache(maxsize=2)
+def _reference_features(name):
+    path = Path(__file__).parent / 'fixtures/current' / name
     image = cv.imread(str(path))
     if image is None or not hasattr(cv, 'SIFT_create'):
         return None
@@ -31,33 +35,36 @@ def calibra_por_referencia(image):
     The resulting mapping is only a proposal: normal socket matching and
     tracking validation must still accept it before any position is reported.
     """
-    reference = _reference_features()
-    if reference is None or reference[1] is None:
+    if not hasattr(cv, 'SIFT_create'):
         return None
     points, descriptors = cv.SIFT_create().detectAndCompute(cv.cvtColor(image, cv.COLOR_BGR2GRAY), None)
     if descriptors is None or len(descriptors) < 2:
         return None
-    matches = cv.BFMatcher().knnMatch(reference[1], descriptors, k=2)
-    good = [pair[0] for pair in matches if len(pair) == 2 and pair[0].distance < .7 * pair[1].distance]
-    if len(good) < 20:
-        return None
-    source = np.float32([reference[0][m.queryIdx].pt for m in good])
-    target = np.float32([points[m.trainIdx].pt for m in good])
-    H, mask = cv.findHomography(source, target, cv.RANSAC, 3.0)
-    if H is None or mask is None or not np.isfinite(H).all():
-        return None
-    accepted = mask.ravel().astype(bool)
-    if accepted.sum() < 20:
-        return None
-    locations = cv.perspectiveTransform(source[accepted][None], np.linalg.inv(_REFERENCE_H))[0]
-    # A cluster on one movable component cannot establish board geometry.
-    if np.ptp(locations[:, 0]) < 5.5 or np.ptp(locations[:, 1]) < 4:
-        return None
-    candidate = H @ _REFERENCE_H
-    projected = cv.perspectiveTransform(CANTOS[None], candidate)[0]
-    if not np.isfinite(projected).all() or not cv.isContourConvex(projected.reshape(-1, 1, 2)):
-        return None
-    return candidate
+    for name, reference_h in REFERENCES:
+        reference = _reference_features(name)
+        if reference is None or reference[1] is None:
+            continue
+        matches = cv.BFMatcher().knnMatch(reference[1], descriptors, k=2)
+        good = [pair[0] for pair in matches if len(pair) == 2 and pair[0].distance < .7 * pair[1].distance]
+        if len(good) < 20:
+            continue
+        source = np.float32([reference[0][m.queryIdx].pt for m in good])
+        target = np.float32([points[m.trainIdx].pt for m in good])
+        H, mask = cv.findHomography(source, target, cv.RANSAC, 3.0)
+        if H is None or mask is None or not np.isfinite(H).all():
+            continue
+        accepted = mask.ravel().astype(bool)
+        if accepted.sum() < 20:
+            continue
+        locations = cv.perspectiveTransform(source[accepted][None], np.linalg.inv(reference_h))[0]
+        # A cluster on one movable component cannot establish board geometry.
+        if np.ptp(locations[:, 0]) < 5.5 or np.ptp(locations[:, 1]) < 4:
+            continue
+        candidate = H @ reference_h
+        projected = cv.perspectiveTransform(CANTOS[None], candidate)[0]
+        if np.isfinite(projected).all() and cv.isContourConvex(projected.reshape(-1, 1, 2)):
+            return candidate
+    return None
 
 
 def calibra_automaticamente(image, points=None):
@@ -124,6 +131,10 @@ def calibra_automaticamente(image, points=None):
             ((matched[:, 0] == 0).sum(), (matched[:, 0] == 10).sum(),
              (matched[:, 1] == 0).sum(), (matched[:, 1] == 5).sum()))):
         return None
+    # A fit spanning the empty channel between two banks can satisfy the
+    # outer-edge check while inventing an entirely missing intermediate row.
+    if any((matched[:, 1] == row).sum() < 2 for row in range(cfg.N_LINHAS_METADE)):
+        return None
     error = np.linalg.norm(cv.perspectiveTransform(model[None], H)[0] - target, axis=1)[inliers]
     spacing = float(np.linalg.norm(vx))
     if np.median(error) > .08 * spacing or np.percentile(error, 90) > .15 * spacing:
@@ -135,14 +146,16 @@ def candidatos(image):
     gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
     gray = cv.GaussianBlur(gray, (3, 3), 0)
     scale = image.shape[0] * image.shape[1] / (1280 * 720)
+    min_distance_squared = 25 * scale
     points = []
     for threshold, polarity in ((110, cv.THRESH_BINARY), (170, cv.THRESH_BINARY), (210, cv.THRESH_BINARY), (110, cv.THRESH_BINARY_INV)):
         _, mask = cv.threshold(gray, threshold, 255, polarity)
         _, _, stats, centers = cv.connectedComponentsWithStats(mask)
         for (_, _, w, h, area), center in zip(stats[1:], centers[1:]):
             if 180 * scale < area < 2400 * scale and .55 < w / h < 1.9 and area / (w*h) > .65:
-                if all(np.linalg.norm(center-p) > 5 * np.sqrt(scale) for p in points):
-                    points.append(center)
+                x, y = map(float, center)
+                if all((x - px) ** 2 + (y - py) ** 2 > min_distance_squared for px, py in points):
+                    points.append((x, y))
     return np.float32(points).reshape(-1, 2)
 
 
@@ -276,9 +289,12 @@ class RegistradorParcial:
                         motivo=self.ultimo_motivo or 'grade incompleta ou origem ambígua; use calibração manual')
         points = candidatos(image)
         if self.H is None:
-            self.H = calibra_automaticamente(image, points)
+            # The completed bench has two similar grids; a lattice-only fit can
+            # span their gap and assign the wrong row numbers. Prefer the
+            # board-specific reference when it has enough distributed matches.
+            self.H = calibra_por_referencia(image)
             if self.H is None:
-                self.H = calibra_por_referencia(image)
+                self.H = calibra_automaticamente(image, points)
             # Remember only failed searches; losing a good grid must be reacquired at once.
             self.ultima_busca = agora if self.H is None else None
             if self.H is not None:

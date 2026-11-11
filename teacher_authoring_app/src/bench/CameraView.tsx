@@ -48,7 +48,9 @@ function where(p: { a: number; b: number; row: number }) {
 function Diagnostics({ live, vision }: { live: VisionState | null; vision: VisionState }) {
   if (!live) return <p className="bench-camera-diag">Sem resposta do serviço da câmera.</p>;
   const age = live.age_s;
-  const stale = age == null || age > 3;
+  // Match the service's stalled-frame timeout; a Pi at 0.7 fps can take
+  // several seconds between frames during a calibration or CPU spike.
+  const stale = age == null || age > 8;
   const fps = live.fps;
   const need = live.stable_frames ?? vision.stable_frames;
   const confirming = live.confirming ?? 0;

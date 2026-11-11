@@ -486,18 +486,23 @@ function lesson03(): Lesson[] {
 
 const L03_1K_NOTES = `Objetivo: montar o circuito mais simples com resistor — bateria, resistor de 1 kΩ e LED — e ver que um resistor maior deixa o LED mais fraco.
 Como saber que deu certo: LED aceso na simulação; a pergunta final compara a corrente com a do resistor de 470 Ω (cerca de 3 mA contra 6 mA).
-Esta é a lição indicada para testar a câmera da bancada com a peça branca de 1 kΩ do kit: são só três peças e dois jumpers.
+Esta é a lição indicada para testar a câmera da bancada com a peça de 1 kΩ do kit: são três componentes e um jumper. Na leitura por câmera desta lição, a bateria é assumida com + à esquerda e o LED com ânodo à direita; a câmera não mede polaridade.
 ${SIM} A corrente vem de (5 V − 2 V do LED) ÷ 1000 Ω ≈ 3 mA. O valor do resistor é uma configuração do kit; a câmera não mede a resistência.`;
 
 function lesson03Resistor1k(): Lesson[] {
-  const board = circuitL04('resistor_1k');
+  const board = [
+    P('bat', 'bateria', 3, 4, 1),
+    P('res', 'resistor_1k', 3, 2, 2),
+    P('led', 'led', 2, 1, 3),
+    P('w2', 'jumper_3', 1, 4, 4),
+  ];
   const qPrev = quiz(
     'q-prev',
     'Antes de testar: com um resistor de 1 kΩ (1000 Ω), o LED vai acender?',
     [
       ['Sim, mas mais fraco do que com um resistor menor.', 'Boa previsão! Resistência maior deixa passar menos corrente, mas ainda o suficiente para acender.'],
       ['Não, 1 kΩ é demais e bloqueia a corrente.', 'Um resistor não bloqueia: ele só limita. Teste e veja o LED aceso.'],
-      ['Vai acender igual a qualquer outro resistor.', 'O valor importa: quanto maior, menos corrente. Compare com a lição anterior.'],
+      ['Vai acender igual a qualquer outro resistor.', 'O valor importa: quanto maior, menos corrente.'],
     ],
     0
   );
@@ -522,7 +527,7 @@ function lesson03Resistor1k(): Lesson[] {
         explain(
           'e-1k',
           'O circuito mais simples com resistor',
-          'São só três peças: a bateria, um resistor de 1 kΩ (1000 Ω) e o LED, ligados em círculo por dois jumpers. A corrente sai do + da bateria, passa pelo resistor, pelo LED e volta ao −.\n\nO resistor protege o LED: com 1 kΩ passam cerca de 3 mA, bem menos que com o resistor de 470 Ω.'
+          'Use a bateria, um resistor de 1 kΩ (1000 Ω), o LED e um jumper. A corrente sai do + da bateria, passa pelo resistor, pelo LED e volta ao − pelo jumper.\n\nNa câmera, confira a orientação: + da bateria à esquerda e ânodo do LED à direita. A câmera não mede a polaridade.\n\nO resistor protege o LED: com 1 kΩ passam cerca de 3 mA, bem menos que com o resistor de 470 Ω.'
         ),
         ...build(
           board,
@@ -530,7 +535,6 @@ function lesson03Resistor1k(): Lesson[] {
             ['bat', 'Coloque a bateria na bancada.'],
             ['res', 'Coloque o resistor de 1 kΩ.'],
             ['led', 'Coloque o LED, depois do resistor. O lado da barra é o −.'],
-            ['w1', 'Jumper do + da bateria ao resistor.'],
             ['w2', 'Jumper do LED de volta ao − da bateria.'],
           ],
           'Confira o circuito inteiro e faça sua previsão antes de energizar.',
@@ -543,7 +547,7 @@ function lesson03Resistor1k(): Lesson[] {
         interact('i-compara', 'Compare com o resistor de 470 Ω.', qCompare),
       ],
       quizzes: [qPrev, qCompare],
-      settings: { requireLit: true, tray: KIT('bateria', 'resistor_1k', 'led', 'jumper_longo', 'jumper_3') },
+      settings: { requireLit: true, tray: KIT('bateria', 'resistor_1k', 'led', 'jumper_3') },
       notes: L03_1K_NOTES,
       tags: ['guiada', 'resistor', 'câmera', 'exemplo'],
     }),
@@ -1428,6 +1432,11 @@ export function curriculumModules(): CurriculumModule[] {
       title: 'Trilha 4 — Segurança e integração (9 e 10)',
       description: 'Curto-circuito, mau contato e o alarme que junta tudo.',
       lessonIds: track('09-guiada', '09-desafio', '10-guiada'),
+    },
+    {
+      title: 'Teste — Bateria, resistor de 1 kΩ e LED',
+      description: 'Uma lição guiada com bateria, resistor de 1 kΩ, LED e um jumper.',
+      lessonIds: track('03-guiada-1k'),
     },
     {
       title: 'Currículo completo — Fundamental II',

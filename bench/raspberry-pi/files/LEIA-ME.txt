@@ -17,6 +17,10 @@ internet durante a instalação, a câmera da bancada conectada e o monitor de 7
    - A tela da bancada abre sozinha em tela cheia depois do login.
    - O ícone "TedTronics Bancada" na área de trabalho abre a tela de novo.
    - Para sair da tela cheia: Alt+F4.
+   - A voz do tutor funciona sem internet usando Piper. O botão de som fica no menu da bancada;
+     confira também o volume e a saída de áudio da Raspberry Pi.
+   - Ao atualizar, feche a tela antiga e abra "TedTronics Bancada" novamente (ou reinicie a Pi)
+     para aplicar as opções do Chromium, incluindo a desativação do aviso de tradução.
 
 3) App do professor: na aba Bancada, escolha "Simulador (Wi-Fi)" e digite o IP que a
    instalação mostrou no final (porta 8765). Celular e Pi precisam estar na mesma rede.

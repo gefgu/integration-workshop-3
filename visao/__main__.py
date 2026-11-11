@@ -18,7 +18,7 @@ import cv2 as cv
 from . import config as cfg
 from .pipeline import Pipeline
 from .circuito import desenha_placa, para_dict
-from .sockets import hsv_ocupados
+from .sockets import assegura_cores, hsv_ocupados
 from .tela import desenha_tela
 from .debug import desenha_frame, desenha_retificada, desenha_sockets, tabela_sockets
 
@@ -119,7 +119,7 @@ def roda_imagens(args):
         if args.json:
             print(json.dumps(saida_json(res), ensure_ascii=False, indent=2))
         if args.cores and res.retificada is not None:
-            for s, cor, hsv in hsv_ocupados(res.retificada, res.cores):
+            for s, cor, hsv in hsv_ocupados(res.retificada, assegura_cores(res)):
                 print(f'  socket {s}: cor={cor} hsv_mediano={hsv.astype(int).tolist()}')
         if args.debug:
             salva_debug(args.debug, os.path.splitext(os.path.basename(caminho))[0], frame, res)
@@ -129,7 +129,9 @@ def abre_camera(indice, travar):
     # V4L2 direto: o backend automático pode cair num que só entrega 640x480.
     # MJPG é o formato em que as câmeras USB entregam 720p/1080p.
     cap = cv.VideoCapture(indice, cv.CAP_V4L2)
-    if not cap.isOpened():
+    # On Linux another backend may silently open a different physical camera
+    # when the requested V4L2 device is busy or unavailable.
+    if not cap.isOpened() and not sys.platform.startswith('linux'):
         cap = cv.VideoCapture(indice)
     cap.set(cv.CAP_PROP_FOURCC, cv.VideoWriter_fourcc(*'MJPG'))
     cap.set(cv.CAP_PROP_FRAME_WIDTH, cfg.CAMERA_LARGURA)

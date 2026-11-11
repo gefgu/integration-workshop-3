@@ -16,6 +16,6 @@ if [ -z "$BROWSER" ]; then
   echo "Chromium não encontrado."
   exit 1
 fi
-exec "$BROWSER" "$MODE" --app="$URL" --noerrdialogs --disable-infobars --disable-session-crashed-bubble \
+exec "$BROWSER" "$MODE" --app="$URL" --noerrdialogs --disable-infobars --disable-session-crashed-bubble --disable-features=Translate \
   --check-for-update-interval=31536000 --autoplay-policy=no-user-gesture-required --password-store=basic \
   --user-data-dir="$HOME/.config/tedtronics-tela"

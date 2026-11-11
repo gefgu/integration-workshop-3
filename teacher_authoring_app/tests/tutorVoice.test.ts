@@ -87,3 +87,16 @@ test('StrictMode (efeito, limpeza, efeito) fala cada linha uma vez só', async (
   sink.end();
   assert.deepEqual(played, ['t.mp3', 'p.mp3']);
 });
+
+test('bench voice speaks arbitrary lesson text and preserves queue and mute', async () => {
+  const { sink, played } = fakeSink();
+  const voice = new TutorVoice(() => sink, (text) => `/tts/speak?text=${encodeURIComponent(text)}`);
+  assert.equal(voice.hasAudio('Uma fala sem manifesto'), true);
+  voice.say(['Bateria de 5 V', 'Resistor de 1 kΩ']);
+  await tick();
+  assert.deepEqual(played, ['speak?text=Bateria%20de%205%20V']);
+  sink.end();
+  assert.deepEqual(played, ['speak?text=Bateria%20de%205%20V', 'speak?text=Resistor%20de%201%20k%CE%A9']);
+  voice.setMuted(true);
+  assert.equal(voice.hasAudio('Qualquer fala'), false);
+});

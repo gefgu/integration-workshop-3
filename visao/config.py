@@ -84,9 +84,10 @@ COMPONENTES = {
 # padrão: todos. O jumper longo passa por cima do socket do meio sem ligá-lo.
 TERMINAIS = {
     'jumper_longo': (0, 2),
+    'jumper_3': (0, 3),
 }
 
-TIPOS_JUMPER = ('jumper_curto', 'jumper_longo')
+TIPOS_JUMPER = ('jumper_curto', 'jumper_longo', 'jumper_3')
 
 # ------------------------------------------------------------------ FAIXA COLORIDA DAS PEÇAS AZUIS
 # as peças azuis (resistores e capacitor) têm uma faixa colorida no meio, sobre a ponte entre os

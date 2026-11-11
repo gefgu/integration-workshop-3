@@ -5,6 +5,98 @@ import numpy as np
 from . import config as cfg
 
 
+def resistores_azuis_kit(ret_bgr):
+    """Find a blue two-socket holder carrying the kit's exposed axial resistor.
+
+    The 1 kΩ value is a kit configuration assumption, not an optical measurement.
+    Plain coloured blue bodies must remain unidentified.
+    """
+    hsv = cv.cvtColor(ret_bgr, cv.COLOR_BGR2HSV)
+    found = set()
+    for row in range(cfg.N_LINHAS_METADE):
+        socket_y = int(round(cfg.para_retificada(0, row)[1]))
+        top, bottom = max(0, socket_y - 38), min(hsv.shape[0], socket_y + 12)
+        region = hsv[top:bottom]
+        mask = cv.inRange(region, (91, 80, 150), (130, 255, 255))
+        mask = cv.morphologyEx(mask, cv.MORPH_CLOSE, np.ones((7, 35), np.uint8))
+        for x, y, width, height, area in cv.connectedComponentsWithStats(mask)[2][1:]:
+            if not (90 <= width <= 165 and 25 <= height <= 52 and area >= 1800):
+                continue
+            center_x = x + width / 2
+            col = round((center_x - 20) / cfg.PX_X - cfg.MARGEM_X - .5)
+            if not 0 <= col < cfg.N_COLUNAS - 1:
+                continue
+            expected_x, _ = cfg.para_retificada(col + .5, row)
+            if abs(center_x - 20 - expected_x) > 20:
+                continue
+            # The mounted axial part contains a dark body/lead in the middle.
+            # A plain bright blue holder does not establish a resistor value.
+            cx = int(round(expected_x))
+            body = hsv[max(0, socket_y - 38):socket_y - 3, max(0, cx - 35):cx + 45]
+            if not body.size or np.mean((body[:, :, 1] < 75) & (body[:, :, 2] > 70) & (body[:, :, 2] < 220)) < .15:
+                continue
+            # The exposed resistor can sit to either side of the holder's
+            # midpoint. Check two narrow regions rather than only the center.
+            regions = [hsv[max(0, socket_y - 38):socket_y - 3,
+                           max(0, cx + offset - 10):cx + offset + 10]
+                       for offset in (-15, 0, 15, 25, 30, 35)]
+            if any(region.size and np.mean(region[:, :, 2] < 100) >= .10 for region in regions):
+                found.add((row, col))
+    return found
+
+
+def pecas_kit(ret_bgr):
+    """Candidate kit pieces; identities and polarity follow the test-kit convention.
+
+    Returns (type, colour, row, first column, last column). Bright openings and
+    fragments are rejected by requiring a substantial, horizontally aligned body.
+    """
+    hsv = cv.cvtColor(ret_bgr, cv.COLOR_BGR2HSV)
+    red = cv.inRange(hsv, (0, 80, 70), (8, 255, 255)) | cv.inRange(hsv, (165, 80, 70), (179, 255, 255))
+    masks = [
+        ('vermelho_2', 'vermelho', red),
+        ('led', 'verde', cv.inRange(hsv, (55, 55, 80), (90, 255, 255))),
+        ('jumper', 'branco', cv.inRange(hsv, (0, 0, 180), (179, 55, 255))),
+    ]
+    found = []
+    for kind, colour, mask in masks:
+        mask = cv.morphologyEx(mask, cv.MORPH_CLOSE, np.ones((5, 11), np.uint8))
+        _, labels, stats, _ = cv.connectedComponentsWithStats(mask)
+        for label, (x, y, width, height, area) in enumerate(stats[1:], 1):
+            # Reflections on a neighboring piece can connect to the body and
+            # extend its bounding box into the next row. Keep the horizontal
+            # core instead of treating that sparse tail as part of the piece.
+            if kind in ('jumper', 'led') and 85 <= width <= 290 and area >= 1500:
+                component = labels[y:y + height, x:x + width] == label
+                minimum = width * (.60 if kind == 'jumper' else .20)
+                dense = np.flatnonzero(np.count_nonzero(component, axis=1) >= minimum)
+                if dense.size:
+                    height = int(dense[-1] - dense[0] + 1)
+                    y += int(dense[0])
+            if not (1500 <= area and 20 <= height <= 75 and 85 <= width <= 290):
+                continue
+            if kind != 'jumper' and width > 165:
+                continue
+            # Printed bodies project slightly to the right of their socket centers.
+            span = 1 if width < 170 else round((width - 60) / cfg.PX_X)
+            # Short pale bodies can be resistors; only the observed long
+            # three-gap jumper is identified in this experimental profile.
+            if kind == 'jumper' and span != 3:
+                continue
+            if kind != 'jumper' and span != 1 or not 1 <= span <= 3:
+                continue
+            first = round((x + width / 2 - 20) / cfg.PX_X - cfg.MARGEM_X - span / 2)
+            row = round((y + height - 3) / cfg.PX_Y - cfg.MARGEM_Y)
+            if not (0 <= row < cfg.N_LINHAS_METADE and 0 <= first < first + span < cfg.N_COLUNAS):
+                continue
+            expected_x, expected_y = cfg.para_retificada(first + span / 2, row)
+            if abs(x + width / 2 - 20 - expected_x) > 24 or abs(y + height - 3 - expected_y) > 18:
+                continue
+            piece_type = kind if kind != 'jumper' else {1: 'jumper_curto', 2: 'jumper_longo', 3: 'jumper_3'}[span]
+            found.append((piece_type, colour, row, first, first + span))
+    return found
+
+
 def suporte_local(vistos, linha, coluna_inicial, coluna_final):
     """Require nearby grid matches on multiple rows and columns."""
     y0, y1 = max(0, linha - 1), min(cfg.N_LINHAS_METADE, linha + 2)

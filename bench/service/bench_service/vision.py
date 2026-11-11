@@ -22,7 +22,7 @@ log = logging.getLogger(__name__)
 BANK_ROWS = 6
 # Vision types the lesson editor knows under the same name.
 # The resistor values come from the colored stripe on the blue pieces (visao/config.py FAIXAS).
-SAME_TYPE = {"led", "buzzer", "capacitor", "botao", "jumper_curto", "jumper_longo",
+SAME_TYPE = {"led", "buzzer", "capacitor", "botao", "jumper_curto", "jumper_longo", "jumper_3",
              "resistor_220", "resistor_470", "resistor_1k"}
 # Vision types that need a choice the camera cannot make (value, polarity), mapped to the editor type.
 ASSUMED_TYPE = {
@@ -93,6 +93,9 @@ def _import_visao(profile: str = "current", calibration: str | None = None):
 
 
 SETTLE_S = 2.0
+# At 0.7 fps a frame normally takes about 1.4 seconds; allow several slow
+# frames but never expose a frozen camera image as an up-to-date circuit.
+MAX_FRAME_AGE_S = 8.0
 
 
 def fps_from(times: "deque[float] | list[float]") -> float | None:
@@ -155,6 +158,9 @@ class VisionSource:
             out = dict(self._state)
         # Seconds since the last processed frame, computed here so it needs no shared clock with the screen.
         out["age_s"] = None if out["updated_at"] is None else round(max(0.0, time.time() - out["updated_at"]), 1)
+        if out["age_s"] is not None and out["age_s"] > MAX_FRAME_AGE_S:
+            out.update(valid=False, reason="A câmera parou de atualizar. Confira a conexão.",
+                       pieces=[], unknown=[], version=-1 - out["version"])
         return out
 
     def frame(self) -> bytes | None:
@@ -209,7 +215,8 @@ class VisionSource:
                 recalibrating = False
                 times.append(time.monotonic())
                 # Candidates seen for fewer than `stable_frames` frames in a row are still being confirmed.
-                confirming = sum(1 for counts in (getattr(pipeline, "counts", {}), getattr(pipeline, "blue_counts", {}))
+                confirming = sum(1 for counts in (getattr(pipeline, "counts", {}), getattr(pipeline, "blue_counts", {}),
+                                                    getattr(pipeline, "kit_counts", {}))
                                  for n in counts.values() if n < vision_config.FRAMES_ESTAVEIS)
                 ok, jpeg = cv.imencode(".jpg", debug.desenha_frame(frame, result), [cv.IMWRITE_JPEG_QUALITY, 70])
                 changes: dict[str, Any] = {"valid": result.valido, "reason": result.motivo,

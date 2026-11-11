@@ -11,6 +11,7 @@ import { BenchLiveContext, BenchModeContext, StepPartsContext, useBenchMode, use
 import ExperimentStep from './ExperimentStep.tsx';
 import ExplainStep from './ExplainStep.tsx';
 import { challengeHint } from './hints.ts';
+import { cameraLessonPieces } from './cameraPolarity.ts';
 import { boardBefore, buildPhases, challengeScore, type PlayerEvent } from './phases.ts';
 import { useLab } from './useLab.ts';
 
@@ -237,11 +238,12 @@ export default function LessonPlayer({
     return current;
   };
   const [idx, setIdx] = useState(first);
-  const [pieces, setPieces] = useState(() => livePieces ?? boardFor(first, boardBefore(lesson, first))); // kept across steps
+  const cameraPieces = useMemo(() => cameraLessonPieces(lesson, livePieces), [lesson, livePieces]);
+  const [pieces, setPieces] = useState(() => cameraPieces ?? boardFor(first, boardBefore(lesson, first))); // kept across steps
   // With the camera on, the real board is the truth: the screen follows it and never resets it.
   useEffect(() => {
-    if (livePieces) setPieces(livePieces);
-  }, [livePieces]);
+    if (cameraPieces) setPieces(cameraPieces);
+  }, [cameraPieces]);
   const [debugEnabled, setDebugEnabled] = useState(false);
   const [prediction, setPrediction] = useState<string | null>(null);
   const [clipsSwapped, setClipsSwapped] = useState(() => Math.random() < 0.5);
@@ -277,7 +279,7 @@ export default function LessonPlayer({
     setIdx(0);
   };
   const stepKey = 'step' in phase ? phase.step.id : 'challenge';
-  const voice = useTutorVoice(lesson);
+  const voice = useTutorVoice(lesson, bench);
   const [muted, setMuted] = useState(!!voiceMuted);
   // The bench's game menu owns the sound switch: follow it.
   useEffect(() => {
@@ -297,10 +299,9 @@ export default function LessonPlayer({
   };
   // teacher's validator: the board is drawn in a fixed left half (see BoardSlotContext)
   const [slot, setSlot] = useState<HTMLElement | null>(null);
-  useSay([lesson.title, lesson.instruction], -1, idx === 0); // again on "Testar de novo"
-
   return (
     <TutorVoiceContext.Provider value={voice}>
+      <LessonIntroVoice title={lesson.title} instruction={lesson.instruction} enabled={idx === 0} />
       <BenchModeContext.Provider value={bench}>
         <BenchLiveContext.Provider value={bench && !!livePieces}>
           <StepPartsContext.Provider value={bench ? stepParts : null}>
@@ -494,6 +495,11 @@ export default function LessonPlayer({
       </BenchModeContext.Provider>
     </TutorVoiceContext.Provider>
   );
+}
+
+function LessonIntroVoice({ title, instruction, enabled }: { title: string; instruction: string; enabled: boolean }) {
+  useSay([title, instruction], -1, enabled);
+  return null;
 }
 
 /**

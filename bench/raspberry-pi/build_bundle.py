@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import io
+import json
 import shutil
 import subprocess
 import sys
@@ -28,7 +29,7 @@ SKIP_DIRS = {"__pycache__", "tests", ".pytest_cache", "images", "fixtures"}
 SKIP_SUFFIXES = {".pyc", ".sqlite3"}
 # Test photos are left out, except the reference photo that visao/calibracao.py matches features against
 # (calibra_por_referencia) when the grid edges are not all visible.
-KEEP_FILES = {"visao/fixtures/current/frame-00.jpg"}
+KEEP_FILES = {"visao/fixtures/current/frame-00.jpg", "visao/fixtures/current/reference-completed.jpg"}
 
 
 def build_ui() -> None:
@@ -71,13 +72,20 @@ def main() -> None:
     args = parser.parse_args()
     if not args.skip_ui:
         build_ui()
+    python = REPO / ".venv" / ("Scripts/python.exe" if sys.platform == "win32" else "bin/python")
+    if not python.is_file():
+        sys.exit("Ambiente .venv não encontrado; instale graph_validator[tts] antes de montar o pacote")
+    subprocess.run([str(python), str(HERE / "build_voice.py")], cwd=REPO, check=True)
     dist = UI / "dist"
     if not (dist / "bench.html").is_file():
         sys.exit("teacher_authoring_app/dist/bench.html não existe; rode o build do site")
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     with tarfile.open(OUT, "w:gz") as tar:
-        add_tree(tar, REPO / "graph_validator", "app/graph_validator", ["pyproject.toml", "README.md", "src"])
+        add_tree(tar, REPO / "graph_validator", "app/graph_validator", ["pyproject.toml", "README.md", "src", "voices"])
+        audio_files = json.loads((HERE / "dist" / "voice-files.json").read_text(encoding="utf-8"))
+        for name in audio_files:
+            add_file(tar, REPO / "graph_validator" / "audio" / name, f"app/graph_validator/audio/{name}")
         add_tree(tar, REPO / "bench" / "service", "app/bench_service", ["pyproject.toml", "bench_service"])
         add_tree(tar, REPO, "app", ["visao"])
         add_tree(tar, dist, "ui", ["bench.html", "assets"])

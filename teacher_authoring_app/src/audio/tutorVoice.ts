@@ -41,7 +41,10 @@ export class TutorVoice {
   private flushing = false;
   private sink: AudioSink | null = null;
 
-  constructor(private makeSink: () => AudioSink | null = () => (typeof Audio === 'undefined' ? null : new Audio())) {}
+  constructor(
+    private makeSink: () => AudioSink | null = () => (typeof Audio === 'undefined' ? null : new Audio()),
+    private localSpeechUrl?: (text: string) => string
+  ) {}
 
   /**
    * Returns a cancel function: lines not flushed yet are dropped. Effects use it as their cleanup,
@@ -71,7 +74,7 @@ export class TutorVoice {
 
   /** True when `text` will be heard (so the mascot can follow the audio instead of a timer). */
   hasAudio(text: string): boolean {
-    return !this.muted && audioFileFor(text, this.manifests) !== null;
+    return !this.muted && !!normalize(text) && (!!this.localSpeechUrl || audioFileFor(text, this.manifests) !== null);
   }
 
   /** For useSyncExternalStore: called whenever `speaking` changes. */
@@ -98,20 +101,26 @@ export class TutorVoice {
     if (!lines.length) return;
     this.stop();
     if (this.muted) return;
-    this.queue = lines.map((line) => audioFileFor(line, this.manifests)).filter(Boolean) as string[];
+    this.queue = lines.map((line) => {
+      const text = normalize(line);
+      if (!text) return null;
+      if (this.localSpeechUrl) return this.localSpeechUrl(text);
+      const file = audioFileFor(text, this.manifests);
+      return file ? audioUrl(file) : null;
+    }).filter(Boolean) as string[];
     this.playNext();
   }
 
   private playNext(): void {
-    const file = this.queue.shift();
-    if (file) this.sink ??= this.makeSink();
-    if (!file || !this.sink) {
+    const url = this.queue.shift();
+    if (url) this.sink ??= this.makeSink();
+    if (!url || !this.sink) {
       this.setSpeaking(false);
       return;
     }
     const sink = this.sink;
     sink.onended = () => this.playNext();
-    sink.src = audioUrl(file);
+    sink.src = url;
     sink.play().then(
       () => {
         if (sink.onended) this.setSpeaking(true); // not stopped while it was starting

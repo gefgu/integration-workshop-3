@@ -640,7 +640,7 @@ function LessonScreen({
         onExit={onExit}
         exitLabel="Sair da lição"
         voiceMuted={muted}
-        livePieces={vision.available ? (vision.pieces ?? NO_PIECES) : null}
+        livePieces={vision.available ? (vision.valid ? (vision.pieces ?? NO_PIECES) : NO_PIECES) : null}
         barExtra={<CameraStatus vision={vision} />}
       />
       <PadHints />

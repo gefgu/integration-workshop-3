@@ -1,23 +1,26 @@
 import { createContext, useContext, useEffect, useState, useSyncExternalStore } from 'react';
 import type { Lesson } from '../model/types.ts';
 import { loadSystemPack, TutorVoice } from './tutorVoice.ts';
+import { serviceUrl } from '../bench/benchApi.ts';
 
 export const TutorVoiceContext = createContext<TutorVoice | null>(null);
 
 /** One voice per player: the lesson's own phrases plus the shared system pack. */
-export function useTutorVoice(lesson: Lesson): TutorVoice {
-  const [voice] = useState(() => new TutorVoice());
+export function useTutorVoice(lesson: Lesson, bench = false): TutorVoice {
+  const [voice] = useState(() => new TutorVoice(undefined, bench
+    ? (text) => `${serviceUrl()}/tts/speak?text=${encodeURIComponent(text)}`
+    : undefined));
   voice.manifests = [lesson.audio, voice.manifests[1]];
   useEffect(() => {
     let active = true;
-    loadSystemPack().then((pack) => {
+    if (!bench) loadSystemPack().then((pack) => {
       if (active) voice.manifests = [voice.manifests[0], pack];
     });
     return () => {
       active = false;
       voice.stop();
     };
-  }, [voice]);
+  }, [voice, bench]);
   return voice;
 }
 

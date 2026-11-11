@@ -6,11 +6,12 @@ Run on the Raspberry Pi (or a laptop for the demo):
 from __future__ import annotations
 
 import os
+import threading
 import sys
 from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI, HTTPException, Response, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, Query, Response, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -26,6 +27,17 @@ from .vision import VisionSource
 
 NOT_RECOGNIZED = "Tag não reconhecida — chame seu professor."
 LOCKED = "Conecte o app do professor para liberar a bancada."
+
+
+_speech_lock = threading.Lock()
+
+
+def synthesize_speech(phrase: str) -> Path:
+    """Reuse the project's Piper cache; synthesize new phrases offline as needed."""
+    from graph_validator.tts import audio_dir, default_synth, ensure_audio, normalize
+    with _speech_lock:
+        files = ensure_audio([phrase], default_synth())
+        return audio_dir() / files[normalize(phrase)]
 
 
 class LoginInput(BaseModel):
@@ -79,6 +91,19 @@ def create_app(store: BenchStore, dev_unlock: bool = False, vision: VisionSource
     @app.get("/status")
     def status() -> dict:
         return store.status()
+
+    @app.get("/tts/speak")
+    def speak(text: str = Query(min_length=1, max_length=3000)) -> Response:
+        """Speak lesson and feedback text locally, without a network or prebuilt manifest."""
+        from graph_validator.tts.synth import normalize
+        phrase = normalize(text)
+        if not phrase:
+            raise HTTPException(422, "Texto vazio.")
+        try:
+            audio = synthesize_speech(phrase)
+        except Exception as error:
+            raise HTTPException(503, "Voz Piper indisponível; confira a instalação e o modelo.") from error
+        return FileResponse(audio, media_type="audio/mpeg", headers={"Cache-Control": "private, max-age=86400"})
 
     @app.get("/package")
     def package() -> dict:

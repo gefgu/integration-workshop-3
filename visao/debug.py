@@ -96,6 +96,8 @@ def tabela_sockets(res):
     H = res.registro.get('H')
     if H is None:
         return []
+    from .sockets import assegura_cores
+    cores = assegura_cores(res)
     proj = cv.perspectiveTransform(cfg.MODELO[None], H)[0]
     vistos = res.registro.get('furos_vistos')
     linhas = []
@@ -103,7 +105,7 @@ def tabela_sockets(res):
         linha = {'metade': cfg.METADES[m], 'linha': l, 'coluna': c,
                        'x': round(float(proj[k, 0]), 1), 'y': round(float(proj[k, 1]), 1),
                        'furo_detectado': None if vistos is None else bool(vistos[k]),
-                       'cor': res.cores[m, l, c] if res.cores is not None else None}
+                       'cor': cores[m, l, c] if cores is not None else None}
         if hasattr(res, 'atualidade'):
             linha.update(observacao=res.observacoes[m, l, c], atualidade=res.atualidade[m, l, c],
                          ativo=(m == 0))
