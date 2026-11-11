@@ -83,18 +83,20 @@ def test_vision_source_reads_the_current_profile_fixture():
     import pytest
     pytest.importorskip("cv2")
     from bench_service.vision import VisionSource
-    photo = Path(__file__).resolve().parents[3] / "visao" / "fixtures" / "current" / "frame-00.jpg"
+    photo = Path(__file__).resolve().parents[3] / "visao" / "fixtures" / "current" / "reference-completed.jpg"
     source = VisionSource(image=str(photo)).start()  # default profile is "current"
     try:
         deadline = time.time() + 30
-        while time.time() < deadline and not source.state()["pieces"]:
+        while time.time() < deadline and len(source.state()["pieces"]) < 4:
             time.sleep(0.2)
         state = source.state()
     finally:
         source.stop()
     assert state["profile"] == "current" and state["partial"] and state["valid"], state["reason"]
-    assert [(p["type"], p["a"], p["b"], p["row"]) for p in state["pieces"]] == [("resistor_1k", 5, 6, 2)]
-    assert state["unknown"], "blue bodies are located but not identified"
+    assert {(p["type"], p["a"], p["b"], p["row"]) for p in state["pieces"]} == {
+        ("jumper_3", 8, 11, 0), ("led", 8, 9, 2),
+        ("resistor_1k", 9, 10, 3), ("bateria", 10, 11, 4),
+    }
 
 
 def test_recalibrate_reports_progress_at_once():

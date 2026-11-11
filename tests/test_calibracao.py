@@ -4,10 +4,69 @@ from unittest import mock
 from pathlib import Path
 import cv2 as cv
 import numpy as np
-from visao.calibracao import salva, RegistradorParcial, calibra_automaticamente, calibra_interativa, CANTOS
+from visao.calibracao import salva, RegistradorParcial, calibra_automaticamente, calibra_interativa, calibra_por_marcadores, CANTOS
 
 
 class TestPartialCalibration(unittest.TestCase):
+    def test_crowded_cropped_grid_is_not_accepted_as_complete(self):
+        from visao.pipeline_atual import PipelineAtual
+        root = Path(__file__).resolve().parents[1] / 'visao/fixtures/current'
+        for index in range(6):
+            result = PipelineAtual(temporal=False).processa(cv.imread(str(root / f'crowded-cropped-{index}.jpg')))
+            self.assertFalse(result.valido, index)
+
+    def test_marked_board_with_bright_strip_and_rotated_view(self):
+        from visao.pipeline_atual import PipelineAtual
+        root = Path(__file__).resolve().parents[1] / 'visao/fixtures/current'
+        image = cv.imread(str(root / 'marked-bright-strip-2026-11-11.jpg'))
+        self.assertIsNotNone(calibra_por_marcadores(image))
+        self.assertIsNone(calibra_por_marcadores(cv.rotate(image, cv.ROTATE_180)))
+        result = PipelineAtual(temporal=False).processa(image)
+        self.assertTrue(result.valido, result.motivo)
+        pieces = {(c.tipo, c.linha, tuple(c.colunas)) for c in result.componentes}
+        self.assertEqual(pieces, {('jumper_3', 0, (7, 8, 9, 10)),
+                                  ('led', 4, (7, 8)), ('vermelho_2', 4, (9, 10))})
+
+    def test_marked_board_and_unsafe_marker_cases(self):
+        root = Path(__file__).resolve().parents[1] / 'visao/fixtures/current'
+        for name in ('marked-empty-2026-11-11.jpg', 'marked-empty-live-2026-11-11.jpg'):
+            image = cv.imread(str(root / name))
+            self.assertIsNotNone(calibra_por_marcadores(image), name)
+            tracker = RegistradorParcial()
+            result = tracker.atualiza(image)
+            self.assertTrue(result['valido'], (name, result['motivo']))
+            self.assertTrue(tracker.marker_active)
+            self.assertGreaterEqual(result['inliers'], 12)
+            for altered in (cv.rotate(image, cv.ROTATE_180), image.copy()):
+                if altered is not image and np.array_equal(altered, image):
+                    altered[65:120, 120:185] = 0  # missing green marker
+                self.assertIsNone(calibra_por_marcadores(altered))
+
+    def test_rejected_marker_proposal_falls_back_to_old_search(self):
+        blank = np.zeros((720, 1280, 3), np.uint8)
+        marker = np.array([[70., 0, 150], [0, 45., 400], [0, 0, 1.]])
+        with mock.patch('visao.calibracao.calibra_por_marcadores', return_value=marker), \
+             mock.patch('visao.calibracao.calibra_por_referencia', return_value=None) as reference, \
+             mock.patch('visao.calibracao.calibra_automaticamente', return_value=None) as fallback:
+            result = RegistradorParcial().atualiza(blank)
+        self.assertFalse(result['valido'])
+        self.assertEqual(reference.call_count, 1)
+        self.assertEqual(fallback.call_count, 1)
+
+    def test_marked_lesson_stills_find_four_parts_without_drift(self):
+        from visao.pipeline_atual import PipelineAtual
+
+        root = Path(__file__).resolve().parents[1] / 'visao/fixtures/current'
+        expected = {('jumper_3', 1, (7, 8, 9, 10)), ('led', 2, (7, 8)),
+                    ('resistor_1k', 3, (8, 9)), ('vermelho_2', 4, (9, 10))}
+        for index in range(1, 4):
+            image = cv.imread(str(root / f'marked-test-still-{index}.jpg'))
+            pipeline = PipelineAtual(temporal=False)
+            for _ in range(3):
+                result = pipeline.processa(image)
+                self.assertTrue(result.valido, result.motivo)
+                self.assertEqual({(part.tipo, part.linha, tuple(part.colunas)) for part in result.componentes}, expected)
+
     def test_saved_frames_and_empty_image(self):
         root = Path(__file__).resolve().parents[1]
         frames = sorted((root / 'visao/fixtures/current').glob('frame-*.jpg'))

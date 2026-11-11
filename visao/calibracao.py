@@ -18,6 +18,81 @@ _COMPLETED_H = np.array([[73.8337295, -4.9540240, 227.165260],
                          [-.00362749906, -.00895937683, 1.]])
 REFERENCES = (('frame-00.jpg', _REFERENCE_H), ('reference-completed.jpg', _COMPLETED_H))
 
+# The two green corner stickers on the current demonstration board, measured
+# in a 1280x720 reference frame. They define a board-specific similarity
+# transform, not a general four-corner perspective calibration. Keep the board
+# in its marked orientation; the diagonally repeated colours cannot identify a
+# 180-degree turn. Socket registration below must still accept every proposal.
+_MARKER_ANCHORS = np.float32([[151.5, 95.3], [989.4, 674.9]])
+_MARKER_GRID = np.float32([[167.618, 409.969], [895.826, 393.541],
+                           [926.305, 637.397], [157.438, 662.056]])
+_MARKER_LUT = np.uint8((np.arange(256) / 255.0) ** .4 * 255)
+
+
+def calibra_por_marcadores(image):
+    """Propose the current board's grid from green stickers, or return None.
+
+    Deliberately limited to a small displacement of the reference framing.
+    Two identical diagonal pairs cannot establish orientation or perspective;
+    a moved sticker, rotated board, or camera perspective change needs manual
+    calibration. The existing socket/inlier validation remains mandatory.
+    """
+    height, width = image.shape[:2]
+    if width < 640 or height < 360 or abs(width / height - 1280 / 720) > .03:
+        return None
+    hsv = cv.cvtColor(image, cv.COLOR_BGR2HSV)
+    mask = cv.inRange(hsv, np.array([70, 70, 70], np.uint8), np.array([95, 255, 255], np.uint8))
+    scale = np.float32([width / 1280, height / 720])
+    anchors = []
+    for expected in _MARKER_ANCHORS * scale:
+        x, y = expected
+        rx, ry = width * .14, height * .10
+        x0, x1 = max(0, int(x - rx)), min(width, int(x + rx))
+        y0, y1 = max(0, int(y - ry)), min(height, int(y + ry))
+        count, _, stats, centers = cv.connectedComponentsWithStats(mask[y0:y1, x0:x1])
+        area_scale = width * height / (1280 * 720)
+        eligible = []
+        for i in range(1, count):
+            _, _, w, h, area = stats[i]
+            if 600 * area_scale <= area <= 4000 * area_scale and .5 < w / h < 2:
+                eligible.append(centers[i] + [x0, y0])
+        if len(eligible) != 1:
+            return None
+        anchors.append(eligible[0] / scale)
+    anchors = np.float32(anchors)
+    source = _MARKER_ANCHORS[1] - _MARKER_ANCHORS[0]
+    target = anchors[1] - anchors[0]
+    ratio = float(np.linalg.norm(target) / np.linalg.norm(source))
+    angle = float(np.arctan2(target[1], target[0]) - np.arctan2(source[1], source[0]))
+    if not .9 <= ratio <= 1.1 or abs(angle) > np.deg2rad(4):
+        return None
+    matrix = np.array([[np.cos(angle), -np.sin(angle)], [np.sin(angle), np.cos(angle)]]) * ratio
+    # The green stickers alone are symmetric under 180 degrees. The fixture's
+    # upper bank is dark and its lower bank has bright socket contacts. Sample
+    # dispersed points in both banks; a single movable strip must not decide
+    # orientation. If illumination or occlusion makes the cue ambiguous,
+    # reject this proposal and fall back to the old registration.
+    gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+    bright_fractions = []
+    means = []
+    for y0, y1 in ((120, 300), (440, 620)):
+        samples = np.float32([(x, y) for x in range(240, 900, 8) for y in range(y0, y1, 8)])
+        projected = np.rint(((samples - _MARKER_ANCHORS[0]) @ matrix.T + anchors[0]) * scale).astype(int)
+        inside = ((projected[:, 0] >= 0) & (projected[:, 0] < width)
+                  & (projected[:, 1] >= 0) & (projected[:, 1] < height))
+        if inside.mean() < .95:
+            return None
+        values = gray[projected[inside, 1], projected[inside, 0]]
+        bright_fractions.append(float(np.mean(values > 90)))
+        means.append(float(np.mean(values)))
+    if bright_fractions[1] - bright_fractions[0] < .06 or means[1] - means[0] < 8:
+        return None
+    corners = ((_MARKER_GRID - _MARKER_ANCHORS[0]) @ matrix.T + anchors[0]) * scale
+    try:
+        return homografia_cantos(image, corners)
+    except ValueError:
+        return None
+
 
 @lru_cache(maxsize=2)
 def _reference_features(name):
@@ -244,6 +319,7 @@ class RegistradorParcial:
         self.auto = path is None
         self.generation = 0
         self.last_gray = None
+        self.marker_active = False
         if self.auto:
             self.size = None
             self.H = None
@@ -266,6 +342,7 @@ class RegistradorParcial:
         self.generation += 1
         self.last_gray = None
         self.ultima_busca = None
+        self.marker_active = False
         if self.auto:
             self.size = None
 
@@ -279,6 +356,15 @@ class RegistradorParcial:
         return result
 
     def atualiza(self, image):
+        result = self._atualiza(image)
+        if not result['valido'] and self.marker_active:
+            # Never let a marker proposal block the original automatic search.
+            self.marker_active = False
+            self.ultima_busca = None
+            return self._atualiza(image, skip_markers=True)
+        return result
+
+    def _atualiza(self, image, skip_markers=False):
         seen = np.zeros(len(cfg.MODELO), bool)
         agora = self.clock()
         if (self.H is None and self.ultima_busca is not None
@@ -287,12 +373,34 @@ class RegistradorParcial:
             return dict(H=None, valido=False, n_furos=0, furos=np.zeros((0, 2), np.float32),
                         inliers=0, erro=None, furos_vistos=seen, generation=self.generation,
                         motivo=self.ultimo_motivo or 'grade incompleta ou origem ambígua; use calibração manual')
-        points = candidatos(image)
+        marker_h = None
+        if self.auto and not skip_markers and (self.H is None or self.marker_active):
+            marker_h = calibra_por_marcadores(image)
+            if self.marker_active and marker_h is None:
+                return self._falhou(dict(H=None, valido=False, n_furos=0, furos=np.zeros((0, 2), np.float32),
+                                         inliers=0, erro=None, furos_vistos=seen, generation=self.generation),
+                                    'marcadores não encontrados')
+            if self.marker_active and self.H is not None:
+                actual = cv.perspectiveTransform(CANTOS[None], self.H)[0]
+                marked = cv.perspectiveTransform(CANTOS[None], marker_h)[0]
+                spacing = np.linalg.norm(marked[1] - marked[0]) / 10
+                if np.max(np.linalg.norm(actual - marked, axis=1)) > spacing * .35:
+                    return self._falhou(dict(H=None, valido=False, n_furos=0, furos=np.zeros((0, 2), np.float32),
+                                             inliers=0, erro=None, furos_vistos=seen, generation=self.generation),
+                                        'marcadores se moveram')
+                # Re-anchor each frame instead of accumulating tiny RANSAC
+                # adjustments when only a few rows are visible.
+                self.H = marker_h
+        marker_search = marker_h is not None and (self.H is None or self.marker_active)
+        points = candidatos(cv.LUT(image, _MARKER_LUT) if marker_search else image)
         if self.H is None:
             # The completed bench has two similar grids; a lattice-only fit can
             # span their gap and assign the wrong row numbers. Prefer the
             # board-specific reference when it has enough distributed matches.
-            self.H = calibra_por_referencia(image)
+            self.H = marker_h
+            self.marker_active = self.H is not None
+            if self.H is None:
+                self.H = calibra_por_referencia(image)
             if self.H is None:
                 self.H = calibra_automaticamente(image, points)
             # Remember only failed searches; losing a good grid must be reacquired at once.
@@ -314,6 +422,10 @@ class RegistradorParcial:
         spacing = np.median(np.linalg.norm(projected.reshape(6,11,2)[:,1:] - projected.reshape(6,11,2)[:,:-1], axis=2))
         if not np.isfinite(projected).all() or not np.isfinite(spacing) or spacing < 1:
             return self._falhou(result, 'geometria da calibração inválida')
+        height, width = image.shape[:2]
+        if (np.any(projected[:, 0] < 0) or np.any(projected[:, 0] >= width)
+                or np.any(projected[:, 1] < 0) or np.any(projected[:, 1] >= height)):
+            return self._falhou(result, 'grade cortada pela imagem; afaste ou centralize a câmera')
         gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
         gray = cv.resize(gray, (320, 180), interpolation=cv.INTER_AREA).astype(np.float32)
         if self.last_gray is not None:
@@ -333,7 +445,16 @@ class RegistradorParcial:
             return self._falhou(result, 'poucos sockets distribuídos para rastrear a grade')
         src = np.float32([model[j] for _,j in matches])
         dst = np.float32([points[i] for i,_ in matches])
-        H, mask = cv.findHomography(src, dst, cv.RANSAC, spacing*.12)
+        if self.marker_active:
+            # A free projective fit can swing the hidden top edge by a whole
+            # socket when the lower rows dominate. Keep the marker geometry
+            # and fit only a small translation/rotation/scale correction.
+            predicted = cv.perspectiveTransform(src[None], self.H)[0]
+            correction, mask = cv.estimateAffinePartial2D(predicted, dst, method=cv.RANSAC,
+                                                          ransacReprojThreshold=spacing*.12)
+            H = None if correction is None else np.vstack([correction, [0., 0., 1.]]) @ self.H
+        else:
+            H, mask = cv.findHomography(src, dst, cv.RANSAC, spacing*.12)
         if H is None or mask is None:
             return self._falhou(result, 'não foi possível ajustar a grade')
         keep = mask.ravel().astype(bool)
@@ -345,8 +466,15 @@ class RegistradorParcial:
         if keep.sum() < 12 or np.median(errors) > spacing*.08 or np.percentile(errors,90) > spacing*.15:
             return self._falhou(result, 'erro alto no ajuste da grade')
         displacement = np.linalg.norm(cv.perspectiveTransform(model[None],H)[0]-projected,axis=1)
-        if not np.isfinite(displacement).all() or displacement.max() > spacing*.18:
+        # The printed fixture can shift slightly relative to the sticker
+        # centres. Still keep the allowed correction well below half a socket.
+        max_shift = .22 if self.marker_active else .18
+        if not np.isfinite(displacement).all() or displacement.max() > spacing * max_shift:
             return self._falhou(result, 'deslocamento do ajuste excedeu o limite')
+        adjusted = cv.perspectiveTransform(model[None], H)[0]
+        if (np.any(adjusted[:, 0] < 0) or np.any(adjusted[:, 0] >= width)
+                or np.any(adjusted[:, 1] < 0) or np.any(adjusted[:, 1] >= height)):
+            return self._falhou(result, 'grade cortada pela imagem; afaste ou centralize a câmera')
         self.H = H
         self.last_gray = gray
         for accepted,(_,j) in zip(keep,matches):

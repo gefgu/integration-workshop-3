@@ -33,6 +33,16 @@ falhas abruptas do processo.
 
 ## Calibração
 
+O perfil atual primeiro procura os dois adesivos verdes diagonais da bancada de
+demonstração fotografada em 11/11/2026. É uma referência específica dessa
+bancada e da posição dos adesivos; não é uma calibração genérica de quatro
+cantos. Os dois adesivos brancos não são usados. Mantenha a orientação e a
+perspectiva da câmera, os adesivos e os contatos das duas metades visíveis.
+Adesivos movidos, rotação de 180°, oclusão ou mudança acentuada de perspectiva
+podem exigir calibração manual. A proposta dos adesivos precisa passar pelas
+mesmas verificações de sockets, distribuição e erro; na falha usa o método
+anterior. Ela não verifica polaridade nem continuidade elétrica.
+
 O perfil atual tenta registrar a grade automaticamente quando há evidência das
 quatro bordas. Caso falte uma borda, também tenta comparar características da
 bancada com a foto de referência `fixtures/current/frame-00.jpg`; a proposta
@@ -65,8 +75,10 @@ local confiável. Esses diagnósticos também aparecem com `--verbose`.
   `03-guiada-1k`: nela a tela usa ânodo à direita para a montagem de teste
   confirmada. Confira fisicamente esses pressupostos; a identificação não é uma medição elétrica. A identificação
   foi conferida em uma montagem e depende de iluminação e posição.
-- O perfil atual não identifica mais o resistor branco nem publica corpos azuis
-  desconhecidos; não interprete a ausência dessas peças como prova de bancada vazia.
+- O perfil atual não lê as faixas de resistores axiais. Se houver vários corpos
+  azuis visíveis, eles são marcados como peças não identificadas, sem presumir
+  seus valores. Um único resistor azul com corpo axial continua identificado
+  como 1 kΩ pela convenção do kit de teste, não por medição óptica.
 - Um suporte azul com resistor axial visível também é interpretado como `resistor_1k`
   nesta montagem de teste, usando o valor informado para o kit. Não use essa
   identificação como leitura das faixas nem para distinguir outros valores.

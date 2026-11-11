@@ -120,7 +120,7 @@ function cleanPiece(p: any): Piece {
   return base;
 }
 
-const SETTING_FLAGS = ['statusLed', 'allowNoResistor', 'requireLit', 'matchValues', 'strictPositions'];
+const SETTING_FLAGS = ['statusLed', 'allowNoResistor', 'requireLit', 'matchValues', 'strictPositions', 'fixedBatteryFirstTwo'];
 
 function cleanSettings(raw: any): LessonSettings | undefined {
   if (!raw || typeof raw !== 'object') return undefined;

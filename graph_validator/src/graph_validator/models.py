@@ -63,6 +63,7 @@ class DetectedBoard(BaseModel):
 class MatchOptions(BaseModel):
     match_values: bool = False
     strict_positions: bool = False
+    fixed_battery_first_two: bool = False
 
 
 class Category(str, Enum):

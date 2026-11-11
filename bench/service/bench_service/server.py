@@ -196,6 +196,67 @@ def create_app(store: BenchStore, dev_unlock: bool = False, vision: VisionSource
     def controls_state() -> dict:
         return controls.state()
 
+    @app.get("/controls/smart")
+    def controls_smart() -> dict:
+        return controls.smart_state()
+
+    @app.websocket("/controls/power")
+    async def controls_power(socket: WebSocket) -> None:
+        """Temporary GPIO14 lease for the live 1k lesson; never restored after a disconnect."""
+        import asyncio
+
+        await socket.accept()
+        owner = object()
+        claimed = False
+        try:
+            while True:
+                message = await asyncio.wait_for(socket.receive_json(), timeout=1.0)
+                state = vision.state() if vision is not None else {}
+                import re
+                is_smart_lesson = str(message.get("lesson", "")).startswith("curriculo-teste-voltimetro-buzzer") if isinstance(message, dict) else False
+                unknown = state.get("unknown") or []
+                smart_visible = any(p.get("type") == "capsula_smart" for p in unknown)
+                acceptable_unknown = all(p.get("type") == "capsula_smart" for p in unknown) if is_smart_lesson else not unknown
+                smart_ok = not is_smart_lesson or (smart_visible and bool(controls.smart_state()["slots"]))
+                valid = (isinstance(message, dict) and re.fullmatch(r"curriculo-(?:03-guiada-1k|teste-voltimetro-buzzer)(?:-p\d+)?", str(message.get("lesson", ""))) is not None
+                         and state.get("available") and state.get("running") and state.get("valid")
+                         and not state.get("uncertain") and acceptable_unknown and smart_ok
+                         and not state.get("recalibrating") and state.get("age_s") is not None
+                         and state["age_s"] <= 8.0 and message.get("version") == state.get("version"))
+                if not valid or not (controls.renew_power(owner) if claimed else controls.claim_power(owner)):
+                    await socket.send_json({"ok": False})
+                    break
+                claimed = True
+                await socket.send_json({"ok": True})
+        except (WebSocketDisconnect, RuntimeError, asyncio.TimeoutError, ValueError, TypeError):
+            pass
+        finally:
+            controls.release_power(owner)
+            try:
+                await socket.close()
+            except RuntimeError:
+                pass
+
+    @app.websocket("/controls/voltmeter")
+    async def controls_voltmeter(socket: WebSocket) -> None:
+        """Keep the separate, explicitly simulated OLED display test alive."""
+        import asyncio
+        await socket.accept()
+        owner = object()
+        try:
+            while True:
+                if await asyncio.wait_for(socket.receive_text(), timeout=1.0) != 'test':
+                    break
+                controls.refresh_voltmeter(owner)
+        except (WebSocketDisconnect, RuntimeError, asyncio.TimeoutError):
+            pass
+        finally:
+            controls.release_voltmeter(owner)
+            try:
+                await socket.close()
+            except RuntimeError:
+                pass
+
     @app.websocket("/controls")
     async def controls_socket(socket: WebSocket) -> None:
         """Pushes {seq, key} for every physical press; the bench screen turns it into a key press."""

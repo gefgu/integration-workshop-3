@@ -12,6 +12,18 @@ internet durante a instalação, a câmera da bancada conectada e o monitor de 7
 
    A instalação demora alguns minutos (baixa o OpenCV e as bibliotecas do Python).
 
+Para atualizar uma bancada já instalada, copie o novo pacote para a Pi e execute
+no diretório onde ele foi copiado:
+
+     BUNDLE_DIR=$(mktemp -d /tmp/tedtronics-atualizacao.XXXXXX)
+     tar xzf tedtronics-bancada-pi.tar.gz -C "$BUNDLE_DIR"
+     cd "$BUNDLE_DIR/tedtronics-bancada"
+     sudo ./update.sh
+
+   A atualização rápida mantém banco de dados, configurações, opções do serviço e ambiente Python.
+   Não baixa dependências. Se os requisitos mudaram, ela avisa e pede a instalação completa com
+   as mesmas opções usadas antes. Ao terminar, feche e abra a tela novamente.
+
 2) Pronto:
    - O serviço da bancada liga sozinho sempre que a Pi ligar (e reinicia se cair).
    - A tela da bancada abre sozinha em tela cheia depois do login.

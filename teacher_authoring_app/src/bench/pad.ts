@@ -139,6 +139,10 @@ export function handlePadKey(key: string, root: ParentNode, energize: () => void
         selected.click();
         return true;
       }
+      if (labScreen(root)) {
+        energize();
+        return true;
+      }
       // Inside a lesson only ← / → / Energizar move things: the click is for the quiz's choices.
       return labScreen(root) || root.querySelector('.bench-lesson') ? false : pressRole(root, 'next');
     case 'Enter':

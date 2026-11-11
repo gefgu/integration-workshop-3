@@ -8,9 +8,21 @@ import { challengeSteps, cumulativeBoard, effectiveSteps, needsBuild, startPiece
 import { buildPhases } from '../src/player/phases.ts';
 import { demoChoices, demoPackage } from '../src/bench/demo.ts';
 import { cameraLessonPieces } from '../src/player/cameraPolarity.ts';
+import { mirrorVisionPiece } from '../src/bench/mirrorVision.ts';
+import { toValidatorLesson } from '../src/model/steps.ts';
 
 const lessons = curriculumLessons();
 const roundTrip = (l) => validateLesson(JSON.parse(JSON.stringify(l)));
+
+test('camera mirror reverses columns and preserves bank, row, and terminal identities', () => {
+  const raw = { id: 'bat', type: 'bateria', a: 10, b: 11, row: 4 };
+  const mirrored = mirrorVisionPiece(raw);
+  assert.deepEqual(mirrored, { ...raw, a: 2, b: 1, row: 4 });
+  assert.deepEqual(mirrorVisionPiece(mirrored), raw);
+  const lesson = lessons.find((l) => l.id === `${SEED_PREFIX}03-guiada-1k`)!;
+  assert.equal(toValidatorLesson(lesson).steps[1].options.fixed_battery_first_two, true);
+  assert.equal(lesson.board.pieces.find((p) => p.id === 'bat')?.a, 2);
+});
 
 test('the bench demo offers the one-jumper 1 kΩ lesson as a standalone module', async () => {
   const id = `${SEED_PREFIX}03-guiada-1k`;
@@ -44,7 +56,23 @@ test('the curriculum has every Notion lesson, guided and challenge', () => {
     assert.ok(ids.includes(`${SEED_PREFIX}${id}`), id);
   assert.equal(new Set(ids).size, ids.length);
   assert.ok(ids.includes(`${SEED_PREFIX}03-guiada-1k`));
-  assert.equal(lessons.length, 21);
+  assert.equal(lessons.length, 22);
+});
+
+test('voltmeter test preserves detected buzzer and does not reinterpret an LED', () => {
+  const lesson = lessons.find((l) => l.id === `${SEED_PREFIX}teste-voltimetro-buzzer`)!;
+  assert.ok(lesson);
+  assert.deepEqual(lesson.board.pieces.map((p) => p.type), ['bateria', 'resistor_1k', 'led', 'buzzer', 'jumper_4']);
+  const diagnosis = diagnose(lesson.board.pieces, new Set());
+  assert.equal(diagnosis.code, 'valido');
+  assert.ok(Math.abs(diagnosis.mA - 2.4) < 0.001);
+  assert.deepEqual([...diagnosis.loadsLit].sort(), ['buzzer', 'led']);
+  const green = { id: 'x', type: 'led', a: 4, b: 3, row: 3 } as const;
+  assert.equal(cameraLessonPieces(lesson, [green])![0].type, 'led');
+  assert.equal(cameraLessonPieces(lessons[0], [green])![0].type, 'led');
+  assert.deepEqual(cameraLessonPieces(lesson, [green])![0], { ...green, a: 3, b: 4 });
+  assert.deepEqual(cameraLessonPieces(lesson, [{ ...green, type: 'buzzer' }])![0],
+    { ...green, type: 'buzzer', a: 3, b: 4 });
 });
 
 test('every lesson survives the same validation as an imported file and has nothing left to fix', () => {

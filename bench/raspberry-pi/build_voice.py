@@ -16,13 +16,14 @@ def main():
     command = ['node', '--import', 'tsx', '--input-type=module', '-e',
                'import {curriculumLessons} from "./src/curriculum/lessons.ts"; console.log(JSON.stringify(curriculumLessons()))']
     lessons = json.loads(subprocess.check_output(command, cwd=ROOT / 'teacher_authoring_app', text=True))
-    lesson = next((item for item in lessons if item['id'] == 'curriculo-03-guiada-1k'), None)
-    if lesson is None:
-        raise SystemExit('The 1 kΩ test lesson is missing from the curriculum.')
-    phrases = {normalize(text) for text in lesson_phrases(lesson)}
+    ids = {'curriculo-03-guiada-1k', 'curriculo-teste-voltimetro-buzzer'}
+    selected = [item for item in lessons if item['id'] in ids]
+    if len(selected) != len(ids):
+        raise SystemExit('A test lesson is missing from the curriculum.')
+    phrases = {normalize(text) for lesson in selected for text in lesson_phrases(lesson)}
     phrases.update(normalize(text) for text in PLAYER_PHRASES)
     missing = sorted(text for text in phrases if text and not (audio_dir() / audio_file(text)).is_file())
-    print(f'Piper: 1 test lesson, {len(phrases)} phrases, {len(missing)} to synthesize', flush=True)
+    print(f'Piper: {len(selected)} test lessons, {len(phrases)} phrases, {len(missing)} to synthesize', flush=True)
     synth = default_synth()
     for index, text in enumerate(missing, 1):
         ensure_audio([text], synth)

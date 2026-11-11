@@ -35,9 +35,11 @@ export function diagnose(
     mA = Math.max(mA, c.mA);
     limited = limited || c.limited;
     if (b.load) currents[b.load] = (currents[b.load] ?? 0) + c.mA;
+    if (b.load === 'led' && b.trail.some((edge) => edge.type === 'buzzer'))
+      currents.buzzer = (currents.buzzer ?? 0) + c.mA;
   }
   let trail = null;
-  const loadsLit = [...new Set(branches.map((b) => b.load).filter((l) => l != null))] as ('led' | 'buzzer')[];
+  const loadsLit = [...new Set(branches.flatMap((b) => [b.load, ...(b.load === 'led' && b.trail.some((edge) => edge.type === 'buzzer') ? ['buzzer'] : [])]).filter((l) => l != null))] as ('led' | 'buzzer')[];
   const looseIds: string[] = [];
   if (an.code === 'valido') {
     const bat = pieces.find((p) => p.type === 'bateria');
@@ -54,10 +56,13 @@ export function diagnose(
   }
   const tone = an.code === 'valido' ? 'ok' : an.code === 'sem_bateria' ? 'info' : 'erro';
   const both = loadsLit.length > 1;
+  const sharedBranch = branches.some((b) => b.trail.some((edge) => edge.type === 'led') && b.trail.some((edge) => edge.type === 'buzzer'));
   const msg =
     an.code === 'valido'
       ? both
-        ? `Circuito fechado. LED: ${currents.led.toFixed(1)} mA; buzzer: ${currents.buzzer.toFixed(1)} mA. A corrente se divide entre os ramos.`
+        ? sharedBranch
+          ? `Circuito fechado. A mesma corrente passa pelo LED e pelo buzzer: ${mA.toFixed(1)} mA.`
+          : `Circuito fechado. LED: ${currents.led.toFixed(1)} mA; buzzer: ${currents.buzzer.toFixed(1)} mA. A corrente se divide entre os ramos.`
         : an.load === 'buzzer'
           ? `Circuito fechado. O buzzer toca com ${mA.toFixed(1)} mA.`
           : `Circuito fechado. Passam ${mA.toFixed(1)} mA pelo LED.`

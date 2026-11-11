@@ -22,6 +22,7 @@ export interface VisionPiece {
   type: string;
   a: number;
   b: number;
+  c?: number;
   row: number;
 }
 export interface VisionState {
@@ -29,6 +30,8 @@ export interface VisionState {
   running?: boolean;
   /** last frame was usable (grid found, no hand in front, scene still) */
   valid?: boolean;
+  /** At least one displayed piece is temporarily unseen, or the frame is unusable. */
+  uncertain?: boolean;
   reason?: string;
   /** "current" reads the half-populated kit board: unlisted positions are unknown, not empty */
   profile?: string;
@@ -110,6 +113,7 @@ export function benchApi(base: string, fetchImpl: typeof fetch = (input, init) =
     devUnlock: () => call<BenchStatus>('/dev/unlock', 'POST'),
     devDemo: (pkg: BenchPackage) => call<BenchStatus>('/dev/demo', 'POST', pkg),
     vision: () => call<VisionState>('/vision/state'),
+    smartStatus: () => call<{ fresh: boolean; slots: number[] }>('/controls/smart'),
     visionRecalibrate: () => call('/vision/recalibrate', 'POST'),
     visionFrameUrl: (stamp: number) => `${base}/vision/frame.jpg?t=${stamp}`,
   };

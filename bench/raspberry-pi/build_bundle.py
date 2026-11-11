@@ -23,7 +23,7 @@ REPO = HERE.parents[1]
 UI = REPO / "teacher_authoring_app"
 OUT = HERE / "dist" / "tedtronics-bancada-pi.tar.gz"
 TOP = "tedtronics-bancada"
-SCRIPTS = {"install.sh", "uninstall.sh", "tedtronics-tela"}
+SCRIPTS = {"install.sh", "update.sh", "uninstall.sh", "tedtronics-tela"}
 TEXT = {".sh", ".txt", ".py", ".toml", ".md", ".html", ".js", ".css", ".json", ""}
 SKIP_DIRS = {"__pycache__", "tests", ".pytest_cache", "images", "fixtures"}
 SKIP_SUFFIXES = {".pyc", ".sqlite3"}
@@ -87,6 +87,7 @@ def main() -> None:
         for name in audio_files:
             add_file(tar, REPO / "graph_validator" / "audio" / name, f"app/graph_validator/audio/{name}")
         add_tree(tar, REPO / "bench" / "service", "app/bench_service", ["pyproject.toml", "bench_service"])
+        add_tree(tar, REPO / "firmware" / "component_testing", "firmware", ["perfboard_stage1_test"])
         add_tree(tar, REPO, "app", ["visao"])
         add_tree(tar, dist, "ui", ["bench.html", "assets"])
         for path in sorted((HERE / "files").iterdir()):

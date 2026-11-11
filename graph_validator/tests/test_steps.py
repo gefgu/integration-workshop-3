@@ -7,6 +7,19 @@ from graph_validator.steps import evaluate_step, lint, resolve_targets
 from helpers import P, loop
 
 
+def test_fixed_battery_requires_top_bank_and_first_two_columns():
+    lesson = Lesson.model_validate({'id': 'fixed', 'kind': 'guided', 'steps': [
+        {'id': 'battery', 'action': 'place_component',
+         'add': [P('b', 'bateria', 2, 1, 0).model_dump()],
+         'options': {'fixed_battery_first_two': True}},
+    ]})
+    for battery, expected in [(P('b', 'bateria', 2, 1, 3), True),
+                              (P('b', 'bateria', 3, 2, 3), False),
+                              (P('b', 'bateria', 1, 2, 3), False),
+                              (P('b', 'bateria', 2, 1, 7), False)]:
+        assert evaluate_step(lesson, 0, parts_from_pieces([battery])).approved is expected
+
+
 def lesson(kind="guided", **kw):
     d = {
         "id": "l2", "kind": kind,

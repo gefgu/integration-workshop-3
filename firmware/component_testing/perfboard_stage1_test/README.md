@@ -1,6 +1,18 @@
 # Perfboard — teste da etapa 1
 
-Sketch independente para ESP32 clássico de 30 pinos. Testa seis portas OLED individualmente, até três telas em sequência, joystick em quatro direções e UART com o Pi ou com jumper de loopback. Não altera o firmware integrado nem os testes anteriores. Sem leitura de medição GPIO34/35, botão SW, multiplexador ou pulso.
+Sketch independente para ESP32 clássico de 30 pinos. Testa seis portas OLED, joystick e comunicação com o Pi. Este perfil experimental também usa GPIO14 como sinal de habilitação; não mede tensão, corrente, curto ou estado real da chave.
+
+Na lição com LED e buzzer em série, o Pi envia `VOLTTEST 1` repetidamente por USB. O ESP32 procura as seis portas, seleciona até três detectadas e mostra somente a tensão calculada no resistor: `0.0V` desligado ou `2.40V` ligado para fonte de 5 V, resistor de 1 kΩ, buzzer aproximado por 250 Ω e LED ideal de 2 V. O valor é calculado por `DemoVoltage.h`, sem medição física. A tela segue o comando, não confirma que a chave ou a carga funcionaram. Ao sair da lição ou perder a comunicação o modo de teste expira; a tela pode manter sua última imagem.
+
+## Teste da lição 1 kΩ com chave externa
+
+Grave `perfboard_stage1_test.ino` junto com `LineReader.h` no ESP32 Dev Module, usando as bibliotecas Adafruit GFX e Adafruit SSD1306. Conecte o ESP32 ao Raspberry Pi por USB e feche o Monitor Serial antes de iniciar a bancada. O joystick usa X=GPIO36, Y=GPIO39 e botão ativo em LOW=GPIO26. GPIO14 é uma saída de habilitação ativa em HIGH para uma chave externa apropriada; essa chave deve permanecer desligada inclusive durante reset e perda de alimentação. Confira compatibilidade 3,3 V e terra comum conforme a chave utilizada.
+
+O USB anuncia `HELLO controles 2`, envia os eventos `KEY`, e aceita `POWER 1` / `POWER 0`. `POWER 1` expira em 1,5 s sem renovação; `POWER 0` desliga. O Pi renova somente durante a etapa final aprovada da lição ao vivo e enquanto a câmera e a sessão permanecem válidas. Após perda da sessão é necessário clicar novamente. A UART 32/33 não aceita comandos de potência. Esse timeout depende do firmware e não substitui intertravamento ou proteção independentes.
+
+Na lição do buzzer, `VOLTTEST 1` renova o modo de tela simulada; o ESP32 publica `SMART <máscara>` a cada segundo. Os bits 0–5 indicam quais OLEDs selecionados responderam e foram inicializados. O Pi mostra os slots e exige tanto um componente inteligente visível na câmera quanto uma resposta recente de tela. Um ACK I²C não comprova a identidade, a posição física, a função ou a leitura elétrica do componente; a tela mostra valores simulados.
+
+Primeiro teste com a carga desconectada: confirme com multímetro a saída desligada no boot/reset, ao sair da lição e ao desconectar USB. Com câmera, montagem e chave conferidas, use o clique do joystick em Energizar; clique outra vez para desligar. A câmera não mede polaridade nem continuidade elétrica; confira ambas fisicamente. Nenhuma compilação, teste de software ou desenho comprova a chave ou a bancada física.
 
 ## Mapa da placa
 

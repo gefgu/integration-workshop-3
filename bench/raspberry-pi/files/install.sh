@@ -115,7 +115,7 @@ Wants=network-online.target
 [Service]
 User=$USER_NAME
 WorkingDirectory=$PREFIX
-Environment=PYTHONPATH=$PREFIX/app
+Environment=PYTHONPATH=$PREFIX/app:$PREFIX/app/bench_service:$PREFIX/app/graph_validator/src
 Environment=TEDTRONICS_BENCH_UI=$PREFIX/ui
 Environment=TEDTRONICS_AUDIO_DIR=$PREFIX/app/graph_validator/audio
 Environment=TEDTRONICS_PIPER_VOICE=$PREFIX/app/graph_validator/voices/pt_BR-cadu-medium.onnx

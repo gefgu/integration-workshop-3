@@ -74,6 +74,8 @@ def parse_line(line: str) -> tuple[str, ...] | None:
         return ("hello", fields[2])
     if len(fields) == 2 and fields[0] == "PONG" and fields[1].isdigit():
         return ("pong", fields[1])
+    if len(fields) == 2 and fields[0] == "SMART" and fields[1].isdigit() and int(fields[1]) < 64:
+        return ("smart", fields[1])
     return None
 
 
@@ -87,6 +89,57 @@ class ControlsHub:
         self.connected = False
         self.port: str | None = None
         self.last_seen = 0.0
+        self.power_capable = False
+        self.smart_mask = 0
+        self.smart_at = 0.0
+        self._power_owner: object | None = None
+        self._power_until = 0.0
+        self._voltmeter_owner: object | None = None
+        self._voltmeter_until = 0.0
+
+    def smart_state(self) -> dict:
+        fresh = self.connected and self.smart_at > 0 and time.monotonic() - self.smart_at < 4.0
+        return {"fresh": fresh, "slots": [i for i in range(6) if fresh and self.smart_mask & (1 << i)]}
+
+    def refresh_voltmeter(self, owner: object) -> None:
+        with self._lock:
+            self._voltmeter_owner = owner
+            self._voltmeter_until = time.monotonic() + 1.2
+
+    def release_voltmeter(self, owner: object) -> None:
+        with self._lock:
+            if self._voltmeter_owner is owner:
+                self._voltmeter_owner = None
+                self._voltmeter_until = 0.0
+
+    def voltmeter_requested(self) -> bool:
+        with self._lock:
+            return self.connected and self._voltmeter_owner is not None and time.monotonic() < self._voltmeter_until
+
+    def claim_power(self, owner: object) -> bool:
+        with self._lock:
+            if not self.connected or not self.power_capable or self._power_owner is not None:
+                return False
+            self._power_owner = owner
+            self._power_until = time.monotonic() + 1.2
+            return True
+
+    def renew_power(self, owner: object) -> bool:
+        with self._lock:
+            if self._power_owner is not owner or not self.connected or time.monotonic() >= self._power_until:
+                return False
+            self._power_until = time.monotonic() + 1.2
+            return True
+
+    def release_power(self, owner: object | None = None) -> None:
+        with self._lock:
+            if owner is None or self._power_owner is owner:
+                self._power_owner = None
+                self._power_until = 0.0
+
+    def power_requested(self) -> bool:
+        with self._lock:
+            return self.connected and self._power_owner is not None and time.monotonic() < self._power_until
 
     def push(self, key: str) -> dict:
         with self._lock:
@@ -167,6 +220,9 @@ class SerialControls:
                         log.warning("controls: cannot open %s (%s)", port, error)
                         warned.add(port)
                 self.hub.connected = False
+                self.hub.power_capable = False
+                self.hub.smart_at = 0.0
+                self.hub.release_power()
             self._stop.wait(2.0)
 
     def _serve(self, link, port: str | None = None) -> None:
@@ -178,6 +234,9 @@ class SerialControls:
         next_ping = 0.0
         opened = time.monotonic()
         heard = False
+        next_power = 0.0
+        next_voltmeter = 0.0
+        voltmeter_sent = False
         link.write(b"HELLO?\n")
         while not self._stop.is_set():
             now = time.monotonic()
@@ -193,8 +252,18 @@ class SerialControls:
                 ping += 1
                 link.write(f"PING {ping}\n".encode("ascii"))
                 next_ping = now + PING_EVERY_S
+            if self.hub.power_capable and now >= next_power:
+                link.write(b"POWER 1\n" if self.hub.power_requested() else b"POWER 0\n")
+                next_power = now + 0.3
+            if self.hub.power_capable and now >= next_voltmeter:
+                requested = self.hub.voltmeter_requested()
+                if requested or voltmeter_sent:
+                    link.write(b'VOLTTEST 1\n' if requested else b'VOLTTEST 0\n')
+                voltmeter_sent = requested
+                next_voltmeter = now + 0.5
             if self.hub.connected and now - self.hub.last_seen > LINK_TIMEOUT_S:
                 self.hub.connected = False
+                self.hub.release_power()
                 log.warning("controls: no reply from the ESP32 on %s", port)
             for byte in link.read(64) or b"":
                 if byte == 0x0A:  # newline
@@ -215,6 +284,11 @@ class SerialControls:
             return
         self.hub.last_seen = time.monotonic()
         self.hub.connected = True
+        if message[0] == "hello":
+            self.hub.power_capable = message[1] == "2" and self._current != "/dev/serial0"
+        if message[0] == "smart":
+            self.hub.smart_mask = int(message[1])
+            self.hub.smart_at = time.monotonic()
         if self.auto:
             self.hub.port = self._current
         if message[0] == "key":

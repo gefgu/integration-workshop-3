@@ -16,8 +16,24 @@ def test_parse_line():
     assert parse_line("KEY 10 ENERGIZAR") == ("key", "10", "Enter")
     assert parse_line("HELLO controles 1") == ("hello", "1")
     assert parse_line("PONG 3") == ("pong", "3")
+    assert parse_line("SMART 12") == ("smart", "12")
+    assert parse_line("SMART 64") is None
     for bad in ["", "KEY x UP", "KEY 1 JUMP", "KEY 1", "PING 1", "lixo"]:
         assert parse_line(bad) is None
+
+
+def test_smart_screen_status_is_fresh_only_after_esp_report(monkeypatch):
+    import bench_service.controls as module
+    clock = [10.0]
+    monkeypatch.setattr(module.time, 'monotonic', lambda: clock[0])
+    hub = ControlsHub()
+    serial = SerialControls('/dev/ttyUSB0', hub)
+    serial._handle(FakeLink(b''), 'SMART 12')
+    assert hub.smart_state() == {'fresh': True, 'slots': [2, 3]}
+    clock[0] += 4.1
+    assert hub.smart_state() == {'fresh': False, 'slots': []}
+    hub.connected = False
+    assert hub.smart_state()['slots'] == []
 
 
 class FakeLink:
@@ -120,3 +136,151 @@ def test_auto_mode_waits_for_the_esp32_to_be_plugged_in():
     time.sleep(0.05)
     controls.stop()
     assert hub.state() == {"port": None, "connected": False, "seq": 0}
+
+
+def test_power_lease_expires_and_cannot_be_renewed_after_expiry(monkeypatch):
+    import bench_service.controls as module
+
+    clock = [10.0]
+    monkeypatch.setattr(module.time, "monotonic", lambda: clock[0])
+    hub = ControlsHub()
+    hub.connected = hub.power_capable = True
+    first, second = object(), object()
+    assert hub.claim_power(first)
+    assert not hub.claim_power(second)
+    clock[0] += 1.3
+    assert not hub.power_requested()
+    assert not hub.renew_power(first)
+    hub.release_power(first)
+    assert hub.claim_power(second)
+    hub.connected = False
+    assert not hub.power_requested()
+
+
+def test_voltmeter_lease(monkeypatch):
+    import bench_service.controls as module
+    clock = [10.0]
+    monkeypatch.setattr(module.time, 'monotonic', lambda: clock[0])
+    hub = ControlsHub()
+    hub.connected = True
+    owner = object()
+    hub.refresh_voltmeter(owner)
+    assert hub.voltmeter_requested()
+    hub.release_voltmeter(object())
+    assert hub.voltmeter_requested()
+    clock[0] += 1.3
+    assert not hub.voltmeter_requested()
+    hub.refresh_voltmeter(owner)
+    hub.release_voltmeter(owner)
+    assert not hub.voltmeter_requested()
+
+
+def test_voltmeter_commands_follow_lease_over_usb():
+    hub = ControlsHub()
+    link = FakeLink(b'HELLO controles 2\n')
+    controls = SerialControls('/dev/ttyUSB0', hub, opener=lambda port, baud: link).start()
+    try:
+        deadline = time.monotonic() + 2
+        while not hub.power_capable and time.monotonic() < deadline:
+            time.sleep(.01)
+        owner = object()
+        hub.refresh_voltmeter(owner)
+        deadline = time.monotonic() + 2
+        while b'VOLTTEST 1\n' not in link.written and time.monotonic() < deadline:
+            time.sleep(.01)
+        assert b'VOLTTEST 1\n' in link.written
+        hub.release_voltmeter(owner)
+        deadline = time.monotonic() + 2
+        while b'VOLTTEST 0\n' not in link.written and time.monotonic() < deadline:
+            time.sleep(.01)
+        assert b'VOLTTEST 0\n' in link.written
+    finally:
+        controls.stop()
+
+
+def test_power_commands_follow_lease_over_usb():
+    hub = ControlsHub()
+    link = FakeLink(b"HELLO controles 2\n")
+    controls = SerialControls("/dev/ttyUSB0", hub, opener=lambda port, baud: link).start()
+    deadline = time.monotonic() + 2
+    while not hub.power_capable and time.monotonic() < deadline:
+        time.sleep(0.01)
+    owner = object()
+    assert hub.claim_power(owner)
+    deadline = time.monotonic() + 2
+    while b"POWER 1\n" not in link.written and time.monotonic() < deadline:
+        time.sleep(0.01)
+    assert b"POWER 1\n" in link.written
+    hub.release_power(owner)
+    sent_at = len(link.written)
+    deadline = time.monotonic() + 2
+    while b"POWER 0\n" not in link.written[sent_at:] and time.monotonic() < deadline:
+        time.sleep(0.01)
+    controls.stop()
+    assert b"POWER 0\n" in link.written[sent_at:]
+
+
+def test_live_power_rejects_wrong_vision_and_releases_on_disconnect(tmp_path):
+    import asyncio
+
+    class Vision:
+        def state(self):
+            return {"available": True, "running": True, "valid": True, "uncertain": False,
+                    "age_s": 1, "version": 7, "unknown": []}
+
+    hub = ControlsHub()
+    hub.connected = hub.power_capable = True
+    app = create_app(BenchStore(str(tmp_path / "b.sqlite3")), vision=Vision(), controls=hub)
+    endpoint = next(route.endpoint for route in app.routes if getattr(route, "path", None) == "/controls/power")
+
+    class Socket:
+        def __init__(self):
+            self.messages = iter([{"lesson": "curriculo-03-guiada-1k", "version": 7},
+                                  {"lesson": "curriculo-03-guiada-1k", "version": 8}])
+            self.replies = []
+
+        async def accept(self): pass
+        async def receive_json(self): return next(self.messages)
+        async def send_json(self, value):
+            self.replies.append(value)
+            if value["ok"]:
+                assert hub.power_requested()
+        async def close(self): pass
+
+    socket = Socket()
+    asyncio.run(endpoint(socket))
+    assert socket.replies == [{"ok": True}, {"ok": False}]
+    assert not hub.power_requested()
+
+
+def test_smart_lesson_power_requires_camera_and_fresh_screen_response(tmp_path):
+    import asyncio
+
+    class Vision:
+        def state(self):
+            return {'available': True, 'running': True, 'valid': True, 'uncertain': False,
+                    'age_s': 1, 'version': 7, 'unknown': [{'type': 'capsula_smart'}]}
+
+    hub = ControlsHub()
+    hub.connected = hub.power_capable = True
+    app = create_app(BenchStore(str(tmp_path / 'b.sqlite3')), vision=Vision(), controls=hub)
+    endpoint = next(route.endpoint for route in app.routes if getattr(route, 'path', None) == '/controls/power')
+
+    class Socket:
+        def __init__(self): self.replies = []
+        async def accept(self): pass
+        async def receive_json(self): return {'lesson': 'curriculo-teste-voltimetro-buzzer', 'version': 7}
+        async def send_json(self, value):
+            self.replies.append(value)
+            if value['ok']:
+                hub.smart_at = 0  # loss of fresh screen response must stop the lease
+        async def close(self): pass
+
+    absent = Socket()
+    asyncio.run(endpoint(absent))
+    assert absent.replies == [{'ok': False}]
+    hub.smart_mask, hub.smart_at = 1 << 2, time.monotonic()
+    present = Socket()
+    asyncio.run(endpoint(present))
+    assert present.replies == [{'ok': True}, {'ok': False}]
+    assert not hub.power_requested()

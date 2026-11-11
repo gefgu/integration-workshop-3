@@ -486,15 +486,15 @@ function lesson03(): Lesson[] {
 
 const L03_1K_NOTES = `Objetivo: montar o circuito mais simples com resistor — bateria, resistor de 1 kΩ e LED — e ver que um resistor maior deixa o LED mais fraco.
 Como saber que deu certo: LED aceso na simulação; a pergunta final compara a corrente com a do resistor de 470 Ω (cerca de 3 mA contra 6 mA).
-Esta é a lição indicada para testar a câmera da bancada com a peça de 1 kΩ do kit: são três componentes e um jumper. Na leitura por câmera desta lição, a bateria é assumida com + à esquerda e o LED com ânodo à direita; a câmera não mede polaridade.
+Esta é a lição indicada para testar a câmera da bancada com a peça de 1 kΩ do kit: são três componentes e um jumper. A bateria fixa ocupa as colunas 1 e 2, com negativo na coluna 1 e positivo na coluna 2. A câmera não mede polaridade.
 ${SIM} A corrente vem de (5 V − 2 V do LED) ÷ 1000 Ω ≈ 3 mA. O valor do resistor é uma configuração do kit; a câmera não mede a resistência.`;
 
 function lesson03Resistor1k(): Lesson[] {
   const board = [
-    P('bat', 'bateria', 3, 4, 1),
-    P('res', 'resistor_1k', 3, 2, 2),
-    P('led', 'led', 2, 1, 3),
-    P('w2', 'jumper_3', 1, 4, 4),
+    P('bat', 'bateria', 2, 1, 1),
+    P('res', 'resistor_1k', 2, 3, 2),
+    P('led', 'led', 3, 4, 3),
+    P('w2', 'jumper_3', 4, 1, 4),
   ];
   const qPrev = quiz(
     'q-prev',
@@ -527,12 +527,12 @@ function lesson03Resistor1k(): Lesson[] {
         explain(
           'e-1k',
           'O circuito mais simples com resistor',
-          'Use a bateria, um resistor de 1 kΩ (1000 Ω), o LED e um jumper. A corrente sai do + da bateria, passa pelo resistor, pelo LED e volta ao − pelo jumper.\n\nNa câmera, confira a orientação: + da bateria à esquerda e ânodo do LED à direita. A câmera não mede a polaridade.\n\nO resistor protege o LED: com 1 kΩ passam cerca de 3 mA, bem menos que com o resistor de 470 Ω.'
+          'Use a bateria, um resistor de 1 kΩ (1000 Ω), o LED e um jumper. A bateria fixa ocupa as colunas 1 e 2: negativo na coluna 1 e positivo na coluna 2. A corrente sai do + da bateria, passa pelo resistor, pelo LED e volta ao − pelo jumper.\n\nConfira a polaridade física: a câmera não a mede.\n\nO resistor protege o LED: com 1 kΩ passam cerca de 3 mA, bem menos que com o resistor de 470 Ω.'
         ),
         ...build(
           board,
           [
-            ['bat', 'Coloque a bateria na bancada.'],
+            ['bat', 'A bateria fica nas colunas 1 e 2: negativo na 1, positivo na 2.'],
             ['res', 'Coloque o resistor de 1 kΩ.'],
             ['led', 'Coloque o LED, depois do resistor. O lado da barra é o −.'],
             ['w2', 'Jumper do LED de volta ao − da bateria.'],
@@ -547,7 +547,7 @@ function lesson03Resistor1k(): Lesson[] {
         interact('i-compara', 'Compare com o resistor de 470 Ω.', qCompare),
       ],
       quizzes: [qPrev, qCompare],
-      settings: { requireLit: true, tray: KIT('bateria', 'resistor_1k', 'led', 'jumper_3') },
+      settings: { requireLit: true, fixedBatteryFirstTwo: true, tray: KIT('bateria', 'resistor_1k', 'led', 'jumper_3') },
       notes: L03_1K_NOTES,
       tags: ['guiada', 'resistor', 'câmera', 'exemplo'],
     }),
@@ -555,6 +555,38 @@ function lesson03Resistor1k(): Lesson[] {
 }
 
 // --- Lesson 4 ------------------------------------------------------------------------------------
+
+function lessonVoltimetroBuzzer(): Lesson[] {
+  const board = [
+    P('bat', 'bateria', 2, 1, 1),
+    P('res', 'resistor_1k', 2, 3, 2),
+    P('led', 'led', 3, 4, 4),
+    P('buz', 'buzzer', 4, 5, 3),
+    P('w2', 'jumper_4', 5, 1, 0),
+  ];
+  return [lesson({
+    id: `${SEED_PREFIX}teste-voltimetro-buzzer`,
+    title: 'Teste — Tela inteligente, LED e buzzer',
+    instruction: 'Monte a bateria fixa, o resistor, o LED e o buzzer; observe a tela inteligente.',
+    kind: 'guided', board,
+    steps: [
+      explain('e-teste', 'A tela inteligente',
+        'Posicione o componente inteligente, o LED e o buzzer. A câmera procura as peças e o ESP32 confirma se uma tela responde. Confira a polaridade fisicamente.'),
+      ...build(board, [
+        ['bat', 'A bateria fixa usa as colunas 1 e 2: negativo na 1 e positivo na 2.'],
+        ['res', 'Coloque o resistor de 1 kΩ entre as colunas 2 e 3.'],
+        ['led', 'Coloque o LED entre as colunas 3 e 4, com o positivo na coluna 3.'],
+        ['buz', 'Coloque o buzzer entre as colunas 4 e 5, com o positivo na coluna 4.'],
+        ['w2', 'Coloque o jumper de quatro espaços da coluna 5 até a coluna 1.'],
+      ], 'Confira a montagem e a polaridade antes de energizar.', { matchValues: true, strictPositions: false }),
+      explain('e-oled', 'Confira a tela',
+        'Observe a tensão exibida na tela com a bancada ligada e depois desligada.'),
+    ],
+    settings: { fixedBatteryFirstTwo: true, tray: KIT('bateria', 'resistor_1k', 'led', 'buzzer', 'jumper_4') },
+    notes: 'Teste de bancada: bateria, resistor de 1 kΩ, LED e buzzer em série; jumper de quatro espaços retorna à coluna 1. A tela mostra a tensão calculada no resistor usando fonte de 5 V, buzzer aproximado por 250 Ω e LED ideal de 2 V; não é medição. O funcionamento real do buzzer não foi confirmado. A câmera não mede polaridade. O ESP32 confirma resposta I2C de uma tela, sem comprovar sua posição ou identidade.',
+    tags: ['guiada', 'câmera', 'buzzer', 'tela inteligente', 'exemplo'],
+  })];
+}
 
 const L04_NOTES = `Objetivo: o LED só acende em um sentido (polaridade).
 Como saber que deu certo: o aluno testa os dois sentidos e identifica qual funciona ANTES de o tutor dar o nome “polaridade”; no desafio, o LED vem invertido sem aviso e o aluno o gira clicando na peça.
@@ -1385,6 +1417,7 @@ export function curriculumLessons(): Lesson[] {
     ...lesson02(),
     ...lesson03(),
     ...lesson03Resistor1k(),
+    ...lessonVoltimetroBuzzer(),
     ...lesson04(),
     ...lesson05(),
     ...lesson06(),
@@ -1439,6 +1472,11 @@ export function curriculumModules(): CurriculumModule[] {
       lessonIds: track('03-guiada-1k'),
     },
     {
+      title: 'Teste — Tela inteligente, LED e buzzer',
+      description: 'Monte o circuito com LED e buzzer e observe a tela inteligente.',
+      lessonIds: track('teste-voltimetro-buzzer'),
+    },
+    {
       title: 'Currículo completo — Fundamental II',
       description:
         'Todas as lições do currículo, na ordem de ensino: da bancada e dos nós até o alarme final.',
@@ -1449,6 +1487,7 @@ export function curriculumModules(): CurriculumModule[] {
         '02-desafio',
         '03-guiada',
         '03-guiada-1k',
+        'teste-voltimetro-buzzer',
         '03-desafio',
         '04-guiada',
         '04-desafio',

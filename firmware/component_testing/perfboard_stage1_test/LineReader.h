@@ -9,3 +9,12 @@ struct LineReader {
   size_t length = 0;
   bool discard = false;
 };
+
+#include <stdint.h>
+
+struct Button {
+  uint8_t pin;
+  bool stable = false, raw = false, armed = false;
+  uint32_t changedAt = 0, pressedAt = 0;
+  explicit Button(uint8_t p) : pin(p) {}
+};

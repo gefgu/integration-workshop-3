@@ -285,7 +285,8 @@ export function toValidatorLesson(lesson: Lesson): any {
   const byId = new Map(lesson.board.pieces.map((p) => [p.id, p]));
   const quizzes = new Map(lesson.quizzes.map((q) => [q.id, q]));
   const steps = effectiveSteps(lesson).map((s) => {
-    const base = { id: s.id, action: s.action, options: optsOut(s.options), overrides: s.overrides || {} };
+    const base = { id: s.id, action: s.action, options: { ...optsOut(s.options),
+      ...(lesson.settings?.fixedBatteryFirstTwo ? { fixed_battery_first_two: true } : {}) }, overrides: s.overrides || {} };
     if (s.action === 'interact') {
       const q = quizzes.get(s.quizId);
       return { ...base, interact: { quiz_correct_id: q ? q.correctId : '' } };

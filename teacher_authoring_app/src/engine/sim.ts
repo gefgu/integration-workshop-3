@@ -256,7 +256,7 @@ export function analyze(
   for (const t of trails) {
     const led = t.find((x) => x.type === 'led');
     const buzzer = t.some((x) => x.type === 'buzzer');
-    const ohms = t.reduce((sum, x) => sum + x.ohms, 0);
+    const ohms = t.reduce((sum, x) => sum + x.ohms, 0) + (led && buzzer ? 250 : 0);
     let code: string;
     let load: 'led' | 'buzzer' | null = null;
     if (led) {

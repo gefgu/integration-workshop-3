@@ -108,6 +108,7 @@ function VisionFeed({ api, vision, onBack }: { api: BenchApi; vision: VisionStat
       <div className="bench-camera">
         <img
           src={api.visionFrameUrl(stamp)}
+          style={{ transform: 'scaleX(-1)' }}
           alt="Imagem da câmera com a leitura da placa"
           onLoad={() => nextFrame(false)}
           onError={() => nextFrame(true)}
@@ -115,6 +116,7 @@ function VisionFeed({ api, vision, onBack }: { api: BenchApi; vision: VisionStat
         {frameError && <p className="bench-camera-status">Ligando a câmera…</p>}
       </div>
       <div className="panel bench-card">
+        <small>A imagem está espelhada; rótulos desenhados nela usam coordenadas originais da câmera. A lista abaixo usa as posições da bancada.</small>
         <strong>Diagnóstico</strong>
         <Diagnostics live={live} vision={vision} />
       </div>

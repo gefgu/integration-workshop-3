@@ -65,3 +65,14 @@ test('with a normal choice selected, → is still the next step', () => {
   handlePadKey('ArrowRight', root, () => undefined);
   assert.deepEqual(clicks, ['next']);
 });
+
+test('joystick click energizes a lab screen without a selected choice', () => {
+  const powerButton = { dataset: { pad: 'energize' }, offsetParent: {} };
+  const root = {
+    querySelector: () => null,
+    querySelectorAll: (selector: string) => selector.includes('data-pad="energize"') ? [powerButton] : [],
+  } as unknown as ParentNode;
+  let presses = 0;
+  assert.equal(handlePadKey(' ', root, () => { presses++; }), true);
+  assert.equal(presses, 1);
+});

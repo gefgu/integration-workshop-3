@@ -132,6 +132,16 @@ def evaluate_step(
     target_pieces = targets[-1] if lesson.kind == "challenge" else targets[step_idx]
     opts: MatchOptions = step.options
     target_parts = parts_from_pieces(target_pieces)
+    if opts.fixed_battery_first_two and step.action != 'interact' and any(p.ctype == 'bateria' for p in target_parts):
+        batteries = [p for p in parts if p.ctype == 'bateria']
+        if len(batteries) == 1:
+            terminals = {t.name: t for t in batteries[0].terms}
+            positive, negative = terminals.get('+'), terminals.get('-')
+            if not (positive and negative and positive.col == 2 and negative.col == 1
+                    and 0 <= positive.row < 6 and 0 <= negative.row < 6):
+                return StepResult(approved=False, category=Category.INCORRECT_CONNECTION,
+                                  message='A bateria fixa deve ficar na bancada superior: negativo na coluna 1 e positivo na coluna 2.',
+                                  graph_hash=graph_hash(build_graph(parts), opts))
     if lesson.kind == "guided" and step.action in ("place_component", "place_connection"):
         issues = diff_inventory(parts, target_parts, opts)
         if issues:

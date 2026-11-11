@@ -178,6 +178,8 @@ export interface LessonStart {
 
 /** Optional per-lesson behaviour; every key is off/absent by default so older lessons play as before. */
 export interface LessonSettings {
+  /** Fixed test source: top bank columns 1 (−) and 2 (+). */
+  fixedBatteryFirstTwo?: boolean;
   /** Show the bench's built-in status LED (lesson 1). Simulated here. */
   statusLed?: boolean;
   /** Withhold the validator's hint until the same mistake happened this many times in a row. */

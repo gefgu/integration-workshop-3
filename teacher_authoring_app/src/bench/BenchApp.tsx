@@ -15,6 +15,7 @@ import { ensureSelection, handlePadKey, padElements, selectedItem, selectElement
 import { lessonStates, nextLessonId, type Screen, screenAfterLesson } from './screens.ts';
 import { useHardwareControls } from './useHardwareControls.ts';
 import { useVision } from './useVision.ts';
+import { mirrorVision } from './mirrorVision.ts';
 
 const NO_PIECES: never[] = [];
 
@@ -36,7 +37,8 @@ export default function BenchApp() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [muted, setMuted] = useState(false);
   const loginAt = useRef(0);
-  const vision = useVision(api);
+  const rawVision = useVision(api);
+  const vision = useMemo(() => mirrorVision(rawVision), [rawVision]);
   // Guided tours: the first time each screen appears on this bench, and again from the ? button.
   const [labReady, setLabReady] = useState(false);
   useEffect(() => {
@@ -597,6 +599,19 @@ function LessonScreen({
 }) {
   const lastPhase = useRef(phase);
   const [saveError, setSaveError] = useState('');
+  const [smartSlots, setSmartSlots] = useState<number[]>([]);
+  const smartLesson = /^curriculo-teste-voltimetro-buzzer(?:-p\d+)?$/.test(lesson?.id ?? '');
+  useEffect(() => {
+    if (!smartLesson) return undefined;
+    let alive = true;
+    const poll = () => api.smartStatus().then((state) => { if (alive) setSmartSlots(state.fresh ? state.slots : []); },
+      () => { if (alive) setSmartSlots([]); });
+    void poll();
+    const timer = setInterval(poll, 800);
+    return () => { alive = false; clearInterval(timer); };
+  }, [api, smartLesson]);
+  const smartVisible = !!vision.unknown?.some((piece) => piece.type === 'capsula_smart');
+  const otherUnknown = vision.unknown?.some((piece) => !smartLesson || piece.type !== 'capsula_smart');
   if (!lesson) return <p className="app-error">Lição não encontrada no módulo.</p>;
 
   // SFR38: every finished phase is saved, so the student resumes at this exact point (SFR37.1).
@@ -640,8 +655,11 @@ function LessonScreen({
         onExit={onExit}
         exitLabel="Sair da lição"
         voiceMuted={muted}
-        livePieces={vision.available ? (vision.valid ? (vision.pieces ?? NO_PIECES) : NO_PIECES) : null}
-        barExtra={<CameraStatus vision={vision} />}
+        livePieces={vision.available ? (vision.pieces ?? NO_PIECES) : null}
+        liveUncertain={!!vision.available && (!vision.valid || !!vision.uncertain || !!otherUnknown)}
+        smartReady={!smartLesson || (smartVisible && smartSlots.length > 0)}
+        visionVersion={vision.available ? vision.version : undefined}
+        barExtra={<><CameraStatus vision={vision} />{smartLesson && <span role="status"> {smartVisible ? 'Câmera: inteligente visto' : 'Câmera: aguardando inteligente'} · {smartSlots.length ? `ESP32: tela responde (slot ${smartSlots.join(', ')})` : 'ESP32: aguardando tela'}</span>}</>}
       />
       <PadHints />
       <FitLeftColumn />
@@ -726,9 +744,9 @@ function CameraStatus({ vision }: { vision: VisionState }) {
   }
   const unknown = vision.unknown?.length ?? 0;
   return (
-    <span className={`bench-camera-chip${vision.valid ? '' : ' paused'}`} role="status">
+    <span className={`bench-camera-chip${vision.valid && !vision.uncertain ? '' : ' paused'}`} role="status">
       <Icon name="camera" size={18} />
-      {vision.valid ? 'lendo a placa' : vision.reason || 'aguardando imagem'}
+      {vision.valid ? (vision.uncertain ? 'confirmando peças…' : 'lendo a placa') : vision.reason || 'aguardando imagem'}
       {unknown > 0 && ` · ${unknown} peça${unknown > 1 ? 's' : ''} não reconhecida${unknown > 1 ? 's' : ''}`}
     </span>
   );

@@ -14,6 +14,7 @@ import { challengeHint } from './hints.ts';
 import { cameraLessonPieces } from './cameraPolarity.ts';
 import { boardBefore, buildPhases, challengeScore, type PlayerEvent } from './phases.ts';
 import { useLab } from './useLab.ts';
+import { serviceUrl } from '../bench/benchApi.ts';
 
 export { boardBefore, buildPhases, challengeScore, type PlayerEvent };
 
@@ -204,6 +205,9 @@ export default function LessonPlayer({
   notice,
   debug,
   livePieces = null,
+  liveUncertain = false,
+  visionVersion,
+  smartReady = true,
   barExtra,
   voiceMuted,
 }: {
@@ -222,6 +226,9 @@ export default function LessonPlayer({
   debug?: boolean;
   /** bench with the camera on: what the camera sees on the real board (the screen board only mirrors it) */
   livePieces?: any[] | null;
+  liveUncertain?: boolean;
+  visionVersion?: number;
+  smartReady?: boolean;
   /** extra content in the bench's top bar (the camera status) */
   barExtra?: ReactNode;
   /** the bench's sound switch (in its game menu); the teacher's player keeps its own checkbox */
@@ -238,6 +245,16 @@ export default function LessonPlayer({
     return current;
   };
   const [idx, setIdx] = useState(first);
+  useEffect(() => {
+    if (!bench || !/^curriculo-teste-voltimetro-buzzer(?:-p\d+)?$/.test(lesson.id)) return undefined;
+    const socket = new WebSocket(serviceUrl().replace(/^http/, 'ws') + '/controls/voltmeter');
+    let timer: ReturnType<typeof setInterval> | undefined;
+    socket.onopen = () => {
+      const send = () => { if (socket.readyState === WebSocket.OPEN) socket.send('test'); };
+      send(); timer = setInterval(send, 400);
+    };
+    return () => { if (timer) clearInterval(timer); socket.close(); };
+  }, [bench, lesson.id]);
   const cameraPieces = useMemo(() => cameraLessonPieces(lesson, livePieces), [lesson, livePieces]);
   const [pieces, setPieces] = useState(() => cameraPieces ?? boardFor(first, boardBefore(lesson, first))); // kept across steps
   // With the camera on, the real board is the truth: the screen follows it and never resets it.
@@ -428,7 +445,27 @@ export default function LessonPlayer({
                     {!(bench && intro) && phase.type === 'explain' && (
                       <ExplainStep key={stepKey} step={phase.step} onDone={next} />
                     )}
-                    {!(bench && intro) && phase.type === 'experiment' && (
+                    {!(bench && intro) && phase.type === 'experiment' && bench && /^curriculo-03-guiada-1k(?:-p\d+)?$/.test(lesson.id) && (
+                      <BuildStep
+                        key={stepKey}
+                        lesson={lesson}
+                        stepIdx={effectiveSteps(lesson).map((step) => step.action).lastIndexOf('connect_circuit')}
+                        final
+                        text={phase.step.text}
+                        pieces={pieces}
+                        setPieces={setPieces}
+                        debugEnabled={debug ?? debugEnabled}
+                        timeLimitS={null}
+                        onDone={next}
+                        mascotKind={mascotKind}
+                        bench
+                        liveUncertain={liveUncertain}
+                        physicalLive={livePieces !== null}
+                        visionVersion={visionVersion}
+                        smartReady={smartReady}
+                      />
+                    )}
+                    {!(bench && intro) && phase.type === 'experiment' && !(bench && /^curriculo-03-guiada-1k(?:-p\d+)?$/.test(lesson.id)) && (
                       <ExperimentStep
                         key={stepKey}
                         lesson={lesson}
@@ -472,6 +509,10 @@ export default function LessonPlayer({
                         mascotKind={mascotKind}
                         bench={bench}
                         autoBuild={bench && !livePieces && lesson.kind !== 'challenge' && phase.type === 'step'}
+                        liveUncertain={liveUncertain}
+                        physicalLive={livePieces !== null}
+                        visionVersion={visionVersion}
+                        smartReady={smartReady}
                       />
                     )}
                     {phase.type === 'done' && !bench && (
@@ -743,6 +784,10 @@ function BuildStep({
   mascotKind,
   bench = false,
   autoBuild = false,
+  liveUncertain = false,
+  physicalLive = false,
+  visionVersion,
+  smartReady = true,
 }) {
   const settings = lesson.settings;
   const [expired, setExpired] = useState(false);
@@ -812,7 +857,38 @@ function BuildStep({
 
   const looseLeft = pieces.some((p) => p.loose);
   // The circuit matches; the lesson may also want to see it work (energized and lit) with firm contacts.
-  const built = !!res?.approved && !looseLeft;
+  const built = !!res?.approved && !looseLeft && !liveUncertain && (!final || smartReady);
+  const physicalLesson = bench && /^curriculo-(?:03-guiada-1k|teste-voltimetro-buzzer)(?:-p\d+)?$/.test(lesson.id);
+  const physicalAllowed = physicalLesson && physicalLive && final && built && diag.code === 'valido' && !expired && visionVersion != null;
+  const requestedVersion = useRef<number | undefined>(undefined);
+  const [powerError, setPowerError] = useState('');
+  useEffect(() => {
+    if (!physicalLesson || !lab.energized) return undefined;
+    if (!physicalAllowed || requestedVersion.current !== visionVersion) {
+      lab.reset();
+      setPowerError('Energia desligada: confira a câmera e a montagem antes de tentar novamente.');
+      return undefined;
+    }
+    let active = true;
+    const url = serviceUrl().replace(/^http/, 'ws') + '/controls/power';
+    const socket = new WebSocket(url);
+    let timer: ReturnType<typeof setInterval> | undefined;
+    const send = () => {
+      if (socket.readyState === WebSocket.OPEN) socket.send(JSON.stringify({ lesson: lesson.id, version: visionVersion }));
+    };
+    socket.onopen = () => { send(); timer = setInterval(send, 400); };
+    socket.onmessage = (event) => {
+      try { if (!JSON.parse(event.data).ok) socket.close(); } catch { socket.close(); }
+    };
+    socket.onclose = () => {
+      if (active) {
+        setPowerError('Energia desligada: comunicação ou câmera indisponível. Confira e pressione Energizar novamente.');
+        lab.reset();
+      }
+    };
+    socket.onerror = () => socket.close();
+    return () => { active = false; if (timer) clearInterval(timer); socket.close(); };
+  }, [physicalLesson, physicalAllowed, lab.energized, lab.reset, lesson.id, visionVersion]);
   const working = lab.energized && diag.code === 'valido';
   const predictionBeforeExperiment = lesson.kind === 'guided' && lesson.quizzes.some((q) => q.prediction);
   const needsWork = final && !!settings?.requireLit && !predictionBeforeExperiment;
@@ -824,7 +900,13 @@ function BuildStep({
       (lesson.kind === 'challenge' && lesson.start?.pieces.length
         ? 'Encontre o que está errado no circuito e conserte.'
         : lesson.instruction || 'Monte o circuito.');
-  if (expired) {
+  if (final && !smartReady) {
+    tone = 'obs';
+    msg = 'Aguardando a câmera ver o componente inteligente e o ESP32 confirmar resposta da tela.';
+  } else if (liveUncertain) {
+    tone = 'obs';
+    msg = 'A câmera está confirmando as peças. Aguarde uma leitura confiável.';
+  } else if (expired) {
     tone = 'erro';
     msg = 'O tempo acabou! Clique em Continuar para ver a explicação. Você pode refazer a lição depois.';
   } else if (v.status === 'offline') {
@@ -878,6 +960,7 @@ function BuildStep({
   return (
     <div className="lab-step">
       <Bubble kind={mascotKind} tone={tone} message={msg} />
+      {powerError && <p role="alert">{powerError}</p>}
       {debugEnabled && (
         <ValidationDebug
           lesson={lesson}
@@ -908,6 +991,12 @@ function BuildStep({
           ...lab,
           toggle: () => {
             if (!lab.energized && !ready) setMisses((n) => n + 1);
+            if (physicalLesson && !lab.energized && !physicalAllowed) {
+              setPowerError('Confira a montagem e aguarde a câmera confirmar as peças antes de energizar.');
+              return;
+            }
+            setPowerError('');
+            if (physicalLesson && !lab.energized) requestedVersion.current = visionVersion;
             lab.toggle();
           },
         }}

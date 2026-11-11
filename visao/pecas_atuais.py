@@ -17,7 +17,9 @@ def resistores_azuis_kit(ret_bgr):
         socket_y = int(round(cfg.para_retificada(0, row)[1]))
         top, bottom = max(0, socket_y - 38), min(hsv.shape[0], socket_y + 12)
         region = hsv[top:bottom]
-        mask = cv.inRange(region, (91, 80, 150), (130, 255, 255))
+        # Keep the holder visible across small exposure changes; the axial
+        # body and band checks below are still mandatory for identification.
+        mask = cv.inRange(region, (91, 80, 135), (130, 255, 255))
         mask = cv.morphologyEx(mask, cv.MORPH_CLOSE, np.ones((7, 35), np.uint8))
         for x, y, width, height, area in cv.connectedComponentsWithStats(mask)[2][1:]:
             if not (90 <= width <= 165 and 25 <= height <= 52 and area >= 1800):
@@ -66,24 +68,24 @@ def pecas_kit(ret_bgr):
             # Reflections on a neighboring piece can connect to the body and
             # extend its bounding box into the next row. Keep the horizontal
             # core instead of treating that sparse tail as part of the piece.
-            if kind in ('jumper', 'led') and 85 <= width <= 290 and area >= 1500:
+            if kind in ('jumper', 'led') and 85 <= width <= 370 and area >= 1500:
                 component = labels[y:y + height, x:x + width] == label
                 minimum = width * (.60 if kind == 'jumper' else .20)
                 dense = np.flatnonzero(np.count_nonzero(component, axis=1) >= minimum)
                 if dense.size:
                     height = int(dense[-1] - dense[0] + 1)
                     y += int(dense[0])
-            if not (1500 <= area and 20 <= height <= 75 and 85 <= width <= 290):
+            if not (1500 <= area and 20 <= height <= 75 and 85 <= width <= (370 if kind == 'jumper' else 290)):
                 continue
             if kind != 'jumper' and width > 165:
                 continue
             # Printed bodies project slightly to the right of their socket centers.
             span = 1 if width < 170 else round((width - 60) / cfg.PX_X)
-            # Short pale bodies can be resistors; only the observed long
-            # three-gap jumper is identified in this experimental profile.
-            if kind == 'jumper' and span != 3:
+            # Short pale bodies can be resistors. Four-gap recognition is
+            # supported by a synthetic shape test, but needs a live check.
+            if kind == 'jumper' and span not in (3, 4):
                 continue
-            if kind != 'jumper' and span != 1 or not 1 <= span <= 3:
+            if kind != 'jumper' and span != 1 or not 1 <= span <= 4:
                 continue
             first = round((x + width / 2 - 20) / cfg.PX_X - cfg.MARGEM_X - span / 2)
             row = round((y + height - 3) / cfg.PX_Y - cfg.MARGEM_Y)
@@ -92,8 +94,90 @@ def pecas_kit(ret_bgr):
             expected_x, expected_y = cfg.para_retificada(first + span / 2, row)
             if abs(x + width / 2 - 20 - expected_x) > 24 or abs(y + height - 3 - expected_y) > 18:
                 continue
-            piece_type = kind if kind != 'jumper' else {1: 'jumper_curto', 2: 'jumper_longo', 3: 'jumper_3'}[span]
+            piece_type = kind if kind != 'jumper' else {3: 'jumper_3', 4: 'jumper_4'}[span]
             found.append((piece_type, colour, row, first, first + span))
+    return found
+
+
+def buzzer_kit(ret_bgr):
+    """Find the photographed green board with its round, dark buzzer body."""
+    hsv = cv.cvtColor(ret_bgr, cv.COLOR_BGR2HSV)
+    gray = cv.cvtColor(ret_bgr, cv.COLOR_BGR2GRAY)
+    circles = cv.HoughCircles(cv.GaussianBlur(gray, (5, 5), 0), cv.HOUGH_GRADIENT,
+                              dp=1, minDist=35, param1=70, param2=20, minRadius=17, maxRadius=29)
+    found = []
+    if circles is None:
+        return found
+    for xf, yf, radius in circles[0]:
+        x, y = int(round(xf)), int(round(yf))
+        if x < 60 or x + 60 >= hsv.shape[1] or y < 20 or y + 20 >= hsv.shape[0]:
+            continue
+        disk = hsv[y - 12:y + 12, x - 12:x + 12]
+        sides = (hsv[y - 15:y + 15, x - 54:x - 28], hsv[y - 15:y + 15, x + 28:x + 54])
+        green = lambda a: np.mean((a[:, :, 0] >= 35) & (a[:, :, 0] <= 100) & (a[:, :, 1] >= 20))
+        if (np.mean(disk[:, :, 2] < 110) < .8
+                or any(green(a) < .55 or np.median(a[:, :, 2]) < 75 for a in sides)):
+            continue
+        col = round((x - 20) / cfg.PX_X - cfg.MARGEM_X - .5)
+        row = round((y + 27) / cfg.PX_Y - cfg.MARGEM_Y)
+        if not (0 <= row < cfg.N_LINHAS_METADE and 0 <= col < cfg.N_COLUNAS - 1):
+            continue
+        ex, ey = cfg.para_retificada(col + .5, row)
+        if abs(x - 20 - ex) <= 20 and abs(y + 27 - ey) <= 15:
+            found.append(('buzzer', 'verde', row, col, col + 1))
+    return found
+
+
+def smart_kit(ret_bgr):
+    """Find the photographed three-position OLED housing, without assuming its mode."""
+    hsv = cv.cvtColor(ret_bgr, cv.COLOR_BGR2HSV)
+    blue = cv.inRange(hsv, (85, 65, 60), (130, 255, 255))
+    blue = cv.morphologyEx(blue, cv.MORPH_CLOSE, np.ones((5, 15), np.uint8))
+    found = []
+    for x, y, w, h, area in cv.connectedComponentsWithStats(blue)[2][1:]:
+        if not (65 <= w <= 115 and 10 <= h <= 28 and area >= 500 and y >= 55):
+            continue
+        cx = x + w / 2
+        row = round((y + h - 13) / cfg.PX_Y - cfg.MARGEM_Y)
+        first = round(cx / cfg.PX_X - cfg.MARGEM_X) - 1
+        if not (0 <= row < cfg.N_LINHAS_METADE and 0 <= first < first + 2 < cfg.N_COLUNAS):
+            continue
+        screen = hsv[max(0, y - 45):y - 12, x + 10:x + w - 10]
+        if not screen.size or np.mean(screen[:, :, 2] < 100) < .65:
+            continue
+        found.append(('capsula_smart', 'azul', row, first, first + 2))
+    # The screen itself can reflect blue above the actual blue circuit board.
+    # Adjacent-row matches at the same columns are one housing, not two.
+    unique = []
+    for item in sorted(found, key=lambda item: -item[2]):
+        if not any(item[3:] == previous[3:] and abs(item[2] - previous[2]) <= 1 for previous in unique):
+            unique.append(item)
+    return unique
+
+
+def led_vermelho_kit(ret_bgr):
+    """Detect the pictured red LED lens on its pale green two-position holder."""
+    hsv = cv.cvtColor(ret_bgr, cv.COLOR_BGR2HSV)
+    red = cv.inRange(hsv, (0, 80, 60), (12, 255, 255)) | cv.inRange(hsv, (165, 80, 60), (179, 255, 255))
+    found = []
+    for x, y, width, height, area in cv.connectedComponentsWithStats(red)[2][1:]:
+        if not (9 <= width <= 24 and 8 <= height <= 23 and 65 <= area <= 350):
+            continue
+        cx, cy = x + width / 2, y + height / 2
+        col = round((cx - 20) / cfg.PX_X - cfg.MARGEM_X - .5)
+        row = round((cy + 27) / cfg.PX_Y - cfg.MARGEM_Y)
+        if not (0 <= row < cfg.N_LINHAS_METADE and 0 <= col < cfg.N_COLUNAS - 1):
+            continue
+        ex, ey = cfg.para_retificada(col + .5, row)
+        if abs(cx - 20 - ex) > 22 or abs(cy + 27 - ey) > 16:
+            continue
+        px, py = int(cx), int(cy)
+        if px < 55 or px + 55 >= hsv.shape[1] or py < 14 or py + 15 >= hsv.shape[0]:
+            continue
+        sides = [hsv[py - 12:py + 12, px - 52:px - 25], hsv[py - 12:py + 12, px + 25:px + 52]]
+        pale_green = lambda a: np.mean((a[:, :, 0] >= 35) & (a[:, :, 0] <= 95) & (a[:, :, 2] >= 120))
+        if all(pale_green(side) >= .50 for side in sides):
+            found.append(('led', 'verde', row, col, col + 1))
     return found
 
 
@@ -113,6 +197,32 @@ def suporte_local(vistos, linha, coluna_inicial, coluna_final):
     x0, x1 = max(0, coluna_inicial - 2), min(cfg.N_COLUNAS, coluna_final + 3)
     rows, cols = np.nonzero(vistos[y0:y1, x0:x1])
     return len(rows) >= 4 and len(np.unique(rows)) >= 2 and len(np.unique(cols)) >= 2
+
+
+def suporte_smart(vistos, linha, coluna_inicial, coluna_final):
+    """A wide OLED housing can cover most of its immediately adjacent sockets."""
+    if suporte_local(vistos, linha, coluna_inicial, coluna_final):
+        return True
+    y0, y1 = max(0, linha - 2), min(cfg.N_LINHAS_METADE, linha + 3)
+    x0, x1 = max(0, coluna_inicial - 2), min(cfg.N_COLUNAS, coluna_final + 3)
+    rows, cols = np.nonzero(vistos[y0:y1, x0:x1])
+    near = vistos[max(0, linha - 1):min(cfg.N_LINHAS_METADE, linha + 2),
+                  max(0, coluna_inicial - 1):min(cfg.N_COLUNAS, coluna_final + 2)]
+    return bool(near.any() and len(rows) >= 3 and len(np.unique(rows)) >= 2 and len(np.unique(cols)) >= 2)
+
+
+def suporte_marcado(vistos, linha, coluna_inicial, coluna_final):
+    """Distributed nearby socket evidence when an anchored piece hides adjacent openings."""
+    y0, y1 = max(0, linha - 2), min(cfg.N_LINHAS_METADE, linha + 3)
+    x0, x1 = max(0, coluna_inicial - 3), min(cfg.N_COLUNAS, coluna_final + 4)
+    rows, cols = np.nonzero(vistos[y0:y1, x0:x1])
+    if len(rows) < 4 or len(np.unique(rows)) < 2 or len(np.unique(cols)) < 2:
+        return False
+    abs_cols = cols + x0
+    abs_rows = rows + y0
+    near = ((abs_rows >= linha - 1) & (abs_rows <= linha + 1)
+            & (abs_cols >= coluna_inicial - 2) & (abs_cols <= coluna_final + 2))
+    return bool(near.any())
 
 
 def corpos_azuis(ret_bgr):

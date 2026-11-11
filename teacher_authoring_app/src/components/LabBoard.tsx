@@ -130,7 +130,7 @@ export default function LabBoard({
     const currents = lab.diag.currents;
     readout =
       loads.length > 1 && currents
-        ? `LED: ${mA(currents.led ?? 0)} mA · buzzer: ${mA(currents.buzzer ?? 0)} mA · total da bateria: ${mA((currents.led ?? 0) + (currents.buzzer ?? 0))} mA`
+        ? `LED: ${mA(currents.led ?? 0)} mA · buzzer: ${mA(currents.buzzer ?? 0)} mA`
         : `${mA(lab.ledMa)} mA ${where}`;
     // Without a resistor the real current would be far above this: say the bench is holding it back.
     if (lab.diag.limited) readout += ' (limite da simulação)';
