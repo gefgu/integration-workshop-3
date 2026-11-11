@@ -123,6 +123,11 @@ class PieceHold:
             self.generation = generation
         fresh = {piece['id']: piece for piece in pieces} if result.valido else {}
         self.pieces.update(fresh)
+        # A visible but untyped body supersedes a held resistor value. This
+        # includes a failed band re-read or a changed appearance signature;
+        # retaining the old value would attribute it to an unverified body.
+        untyped = {(item['metade'], item['linha'], item['colunas'][0], item['colunas'][-1])
+                   for item in getattr(result, 'pecas_sem_tipo', []) if item['atualidade'] == 'fresh'}
         uncertain = not result.valido
         for ident, piece in list(self.pieces.items()):
             if ident in fresh:
@@ -130,6 +135,12 @@ class PieceHold:
                 continue
             bank, row = divmod(piece['row'], BANK_ROWS)
             cols = (piece['a'] - 1, piece['b'] - 1)
+            if (result.valido and piece['type'].startswith('resistor_')
+                    and (('C', 'B')[bank], row, *cols) in untyped):
+                del self.pieces[ident]
+                self.empty_counts.pop(ident, None)
+                uncertain = True
+                continue
             visible_empty = result.valido and all(
                 result.atualidade[bank, row, col] == 'fresh' and result.observacoes[bank, row, col] == 'empty'
                 for col in cols

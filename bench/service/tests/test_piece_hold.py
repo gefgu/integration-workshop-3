@@ -49,6 +49,14 @@ class PieceHoldTest(unittest.TestCase):
             self.assertEqual(self.update([]), ([self.piece], True))
         self.assertEqual(self.update([]), ([], False))
 
+    def test_fresh_unknown_body_invalidates_held_resistor_value(self):
+        resistor = {'id': 'resistor', 'type': 'resistor_470', 'row': 3, 'a': 3, 'b': 4}
+        self.assertEqual(self.update([resistor]), ([resistor], False))
+        self.result.pecas_sem_tipo = [{'metade': 'C', 'linha': 3, 'colunas': [2, 3], 'atualidade': 'fresh'}]
+        self.assertEqual(self.update([]), ([], True))
+        self.result.pecas_sem_tipo = []
+        self.assertEqual(self.update([]), ([], False))
+
 
 if __name__ == '__main__':
     unittest.main()
