@@ -152,13 +152,6 @@
     "partial": true,
     "pieces": [
       {
-        "a": 10,
-        "b": 11,
-        "id": "vermelho_2@C5:9-10",
-        "row": 5,
-        "type": "bateria"
-      },
-      {
         "a": 2,
         "b": 3,
         "id": "resistor_220@C1:1-2",
@@ -171,6 +164,13 @@
         "id": "resistor_470@C3:2-3",
         "row": 3,
         "type": "resistor_470"
+      },
+      {
+        "a": 10,
+        "b": 11,
+        "id": "vermelho_2@C5:9-10",
+        "row": 5,
+        "type": "bateria"
       }
     ],
     "profile": "current",
@@ -213,11 +213,11 @@
     "partial": true,
     "pieces": [
       {
-        "a": 10,
-        "b": 11,
-        "id": "vermelho_2@C5:9-10",
-        "row": 5,
-        "type": "bateria"
+        "a": 8,
+        "b": 9,
+        "id": "led@C3:7-8",
+        "row": 3,
+        "type": "led"
       },
       {
         "a": 2,
@@ -234,11 +234,11 @@
         "type": "resistor_470"
       },
       {
-        "a": 8,
-        "b": 9,
-        "id": "led@C3:7-8",
-        "row": 3,
-        "type": "led"
+        "a": 10,
+        "b": 11,
+        "id": "vermelho_2@C5:9-10",
+        "row": 5,
+        "type": "bateria"
       }
     ],
     "profile": "current",
@@ -281,11 +281,11 @@
     "partial": true,
     "pieces": [
       {
-        "a": 10,
-        "b": 11,
-        "id": "vermelho_2@C5:9-10",
-        "row": 5,
-        "type": "bateria"
+        "a": 8,
+        "b": 9,
+        "id": "led@C3:7-8",
+        "row": 3,
+        "type": "led"
       },
       {
         "a": 2,
@@ -302,11 +302,11 @@
         "type": "resistor_470"
       },
       {
-        "a": 8,
-        "b": 9,
-        "id": "led@C3:7-8",
-        "row": 3,
-        "type": "led"
+        "a": 10,
+        "b": 11,
+        "id": "vermelho_2@C5:9-10",
+        "row": 5,
+        "type": "bateria"
       }
     ],
     "profile": "current",
@@ -349,11 +349,11 @@
     "partial": true,
     "pieces": [
       {
-        "a": 10,
-        "b": 11,
-        "id": "vermelho_2@C5:9-10",
-        "row": 5,
-        "type": "bateria"
+        "a": 8,
+        "b": 9,
+        "id": "led@C3:7-8",
+        "row": 3,
+        "type": "led"
       },
       {
         "a": 2,
@@ -370,11 +370,11 @@
         "type": "resistor_470"
       },
       {
-        "a": 8,
-        "b": 9,
-        "id": "led@C3:7-8",
-        "row": 3,
-        "type": "led"
+        "a": 10,
+        "b": 11,
+        "id": "vermelho_2@C5:9-10",
+        "row": 5,
+        "type": "bateria"
       }
     ],
     "profile": "current",
@@ -417,11 +417,11 @@
     "partial": true,
     "pieces": [
       {
-        "a": 10,
-        "b": 11,
-        "id": "vermelho_2@C5:9-10",
-        "row": 5,
-        "type": "bateria"
+        "a": 8,
+        "b": 9,
+        "id": "led@C3:7-8",
+        "row": 3,
+        "type": "led"
       },
       {
         "a": 2,
@@ -438,11 +438,11 @@
         "type": "resistor_470"
       },
       {
-        "a": 8,
-        "b": 9,
-        "id": "led@C3:7-8",
-        "row": 3,
-        "type": "led"
+        "a": 10,
+        "b": 11,
+        "id": "vermelho_2@C5:9-10",
+        "row": 5,
+        "type": "bateria"
       }
     ],
     "profile": "current",

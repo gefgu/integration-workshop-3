@@ -99,7 +99,7 @@ DEFAULT_EXPOSURE = 1300.0
 # At 0.7 fps a frame normally takes about 1.4 seconds; allow several slow
 # frames but never expose a frozen camera image as an up-to-date circuit.
 MAX_FRAME_AGE_S = 8.0
-REMOVAL_CONFIRM_S = 1.0
+REMOVAL_CONFIRM_FRAMES = 6
 
 
 class PieceHold:
@@ -107,14 +107,14 @@ class PieceHold:
 
     def __init__(self) -> None:
         self.pieces: dict[str, dict[str, Any]] = {}
-        self.empty_since: dict[str, float] = {}
+        self.empty_counts: dict[str, int] = {}
         self.generation = None
 
-    def update(self, pieces: list[dict[str, Any]], result: Any, now: float) -> tuple[list[dict[str, Any]], bool]:
+    def update(self, pieces: list[dict[str, Any]], result: Any) -> tuple[list[dict[str, Any]], bool]:
         generation = result.registro.get('generation') if result.registro.get('valido') else None
         if generation is not None and self.generation is not None and generation != self.generation:
             self.pieces.clear()
-            self.empty_since.clear()
+            self.empty_counts.clear()
         if generation is not None:
             self.generation = generation
         fresh = {piece['id']: piece for piece in pieces} if result.valido else {}
@@ -122,7 +122,7 @@ class PieceHold:
         uncertain = not result.valido
         for ident, piece in list(self.pieces.items()):
             if ident in fresh:
-                self.empty_since.pop(ident, None)
+                self.empty_counts.pop(ident, None)
                 continue
             bank, row = divmod(piece['row'], BANK_ROWS)
             cols = (piece['a'] - 1, piece['b'] - 1)
@@ -131,15 +131,15 @@ class PieceHold:
                 for col in cols
             )
             if visible_empty:
-                start = self.empty_since.setdefault(ident, now)
-                if now - start >= REMOVAL_CONFIRM_S:
+                self.empty_counts[ident] = self.empty_counts.get(ident, 0) + 1
+                if self.empty_counts[ident] >= REMOVAL_CONFIRM_FRAMES:
                     del self.pieces[ident]
-                    del self.empty_since[ident]
+                    del self.empty_counts[ident]
                     continue
             else:
-                self.empty_since.pop(ident, None)
+                self.empty_counts.pop(ident, None)
             uncertain = True
-        return list(self.pieces.values()), uncertain
+        return [self.pieces[ident] for ident in sorted(self.pieces)], uncertain
 
 
 def fps_from(times: "deque[float] | list[float]") -> float | None:
@@ -340,7 +340,7 @@ class VisionSource:
                                            "confirming": confirming}
                 pieces, unknown = to_pieces(para_dict(result.grafo))
                 if self.profile == 'current':
-                    pieces, uncertain = held.update(pieces, result, time.monotonic())
+                    pieces, uncertain = held.update(pieces, result)
                 else:
                     uncertain = not result.valido
                 unknown += unknown_from_partial(getattr(result, "pecas_sem_tipo", []))
