@@ -30,6 +30,13 @@ def test_resistor_values_read_from_the_stripe_are_kept():
     assert [p["type"] for p in pieces] == ["resistor_220", "resistor_470", "resistor_1k", "capacitor"]
 
 
+def test_generic_resistor_is_never_given_an_assumed_value():
+    pieces, unknown = to_pieces({"componentes": [comp("resistor", [0, 1])]})
+    assert pieces == []
+    assert len(unknown) == 1 and unknown[0]["type"] == "resistor"
+    assert "valor não foi identificado" in unknown[0]["reason"]
+
+
 def test_camera_colors_are_locked_after_auto_exposure_settles():
     from bench_service.vision import settle_and_lock
 

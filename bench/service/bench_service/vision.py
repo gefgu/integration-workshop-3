@@ -26,12 +26,11 @@ SAME_TYPE = {"led", "buzzer", "capacitor", "botao", "jumper_curto", "jumper_long
              "resistor_220", "resistor_470", "resistor_1k"}
 # Vision types that need a choice the camera cannot make (value, polarity), mapped to the editor type.
 ASSUMED_TYPE = {
-    # A blue piece whose stripe was not read (1 black dot): taken as 220 Ω, so value checks may fail.
-    "resistor": "resistor_220",
     # The red two-socket piece is the battery in the kit; the left column is taken as "+".
     "vermelho_2": "bateria",
 }
 UNSUPPORTED = {
+    "resistor": "Resistor detectado; o valor não foi identificado pelas faixas.",
     "capsula_smart": "Componente inteligente detectado; a câmera não identifica sua função ou configuração.",
     "potenciometro": "O potenciômetro da câmera ocupa 3 furos; nas lições ele ainda tem 2.",
     "led_ou_buzzer": "Não deu para saber se é LED ou buzzer (pontos pretos não lidos).",
