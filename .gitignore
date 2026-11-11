@@ -80,3 +80,8 @@ graph_validator/*.log
 
 # Raspberry Pi bench bundle (built by bench/raspberry-pi/build_bundle.py)
 bench/raspberry-pi/dist/
+
+# Local secrets (never commit)
+.env
+.env.*
+!.env.example
