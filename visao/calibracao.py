@@ -125,6 +125,9 @@ def calibra_por_referencia(image):
             continue
         source = np.float32([reference[0][m.queryIdx].pt for m in good])
         target = np.float32([points[m.trainIdx].pt for m in good])
+        # OpenCV's random state is thread-local; seed every RANSAC fit so an
+        # unrelated earlier OpenCV call cannot change a registration proposal.
+        cv.setRNGSeed(0)
         H, mask = cv.findHomography(source, target, cv.RANSAC, 3.0)
         if H is None or mask is None or not np.isfinite(H).all():
             continue
@@ -197,6 +200,7 @@ def calibra_automaticamente(image, points=None):
     take = list(unique.values())
     model = np.float32(positions[take])
     target = candidate_points[take]
+    cv.setRNGSeed(0)
     H, mask = cv.findHomography(model, target, cv.RANSAC, float(np.linalg.norm(vx)) * .12)
     if H is None:
         return None
@@ -445,6 +449,7 @@ class RegistradorParcial:
             return self._falhou(result, 'poucos sockets distribuídos para rastrear a grade')
         src = np.float32([model[j] for _,j in matches])
         dst = np.float32([points[i] for i,_ in matches])
+        cv.setRNGSeed(0)
         if self.marker_active:
             # A free projective fit can swing the hidden top edge by a whole
             # socket when the lower rows dominate. Keep the marker geometry

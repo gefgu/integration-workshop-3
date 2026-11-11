@@ -84,7 +84,7 @@ class PipelineAtual:
         if not (self.geracao_valida and self.corpos_visiveis):
             return False
         now = self.clock()
-        for pos in self.corpos_visiveis:
+        for pos in sorted(self.corpos_visiveis):
             value = self.valores_resistor.get(pos)
             if value is not None:
                 if now - value['lido_em'] >= REVERIFICA_BANDAS_S:
@@ -104,7 +104,7 @@ class PipelineAtual:
     def adia_bandas(self):
         """A reading could not be attempted (the exposure did not take); retry later."""
         now = self.clock()
-        for pos in self.corpos_visiveis:
+        for pos in sorted(self.corpos_visiveis):
             if pos not in self.valores_resistor:
                 self._falhou_bandas(pos, now)
 
@@ -203,7 +203,7 @@ class PipelineAtual:
             # No value is assumed: a blue body whose bands were not read stays unknown,
             # even when it is the only one on the board.
             found_raw = read_blue
-            standard_kit = list(set(pecas_kit(result.retificada) + led_vermelho_kit(result.retificada)))
+            standard_kit = sorted(set(pecas_kit(result.retificada) + led_vermelho_kit(result.retificada)))
             candidates_buzzer = buzzer_kit(result.retificada)
             # A buzzer's green PCB can also satisfy the LED-colour mask. A
             # round buzzer body at exactly the same footprint wins; a nearby

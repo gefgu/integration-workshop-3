@@ -8,6 +8,19 @@ from visao.calibracao import salva, RegistradorParcial, calibra_automaticamente,
 
 
 class TestPartialCalibration(unittest.TestCase):
+    def test_saved_picture_registration_ignores_prior_opencv_rng_state(self):
+        image = cv.imread(str(Path(__file__).resolve().parents[1]
+                              / 'visao/fixtures/current/bench-2026-11-11/normal-1.jpg'))
+        results = []
+        for seed in (1, 17, 999):
+            cv.setRNGSeed(seed)
+            tracker = RegistradorParcial(clock=lambda: 0.0)
+            result = tracker.atualiza(image)
+            self.assertTrue(result['valido'], result['motivo'])
+            results.append((result['inliers'], result['furos_vistos'].tobytes(), result['H'].tobytes()))
+        self.assertEqual(results[0], results[1])
+        self.assertEqual(results[0], results[2])
+
     def test_crowded_cropped_grid_is_not_accepted_as_complete(self):
         from visao.pipeline_atual import PipelineAtual
         root = Path(__file__).resolve().parents[1] / 'visao/fixtures/current'
