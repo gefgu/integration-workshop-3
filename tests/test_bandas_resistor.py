@@ -195,6 +195,28 @@ class PipelineBandsTest(unittest.TestCase):
             for pos in sigs:
                 self.assertGreater(float(sigs[pos] @ assinatura_corpo(again.retificada, *pos)), .9, (name, pos))
 
+    def test_signatures_remain_distinct_with_adjacent_jumper_and_frame_variation(self):
+        from bench_service.replay import ReplayCamera
+        folder = FIXTURES / 'bench-2026-11-11'
+        camera = ReplayCamera(folder, 1280, 720, seed=0, perturb=True)
+        pipeline = PipelineAtual(temporal=False)
+        positions = list(BODIES) + [CAPACITOR]
+        signatures = {pos: [] for pos in positions}
+        for _ in range(8):
+            _, frame = camera.read()
+            result = pipeline.processa(frame)
+            self.assertTrue(result.valido, result.motivo)
+            for pos in positions:
+                signatures[pos].append(assinatura_corpo(result.retificada, *pos))
+        for first in positions:
+            for a in signatures[first]:
+                for second in positions:
+                    for b in signatures[second]:
+                        if first == second:
+                            self.assertGreater(float(a @ b), MIN_ASSINATURA)
+                        else:
+                            self.assertLess(float(a @ b), MIN_ASSINATURA)
+
     def test_a_lost_grid_blocks_band_reads(self):
         self.pipeline.processa(np.zeros((720, 1280, 3), np.uint8))
         self.assertFalse(self.pipeline.precisa_bandas())

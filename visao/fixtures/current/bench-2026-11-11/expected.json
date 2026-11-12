@@ -9,7 +9,7 @@
     {"type": "buzzer", "row": 2, "a": 6, "b": 7},
     {"type": "resistor_470", "row": 3, "a": 2, "b": 3},
     {"type": "led", "row": 3, "a": 7, "b": 8},
-    {"type": "capsula_smart", "row": 4, "a": 4, "b": 6, "allow_unknown_mode": true},
+    {"type": "capsula_smart", "row": 5, "a": 4, "b": 6, "allow_unknown_mode": true},
     {"type": "bateria", "row": 5, "a": 9, "b": 10}
   ]
 }

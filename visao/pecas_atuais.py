@@ -143,31 +143,46 @@ def buzzer_kit(ret_bgr):
     return found
 
 
+def _fracao(mascara, x0, x1, y0, y1):
+    x0, y0 = max(0, int(x0)), max(0, int(y0))
+    x1, y1 = min(mascara.shape[1], int(x1)), min(mascara.shape[0], int(y1))
+    return float(mascara[y0:y1, x0:x1].mean()) if x1 > x0 and y1 > y0 else 0.0
+
+
+# Scores of the black housing template: the saved normal-exposure pictures with the module
+# score 0.80-0.87 at its position and every picture without it 0.27 or less.
+MIN_CORPO_SMART = .60
+MAX_PLACA_AO_REDOR = .60
+
+
 def smart_kit(ret_bgr):
-    """Find the photographed three-position OLED housing, without assuming its mode."""
+    """Find the black three-position smart housing, without assuming its mode.
+
+    The housing is a flat grey-black block about three sockets wide and three rows tall. It is
+    matched as a template at each grid position: its top band and both lower corners must be
+    uniformly grey while the socket columns beside it are not. The blue OLED strip on its lower
+    edge is deliberately not used, because its width and brightness change with exposure and
+    its glass reflects blue above it.
+    """
     hsv = cv.cvtColor(ret_bgr, cv.COLOR_BGR2HSV)
-    blue = cv.inRange(hsv, (85, 65, 60), (130, 255, 255))
-    blue = cv.morphologyEx(blue, cv.MORPH_CLOSE, np.ones((5, 15), np.uint8))
+    grey = cv.inRange(hsv, (0, 0, 55), (179, 75, 125)) > 0
+    scored = []
+    for row in range(2, cfg.N_LINHAS_METADE):
+        for first in range(0, cfg.N_COLUNAS - 2):
+            cx, yc = cfg.para_retificada(first + 1, row)
+            top = _fracao(grey, cx - 80, cx + 80, yc - 80, yc - 55)
+            corners = min(_fracao(grey, cx - 85, cx - 45, yc - 50, yc - 10),
+                          _fracao(grey, cx + 45, cx + 85, yc - 50, yc - 10))
+            around = max(_fracao(grey, cx - 125, cx - 108, yc - 80, yc),
+                         _fracao(grey, cx + 108, cx + 125, yc - 80, yc))
+            score = min(top, corners)
+            if score >= MIN_CORPO_SMART and around <= MAX_PLACA_AO_REDOR:
+                scored.append((score, row, first))
     found = []
-    for x, y, w, h, area in cv.connectedComponentsWithStats(blue)[2][1:]:
-        if not (65 <= w <= 115 and 10 <= h <= 28 and area >= 500 and y >= 55):
-            continue
-        cx = x + w / 2
-        row = round((y + h - 13) / cfg.PX_Y - cfg.MARGEM_Y)
-        first = round(cx / cfg.PX_X - cfg.MARGEM_X) - 1
-        if not (0 <= row < cfg.N_LINHAS_METADE and 0 <= first < first + 2 < cfg.N_COLUNAS):
-            continue
-        screen = hsv[max(0, y - 45):y - 12, x + 10:x + w - 10]
-        if not screen.size or np.mean(screen[:, :, 2] < 100) < .65:
-            continue
-        found.append(('capsula_smart', 'azul', row, first, first + 2))
-    # The screen itself can reflect blue above the actual blue circuit board.
-    # Adjacent-row matches at the same columns are one housing, not two.
-    unique = []
-    for item in sorted(found, key=lambda item: -item[2]):
-        if not any(item[3:] == previous[3:] and abs(item[2] - previous[2]) <= 1 for previous in unique):
-            unique.append(item)
-    return unique
+    for score, row, first in sorted(scored, key=lambda item: (-item[0], item[1], item[2])):
+        if not any(abs(row - r) <= 2 and abs(first - f) <= 2 for _, r, f in found):
+            found.append((score, row, first))
+    return sorted(('capsula_smart', 'preto', row, first, first + 2) for _, row, first in found)
 
 
 def led_vermelho_kit(ret_bgr):

@@ -31,7 +31,9 @@ MIN_ASSINATURA = .80
 def assinatura_corpo(retificada, linha, coluna):
     """Zero-mean, unit-norm HSV thumbnail of the body at (row, column), or None."""
     cx, cy = cfg.para_retificada(coluna + .5, linha)
-    x0, x1, y0, y1 = int(cx - 85), int(cx + 95), int(cy - 44), int(cy + 4)
+    # Exclude the upper edge where an adjacent white jumper can enter the crop;
+    # retain the body and its bands so a different resistor remains distinct.
+    x0, x1, y0, y1 = int(cx - 85), int(cx + 95), int(cy - 35), int(cy + 4)
     if x0 < 0 or y0 < 0 or x1 > retificada.shape[1] or y1 > retificada.shape[0]:
         return None
     thumb = cv.resize(cv.cvtColor(retificada[y0:y1, x0:x1], cv.COLOR_BGR2HSV), (45, 12),

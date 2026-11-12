@@ -2,7 +2,7 @@
   {
     "available": true,
     "calibration": "automatic",
-    "confirming": 5,
+    "confirming": 6,
     "fps": null,
     "frame_size": [
       1280,
@@ -21,7 +21,7 @@
         "a": 2,
         "b": 3,
         "id": "sem_tipo_C1_1",
-        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
         "row": 1,
         "type": "peca_sem_tipo"
       },
@@ -29,7 +29,7 @@
         "a": 5,
         "b": 6,
         "id": "sem_tipo_C1_4",
-        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
         "row": 1,
         "type": "peca_sem_tipo"
       },
@@ -37,7 +37,7 @@
         "a": 9,
         "b": 10,
         "id": "sem_tipo_C1_8",
-        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
         "row": 1,
         "type": "peca_sem_tipo"
       },
@@ -45,7 +45,7 @@
         "a": 3,
         "b": 4,
         "id": "sem_tipo_C3_2",
-        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
         "row": 3,
         "type": "peca_sem_tipo"
       }
@@ -57,7 +57,7 @@
   {
     "available": true,
     "calibration": "automatic",
-    "confirming": 7,
+    "confirming": 8,
     "fps": null,
     "frame_size": [
       1280,
@@ -76,7 +76,7 @@
         "a": 9,
         "b": 10,
         "id": "sem_tipo_C1_8",
-        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
         "row": 1,
         "type": "peca_sem_tipo"
       }
@@ -126,10 +126,18 @@
     "uncertain": false,
     "unknown": [
       {
+        "a": 5,
+        "b": 7,
+        "id": "capsula_smart@C5:4-6",
+        "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o.",
+        "row": 5,
+        "type": "capsula_smart"
+      },
+      {
         "a": 9,
         "b": 10,
         "id": "sem_tipo_C1_8",
-        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
         "row": 1,
         "type": "peca_sem_tipo"
       }
@@ -200,10 +208,18 @@
     "uncertain": false,
     "unknown": [
       {
+        "a": 5,
+        "b": 7,
+        "id": "capsula_smart@C5:4-6",
+        "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o.",
+        "row": 5,
+        "type": "capsula_smart"
+      },
+      {
         "a": 9,
         "b": 10,
         "id": "sem_tipo_C1_8",
-        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
         "row": 1,
         "type": "peca_sem_tipo"
       }
@@ -281,10 +297,18 @@
     "uncertain": false,
     "unknown": [
       {
+        "a": 5,
+        "b": 7,
+        "id": "capsula_smart@C5:4-6",
+        "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o.",
+        "row": 5,
+        "type": "capsula_smart"
+      },
+      {
         "a": 9,
         "b": 10,
         "id": "sem_tipo_C1_8",
-        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
         "row": 1,
         "type": "peca_sem_tipo"
       }
@@ -362,10 +386,18 @@
     "uncertain": false,
     "unknown": [
       {
+        "a": 5,
+        "b": 7,
+        "id": "capsula_smart@C5:4-6",
+        "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o.",
+        "row": 5,
+        "type": "capsula_smart"
+      },
+      {
         "a": 9,
         "b": 10,
         "id": "sem_tipo_C1_8",
-        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
         "row": 1,
         "type": "peca_sem_tipo"
       }
@@ -443,10 +475,18 @@
     "uncertain": true,
     "unknown": [
       {
+        "a": 5,
+        "b": 7,
+        "id": "capsula_smart@C5:4-6",
+        "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o.",
+        "row": 5,
+        "type": "capsula_smart"
+      },
+      {
         "a": 9,
         "b": 10,
         "id": "sem_tipo_C1_8",
-        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
         "row": 1,
         "type": "peca_sem_tipo"
       }
@@ -524,10 +564,18 @@
     "uncertain": true,
     "unknown": [
       {
+        "a": 5,
+        "b": 7,
+        "id": "capsula_smart@C5:4-6",
+        "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o.",
+        "row": 5,
+        "type": "capsula_smart"
+      },
+      {
         "a": 9,
         "b": 10,
         "id": "sem_tipo_C1_8",
-        "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é.",
+        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
         "row": 1,
         "type": "peca_sem_tipo"
       }

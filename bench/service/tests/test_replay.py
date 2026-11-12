@@ -81,6 +81,18 @@ def test_service_replay_does_not_use_stale_exposure_readback(monkeypatch):
     assert {read['requested_exposure'] for read in actual['reads']} >= {1000, 1100, 1300}
 
 
+import pytest
+
+
+@pytest.mark.xfail(reason='target not met yet: startup and buzzer/resistor frames break the streak (25 of 50 on 2026-11-11)')
+def test_saved_bench_pictures_reach_thirty_consecutive_correct_frames_without_wrong_values():
+    expected = json.loads((FIXTURES / 'expected.json').read_text())
+    result = replay(FIXTURES, frames=50, width=1280, height=720, perturb=True)
+    report = score(result['frames'], expected)
+    assert report['wrong_values'] == 0
+    assert report['longest_correct_streak'] >= 30, report['longest_correct_streak']
+
+
 def test_service_loop_does_not_consult_public_timeout_view(monkeypatch):
     from bench_service.vision import VisionSource
 

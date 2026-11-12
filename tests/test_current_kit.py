@@ -53,6 +53,32 @@ class CurrentKitTest(unittest.TestCase):
             self.assertNotIn('resistor_1k', {piece[0] for piece in pieces})
             self.assertIn((3, [8, 9]), [(q['linha'], q['colunas']) for q in result.pecas_sem_tipo])
 
+    def test_black_smart_housing_is_found_on_every_normal_exposure_picture_that_has_it(self):
+        from visao.pecas_atuais import smart_kit
+        expected = [('capsula_smart', 'preto', 5, 4, 6)]
+        names = [f'bench-2026-11-11/normal-{i}.jpg' for i in range(1, 7)]
+        names += [f'bands-2026-11-11-{i}.jpg' for i in (1, 2, 3)] + ['led-buzzer-smart-2026-11-11.jpg']
+        names += [f'buzzer-smart-frame-{i}.jpg' for i in (1, 2, 3)]
+        for name in names:
+            with self.subTest(name=name):
+                image = cv.imread(str(FIXTURES / name))
+                if name.startswith('bench-'):
+                    image = cv.resize(image, (1280, 720), interpolation=cv.INTER_AREA)
+                result = PipelineAtual(temporal=False).processa(image)
+                self.assertTrue(result.valido, result.motivo)
+                self.assertEqual(smart_kit(result.retificada), expected)
+
+    def test_smart_housing_is_not_found_where_there_is_none(self):
+        from visao.pecas_atuais import smart_kit
+        names = ['reference-completed.jpg', 'kit-test-2026-11-10.jpg', 'kit-test-overlap-2026-11-10.jpg',
+                 'edge-test-0.jpg', 'edge-test-4.jpg', 'edge-occluded-0.jpg', 'edge-occluded-6.jpg',
+                 'marked-test-circuit-2026-11-11.jpg', 'buzzer-2026-11-11.jpg']
+        for name in names:
+            with self.subTest(name=name):
+                result = PipelineAtual(temporal=False).processa(cv.imread(str(FIXTURES / name)))
+                self.assertTrue(result.valido, result.motivo)
+                self.assertEqual(smart_kit(result.retificada), [])
+
     def test_smart_component_is_not_assumed_to_have_a_mode(self):
         from bench_service.vision import to_pieces
         from visao.circuito import para_dict
