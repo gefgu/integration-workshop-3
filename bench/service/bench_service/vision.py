@@ -135,14 +135,12 @@ class PieceHold:
             self.generation = generation
         fresh = {piece['id']: piece for piece in pieces} if result.valido else {}
         if self.demo_assume_1k:
-            # In this one-LED demo, a fresh adjacent detection supersedes the
-            # previously held position rather than displaying both positions.
+            # This lesson uses one piece of each listed type. A single fresh
+            # detection supersedes old held positions of that same type.
+            unique_demo_types = {'led', 'resistor_1k', 'bateria', 'jumper_3'}
             for ident, old in list(self.pieces.items()):
-                if ident not in fresh and old['type'] == 'led' and any(
-                    p['type'] == 'led' and p['a'] == old['a'] and p['b'] == old['b']
-                    and p['row'] // BANK_ROWS == old['row'] // BANK_ROWS
-                    and abs(p['row'] - old['row']) == 1 for p in fresh.values()
-                ):
+                same_type = [p for p in fresh.values() if p['type'] == old['type']]
+                if ident not in fresh and old['type'] in unique_demo_types and len(same_type) == 1:
                     del self.pieces[ident]
                     self.empty_counts.pop(ident, None)
         self.pieces.update(fresh)

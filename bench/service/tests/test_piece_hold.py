@@ -72,6 +72,23 @@ class PieceHoldTest(unittest.TestCase):
             self.assertEqual(self.update([]), ([new], True))
         self.assertEqual(self.update([]), ([], False))
 
+    def test_demo_move_replaces_held_position_without_removing_fresh_pieces(self):
+        self.hold = PieceHold(demo_assume_1k=True)
+        for kind in ('led', 'resistor_1k', 'bateria', 'jumper_3'):
+            with self.subTest(kind=kind):
+                old = dict(self.piece, id=f'{kind}-old', type=kind)
+                new = dict(old, id=f'{kind}-new', row=4, a=2, b=3)
+                self.hold = PieceHold(demo_assume_1k=True)
+                self.update([old])
+                self.assertEqual(self.update([new]), ([new], False))
+                self.assertEqual(self.update([old, new]), ([new, old], False))
+
+    def test_normal_mode_does_not_assume_same_type_is_same_piece(self):
+        old = dict(self.piece, id='old')
+        new = dict(old, id='new', row=4, a=2, b=3)
+        self.update([old])
+        self.assertEqual(self.update([new]), ([new, old], True))
+
 
 if __name__ == '__main__':
     unittest.main()
