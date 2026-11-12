@@ -73,6 +73,22 @@ def test_normal_saved_picture_publication_snapshot():
     assert actual['frames'] == expected
 
 
+def test_confidence_flicker_does_not_change_identical_board_version(monkeypatch):
+    from bench_service import vision
+    original = vision.PieceHold.update
+    count = [0]
+    def flicker(self, pieces, result):
+        held, _ = original(self, pieces, result)
+        count[0] += 1
+        return held, bool(count[0] % 2)
+    monkeypatch.setattr(vision.PieceHold, 'update', flicker)
+    frames = replay(FIXTURES, frames=8, width=1280, height=720, perturb=False)['frames']
+    pairs = [(a, b) for a, b in zip(frames, frames[1:])
+             if a['pieces'] == b['pieces'] and a['unknown'] == b['unknown']]
+    assert pairs
+    assert all(a['uncertain'] != b['uncertain'] and a['version'] == b['version'] for a, b in pairs)
+
+
 def test_service_replay_does_not_use_stale_exposure_readback(monkeypatch):
     monkeypatch.setattr(ReplayCamera, 'get', lambda self, prop: 9999.0)
     expected = json.loads((FIXTURES / 'snapshot-normal.json').read_text())[:3]

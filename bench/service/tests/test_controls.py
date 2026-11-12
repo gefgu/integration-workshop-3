@@ -253,6 +253,35 @@ def test_live_power_rejects_wrong_vision_and_releases_on_disconnect(tmp_path):
     assert not hub.power_requested()
 
 
+def test_power_allows_held_piece_but_rejects_unknown_or_stale_camera(tmp_path):
+    import asyncio
+    class Vision:
+        value = {'available': True, 'running': True, 'valid': True, 'uncertain': True,
+                 'age_s': 1, 'version': 7, 'unknown': []}
+        def state(self): return dict(self.value)
+    vision = Vision()
+    hub = ControlsHub()
+    hub.connected = hub.power_capable = True
+    app = create_app(BenchStore(str(tmp_path / 'b.sqlite3')), vision=vision, controls=hub)
+    endpoint = next(route.endpoint for route in app.routes if getattr(route, 'path', None) == '/controls/power')
+    class Socket:
+        def __init__(self): self.replies = []
+        async def accept(self): pass
+        async def receive_json(self): return {'lesson': 'curriculo-03-guiada-1k', 'version': 7}
+        async def send_json(self, value):
+            self.replies.append(value)
+            if value['ok']: vision.value['unknown'] = [{'type': 'peca_sem_tipo'}]
+        async def close(self): pass
+    socket = Socket()
+    asyncio.run(endpoint(socket))
+    assert socket.replies == [{'ok': True}, {'ok': False}]
+    assert not hub.power_requested()
+    vision.value.update(unknown=[], age_s=9)
+    stale = Socket()
+    asyncio.run(endpoint(stale))
+    assert stale.replies == [{'ok': False}]
+
+
 def test_smart_lesson_power_requires_camera_and_fresh_screen_response(tmp_path):
     import asyncio
 

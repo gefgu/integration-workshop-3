@@ -498,7 +498,10 @@ class VisionSource:
                 with self._lock:
                     old = dict(self._state)
                 changes['uncertain'] = uncertain
-                if pieces != old.get('pieces') or unknown != old.get('unknown') or uncertain != old.get('uncertain'):
+                # A temporary hold changes confidence but not the displayed
+                # circuit. Version actual piece/unknown changes so a lease
+                # remains tied to the same board when confidence flickers.
+                if pieces != old.get('pieces') or unknown != old.get('unknown'):
                     changes.update(pieces=pieces, unknown=unknown, version=old['version'] + 1)
                 with self._lock:
                     self._state.update(changes)
