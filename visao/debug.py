@@ -17,7 +17,7 @@ def _txt(img, texto, pos, cor=(255, 255, 255), escala=0.5):
     cv.putText(img, texto, pos, cv.FONT_HERSHEY_SIMPLEX, escala, cor, 1, cv.LINE_AA)
 
 
-def desenha_frame(frame, res):
+def desenha_frame(frame, res, reverse_rows=False):
     """ grid projetado + componentes sobre o frame original."""
     img = frame.copy()
     H = res.registro.get('H')
@@ -41,7 +41,8 @@ def desenha_frame(frame, res):
             for c in comp.terminais:
                 p = cv.perspectiveTransform(np.float32([[cfg.coord_modelo(comp.metade, comp.linha, c)]]), H)[0, 0]
                 cv.circle(img, tuple(int(v) for v in p), 7, (255, 0, 255), 2)
-            rotulo = (f'{comp.tipo} {cfg.METADES[comp.metade]}{comp.linha}:'
+            label_row = cfg.N_LINHAS_METADE - 1 - comp.linha if reverse_rows else comp.linha
+            rotulo = (f'{comp.tipo} {cfg.METADES[comp.metade]}{label_row}:'
                       f'{comp.colunas[0]}-{comp.colunas[-1]}')
             _txt(img, rotulo, (int(pts[0][0]) - 10, int(pts[0][1]) - 14))
 
@@ -51,7 +52,8 @@ def desenha_frame(frame, res):
             pts = cv.perspectiveTransform(pts, H).reshape(-1, 2).astype(int)
             cor = ATUALIDADE_BGR[peca['atualidade']]
             cv.polylines(img, [pts.reshape(-1, 1, 2)], False, cor, 3)
-            rotulo = (f"peca ? {peca['metade']}{peca['linha']}:"
+            label_row = cfg.N_LINHAS_METADE - 1 - peca['linha'] if reverse_rows else peca['linha']
+            rotulo = (f"peca ? {peca['metade']}{label_row}:"
                       f"{peca['colunas'][0]}-{peca['colunas'][-1]}")
             if peca['atualidade'] == 'stale':
                 rotulo += ' anterior'

@@ -20,33 +20,33 @@
       {
         "a": 2,
         "b": 3,
-        "id": "sem_tipo_C1_1",
+        "id": "sem_tipo_C4_1",
         "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
-        "row": 1,
+        "row": 4,
         "type": "peca_sem_tipo"
       },
       {
         "a": 5,
         "b": 6,
-        "id": "sem_tipo_C1_4",
+        "id": "sem_tipo_C4_4",
         "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
-        "row": 1,
+        "row": 4,
         "type": "peca_sem_tipo"
       },
       {
         "a": 9,
         "b": 10,
-        "id": "sem_tipo_C1_8",
+        "id": "sem_tipo_C4_8",
         "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
-        "row": 1,
+        "row": 4,
         "type": "peca_sem_tipo"
       },
       {
         "a": 3,
         "b": 4,
-        "id": "sem_tipo_C3_2",
+        "id": "sem_tipo_C2_2",
         "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
-        "row": 3,
+        "row": 2,
         "type": "peca_sem_tipo"
       }
     ],
@@ -75,9 +75,9 @@
       {
         "a": 9,
         "b": 10,
-        "id": "sem_tipo_C1_8",
+        "id": "sem_tipo_C4_8",
         "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
-        "row": 1,
+        "row": 4,
         "type": "peca_sem_tipo"
       }
     ],
@@ -97,24 +97,24 @@
     "partial": true,
     "pieces": [
       {
-        "a": 5,
-        "b": 8,
-        "id": "jumper_3@C0:4-7",
-        "row": 0,
+        "a": 3,
+        "b": 6,
+        "id": "jumper_3@C3:2-5",
+        "row": 3,
         "type": "jumper_3"
       },
       {
-        "a": 3,
-        "b": 6,
-        "id": "jumper_3@C2:2-5",
-        "row": 2,
+        "a": 5,
+        "b": 8,
+        "id": "jumper_3@C5:4-7",
+        "row": 5,
         "type": "jumper_3"
       },
       {
         "a": 10,
         "b": 11,
-        "id": "vermelho_2@C5:9-10",
-        "row": 5,
+        "id": "vermelho_2@C0:9-10",
+        "row": 0,
         "type": "bateria"
       }
     ],
@@ -128,17 +128,17 @@
       {
         "a": 5,
         "b": 7,
-        "id": "capsula_smart@C5:4-6",
+        "id": "capsula_smart@C0:4-6",
         "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o.",
-        "row": 5,
+        "row": 0,
         "type": "capsula_smart"
       },
       {
         "a": 9,
         "b": 10,
-        "id": "sem_tipo_C1_8",
+        "id": "sem_tipo_C4_8",
         "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
-        "row": 1,
+        "row": 4,
         "type": "peca_sem_tipo"
       }
     ],
@@ -158,45 +158,45 @@
     "partial": true,
     "pieces": [
       {
-        "a": 5,
-        "b": 8,
-        "id": "jumper_3@C0:4-7",
-        "row": 0,
-        "type": "jumper_3"
-      },
-      {
         "a": 3,
         "b": 6,
-        "id": "jumper_3@C2:2-5",
-        "row": 2,
+        "id": "jumper_3@C3:2-5",
+        "row": 3,
+        "type": "jumper_3"
+      },
+      {
+        "a": 5,
+        "b": 8,
+        "id": "jumper_3@C5:4-7",
+        "row": 5,
         "type": "jumper_3"
       },
       {
         "a": 5,
         "b": 6,
-        "id": "resistor_1k@C1:4-5",
-        "row": 1,
+        "id": "resistor_1k@C4:4-5",
+        "row": 4,
         "type": "resistor_1k"
       },
       {
         "a": 2,
         "b": 3,
-        "id": "resistor_220@C1:1-2",
-        "row": 1,
+        "id": "resistor_220@C4:1-2",
+        "row": 4,
         "type": "resistor_220"
       },
       {
         "a": 3,
         "b": 4,
-        "id": "resistor_470@C3:2-3",
-        "row": 3,
+        "id": "resistor_470@C2:2-3",
+        "row": 2,
         "type": "resistor_470"
       },
       {
         "a": 10,
         "b": 11,
-        "id": "vermelho_2@C5:9-10",
-        "row": 5,
+        "id": "vermelho_2@C0:9-10",
+        "row": 0,
         "type": "bateria"
       }
     ],
@@ -210,17 +210,17 @@
       {
         "a": 5,
         "b": 7,
-        "id": "capsula_smart@C5:4-6",
+        "id": "capsula_smart@C0:4-6",
         "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o.",
-        "row": 5,
+        "row": 0,
         "type": "capsula_smart"
       },
       {
         "a": 9,
         "b": 10,
-        "id": "sem_tipo_C1_8",
+        "id": "sem_tipo_C4_8",
         "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
-        "row": 1,
+        "row": 4,
         "type": "peca_sem_tipo"
       }
     ],
@@ -240,52 +240,52 @@
     "partial": true,
     "pieces": [
       {
-        "a": 5,
-        "b": 8,
-        "id": "jumper_3@C0:4-7",
-        "row": 0,
+        "a": 3,
+        "b": 6,
+        "id": "jumper_3@C3:2-5",
+        "row": 3,
         "type": "jumper_3"
       },
       {
-        "a": 3,
-        "b": 6,
-        "id": "jumper_3@C2:2-5",
-        "row": 2,
+        "a": 5,
+        "b": 8,
+        "id": "jumper_3@C5:4-7",
+        "row": 5,
         "type": "jumper_3"
       },
       {
         "a": 8,
         "b": 9,
-        "id": "led@C3:7-8",
-        "row": 3,
+        "id": "led@C2:7-8",
+        "row": 2,
         "type": "led"
       },
       {
         "a": 5,
         "b": 6,
-        "id": "resistor_1k@C1:4-5",
-        "row": 1,
+        "id": "resistor_1k@C4:4-5",
+        "row": 4,
         "type": "resistor_1k"
       },
       {
         "a": 2,
         "b": 3,
-        "id": "resistor_220@C1:1-2",
-        "row": 1,
+        "id": "resistor_220@C4:1-2",
+        "row": 4,
         "type": "resistor_220"
       },
       {
         "a": 3,
         "b": 4,
-        "id": "resistor_470@C3:2-3",
-        "row": 3,
+        "id": "resistor_470@C2:2-3",
+        "row": 2,
         "type": "resistor_470"
       },
       {
         "a": 10,
         "b": 11,
-        "id": "vermelho_2@C5:9-10",
-        "row": 5,
+        "id": "vermelho_2@C0:9-10",
+        "row": 0,
         "type": "bateria"
       }
     ],
@@ -299,17 +299,17 @@
       {
         "a": 5,
         "b": 7,
-        "id": "capsula_smart@C5:4-6",
+        "id": "capsula_smart@C0:4-6",
         "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o.",
-        "row": 5,
+        "row": 0,
         "type": "capsula_smart"
       },
       {
         "a": 9,
         "b": 10,
-        "id": "sem_tipo_C1_8",
+        "id": "sem_tipo_C4_8",
         "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
-        "row": 1,
+        "row": 4,
         "type": "peca_sem_tipo"
       }
     ],
@@ -329,52 +329,52 @@
     "partial": true,
     "pieces": [
       {
-        "a": 5,
-        "b": 8,
-        "id": "jumper_3@C0:4-7",
-        "row": 0,
+        "a": 3,
+        "b": 6,
+        "id": "jumper_3@C3:2-5",
+        "row": 3,
         "type": "jumper_3"
       },
       {
-        "a": 3,
-        "b": 6,
-        "id": "jumper_3@C2:2-5",
-        "row": 2,
+        "a": 5,
+        "b": 8,
+        "id": "jumper_3@C5:4-7",
+        "row": 5,
         "type": "jumper_3"
       },
       {
         "a": 8,
         "b": 9,
-        "id": "led@C3:7-8",
-        "row": 3,
+        "id": "led@C2:7-8",
+        "row": 2,
         "type": "led"
       },
       {
         "a": 5,
         "b": 6,
-        "id": "resistor_1k@C1:4-5",
-        "row": 1,
+        "id": "resistor_1k@C4:4-5",
+        "row": 4,
         "type": "resistor_1k"
       },
       {
         "a": 2,
         "b": 3,
-        "id": "resistor_220@C1:1-2",
-        "row": 1,
+        "id": "resistor_220@C4:1-2",
+        "row": 4,
         "type": "resistor_220"
       },
       {
         "a": 3,
         "b": 4,
-        "id": "resistor_470@C3:2-3",
-        "row": 3,
+        "id": "resistor_470@C2:2-3",
+        "row": 2,
         "type": "resistor_470"
       },
       {
         "a": 10,
         "b": 11,
-        "id": "vermelho_2@C5:9-10",
-        "row": 5,
+        "id": "vermelho_2@C0:9-10",
+        "row": 0,
         "type": "bateria"
       }
     ],
@@ -388,17 +388,17 @@
       {
         "a": 5,
         "b": 7,
-        "id": "capsula_smart@C5:4-6",
+        "id": "capsula_smart@C0:4-6",
         "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o.",
-        "row": 5,
+        "row": 0,
         "type": "capsula_smart"
       },
       {
         "a": 9,
         "b": 10,
-        "id": "sem_tipo_C1_8",
+        "id": "sem_tipo_C4_8",
         "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
-        "row": 1,
+        "row": 4,
         "type": "peca_sem_tipo"
       }
     ],
@@ -418,52 +418,52 @@
     "partial": true,
     "pieces": [
       {
-        "a": 5,
-        "b": 8,
-        "id": "jumper_3@C0:4-7",
-        "row": 0,
+        "a": 3,
+        "b": 6,
+        "id": "jumper_3@C3:2-5",
+        "row": 3,
         "type": "jumper_3"
       },
       {
-        "a": 3,
-        "b": 6,
-        "id": "jumper_3@C2:2-5",
-        "row": 2,
+        "a": 5,
+        "b": 8,
+        "id": "jumper_3@C5:4-7",
+        "row": 5,
         "type": "jumper_3"
       },
       {
         "a": 8,
         "b": 9,
-        "id": "led@C3:7-8",
-        "row": 3,
+        "id": "led@C2:7-8",
+        "row": 2,
         "type": "led"
       },
       {
         "a": 5,
         "b": 6,
-        "id": "resistor_1k@C1:4-5",
-        "row": 1,
+        "id": "resistor_1k@C4:4-5",
+        "row": 4,
         "type": "resistor_1k"
       },
       {
         "a": 2,
         "b": 3,
-        "id": "resistor_220@C1:1-2",
-        "row": 1,
+        "id": "resistor_220@C4:1-2",
+        "row": 4,
         "type": "resistor_220"
       },
       {
         "a": 3,
         "b": 4,
-        "id": "resistor_470@C3:2-3",
-        "row": 3,
+        "id": "resistor_470@C2:2-3",
+        "row": 2,
         "type": "resistor_470"
       },
       {
         "a": 10,
         "b": 11,
-        "id": "vermelho_2@C5:9-10",
-        "row": 5,
+        "id": "vermelho_2@C0:9-10",
+        "row": 0,
         "type": "bateria"
       }
     ],
@@ -477,17 +477,17 @@
       {
         "a": 5,
         "b": 7,
-        "id": "capsula_smart@C5:4-6",
+        "id": "capsula_smart@C0:4-6",
         "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o.",
-        "row": 5,
+        "row": 0,
         "type": "capsula_smart"
       },
       {
         "a": 9,
         "b": 10,
-        "id": "sem_tipo_C1_8",
+        "id": "sem_tipo_C4_8",
         "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
-        "row": 1,
+        "row": 4,
         "type": "peca_sem_tipo"
       }
     ],
@@ -507,52 +507,52 @@
     "partial": true,
     "pieces": [
       {
-        "a": 5,
-        "b": 8,
-        "id": "jumper_3@C0:4-7",
-        "row": 0,
+        "a": 3,
+        "b": 6,
+        "id": "jumper_3@C3:2-5",
+        "row": 3,
         "type": "jumper_3"
       },
       {
-        "a": 3,
-        "b": 6,
-        "id": "jumper_3@C2:2-5",
-        "row": 2,
+        "a": 5,
+        "b": 8,
+        "id": "jumper_3@C5:4-7",
+        "row": 5,
         "type": "jumper_3"
       },
       {
         "a": 8,
         "b": 9,
-        "id": "led@C3:7-8",
-        "row": 3,
+        "id": "led@C2:7-8",
+        "row": 2,
         "type": "led"
       },
       {
         "a": 5,
         "b": 6,
-        "id": "resistor_1k@C1:4-5",
-        "row": 1,
+        "id": "resistor_1k@C4:4-5",
+        "row": 4,
         "type": "resistor_1k"
       },
       {
         "a": 2,
         "b": 3,
-        "id": "resistor_220@C1:1-2",
-        "row": 1,
+        "id": "resistor_220@C4:1-2",
+        "row": 4,
         "type": "resistor_220"
       },
       {
         "a": 3,
         "b": 4,
-        "id": "resistor_470@C3:2-3",
-        "row": 3,
+        "id": "resistor_470@C2:2-3",
+        "row": 2,
         "type": "resistor_470"
       },
       {
         "a": 10,
         "b": 11,
-        "id": "vermelho_2@C5:9-10",
-        "row": 5,
+        "id": "vermelho_2@C0:9-10",
+        "row": 0,
         "type": "bateria"
       }
     ],
@@ -566,17 +566,17 @@
       {
         "a": 5,
         "b": 7,
-        "id": "capsula_smart@C5:4-6",
+        "id": "capsula_smart@C0:4-6",
         "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o.",
-        "row": 5,
+        "row": 0,
         "type": "capsula_smart"
       },
       {
         "a": 9,
         "b": 10,
-        "id": "sem_tipo_C1_8",
+        "id": "sem_tipo_C4_8",
         "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
-        "row": 1,
+        "row": 4,
         "type": "peca_sem_tipo"
       }
     ],

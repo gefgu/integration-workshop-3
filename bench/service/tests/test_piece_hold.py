@@ -21,8 +21,8 @@ class PieceHoldTest(unittest.TestCase):
         self.assertEqual(self.update([self.piece]), ([self.piece], False))
         self.assertEqual(self.update([]), ([self.piece], True))
         self.assertEqual(self.update([self.piece]), ([self.piece], False))
-        self.result.atualidade[0, 2, 6:8] = 'fresh'
-        self.result.observacoes[0, 2, 6:8] = 'empty'
+        self.result.atualidade[0, 3, 6:8] = 'fresh'
+        self.result.observacoes[0, 3, 6:8] = 'empty'
         for _ in range(REMOVAL_CONFIRM_FRAMES - 1):
             self.assertEqual(self.update([]), ([self.piece], True))
         self.assertEqual(self.update([]), ([], False))
@@ -38,8 +38,8 @@ class PieceHoldTest(unittest.TestCase):
 
     def test_ambiguous_frame_resets_removal_confirmation(self):
         self.update([self.piece])
-        self.result.atualidade[0, 2, 6:8] = 'fresh'
-        self.result.observacoes[0, 2, 6:8] = 'empty'
+        self.result.atualidade[0, 3, 6:8] = 'fresh'
+        self.result.observacoes[0, 3, 6:8] = 'empty'
         for _ in range(REMOVAL_CONFIRM_FRAMES - 1):
             self.update([])
         self.result.valido = False
@@ -52,7 +52,7 @@ class PieceHoldTest(unittest.TestCase):
     def test_fresh_unknown_body_invalidates_held_resistor_value(self):
         resistor = {'id': 'resistor', 'type': 'resistor_470', 'row': 3, 'a': 3, 'b': 4}
         self.assertEqual(self.update([resistor]), ([resistor], False))
-        self.result.pecas_sem_tipo = [{'metade': 'C', 'linha': 3, 'colunas': [2, 3], 'atualidade': 'fresh'}]
+        self.result.pecas_sem_tipo = [{'metade': 'C', 'linha': 2, 'colunas': [2, 3], 'atualidade': 'fresh'}]
         self.assertEqual(self.update([]), ([], True))
         self.result.pecas_sem_tipo = []
         self.assertEqual(self.update([]), ([], False))

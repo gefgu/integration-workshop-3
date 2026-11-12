@@ -39,6 +39,20 @@ def comp(tipo, colunas, cor="azul"):
     return {"id": tipo, "tipo": tipo, "cor": cor, "posicao": {"metade": "C", "linha": 0, "colunas": colunas}}
 
 
+def test_bottom_physical_row_is_first_published_row_in_both_banks():
+    from bench_service.vision import published_row
+    assert [published_row('C', r) for r in range(6)] == [5, 4, 3, 2, 1, 0]
+    assert [published_row('B', r) for r in range(6)] == [11, 10, 9, 8, 7, 6]
+    for bank, expected in [('C', 0), ('B', 6)]:
+        item = comp('capsula_smart', [4, 5, 6])
+        item['id'] = f'capsula_smart@{bank}5:4-6'
+        item['posicao'].update(metade=bank, linha=5)
+        pieces, unknown = to_pieces({'componentes': [item]})
+        assert pieces == []
+        assert unknown[0]['row'] == expected
+        assert unknown[0]['id'] == f'capsula_smart@{bank}0:4-6'
+
+
 def test_resistor_values_read_from_the_stripe_are_kept():
     pieces, unknown = to_pieces({"componentes": [
         comp("resistor_220", [0, 1]), comp("resistor_470", [2, 3]), comp("resistor_1k", [4, 5]),
@@ -75,7 +89,7 @@ def test_untyped_pieces_from_the_current_profile_are_listed_as_unrecognised():
     out = unknown_from_partial([
         {"metade": "C", "linha": 2, "colunas": [4, 5], "atualidade": "fresh"},
         {"metade": "C", "linha": 0, "colunas": [0, 1], "atualidade": "stale"}])
-    assert [(u["row"], u["a"], u["b"]) for u in out] == [(2, 5, 6), (0, 1, 2)]
+    assert [(u["row"], u["a"], u["b"]) for u in out] == [(3, 5, 6), (5, 1, 2)]
     assert "fora de vista" in out[1]["reason"] and "fora de vista" not in out[0]["reason"]
 
 
@@ -98,9 +112,9 @@ def test_vision_source_reads_the_current_profile_fixture():
     assert state["profile"] == "current" and state["partial"] and state["valid"], state["reason"]
     # The resistor's value is never assumed; its body is listed as an unidentified piece.
     assert {(p["type"], p["a"], p["b"], p["row"]) for p in state["pieces"]} == {
-        ("jumper_3", 8, 11, 0), ("led", 8, 9, 2), ("bateria", 10, 11, 4),
+        ("jumper_3", 8, 11, 5), ("led", 8, 9, 3), ("bateria", 10, 11, 1),
     }
-    assert any(u["type"] == "peca_sem_tipo" and u["row"] == 3 and (u["a"], u["b"]) == (9, 10)
+    assert any(u["type"] == "peca_sem_tipo" and u["row"] == 2 and (u["a"], u["b"]) == (9, 10)
                for u in state["unknown"])
 
 

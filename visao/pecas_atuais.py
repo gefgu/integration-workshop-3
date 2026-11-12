@@ -166,7 +166,11 @@ MIN_CORPO_SMART = .60
 MAX_PLACA_AO_REDOR = .60
 
 
-def smart_kit(ret_bgr):
+SMART_FIRST_COLUMNS = (0, 4, 8)
+SMART_PHYSICAL_ROW = cfg.N_LINHAS_METADE - 1
+
+
+def smart_kit(ret_bgr, metade=0):
     """Find the black three-position smart housing, without assuming its mode.
 
     The housing is a flat grey-black block about three sockets wide and three rows tall. It is
@@ -178,9 +182,12 @@ def smart_kit(ret_bgr):
     hsv = cv.cvtColor(ret_bgr, cv.COLOR_BGR2HSV)
     grey = cv.inRange(hsv, (0, 0, 55), (179, 75, 125)) > 0
     scored = []
-    for row in range(2, cfg.N_LINHAS_METADE):
-        for first in range(0, cfg.N_COLUNAS - 2):
-            cx, yc = cfg.para_retificada(first + 1, row)
+    # Exactly three permitted footprints in each bank. Public row numbering
+    # is reversed, so this physical bottom row is lesson row zero.
+    for row in (SMART_PHYSICAL_ROW,):
+        for first in SMART_FIRST_COLUMNS:
+            x, y = cfg.coord_modelo(metade, row, first + 1)
+            cx, yc = cfg.para_retificada(x, y)
             top = _fracao(grey, cx - 80, cx + 80, yc - 80, yc - 55)
             corners = min(_fracao(grey, cx - 85, cx - 45, yc - 50, yc - 10),
                           _fracao(grey, cx + 45, cx + 85, yc - 50, yc - 10))

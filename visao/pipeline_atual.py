@@ -53,6 +53,7 @@ class PipelineAtual:
         self.previous = None
         self.last_seen = {}
         self.kit_counts = {}
+        self.smart_other_counts = {}
         self.kit_last_seen = {}
         self.empty_counts = {}
         self.empty_last_seen = {}
@@ -73,6 +74,7 @@ class PipelineAtual:
         self.counts.clear()
         self.last_seen.clear()
         self.kit_counts.clear()
+        self.smart_other_counts.clear()
         self.kit_last_seen.clear()
         self.empty_counts.clear()
         self.empty_last_seen.clear()
@@ -155,6 +157,7 @@ class PipelineAtual:
             self.empty_counts.clear()
             self.last_seen.clear()
             self.kit_counts.clear()
+            self.smart_other_counts.clear()
             self.kit_last_seen.clear()
             self.empty_last_seen.clear()
             self.generation = registration['generation']
@@ -178,6 +181,9 @@ class PipelineAtual:
             # A bright candidate can also be part of a component. Do not infer
             # an empty socket solely from a match used for registration.
             seen = registration['furos_vistos'].reshape(2, 6, 11)
+            other_smart = {p for p in smart_kit(result.retificada, metade=1)
+                           if suporte_smart(seen[1], p[2], p[3], p[4])}
+            self.smart_other_counts = {p: self.smart_other_counts.get(p, 0) + 1 for p in other_smart}
             resistor_blue_raw = resistores_azuis_kit(result.retificada)
             visible_blue = corpos_azuis(result.retificada) | resistor_blue_raw
             # Blue bodies (resistors and the capacitor) are unknown until their colour
@@ -303,6 +309,14 @@ class PipelineAtual:
                     result.atualidade[0, row, col:col + 2] = 'fresh'
                     result.visiveis[0, row, col:col + 2] = True
                     self.last_seen[(row, col)] = now
+            for kind, colour, row, first, last in sorted(other_smart):
+                key = (kind, colour, row, first, last)
+                if not self.temporal or self.smart_other_counts[key] >= cfg.FRAMES_ESTAVEIS:
+                    result.componentes.append(Componente(kind, colour, 1, row,
+                                                         list(range(first, last + 1)), [first, last]))
+                    result.observacoes[1, row, first:last + 1] = 'occupied'
+                    result.atualidade[1, row, first:last + 1] = 'fresh'
+                    result.visiveis[1, row, first:last + 1] = True
             result.grafo = monta_grafo(result.componentes)
             result.grafo_eletrico = contrai_jumpers(result.grafo)
         self.last_seen = {key: when for key, when in self.last_seen.items() if now - when <= MAX_ESTADO_OBSERVACAO_FRAMES}

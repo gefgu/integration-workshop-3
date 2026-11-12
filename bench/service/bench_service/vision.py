@@ -41,25 +41,33 @@ UNSUPPORTED = {
 }
 
 
+def published_row(bank: str, physical_row: int) -> int:
+    """Bottom physical socket row is the first lesson row, within each bank."""
+    return BANK_ROWS - 1 - physical_row + (BANK_ROWS if bank == 'B' else 0)
+
+
 def to_pieces(circuit: dict[str, Any]) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     """`visao.circuito.para_dict` output → (pieces in the editor's format, components the lesson can't use).
 
-    Vision columns are 0-based per bank (C = top, B = bottom) and rows 0..5 per bank; the editor uses
-    columns 1..11 and rows 0..11 (rows 6..11 = bottom bank). Each column of each bank is one node in both.
+    Vision uses physical rows 0..5 per bank. The lesson's first row is the
+    physical bottom row: reverse rows within each bank, keeping columns and
+    bank names. Editor columns are 1..11 and rows 6..11 are bank B.
     """
     pieces, unknown = [], []
     for comp in circuit.get("componentes", []):
         kind, pos = comp["tipo"], comp["posicao"]
         cols = pos["colunas"]
-        row = pos["linha"] + (BANK_ROWS if pos["metade"] == "B" else 0)
+        row = published_row(pos['metade'], pos['linha'])
+        identifier = (f"{kind}@{pos['metade']}{row % BANK_ROWS}:{cols[0]}-{cols[-1]}"
+                      if '@' in comp['id'] else comp['id'])
         piece_type = kind if kind in SAME_TYPE else ASSUMED_TYPE.get(kind)
         if piece_type is None:
             holes = f"{len(cols)} furo{'s' if len(cols) > 1 else ''}"
             reason = UNSUPPORTED.get(kind, f"Peça não reconhecida ({comp['cor']}, {holes}).")
-            unknown.append({"id": comp["id"], "type": kind, "row": row, "a": cols[0] + 1, "b": cols[-1] + 1,
+            unknown.append({"id": identifier, "type": kind, "row": row, "a": cols[0] + 1, "b": cols[-1] + 1,
                             "reason": reason})
             continue
-        pieces.append({"id": comp["id"], "type": piece_type, "a": cols[0] + 1, "b": cols[-1] + 1, "row": row})
+        pieces.append({"id": identifier, "type": piece_type, "a": cols[0] + 1, "b": cols[-1] + 1, "row": row})
     return pieces, unknown
 
 
@@ -68,9 +76,9 @@ def unknown_from_partial(unlabeled: list[dict[str, Any]]) -> list[dict[str, Any]
     out = []
     for item in unlabeled:
         cols = item["colunas"]
-        row = item["linha"] + (BANK_ROWS if item["metade"] == "B" else 0)
+        row = published_row(item['metade'], item['linha'])
         stale = item["atualidade"] == "stale"
-        out.append({"id": f"sem_tipo_{item['metade']}{item['linha']}_{cols[0]}", "type": "peca_sem_tipo",
+        out.append({"id": f"sem_tipo_{item['metade']}{row % BANK_ROWS}_{cols[0]}", "type": "peca_sem_tipo",
                     "row": row, "a": cols[0] + 1, "b": cols[-1] + 1,
                     "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é"
                               + (" (última leitura, agora fora de vista)." if stale else ".")})
@@ -136,6 +144,7 @@ class PieceHold:
                 self.empty_counts.pop(ident, None)
                 continue
             bank, row = divmod(piece['row'], BANK_ROWS)
+            row = BANK_ROWS - 1 - row
             cols = (piece['a'] - 1, piece['b'] - 1)
             if (result.valido and piece['type'].startswith('resistor_')
                     and (('C', 'B')[bank], row, *cols) in untyped):
@@ -441,7 +450,7 @@ class VisionSource:
                 confirming = sum(1 for counts in (getattr(pipeline, "counts", {}), getattr(pipeline, "blue_counts", {}),
                                                     getattr(pipeline, "kit_counts", {}))
                                  for n in counts.values() if n < vision_config.FRAMES_ESTAVEIS)
-                ok, jpeg = cv.imencode(".jpg", debug.desenha_frame(frame, result), [cv.IMWRITE_JPEG_QUALITY, 70])
+                ok, jpeg = cv.imencode(".jpg", debug.desenha_frame(frame, result, reverse_rows=True), [cv.IMWRITE_JPEG_QUALITY, 70])
                 changes: dict[str, Any] = {"valid": result.valido, "reason": result.motivo,
                                            "updated_at": time.time(), "recalibrating": recalibrating,
                                            "fps": fps_from(times), "frame_size": list(frame.shape[1::-1]),

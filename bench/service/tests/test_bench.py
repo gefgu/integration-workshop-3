@@ -218,7 +218,7 @@ def test_vision_components_become_editor_pieces():
         comp("desconhecido_azul_1", "B", 2, [0], "azul"),
     ]})
     assert [(p["type"], p["a"], p["b"], p["row"]) for p in pieces] == [
-        ("led", 3, 4, 0), ("jumper_longo", 1, 3, 11), ("bateria", 1, 2, 0),
+        ("led", 3, 4, 5), ("jumper_longo", 1, 3, 6), ("bateria", 1, 2, 5),
     ]
     assert [u["type"] for u in unknown] == ["resistor", "led_ou_buzzer", "potenciometro", "desconhecido_azul_1"]
     assert all(u["reason"] for u in unknown)
@@ -270,7 +270,7 @@ def test_vision_source_reads_a_real_photo():
     finally:
         source.stop()
     assert state["available"] and state["valid"], state["reason"]
-    assert ("bateria", 1, 2, 0) in [(p["type"], p["a"], p["b"], p["row"]) for p in state["pieces"]]
+    assert ("bateria", 1, 2, 5) in [(p["type"], p["a"], p["b"], p["row"]) for p in state["pieces"]]
     assert source.frame()[:2] == b"\xff\xd8"
 
 

@@ -4,6 +4,7 @@ from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import cv2 as cv
+import numpy as np
 
 from visao.pipeline_atual import PipelineAtual
 
@@ -11,6 +12,30 @@ FIXTURES = Path(__file__).resolve().parents[1] / 'visao' / 'fixtures' / 'current
 
 
 class CurrentKitTest(unittest.TestCase):
+    def test_smart_is_restricted_to_three_slots_in_each_bank(self):
+        from visao import config as cfg
+        from visao.pecas_atuais import smart_kit
+        # Translate an actual saved housing crop: synthetic geometry coverage,
+        # not measured evidence for the five unpictured physical slots.
+        image = cv.imread(str(FIXTURES / 'buzzer-smart-frame-1.jpg'))
+        result = PipelineAtual(temporal=False).processa(image)
+        cx, cy = [int(v) for v in cfg.para_retificada(5, 5)]
+        housing = result.retificada[cy - 85:cy + 1, cx - 100:cx + 100].copy()
+        for bank in (0, 1):
+            for first in (0, 4, 8):
+                board = np.zeros_like(result.retificada)
+                x, y = cfg.coord_modelo(bank, 5, first + 1)
+                tx, ty = [int(v) for v in cfg.para_retificada(x, y)]
+                board[ty - 85:ty + 1, tx - 100:tx + 100] = housing
+                with self.subTest(bank=bank, first=first):
+                    self.assertEqual(smart_kit(board, metade=bank),
+                                     [('capsula_smart', 'preto', 5, first, first + 2)])
+                    self.assertEqual(smart_kit(board, metade=1 - bank), [])
+        # The identical appearance on a forbidden row is not snapped to a slot.
+        board = np.zeros_like(result.retificada)
+        board[cy - 125:cy - 39, cx - 100:cx + 100] = housing
+        self.assertEqual(smart_kit(board), [])
+
     def test_edge_battery_remains_recognized_across_real_frames(self):
         # The blue resistor body is visible but its value is unknown until its bands are read.
         expected = {'buzzer', 'jumper_4', 'led', 'vermelho_2'}
