@@ -1,4 +1,4 @@
-"""Read the colour bands of the kit's three-band resistors from a low-exposure frame.
+"""Read only the kit's three complete resistor patterns from camera frames.
 
 Only three values exist in the kit: 220 Ω (red red brown), 470 Ω (yellow violet
 brown) and 1 kΩ (brown black red). The decoder still refuses to answer unless every
@@ -12,9 +12,8 @@ body stays unknown instead of receiving a guessed value:
 The direction of reading does not matter with this set. Reading either way, no other
 three-band pattern of these colours is a member of the set.
 
-The frame must be exposed for the bands (the bench service lowers the camera exposure
-for a moment); at the normal exposure red, brown and orange merge and are clipped, which
-`recorte_corpo` / `le_valor` detect and reject.
+Exposure must preserve the bands. Clipped highlights are refused before any
+strip is decoded; enlargement rectifies geometry without inventing detail.
 """
 import cv2 as cv
 import numpy as np
@@ -58,9 +57,9 @@ def _runs(mask, minimum, gap=2):
     return [(a, b) for a, b in runs if b - a + 1 >= minimum]
 
 
-def _corpo(hsv):
+def _corpo(hsv, linhas=_LINHAS_FAIXA):
     """Columns of the grey ceramic body, between the blue holder's two ends."""
-    band = hsv[_LINHAS_FAIXA[0]:_LINHAS_FAIXA[1]]
+    band = hsv[linhas[0]:linhas[1]]
     blue = ((band[:, :, 0] >= 88) & (band[:, :, 0] <= 110) & (band[:, :, 1] >= 150) & (band[:, :, 2] >= 40))
     runs = _runs(blue.mean(axis=0) >= .35, 18, gap=4)
     if len(runs) < 2:
@@ -70,7 +69,7 @@ def _corpo(hsv):
     return (start, end) if end - start >= 150 else None
 
 
-def le_bandas(crop):
+def _le_faixas(crop, linhas):
     """Per-body reading: dict(valor=int|None, motivo=str, faixas=[(start, end, name)])."""
     def recusa(motivo, faixas=()):
         return dict(valor=None, motivo=motivo, faixas=list(faixas))
@@ -81,19 +80,21 @@ def le_bandas(crop):
     if clipped > MAX_SATURADO:
         return recusa('imagem estourada; reduza a exposição')
     hsv = cv.cvtColor(cv.GaussianBlur(crop, (5, 5), 0), cv.COLOR_BGR2HSV)
-    span = _corpo(hsv)
+    span = _corpo(hsv, linhas)
     if span is None:
         return recusa('corpo azul do resistor não encontrado')
     x0, x1 = span
-    strip = hsv[_LINHAS_FAIXA[0]:_LINHAS_FAIXA[1], x0:x1]
+    strip = hsv[linhas[0]:linhas[1], x0:x1]
     # Column medians of each channel (hue is only read where saturation says it is colour).
     h, s, v = (np.median(strip[:, :, i], axis=0) for i in range(3))
     warm = ((h <= 14) | (h >= 165)) & (s >= 60) & (v >= 80)
     yellow = (h >= 22) & (h <= 45) & (s >= 70) & (v >= 110)
     violet = (h >= 110) & (h <= 150) & (s >= 45) & (v >= 18)
-    bands = ([(a + x0, b + x0, 'warm') for a, b in _runs(warm, MIN_LARGURA)]
-             + [(a + x0, b + x0, 'yellow') for a, b in _runs(yellow, MIN_LARGURA)]
-             + [(a + x0, b + x0, 'violet') for a, b in _runs(violet, MIN_LARGURA)])
+    # Close sub-band holes caused by interpolation/JPEG: four 3x pixels
+    # are smaller than the minimum accepted band, not a missing colour band.
+    bands = ([(a + x0, b + x0, 'warm') for a, b in _runs(warm, MIN_LARGURA, gap=4)]
+             + [(a + x0, b + x0, 'yellow') for a, b in _runs(yellow, MIN_LARGURA, gap=4)]
+             + [(a + x0, b + x0, 'violet') for a, b in _runs(violet, MIN_LARGURA, gap=4)])
     bands.sort()
     # A band must not overlap another one of a different colour.
     for first, second in zip(bands, bands[1:]):
@@ -131,6 +132,27 @@ def le_bandas(crop):
             return dict(valor=1000, motivo='', faixas=bands)
         return recusa('faixa preta não confirmada', bands)
     return recusa('padrão de faixas desconhecido', bands)
+
+
+def le_bandas(crop):
+    """Decode only kit patterns; require agreement across body strips.
+
+    Socket edges, glare and the curved ceramic surface affect different rows.
+    Each strip must independently account for the complete three-band pattern.
+    A conflicting value is refused, including when a majority would win.
+    """
+    reads = [_le_faixas(crop, rows) for rows in
+             (_LINHAS_FAIXA, (20, 50), (40, 65), (65, 90), (60, 100), (75, 105),
+              (30, 80), (50, 85))]
+    decoded = [read for read in reads if read['valor'] is not None]
+    values = {read['valor'] for read in decoded}
+    if len(values) > 1:
+        return dict(valor=None, motivo='leituras de faixas conflitantes', faixas=[])
+    if len(decoded) >= 2:
+        return decoded[0]
+    if decoded:
+        return dict(valor=None, motivo='faixas sem confirmação entre linhas', faixas=decoded[0]['faixas'])
+    return reads[0]
 
 
 def le_valor(frame, H, linha, coluna):

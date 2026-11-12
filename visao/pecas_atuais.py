@@ -19,8 +19,8 @@ def resistores_azuis_kit(ret_bgr):
 def _resistores_azuis(ret_bgr, valor_minimo):
     """Find a blue two-socket holder carrying the kit's exposed axial resistor.
 
-    The 1 kΩ value is a kit configuration assumption, not an optical measurement.
-    Plain coloured blue bodies must remain unidentified.
+    This locates a body, never its value. Plain coloured blue bodies remain
+    unidentified until the complete band reader supplies positive evidence.
     """
     hsv = cv.cvtColor(ret_bgr, cv.COLOR_BGR2HSV)
     found = set()
@@ -269,7 +269,33 @@ def suporte_marcado(vistos, linha, coluna_inicial, coluna_final):
 def corpos_azuis(ret_bgr):
     """Blue bodies at the normal brightness (V>=150) or a relaxed one (V>=110) for dim frames; see
     resistores_azuis_kit for why both passes are kept."""
-    return _corpos_azuis(ret_bgr, 150) | _corpos_azuis(ret_bgr, 110)
+    return (_corpos_azuis(ret_bgr, 150) | _corpos_azuis(ret_bgr, 110)
+            | _corpos_com_extremos_azuis(ret_bgr))
+
+
+def _corpos_com_extremos_azuis(ret_bgr):
+    """Paired holder ends survive when bands obscure most of the blue area.
+
+    Require both blue ends around the socket-pair centre. This locates a
+    body only; complete bands and local socket support still establish type
+    and position in PipelineAtual.
+    """
+    from .bandas_resistor import ESCALA, _JANELA, _corpo
+    found = set()
+    for row in range(cfg.N_LINHAS_METADE):
+        for col in range(cfg.N_COLUNAS - 1):
+            cx, cy = cfg.para_retificada(col + .5, row)
+            x0, x1 = int(cx + _JANELA[0]), int(cx + _JANELA[1])
+            y0, y1 = int(cy + _JANELA[2]), int(cy + _JANELA[3])
+            if x0 < 0 or y0 < 0 or x1 > ret_bgr.shape[1] or y1 > ret_bgr.shape[0]:
+                continue
+            crop = cv.resize(ret_bgr[y0:y1, x0:x1], None, fx=ESCALA, fy=ESCALA)
+            hsv = cv.cvtColor(cv.GaussianBlur(crop, (5, 5), 0), cv.COLOR_BGR2HSV)
+            span = _corpo(hsv)
+            centre = -_JANELA[0] * ESCALA
+            if span is not None and span[0] < centre < span[1] and abs(sum(span) / 2 - centre) <= 60:
+                found.add((row, col))
+    return found
 
 
 def _corpos_azuis(ret_bgr, valor_minimo):

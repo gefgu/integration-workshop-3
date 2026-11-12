@@ -63,7 +63,8 @@ def test_every_vision_type_is_mapped_or_explained():
 
     named = {rule["tipo"] for rule in config.COMPONENTES.values()}
     named |= {t for rule in config.COMPONENTES.values() for t in rule.get("pontos", {}).values()}
-    named |= {faixa["tipo"] for faixa in config.FAIXAS.values()}
+    from visao.bandas_resistor import VALORES
+    named |= set(VALORES.values())
     known = SAME_TYPE | set(ASSUMED_TYPE) | set(UNSUPPORTED)
     # vermelho_3 has no kit piece yet and falls to the generic "Peça não reconhecida".
     assert named - known <= {"vermelho_3"}

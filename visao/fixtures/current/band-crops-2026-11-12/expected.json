@@ -1,0 +1,65 @@
+[
+  {
+    "file": "220-frame00.png",
+    "expected": 220,
+    "source": "frame-00000000.jpg",
+    "source_sha256": "07996a5d2d3d6ba31168791e8ce701f0b7a71b20e80ae6df1a4a0822eeb4b8d9",
+    "row": 2,
+    "column": 3,
+    "result": 220
+  },
+  {
+    "file": "470-frame00.png",
+    "expected": 470,
+    "source": "frame-00000000.jpg",
+    "source_sha256": "07996a5d2d3d6ba31168791e8ce701f0b7a71b20e80ae6df1a4a0822eeb4b8d9",
+    "row": 2,
+    "column": 6,
+    "result": 470
+  },
+  {
+    "file": "1000-frame00.png",
+    "expected": 1000,
+    "source": "frame-00000000.jpg",
+    "source_sha256": "07996a5d2d3d6ba31168791e8ce701f0b7a71b20e80ae6df1a4a0822eeb4b8d9",
+    "row": 3,
+    "column": 8,
+    "result": 1000
+  },
+  {
+    "file": "1000-frame09.png",
+    "expected": 1000,
+    "source": "frame-00000009.jpg",
+    "source_sha256": "4426f1a85c704ae34b892648542c1a146c429ea45bc9f4f9f9fb0bbfe0d1e98f",
+    "row": 3,
+    "column": 8,
+    "result": 1000
+  },
+  {
+    "file": "220-frame12.png",
+    "expected": 220,
+    "source": "frame-00000012.jpg",
+    "source_sha256": "1eed29846be626642596bb0a70e42228a39cab1c6f9484a2eac7c9352c652694",
+    "row": 2,
+    "column": 3,
+    "result": 220
+  },
+  {
+    "file": "1000-frame27.png",
+    "expected": 1000,
+    "source": "frame-00000027.jpg",
+    "source_sha256": "703bdff39061e72d7287ada459f2d4b1bb6467214bbdae7d874efd9b0b04e8bc",
+    "row": 3,
+    "column": 8,
+    "result": 1000
+  },
+  {
+    "file": "470-frame31.png",
+    "expected": 470,
+    "source": "frame-00000031.jpg",
+    "source_sha256": "f5eed34b0882556cee59a4c1a275fa898d3de562f69fa22619ff9b745bcd1bed",
+    "row": 2,
+    "column": 6,
+    "result": 470
+  }
+]

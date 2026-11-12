@@ -125,7 +125,7 @@ class TestComponentes(unittest.TestCase):
 
 
 class TestFaixa(unittest.TestCase):
-    """ peças azuis: a faixa colorida do meio define a peça (catálogo do app web)."""
+    """A single painted stripe must never establish a resistor value."""
 
     def retificada_com_faixa(self, bgr):
         ret = np.zeros((cfg.ALTURA_RET, cfg.LARGURA_RET, 3), np.uint8)
@@ -135,19 +135,15 @@ class TestFaixa(unittest.TestCase):
         cv.rectangle(ret, (xm - 7, int(y) - 22), (xm + 7, int(y) + 8), bgr, -1)
         return ret
 
-    def test_cor_da_faixa_define_a_peca(self):
-        from visao.componentes import le_faixa
-        # cada faixa, na cor que a câmera real vê (centros medidos em FAIXAS), vira o tipo do catálogo do app web
-        tipos = {'laranja': 'resistor_220', 'vermelho': 'resistor_470', 'amarelo': 'resistor_1k',
-                 'verde': 'capacitor'}
-        for faixa, dados in cfg.FAIXAS.items():
-            bgr = cv.cvtColor(np.uint8([[dados['hsv']]]), cv.COLOR_HSV2BGR)[0, 0].tolist()
-            self.assertEqual(le_faixa(self.retificada_com_faixa(bgr), 0, 1, 3), faixa)
-            self.assertEqual(dados['tipo'], tipos[faixa])
-
-    def test_sem_faixa_nao_ha_faixa(self):
-        from visao.componentes import le_faixa
-        self.assertIsNone(le_faixa(self.retificada_com_faixa((200, 110, 30)), 0, 1, 3))
+    def test_single_stripe_never_assigns_a_value(self):
+        from visao.componentes import identifica
+        cores = np.full((2, 6, 11), None, dtype=object)
+        pontes = np.full((2, 6, 10), None, dtype=object)
+        cores[0, 1, 3:5] = 'azul'
+        pontes[0, 1, 3] = 'azul'
+        for bgr in ((0, 0, 220), (0, 180, 220), (0, 180, 0), (0, 100, 220)):
+            components = identifica(cores, pontes, self.retificada_com_faixa(bgr))
+            self.assertEqual([c.tipo for c in components], ['resistor_ou_capacitor'])
 
 
 class TestTemporal(unittest.TestCase):

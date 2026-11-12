@@ -90,20 +90,14 @@ TERMINAIS = {
 TIPOS_JUMPER = ('jumper_curto', 'jumper_longo', 'jumper_3')
 
 # ------------------------------------------------------------------ FAIXA COLORIDA DAS PEÇAS AZUIS
-# as peças azuis (resistores e capacitor) têm uma faixa colorida no meio, sobre a ponte entre os
-# 2 sockets; a cor da faixa define a peça (mesmo catálogo do app web: engine/sim.ts, `stripe`).
-# 'hsv' = (H, S, V) mediano medido na câmera real (OpenCV: H 0..179); a faixa é classificada pelo
-# centro mais próximo. AJUSTAR se a luz mudar (rodar python -m visao.diagnostico).
+# Legacy drawing colours only. These are never used to identify a component;
+# resistor values come exclusively from bandas_resistor's complete patterns.
 FAIXAS = {
-    'laranja':  {'hsv': (11, 127, 220), 'tipo': 'resistor_220', 'web': '#f28c28'},
-    'vermelho': {'hsv': (8, 171, 175),  'tipo': 'resistor_470', 'web': '#e5423a'},
-    'amarelo':  {'hsv': (33, 82, 224),  'tipo': 'resistor_1k',  'web': '#f2d52e'},
-    'verde':    {'hsv': (81, 170, 130), 'tipo': 'capacitor',    'web': '#39b96b'},
+    'laranja':  {'web': '#f28c28'},
+    'vermelho': {'web': '#e5423a'},
+    'amarelo':  {'web': '#f2d52e'},
+    'verde':    {'web': '#39b96b'},
 }
-FAIXA_JANELA = (8, 22, 8)   # px na imagem retificada: meia largura, acima e abaixo do centro da ponte
-FAIXA_MIN_PIXELS = 60       # pixels de faixa para considerar que existe faixa
-FAIXA_DIST_MAX = 45.0       # distância máxima ao centro da cor para aceitar a classificação
-FAIXA_PESOS = (6.0, 0.5, 0.5)  # peso de H (em graus), S e V na distância
 
 # ------------------------------------------------------------------ FILTRO TEMPORAL
 FRAMES_ESTAVEIS = 3         # nº de frames seguidos para aceitar uma mudança (3 frames = 0,6 s a 5 fps)

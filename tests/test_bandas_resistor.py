@@ -6,13 +6,14 @@ in the images, not from the kit inventory. `bands-2026-11-11-1.jpg` is the norma
 `-exp800` and `-exp1000` are the exposures the service uses for the band read.
 """
 import unittest
+import json
 from pathlib import Path
 from unittest import mock
 
 import cv2 as cv
 import numpy as np
 
-from visao.bandas_resistor import le_valor
+from visao.bandas_resistor import le_valor, le_bandas
 from visao.pipeline_atual import MIN_ASSINATURA, PipelineAtual, assinatura_corpo
 
 FIXTURES = Path(__file__).resolve().parents[1] / 'visao' / 'fixtures' / 'current'
@@ -33,6 +34,35 @@ def registered(small=False):
 
 
 class BandDecoderTest(unittest.TestCase):
+    def test_live_lesson_crops_with_fragmented_bands(self):
+        folder = FIXTURES / 'band-crops-2026-11-12'
+        for case in json.loads((folder / 'expected.json').read_text()):
+            with self.subTest(file=case['file']):
+                crop = cv.imread(str(folder / case['file']))
+                self.assertEqual(le_bandas(crop)['valor'], case['expected'])
+
+    def test_missing_middle_band_is_not_inferred_from_kit_inventory(self):
+        folder = FIXTURES / 'band-crops-2026-11-12'
+        for name, first, last in [('220-frame00.png', 220, 285),
+                                  ('1000-frame00.png', 270, 345)]:
+            with self.subTest(file=name):
+                crop = cv.imread(str(folder / name))
+                crop[:, first:last] = (145, 145, 145)
+                self.assertIsNone(le_bandas(crop)['valor'])
+
+    def test_holder_ends_locate_bodies_with_small_visible_blue_area(self):
+        from visao import config as cfg
+        from visao.pecas_atuais import corpos_azuis
+        folder = FIXTURES / 'band-crops-2026-11-12'
+        for value in (220, 470, 1000):
+            with self.subTest(value=value):
+                crop = cv.imread(str(folder / f'{value}-frame00.png'))
+                board = np.zeros((cfg.ALTURA_RET, cfg.LARGURA_RET, 3), np.uint8)
+                cx, cy = cfg.para_retificada(3.5, 2)
+                x0, y0 = int(cx - 85), int(cy - 44)
+                board[y0:y0 + 48, x0:x0 + 180] = cv.resize(crop, (180, 48))
+                self.assertEqual(corpos_azuis(board), {(2, 3)})
+
     def test_values_at_the_service_exposures_in_both_resolutions(self):
         for small in (False, True):
             pipeline, _ = registered(small)
