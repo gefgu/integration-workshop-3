@@ -7,13 +7,13 @@ import type { ClassDetail } from '../../lib/api';
 import { useApp } from '../../lib/AppContext';
 import { TourAnchor, useScreenTour } from '../../components/Tour';
 import { APP_TOURS } from '../../lib/tours';
-import { type ClassDashboard, formatDuration, type StudentProgress } from '../../lib/progress';
+import { type ClassDashboard, formatDuration, shortUid, type StudentProgress } from '../../lib/progress';
 import { colors, fonts, ui } from '../../theme';
 
 const when = (iso: string) =>
   new Date(iso).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
 
-/** A class: summary, then each student with tag, progress and best score; tap a student for details (SFR62). */
+/** A class: summary, then each student with their id, progress and best score; tap a student for details (SFR62). */
 export default function Turma() {
   const router = useRouter();
   const { id, name = 'Turma' } = useLocalSearchParams<{ id: string; name?: string }>();
@@ -66,7 +66,6 @@ export default function Turma() {
       time_spent_s: 0,
       last_activity: null,
     }));
-  const withoutTag = rows.filter((r) => !r.student.nfc_code).length;
 
   return (
     <>
@@ -105,9 +104,6 @@ export default function Turma() {
                     label="pontuação média"
                   />
                 </View>
-                {withoutTag > 0 && (
-                  <Pill text={`${withoutTag} aluno(s) sem tag: vincule pelo site`} tone="warn" icon="pricetag-outline" />
-                )}
               </Card>
               </TourAnchor>
               {progressNote ? <Text style={ui.muted}>{progressNote}</Text> : null}
@@ -128,13 +124,7 @@ export default function Turma() {
                 detail={`${s.nickname}${s.active ? '' : ' · inativo'}`}
                 selected={expanded}
                 onPress={() => setOpen(expanded ? null : s.id)}
-                end={
-                  s.nfc_code ? (
-                    <Pill text={`Tag ${s.nfc_code}`} tone="ok" icon="pricetag" />
-                  ) : (
-                    <Pill text="Sem tag" icon="pricetag-outline" />
-                  )
-                }
+                end={<Pill text={`ID ${shortUid(s.uid)}`} icon="finger-print-outline" />}
               >
                 {dashboard && (
                   <View style={{ gap: 6 }}>
@@ -153,7 +143,8 @@ export default function Turma() {
                 )}
                 {expanded && (
                   <View style={{ gap: 6, paddingTop: 4 }}>
-                    <Detail icon="pricetag-outline" text={s.nfc_code ? `Aproxime a tag ${s.nfc_code} do leitor da bancada.` : 'Sem tag vinculada. Vincule pelo site.'} />
+                    <Detail icon="finger-print-outline" text={`ID do aluno: ${s.uid}`} />
+                    <Detail icon="hardware-chip-outline" text="Para usar a bancada, escolha este aluno em “Levar aula”." />
                     {dashboard && <Detail icon="time-outline" text={`Tempo na bancada: ${formatDuration(item.time_spent_s)}`} />}
                     {dashboard && item.challenges > 0 && (
                       <Detail icon="flag-outline" text={`${item.challenges} desafio(s) · última pontuação ${item.last_score ?? '—'}`} />

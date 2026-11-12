@@ -127,10 +127,11 @@ export async function sendModule(
   api: Api,
   moduleId: number,
   classId: number,
+  studentId: number,
   onProgress?: (progress: SendProgress) => void
 ): Promise<BenchPackage> {
   onProgress?.({ phase: 'download' });
-  const pkg = await api.benchPackage(moduleId, classId);
+  const pkg = await api.benchPackage(moduleId, classId, studentId);
   let last = { sent: 0, total: 1 };
   const transport = bench.transport;
   if (transport.onRetry !== undefined) transport.onRetry = (retry) => onProgress?.({ phase: 'send', ...last, retry });

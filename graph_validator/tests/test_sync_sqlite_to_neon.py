@@ -45,11 +45,11 @@ def seed_source(path: Path) -> None:
         db.execute(SchoolClass.__table__.insert(), [{"id": 4, "teacher_id": 4, "name": "6A", "description": ""}])
         db.execute(ClassModule.__table__.insert(), [{"class_id": 4, "module_id": 9, "position": 0}])
         db.execute(Student.__table__.insert(), [
-            {"id": 5, "class_id": 4, "name": "Ana", "nickname": "ana", "nfc_code": "TAG-A", "active": True},
-            {"id": 6, "class_id": 4, "name": "Bia", "nickname": "bia", "nfc_code": "TAG-USED", "active": True},
+            {"id": 5, "class_id": 4, "name": "Ana", "nickname": "ana", "active": True},
+            {"id": 6, "class_id": 4, "name": "Bia", "nickname": "bia", "active": True},
         ])
         db.execute(ProgressEvent.__table__.insert(), [
-            {"event_id": "ev-1", "student_id": 5, "nfc_code": "TAG-A", "lesson_id": "curriculo-01-guiada-p4",
+            {"event_id": "ev-1", "student_id": 5, "nfc_code": "5", "lesson_id": "curriculo-01-guiada-p4",
              "module_id": 9, "lesson_version": None, "kind": "lesson_done", "step_idx": 0, "score": 100,
              "duration_s": 3.0, "seq": 1, "at": NOW, "bench_id": "b1", "received_at": NOW},
         ])
@@ -64,7 +64,7 @@ def seed_target(path: Path) -> None:
         ])
         db.execute(SchoolClass.__table__.insert(), [{"id": 1, "teacher_id": 2, "name": "T", "description": ""}])
         db.execute(Student.__table__.insert(), [{"id": 1, "class_id": 1, "name": "Zé", "nickname": "ze",
-                                                 "nfc_code": "TAG-USED", "active": True}])
+                                                 "active": True}])
 
 
 def counts(path: Path) -> dict[str, int]:
@@ -103,10 +103,12 @@ def test_dry_run_writes_nothing_and_apply_is_idempotent(tmp_path, capsys):
         assert links == [f"curriculo-01-guiada-p{teacher.id}", "lesson-abc"]
         klass = db.execute(select(SchoolClass.__table__).where(SchoolClass.teacher_id == teacher.id)).one()
         assert db.scalar(select(ClassModule.module_id).where(ClassModule.class_id == klass.id)) == module.id
-        tags = dict(db.execute(select(Student.nickname, Student.nfc_code).where(Student.class_id == klass.id)).all())
-        assert tags == {"ana": "TAG-A", "bia": None}  # TAG-USED belongs to another student in the target
+        ids = dict(db.execute(select(Student.nickname, Student.id).where(Student.class_id == klass.id)).all())
+        assert set(ids) == {"ana", "bia"} and ids["ana"] != 5  # the copy gets new ids in the target
         event = db.execute(select(ProgressEvent.__table__).where(ProgressEvent.event_id == "ev-1")).one()
         assert event.module_id == module.id and event.lesson_id == f"curriculo-01-guiada-p{teacher.id}"
+        # the event's uid (stored in the legacy nfc_code column) follows the student's new id
+        assert event.student_id == ids["ana"] and event.nfc_code == str(ids["ana"])
 
     after = counts(dst)
     assert sync.main([*args, "--apply"]) == 0

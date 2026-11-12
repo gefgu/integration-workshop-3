@@ -29,11 +29,6 @@ CREATE TABLE IF NOT EXISTS scores (
 EVENT_KINDS = {"session", "step_done", "lesson_done", "quiz_answer", "challenge_score"}
 
 
-def _loose_tag(code: str) -> str:
-    code = " ".join(code.split()).casefold()
-    return code[4:].strip() if code.startswith("tag ") else code
-
-
 def iso_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
@@ -77,6 +72,23 @@ class BenchStore:
     # package ---------------------------------------------------------------------------------------
     def load_package(self, package: dict[str, Any]) -> None:
         self._set("package", json.dumps(package, ensure_ascii=False))
+        student = package.get("student")
+        if isinstance(student, dict) and "id" in student:
+            # Remembered so a student whose bench was just handed to someone else can still finish and leave.
+            known = self._known_students()
+            known[str(student["id"])] = student
+            self._set("known_students", json.dumps(known, ensure_ascii=False))
+
+    def _known_students(self) -> dict[str, dict[str, Any]]:
+        raw = self._get("known_students")
+        return json.loads(raw) if raw else {}
+
+    def known_student(self, student_id: int) -> dict[str, Any] | None:
+        """The current student, or one picked earlier on this bench (events must always name a real student)."""
+        current = self.student()
+        if current and current["id"] == student_id:
+            return current
+        return self._known_students().get(str(student_id))
 
     def clear_package(self) -> None:
         """Drops the loaded module and student list (progress and pending events are kept)."""
@@ -87,17 +99,10 @@ class BenchStore:
         raw = self._get("package")
         return json.loads(raw) if raw else None
 
-    def student_by_tag(self, nfc_code: str) -> dict[str, Any] | None:
+    def student(self) -> dict[str, Any] | None:
+        """The student the teacher picked in the app for this bench, sent with the module (no tags)."""
         package = self.package()
-        if not package:
-            return None
-        code = nfc_code.strip()
-        exact = next((s for s in package["students"] if s.get("nfc_code") == code), None)
-        if exact:
-            return exact
-        # Typed by hand: "Tag 3", "tag 3", " 3 " all mean the code "3" (the site labels tags "Tag <code>").
-        loose = _loose_tag(code)
-        return next((s for s in package["students"] if s.get("nfc_code") and _loose_tag(s["nfc_code"]) == loose), None)
+        return (package or {}).get("student") or None
 
     def status(self) -> dict[str, Any]:
         package = self.package()
@@ -106,7 +111,8 @@ class BenchStore:
             "unlocked": self.is_unlocked(),
             "teacher": self.teacher(),
             "package": {"version_id": package["version_id"], "module_title": package["module"]["title"],
-                        "class_name": package["class"]["name"]} if package else None,
+                        "class_name": package["class"]["name"],
+                        "student_nickname": (package.get("student") or {}).get("nickname", "")} if package else None,
             "pending_events": self.pending_count(),
         }
 
@@ -117,13 +123,13 @@ class BenchStore:
         package = self.package() or {}
         if package.get("demo"):
             # demo mode: progress is kept, but nothing is queued for the teacher's server
-            return {"event_id": str(uuid.uuid4()), "student_id": student["id"], "nfc_code": student["nfc_code"],
+            return {"event_id": str(uuid.uuid4()), "student_id": student["id"], "student_uid": student["uid"],
                     "kind": kind, "seq": 0, "at": iso_now(), "demo": True, **fields}
         with self._lock, self._db:
             seq = int(self._db.execute("SELECT COALESCE(MAX(CAST(value AS INTEGER)), 0) FROM meta "
                                        "WHERE key = 'seq'").fetchone()[0]) + 1
             self._db.execute("INSERT OR REPLACE INTO meta (key, value) VALUES ('seq', ?)", (str(seq),))
-            event = {"event_id": str(uuid.uuid4()), "student_id": student["id"], "nfc_code": student["nfc_code"],
+            event = {"event_id": str(uuid.uuid4()), "student_id": student["id"], "student_uid": student["uid"],
                      "kind": kind, "seq": seq, "at": iso_now(),
                      "module_id": (package.get("module") or {}).get("id"), **fields}
             self._db.execute("INSERT INTO events (event_id, seq, body) VALUES (?, ?, ?)",

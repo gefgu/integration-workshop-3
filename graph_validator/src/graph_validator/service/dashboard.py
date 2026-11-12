@@ -61,7 +61,7 @@ def class_dashboard(class_id: int, db: Db, me: Me) -> dict:
     by_student: dict[int, list[ProgressEvent]] = defaultdict(list)
     for event in db.scalars(select(ProgressEvent).where(ProgressEvent.student_id.in_([s.id for s in students]))):
         by_student[event.student_id].append(event)
-    rows = [{"student": {"id": s.id, "name": s.name, "nickname": s.nickname, "nfc_code": s.nfc_code,
+    rows = [{"student": {"id": s.id, "name": s.name, "nickname": s.nickname, "uid": s.uid,
                          "active": s.active}, **summarize(by_student[s.id], lesson_ids)} for s in students]
     scored = [r["best_score"] for r in rows if r["best_score"] is not None]
     return {
@@ -102,7 +102,7 @@ def student_dashboard(student_id: int, db: Db, me: Me) -> dict:
         })
     return {
         "student": {"id": student.id, "name": student.name, "nickname": student.nickname,
-                    "nfc_code": student.nfc_code, "class_id": student.class_id},
+                    "uid": student.uid, "class_id": student.class_id},
         **summarize(list(events), lesson_ids),
         "lessons": lessons,
         "events": [{"event_id": e.event_id, "kind": e.kind, "lesson_id": e.lesson_id,

@@ -4,27 +4,34 @@ import { ScrollView, Text, View } from 'react-native';
 import BenchConnect from '../components/BenchConnect';
 import Button from '../components/Button';
 import { Card, Icon, Row, StateView } from '../components/Kit';
-import type { Module, SchoolClass } from '../lib/api';
+import type { Module, SchoolClass, Student } from '../lib/api';
 import { useApp } from '../lib/AppContext';
 import type { SendProgress } from '../lib/sync';
 import { TourAnchor, useScreenTour } from '../components/Tour';
 import { APP_TOURS } from '../lib/tours';
+import { shortUid } from '../lib/progress';
 import { colors, fonts, ui } from '../theme';
 
-const STEPS = ['Bancada', 'Turma', 'Módulo', 'Enviar'] as const;
-type Step = 0 | 1 | 2 | 3 | 4; // 4 = done
+const STEPS = ['Bancada', 'Turma', 'Aluno', 'Módulo', 'Enviar'] as const;
+type Step = 0 | 1 | 2 | 3 | 4 | 5; // 5 = done
+const DONE: Step = 5;
 
-/** Guided flow: connect the bench → pick the class → pick the module → send. */
+/**
+ * Guided flow: connect the bench → pick the class → pick the student who will use the bench → pick the module →
+ * send. The student goes with the module (there are no tags: the teacher decides who sits at each bench).
+ */
 export default function Enviar() {
   const router = useRouter();
   const params = useLocalSearchParams<{ moduleId?: string }>();
   const { api, bench, benchLabel, sendModuleToBench } = useApp();
   const [chosenStep, setStep] = useState<Step>(bench ? 1 : 0);
   // Losing the bench mid-way sends the teacher back to step 1.
-  const step: Step = !bench && chosenStep > 0 && chosenStep < 4 ? 0 : chosenStep;
+  const step: Step = !bench && chosenStep > 0 && chosenStep < DONE ? 0 : chosenStep;
   const [classes, setClasses] = useState<SchoolClass[] | null>(null);
   const [modules, setModules] = useState<Module[] | null>(null);
   const [classId, setClassId] = useState<number | null>(null);
+  const [students, setStudents] = useState<Student[] | null>(null);
+  const [studentId, setStudentId] = useState<number | null>(null);
   const [moduleId, setModuleId] = useState<number | null>(params.moduleId ? Number(params.moduleId) : null);
   const [busy, setBusy] = useState(false);
   const [progress, setProgress] = useState<SendProgress | null>(null);
@@ -41,18 +48,33 @@ export default function Enviar() {
     );
   }, [api]);
 
+  // The class's students, for the "who uses the bench" step; inactive students cannot use it.
+  useEffect(() => {
+    if (classId == null) return undefined;
+    let alive = true;
+    setStudents(null);
+    api.classDetail(classId).then(
+      (detail) => alive && setStudents(detail.students.filter((s) => s.active)),
+      (cause) => alive && setError((cause as Error).message)
+    );
+    return () => {
+      alive = false;
+    };
+  }, [api, classId]);
+
   const pickedClass = classes?.find((c) => c.id === classId);
+  const pickedStudent = students?.find((s) => s.id === studentId);
   const pickedModule = modules?.find((m) => m.id === moduleId);
   const forClass = modules?.filter((m) => classId != null && m.class_ids.includes(classId)) ?? [];
   const others = modules?.filter((m) => !forClass.includes(m)) ?? [];
 
   async function send() {
-    if (moduleId == null || classId == null) return;
+    if (moduleId == null || classId == null || studentId == null) return;
     setBusy(true);
     setError('');
     let shown = '';
     try {
-      await sendModuleToBench(moduleId, classId, (next) => {
+      await sendModuleToBench(moduleId, classId, studentId, (next) => {
         // Hundreds of frames: re-render only when the whole percent (or the phase) changes.
         const key =
           next.phase === 'send' ? `send${Math.floor((100 * next.sent) / next.total)}r${next.retry ?? 0}` : next.phase;
@@ -60,7 +82,7 @@ export default function Enviar() {
         shown = key;
         setProgress(next);
       });
-      setStep(4);
+      setStep(DONE);
     } catch (cause) {
       setError((cause as Error).message);
     } finally {
@@ -69,7 +91,7 @@ export default function Enviar() {
     }
   }
 
-  if (step === 4) {
+  if (step === DONE) {
     return (
       <ScrollView style={ui.screen} contentContainerStyle={[ui.content, { flexGrow: 1, justifyContent: 'center' }]}>
         <View style={{ alignItems: 'center', gap: 14 }}>
@@ -87,9 +109,19 @@ export default function Enviar() {
           </View>
           <Text style={[ui.h1, { textAlign: 'center' }]}>Aula na bancada!</Text>
           <Text style={[ui.text, { textAlign: 'center' }]}>
-            {pickedModule?.title} está liberado para a turma {pickedClass?.name}. Os alunos já podem aproximar a tag.
+            {pickedModule?.title} está na bancada para {pickedStudent?.name} ({pickedClass?.name}). É só tocar em Entrar na
+            tela da bancada.
           </Text>
         </View>
+        <Button
+          title="Mesma aula para outro aluno"
+          icon="swap-horizontal"
+          variant="light"
+          onPress={() => {
+            setStudentId(null);
+            setStep(2);
+          }}
+        />
         <Button title="Voltar ao início" icon="home-outline" onPress={() => (router.canDismiss() ? router.dismissAll() : router.replace('/'))} />
         {pickedClass && (
           <Button
@@ -136,6 +168,7 @@ export default function Enviar() {
                 detail={`${c.student_count ?? 0} aluno(s)`}
                 selected={classId === c.id}
                 onPress={() => {
+                  if (c.id !== classId) setStudentId(null);
                   setClassId(c.id);
                   if (moduleId != null && !modules?.some((m) => m.id === moduleId)) setModuleId(null);
                 }}
@@ -147,6 +180,29 @@ export default function Enviar() {
       )}
 
       {step === 2 && (
+        <>
+          <Text style={ui.h2}>Quem vai usar a bancada?</Text>
+          {!students ? (
+            <StateView loading />
+          ) : students.length === 0 ? (
+            <StateView icon="person-add-outline" title="Nenhum aluno ativo" text="Cadastre alunos nesta turma pelo site do professor." />
+          ) : (
+            students.map((s) => (
+              <Row
+                key={s.id}
+                initial={s.nickname || s.name}
+                title={s.name}
+                detail={`${s.nickname} · ID ${shortUid(s.uid)}`}
+                selected={studentId === s.id}
+                onPress={() => setStudentId(s.id)}
+              />
+            ))
+          )}
+          <Nav back={() => setStep(1)} next={() => setStep(3)} disabled={studentId == null} />
+        </>
+      )}
+
+      {step === 3 && (
         <>
           <Text style={ui.h2}>Qual módulo?</Text>
           {!modules ? (
@@ -165,16 +221,21 @@ export default function Enviar() {
               ))}
             </>
           )}
-          <Nav back={() => setStep(1)} next={() => setStep(3)} disabled={moduleId == null} />
+          <Nav back={() => setStep(2)} next={() => setStep(4)} disabled={moduleId == null} />
         </>
       )}
 
-      {step === 3 && (
+      {step === 4 && (
         <>
           <Text style={ui.h2}>Confira e envie</Text>
           <Card>
             <Summary icon="hardware-chip-outline" label="Bancada" value={`${bench?.bench_id ?? ''} · ${benchLabel ?? ''}`} />
-            <Summary icon="people-outline" label="Turma" value={`${pickedClass?.name} · ${pickedClass?.student_count ?? 0} aluno(s)`} />
+            <Summary icon="people-outline" label="Turma" value={pickedClass?.name ?? ''} />
+            <Summary
+              icon="person-outline"
+              label="Aluno na bancada"
+              value={`${pickedStudent?.name} · ${pickedStudent?.nickname} · ID ${pickedStudent ? shortUid(pickedStudent.uid) : ''}`}
+            />
             <Summary
               icon="albums-outline"
               label="Módulo"
@@ -183,12 +244,14 @@ export default function Enviar() {
           </Card>
           {bench?.package && (
             <Text style={ui.muted}>
-              A bancada está com “{bench.package.module_title}”. Ele será trocado; o progresso já salvo continua.
+              A bancada está com “{bench.package.module_title}”
+              {bench.package.student_nickname ? ` para ${bench.package.student_nickname}` : ''}. Será trocado; o progresso já
+              salvo continua.
             </Text>
           )}
           {progress && <SendBar progress={progress} />}
           <Button title="Enviar para a bancada" icon="send" busy={busy} onPress={send} />
-          <Button title="Voltar" icon="arrow-back" variant="outline" disabled={busy} onPress={() => setStep(2)} />
+          <Button title="Voltar" icon="arrow-back" variant="outline" disabled={busy} onPress={() => setStep(3)} />
         </>
       )}
     </ScrollView>

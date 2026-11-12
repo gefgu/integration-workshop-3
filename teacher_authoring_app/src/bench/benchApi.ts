@@ -96,7 +96,8 @@ export function benchApi(base: string, fetchImpl: typeof fetch = (input, init) =
   return {
     status: () => call<BenchStatus>('/status'),
     package: () => call<BenchPackage>('/package'),
-    login: (nfc_code: string) => call<LoginResult>('/login', 'POST', { nfc_code }),
+    /** Enters as the student the teacher picked in the app for this bench (sent with the module). */
+    login: () => call<LoginResult>('/login', 'POST'),
     step: (
       studentId: number,
       body: { lesson_id: string; step_idx: number; lesson_done?: boolean; duration_s?: number }

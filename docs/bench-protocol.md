@@ -83,8 +83,8 @@ Toda mensagem do app traz um `id`. A resposta da bancada repete esse valor em `r
 | App → bancada | Resposta | O que faz |
 |---|---|---|
 | `HELLO {token, protocol}` | `WELCOME {...status}` ou `ERROR bad_token` | O `token` vem de `POST /bench/session`: um HMAC assinado pelo servidor com o segredo compartilhado `TEDTRONICS_BENCH_SECRET`. A bancada confere a assinatura e a validade **offline**. Se estiver tudo certo, desbloqueia a sessão (SFR43, SFR57). |
-| `STATUS` | `STATUS {...}` | Devolve `bench_id`, se a bancada está desbloqueada, o pacote carregado e quantos eventos estão pendentes. |
-| `LOAD_PACKAGE {package}` | `PACKAGE_OK {version_id}` | Recebe o pacote de `GET /bench/package/{módulo}?class_id=`: módulo, documentos das lições com `lessonVersion` e alunos com tag. O pacote novo substitui o anterior. Sessões já abertas continuam na versão em que começaram (SFR58). |
+| `STATUS` | `STATUS {...}` | Devolve `bench_id`, se a bancada está desbloqueada, o pacote carregado (com o `student_nickname` do aluno escolhido) e quantos eventos estão pendentes. |
+| `LOAD_PACKAGE {package}` | `PACKAGE_OK {version_id}` | Recebe o pacote de `GET /bench/package/{módulo}?class_id=&student_id=`: módulo, documentos das lições com `lessonVersion` e o `student` (`id`, `uid`, `name`, `nickname`) que o professor escolheu para usar a bancada. Um pacote sem `student` recebe `ERROR bad_package`. O pacote novo substitui o anterior. Sessões já abertas continuam na versão em que começaram (SFR58). |
 | `PULL_EVENTS {max, after_seq?}` | `EVENTS {events, remaining}` | Devolve até `max` eventos pendentes com `seq > after_seq`, em ordem de `seq` (SFR44). Para paginar, o app envia como `after_seq` o `seq` do último evento recebido. |
 | `ACK_EVENTS {event_ids}` | `ACKED {deleted, pending_events}` | A bancada apaga os eventos que o servidor já confirmou. |
 
@@ -93,7 +93,7 @@ Qualquer mensagem que não seja `HELLO`, enviada antes de um `HELLO` válido, re
 ## Evento
 
 ```json
-{"event_id": "uuid", "student_id": 3, "nfc_code": "TAG-1", "kind": "step_done",
+{"event_id": "uuid", "student_id": 3, "student_uid": "0b9f3c1e-5d1a-4c4e-9a51-2f7d7f0e0a01", "kind": "step_done",
  "seq": 17, "at": "2026-10-20T13:02:11Z", "lesson_id": "l1", "module_id": 2,
  "lesson_version": "a1b2…", "step_idx": 3, "score": null, "duration_s": null}
 ```
@@ -108,7 +108,23 @@ Qualquer mensagem que não seja `HELLO`, enviada antes de um `HELLO` válido, re
 | `quiz_answer` | O aluno respondeu um quiz. |
 | `challenge_score` | O desafio terminou. Traz `score` e `duration_s`. |
 
-Todo evento leva `student_id` **e** `nfc_code` juntos, nunca só a tag (SNFR8).
+Todo evento leva `student_id` **e** `student_uid` juntos (SNFR8). O servidor recusa o evento se o `uid` não for o
+do aluno com aquele `id` (por exemplo, uma bancada carregada a partir de outro banco).
+
+## Quem usa a bancada
+
+Não há tag NFC. Cada aluno tem um `uid` único e permanente: o próprio `id` do aluno no banco, em texto (`"12"`).
+Assim o Neon não precisou de migração: a coluna antiga `students.nfc_code` fica no banco sem uso, e nos eventos de
+progresso o `student_uid` é gravado na coluna antiga `progress_events.nfc_code` (é ela que a função
+`sync_bench_events` do Neon lê).
+No app, o professor escolhe a turma e depois o aluno que vai usar a bancada. Esse aluno vai dentro do pacote,
+junto com as lições, como o campo `student`.
+
+- A tela da bancada mostra "Oi, <apelido>!". O aluno aperta **Entrar**, e a tela chama `POST /login` sem corpo,
+  que devolve o aluno do pacote, o progresso dele e o ponto de retomada.
+- Para passar a bancada a outro aluno, o professor envia o módulo de novo com esse aluno. Quem estava na bancada sai
+  sozinho, mas não no meio de uma lição. Os eventos dele continuam valendo, porque a bancada lembra os alunos que
+  já passaram por ela (`known_students`).
 
 ## Ciclo de sincronização
 
@@ -119,7 +135,7 @@ Todo evento leva `student_id` **e** `nfc_code` juntos, nunca só a tag (SNFR8).
 5. O app envia `ACK_EVENTS` com os ids confirmados. A bancada apaga esses eventos.
 6. Sem internet, a fila fica marcada como "pendente" e o app tenta de novo quando a rede voltar (SFR45, SNFR9).
    A bancada só apaga um evento depois do `ACK_EVENTS`. Se a conexão cair no meio, o pior que acontece é reenviar eventos, e o servidor descarta as duplicatas pelo `event_id` (SFR59).
-7. Se quiser, o professor escolhe um módulo e uma turma, e o app envia `LOAD_PACKAGE`.
+7. Se quiser, o professor escolhe a turma, o aluno que vai usar a bancada e o módulo, e o app envia `LOAD_PACKAGE`.
 
 ## Physical controls on the bench screen
 

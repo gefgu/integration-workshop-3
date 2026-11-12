@@ -582,10 +582,10 @@
   background: var(--color-accent-200);
   color: var(--color-accent-700);
 }
-.bench-shell .bench-hero-nfc {
-  animation: bench-nfc 1.8s ease-in-out infinite;
+.bench-shell .bench-hero-student {
+  animation: bench-student 1.8s ease-in-out infinite;
 }
-@keyframes bench-nfc {
+@keyframes bench-student {
   50% {
     transform: scale(1.08);
     box-shadow: 0 0 0 14px rgba(198, 113, 57, 0.15);
@@ -602,14 +602,16 @@
   margin-top: 20px;
   font-size: 17px;
 }
-.bench-shell .bench-tag-form {
-  display: flex;
-  gap: 10px;
+.bench-shell .bench-enter {
+  display: inline-flex;
   align-items: center;
+  gap: 10px;
+  font-size: 24px;
+  padding: 14px 40px;
 }
-.bench-shell .bench-tag-form .text-input {
-  width: 300px;
-  font-size: 18px;
+.bench-shell .bench-hero-note {
+  font-size: 15px;
+  opacity: 0.75;
 }
 .bench-shell .bench-foot {
   display: flex;

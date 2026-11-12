@@ -1,4 +1,4 @@
-"""Teacher workspace API: lessons, modules, classes, students and their NFC tags.
+"""Teacher workspace API: lessons, modules, classes and students.
 
 Every query is scoped to the signed-in teacher (SFR28), so another teacher's rows answer 404.
 """
@@ -18,7 +18,7 @@ from ..tts import lesson_audio, lesson_phrases
 from . import tts
 from .auth import Me
 from .storage import (
-    ClassLesson, ClassModule, Module, ModuleLesson, SavedLesson, SchoolClass, Student, TagLinkEvent, Teacher,
+    ClassLesson, ClassModule, Module, ModuleLesson, SavedLesson, SchoolClass, Student, Teacher,
     get_session,
 )
 
@@ -52,7 +52,6 @@ class ClassInput(BaseModel):
 class StudentInput(BaseModel):
     name: str = Field(min_length=1, max_length=255)
     nickname: str = Field(min_length=1, max_length=255)
-    nfc_code: str | None = Field(default=None, max_length=255)
     active: bool = True
     class_id: int | None = None  # set to move the student to another of the teacher's classes
 
@@ -60,20 +59,6 @@ class StudentInput(BaseModel):
     @classmethod
     def required_text(cls, value: str) -> str:
         return required("Este campo é obrigatório")(value)
-
-    @field_validator("nfc_code")
-    @classmethod
-    def blank_nfc_is_null(cls, value: str | None) -> str | None:
-        return value.strip() or None if value is not None else None
-
-
-class TagInput(BaseModel):
-    nfc_code: str = Field(min_length=1, max_length=255)
-
-    @field_validator("nfc_code")
-    @classmethod
-    def code_required(cls, value: str) -> str:
-        return required("Informe o código da tag")(value)
 
 
 class StepInput(BaseModel):
@@ -193,7 +178,7 @@ def commit(db: Session) -> None:
         db.commit()
     except IntegrityError as error:
         db.rollback()
-        raise HTTPException(409, "Já existe um registro com este apelido ou código NFC.") from error
+        raise HTTPException(409, "Já existe um registro com este apelido.") from error
 
 
 def class_out(item: SchoolClass) -> dict[str, Any]:
@@ -201,8 +186,8 @@ def class_out(item: SchoolClass) -> dict[str, Any]:
 
 
 def student_out(item: Student) -> dict[str, Any]:
-    return {"id": item.id, "class_id": item.class_id, "name": item.name, "nickname": item.nickname,
-            "nfc_code": item.nfc_code, "active": item.active}
+    return {"id": item.id, "uid": item.uid, "class_id": item.class_id, "name": item.name,
+            "nickname": item.nickname, "active": item.active}
 
 
 def module_out(item: Module) -> dict[str, Any]:
@@ -210,16 +195,6 @@ def module_out(item: Module) -> dict[str, Any]:
             "lesson_ids": [link.lesson_id for link in item.lessons],
             "class_ids": sorted(link.class_id for link in item.classes),
             "updated_at": item.updated_at.isoformat() + "Z"}
-
-
-def log_tag(db: Session, me: Teacher, student: Student, code: str, action: str) -> None:
-    db.add(TagLinkEvent(teacher_id=me.id, student_id=student.id, student_name=student.name, nfc_code=code,
-                        action=action, at=utcnow()))
-
-
-def tag_in_use(db: Session, code: str, student_id: int | None) -> bool:
-    other = db.scalar(select(Student).where(Student.nfc_code == code))
-    return other is not None and other.id != student_id
 
 
 # Lessons ------------------------------------------------------------------------------------------
@@ -278,13 +253,44 @@ def export_lesson(lesson_id: str, db: Db, me: Me) -> Response:
     return tts.zip_response(f"licao-{lesson_id}", "lesson.json", document, {f: f for f in phrases.values()})
 
 
+@router.get("/lessons/{lesson_id}/usage")
+def lesson_usage(lesson_id: str, db: Db, me: Me) -> dict:
+    """Where a lesson is used: the site shows it before deleting (the lesson leaves all of them)."""
+    own_lesson(db, me, lesson_id)
+    modules = db.scalars(select(Module.title).join(ModuleLesson).where(ModuleLesson.lesson_id == lesson_id)
+                         .order_by(Module.title)).all()
+    classes = db.scalars(select(SchoolClass.name).join(ClassLesson).where(ClassLesson.lesson_id == lesson_id)
+                         .order_by(SchoolClass.name)).all()
+    return {"modules": list(modules), "classes": list(classes)}
+
+
+def _close_gap(db: Session, links: list, removed_position: int) -> None:
+    """Shifts the links after a removed one down by one, one row at a time (each position is unique)."""
+    for link in sorted(links, key=lambda item: item.position):
+        if link.position > removed_position:
+            link.position -= 1
+            db.flush()
+
+
 @router.delete("/lessons/{lesson_id}", status_code=204)
 def delete_lesson(lesson_id: str, db: Db, me: Me) -> None:
+    """Deletes the lesson and takes it out of every module and class that used it (the rest keep their order).
+
+    Progress already recorded for it stays: events keep the lesson id and the dashboard still shows them.
+    """
     item = own_lesson(db, me, lesson_id)
-    if db.scalar(select(ClassLesson).where(ClassLesson.lesson_id == lesson_id)):
-        raise HTTPException(409, "Remova esta lição das turmas antes de excluí-la.")
-    if db.scalar(select(ModuleLesson).where(ModuleLesson.lesson_id == lesson_id)):
-        raise HTTPException(409, "Remova esta lição dos módulos antes de excluí-la.")
+    for link in db.scalars(select(ModuleLesson).where(ModuleLesson.lesson_id == lesson_id)).all():
+        module, position = db.get(Module, link.module_id), link.position
+        db.delete(link)
+        db.flush()
+        _close_gap(db, [other for other in module.lessons if other is not link], position)
+        module.updated_at = utcnow()
+        db.expire(module, ["lessons"])  # reload the list in its new order (and without the removed link)
+    for link in db.scalars(select(ClassLesson).where(ClassLesson.lesson_id == lesson_id)).all():
+        class_id, position = link.class_id, link.position
+        db.delete(link)
+        db.flush()
+        _close_gap(db, db.scalars(select(ClassLesson).where(ClassLesson.class_id == class_id)).all(), position)
     db.delete(item)
     commit(db)
 
@@ -429,7 +435,7 @@ def set_class_modules(class_id: int, body: ModuleOrder, db: Db, me: Me) -> dict:
     return {"module_ids": body.module_ids}
 
 
-# Students and NFC tags ----------------------------------------------------------------------------
+# Students ------------------------------------------------------------------------------------------
 
 @router.get("/students")
 def list_students(db: Db, me: Me, class_id: int | None = None) -> list[dict]:
@@ -443,17 +449,8 @@ def list_students(db: Db, me: Me, class_id: int | None = None) -> list[dict]:
 @router.post("/classes/{class_id}/students", status_code=201)
 def create_student(class_id: int, body: StudentInput, db: Db, me: Me) -> dict:
     own_class(db, me, class_id)
-    if body.nfc_code and tag_in_use(db, body.nfc_code, None):
-        raise HTTPException(409, "Esta tag já está vinculada a outro aluno.")
-    item = Student(class_id=class_id, **body.model_dump(exclude={"class_id"}))
+    item = Student(class_id=class_id, **body.model_dump(exclude={"class_id"}))  # uid: assigned here, never edited
     db.add(item)
-    try:
-        db.flush()
-    except IntegrityError as error:
-        db.rollback()
-        raise HTTPException(409, "Já existe um registro com este apelido ou código NFC.") from error
-    if item.nfc_code:
-        log_tag(db, me, item, item.nfc_code, "link")
     commit(db)
     db.refresh(item)
     return student_out(item)
@@ -465,13 +462,6 @@ def update_student(student_id: int, body: StudentInput, db: Db, me: Me) -> dict:
     if body.class_id is not None and body.class_id != item.class_id:
         own_class(db, me, body.class_id)
         item.class_id = body.class_id
-    if body.nfc_code != item.nfc_code:
-        if body.nfc_code and tag_in_use(db, body.nfc_code, item.id):
-            raise HTTPException(409, "Esta tag já está vinculada a outro aluno.")
-        if item.nfc_code:
-            log_tag(db, me, item, item.nfc_code, "unlink")
-        if body.nfc_code:
-            log_tag(db, me, item, body.nfc_code, "link")
     for name, value in body.model_dump(exclude={"class_id"}).items():
         setattr(item, name, value)
     commit(db)
@@ -482,38 +472,3 @@ def update_student(student_id: int, body: StudentInput, db: Db, me: Me) -> dict:
 def delete_student(student_id: int, db: Db, me: Me) -> None:
     db.delete(own_student(db, me, student_id))
     commit(db)
-
-
-@router.post("/students/{student_id}/tag")
-def link_tag(student_id: int, body: TagInput, db: Db, me: Me) -> dict:
-    """Links a fresh tag (SFR30.1, SFR33). The student's history stays tied to the student, not the tag."""
-    item = own_student(db, me, student_id)
-    if item.nfc_code:
-        raise HTTPException(409, "Desvincule a tag atual antes de vincular outra.")
-    if tag_in_use(db, body.nfc_code, item.id):
-        raise HTTPException(409, "Esta tag já está vinculada a outro aluno.")
-    item.nfc_code = body.nfc_code
-    log_tag(db, me, item, body.nfc_code, "link")
-    commit(db)
-    return student_out(item)
-
-
-@router.delete("/students/{student_id}/tag")
-def unlink_tag(student_id: int, db: Db, me: Me) -> dict:
-    """Unlinks the tag without touching progress (SFR32, SAR3) and logs it (SFR34)."""
-    item = own_student(db, me, student_id)
-    if not item.nfc_code:
-        raise HTTPException(409, "Este aluno não tem tag vinculada.")
-    log_tag(db, me, item, item.nfc_code, "unlink")
-    item.nfc_code = None
-    commit(db)
-    return student_out(item)
-
-
-@router.get("/students/{student_id}/tag-history")
-def tag_history(student_id: int, db: Db, me: Me) -> list[dict]:
-    own_student(db, me, student_id)
-    events = db.scalars(select(TagLinkEvent).where(TagLinkEvent.student_id == student_id,
-                                                   TagLinkEvent.teacher_id == me.id)
-                        .order_by(TagLinkEvent.at.desc(), TagLinkEvent.id.desc())).all()
-    return [{"nfc_code": e.nfc_code, "action": e.action, "at": e.at.isoformat() + "Z"} for e in events]

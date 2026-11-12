@@ -11,7 +11,7 @@ database, and do not edit any repository file** — you are a reviewer. Write no
 | Teacher login | `professor@tedtronics.local` / `tedtronics` (isolated database only) |
 
 The isolated database holds the 20 curriculum lessons (ids `curriculo-…`) and 5 modules. A class
-“E2E currículo” with one student (NFC tag `E2E-TAG-1`) is assigned all modules.
+“E2E currículo” with one student (nickname `e2e`, picked for the bench when a module is sent) is assigned all modules.
 
 ## How to drive the UI
 

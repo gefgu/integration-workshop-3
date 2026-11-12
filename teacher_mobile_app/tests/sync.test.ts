@@ -23,7 +23,7 @@ class MemoryStore implements KeyValueStore {
 const event = (seq: number): BenchEvent => ({
   event_id: `evt-${seq}`,
   student_id: 1,
-  nfc_code: 'TAG-1',
+  student_uid: 'uid-1',
   kind: 'step_done',
   seq,
   at: '2026-10-20T10:00:00Z',
@@ -99,7 +99,7 @@ function fakeServer() {
       for (const e of body.events) stored.add(e.event_id);
       return json(200, { acked: body.events.map((e: BenchEvent) => e.event_id), rejected: [], inserted: 0 });
     }
-    if (url.includes('/bench/package/2?class_id=5')) return json(200, { version_id: 'v42', lessons: [{}] });
+    if (url.includes('/bench/package/2?class_id=5&student_id=7')) return json(200, { version_id: 'v42', lessons: [{}] });
     return json(404, { detail: 'Não encontrado.' });
   };
   return { stored, setOnline: (v: boolean) => (online = v), fetchImpl: fetchImpl as typeof fetch };
@@ -171,7 +171,7 @@ test('enviar módulo baixa o pacote do servidor e carrega na bancada', async () 
   await client.hello('ok');
   const api = new Api(new MemoryStore(), fakeServer().fetchImpl);
   await api.setServer('http://server');
-  const pkg = await sendModule(client, api, 2, 5);
+  const pkg = await sendModule(client, api, 2, 5, 7);
   assert.equal(pkg.version_id, 'v42');
   assert.equal(client.status?.package?.version_id, 'v42');
 });

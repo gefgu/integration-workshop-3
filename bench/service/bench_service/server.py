@@ -25,7 +25,7 @@ from .protocol import FrameAssembler, Session, encode_frames
 from .store import BenchStore
 from .vision import VisionSource
 
-NOT_RECOGNIZED = "Tag não reconhecida — chame seu professor."
+NO_STUDENT = "Nenhum aluno escolhido para esta bancada. Peça ao professor para escolher no app."
 LOCKED = "Conecte o app do professor para liberar a bancada."
 
 
@@ -38,10 +38,6 @@ def synthesize_speech(phrase: str) -> Path:
     with _speech_lock:
         files = ensure_audio([phrase], default_synth())
         return audio_dir() / files[normalize(phrase)]
-
-
-class LoginInput(BaseModel):
-    nfc_code: str = Field(min_length=1)
 
 
 class StepInput(BaseModel):
@@ -78,8 +74,7 @@ def create_app(store: BenchStore, dev_unlock: bool = False, vision: VisionSource
     app.state.controls = controls
 
     def student(student_id: int) -> dict[str, Any]:
-        package = store.package()
-        found = next((s for s in (package or {}).get("students", []) if s["id"] == student_id), None)
+        found = store.known_student(student_id)
         if found is None:
             raise HTTPException(404, "Aluno não está no pacote carregado.")
         return found
@@ -115,13 +110,13 @@ def create_app(store: BenchStore, dev_unlock: bool = False, vision: VisionSource
         return loaded
 
     @app.post("/login")
-    def login(body: LoginInput) -> dict:
-        """NFC tag → student, their saved progress and where to resume (SFR35-37)."""
+    def login() -> dict:
+        """The student the teacher picked in the app, their saved progress and where to resume (SFR37)."""
         if not store.is_unlocked():
             raise HTTPException(423, LOCKED)
-        found = store.student_by_tag(body.nfc_code)
+        found = store.student()
         if found is None:
-            raise HTTPException(404, NOT_RECOGNIZED)
+            raise HTTPException(404, NO_STUDENT)
         return {"student": found, "progress": store.progress(found["id"]), "resume": store.resume_point(found["id"])}
 
     @app.post("/students/{student_id}/step")
@@ -290,10 +285,10 @@ def create_app(store: BenchStore, dev_unlock: bool = False, vision: VisionSource
 
         @app.post("/dev/demo")
         def dev_demo_endpoint(package: dict[str, Any]) -> dict:
-            """Demo only: unlock and load a package built by the bench screen (curriculum + demo students).
+            """Demo only: unlock and load a package built by the bench screen (curriculum + a demo student).
             It is marked `demo`, so its events are never queued for the teacher's server."""
             import time
-            if not package.get("lessons") or not package.get("students") or not package.get("module"):
+            if not package.get("lessons") or not package.get("student") or not package.get("module"):
                 raise HTTPException(422, "Pacote de demonstração incompleto.")
             store.load_package({
                 "teacher": {"id": 0, "name": "Modo demonstração"},

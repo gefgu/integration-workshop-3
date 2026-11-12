@@ -46,18 +46,18 @@ class LossyBench implements BenchTransport {
 
 test('a lost PACKAGE_OK is confirmed by STATUS showing the new version', async () => {
   const bench = new LossyBench(true);
-  const sent = await sendModule(new BenchClient(bench, 20), api, 1, 1);
+  const sent = await sendModule(new BenchClient(bench, 20), api, 1, 1, 1);
   assert.equal(sent.version_id, 'v2');
 });
 
 test('a silent link is reconnected once before asking STATUS again', async () => {
   const bench = new LossyBench(true, true);
-  await sendModule(new BenchClient(bench, 20), api, 1, 1);
+  await sendModule(new BenchClient(bench, 20), api, 1, 1, 1);
   assert.equal(bench.reconnects, 1);
 });
 
 test('a package the bench did not load is reported, not taken as sent', async () => {
-  await assert.rejects(sendModule(new BenchClient(new LossyBench(false), 20), api, 1, 1), (error: BenchError) => {
+  await assert.rejects(sendModule(new BenchClient(new LossyBench(false), 20), api, 1, 1, 1), (error: BenchError) => {
     assert.equal(error.code, 'not_loaded');
     return true;
   });
