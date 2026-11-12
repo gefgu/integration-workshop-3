@@ -95,9 +95,11 @@ def _import_visao(profile: str = "current", calibration: str | None = None):
     return (lambda: PipelineAtual(calibration)), para_dict, debug
 
 
-# Provisional saved-picture setting, in V4L2 100 µs units. The physical
-# camera's controls still need a later on-bench calibration.
-DEFAULT_EXPOSURE = 1300.0
+# Normal exposure in V4L2 100 µs units, from the 2026-11-12 live sweep (visao/fixtures/current/
+# live-2026-11-12/sweep): at 1300 the frame is dark (mean 59) and one resistor's bands misread; at 1600
+# (mean 68) all three resistors decode from a normal frame; from 1900 the bands blow out.
+# The camera's other controls still need an on-bench calibration.
+DEFAULT_EXPOSURE = 1600.0
 REQUIRED_CAMERA_CONTROLS = ('gain', 'white_balance_temperature', 'brightness', 'contrast',
                             'saturation', 'gamma', 'power_line_frequency')
 # At 0.7 fps a frame normally takes about 1.4 seconds; allow several slow
@@ -251,8 +253,14 @@ class ExposureRestoreError(RuntimeError):
 # Resistor bands wash out at the normal exposure (glare turns red, brown and orange into one
 # clipped salmon). The bands are read from a few frames at two lower exposures (V4L2 units of
 # 100 µs; the camera's useful range was 600-1300 under the bench lamp) and the exposure is then put back.
-BAND_EXPOSURES = (1000, 1100)
+# On the live bench camera at the normal exposure (DEFAULT_EXPOSURE) all three resistors decode from a
+# normal frame, so no switch is needed (BAND_EXPOSURES empty); the bands are read from a few consecutive
+# frames instead. The switching path below remains for a camera whose normal exposure washes the bands
+# out; set BAND_EXPOSURES to the lower exposures to use it. A blown-out frame is refused by the decoder
+# (never misread), so a lighting change leaves the values unknown rather than wrong.
+BAND_EXPOSURES: tuple[int, ...] = ()
 BAND_FRAMES = 2
+BAND_FRAMES_NORMAL = 3
 BAND_DARKER = .8            # a band frame must be at least this much darker than the normal one
 RESTORE_TOLERANCE = .12     # the restored frame must match the normal brightness within this
 
@@ -278,6 +286,12 @@ def read_bands_frames(cv: Any, cap: Any, locked: float, reference: float) -> tup
     the normal image brightness cannot be restored; never re-lock from auto or
     substitute a camera readback for the commanded value."""
     frames: list[Any] = []
+    if not BAND_EXPOSURES:
+        for _ in range(BAND_FRAMES_NORMAL):
+            ok, frame = cap.read()
+            if ok:
+                frames.append(frame)
+        return frames, locked
     try:
         for exposure in BAND_EXPOSURES:
             cap.set(cv.CAP_PROP_EXPOSURE, exposure)

@@ -45,7 +45,7 @@ class ReplayCamera:
     """V4L2-shaped picture source; never opens a device."""
 
     def __init__(self, directory: Path, width: int, height: int, seed: int,
-                 series: str = 'a', perturb: bool = True, normal_exposure: int = 1300):
+                 series: str = 'a', perturb: bool = True, normal_exposure: int = int(vision.DEFAULT_EXPOSURE)):
         self.directory = Path(directory)
         self.width, self.height, self.seed = width, height, seed
         self.perturb, self.normal_exposure = perturb, normal_exposure
@@ -169,7 +169,13 @@ def replay(directory, frames=35, width=1280, height=720, seed=0, series='a', per
     source._state = state
     fake_time = SimpleNamespace(monotonic=clock.monotonic, time=clock.time, sleep=clock.sleep)
     make_pipeline = lambda: PipelineAtual(clock=clock.monotonic)
+    # A folder captured with the exposure switch (the Nov 11 pictures) says so in expected.json; every
+    # other folder replays with the service's current band-reading mode.
+    expected_file = Path(directory) / 'expected.json'
+    declared = json.loads(expected_file.read_text()).get('band_exposures') if expected_file.exists() else None
+    band_exposures = tuple(declared) if declared is not None else vision.BAND_EXPOSURES
     with patch.object(vision, 'time', fake_time), patch.object(vision, 'open_camera', return_value=camera), \
+            patch.object(vision, 'BAND_EXPOSURES', band_exposures), \
             patch.object(vision, '_import_visao', return_value=(make_pipeline, para_dict, debug)):
         source._run()
     return {'frames': state.published, 'reads': camera.read_log}

@@ -1,4 +1,5 @@
 {
+  "band_exposures": [1000, 1100],
   "description": "Nov 11 bench arrangement; zero-based bank C coordinates. Capacitor may remain unknown and smart mode is unknown.",
   "pieces": [
     {"type": "jumper_3", "row": 0, "a": 4, "b": 7},

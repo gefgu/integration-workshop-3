@@ -5,6 +5,11 @@ import pytest
 import bench_service.vision as vision
 
 
+@pytest.fixture(autouse=True)
+def switching_exposures(monkeypatch):
+    monkeypatch.setattr(vision, 'BAND_EXPOSURES', (1000, 1100))
+
+
 class FakeCv:
     CAP_PROP_EXPOSURE = 15
     CAP_PROP_AUTO_EXPOSURE = 21
@@ -99,3 +104,11 @@ def test_unavailable_readback_does_not_change_commanded_settings():
     settings = vision.CameraSettings(exposure=1500.0)
     settings.apply(FakeCv, cap)
     assert cap.exposure == settings.exposure
+
+
+def test_without_band_exposures_the_normal_frames_are_read_and_the_exposure_is_never_touched(monkeypatch):
+    monkeypatch.setattr(vision, 'BAND_EXPOSURES', ())
+    cap = FakeCamera()
+    frames, locked = vision.read_bands_frames(FakeCv, cap, 1500.0, 100.0)
+    assert len(frames) == vision.BAND_FRAMES_NORMAL and locked == 1500.0
+    assert cap.sets == []

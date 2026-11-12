@@ -6,6 +6,17 @@ from . import config as cfg
 
 
 def resistores_azuis_kit(ret_bgr):
+    """Blue resistor holders found at the normal brightness or, for dim frames, a relaxed one.
+
+    The relaxed pass only adds holders: on the 2026-11-12 live frames at the bench's normal exposure a
+    holder in the jumper's shadow reads V~118, under the strict cutoff of 135. Running the strict pass
+    as well means a brighter frame can never lose a body to the relaxed pass (neighbouring blue regions
+    can merge into one oversize blob at the relaxed cutoff).
+    """
+    return _resistores_azuis(ret_bgr, 135) | _resistores_azuis(ret_bgr, 100)
+
+
+def _resistores_azuis(ret_bgr, valor_minimo):
     """Find a blue two-socket holder carrying the kit's exposed axial resistor.
 
     The 1 kΩ value is a kit configuration assumption, not an optical measurement.
@@ -19,7 +30,7 @@ def resistores_azuis_kit(ret_bgr):
         region = hsv[top:bottom]
         # Keep the holder visible across small exposure changes; the axial
         # body and band checks below are still mandatory for identification.
-        mask = cv.inRange(region, (91, 80, 135), (130, 255, 255))
+        mask = cv.inRange(region, (91, 80, valor_minimo), (130, 255, 255))
         mask = cv.morphologyEx(mask, cv.MORPH_CLOSE, np.ones((7, 35), np.uint8))
         for x, y, width, height, area in cv.connectedComponentsWithStats(mask)[2][1:]:
             if not (90 <= width <= 165 and 25 <= height <= 52 and area >= 1800):
@@ -256,8 +267,14 @@ def suporte_marcado(vistos, linha, coluna_inicial, coluna_final):
 
 
 def corpos_azuis(ret_bgr):
+    """Blue bodies at the normal brightness (V>=150) or a relaxed one (V>=110) for dim frames; see
+    resistores_azuis_kit for why both passes are kept."""
+    return _corpos_azuis(ret_bgr, 150) | _corpos_azuis(ret_bgr, 110)
+
+
+def _corpos_azuis(ret_bgr, valor_minimo):
     hsv = cv.cvtColor(ret_bgr, cv.COLOR_BGR2HSV)
-    mask = cv.inRange(hsv, (85, 80, 150), (130, 255, 255))
+    mask = cv.inRange(hsv, (85, 80, valor_minimo), (130, 255, 255))
     masks = [cv.morphologyEx(mask, cv.MORPH_CLOSE, np.ones((7, width), np.uint8))
              for width in (20, 35)]
     found = set()

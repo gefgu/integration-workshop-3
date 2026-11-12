@@ -21,7 +21,7 @@ def test_replay_camera_uses_exact_saved_exposure_or_labels_synthesis():
     camera.read()
     assert camera.read_log[-1]['source_exposure'] == 1000
     assert camera.read_log[-1]['synthetic_exposure']
-    camera.set(cv.CAP_PROP_EXPOSURE, 1300)
+    camera.set(cv.CAP_PROP_EXPOSURE, 1600)
     camera.read()
     assert camera.read_log[-1]['normal_exposure_assumed']
     assert camera.read_log[-1]['source_exposure'] is None
@@ -64,7 +64,7 @@ def test_full_service_loop_replays_saved_images_without_opening_camera(monkeypat
     assert len(result['frames']) == 3
     assert all(frame['frame_size'] == [1280, 720] for frame in result['frames'])
     assert all('updated_at' in frame for frame in result['frames'])
-    assert {read['requested_exposure'] for read in result['reads']} >= {1000, 1100, 1300}
+    assert {read['requested_exposure'] for read in result['reads']} >= {1000, 1100, 1600}
 
 
 def test_normal_saved_picture_publication_snapshot():
@@ -78,7 +78,7 @@ def test_service_replay_does_not_use_stale_exposure_readback(monkeypatch):
     expected = json.loads((FIXTURES / 'snapshot-normal.json').read_text())[:3]
     actual = replay(FIXTURES, frames=3, width=1280, height=720, perturb=False)
     assert actual['frames'] == expected
-    assert {read['requested_exposure'] for read in actual['reads']} >= {1000, 1100, 1300}
+    assert {read['requested_exposure'] for read in actual['reads']} >= {1000, 1100, 1600}
 
 
 import pytest
