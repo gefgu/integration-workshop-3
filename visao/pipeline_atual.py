@@ -27,6 +27,8 @@ MAX_ESTADO_OBSERVACAO_FRAMES = 1
 # loses the value at once instead of waiting for the next re-read.
 MIN_ASSINATURA = .80
 
+log = __import__('logging').getLogger('visao.valores')
+
 
 def assinatura_corpo(retificada, linha, coluna):
     """Zero-mean, unit-norm HSV thumbnail of the body at (row, column), or None."""
@@ -80,6 +82,15 @@ class PipelineAtual:
         self.empty_last_seen.clear()
         self.previous = None
         self.generation = None
+
+    def _nota(self, pos, motivo):
+        """Log (warning level, so the service shows it) why a read value is held back or lost,
+        once per change of reason for a position; None clears the position's last reason."""
+        anteriores = self.__dict__.setdefault('motivos_valor', {})
+        if anteriores.get(pos) != motivo:
+            if motivo is not None:
+                log.warning('resistor %s: %s (frame %s)', pos, motivo, self.frame_index)
+            anteriores[pos] = motivo
 
     def precisa_bandas(self):
         """True when a visible blue body has no recent band reading (the caller then
@@ -139,6 +150,9 @@ class PipelineAtual:
                 out[pos] = decoded[0]
             else:
                 if len(set(decoded)) > 1 or pos in self.valores_resistor:
+                    if pos in self.valores_resistor:
+                        self._nota(pos, 'valor perdido na releitura: %d de %d quadros decodificaram (%s)'
+                                   % (len(decoded), len(reads), sorted(set(decoded))))
                     self.valores_resistor.pop(pos, None)
                 self._falhou_bandas(pos, now)
                 out[pos] = None
@@ -195,11 +209,14 @@ class PipelineAtual:
                     stored, current = self.valores_resistor[pos].get('assinatura'), self.assinaturas[pos]
                     if stored is None or current is None or float(stored @ current) < MIN_ASSINATURA:
                         # A different (or unreadable) body now sits where the bands were read.
+                        self._nota(pos, 'valor perdido: aparência do corpo mudou (assinatura %s)'
+                                   % ('ausente' if stored is None or current is None else '%.2f' % float(stored @ current)))
                         del self.valores_resistor[pos]
                         self.tentativa_bandas.pop(pos, None)
                         continue
                     self.valores_resistor[pos]['visto_em'] = now
                 elif now - self.valores_resistor[pos]['visto_em'] > ESQUECE_VALOR_FRAMES:
+                    self._nota(pos, 'valor perdido: corpo azul não foi visto por mais de %d quadros' % ESQUECE_VALOR_FRAMES)
                     del self.valores_resistor[pos]
             # A body whose bands were read keeps its value (the reading is position
             # based and expires if the body leaves); the rest stay unknown.
@@ -263,7 +280,12 @@ class PipelineAtual:
                          and suporte_marcado(seen[0], row, col, col + 1))}
             # A read resistor that lacks distributed socket support is not published
             # with its value; it is still a visible, unidentified body.
+            for pos in sorted(read_blue):
+                if pos in found:
+                    self._nota(pos, None)
             for row, col in sorted((found_raw - found) & read_blue):
+                self._nota((row, col), 'valor mantido, mas não publicado: poucos sockets visíveis ao redor (%d marcados)'
+                           % int(seen[0][max(0, row - 2):row + 3, max(0, col - 3):col + 5].sum()))
                 result.pecas_sem_tipo.append({'metade': 'C', 'linha': row,
                                                'colunas': [col, col + 1], 'atualidade': 'fresh'})
             empty = {(row, col) for row in range(6) for col in range(11)
