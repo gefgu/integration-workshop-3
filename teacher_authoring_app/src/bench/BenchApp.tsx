@@ -670,6 +670,7 @@ function LessonScreen({
         voiceMuted={muted}
         livePieces={vision.available ? (vision.pieces ?? NO_PIECES) : null}
         liveUncertain={!!vision.available && (!vision.valid || !!vision.uncertain || !!otherUnknown)}
+        liveProgressUncertain={!!vision.available && (!vision.valid || !!otherUnknown)}
         smartReady={!smartLesson || (smartVisible && smartSlots.length > 0)}
         visionVersion={vision.available ? vision.version : undefined}
         barExtra={<><CameraStatus vision={vision} />{smartLesson && <span role="status"> {smartVisible ? 'Câmera: inteligente visto' : 'Câmera: aguardando inteligente'} · {smartSlots.length ? `ESP32: tela responde (slot ${smartSlots.join(', ')})` : 'ESP32: aguardando tela'}</span>}</>}

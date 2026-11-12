@@ -15,6 +15,7 @@ import { cameraLessonPieces } from './cameraPolarity.ts';
 import { boardBefore, buildPhases, challengeScore, type PlayerEvent } from './phases.ts';
 import { useLab } from './useLab.ts';
 import { serviceUrl } from '../bench/benchApi.ts';
+import { stepVisionBlocked } from './visionGate.ts';
 
 export { boardBefore, buildPhases, challengeScore, type PlayerEvent };
 
@@ -206,6 +207,7 @@ export default function LessonPlayer({
   debug,
   livePieces = null,
   liveUncertain = false,
+  liveProgressUncertain = liveUncertain,
   visionVersion,
   smartReady = true,
   barExtra,
@@ -227,6 +229,7 @@ export default function LessonPlayer({
   /** bench with the camera on: what the camera sees on the real board (the screen board only mirrors it) */
   livePieces?: any[] | null;
   liveUncertain?: boolean;
+  liveProgressUncertain?: boolean;
   visionVersion?: number;
   smartReady?: boolean;
   /** extra content in the bench's top bar (the camera status) */
@@ -460,6 +463,7 @@ export default function LessonPlayer({
                         mascotKind={mascotKind}
                         bench
                         liveUncertain={liveUncertain}
+                        liveProgressUncertain={liveProgressUncertain}
                         physicalLive={livePieces !== null}
                         visionVersion={visionVersion}
                         smartReady={smartReady}
@@ -510,6 +514,7 @@ export default function LessonPlayer({
                         bench={bench}
                         autoBuild={bench && !livePieces && lesson.kind !== 'challenge' && phase.type === 'step'}
                         liveUncertain={liveUncertain}
+                        liveProgressUncertain={liveProgressUncertain}
                         physicalLive={livePieces !== null}
                         visionVersion={visionVersion}
                         smartReady={smartReady}
@@ -785,6 +790,7 @@ function BuildStep({
   bench = false,
   autoBuild = false,
   liveUncertain = false,
+  liveProgressUncertain = liveUncertain,
   physicalLive = false,
   visionVersion,
   smartReady = true,
@@ -857,7 +863,8 @@ function BuildStep({
 
   const looseLeft = pieces.some((p) => p.loose);
   // The circuit matches; the lesson may also want to see it work (energized and lit) with firm contacts.
-  const built = !!res?.approved && !looseLeft && !liveUncertain && (!final || smartReady);
+  const stepUncertain = stepVisionBlocked(final, liveUncertain, liveProgressUncertain);
+  const built = !!res?.approved && !looseLeft && !stepUncertain && (!final || smartReady);
   const physicalLesson = bench && /^curriculo-(?:03-guiada-1k|teste-voltimetro-buzzer)(?:-p\d+)?$/.test(lesson.id);
   const physicalAllowed = physicalLesson && physicalLive && final && built && diag.code === 'valido' && !expired && visionVersion != null;
   const requestedVersion = useRef<number | undefined>(undefined);
@@ -903,7 +910,7 @@ function BuildStep({
   if (final && !smartReady) {
     tone = 'obs';
     msg = 'Aguardando a câmera ver o componente inteligente e o ESP32 confirmar resposta da tela.';
-  } else if (liveUncertain) {
+  } else if (stepUncertain) {
     tone = 'obs';
     msg = 'A câmera está confirmando as peças. Aguarde uma leitura confiável.';
   } else if (expired) {
