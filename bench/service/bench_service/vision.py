@@ -120,10 +120,11 @@ REMOVAL_CONFIRM_FRAMES = 2
 class PieceHold:
     """Keep confirmed pieces on the display until their location is visibly empty."""
 
-    def __init__(self) -> None:
+    def __init__(self, demo_assume_1k: bool = False) -> None:
         self.pieces: dict[str, dict[str, Any]] = {}
         self.empty_counts: dict[str, int] = {}
         self.generation = None
+        self.demo_assume_1k = demo_assume_1k
 
     def update(self, pieces: list[dict[str, Any]], result: Any) -> tuple[list[dict[str, Any]], bool]:
         generation = result.registro.get('generation') if result.registro.get('valido') else None
@@ -133,6 +134,17 @@ class PieceHold:
         if generation is not None:
             self.generation = generation
         fresh = {piece['id']: piece for piece in pieces} if result.valido else {}
+        if self.demo_assume_1k:
+            # In this one-LED demo, a fresh adjacent detection supersedes the
+            # previously held position rather than displaying both positions.
+            for ident, old in list(self.pieces.items()):
+                if ident not in fresh and old['type'] == 'led' and any(
+                    p['type'] == 'led' and p['a'] == old['a'] and p['b'] == old['b']
+                    and p['row'] // BANK_ROWS == old['row'] // BANK_ROWS
+                    and abs(p['row'] - old['row']) == 1 for p in fresh.values()
+                ):
+                    del self.pieces[ident]
+                    self.empty_counts.pop(ident, None)
         self.pieces.update(fresh)
         # A visible but untyped body supersedes a held resistor value. This
         # includes a failed band re-read or a changed appearance signature;
@@ -159,7 +171,8 @@ class PieceHold:
             )
             if visible_empty:
                 self.empty_counts[ident] = self.empty_counts.get(ident, 0) + 1
-                if self.empty_counts[ident] >= REMOVAL_CONFIRM_FRAMES:
+                threshold = 8 if self.demo_assume_1k else REMOVAL_CONFIRM_FRAMES
+                if self.empty_counts[ident] >= threshold:
                     del self.pieces[ident]
                     del self.empty_counts[ident]
                     continue
@@ -456,7 +469,7 @@ class VisionSource:
                 return
             locked_exposure = settings.exposure
         pipeline = make_pipeline()
-        held = PieceHold()
+        held = PieceHold(self.demo_assume_1k)
         from visao import config as vision_config
         self._set(stable_frames=vision_config.FRAMES_ESTAVEIS)
         period = 1.0 / 5
@@ -468,7 +481,7 @@ class VisionSource:
                 if self._recalibrate.is_set():
                     self._recalibrate.clear()
                     pipeline.recalibrar()
-                    held = PieceHold()
+                    held = PieceHold(self.demo_assume_1k)
                 if still is not None:
                     frame = still.copy()
                 else:

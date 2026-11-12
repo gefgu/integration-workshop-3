@@ -57,6 +57,21 @@ class PieceHoldTest(unittest.TestCase):
         self.result.pecas_sem_tipo = []
         self.assertEqual(self.update([]), ([], False))
 
+    def test_demo_holds_brief_empty_readings_and_replaces_old_led_position(self):
+        self.hold = PieceHold(demo_assume_1k=True)
+        self.update([self.piece])
+        self.result.atualidade[0, 3, 6:8] = 'fresh'
+        self.result.observacoes[0, 3, 6:8] = 'empty'
+        for _ in range(7):
+            self.assertEqual(self.update([]), ([self.piece], True))
+        new = dict(self.piece, id='moved-led', row=3)
+        self.assertEqual(self.update([new]), ([new], False))
+        self.result.atualidade[0, 2, 6:8] = 'fresh'
+        self.result.observacoes[0, 2, 6:8] = 'empty'
+        for _ in range(7):
+            self.assertEqual(self.update([]), ([new], True))
+        self.assertEqual(self.update([]), ([], False))
+
 
 if __name__ == '__main__':
     unittest.main()
