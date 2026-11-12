@@ -29,7 +29,8 @@ SKIP_DIRS = {"__pycache__", "tests", ".pytest_cache", "images", "fixtures"}
 SKIP_SUFFIXES = {".pyc", ".sqlite3"}
 # Test photos are left out, except the reference photo that visao/calibracao.py matches features against
 # (calibra_por_referencia) when the grid edges are not all visible.
-KEEP_FILES = {"visao/fixtures/current/frame-00.jpg", "visao/fixtures/current/reference-completed.jpg"}
+KEEP_FILES = {"visao/fixtures/current/frame-00.jpg", "visao/fixtures/current/reference-completed.jpg",
+              "visao/fixtures/current/bench-2026-11-11/normal-1.jpg"}
 
 
 def build_ui() -> None:
