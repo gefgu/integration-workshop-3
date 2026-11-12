@@ -17,8 +17,8 @@ def main() -> None:
     parser.add_argument("--ble", action="store_true",
                         help="also run the BLE GATT peripheral (BlueZ, pip install -e '.[ble]')")
     parser.add_argument("--adapter", default=None, help="Bluetooth adapter for --ble, e.g. hci0")
-    parser.add_argument("--camera", type=int, default=None,
-                        help="read the board with the vision pipeline from this camera index (pip install -e '.[vision]')")
+    parser.add_argument("--camera", default=None,
+                        help="camera index or persistent /dev/v4l/by-id path (pip install -e '.[vision]')")
     parser.add_argument("--vision-image", default=None, help="demo: run the vision pipeline on this photo in a loop")
     parser.add_argument("--record", default=None, metavar="DIR",
                         help="record original MJPEG camera frames and control commands for later replay")

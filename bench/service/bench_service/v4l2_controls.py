@@ -11,9 +11,10 @@ VIDIOC_G_CTRL = 0xC008561B
 VIDIOC_S_CTRL = 0xC008561C
 
 
-def set_power_line_frequency(camera_index: int, value: int) -> int:
+def set_power_line_frequency(camera_index: int | str, value: int) -> int:
     """Command a V4L2 menu value and return readback for logging only."""
-    descriptor = os.open(f'/dev/video{camera_index}', os.O_RDWR | os.O_NONBLOCK)
+    path = f'/dev/video{camera_index}' if isinstance(camera_index, int) else camera_index
+    descriptor = os.open(path, os.O_RDWR | os.O_NONBLOCK)
     try:
         request = bytearray(struct.pack('=Ii', V4L2_CID_POWER_LINE_FREQUENCY, int(value)))
         fcntl.ioctl(descriptor, VIDIOC_S_CTRL, request, True)

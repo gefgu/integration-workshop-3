@@ -15,6 +15,7 @@ import numpy as np
 
 from .v4l2_controls import set_power_line_frequency
 from .vision import CameraSettings, open_camera
+from .camera_device import camera_argument
 
 EXPOSURES = (600, 700, 800, 900, 1000, 1100, 1300)
 REQUIRED = ('gain', 'white_balance_temperature', 'brightness', 'contrast', 'saturation',
@@ -52,7 +53,7 @@ def sweep_exposure(cv_module, cap, exposures=EXPOSURES, target=100.0, settle_fra
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--camera', type=int, required=True)
+    parser.add_argument('--camera', type=camera_argument, required=True)
     parser.add_argument('--base-settings', required=True, type=Path,
                         help='JSON with gain, white balance, brightness, contrast, saturation, gamma and power line')
     parser.add_argument('--output', required=True, type=Path, help='new JSON file; never overwrites an existing file')

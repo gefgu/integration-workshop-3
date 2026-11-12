@@ -67,7 +67,7 @@ def main() -> None:
     parser.add_argument("--port", type=int, default=8765)
     parser.add_argument("--host", default="0.0.0.0", help="0.0.0.0 lets the teacher app connect over Wi-Fi")
     camera = parser.add_mutually_exclusive_group()
-    camera.add_argument("--camera", type=int, default=0, help="camera index for the vision pipeline (default 0)")
+    camera.add_argument("--camera", default='0', help="camera index or persistent /dev/v4l/by-id path (default 0)")
     camera.add_argument("--no-camera", action="store_true", help="no camera: the board is simulated on screen")
     camera.add_argument("--vision-image", help="demo: run the vision pipeline on this photo in a loop")
     camera.add_argument("--vision-profile", choices=("current", "legacy"), default=None,

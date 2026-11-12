@@ -175,7 +175,7 @@ def fps_from(times: "deque[float] | list[float]") -> float | None:
     return round((len(times) - 1) / (times[-1] - times[0]), 1)
 
 
-def open_camera(cv: Any, index: int) -> Any:
+def open_camera(cv: Any, index: int | str) -> Any:
     """Same opening as `python -m visao --camera`: V4L2 + MJPG, so a USB camera gives 1280x720, not 640x480."""
     from visao.__main__ import abre_camera
     return abre_camera(index, False)
@@ -322,7 +322,7 @@ def read_bands_frames(cv: Any, cap: Any, locked: float, reference: float) -> tup
 class VisionSource:
     """Runs the vision pipeline on a camera index or a still image in a daemon thread."""
 
-    def __init__(self, camera: int | None = None, image: str | None = None,
+    def __init__(self, camera: int | str | None = None, image: str | None = None,
                  profile: str = "current", calibration: str | None = None,
                  record: str | None = None, camera_settings: str | None = None) -> None:
         if profile not in ("current", "legacy"):
@@ -333,6 +333,7 @@ class VisionSource:
         self.profile, self.calibration = profile, calibration
         self.record = record
         self.camera_settings = camera_settings
+        self._record_session = 0
         self._lock = threading.Lock()
         self._recalibrate = threading.Event()
         self._stop = threading.Event()
@@ -379,6 +380,30 @@ class VisionSource:
             self._state.update(changes)
 
     def _run(self) -> None:
+        from .camera_device import persistent_camera, has_persistent_identity
+        if not self.image:
+            self.camera = persistent_camera(self.camera if self.camera is not None else 0)
+            log.info('camera pinned to %s', self.camera)
+            if isinstance(self.camera, str):
+                self._set(camera_device=self.camera)
+        while not self._stop.is_set():
+            self._retry_camera = False
+            self._run_once()
+            if self.image or not self._retry_camera or self._stop.is_set():
+                return
+            # Without a persistent identity, reusing an index after unplugging
+            # could silently open a different camera. Refuse that fallback.
+            if not has_persistent_identity(self.camera):
+                self._set(reason='Câmera desconectada; configure um caminho persistente para reconectar.')
+                return
+            self._set(valid=False, pieces=[], unknown=[], updated_at=None, confirming=0, uncertain=True)
+            with self._lock:
+                self._jpeg = None
+            log.warning('camera disconnected; retrying the same device %s', self.camera)
+            if self._stop.wait(1.0):
+                return
+
+    def _run_once(self) -> None:
         try:
             import cv2 as cv
             make_pipeline, para_dict, debug = _import_visao(self.profile, self.calibration)
@@ -394,12 +419,17 @@ class VisionSource:
         if still is None:
             cap = open_camera(cv, self.camera or 0)
             if not cap.isOpened():
+                cap.release()
+                self._retry_camera = True
                 self._set(available=False, reason="Nenhuma câmera encontrada. Confira o cabo da câmera.")
                 return
             if self.record:
                 from .recorder import RecordingCamera
                 try:
-                    cap = RecordingCamera(cv, cap, self.record)
+                    directory = (Path(self.record) / f'reconnect-{self._record_session:04d}'
+                                 if self._record_session else Path(self.record))
+                    cap = RecordingCamera(cv, cap, directory)
+                    self._record_session += 1
                 except (OSError, RuntimeError) as error:
                     cap.release()
                     self._set(valid=False, reason=f"Não consegui gravar a câmera: {error}")
@@ -427,7 +457,7 @@ class VisionSource:
         self._set(stable_frames=vision_config.FRAMES_ESTAVEIS)
         period = 1.0 / 5
         times: deque[float] = deque(maxlen=25)
-        self._set(running=True)
+        self._set(available=True, running=True)
         try:
             while not self._stop.is_set():
                 started = time.monotonic()
@@ -440,9 +470,10 @@ class VisionSource:
                 else:
                     ok, frame = cap.read()
                     if not ok:
-                        self._set(valid=False, reason="Falha ao ler a câmera.")
-                        time.sleep(period)
-                        continue
+                        self._retry_camera = True
+                        self._set(valid=False, reason="Câmera desconectada; tentando reconectar.",
+                                  pieces=[], unknown=[], updated_at=None)
+                        break
                 result = pipeline.processa(frame)
                 recalibrating = False
                 times.append(time.monotonic())
@@ -488,6 +519,7 @@ class VisionSource:
                     continue
                 time.sleep(max(0.0, period - (time.monotonic() - started)))
         except (OSError, RuntimeError) as error:
+            self._retry_camera = not bool(self.image)
             log.exception('vision capture failed')
             self._set(valid=False, reason=f'Falha na captura: {error}', pieces=[], unknown=[])
         finally:

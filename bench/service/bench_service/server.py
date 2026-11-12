@@ -361,7 +361,8 @@ def default_app() -> FastAPI:
     calibration = os.getenv("TEDTRONICS_BENCH_CALIBRATION") or None
     record = os.getenv("TEDTRONICS_BENCH_RECORD") or None
     camera_settings = os.getenv("TEDTRONICS_BENCH_CAMERA_SETTINGS") or None
-    vision = (VisionSource(int(camera) if camera else None, image, profile, calibration, record, camera_settings).start()
+    from .camera_device import camera_argument
+    vision = (VisionSource(camera_argument(camera) if camera else None, image, profile, calibration, record, camera_settings).start()
               if camera or image else None)
     controls = ControlsHub()
     port = os.getenv("TEDTRONICS_BENCH_CONTROLS")  # "auto" (USB or GPIO), /dev/ttyUSB0, /dev/serial0, COM4

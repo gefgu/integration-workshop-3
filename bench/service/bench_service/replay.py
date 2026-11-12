@@ -175,6 +175,7 @@ def replay(directory, frames=35, width=1280, height=720, seed=0, series='a', per
     declared = json.loads(expected_file.read_text()).get('band_exposures') if expected_file.exists() else None
     band_exposures = tuple(declared) if declared is not None else vision.BAND_EXPOSURES
     with patch.object(vision, 'time', fake_time), patch.object(vision, 'open_camera', return_value=camera), \
+            patch('bench_service.camera_device.persistent_camera', side_effect=lambda selected: selected), \
             patch.object(vision, 'BAND_EXPOSURES', band_exposures), \
             patch.object(vision, '_import_visao', return_value=(make_pipeline, para_dict, debug)):
         source._run()
