@@ -12,6 +12,7 @@ from __future__ import annotations
 import logging
 import json
 import math
+import os
 import sys
 import threading
 import time
@@ -333,6 +334,7 @@ class VisionSource:
         self.profile, self.calibration = profile, calibration
         self.record = record
         self.camera_settings = camera_settings
+        self.demo_assume_1k = os.getenv('TEDTRONICS_DEMO_ASSUME_1K') == '1'
         self._record_session = 0
         self._lock = threading.Lock()
         self._recalibrate = threading.Event()
@@ -344,6 +346,8 @@ class VisionSource:
                                        "updated_at": None}
         self._jpeg: bytes | None = None
         self._thread = threading.Thread(target=self._run, name="vision", daemon=True)
+        if self.demo_assume_1k:
+            self._state['resistor_value_assumed'] = '1k'
 
     def start(self) -> "VisionSource":
         self._thread.start()

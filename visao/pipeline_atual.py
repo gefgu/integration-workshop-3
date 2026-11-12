@@ -1,6 +1,7 @@
 """Conservative reader for the currently assembled half of the board."""
 import cv2 as cv
 import numpy as np
+import os
 
 from . import config as cfg
 from .calibracao import RegistradorParcial
@@ -51,6 +52,7 @@ class PipelineAtual:
         self.frame_index = 0
         self.registrador = RegistradorParcial(calibracao, clock=lambda: self.frame_index / 5)
         self.temporal = temporal
+        self.demo_assume_1k = os.getenv('TEDTRONICS_DEMO_ASSUME_1K') == '1'
         self.counts = {}
         self.previous = None
         self.last_seen = {}
@@ -97,7 +99,7 @@ class PipelineAtual:
         lowers the exposure and calls `registra_bandas`). Failed readings are retried
         only after RETENTA_BANDAS_FRAMES, so a body without bands (the capacitor) does not
         keep stalling the camera."""
-        if not (self.geracao_valida and self.corpos_visiveis):
+        if self.demo_assume_1k or not (self.geracao_valida and self.corpos_visiveis):
             return False
         now = self.frame_index
         for pos in sorted(self.corpos_visiveis):
@@ -226,6 +228,12 @@ class PipelineAtual:
                 if pos in visible_blue and (stored is None or current is None
                                             or float(stored @ current) < MIN_ASSINATURA):
                     del self.tentativa_bandas[pos]
+            if self.demo_assume_1k:
+                for pos in resistor_blue_raw:
+                    signature = self.assinaturas.get(pos)
+                    if signature is not None:
+                        self.valores_resistor[pos] = {'valor': 1000, 'lido_em': now,
+                                                      'visto_em': now, 'assinatura': signature}
             read_blue = {pos for pos in visible_blue if pos in self.valores_resistor}
             # No value is assumed: a blue body whose bands were not read stays unknown,
             # even when it is the only one on the board.
