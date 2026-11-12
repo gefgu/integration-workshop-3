@@ -93,3 +93,41 @@ def test_power_line_control_uses_v4l2_ioctl_without_opening_a_device(monkeypatch
     assert calls[0] == '/dev/video3'
     assert calls[1] == (42, v4l2_controls.VIDIOC_S_CTRL, (v4l2_controls.V4L2_CID_POWER_LINE_FREQUENCY, 2))
     assert calls[-1] == ('close', 42)
+
+
+class NoAutoWhiteBalance(FakeCamera):
+    """The bench's USB camera: no auto white-balance switch (readback -1, set refused)."""
+
+    def set(self, prop, value):
+        if prop == cv.CAP_PROP_AUTO_WB:
+            return False
+        return super().set(prop, value)
+
+    def get(self, prop):
+        return -1.0 if prop == cv.CAP_PROP_AUTO_WB else -999
+
+
+def test_missing_auto_white_balance_switch_does_not_stop_the_explicit_controls():
+    fake = NoAutoWhiteBalance()
+    CameraSettings(exposure=1300, white_balance_temperature=4500).apply(cv, fake)
+    assert (cv.CAP_PROP_EXPOSURE, 1300) in fake.controls
+    assert (cv.CAP_PROP_WB_TEMPERATURE, 4500) in fake.controls
+
+
+def test_other_refused_controls_and_a_supported_refused_switch_still_fail_closed():
+    class RefusesExposure(FakeCamera):
+        def set(self, prop, value):
+            return False if prop == cv.CAP_PROP_EXPOSURE else super().set(prop, value)
+
+    with pytest.raises(RuntimeError, match='rejected'):
+        CameraSettings(exposure=1300).apply(cv, RefusesExposure())
+
+    class RefusesSupportedSwitch(FakeCamera):
+        def set(self, prop, value):
+            return False if prop == cv.CAP_PROP_AUTO_WB else super().set(prop, value)
+
+        def get(self, prop):
+            return 1.0  # the switch exists and reads a real value
+
+    with pytest.raises(RuntimeError, match='rejected'):
+        CameraSettings(exposure=1300).apply(cv, RefusesSupportedSwitch())

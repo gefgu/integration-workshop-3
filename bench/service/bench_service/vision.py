@@ -224,6 +224,14 @@ class CameraSettings:
             log.info('camera control %s: requested %s, accepted %s, readback %s',
                      prop, value, accepted, readback)
             if not accepted:
+                # Some UVC cameras (the bench's USB camera) have no automatic white-balance or
+                # focus switch at all: the property reads -1 and the set is refused. The fixed
+                # value commanded next still applies, so this is not a failure. Any other
+                # rejected control, or a refusal of a supported switch, still fails closed.
+                if name in OPTIONAL_SWITCHES and readback == -1:
+                    log.warning('camera has no %s control (readback -1); continuing with the explicit values',
+                                name)
+                    continue
                 raise RuntimeError(f'camera rejected control {prop}={value}')
         if self.power_line_frequency is not None:
             if set_power_line is None:
@@ -231,6 +239,9 @@ class CameraSettings:
             readback = set_power_line(self.power_line_frequency)
             log.info('camera power-line frequency: requested %s, readback %s',
                      self.power_line_frequency, readback)
+
+
+OPTIONAL_SWITCHES = frozenset({'CAP_PROP_AUTO_WB', 'CAP_PROP_AUTOFOCUS'})
 
 
 class ExposureRestoreError(RuntimeError):
