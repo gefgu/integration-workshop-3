@@ -8,9 +8,9 @@ export const BENCH_TOURS: Record<string, TourStep[]> = {
       text: 'Você monta circuitos de verdade na protoboard, e a tela te guia passo a passo. Use o joystick para andar (setas) e aperte para confirmar.',
     },
     {
-      target: '.bench-hero-nfc',
-      title: 'Sua tag',
-      text: 'Aproxime a sua tag do leitor para entrar. A bancada lembra onde você parou.',
+      target: '.bench-hero-student',
+      title: 'Sua vez',
+      text: 'O professor escolhe no app quem usa a bancada. Confira o seu nome e aperte Entrar. A bancada lembra onde você parou.',
     },
     {
       target: '.bench-foot',

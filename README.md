@@ -16,10 +16,10 @@ Project documentation (blog, project description, requirements, budget, risk ana
 
 | Part | Folder | What it does |
 |---|---|---|
-| Server API | `graph_validator/` | FastAPI + SQLite (Alembic): teacher accounts, lessons, modules, classes, students, NFC tags (with audit log), bench sync, dashboard, and the graph validator. |
-| Teacher website | `teacher_authoring_app/` (`index.html`) | Phone-first React site: sign-up/login, lesson editor, modules, classes, students and tags, performance dashboard. |
-| Teacher app | `teacher_mobile_app/` | Expo / React Native: login, classes and students, connect to a bench (Bluetooth or simulator), send a module, sync progress, offline queue. |
-| Bench | `bench/service/` + `teacher_authoring_app/bench.html` | Bench service (local storage, protocol, local validation) and the 7" screen: tag login, guided lesson, challenge, score and top-3 ranking. |
+| Server API | `graph_validator/` | FastAPI + SQLite (Alembic): teacher accounts, lessons, modules, classes, students (each with a unique `uid`), bench sync, dashboard, and the graph validator. |
+| Teacher website | `teacher_authoring_app/` (`index.html`) | Phone-first React site: sign-up/login, lesson editor, modules, classes, students (with their unique ID), performance dashboard. |
+| Teacher app | `teacher_mobile_app/` | Expo / React Native: login, classes and students, connect to a bench (Bluetooth or simulator), pick the class and the student who will use the bench, send a module, sync progress, offline queue. |
+| Bench | `bench/service/` + `teacher_authoring_app/bench.html` | Bench service (local storage, protocol, local validation) and the 7" screen: the student the teacher picked enters, guided lesson, challenge, score and top-3 ranking. |
 | Protocol | `protocol/bench.ts`, `docs/bench-protocol.md` | App ⇄ bench messages, framed for BLE; the simulator carries the same frames over WebSocket. |
 
 ### Setup
@@ -36,9 +36,9 @@ The demo teacher created by the migration is `professor@tedtronics.local` / `ted
 
 ### End-to-end demo
 
-1. On the website: sign up → create lessons (one guided, one challenge) → **Módulos**: create a module with them and tick the class → **Alunos**: register students and link a tag code (e.g. `TAG-1`).
-2. In the app: log in → **Bancada** → **Simulador** → `<pc>:8765` → **Enviar módulo** (module + class). Without the phone, the bench screen's "Modo demonstração" unlocks it, but no module is loaded.
-3. On `bench.html`: type `TAG-1` + Enter (a USB NFC reader types the same way) → do the lesson → leave halfway and come back: it resumes at the same step → the challenge shows the score and the top 3.
+1. On the website: sign up → create lessons (one guided, one challenge) → **Módulos**: create a module with them and tick the class → **Alunos**: register students (each gets a unique ID).
+2. In the app: log in → **Bancada** → **Simulador** → `<pc>:8765` → **Levar aula** (class → student who will use the bench → module). Without the phone, the bench screen's "Modo demonstração" loads a curriculum module with demo students.
+3. On `bench.html`: the screen greets the chosen student → **Entrar** → do the lesson → leave halfway and come back: it resumes at the same step → the challenge shows the score and the top 3. To hand the bench to another student, send the module again for them from the app (the bench switches students; the previous one's progress is kept).
 4. In the app: **Sincronizar progresso** (with no internet, the data waits on the phone and goes up later) → the website's **Painel** shows progress, score and time.
 
 ### Tests

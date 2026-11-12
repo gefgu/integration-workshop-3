@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import type { ClassDashboard, SchoolClass, StudentDashboard } from '../api/workspace.ts';
-import { dashboard, formatDuration, workspace } from '../api/workspace.ts';
+import { dashboard, formatDuration, shortUid, workspace } from '../api/workspace.ts';
 
 /** Student performance (SFR29, SFR29.1): score, progress and time per student, filled by bench syncs. */
 export default function Dashboard() {
@@ -162,7 +162,7 @@ function StudentView({ studentId }: { studentId: number }) {
         <>
           <h2>{data.student.name}</h2>
           <p>
-            Apelido {data.student.nickname} · {data.student.nfc_code ? `Tag ${data.student.nfc_code}` : 'Sem tag'}
+            Apelido {data.student.nickname} · <span title={data.student.uid}>ID {shortUid(data.student.uid)}</span>
           </p>
           <div className="stat-row">
             <div className="stat-tile panel">

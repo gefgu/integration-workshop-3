@@ -10,7 +10,7 @@ export const APP_TOURS: Record<string, TourStep[]> = {
     {
       target: 'home-cta',
       title: 'Levar aula à bancada',
-      text: 'O caminho principal: conecte a bancada, escolha a turma e o módulo e envie. Os alunos já podem entrar com a tag.',
+      text: 'O caminho principal: conecte a bancada, escolha a turma, o aluno que vai usar a bancada e o módulo, e envie.',
     },
     {
       target: 'home-bench',
@@ -24,12 +24,12 @@ export const APP_TOURS: Record<string, TourStep[]> = {
     },
     {
       title: 'Abas lá embaixo',
-      text: 'Turmas: alunos, tags e progresso. Módulos: escolha um e leve à bancada. Bancada: conectar por Bluetooth ou simulador.',
+      text: 'Turmas: alunos e progresso. Módulos: escolha um e leve à bancada. Bancada: conectar por Bluetooth ou simulador.',
     },
     { target: 'home-help', title: 'Ajuda', text: 'Toque no ? em qualquer tela para ver o tutorial dela de novo.' },
   ],
   turmas: [
-    { target: 'turmas-first', title: 'Suas turmas', text: 'Toque numa turma para ver os alunos, as tags e o progresso de cada um.' },
+    { target: 'turmas-first', title: 'Suas turmas', text: 'Toque numa turma para ver os alunos e o progresso de cada um.' },
   ],
   turma: [
     { target: 'turma-summary', title: 'Resumo da turma', text: 'Quantos alunos, progresso médio e pontuação média nos desafios.' },
@@ -41,7 +41,7 @@ export const APP_TOURS: Record<string, TourStep[]> = {
     {
       target: 'turma-student',
       title: 'Cada aluno',
-      text: 'Tag vinculada, lições concluídas e melhor pontuação. Toque no aluno para ver tempo na bancada e última atividade.',
+      text: 'ID do aluno, lições concluídas e melhor pontuação. Toque no aluno para ver tempo na bancada e última atividade.',
     },
   ],
   modulos: [
@@ -71,8 +71,8 @@ export const APP_TOURS: Record<string, TourStep[]> = {
   enviar: [
     {
       target: 'enviar-stepper',
-      title: 'Quatro passos',
-      text: 'Bancada → Turma → Módulo → Enviar. O passo atual fica em destaque; os concluídos ficam verdes.',
+      title: 'Cinco passos',
+      text: 'Bancada → Turma → Aluno → Módulo → Enviar. O aluno escolhido é quem vai usar a bancada. O passo atual fica em destaque; os concluídos ficam verdes.',
     },
   ],
 };

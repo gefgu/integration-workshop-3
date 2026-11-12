@@ -20,14 +20,16 @@ export const PROTOCOL_VERSION = 1;
 /** Payload characters per frame; fits a 185-byte ATT MTU with the header. */
 export const DEFAULT_CHUNK = 150;
 
+/** The student the teacher picked in the app for this bench (no tags: the teacher chooses who sits there). */
 export interface BenchStudent {
   id: number;
+  /** Unique, permanent student id: the student's database id as text (no column, no migration); in every event. */
+  uid: string;
   name: string;
   nickname: string;
-  nfc_code: string;
 }
 
-/** What GET /bench/package/{module}?class_id= returns, carried as is to the bench. */
+/** What GET /bench/package/{module}?class_id=&student_id= returns, carried as is to the bench. */
 export interface BenchPackage {
   format: number;
   version_id: string;
@@ -37,7 +39,8 @@ export interface BenchPackage {
   class: { id: number; name: string };
   // biome-ignore lint/suspicious/noExplicitAny: lesson documents are the teacher app's Lesson (v3) + lessonVersion
   lessons: any[];
-  students: BenchStudent[];
+  /** who uses the bench with this module, picked by the teacher (class → student) */
+  student: BenchStudent;
   /** demo mode (bench service with --dev): loaded by the bench itself, progress is never synced */
   demo?: boolean;
 }
@@ -48,7 +51,8 @@ export type BenchEventKind = 'session' | 'step_done' | 'lesson_done' | 'quiz_ans
 export interface BenchEvent {
   event_id: string;
   student_id: number;
-  nfc_code: string;
+  /** BenchStudent.uid: the event names the student by both ids (SNFR8) */
+  student_uid: string;
   kind: BenchEventKind;
   seq: number;
   at: string;
@@ -71,7 +75,7 @@ export interface BenchStatus {
   bench_id: string;
   unlocked: boolean;
   teacher: { id: number; name: string } | null;
-  package: { version_id: string; module_title: string; class_name: string } | null;
+  package: { version_id: string; module_title: string; class_name: string; student_nickname: string } | null;
   pending_events: number;
 }
 

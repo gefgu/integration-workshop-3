@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import type { Module, SchoolClass } from '../api/workspace.ts';
+import type { Module, SchoolClass, Student } from '../api/workspace.ts';
 import { bench, curriculumApi, workspace } from '../api/workspace.ts';
 import { useAuth } from '../auth/AuthContext.tsx';
 import Icon from '../components/Icon.tsx';
@@ -146,6 +146,19 @@ function ModulePage({ moduleId, lessons }: { moduleId: number; lessons: Lesson[]
   const [classes, setClasses] = useState<SchoolClass[]>([]);
   const [editing, setEditing] = useState(false);
   const [packageClass, setPackageClass] = useState('');
+  const [packageStudents, setPackageStudents] = useState<Student[]>([]);
+  const [packageStudent, setPackageStudent] = useState('');
+
+  // The package names the student who will use the bench, so it is picked inside the chosen class.
+  useEffect(() => {
+    setPackageStudent('');
+    setPackageStudents([]);
+    if (!packageClass) return;
+    workspace.listStudents(Number(packageClass)).then(
+      (all) => setPackageStudents(all.filter((s) => s.active)),
+      (cause) => setError(cause.message)
+    );
+  }, [packageClass]);
   const [error, setError] = useState('');
   const [status, setStatus] = useState('');
 
@@ -193,9 +206,9 @@ function ModulePage({ moduleId, lessons }: { moduleId: number; lessons: Lesson[]
 
   async function downloadPackage() {
     try {
-      const pkg = await bench.package(moduleId, Number(packageClass));
+      const pkg = await bench.package(moduleId, Number(packageClass), Number(packageStudent));
       const blob = new Blob([JSON.stringify(pkg, null, 2)], { type: 'application/json' });
-      downloadBlob(blob, `pacote-modulo-${moduleId}-turma-${packageClass}.json`);
+      downloadBlob(blob, `pacote-modulo-${moduleId}-turma-${packageClass}-aluno-${packageStudent}.json`);
     } catch (cause) {
       setError((cause as Error).message);
     }
@@ -297,7 +310,8 @@ function ModulePage({ moduleId, lessons }: { moduleId: number; lessons: Lesson[]
           <section className="panel workspace-section">
             <h2>Pacote para a bancada</h2>
             <p>
-              Este site não se conecta à bancada: ele monta o pacote do módulo para a turma escolhida. O envio à bancada
+              Este site não se conecta à bancada: ele monta o pacote do módulo para o aluno escolhido (de uma turma), que
+              é quem vai usar a bancada. O envio à bancada
               é feito pelo aplicativo do professor, no celular. A transferência com a bancada física ainda precisa de
               teste de ponta a ponta. Aqui você pode baixar o pacote (JSON) para conferência e backup; este arquivo não
               é enviado à bancada por este site. Use o aplicativo do professor para a entrega.
@@ -316,10 +330,24 @@ function ModulePage({ moduleId, lessons }: { moduleId: number; lessons: Lesson[]
                   </option>
                 ))}
               </select>
+              <select
+                className="text-input"
+                aria-label="Aluno que vai usar a bancada"
+                value={packageStudent}
+                disabled={!packageClass}
+                onChange={(e) => setPackageStudent(e.target.value)}
+              >
+                <option value="">Selecione o aluno</option>
+                {packageStudents.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name} ({item.nickname})
+                  </option>
+                ))}
+              </select>
               <button
                 type="button"
                 className="btn-outline btn-icon"
-                disabled={!packageClass || module.lesson_ids.length === 0}
+                disabled={!packageClass || !packageStudent || module.lesson_ids.length === 0}
                 onClick={downloadPackage}
               >
                 <Icon name="download" />

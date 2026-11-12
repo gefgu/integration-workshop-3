@@ -15,7 +15,7 @@ def test_frames_written_again_after_reconnect_complete_the_message(tmp_path, cap
     bridge.on_write(encode_frames({"type": "HELLO", "id": "h", "token": sign_bench_token(1, "Ana")["token"]}, "a")[0].encode())
 
     package = {"version_id": "v1", "module": {"id": 1, "title": "M"}, "class": {"id": 1, "name": "T"},
-               "lessons": [{"id": "l1", "text": "lição " * 300}], "students": [], "teacher": {"id": 1, "name": "Ana"}}
+               "lessons": [{"id": "l1", "text": "lição " * 300}], "student": {"id": 1, "uid": "uid-1", "name": "Ana", "nickname": "ana"}, "teacher": {"id": 1, "name": "Ana"}}
     frames = encode_frames({"type": "LOAD_PACKAGE", "id": "q1", "package": package}, "f1", chunk=150)
     assert len(frames) > 10
     sent.clear()
@@ -34,7 +34,7 @@ def test_frames_written_again_after_reconnect_complete_the_message(tmp_path, cap
 
 
 PACKAGE = {"version_id": "v9", "module": {"id": 1, "title": "Módulo"}, "class": {"id": 1, "name": "T"},
-           "lessons": [{"id": "l1", "text": "lição com acentuação " * 40}], "students": [],
+           "lessons": [{"id": "l1", "text": "lição com acentuação " * 40}], "student": {"id": 1, "uid": "uid-1", "name": "Ana", "nickname": "ana"},
            "teacher": {"id": 1, "name": "Ana"}}
 
 

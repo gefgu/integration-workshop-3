@@ -1,4 +1,4 @@
-"""Teacher accounts, modules, NFC tags, bench sync and the dashboard, over HTTP with real tokens."""
+"""Teacher accounts, modules, students, bench sync and the dashboard, over HTTP with real tokens."""
 import uuid
 from datetime import datetime, timezone
 
@@ -49,8 +49,8 @@ def lesson(id_, kind="guided"):
             "quizzes": [], "timeLimitS": None}
 
 
-def ev(student_id, nfc, kind, **kw):
-    return {"event_id": str(uuid.uuid4()), "student_id": student_id, "nfc_code": nfc, "kind": kind,
+def ev(student, kind, **kw):
+    return {"event_id": str(uuid.uuid4()), "student_id": student["id"], "student_uid": student["uid"], "kind": kind,
             "seq": kw.pop("seq", 1), "at": kw.pop("at", datetime.now(timezone.utc).isoformat()), **kw}
 
 
@@ -129,42 +129,37 @@ def test_modules_crud_and_class_assignment(client):
     assert client.get(f"/workspace/classes/{turma['id']}", headers=ana).json()["module_ids"] == [module["id"]]
     assert client.get(f"/workspace/modules/{module['id']}", headers=ana).json()["class_ids"] == [turma["id"]]
 
-    assert client.delete("/workspace/lessons/a", headers=ana).status_code == 409
+    # Deleting a lesson used by a module takes it out of the module (the site shows where it is first).
+    usage = client.get("/workspace/lessons/a/usage", headers=ana).json()
+    assert usage == {"modules": ["Circuitos"], "classes": []}
+    assert client.delete("/workspace/lessons/a", headers=ana).status_code == 204
+    assert client.get(f"/workspace/modules/{module['id']}", headers=ana).json()["lesson_ids"] == ["c"]
     assert client.delete("/workspace/lessons/b", headers=ana).status_code == 204
     assert client.delete(f"/workspace/modules/{module['id']}", headers=ana).status_code == 204
     assert client.get(f"/workspace/classes/{turma['id']}", headers=ana).json()["module_ids"] == []
-    assert client.delete("/workspace/lessons/a", headers=ana).status_code == 204
 
 
-def test_tags_link_unlink_keeps_history_and_audit(client):
+def test_students_get_a_unique_uid_and_no_tag_routes(client):
     ana = signup(client)
     turma = client.post("/workspace/classes", headers=ana, json={"name": "7A"}).json()
     outra = client.post("/workspace/classes", headers=ana, json={"name": "7B"}).json()
     s1 = client.post(f"/workspace/classes/{turma['id']}/students", headers=ana,
-                     json={"name": "Caio", "nickname": "caio", "nfc_code": "TAG-1"}).json()
+                     json={"name": "Caio", "nickname": "caio"}).json()
     s2 = client.post(f"/workspace/classes/{turma['id']}/students", headers=ana,
                      json={"name": "Duda", "nickname": "duda"}).json()
-
-    assert client.post(f"/workspace/students/{s2['id']}/tag", headers=ana,
-                       json={"nfc_code": "TAG-1"}).status_code == 409
-    assert client.post(f"/workspace/students/{s1['id']}/tag", headers=ana,
-                       json={"nfc_code": "TAG-9"}).status_code == 409
-
-    client.post("/bench/sync", headers=ana, json={"bench_id": "b1", "events": [
-        ev(s1["id"], "TAG-1", "lesson_done", lesson_id="l1", duration_s=60)]})
-    assert client.delete(f"/workspace/students/{s1['id']}/tag", headers=ana).json()["nfc_code"] is None
-    assert client.delete(f"/workspace/students/{s1['id']}/tag", headers=ana).status_code == 409
-    relinked = client.post(f"/workspace/students/{s1['id']}/tag", headers=ana, json={"nfc_code": "TAG-2"}).json()
-    assert relinked["nfc_code"] == "TAG-2"
-    history = client.get(f"/workspace/students/{s1['id']}/tag-history", headers=ana).json()
-    assert [(h["action"], h["nfc_code"]) for h in history] == [("link", "TAG-2"), ("unlink", "TAG-1"),
-                                                              ("link", "TAG-1")]
-    # SAR3: the old tag's progress still belongs to the student
-    assert client.get(f"/dashboard/students/{s1['id']}", headers=ana).json()["events"][0]["kind"] == "lesson_done"
+    # The uid is the student's id as text (no column, no migration on Neon).
+    assert s1["uid"] == str(s1["id"]) and s2["uid"] == str(s2["id"]) and s1["uid"] != s2["uid"]
+    assert "nfc_code" not in s1
+    # The uid is the server's: a client cannot set or change it.
+    edited = client.put(f"/workspace/students/{s1['id']}", headers=ana,
+                        json={"name": "Caio S.", "nickname": "caio", "uid": "outro"}).json()
+    assert edited["uid"] == s1["uid"] and edited["name"] == "Caio S."
+    assert client.post(f"/workspace/students/{s1['id']}/tag", headers=ana, json={"nfc_code": "T"}).status_code == 404
+    assert client.get(f"/workspace/students/{s1['id']}/tag-history", headers=ana).status_code == 404
 
     moved = client.put(f"/workspace/students/{s2['id']}", headers=ana,
-                       json={"name": "Duda", "nickname": "duda", "nfc_code": "TAG-1", "class_id": outra["id"]})
-    assert moved.json()["class_id"] == outra["id"] and moved.json()["nfc_code"] == "TAG-1"
+                       json={"name": "Duda", "nickname": "duda", "class_id": outra["id"]})
+    assert moved.json()["class_id"] == outra["id"] and moved.json()["uid"] == s2["uid"]
     everyone = client.get("/workspace/students", headers=ana).json()
     assert {s["class_name"] for s in everyone} == {"7A", "7B"}
     assert len(client.get(f"/workspace/students?class_id={outra['id']}", headers=ana).json()) == 1
@@ -178,43 +173,60 @@ def test_bench_package_sync_is_idempotent_and_dashboard(client):
     turma = client.post("/workspace/classes", headers=ana, json={"name": "7A"}).json()
     client.put(f"/workspace/classes/{turma['id']}/modules", headers=ana, json={"module_ids": [module["id"]]})
     caio = client.post(f"/workspace/classes/{turma['id']}/students", headers=ana,
-                       json={"name": "Caio", "nickname": "caio", "nfc_code": "TAG-1"}).json()
-    client.post(f"/workspace/classes/{turma['id']}/students", headers=ana,
-                json={"name": "Sem Tag", "nickname": "st"})
+                       json={"name": "Caio", "nickname": "caio"}).json()
+    other = client.post(f"/workspace/classes/{turma['id']}/students", headers=ana,
+                        json={"name": "Duda", "nickname": "duda"}).json()
+    elsewhere = client.post("/workspace/classes", headers=ana, json={"name": "7B"}).json()
+    inactive = client.post(f"/workspace/classes/{elsewhere['id']}/students", headers=ana,
+                           json={"name": "Eva", "nickname": "eva", "active": False}).json()
 
     session = client.post("/bench/session", headers=ana).json()
     assert read_bench_token(session["token"])["tid"] == session["teacher"]["id"]
 
-    package = client.get(f"/bench/package/{module['id']}?class_id={turma['id']}", headers=ana).json()
+    url = f"/bench/package/{module['id']}?class_id={turma['id']}"
+    package = client.get(f"{url}&student_id={caio['id']}", headers=ana).json()
     assert [l["id"] for l in package["lessons"]] == ["l1", "l2"]
-    assert [s["nickname"] for s in package["students"]] == ["caio"]
+    # The teacher picked who uses the bench: the package names that one student (no tags, no class list).
+    assert package["student"] == {"id": caio["id"], "uid": caio["uid"], "name": "Caio", "nickname": "caio"}
+    assert "students" not in package
+    assert client.get(url, headers=ana).status_code == 422  # the student is required
+    assert client.get(f"/bench/package/{module['id']}?class_id={elsewhere['id']}&student_id={caio['id']}",
+                      headers=ana).status_code == 422  # not in that class
+    assert client.get(f"/bench/package/{module['id']}?class_id={elsewhere['id']}&student_id={inactive['id']}",
+                      headers=ana).status_code == 422  # inactive
+    assert client.get(f"{url}&student_id={other['id']}", headers=ana).json()["version_id"] != package["version_id"]
     assert all("audio" not in l and l["lessonVersion"] for l in package["lessons"])
     assert all("teacherNotes" not in l for l in package["lessons"])
-    again = client.get(f"/bench/package/{module['id']}?class_id={turma['id']}", headers=ana).json()
+    again = client.get(f"{url}&student_id={caio['id']}", headers=ana).json()
     assert again["version_id"] == package["version_id"]
-    assert client.get(f"/bench/package/{module['id']}?class_id={turma['id']}", headers=bia).status_code == 404
+    assert client.get(f"{url}&student_id={caio['id']}", headers=bia).status_code == 404
 
     events = [
-        ev(caio["id"], "TAG-1", "step_done", lesson_id="l1", step_idx=0, seq=1),
-        ev(caio["id"], "TAG-1", "lesson_done", lesson_id="l1", duration_s=120, seq=2),
-        ev(caio["id"], "TAG-1", "challenge_score", lesson_id="l2", score=80, duration_s=90, seq=3),
-        ev(caio["id"], "TAG-1", "session", duration_s=300, seq=4),
+        ev(caio, "step_done", lesson_id="l1", step_idx=0, seq=1),
+        ev(caio, "lesson_done", lesson_id="l1", duration_s=120, seq=2),
+        ev(caio, "challenge_score", lesson_id="l2", score=80, duration_s=90, seq=3),
+        ev(caio, "session", duration_s=300, seq=4),
     ]
     first = client.post("/bench/sync", headers=ana, json={"bench_id": "b1", "events": events}).json()
     assert first["inserted"] == 4 and len(first["acked"]) == 4
     second = client.post("/bench/sync", headers=ana, json={"bench_id": "b1", "events": events}).json()
     assert second["inserted"] == 0 and sorted(second["acked"]) == sorted(first["acked"])
     stranger = client.post("/bench/sync", headers=bia, json={"bench_id": "b2", "events": [
-        ev(caio["id"], "TAG-1", "session", duration_s=5)]}).json()
+        ev(caio, "session", duration_s=5)]}).json()
     assert stranger["inserted"] == 0 and len(stranger["rejected"]) == 1
     assert client.post("/bench/sync", headers=ana, json={"bench_id": "b1", "events": [
-        {**ev(caio["id"], "TAG-1", "session"), "nfc_code": ""}]}).status_code == 422
+        {**ev(caio, "session"), "student_uid": ""}]}).status_code == 422
+    # Same integer id but another student's uid (a bench loaded from another database): refused, not mixed up.
+    mismatch = client.post("/bench/sync", headers=ana, json={"bench_id": "b1", "events": [
+        {**ev(caio, "session", duration_s=5), "student_uid": other["uid"]}]}).json()
+    assert mismatch["inserted"] == 0 and mismatch["rejected"][0]["reason"] == "O uid do aluno não confere."
 
     board = client.get(f"/dashboard/classes/{turma['id']}", headers=ana).json()
     row = next(r for r in board["students"] if r["student"]["id"] == caio["id"])
     assert row["lessons_done"] == 1 and row["lessons_total"] == 2 and row["progress"] == 0.5
     assert row["best_score"] == 80 and row["time_spent_s"] == 300
     assert board["summary"]["students"] == 2
+    assert row["student"]["uid"] == caio["uid"] and "nfc_code" not in row["student"]
     detail = client.get(f"/dashboard/students/{caio['id']}", headers=ana).json()
     assert [l["status"] for l in detail["lessons"]] == ["done", "in_progress"]
     assert detail["lessons"][0]["steps_done"] == 1 and detail["lessons"][1]["best_score"] == 80

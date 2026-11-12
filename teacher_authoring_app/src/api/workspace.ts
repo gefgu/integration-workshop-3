@@ -13,9 +13,15 @@ export interface Student {
   class_id: number;
   name: string;
   nickname: string;
-  nfc_code: string | null;
+  /** Unique, permanent id: the student's database id as text; names the student on the bench and in every event. */
+  uid: string;
   active: boolean;
   class_name?: string;
+}
+
+/** The first block of a student's uid, enough to tell students apart on screen. */
+export function shortUid(uid: string): string {
+  return uid.split('-')[0].toUpperCase();
 }
 
 export interface ClassDetail extends SchoolClass {
@@ -33,12 +39,6 @@ export interface Module {
   updated_at: string;
 }
 
-export interface TagEvent {
-  nfc_code: string;
-  action: 'link' | 'unlink';
-  at: string;
-}
-
 export interface StudentSummary {
   lessons_done: number;
   lessons_total: number;
@@ -54,11 +54,11 @@ export interface ClassDashboard {
   class: { id: number; name: string };
   lesson_ids: string[];
   summary: { students: number; avg_progress: number; avg_best_score: number | null; time_spent_s: number };
-  students: (StudentSummary & { student: Pick<Student, 'id' | 'name' | 'nickname' | 'nfc_code' | 'active'> })[];
+  students: (StudentSummary & { student: Pick<Student, 'id' | 'uid' | 'name' | 'nickname' | 'active'> })[];
 }
 
 export interface StudentDashboard extends StudentSummary {
-  student: Pick<Student, 'id' | 'name' | 'nickname' | 'nfc_code' | 'class_id'>;
+  student: Pick<Student, 'id' | 'uid' | 'name' | 'nickname' | 'class_id'>;
   lessons: {
     lesson_id: string;
     title: string;
@@ -80,7 +80,7 @@ export interface StudentDashboard extends StudentSummary {
   }[];
 }
 
-export type StudentInput = Pick<Student, 'name' | 'nickname' | 'nfc_code' | 'active'> & { class_id?: number };
+export type StudentInput = Pick<Student, 'name' | 'nickname' | 'active'> & { class_id?: number };
 export type ModuleInput = Pick<Module, 'title' | 'description'> & { lesson_ids?: string[] };
 
 const w = <T>(path: string, method = 'GET', body?: unknown) => api<T>(`/workspace${path}`, method, body);
@@ -91,6 +91,8 @@ export const workspace = {
   exportZip: (lessonId: string) => apiBlob(`/workspace/lessons/${id(lessonId)}/export.zip`),
   listLessons: () => w<Lesson[]>('/lessons'),
   saveLesson: (lesson: Lesson) => w<Lesson>(`/lessons/${id(lesson.id)}`, 'PUT', lesson),
+  /** Deleting a lesson also takes it out of these modules and classes. */
+  lessonUsage: (lessonId: string) => w<{ modules: string[]; classes: string[] }>(`/lessons/${id(lessonId)}/usage`),
   deleteLesson: (lessonId: string) => w<void>(`/lessons/${id(lessonId)}`, 'DELETE'),
 
   listModules: () => w<Module[]>('/modules'),
@@ -115,9 +117,6 @@ export const workspace = {
   createStudent: (classId: number, body: StudentInput) => w<Student>(`/classes/${classId}/students`, 'POST', body),
   updateStudent: (studentId: number, body: StudentInput) => w<Student>(`/students/${studentId}`, 'PUT', body),
   deleteStudent: (studentId: number) => w<void>(`/students/${studentId}`, 'DELETE'),
-  linkTag: (studentId: number, nfc_code: string) => w<Student>(`/students/${studentId}/tag`, 'POST', { nfc_code }),
-  unlinkTag: (studentId: number) => w<Student>(`/students/${studentId}/tag`, 'DELETE'),
-  tagHistory: (studentId: number) => w<TagEvent[]>(`/students/${studentId}/tag-history`),
 };
 
 export const dashboard = {
@@ -126,8 +125,9 @@ export const dashboard = {
 };
 
 export const bench = {
-  /** The same package the phone app sends over Bluetooth; downloadable as a fallback. */
-  package: (moduleId: number, classId: number) => api<unknown>(`/bench/package/${moduleId}?class_id=${classId}`),
+  /** The same package the phone app sends over Bluetooth (module + the student who uses the bench). */
+  package: (moduleId: number, classId: number, studentId: number) =>
+    api<unknown>(`/bench/package/${moduleId}?class_id=${classId}&student_id=${studentId}`),
 };
 
 export function formatDuration(seconds: number): string {

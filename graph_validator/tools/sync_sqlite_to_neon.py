@@ -15,8 +15,9 @@ Rules (so running it twice changes nothing the second time):
   updated or deleted.
 - lessons keep their id, except curriculum copies ("curriculo-…-p<old id>"), renamed to the new teacher id the way
   the site names them. A lesson id held by another teacher in the target is skipped and reported.
-- modules are matched by title, classes by name, students by nickname inside their class. An NFC tag already used
-  in the target is left off the copied student (reported). Progress events are matched by their event id.
+- modules are matched by title, classes by name, students by nickname inside their class. A copied student keeps
+  its uid (a new one is drawn if the target already uses it, reported). Progress events are matched by their event
+  id and take the target student's id and uid.
 - login sessions (auth_tokens) are not copied: sign in again on the site.
 
 Everything runs in one transaction; the dry run rolls it back, so its report is exactly what --apply would do.
@@ -34,8 +35,8 @@ from sqlalchemy import create_engine, func, select
 from sqlalchemy.engine import Connection
 
 from graph_validator.service.storage import (
-    ClassLesson, ClassModule, Module, ModuleLesson, ProgressEvent, SavedLesson, SchoolClass, Student, TagLinkEvent,
-    Teacher,
+    ClassLesson, ClassModule, Module, ModuleLesson, ProgressEvent, SavedLesson, SchoolClass, Student, Teacher,
+    student_uid,
 )
 
 REPO = Path(__file__).resolve().parents[2]
@@ -44,7 +45,7 @@ CURRICULUM_COPY = re.compile(r"^(curriculo-.+)-p\d+$")
 
 T, L, M, ML = Teacher.__table__, SavedLesson.__table__, Module.__table__, ModuleLesson.__table__
 C, CL, CM, S = SchoolClass.__table__, ClassLesson.__table__, ClassModule.__table__, Student.__table__
-TAG, EV = TagLinkEvent.__table__, ProgressEvent.__table__
+EV = ProgressEvent.__table__
 
 
 def read_env_file(path: Path) -> dict[str, str]:
@@ -144,6 +145,7 @@ class Sync:
 
         classes: dict[int, int] = {}
         students: dict[int, int] = {}
+        uids: dict[int, str] = {}  # source student id -> the target student's uid
         for row in src.execute(select(C).where(C.c.teacher_id == old_t).order_by(C.c.id)):
             have = dst.execute(select(C.c.id).where(C.c.teacher_id == new_t, C.c.name == row.name)).scalar()
             fresh = have is None
@@ -161,22 +163,16 @@ class Sync:
                                          "position": link.position})
             for st in src.execute(select(S).where(S.c.class_id == row.id).order_by(S.c.id)):
                 have_st = dst.execute(select(S.c.id).where(S.c.class_id == classes[row.id],
-                                                           S.c.nickname == st.nickname)).scalar()
+                                                         S.c.nickname == st.nickname)).scalar()
                 if have_st is not None:
                     students[st.id] = have_st
-                    continue
-                tag = st.nfc_code
-                if tag and dst.execute(select(S.c.id).where(S.c.nfc_code == tag)).first():
-                    self.say(f"! {email}: tag NFC de {st.nickname} já usada no destino; aluno copiado sem tag")
-                    tag = None
-                students[st.id] = self.insert(S, {"class_id": classes[row.id], "name": st.name,
-                                                  "nickname": st.nickname, "nfc_code": tag, "active": st.active})
-                self.added("alunos")
-                for ev in src.execute(select(TAG).where(TAG.c.student_id == st.id).order_by(TAG.c.id)):
-                    self.insert(TAG, {"teacher_id": new_t, "student_id": students[st.id],
-                                      "student_name": ev.student_name, "nfc_code": ev.nfc_code,
-                                      "action": ev.action, "at": ev.at})
-                    self.added("registros de tag")
+                else:
+                    # No tag is copied: tags are gone, and the legacy column stays empty.
+                    students[st.id] = self.insert(S, {"class_id": classes[row.id], "name": st.name,
+                                                      "nickname": st.nickname, "active": st.active})
+                    self.added("alunos")
+                # The uid is the student's id, which is new in the destination: events get it rewritten below.
+                uids[st.id] = student_uid(students[st.id])
 
         if students:
             for ev in src.execute(select(EV).where(EV.c.student_id.in_(list(students))).order_by(EV.c.at)):
@@ -184,6 +180,7 @@ class Sync:
                     continue
                 row = dict(ev._mapping)
                 row["student_id"] = students[ev.student_id]
+                row[EV.c.nfc_code.key] = uids[ev.student_id]  # ProgressEvent.student_uid lives in nfc_code
                 if row["lesson_id"]:
                     row["lesson_id"] = lessons.get(row["lesson_id"], self.lesson_id(row["lesson_id"], new_t))
                 if row["module_id"] is not None:

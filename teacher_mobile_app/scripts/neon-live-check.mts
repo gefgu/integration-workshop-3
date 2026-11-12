@@ -32,9 +32,10 @@ const modules = await api.modules();
 console.log('modules', JSON.stringify(modules.map((m) => ({ id: m.id, lessons: m.lesson_ids.length, classes: m.class_ids }))));
 const session = await api.benchSession();
 console.log('benchSession token', session.token.slice(0, 24) + '…', 'expires', session.expires_at);
-if (modules[0] && classes[0]) {
-  const pkg = await api.benchPackage(modules[0].id, classes[0].id);
-  console.log('benchPackage', pkg.version_id, pkg.lessons.length, 'lessons,', pkg.students.length, 'students');
+const firstStudent = detail.students.find((s) => s.active);
+if (modules[0] && classes[0] && firstStudent) {
+  const pkg = await api.benchPackage(modules[0].id, classes[0].id, firstStudent.id);
+  console.log('benchPackage', pkg.version_id, pkg.lessons.length, 'lessons, for', pkg.student.nickname, pkg.student.uid);
 }
 await api.logout();
 console.log('after logout token =', api.token, 'stored keys =', [...data.keys()]);

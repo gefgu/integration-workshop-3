@@ -32,7 +32,7 @@ export const SITE_TOURS: Record<string, TourStep[]> = {
     {
       target: nav('/alunos'),
       title: 'Alunos',
-      text: 'Todos os alunos, com a tag NFC que identifica cada um na bancada.',
+      text: 'Todos os alunos, cada um com o seu ID único. Quem usa cada bancada é escolhido no app do professor.',
     },
     { target: nav('/painel'), title: 'Painel', text: 'Progresso, pontuação e tempo de cada aluno, por turma.' },
     {
@@ -84,7 +84,7 @@ export const SITE_TOURS: Record<string, TourStep[]> = {
     {
       target: '.workspace-card-actions',
       title: 'Abrir turma',
-      text: 'Na turma você cadastra os alunos, vincula as tags e escolhe os módulos que ela estuda. “Desempenho” abre o painel da turma.',
+      text: 'Na turma você cadastra os alunos e escolhe os módulos que ela estuda. “Desempenho” abre o painel da turma.',
     },
   ],
   turma: [
@@ -96,7 +96,7 @@ export const SITE_TOURS: Record<string, TourStep[]> = {
     {
       target: '.section-head',
       title: 'Alunos',
-      text: 'O + cadastra um aluno. Em cada aluno: desempenho, tag NFC, editar e excluir.',
+      text: 'O + cadastra um aluno. Em cada aluno: ID, desempenho, editar e excluir.',
     },
     {
       target: '.class-study',
@@ -109,12 +109,12 @@ export const SITE_TOURS: Record<string, TourStep[]> = {
     {
       target: '.section-head .icon-btn',
       title: 'Novo aluno',
-      text: 'O + cadastra um aluno, com apelido (aparece na bancada) e tag NFC.',
+      text: 'O + cadastra um aluno, com apelido (aparece na bancada). O ID único é gerado sozinho.',
     },
     {
       target: '.student-actions',
       title: 'Ações do aluno',
-      text: 'Desempenho, tag NFC (vincular ou trocar, com histórico), editar e excluir. Trocar a tag não apaga o progresso.',
+      text: 'ID único do aluno, desempenho, editar e excluir. Mudar o aluno de turma não apaga o progresso.',
     },
   ],
   painel: [

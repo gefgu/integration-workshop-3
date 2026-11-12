@@ -47,8 +47,8 @@ test('buildDashboard averages progress and best scores over the class', () => {
     lesson_ids: ['a', 'b'],
     module_ids: [],
     students: [
-      { id: 1, class_id: 7, name: 'Ana', nickname: 'ana', nfc_code: 'T1', active: true },
-      { id: 2, class_id: 7, name: 'Bia', nickname: 'bia', nfc_code: null, active: true },
+      { id: 1, uid: 'uid-ana', class_id: 7, name: 'Ana', nickname: 'ana', active: true },
+      { id: 2, uid: 'uid-bia', class_id: 7, name: 'Bia', nickname: 'bia', active: true },
     ],
   };
   const d = buildDashboard(detail, ['a', 'b'], [

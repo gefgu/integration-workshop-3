@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import type { SchoolClass, Student, StudentInput, TagEvent } from '../api/workspace.ts';
-import { workspace } from '../api/workspace.ts';
+import type { SchoolClass, Student, StudentInput } from '../api/workspace.ts';
+import { shortUid, workspace } from '../api/workspace.ts';
 import { IconButton, TrashButton } from '../components/IconButton.tsx';
 import Modal from '../components/Modal.tsx';
 
-const emptyStudent: StudentInput = { name: '', nickname: '', nfc_code: null, active: true };
+const emptyStudent: StudentInput = { name: '', nickname: '', active: true };
 
 /** Every student of the teacher, filterable by class (?turma=ID). */
 export default function Students() {
@@ -37,7 +37,7 @@ export default function Students() {
           key={classId ?? 'all'}
           classes={classes}
           classId={classId}
-          intro="Cadastre alunos e vincule a tag NFC que identifica cada um na bancada."
+          intro="Cadastre os alunos. Cada um recebe um ID único; no app, você escolhe qual aluno usa cada bancada."
           tools={
             <select
               className="select-pill"
@@ -80,7 +80,6 @@ export function StudentManager({
   const [form, setForm] = useState<StudentInput>(emptyStudent);
   const [formClass, setFormClass] = useState<number | ''>(classId ?? classes[0]?.id ?? '');
   const [dialog, setDialog] = useState<'new' | Student | null>(null);
-  const [tagFor, setTagFor] = useState<Student | null>(null);
   const [error, setError] = useState('');
   const [status, setStatus] = useState('');
   const editing = dialog && dialog !== 'new' ? dialog : null;
@@ -112,11 +111,7 @@ export function StudentManager({
     const ok = await run(
       async () => {
         if (editing) {
-          await workspace.updateStudent(editing.id, {
-            ...form,
-            nfc_code: editing.nfc_code,
-            class_id: Number(formClass),
-          });
+          await workspace.updateStudent(editing.id, { ...form, class_id: Number(formClass) });
         } else {
           await workspace.createStudent(Number(formClass), form);
         }
@@ -132,7 +127,7 @@ export function StudentManager({
       setForm(emptyStudent);
       setFormClass(classId ?? classes[0]?.id ?? '');
     } else {
-      setForm({ name: item.name, nickname: item.nickname, nfc_code: item.nfc_code, active: item.active });
+      setForm({ name: item.name, nickname: item.nickname, active: item.active });
       setFormClass(item.class_id);
     }
   }
@@ -170,13 +165,12 @@ export function StudentManager({
               {classId == null && <> · {item.class_name ?? className(item.class_id)}</>}
               {!item.active && <> · Inativo</>}
               <br />
-              <span className={item.nfc_code ? 'tag-badge' : 'tag-badge none'}>
-                {item.nfc_code ? `Tag ${item.nfc_code}` : 'Sem tag'}
+              <span className="id-badge" title={`ID do aluno: ${item.uid}`}>
+                ID {shortUid(item.uid)}
               </span>
             </span>
             <div className="workspace-actions student-actions">
               <IconButton icon="chart" label="Desempenho" onClick={() => navigate(`/painel/aluno/${item.id}`)} />
-              <IconButton icon="tag" label="Tag NFC" onClick={() => setTagFor(item)} />
               <IconButton icon="edit" label="Editar" onClick={() => open(item)} />
               <TrashButton
                 confirm={`Excluir ${item.name}? O histórico deste aluno também será apagado.`}
@@ -233,20 +227,10 @@ export function StudentManager({
                 </select>
               </>
             )}
-            {!editing && (
-              <>
-                <label className="field-label" htmlFor="student-nfc">
-                  Tag NFC (opcional)
-                </label>
-                <input
-                  id="student-nfc"
-                  className="text-input"
-                  maxLength={255}
-                  placeholder="Código lido da tag"
-                  value={form.nfc_code ?? ''}
-                  onChange={(e) => setForm({ ...form, nfc_code: e.target.value || null })}
-                />
-              </>
+            {editing && (
+              <p className="muted-line">
+                ID do aluno: <code>{editing.uid}</code> (gerado pelo sistema, não muda)
+              </p>
             )}
             <label className="workspace-checkbox">
               <input
@@ -267,112 +251,6 @@ export function StudentManager({
           </form>
         </Modal>
       )}
-      {tagFor && (
-        <TagDialog
-          student={tagFor}
-          onClose={() => setTagFor(null)}
-          onChanged={(updated) => {
-            setTagFor(updated);
-            void refresh();
-            onChange?.();
-          }}
-        />
-      )}
     </>
-  );
-}
-
-/** Link / unlink a student's NFC tag (SFR30.1, SFR32, SFR33) and show the audit log (SFR34). */
-function TagDialog({
-  student,
-  onClose,
-  onChanged,
-}: {
-  student: Student;
-  onClose: () => void;
-  onChanged: (student: Student) => void;
-}) {
-  const [code, setCode] = useState('');
-  const [history, setHistory] = useState<TagEvent[]>([]);
-  const [error, setError] = useState('');
-
-  // Reloads after every link/unlink: `student` is replaced by the updated row.
-  useEffect(() => {
-    workspace.tagHistory(student.id).then(setHistory, (cause) => setError(cause.message));
-  }, [student]);
-
-  async function act(action: () => Promise<Student>) {
-    try {
-      onChanged(await action());
-      setCode('');
-      setError('');
-    } catch (cause) {
-      setError((cause as Error).message);
-    }
-  }
-
-  return (
-    <div className="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="tag-dialog-title">
-      <div className="modal-card tag-dialog">
-        <h2 id="tag-dialog-title">Tag NFC</h2>
-        <p className="dialog-subtitle">{student.name}</p>
-        <p>O progresso fica ligado ao aluno, não à tag: trocar a tag não apaga o histórico.</p>
-        {error && (
-          <p className="app-error" role="alert">
-            {error}
-          </p>
-        )}
-        {student.nfc_code ? (
-          <div className="workspace-actions">
-            <span className="tag-badge">Tag {student.nfc_code}</span>
-            <TrashButton
-              label="Desvincular tag"
-              confirm={`Desvincular a tag ${student.nfc_code} de ${student.name}?`}
-              onConfirm={() => void act(() => workspace.unlinkTag(student.id))}
-            />
-          </div>
-        ) : (
-          <form
-            className="workspace-actions"
-            onSubmit={(event) => {
-              event.preventDefault();
-              void act(() => workspace.linkTag(student.id, code));
-            }}
-          >
-            <input
-              className="text-input tag-input"
-              aria-label="Código da nova tag"
-              placeholder="Código da nova tag"
-              required
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-            />
-            <button className="btn-primary" type="submit">
-              Vincular
-            </button>
-          </form>
-        )}
-        <h3>Histórico</h3>
-        {history.length === 0 ? (
-          <p>Nenhuma alteração registrada.</p>
-        ) : (
-          <ul className="workspace-list">
-            {history.map((item) => (
-              <li key={`${item.at}-${item.action}-${item.nfc_code}`}>
-                <span>
-                  {item.action === 'link' ? 'Vinculou' : 'Desvinculou'} a tag {item.nfc_code}
-                </span>
-                <time dateTime={item.at}>{new Date(item.at).toLocaleString('pt-BR')}</time>
-              </li>
-            ))}
-          </ul>
-        )}
-        <div className="modal-actions">
-          <button type="button" className="btn-outline" onClick={onClose}>
-            Fechar
-          </button>
-        </div>
-      </div>
-    </div>
   );
 }

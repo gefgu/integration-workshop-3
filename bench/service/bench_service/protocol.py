@@ -100,7 +100,7 @@ class Session:
             claims, problem = check_bench_token(str(message.get("token", "")))
             if claims is None:
                 return error(re, "bad_token", bad_token_message(problem))
-            # Another teacher's module and students must not stay usable in this teacher's session: the bench
+            # Another teacher's module and student must not stay usable in this teacher's session: the bench
             # waits for this teacher's package. Progress already recorded stays queued for its own teacher.
             loaded = self.store.package()
             if loaded and not loaded.get("demo") and (loaded.get("teacher") or {}).get("id") != claims["tid"]:
@@ -155,11 +155,22 @@ def error(re: str | None, code: str, text: str) -> dict[str, Any]:
 def package_problem(package: Any) -> str | None:
     if not isinstance(package, dict):
         return "Pacote ausente."
-    for key in ("version_id", "module", "class", "lessons", "students", "teacher"):
+    for key in ("version_id", "module", "class", "lessons", "student", "teacher"):
         if key not in package:
             return f"Pacote sem o campo {key}."
     if not package["lessons"]:
         return "Pacote sem lições."
+    return student_problem(package["student"])
+
+
+def student_problem(student: Any) -> str | None:
+    """The package names the one student the teacher picked for this bench."""
+    if not isinstance(student, dict):
+        return "Pacote sem o aluno escolhido pelo professor."
+    if not isinstance(student.get("id"), int) or not str(student.get("uid") or "").strip():
+        return "Aluno do pacote sem id ou uid."
+    if not str(student.get("nickname") or "").strip():
+        return "Aluno do pacote sem apelido."
     return None
 
 

@@ -48,6 +48,15 @@ class SchoolClass(Base):
     modules: Mapped[list[ClassModule]] = relationship(back_populates="school_class", cascade="all, delete-orphan")
 
 
+def student_uid(student_id: int) -> str:
+    """A student's permanent id outside the database: the bench, events and screens name the student by it.
+
+    It is the integer primary key as text, so no column (and no migration on Neon) is needed. A copy to another
+    database (tools/sync_sqlite_to_neon.py) gives students new ids, and that tool rewrites the events' uid.
+    """
+    return str(student_id)
+
+
 class Student(Base):
     __tablename__ = "students"
     __table_args__ = (UniqueConstraint("class_id", "nickname", name="uq_student_class_nickname"),)
@@ -56,9 +65,15 @@ class Student(Base):
     class_id: Mapped[int] = mapped_column(ForeignKey("school_classes.id", ondelete="CASCADE"), nullable=False, index=True)
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     nickname: Mapped[str] = mapped_column(String(255), nullable=False)
+    # Legacy NFC tag column, kept so the schema (and Neon) needs no migration; nothing reads or writes it now.
+    # The teacher picks who uses a bench in the app; there are no tags.
     nfc_code: Mapped[str | None] = mapped_column(String(255), unique=True, nullable=True)
     active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
     school_class: Mapped[SchoolClass] = relationship(back_populates="students")
+
+    @property
+    def uid(self) -> str:
+        return student_uid(self.id)
 
 
 class SavedLesson(Base):
@@ -119,7 +134,7 @@ class ClassModule(Base):
 
 
 class TagLinkEvent(Base):
-    """Audit log of NFC tag links and unlinks (SFR34). Kept even if the student is deleted."""
+    """Legacy audit log of NFC tag links (SFR34). The table stays so no migration is needed; nothing writes to it."""
     __tablename__ = "tag_link_events"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
@@ -137,7 +152,8 @@ class ProgressEvent(Base):
 
     event_id: Mapped[str] = mapped_column(String(64), primary_key=True)
     student_id: Mapped[int] = mapped_column(ForeignKey("students.id", ondelete="CASCADE"), nullable=False, index=True)
-    nfc_code: Mapped[str] = mapped_column(String(255), nullable=False)
+    # Stored in the old `nfc_code` column (no migration): it now holds the student's uid (see student_uid()).
+    student_uid: Mapped[str] = mapped_column("nfc_code", String(255), nullable=False)
     lesson_id: Mapped[str | None] = mapped_column(String(128), nullable=True)
     module_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
     lesson_version: Mapped[str | None] = mapped_column(String(64), nullable=True)
