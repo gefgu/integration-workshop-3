@@ -1,587 +1,694 @@
 [
   {
     "available": true,
-    "calibration": "automatic",
-    "confirming": 6,
-    "fps": null,
-    "frame_size": [
-      1280,
-      720
-    ],
-    "partial": true,
-    "pieces": [],
-    "profile": "current",
-    "reason": "",
-    "recalibrating": false,
     "running": true,
-    "stable_frames": 3,
-    "uncertain": false,
+    "valid": true,
+    "reason": "",
+    "version": 1,
+    "profile": "current",
+    "partial": true,
+    "recalibrating": false,
+    "pieces": [],
     "unknown": [
       {
+        "id": "sem_tipo_C4_1",
+        "type": "peca_sem_tipo",
+        "row": 4,
         "a": 2,
         "b": 3,
-        "id": "sem_tipo_C4_1",
-        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
-        "row": 4,
-        "type": "peca_sem_tipo"
+        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9."
       },
       {
+        "id": "sem_tipo_C4_4",
+        "type": "peca_sem_tipo",
+        "row": 4,
         "a": 5,
         "b": 6,
-        "id": "sem_tipo_C4_4",
-        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
-        "row": 4,
-        "type": "peca_sem_tipo"
+        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9."
       },
       {
+        "id": "sem_tipo_C4_8",
+        "type": "peca_sem_tipo",
+        "row": 4,
         "a": 9,
         "b": 10,
-        "id": "sem_tipo_C4_8",
-        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
-        "row": 4,
-        "type": "peca_sem_tipo"
+        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9."
       },
       {
+        "id": "sem_tipo_C2_2",
+        "type": "peca_sem_tipo",
+        "row": 2,
         "a": 3,
         "b": 4,
-        "id": "sem_tipo_C2_2",
-        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
-        "row": 2,
-        "type": "peca_sem_tipo"
+        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9."
       }
     ],
-    "updated_at": 1700000000.0,
-    "valid": true,
-    "version": 1
-  },
-  {
-    "available": true,
-    "calibration": "automatic",
-    "confirming": 8,
     "fps": null,
     "frame_size": [
       1280,
       720
     ],
-    "partial": true,
-    "pieces": [],
-    "profile": "current",
-    "reason": "",
-    "recalibrating": false,
-    "running": true,
-    "stable_frames": 3,
-    "uncertain": false,
-    "unknown": [
-      {
-        "a": 9,
-        "b": 10,
-        "id": "sem_tipo_C4_8",
-        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
-        "row": 4,
-        "type": "peca_sem_tipo"
-      }
-    ],
+    "confirming": 6,
+    "stable_frames": 2,
+    "calibration": "automatic",
     "updated_at": 1700000000.0,
-    "valid": true,
-    "version": 2
+    "uncertain": false
   },
   {
     "available": true,
+    "running": true,
+    "valid": true,
+    "reason": "",
+    "version": 2,
+    "profile": "current",
+    "partial": true,
+    "recalibrating": false,
+    "pieces": [
+      {
+        "id": "buzzer@C3:6-7",
+        "type": "buzzer",
+        "a": 7,
+        "b": 8,
+        "row": 3
+      },
+      {
+        "id": "jumper_3@C3:2-5",
+        "type": "jumper_3",
+        "a": 3,
+        "b": 6,
+        "row": 3
+      },
+      {
+        "id": "jumper_3@C5:4-7",
+        "type": "jumper_3",
+        "a": 5,
+        "b": 8,
+        "row": 5
+      },
+      {
+        "id": "vermelho_2@C0:9-10",
+        "type": "bateria",
+        "a": 10,
+        "b": 11,
+        "row": 0
+      }
+    ],
+    "unknown": [
+      {
+        "id": "capsula_smart@C0:4-6",
+        "type": "capsula_smart",
+        "row": 0,
+        "a": 5,
+        "b": 7,
+        "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o."
+      },
+      {
+        "id": "sem_tipo_C4_8",
+        "type": "peca_sem_tipo",
+        "row": 4,
+        "a": 9,
+        "b": 10,
+        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9."
+      }
+    ],
+    "fps": null,
+    "frame_size": [
+      1280,
+      720
+    ],
+    "confirming": 3,
+    "stable_frames": 2,
     "calibration": "automatic",
-    "confirming": 4,
+    "updated_at": 1700000000.0,
+    "uncertain": false
+  },
+  {
+    "available": true,
+    "running": true,
+    "valid": true,
+    "reason": "",
+    "version": 3,
+    "profile": "current",
+    "partial": true,
+    "recalibrating": false,
+    "pieces": [
+      {
+        "id": "buzzer@C3:6-7",
+        "type": "buzzer",
+        "a": 7,
+        "b": 8,
+        "row": 3
+      },
+      {
+        "id": "jumper_3@C3:2-5",
+        "type": "jumper_3",
+        "a": 3,
+        "b": 6,
+        "row": 3
+      },
+      {
+        "id": "jumper_3@C5:4-7",
+        "type": "jumper_3",
+        "a": 5,
+        "b": 8,
+        "row": 5
+      },
+      {
+        "id": "resistor_1k@C4:4-5",
+        "type": "resistor_1k",
+        "a": 5,
+        "b": 6,
+        "row": 4
+      },
+      {
+        "id": "resistor_220@C4:1-2",
+        "type": "resistor_220",
+        "a": 2,
+        "b": 3,
+        "row": 4
+      },
+      {
+        "id": "resistor_470@C2:2-3",
+        "type": "resistor_470",
+        "a": 3,
+        "b": 4,
+        "row": 2
+      },
+      {
+        "id": "vermelho_2@C0:9-10",
+        "type": "bateria",
+        "a": 10,
+        "b": 11,
+        "row": 0
+      }
+    ],
+    "unknown": [
+      {
+        "id": "capsula_smart@C0:4-6",
+        "type": "capsula_smart",
+        "row": 0,
+        "a": 5,
+        "b": 7,
+        "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o."
+      },
+      {
+        "id": "sem_tipo_C4_8",
+        "type": "peca_sem_tipo",
+        "row": 4,
+        "a": 9,
+        "b": 10,
+        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9."
+      }
+    ],
     "fps": 10.0,
     "frame_size": [
       1280,
       720
     ],
-    "partial": true,
-    "pieces": [
-      {
-        "a": 3,
-        "b": 6,
-        "id": "jumper_3@C3:2-5",
-        "row": 3,
-        "type": "jumper_3"
-      },
-      {
-        "a": 5,
-        "b": 8,
-        "id": "jumper_3@C5:4-7",
-        "row": 5,
-        "type": "jumper_3"
-      },
-      {
-        "a": 10,
-        "b": 11,
-        "id": "vermelho_2@C0:9-10",
-        "row": 0,
-        "type": "bateria"
-      }
-    ],
-    "profile": "current",
-    "reason": "",
-    "recalibrating": false,
-    "running": true,
-    "stable_frames": 3,
-    "uncertain": false,
-    "unknown": [
-      {
-        "a": 5,
-        "b": 7,
-        "id": "capsula_smart@C0:4-6",
-        "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o.",
-        "row": 0,
-        "type": "capsula_smart"
-      },
-      {
-        "a": 9,
-        "b": 10,
-        "id": "sem_tipo_C4_8",
-        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
-        "row": 4,
-        "type": "peca_sem_tipo"
-      }
-    ],
+    "confirming": 1,
+    "stable_frames": 2,
+    "calibration": "automatic",
     "updated_at": 1700000000.2,
-    "valid": true,
-    "version": 3
+    "uncertain": true
   },
   {
     "available": true,
-    "calibration": "automatic",
-    "confirming": 1,
+    "running": true,
+    "valid": true,
+    "reason": "",
+    "version": 4,
+    "profile": "current",
+    "partial": true,
+    "recalibrating": false,
+    "pieces": [
+      {
+        "id": "buzzer@C3:6-7",
+        "type": "buzzer",
+        "a": 7,
+        "b": 8,
+        "row": 3
+      },
+      {
+        "id": "jumper_3@C3:2-5",
+        "type": "jumper_3",
+        "a": 3,
+        "b": 6,
+        "row": 3
+      },
+      {
+        "id": "jumper_3@C5:4-7",
+        "type": "jumper_3",
+        "a": 5,
+        "b": 8,
+        "row": 5
+      },
+      {
+        "id": "led@C2:7-8",
+        "type": "led",
+        "a": 8,
+        "b": 9,
+        "row": 2
+      },
+      {
+        "id": "resistor_1k@C4:4-5",
+        "type": "resistor_1k",
+        "a": 5,
+        "b": 6,
+        "row": 4
+      },
+      {
+        "id": "resistor_220@C4:1-2",
+        "type": "resistor_220",
+        "a": 2,
+        "b": 3,
+        "row": 4
+      },
+      {
+        "id": "resistor_470@C2:2-3",
+        "type": "resistor_470",
+        "a": 3,
+        "b": 4,
+        "row": 2
+      },
+      {
+        "id": "vermelho_2@C0:9-10",
+        "type": "bateria",
+        "a": 10,
+        "b": 11,
+        "row": 0
+      }
+    ],
+    "unknown": [
+      {
+        "id": "capsula_smart@C0:4-6",
+        "type": "capsula_smart",
+        "row": 0,
+        "a": 5,
+        "b": 7,
+        "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o."
+      },
+      {
+        "id": "sem_tipo_C4_8",
+        "type": "peca_sem_tipo",
+        "row": 4,
+        "a": 9,
+        "b": 10,
+        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9."
+      }
+    ],
     "fps": 7.5,
     "frame_size": [
       1280,
       720
     ],
-    "partial": true,
-    "pieces": [
-      {
-        "a": 3,
-        "b": 6,
-        "id": "jumper_3@C3:2-5",
-        "row": 3,
-        "type": "jumper_3"
-      },
-      {
-        "a": 5,
-        "b": 8,
-        "id": "jumper_3@C5:4-7",
-        "row": 5,
-        "type": "jumper_3"
-      },
-      {
-        "a": 5,
-        "b": 6,
-        "id": "resistor_1k@C4:4-5",
-        "row": 4,
-        "type": "resistor_1k"
-      },
-      {
-        "a": 2,
-        "b": 3,
-        "id": "resistor_220@C4:1-2",
-        "row": 4,
-        "type": "resistor_220"
-      },
-      {
-        "a": 3,
-        "b": 4,
-        "id": "resistor_470@C2:2-3",
-        "row": 2,
-        "type": "resistor_470"
-      },
-      {
-        "a": 10,
-        "b": 11,
-        "id": "vermelho_2@C0:9-10",
-        "row": 0,
-        "type": "bateria"
-      }
-    ],
-    "profile": "current",
-    "reason": "",
-    "recalibrating": false,
-    "running": true,
-    "stable_frames": 3,
-    "uncertain": false,
-    "unknown": [
-      {
-        "a": 5,
-        "b": 7,
-        "id": "capsula_smart@C0:4-6",
-        "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o.",
-        "row": 0,
-        "type": "capsula_smart"
-      },
-      {
-        "a": 9,
-        "b": 10,
-        "id": "sem_tipo_C4_8",
-        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
-        "row": 4,
-        "type": "peca_sem_tipo"
-      }
-    ],
+    "confirming": 0,
+    "stable_frames": 2,
+    "calibration": "automatic",
     "updated_at": 1700000000.4,
-    "valid": true,
-    "version": 4
+    "uncertain": true
   },
   {
     "available": true,
-    "calibration": "automatic",
-    "confirming": 1,
+    "running": true,
+    "valid": true,
+    "reason": "",
+    "version": 4,
+    "profile": "current",
+    "partial": true,
+    "recalibrating": false,
+    "pieces": [
+      {
+        "id": "buzzer@C3:6-7",
+        "type": "buzzer",
+        "a": 7,
+        "b": 8,
+        "row": 3
+      },
+      {
+        "id": "jumper_3@C3:2-5",
+        "type": "jumper_3",
+        "a": 3,
+        "b": 6,
+        "row": 3
+      },
+      {
+        "id": "jumper_3@C5:4-7",
+        "type": "jumper_3",
+        "a": 5,
+        "b": 8,
+        "row": 5
+      },
+      {
+        "id": "led@C2:7-8",
+        "type": "led",
+        "a": 8,
+        "b": 9,
+        "row": 2
+      },
+      {
+        "id": "resistor_1k@C4:4-5",
+        "type": "resistor_1k",
+        "a": 5,
+        "b": 6,
+        "row": 4
+      },
+      {
+        "id": "resistor_220@C4:1-2",
+        "type": "resistor_220",
+        "a": 2,
+        "b": 3,
+        "row": 4
+      },
+      {
+        "id": "resistor_470@C2:2-3",
+        "type": "resistor_470",
+        "a": 3,
+        "b": 4,
+        "row": 2
+      },
+      {
+        "id": "vermelho_2@C0:9-10",
+        "type": "bateria",
+        "a": 10,
+        "b": 11,
+        "row": 0
+      }
+    ],
+    "unknown": [
+      {
+        "id": "capsula_smart@C0:4-6",
+        "type": "capsula_smart",
+        "row": 0,
+        "a": 5,
+        "b": 7,
+        "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o."
+      },
+      {
+        "id": "sem_tipo_C4_8",
+        "type": "peca_sem_tipo",
+        "row": 4,
+        "a": 9,
+        "b": 10,
+        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9."
+      }
+    ],
     "fps": 6.7,
     "frame_size": [
       1280,
       720
     ],
-    "partial": true,
-    "pieces": [
-      {
-        "a": 3,
-        "b": 6,
-        "id": "jumper_3@C3:2-5",
-        "row": 3,
-        "type": "jumper_3"
-      },
-      {
-        "a": 5,
-        "b": 8,
-        "id": "jumper_3@C5:4-7",
-        "row": 5,
-        "type": "jumper_3"
-      },
-      {
-        "a": 8,
-        "b": 9,
-        "id": "led@C2:7-8",
-        "row": 2,
-        "type": "led"
-      },
-      {
-        "a": 5,
-        "b": 6,
-        "id": "resistor_1k@C4:4-5",
-        "row": 4,
-        "type": "resistor_1k"
-      },
-      {
-        "a": 2,
-        "b": 3,
-        "id": "resistor_220@C4:1-2",
-        "row": 4,
-        "type": "resistor_220"
-      },
-      {
-        "a": 3,
-        "b": 4,
-        "id": "resistor_470@C2:2-3",
-        "row": 2,
-        "type": "resistor_470"
-      },
-      {
-        "a": 10,
-        "b": 11,
-        "id": "vermelho_2@C0:9-10",
-        "row": 0,
-        "type": "bateria"
-      }
-    ],
-    "profile": "current",
-    "reason": "",
-    "recalibrating": false,
-    "running": true,
-    "stable_frames": 3,
-    "uncertain": false,
-    "unknown": [
-      {
-        "a": 5,
-        "b": 7,
-        "id": "capsula_smart@C0:4-6",
-        "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o.",
-        "row": 0,
-        "type": "capsula_smart"
-      },
-      {
-        "a": 9,
-        "b": 10,
-        "id": "sem_tipo_C4_8",
-        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
-        "row": 4,
-        "type": "peca_sem_tipo"
-      }
-    ],
+    "confirming": 1,
+    "stable_frames": 2,
+    "calibration": "automatic",
     "updated_at": 1700000000.6,
-    "valid": true,
-    "version": 5
+    "uncertain": true
   },
   {
     "available": true,
-    "calibration": "automatic",
-    "confirming": 0,
+    "running": true,
+    "valid": true,
+    "reason": "",
+    "version": 4,
+    "profile": "current",
+    "partial": true,
+    "recalibrating": false,
+    "pieces": [
+      {
+        "id": "buzzer@C3:6-7",
+        "type": "buzzer",
+        "a": 7,
+        "b": 8,
+        "row": 3
+      },
+      {
+        "id": "jumper_3@C3:2-5",
+        "type": "jumper_3",
+        "a": 3,
+        "b": 6,
+        "row": 3
+      },
+      {
+        "id": "jumper_3@C5:4-7",
+        "type": "jumper_3",
+        "a": 5,
+        "b": 8,
+        "row": 5
+      },
+      {
+        "id": "led@C2:7-8",
+        "type": "led",
+        "a": 8,
+        "b": 9,
+        "row": 2
+      },
+      {
+        "id": "resistor_1k@C4:4-5",
+        "type": "resistor_1k",
+        "a": 5,
+        "b": 6,
+        "row": 4
+      },
+      {
+        "id": "resistor_220@C4:1-2",
+        "type": "resistor_220",
+        "a": 2,
+        "b": 3,
+        "row": 4
+      },
+      {
+        "id": "resistor_470@C2:2-3",
+        "type": "resistor_470",
+        "a": 3,
+        "b": 4,
+        "row": 2
+      },
+      {
+        "id": "vermelho_2@C0:9-10",
+        "type": "bateria",
+        "a": 10,
+        "b": 11,
+        "row": 0
+      }
+    ],
+    "unknown": [
+      {
+        "id": "capsula_smart@C0:4-6",
+        "type": "capsula_smart",
+        "row": 0,
+        "a": 5,
+        "b": 7,
+        "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o."
+      },
+      {
+        "id": "sem_tipo_C4_8",
+        "type": "peca_sem_tipo",
+        "row": 4,
+        "a": 9,
+        "b": 10,
+        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9."
+      }
+    ],
     "fps": 6.2,
     "frame_size": [
       1280,
       720
     ],
-    "partial": true,
-    "pieces": [
-      {
-        "a": 3,
-        "b": 6,
-        "id": "jumper_3@C3:2-5",
-        "row": 3,
-        "type": "jumper_3"
-      },
-      {
-        "a": 5,
-        "b": 8,
-        "id": "jumper_3@C5:4-7",
-        "row": 5,
-        "type": "jumper_3"
-      },
-      {
-        "a": 8,
-        "b": 9,
-        "id": "led@C2:7-8",
-        "row": 2,
-        "type": "led"
-      },
-      {
-        "a": 5,
-        "b": 6,
-        "id": "resistor_1k@C4:4-5",
-        "row": 4,
-        "type": "resistor_1k"
-      },
-      {
-        "a": 2,
-        "b": 3,
-        "id": "resistor_220@C4:1-2",
-        "row": 4,
-        "type": "resistor_220"
-      },
-      {
-        "a": 3,
-        "b": 4,
-        "id": "resistor_470@C2:2-3",
-        "row": 2,
-        "type": "resistor_470"
-      },
-      {
-        "a": 10,
-        "b": 11,
-        "id": "vermelho_2@C0:9-10",
-        "row": 0,
-        "type": "bateria"
-      }
-    ],
-    "profile": "current",
-    "reason": "",
-    "recalibrating": false,
-    "running": true,
-    "stable_frames": 3,
-    "uncertain": false,
-    "unknown": [
-      {
-        "a": 5,
-        "b": 7,
-        "id": "capsula_smart@C0:4-6",
-        "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o.",
-        "row": 0,
-        "type": "capsula_smart"
-      },
-      {
-        "a": 9,
-        "b": 10,
-        "id": "sem_tipo_C4_8",
-        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
-        "row": 4,
-        "type": "peca_sem_tipo"
-      }
-    ],
+    "confirming": 0,
+    "stable_frames": 2,
+    "calibration": "automatic",
     "updated_at": 1700000000.8,
-    "valid": true,
-    "version": 5
+    "uncertain": true
   },
   {
     "available": true,
-    "calibration": "automatic",
-    "confirming": 0,
+    "running": true,
+    "valid": true,
+    "reason": "",
+    "version": 4,
+    "profile": "current",
+    "partial": true,
+    "recalibrating": false,
+    "pieces": [
+      {
+        "id": "buzzer@C3:6-7",
+        "type": "buzzer",
+        "a": 7,
+        "b": 8,
+        "row": 3
+      },
+      {
+        "id": "jumper_3@C3:2-5",
+        "type": "jumper_3",
+        "a": 3,
+        "b": 6,
+        "row": 3
+      },
+      {
+        "id": "jumper_3@C5:4-7",
+        "type": "jumper_3",
+        "a": 5,
+        "b": 8,
+        "row": 5
+      },
+      {
+        "id": "led@C2:7-8",
+        "type": "led",
+        "a": 8,
+        "b": 9,
+        "row": 2
+      },
+      {
+        "id": "resistor_1k@C4:4-5",
+        "type": "resistor_1k",
+        "a": 5,
+        "b": 6,
+        "row": 4
+      },
+      {
+        "id": "resistor_220@C4:1-2",
+        "type": "resistor_220",
+        "a": 2,
+        "b": 3,
+        "row": 4
+      },
+      {
+        "id": "resistor_470@C2:2-3",
+        "type": "resistor_470",
+        "a": 3,
+        "b": 4,
+        "row": 2
+      },
+      {
+        "id": "vermelho_2@C0:9-10",
+        "type": "bateria",
+        "a": 10,
+        "b": 11,
+        "row": 0
+      }
+    ],
+    "unknown": [
+      {
+        "id": "capsula_smart@C0:4-6",
+        "type": "capsula_smart",
+        "row": 0,
+        "a": 5,
+        "b": 7,
+        "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o."
+      },
+      {
+        "id": "sem_tipo_C4_8",
+        "type": "peca_sem_tipo",
+        "row": 4,
+        "a": 9,
+        "b": 10,
+        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9."
+      }
+    ],
     "fps": 6.0,
     "frame_size": [
       1280,
       720
     ],
-    "partial": true,
-    "pieces": [
-      {
-        "a": 3,
-        "b": 6,
-        "id": "jumper_3@C3:2-5",
-        "row": 3,
-        "type": "jumper_3"
-      },
-      {
-        "a": 5,
-        "b": 8,
-        "id": "jumper_3@C5:4-7",
-        "row": 5,
-        "type": "jumper_3"
-      },
-      {
-        "a": 8,
-        "b": 9,
-        "id": "led@C2:7-8",
-        "row": 2,
-        "type": "led"
-      },
-      {
-        "a": 5,
-        "b": 6,
-        "id": "resistor_1k@C4:4-5",
-        "row": 4,
-        "type": "resistor_1k"
-      },
-      {
-        "a": 2,
-        "b": 3,
-        "id": "resistor_220@C4:1-2",
-        "row": 4,
-        "type": "resistor_220"
-      },
-      {
-        "a": 3,
-        "b": 4,
-        "id": "resistor_470@C2:2-3",
-        "row": 2,
-        "type": "resistor_470"
-      },
-      {
-        "a": 10,
-        "b": 11,
-        "id": "vermelho_2@C0:9-10",
-        "row": 0,
-        "type": "bateria"
-      }
-    ],
-    "profile": "current",
-    "reason": "",
-    "recalibrating": false,
-    "running": true,
-    "stable_frames": 3,
-    "uncertain": true,
-    "unknown": [
-      {
-        "a": 5,
-        "b": 7,
-        "id": "capsula_smart@C0:4-6",
-        "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o.",
-        "row": 0,
-        "type": "capsula_smart"
-      },
-      {
-        "a": 9,
-        "b": 10,
-        "id": "sem_tipo_C4_8",
-        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
-        "row": 4,
-        "type": "peca_sem_tipo"
-      }
-    ],
+    "confirming": 0,
+    "stable_frames": 2,
+    "calibration": "automatic",
     "updated_at": 1700000001.0,
-    "valid": true,
-    "version": 6
+    "uncertain": true
   },
   {
     "available": true,
-    "calibration": "automatic",
-    "confirming": 1,
+    "running": true,
+    "valid": true,
+    "reason": "",
+    "version": 4,
+    "profile": "current",
+    "partial": true,
+    "recalibrating": false,
+    "pieces": [
+      {
+        "id": "buzzer@C3:6-7",
+        "type": "buzzer",
+        "a": 7,
+        "b": 8,
+        "row": 3
+      },
+      {
+        "id": "jumper_3@C3:2-5",
+        "type": "jumper_3",
+        "a": 3,
+        "b": 6,
+        "row": 3
+      },
+      {
+        "id": "jumper_3@C5:4-7",
+        "type": "jumper_3",
+        "a": 5,
+        "b": 8,
+        "row": 5
+      },
+      {
+        "id": "led@C2:7-8",
+        "type": "led",
+        "a": 8,
+        "b": 9,
+        "row": 2
+      },
+      {
+        "id": "resistor_1k@C4:4-5",
+        "type": "resistor_1k",
+        "a": 5,
+        "b": 6,
+        "row": 4
+      },
+      {
+        "id": "resistor_220@C4:1-2",
+        "type": "resistor_220",
+        "a": 2,
+        "b": 3,
+        "row": 4
+      },
+      {
+        "id": "resistor_470@C2:2-3",
+        "type": "resistor_470",
+        "a": 3,
+        "b": 4,
+        "row": 2
+      },
+      {
+        "id": "vermelho_2@C0:9-10",
+        "type": "bateria",
+        "a": 10,
+        "b": 11,
+        "row": 0
+      }
+    ],
+    "unknown": [
+      {
+        "id": "capsula_smart@C0:4-6",
+        "type": "capsula_smart",
+        "row": 0,
+        "a": 5,
+        "b": 7,
+        "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o."
+      },
+      {
+        "id": "sem_tipo_C4_8",
+        "type": "peca_sem_tipo",
+        "row": 4,
+        "a": 9,
+        "b": 10,
+        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9."
+      }
+    ],
     "fps": 7.0,
     "frame_size": [
       1280,
       720
     ],
-    "partial": true,
-    "pieces": [
-      {
-        "a": 3,
-        "b": 6,
-        "id": "jumper_3@C3:2-5",
-        "row": 3,
-        "type": "jumper_3"
-      },
-      {
-        "a": 5,
-        "b": 8,
-        "id": "jumper_3@C5:4-7",
-        "row": 5,
-        "type": "jumper_3"
-      },
-      {
-        "a": 8,
-        "b": 9,
-        "id": "led@C2:7-8",
-        "row": 2,
-        "type": "led"
-      },
-      {
-        "a": 5,
-        "b": 6,
-        "id": "resistor_1k@C4:4-5",
-        "row": 4,
-        "type": "resistor_1k"
-      },
-      {
-        "a": 2,
-        "b": 3,
-        "id": "resistor_220@C4:1-2",
-        "row": 4,
-        "type": "resistor_220"
-      },
-      {
-        "a": 3,
-        "b": 4,
-        "id": "resistor_470@C2:2-3",
-        "row": 2,
-        "type": "resistor_470"
-      },
-      {
-        "a": 10,
-        "b": 11,
-        "id": "vermelho_2@C0:9-10",
-        "row": 0,
-        "type": "bateria"
-      }
-    ],
-    "profile": "current",
-    "reason": "",
-    "recalibrating": false,
-    "running": true,
-    "stable_frames": 3,
-    "uncertain": true,
-    "unknown": [
-      {
-        "a": 5,
-        "b": 7,
-        "id": "capsula_smart@C0:4-6",
-        "reason": "Componente inteligente detectado; a c\u00e2mera n\u00e3o identifica sua fun\u00e7\u00e3o ou configura\u00e7\u00e3o.",
-        "row": 0,
-        "type": "capsula_smart"
-      },
-      {
-        "a": 9,
-        "b": 10,
-        "id": "sem_tipo_C4_8",
-        "reason": "Pe\u00e7a vista na bancada, mas a c\u00e2mera ainda n\u00e3o sabe qual \u00e9.",
-        "row": 4,
-        "type": "peca_sem_tipo"
-      }
-    ],
+    "confirming": 1,
+    "stable_frames": 2,
+    "calibration": "automatic",
     "updated_at": 1700000001.0,
-    "valid": true,
-    "version": 6
+    "uncertain": true
   }
 ]

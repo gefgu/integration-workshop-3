@@ -100,7 +100,7 @@ FAIXAS = {
 }
 
 # ------------------------------------------------------------------ FILTRO TEMPORAL
-FRAMES_ESTAVEIS = 3         # nº de frames seguidos para aceitar uma mudança (3 frames = 0,6 s a 5 fps)
+FRAMES_ESTAVEIS = 2         # nº de frames seguidos para aceitar uma mudança (2 frames = 0,4 s a 5 fps)
 # socket "obstruído" = furo não aparece E não tem cor de componente (ex.: mão, sombra).
 # acima desse número o frame é descartado
 MAX_OBSTRUIDOS = 50  # a câmera real não vê ~40 furos escuros (cantos/direita); com 6 todo frame era descartado
