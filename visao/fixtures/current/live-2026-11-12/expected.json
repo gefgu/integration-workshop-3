@@ -1,0 +1,15 @@
+{
+  "description": "Same arrangement as Nov 11 (assumed from the live picture, to be confirmed); zero-based bank C coordinates. Capacitor may remain unknown and smart mode is unknown.",
+  "pieces": [
+    {"type": "jumper_3", "row": 0, "a": 4, "b": 7},
+    {"type": "resistor_220", "row": 1, "a": 1, "b": 2},
+    {"type": "resistor_1k", "row": 1, "a": 4, "b": 5},
+    {"type": "capacitor", "row": 1, "a": 8, "b": 9, "allow_unknown_body": true},
+    {"type": "jumper_3", "row": 2, "a": 2, "b": 5},
+    {"type": "buzzer", "row": 2, "a": 6, "b": 7},
+    {"type": "resistor_470", "row": 3, "a": 2, "b": 3},
+    {"type": "led", "row": 3, "a": 7, "b": 8},
+    {"type": "capsula_smart", "row": 5, "a": 4, "b": 6, "allow_unknown_mode": true},
+    {"type": "bateria", "row": 5, "a": 9, "b": 10}
+  ]
+}

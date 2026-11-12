@@ -12,8 +12,9 @@ import numpy as np
 class RecordingCamera:
     """Wrap a capture, recording every read including temporary exposure frames.
 
-    OpenCV normally returns decoded pixels. FORMAT=-1 requests the original
-    compressed capture packet; a backend that ignores it is rejected instead
+    OpenCV normally returns decoded pixels. CONVERT_RGB=0 requests the original
+    compressed capture packet (verified on the bench USB camera with OpenCV 5.0; FORMAT=-1 is
+    refused there); a backend that ignores it is rejected instead
     of silently writing recompressed pictures as if they were originals.
     """
 
@@ -31,7 +32,7 @@ class RecordingCamera:
             ('CAP_PROP_CONTRAST', 'contrast'), ('CAP_PROP_SATURATION', 'saturation'),
             ('CAP_PROP_GAMMA', 'gamma'), ('CAP_PROP_AUTOFOCUS', 'auto_focus'),
             ('CAP_PROP_FOCUS', 'focus')) if hasattr(cv, attr)}
-        if not camera.set(cv.CAP_PROP_FORMAT, -1):
+        if not camera.set(cv.CAP_PROP_CONVERT_RGB, 0):
             self.manifest.close()
             raise RuntimeError('camera backend rejected raw MJPEG capture')
 

@@ -22,7 +22,7 @@ class FakeCapture:
 
     def set(self, prop, value):
         self.sets.append((prop, value))
-        return self.raw_supported if prop == cv.CAP_PROP_FORMAT else True
+        return self.raw_supported if prop == cv.CAP_PROP_CONVERT_RGB else True
 
     def get(self, prop):
         return 9999  # intentionally stale; metadata must report commanded settings
