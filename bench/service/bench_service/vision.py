@@ -113,7 +113,7 @@ REQUIRED_CAMERA_CONTROLS = ('gain', 'white_balance_temperature', 'brightness', '
 # At 0.7 fps a frame normally takes about 1.4 seconds; allow several slow
 # frames but never expose a frozen camera image as an up-to-date circuit.
 MAX_FRAME_AGE_S = 8.0
-REMOVAL_CONFIRM_FRAMES = 6
+REMOVAL_CONFIRM_FRAMES = 2
 
 
 class PieceHold:
