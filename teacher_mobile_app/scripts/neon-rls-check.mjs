@@ -24,7 +24,8 @@ const show = (label, r) => console.log(label.padEnd(34), r.status, JSON.stringif
 show('teachers (own row only)', await rest('/teachers?select=id,email'));
 show('teachers.password_hash (denied)', await rest('/teachers?select=password_hash'));
 show('classes (own only)', await rest('/school_classes?select=id,name,teacher_id'));
-const students = await rest('/students?select=id,name,nfc_code');
+// Neon keeps its schema (no uid column): the uid is the id as text, as in the app (studentUid).
+const students = await rest('/students?select=id,name,class_id');
 show('students (own only)', students);
 show('progress_events (denied)', await rest('/progress_events?select=event_id'));
 show('direct insert (denied)', await rest('/progress_events', { method: 'POST', body: JSON.stringify({ event_id: 'x'.repeat(10) }) }));
@@ -35,16 +36,21 @@ console.log('BENCH_TOKEN=' + session.body?.token);
 
 const own = students.body?.[0];
 const at = new Date().toISOString();
-const event = (id, student, nfc) => ({ event_id: id, student_id: student, nfc_code: nfc, kind: 'step_done', seq: 1, at, step_idx: 0 });
-const batch = [event('evt-own-0001', own.id, own.nfc_code), event('evt-foreign-1', Number(foreignStudent), 'NFC-OTHER'), { ...event('evt-bad-kind', own.id, 'n'), kind: 'nope' }];
-show('sync (ack, reject, reject)', await rpc('sync_bench_events', { bench_id: 'bench-1', events: batch }));
+// sync_bench_events (migration 0003) reads the student code from nfc_code: the app sends the uid there.
+const event = (id, student) => ({
+  event_id: id, student_id: student, student_uid: String(student), nfc_code: String(student), kind: 'step_done', seq: 1, at, step_idx: 0,
+});
+const batch = [event('evt-own-0001', own.id), event('evt-foreign-1', Number(foreignStudent))];
+show('sync (ack own, skip foreign)', await rpc('sync_bench_events', { bench_id: 'bench-1', events: batch }));
 show('sync again (dedup)', await rpc('sync_bench_events', { bench_id: 'bench-1', events: batch.slice(0, 1) }));
+show('sync bad kind (refused)', await rpc('sync_bench_events', { bench_id: 'bench-1', events: [{ ...event('evt-bad-kind', own.id), kind: 'nope' }] }));
 
 const modules = await rest('/modules?select=id,title');
 show('modules (own only)', modules);
-const pkg = await rpc('bench_package', { p_module_id: modules.body?.[0]?.id, p_class_id: 1 });
+// bench_package (migration 0003) takes module and class; the app adds the student the teacher picked.
+const pkg = await rpc('bench_package', { p_module_id: modules.body?.[0]?.id, p_class_id: own.class_id });
 console.log('bench_package'.padEnd(34), pkg.status, pkg.body && pkg.body.format !== undefined
   ? JSON.stringify({ format: pkg.body.format, version_id: pkg.body.version_id, teacher: pkg.body.teacher, class: pkg.body.class,
-      module: pkg.body.module, lessons: pkg.body.lessons.length, students: pkg.body.students, created_at: pkg.body.created_at })
+      module: pkg.body.module, lessons: pkg.body.lessons.length, created_at: pkg.body.created_at })
   : JSON.stringify(pkg.body));
 show('bench_package foreign class (404)', await rpc('bench_package', { p_module_id: modules.body?.[0]?.id, p_class_id: 2 }));

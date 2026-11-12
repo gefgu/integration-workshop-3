@@ -1,7 +1,7 @@
 /**
  * End-to-end check of the seeded curriculum, in the order a class would meet it:
  *   teacher API (saved lessons, modules, class assignment) → bench package → bench service (BLE-protocol
- *   WebSocket) → student NFC login → every lesson played through the bench's own validator route →
+ *   WebSocket, with the student the teacher picked) → student enters → every lesson played through the bench's own validator route →
  *   progress saved on the bench → events synced back → teacher dashboard.
  *
  *   npm run e2e:curriculum -- --api http://localhost:8010 --bench http://localhost:8766
@@ -56,13 +56,12 @@ async function main() {
   });
   token = (await login.json()).token;
 
-  // Teacher side: class, student with a tag, modules assigned.
+  // Teacher side: class, one student (the one the teacher will put on the bench), modules assigned.
   const classes = await call<{ id: number; name: string }[]>('/workspace/classes');
   const klass = classes.find((c) => c.name === 'E2E currículo') ?? (await call<{ id: number }>('/workspace/classes', 'POST', { name: 'E2E currículo', description: 'Criada por scripts/e2e-curriculum.ts' }));
-  const code = `E2E-TAG-${klass.id}`;
-  let students = await call<{ id: number; nickname: string; nfc_code: string | null }[]>(`/workspace/students?class_id=${klass.id}`);
+  let students = await call<{ id: number; uid: string; nickname: string }[]>(`/workspace/students?class_id=${klass.id}`);
   if (!students.length) {
-    await call(`/workspace/classes/${klass.id}/students`, 'POST', { name: 'Aluno E2E', nickname: 'e2e', nfc_code: code });
+    await call(`/workspace/classes/${klass.id}/students`, 'POST', { name: 'Aluno E2E', nickname: 'e2e' });
     students = await call(`/workspace/students?class_id=${klass.id}`);
   }
   const student = students[0];
@@ -76,7 +75,7 @@ async function main() {
 
   // Every module's package must fit the bench link; deliver each, finishing with the full track.
   const full = ours.at(-1);
-  for (const m of ours) console.log(`  ${run('load', '--api', api, '--bench', benchWs, '--module-id', String(m.id), '--class-id', String(klass.id))}`);
+  for (const m of ours) console.log(`  ${run('load', '--api', api, '--bench', benchWs, '--module-id', String(m.id), '--class-id', String(klass.id), '--student-id', String(student.id))}`);
 
   // Bench side, as the bench UI does it.
   const bench = benchApi(benchBase);
@@ -86,8 +85,9 @@ async function main() {
   const pkg = await bench.package();
   expect(pkg.module.id === full.id, 'the bench holds the full-curriculum module (the last one delivered)');
   expect(pkg.lessons.length === 20, `package carries all 20 lessons (got ${pkg.lessons.length})`);
-  const session = await bench.login(student.nfc_code ?? code);
-  console.log(`student ${session.student.nickname} signed in by tag; resume=${JSON.stringify(session.resume)}`);
+  expect(pkg.student.id === student.id && pkg.student.uid === student.uid, 'the package carries the student the teacher picked');
+  const session = await bench.login();
+  console.log(`student ${session.student.nickname} entered; resume=${JSON.stringify(session.resume)}`);
 
   let judged = 0;
   for (const lesson of pkg.lessons) {
@@ -133,7 +133,7 @@ async function main() {
   }
   console.log(`played ${pkg.lessons.length} lessons through the bench; ${judged} validator judgements`);
 
-  const back = await bench.login(session.student.nfc_code);
+  const back = await bench.login();
   expect(Object.values(back.progress).filter((p) => p.completed).length === 20, 'the bench remembers all 20 lessons as completed');
   await bench.logout(session.student.id, 120);
 

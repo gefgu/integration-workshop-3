@@ -1,6 +1,6 @@
 """Do what the teacher's phone does: deliver a module to a bench, and sync the bench's events back.
 
-  python graph_validator/tools/bench_delivery.py load --api URL --bench ws://HOST:PORT/ble --module-id N --class-id M
+  python graph_validator/tools/bench_delivery.py load --api URL --bench ws://HOST:PORT/ble --module-id N --class-id M       --student-id S   (S: the student, of class M, who will use the bench)
   python graph_validator/tools/bench_delivery.py sync --api URL --bench ws://HOST:PORT/ble
 
 Credentials: SEED_EMAIL / SEED_PASSWORD (default: the seeded demo teacher). It speaks the same framed
@@ -48,7 +48,8 @@ async def load(args: argparse.Namespace) -> None:
     api = login(args.api)
     session = api.post("/bench/session")
     session.raise_for_status()
-    package = api.get(f"/bench/package/{args.module_id}", params={"class_id": args.class_id})
+    package = api.get(f"/bench/package/{args.module_id}",
+                      params={"class_id": args.class_id, "student_id": args.student_id})
     package.raise_for_status()
     package = package.json()
     async with websockets.connect(args.bench, max_size=None) as socket:
@@ -56,7 +57,7 @@ async def load(args: argparse.Namespace) -> None:
         assert hello["type"] == "WELCOME", hello
         reply, frames = await request(socket, {"type": "LOAD_PACKAGE", "package": package})
         size = len(json.dumps(package, ensure_ascii=True, separators=(",", ":")))
-        print(f"module {args.module_id}: {len(package['lessons'])} lessons, {size:,} bytes, {frames:,} frames of 150 chars"
+        print(f"module {args.module_id} for {package['student']['nickname']}: {len(package['lessons'])} lessons, {size:,} bytes, {frames:,} frames of 150 chars"
               f" → {reply['type']}" + (f" ({reply.get('message')})" if reply["type"] == "ERROR" else ""))
         if reply["type"] != "PACKAGE_OK":
             sys.exit(1)
@@ -96,6 +97,7 @@ def main() -> None:
         if name == "load":
             p.add_argument("--module-id", type=int, required=True)
             p.add_argument("--class-id", type=int, required=True)
+            p.add_argument("--student-id", type=int, required=True)
     args = parser.parse_args()
     asyncio.run(load(args) if args.command == "load" else sync(args))
 

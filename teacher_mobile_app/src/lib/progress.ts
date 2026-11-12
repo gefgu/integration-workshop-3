@@ -2,7 +2,7 @@
 import type { ClassDetail, Student } from './api.ts';
 
 export interface StudentProgress {
-  student: Pick<Student, 'id' | 'name' | 'nickname' | 'nfc_code' | 'active'>;
+  student: Pick<Student, 'id' | 'uid' | 'name' | 'nickname' | 'active'>;
   lessons_done: number;
   lessons_total: number;
   progress: number;
@@ -58,7 +58,7 @@ export function summarize(events: ProgressRow[], lessonIds: string[]): Omit<Stud
 
 export function buildDashboard(detail: ClassDetail, lessonIds: string[], events: ProgressRow[]): ClassDashboard {
   const rows = detail.students.map((s) => ({
-    student: { id: s.id, name: s.name, nickname: s.nickname, nfc_code: s.nfc_code, active: s.active },
+    student: { id: s.id, uid: s.uid, name: s.name, nickname: s.nickname, active: s.active },
     ...summarize(
       events.filter((e) => e.student_id === s.id),
       lessonIds
@@ -82,6 +82,11 @@ export function buildDashboard(detail: ClassDetail, lessonIds: string[], events:
 }
 
 /** "12 min", "1 h 05 min" */
+/** The first block of the student's uid, enough to tell students apart on screen (the full uid stays in data). */
+export function shortUid(uid: string): string {
+  return uid.split('-')[0].toUpperCase();
+}
+
 export function formatDuration(seconds: number): string {
   const minutes = Math.round(seconds / 60);
   if (minutes < 60) return `${minutes} min`;

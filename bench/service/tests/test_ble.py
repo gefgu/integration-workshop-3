@@ -88,7 +88,7 @@ def package():
             "teacher": {"id": 1, "name": "Ana Conceição"},
             "module": {"id": 2, "title": "Iluminação", "description": "Circuitos básicos", "lesson_ids": ["l0"]},
             "class": {"id": 3, "name": "7º A"}, "lessons": lessons,
-            "students": [{"id": 5, "name": "João", "nickname": "jão", "nfc_code": "TAG-1"}]}
+            "student": {"id": 5, "uid": "0b9f3c1e-5d1a-4c4e-9a51-2f7d7f0e0a01", "name": "João", "nickname": "jão"}}
 
 
 def script(phone, store):
@@ -98,7 +98,7 @@ def script(phone, store):
                phone.send({"type": "HELLO", "token": token, "protocol": 1}),
                phone.send({"type": "LOAD_PACKAGE", "package": package()}),
                phone.send({"type": "LOAD_PACKAGE", "package": {"version_id": "x"}})]
-    student = package()["students"][0]
+    student = package()["student"]
     for step in range(7):
         store.record("step_done", student, lesson_id="l0", lesson_version="v0", step_idx=step)
     first = phone.send({"type": "PULL_EVENTS", "max": 4})

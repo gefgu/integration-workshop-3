@@ -22,7 +22,8 @@ judge the teacher website and the saved curriculum the way a busy teacher would.
 5. **Modules and delivery.** In “Módulos”, build a module from lessons you chose and reorder them; assign it to
    the class “E2E currículo”; find how you would send it to a bench. Check that the 22-lesson module is readable
    in the module list and the module page. Check the bench screen (`/bench.html`): does the class's module appear,
-   and can the student (tag `E2E-TAG-1`, enter it where the screen asks) start a lesson?
+   and can the student the teacher picked for the bench (nickname `e2e`, sent with the module) press Entrar and
+   start a lesson?
 6. **Flexibility.** Try to design three things the platform should allow, and say for each whether you could:
    (a) a question that appears *between* build steps, (b) a challenge with a time limit followed by an explanation,
    (c) a lesson with no circuit at all (only explanations and questions).

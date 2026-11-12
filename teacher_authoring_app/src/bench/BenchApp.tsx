@@ -9,7 +9,7 @@ import { BENCH_TOURS } from '../tour/benchTours.ts';
 import { type BenchApi, benchApi, type LoginResult, type RankRow, serviceUrl, type VisionState } from './benchApi.ts';
 import BenchMenu, { type MenuOption } from './BenchMenu.tsx';
 import CameraView from './CameraView.tsx';
-import { type DemoChoice, demoChoices, demoPackage } from './demo.ts';
+import { DEMO_STUDENTS, type DemoChoice, demoChoices, demoPackage } from './demo.ts';
 import FitStage from './FitStage.tsx';
 import { ensureSelection, handlePadKey, padElements, selectedItem, selectElement } from './pad.ts';
 import { lessonStates, nextLessonId, type Screen, screenAfterLesson } from './screens.ts';
@@ -21,7 +21,7 @@ const NO_PIECES: never[] = [];
 
 /**
  * The workbench's 7" screen. Exactly one screen is shown at a time (SFR17): locked (waiting for the
- * teacher's app), home (tap your tag), the student's lessons, a running lesson, the score, the ranking and the
+ * teacher's app), home (the student the teacher picked in the app, who presses Entrar), the student's lessons, a running lesson, the score, the ranking and the
  * camera board view.
  * Played like a game console (see pad.ts): joystick = arrows, its click = Enter, a long press = Escape (menu).
  */
@@ -97,17 +97,33 @@ export default function BenchApp() {
     if (status.unlocked && screen.name === 'locked') setScreen({ name: 'home' });
   }, [status, screen.name, session]);
 
-  // Back to the student's lessons, with the progress the service just saved.
-  const backToStudent = useCallback(async () => {
-    if (session) setSession(await api.login(session.student.nfc_code).catch(() => session));
-    setScreen({ name: 'student' });
-  }, [api, session]);
-
   const logout = useCallback(async () => {
     if (session) await api.logout(session.student.id, (Date.now() - loginAt.current) / 1000).catch(() => undefined);
     setSession(null);
     setScreen({ name: 'home' });
   }, [api, session]);
+
+  /**
+   * Back to the student's lessons, with the progress the service just saved. False when the teacher handed the
+   * bench to another student meanwhile: this student's session ends and the bench shows the new one.
+   */
+  const backToStudent = useCallback(async () => {
+    if (session) {
+      const next = await api.login().catch(() => session);
+      if (next.student.id !== session.student.id) {
+        await logout();
+        return false;
+      }
+      setSession(next);
+    }
+    setScreen({ name: 'student' });
+    return true;
+  }, [api, session, logout]);
+
+  // The teacher sent the module for another student: whoever was on the bench leaves (not mid-lesson).
+  useEffect(() => {
+    if (session && pkg?.student && pkg.student.id !== session.student.id && screen.name !== 'lesson') void logout();
+  }, [session, pkg, screen.name, logout]);
 
   // The joystick acts on what the controls mean (pad.ts), not on every button in a row.
   useEffect(() => {
@@ -162,9 +178,9 @@ export default function BenchApp() {
     menuOptions.push({ id: 'logout', label: 'Trocar de aluno', icon: 'logout', onSelect: () => void logout() });
   }
 
-  async function login(code: string) {
+  async function login() {
     try {
-      const result = await api.login(code);
+      const result = await api.login();
       loginAt.current = Date.now();
       setSession(result);
       setScreen({ name: 'student' });
@@ -196,7 +212,7 @@ export default function BenchApp() {
               api={api}
               pkg={pkg}
               notice={screen.notice}
-              onTag={login}
+              onEnter={login}
             />
           )}
           {screen.name === 'student' && session && pkg && (
@@ -218,7 +234,7 @@ export default function BenchApp() {
               muted={muted}
               onExit={backToStudent}
               onFinished={async (result) => {
-                await backToStudent();
+                if (!(await backToStudent())) return;
                 setScreen(screenAfterLesson(screen.lessonId, result, nextLessonId(pkg, screen.lessonId)));
               }}
             />
@@ -282,7 +298,7 @@ function Locked({ status, api }: { status: BenchStatus | null; api: BenchApi }) 
   );
 }
 
-/** Demo mode: pick a curriculum module; the bench loads it with three demo students (no phone, no tags). */
+/** Demo mode: pick a curriculum module; the bench loads it with a demo student (no phone). */
 function DemoPicker({ api, onCancel }: { api: BenchApi; onCancel?: () => void }) {
   const [choices, setChoices] = useState<DemoChoice[]>([]);
   const [error, setError] = useState('');
@@ -310,7 +326,7 @@ function DemoPicker({ api, onCancel }: { api: BenchApi; onCancel?: () => void })
   return (
     <section className="bench-demo">
       <h1>Modo demonstração</h1>
-      <p>Escolha o módulo. A bancada entra com alunos de teste, sem o app do professor.</p>
+      <p>Escolha o módulo. A bancada entra com um aluno de teste, sem o app do professor.</p>
       {error && <Bubble kind="hamster" tone="erro" message={error} />}
       <div className="bench-demo-grid">
         {choices.map((choice) => (
@@ -337,53 +353,72 @@ function DemoPicker({ api, onCancel }: { api: BenchApi; onCancel?: () => void })
   );
 }
 
-/** Home: the NFC reader types the tag code and Enter, like a keyboard (SFR35, SFR36). */
+/**
+ * Home: the student the teacher picked in the app for this bench (it comes with the module) presses Entrar.
+ * There are no tags: to hand the bench to someone else, the teacher sends the module again with another student.
+ */
 function Home({
   api,
   pkg,
   notice,
-  onTag,
+  onEnter,
 }: {
   api: BenchApi;
   pkg: BenchPackage | null;
   notice?: string;
-  onTag: (code: string) => void;
+  onEnter: () => void;
 }) {
   const [picking, setPicking] = useState(false);
-  const [code, setCode] = useState('');
-  const input = useRef<HTMLInputElement>(null);
-  // The reader acts as a keyboard: keep the field focused, also after a refused tag.
-  useEffect(() => input.current?.focus(), [pkg, notice]);
+  const [error, setError] = useState('');
   if (picking) return <DemoPicker api={api} onCancel={() => setPicking(false)} />;
-  if (!pkg) {
+  // No module yet, or one saved before students were picked in the app (it names no student): wait for the teacher.
+  if (!pkg?.student) {
     return (
       <section className="bench-hero">
         <span className="bench-hero-icon" aria-hidden="true">
-          <Icon name="nfc" size={64} />
+          <Icon name="user" size={64} />
         </span>
         <h1>Quase lá!</h1>
-        <p>Esperando o professor enviar um módulo.</p>
+        <p>Esperando o professor escolher o aluno e enviar a aula pelo app.</p>
       </section>
     );
+  }
+  const loaded = pkg;
+  // Demo: switch between the demo students by loading the same module for another one.
+  async function demoAs(student: BenchStudent) {
+    try {
+      await api.devDemo({ ...loaded, student });
+      onEnter();
+    } catch (cause) {
+      setError((cause as Error).message);
+    }
   }
   return (
     <section className="bench-hero">
       <span className="bench-chip">{pkg.module.title}</span>
-      <span className="bench-hero-icon bench-hero-nfc" aria-hidden="true">
-        <Icon name="nfc" size={72} />
+      <span className="bench-hero-icon bench-hero-student" aria-hidden="true">
+        <Icon name="user" size={72} />
       </span>
-      <h1>Aproxime sua tag</h1>
-      {notice && <Bubble kind="hamster" tone="erro" message={notice} />}
+      <h1>Oi, {pkg.student.nickname}!</h1>
+      <p>
+        {pkg.student.name} · {pkg.class.name}
+      </p>
+      {(notice || error) && <Bubble kind="hamster" tone="erro" message={notice || error} />}
+      <button type="button" className="btn-primary bench-enter" data-pad="item" data-pad-default="" onClick={onEnter}>
+        <Icon name="play" size={28} />
+        Entrar
+      </button>
+      <p className="bench-hero-note">Não é você? Chame o professor.</p>
       {pkg.demo && (
         <div className="bench-demo-login" aria-label="Alunos de demonstração">
           <span>Demonstração: entrar como</span>
-          {pkg.students.map((s) => (
+          {DEMO_STUDENTS.map((s) => (
             <button
               key={s.id}
               type="button"
               className="bench-tile small"
               data-pad="item"
-              onClick={() => onTag(s.nfc_code)}
+              onClick={() => void demoAs(s)}
             >
               {s.nickname}
             </button>
@@ -393,28 +428,6 @@ function Home({
           </button>
         </div>
       )}
-      <form
-        className="bench-tag-form"
-        onSubmit={(event) => {
-          event.preventDefault();
-          if (code.trim()) onTag(code.trim());
-          setCode('');
-        }}
-      >
-        <input
-          id="bench-tag"
-          ref={input}
-          className="text-input"
-          autoComplete="off"
-          aria-label="Código da tag"
-          placeholder="ou digite o código"
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-        />
-        <button className="btn-primary" type="submit">
-          Entrar
-        </button>
-      </form>
     </section>
   );
 }

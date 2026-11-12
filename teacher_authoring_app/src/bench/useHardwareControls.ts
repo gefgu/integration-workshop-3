@@ -7,8 +7,8 @@ import { useEffect } from 'react';
  * Voltar and "e" is Energizar (see docs/bench-protocol.md, "Physical controls").
  */
 export function pressKey(key: string, doc: Document = document): void {
-  // Sent to the page, not to whatever has focus: the tag field keeps the focus for the NFC reader, and the
-  // joystick must still drive the screen (pad.ts) instead of typing into it.
+  // Sent to the page, not to whatever has focus: a text field may hold the focus, and the joystick must still
+  // drive the screen (pad.ts) instead of typing into it.
   const target = doc.body;
   target.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }));
   target.dispatchEvent(new KeyboardEvent('keyup', { key, bubbles: true }));

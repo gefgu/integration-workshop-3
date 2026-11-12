@@ -24,7 +24,8 @@ export interface Student {
   class_id: number;
   name: string;
   nickname: string;
-  nfc_code: string | null;
+  /** Unique, permanent id assigned by the server; names the student on the bench and in every event. */
+  uid: string;
   active: boolean;
 }
 export interface ClassDetail extends SchoolClass {
@@ -154,8 +155,9 @@ export class Api {
   modules = () => this.request<Module[]>('/workspace/modules');
   classDashboard = (id: number) => this.request<ClassDashboard>(`/dashboard/classes/${id}`);
   benchSession = () => this.request<{ token: string; expires_at: number }>('/bench/session', 'POST');
-  benchPackage = (moduleId: number, classId: number) =>
-    this.request<BenchPackage>(`/bench/package/${moduleId}?class_id=${classId}`);
+  /** The module for one bench, with the student the teacher picked to use it (class → student). */
+  benchPackage = (moduleId: number, classId: number, studentId: number) =>
+    this.request<BenchPackage>(`/bench/package/${moduleId}?class_id=${classId}&student_id=${studentId}`);
   sync = (benchId: string, events: BenchEvent[]) =>
     this.request<SyncResult>('/bench/sync', 'POST', { bench_id: benchId, events });
 }

@@ -195,11 +195,28 @@ function AppRoutes() {
 
   async function remove(selectedLesson) {
     try {
+      // The lesson also leaves the modules and classes that use it: say which, before asking.
+      const title = selectedLesson.title || 'Lição sem título';
+      const usage = await workspace.lessonUsage(selectedLesson.id);
+      const quoted = (names: string[]) => names.map((n) => `“${n}”`).join(', ');
+      const where = [
+        usage.modules.length && `${usage.modules.length === 1 ? 'do módulo' : 'dos módulos'} ${quoted(usage.modules)}`,
+        usage.classes.length && `${usage.classes.length === 1 ? 'da turma' : 'das turmas'} ${quoted(usage.classes)}`,
+      ].filter(Boolean);
+      const question = where.length
+        ? `Excluir “${title}”?\n\nEla também sai ${where.join(' e ')}. O progresso já registrado dos alunos é mantido.\n\nNão dá para desfazer.`
+        : `Excluir “${title}”? Não dá para desfazer.`;
+      if (!window.confirm(question)) return;
       await workspace.deleteLesson(selectedLesson.id);
       setLessons((items) => items.filter((item) => item.id !== selectedLesson.id));
       setError('');
+      flash(`“${selectedLesson.title || 'Lição sem título'}” foi excluída.`);
     } catch (cause) {
       setError((cause as Error).message);
+      // The message sits above the list, far from the card's button: bring it into view.
+      requestAnimationFrame(() =>
+        document.querySelector('.app-error')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      );
     }
   }
 

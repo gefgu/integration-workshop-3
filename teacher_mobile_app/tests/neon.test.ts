@@ -139,8 +139,9 @@ test('turmas e módulos têm o mesmo formato do servidor', async () => {
       ],
     }),
     'GET /school_classes?id=eq.5&select=id,name,description': () => ({ json: [{ id: 5, name: '7A', description: '' }] }),
-    'GET /students?class_id=eq.5&select=id,class_id,name,nickname,nfc_code,active&order=name': () => ({
-      json: [{ id: 1, class_id: 5, name: 'Ana', nickname: 'ana', nfc_code: 'T1', active: true }],
+    // Neon has no uid column (no migration): the app derives it from the id.
+    'GET /students?class_id=eq.5&select=id,class_id,name,nickname,active&order=name': () => ({
+      json: [{ id: 1, class_id: 5, name: 'Ana', nickname: 'ana', active: true }],
     }),
     'GET /class_lessons?class_id=eq.5&select=lesson_id&order=position': () => ({ json: [{ lesson_id: 'a' }] }),
     'GET /class_modules?class_id=eq.5&select=module_id&order=position': () => ({ json: [{ module_id: 2 }] }),
@@ -153,7 +154,7 @@ test('turmas e módulos têm o mesmo formato do servidor', async () => {
   assert.deepEqual(module.lesson_ids, ['a', 'b']);
   assert.deepEqual(module.class_ids, [5]);
   const detail = await api.classDetail(5);
-  assert.equal(detail.students[0].nfc_code, 'T1');
+  assert.equal(detail.students[0].uid, '1');
   assert.deepEqual(detail.lesson_ids, ['a']);
   assert.deepEqual(detail.module_ids, [2]);
 });
@@ -162,7 +163,19 @@ test('pacote, sessão da bancada e sincronização chamam as funções do banco'
   const neon = fakeNeon({
     ...teacherRoute,
     'POST /rpc/bench_session': () => ({ json: { token: 'p.s', expires_at: 1 } }),
-    'POST /rpc/bench_package': (b) => ({ json: { format: 1, version_id: 'v', ids: [b.p_module_id, b.p_class_id] } }),
+    // Neon's bench_package from migration 0003: (module, class) and a tag list, which the app replaces.
+    'POST /rpc/bench_package': (b) => ({
+      json: { format: 1, version_id: 'v', ids: [b.p_module_id, b.p_class_id], students: [{ nfc_code: 'T1' }] },
+    }),
+    'GET /students?id=eq.1&select=id,class_id,name,nickname,active': () => ({
+      json: [{ id: 1, class_id: 5, name: 'Ana', nickname: 'ana', active: true }],
+    }),
+    'GET /students?id=eq.2&select=id,class_id,name,nickname,active': () => ({
+      json: [{ id: 2, class_id: 9, name: 'Bia', nickname: 'bia', active: true }],
+    }),
+    'GET /students?id=eq.3&select=id,class_id,name,nickname,active': () => ({
+      json: [{ id: 3, class_id: 5, name: 'Caio', nickname: 'caio', active: false }],
+    }),
     'POST /rpc/sync_bench_events': (b) => ({
       json: { acked: b.events.map((e: { event_id: string }) => e.event_id), rejected: [], inserted: b.events.length },
     }),
@@ -171,11 +184,19 @@ test('pacote, sessão da bancada e sincronização chamam as funções do banco'
   await api.login('p@escola.br', 'good');
 
   assert.equal((await api.benchSession()).token, 'p.s');
-  assert.deepEqual(((await api.benchPackage(2, 5)) as any).ids, [2, 5]);
-  const events = [{ event_id: 'evt-00001', student_id: 1, nfc_code: 'T1', kind: 'step_done', seq: 1, at: '2026-10-29T10:00:00Z' }] as any;
+  const pkg = (await api.benchPackage(2, 5, 1)) as any;
+  assert.deepEqual(pkg.ids, [2, 5]);
+  assert.deepEqual(pkg.student, { id: 1, uid: '1', name: 'Ana', nickname: 'ana' });
+  assert.equal(pkg.students, undefined, 'no tag list reaches the bench');
+  assert.equal(pkg.version_id, 'v-1', 'the same module for another student is another package');
+  await assert.rejects(api.benchPackage(2, 5, 2), (e: ApiError) => e.status === 422);
+  await assert.rejects(api.benchPackage(2, 5, 3), (e: ApiError) => /inativo/.test(e.message));
+
+  const events = [{ event_id: 'evt-00001', student_id: 1, student_uid: '1', kind: 'step_done', seq: 1, at: '2026-10-29T10:00:00Z' }] as any;
   const result = await api.sync('bench-1', events);
   assert.deepEqual(result.acked, ['evt-00001']);
-  assert.deepEqual(neon.calls.at(-1)!.body, { bench_id: 'bench-1', events });
+  // Neon's sync_bench_events reads the student code from nfc_code: it gets the uid there.
+  assert.deepEqual(neon.calls.at(-1)!.body, { bench_id: 'bench-1', events: [{ ...events[0], nfc_code: '1' }] });
 });
 
 test('erros do banco viram ApiError legível; sessão expirada desloga', async () => {
@@ -187,7 +208,7 @@ test('erros do banco viram ApiError legível; sessão expirada desloga', async (
   const api = new NeonApi(store, config, neon.fetchImpl);
   await api.login('p@escola.br', 'good');
 
-  await assert.rejects(api.benchPackage(2, 9), (e: ApiError) => e.status === 404 && e.message === 'Turma não encontrada.');
+  await assert.rejects(api.benchPackage(2, 9, 1), (e: ApiError) => e.status === 404 && e.message === 'Turma não encontrada.');
 
   // JWT cache cleared by a fresh instance sharing the stored session; the auth server now refuses the cookie.
   const later = new NeonApi(store, config, neon.fetchImpl);

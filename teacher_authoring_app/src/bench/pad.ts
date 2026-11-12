@@ -10,7 +10,7 @@
  *   data-pad="energize"   marks a board that can be powered: the click energizes it
  *
  * The selection is a class drawn by the screen (`pad-selected`), not the browser focus: a kiosk window may not
- * have focus, and the tag field keeps it for the NFC reader.
+ * have focus, and a text field may hold it.
  * Click (Enter): presses the selected choice; on a lab screen it energizes; elsewhere it presses "next".
  * Long press (Escape) opens the game menu (sound, help, ranking, camera, leave).
  * A screen that needs its own keys listens in the capture phase and calls preventDefault().

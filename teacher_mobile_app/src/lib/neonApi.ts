@@ -25,6 +25,16 @@ export interface NeonConfig {
   restUrl: string;
 }
 
+/**
+ * A student's uid is their id as text, the same rule as the server (storage.student_uid): Neon keeps its schema,
+ * with no uid column and no migration.
+ */
+export const studentUid = (id: number): string => String(id);
+
+/** Student columns read from Neon (the legacy nfc_code column is never read). */
+const STUDENT_COLUMNS = 'id,class_id,name,nickname,active';
+type StudentRow = Omit<ClassDetail['students'][number], 'uid'>;
+
 const TOKEN_KEY = 'tedtronics.token';
 const TEACHER_KEY = 'tedtronics.teacher';
 const ORIGIN = 'http://localhost';
@@ -202,14 +212,14 @@ export class NeonApi extends Api {
   override classDetail = async (id: number): Promise<ClassDetail> => {
     const [classes, students, lessons, modules] = await Promise.all([
       this.rest<SchoolClass[]>(`/school_classes?id=eq.${id}&select=id,name,description`),
-      this.rest<ClassDetail['students']>(`/students?class_id=eq.${id}&select=id,class_id,name,nickname,nfc_code,active&order=name`),
+      this.rest<StudentRow[]>(`/students?class_id=eq.${id}&select=${STUDENT_COLUMNS}&order=name`),
       this.rest<{ lesson_id: string }[]>(`/class_lessons?class_id=eq.${id}&select=lesson_id&order=position`),
       this.rest<{ module_id: number }[]>(`/class_modules?class_id=eq.${id}&select=module_id&order=position`),
     ]);
     if (!classes[0]) throw new ApiError('Turma não encontrada.', 404);
     return {
       ...classes[0],
-      students,
+      students: students.map((s) => ({ ...s, uid: studentUid(s.id) })),
       lesson_ids: lessons.map((row) => row.lesson_id),
       module_ids: modules.map((row) => row.module_id),
     };
@@ -249,9 +259,31 @@ export class NeonApi extends Api {
 
   override benchSession = () => this.rpc<{ token: string; expires_at: number }>('bench_session', {});
 
-  override benchPackage = (moduleId: number, classId: number) =>
-    this.rpc<BenchPackage>('bench_package', { p_module_id: moduleId, p_class_id: classId });
+  /**
+   * Neon keeps the schema it had with NFC tags (no migration): bench_package(module, class) gives the lessons and
+   * a tag list we drop, and the student the teacher picked is read here and added to the package.
+   */
+  override benchPackage = async (moduleId: number, classId: number, studentId: number): Promise<BenchPackage> => {
+    const [base, rows] = await Promise.all([
+      this.rpc<BenchPackage & { students?: unknown }>('bench_package', { p_module_id: moduleId, p_class_id: classId }),
+      this.rest<StudentRow[]>(`/students?id=eq.${studentId}&select=${STUDENT_COLUMNS}`),
+    ]);
+    const student = rows[0];
+    if (!student || student.class_id !== classId) throw new ApiError('O aluno não é desta turma.', 422);
+    if (!student.active) throw new ApiError('O aluno está inativo.', 422);
+    const { students: _tags, ...pkg } = base;
+    return {
+      ...pkg,
+      // The same module sent for another student is another package (the bench and confirmLoaded compare it).
+      version_id: `${base.version_id}-${student.id}`,
+      student: { id: student.id, uid: studentUid(student.id), name: student.name, nickname: student.nickname },
+    };
+  };
 
+  /** Neon's sync_bench_events still reads the student's code from `nfc_code`: it now carries the uid. */
   override sync = (benchId: string, events: BenchEvent[]) =>
-    this.rpc<SyncResult>('sync_bench_events', { bench_id: benchId, events });
+    this.rpc<SyncResult>('sync_bench_events', {
+      bench_id: benchId,
+      events: events.map((event) => ({ ...event, nfc_code: event.student_uid })),
+    });
 }

@@ -25,7 +25,13 @@ interface AppState {
   connectBench: (transport: BenchTransport) => Promise<BenchStatus>;
   disconnectBench: () => Promise<void>;
   syncNow: () => Promise<SyncReport | null>;
-  sendModuleToBench: (moduleId: number, classId: number, onProgress?: (progress: SendProgress) => void) => Promise<string>;
+  /** Sends the module with the student the teacher picked to use this bench. */
+  sendModuleToBench: (
+    moduleId: number,
+    classId: number,
+    studentId: number,
+    onProgress?: (progress: SendProgress) => void
+  ) => Promise<string>;
   retryUpload: () => Promise<void>;
 }
 
@@ -131,9 +137,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }, [api, queue]);
 
   const sendModuleToBench = useCallback(
-    async (moduleId: number, classId: number, onProgress?: (progress: SendProgress) => void) => {
+    async (moduleId: number, classId: number, studentId: number, onProgress?: (progress: SendProgress) => void) => {
       if (!client.current) throw new Error('Conecte uma bancada primeiro.');
-      const pkg = await sendModule(client.current, api, moduleId, classId, onProgress);
+      const pkg = await sendModule(client.current, api, moduleId, classId, studentId, onProgress);
       setBench(client.current.status);
       return pkg.version_id;
     },

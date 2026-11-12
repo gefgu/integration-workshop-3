@@ -2,13 +2,14 @@ import type { BenchPackage, BenchStudent } from '../../../protocol/bench.ts';
 
 /**
  * Demo mode: test the bench without the teacher's phone. The bench screen builds a package from the TedTronics
- * curriculum (the same lessons the teacher site imports) with three demo students, and the bench service
- * (started with --dev) loads it. Demo progress stays on the bench and is never sent to the server.
+ * curriculum (the same lessons the teacher site imports) for one of three demo students (the home screen switches
+ * between them), and the bench service (started with --dev) loads it. Demo progress stays on the bench and is
+ * never sent to the server.
  */
 export const DEMO_STUDENTS: BenchStudent[] = [
-  { id: 9001, name: 'Ana (demonstração)', nickname: 'ana', nfc_code: 'DEMO-1' },
-  { id: 9002, name: 'Bia (demonstração)', nickname: 'bia', nfc_code: 'DEMO-2' },
-  { id: 9003, name: 'Caio (demonstração)', nickname: 'caio', nfc_code: 'DEMO-3' },
+  { id: 9001, uid: 'demo-ana', name: 'Ana (demonstração)', nickname: 'ana' },
+  { id: 9002, uid: 'demo-bia', name: 'Bia (demonstração)', nickname: 'bia' },
+  { id: 9003, uid: 'demo-caio', name: 'Caio (demonstração)', nickname: 'caio' },
 ];
 
 export interface DemoChoice {
@@ -55,6 +56,6 @@ export async function demoPackage(choice: DemoChoice): Promise<BenchPackage> {
     },
     class: { id: 0, name: 'Turma de demonstração' },
     lessons: lessons.map((l) => ({ ...l, lessonVersion: versionId })),
-    students: DEMO_STUDENTS,
+    student: DEMO_STUDENTS[0],
   };
 }
