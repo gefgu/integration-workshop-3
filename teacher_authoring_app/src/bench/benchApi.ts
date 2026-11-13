@@ -24,6 +24,7 @@ export interface VisionPiece {
   b: number;
   c?: number;
   row: number;
+  polarity?: { status: 'known' | 'unknown'; positive?: number; negative?: number; reason?: string };
 }
 export interface VisionState {
   available: boolean;

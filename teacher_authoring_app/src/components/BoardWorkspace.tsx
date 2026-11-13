@@ -368,6 +368,7 @@ export default function BoardWorkspace({
                     height={p.type.startsWith('jumper') ? SOCKET : 28}
                     fill
                     reversed={p.a > p.b}
+                    polarityUnknown={p.polarity?.status === 'unknown'}
                     lit={glow && (p.type === 'led' || p.type === 'buzzer')}
                     brilho={brilho}
                     value={p.value}

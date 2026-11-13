@@ -48,6 +48,14 @@ test('the camera lesson uses the confirmed LED orientation for the live test cir
   assert.deepEqual(cameraLessonPieces(lessons[0], [...pieces]), [...pieces]);
 });
 
+test('printed camera polarity is never replaced by a lesson demo convention', () => {
+  const lesson = lessons.find((l) => l.id === `${SEED_PREFIX}03-guiada-1k`)!;
+  for (const status of ['known', 'unknown'] as const) {
+    const piece = { id: 'measured', type: 'led' as const, a: 9, b: 8, row: 2, polarity: { status } };
+    assert.deepEqual(cameraLessonPieces(lesson, [piece]), [piece]);
+  }
+});
+
 test('the curriculum has every Notion lesson, guided and challenge', () => {
   const ids = lessons.map((l) => l.id);
   for (const n of ['01', '02', '03', '04', '05', '06', '07', '09'])

@@ -20,6 +20,7 @@ interface PieceViewProps {
   brilho?: number;
   pins?: boolean;
   reversed?: boolean;
+  polarityUnknown?: boolean;
   value?: number;
   onPotStep?: (direction: number) => void;
   pressed?: boolean;
@@ -38,6 +39,7 @@ export default function PieceView({
   brilho = 1,
   pins = true,
   reversed = false,
+  polarityUnknown = false,
   value,
   onPotStep,
   pressed = false,
@@ -119,10 +121,10 @@ export default function PieceView({
             ...(type === 'buzzer' && lit ? { animation: 'pulse .5s ease-in-out infinite alternate' } : {}),
           }}
         >
-          {isLed && reversed ? '◀' : d.text}
+          {isLed && polarityUnknown ? '?' : isLed && reversed ? '◀' : d.text}
         </span>
       )}
-      {isLed && (
+      {isLed && !polarityUnknown && (
         // The bar marks the cathode (K, the − side): dark and thick so it can be seen at a glance.
         <span
           style={{
@@ -140,14 +142,14 @@ export default function PieceView({
       {pins && d.pinA && (
         <Pin
           side="left"
-          label={reversed ? d.pinB : d.pinA}
+          label={polarityUnknown ? '?' : reversed ? d.pinB : d.pinA}
           bg={type === 'bateria' ? (reversed ? '#8b9096' : '#f5ead8') : '#fff'}
         />
       )}
       {pins && d.pinB && (
         <Pin
           side="right"
-          label={reversed ? d.pinA : d.pinB}
+          label={polarityUnknown ? '?' : reversed ? d.pinA : d.pinB}
           bg={type === 'bateria' ? (reversed ? '#f5ead8' : '#8b9096') : '#fff'}
         />
       )}

@@ -33,6 +33,8 @@ export interface Piece {
   a: number;
   b: number;
   row: number;
+  /** Camera observation of the printed terminal signs; absent in authored/simulated pieces. */
+  polarity?: { status: 'known' | 'unknown'; positive?: number; negative?: number; reason?: string };
   value?: number;
   /** Third column (P3) of a smart capsule; its pins are a (P1), b = a + 1 (P2) and c = a + 2 (P3). */
   c?: number;
