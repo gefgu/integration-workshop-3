@@ -31,6 +31,7 @@ class RecordingCamera:
             ('CAP_PROP_GAIN', 'gain'), ('CAP_PROP_BRIGHTNESS', 'brightness'),
             ('CAP_PROP_CONTRAST', 'contrast'), ('CAP_PROP_SATURATION', 'saturation'),
             ('CAP_PROP_GAMMA', 'gamma'), ('CAP_PROP_AUTOFOCUS', 'auto_focus'),
+            ('CAP_PROP_SHARPNESS', 'sharpness'), ('CAP_PROP_BACKLIGHT', 'backlight_compensation'),
             ('CAP_PROP_FOCUS', 'focus')) if hasattr(cv, attr)}
         if not camera.set(cv.CAP_PROP_CONVERT_RGB, 0):
             self.manifest.close()

@@ -46,6 +46,13 @@ class BandDecoderTest(unittest.TestCase):
             removed[:, a:b] = (90, 90, 90)
             self.assertIsNone(le_bandas(removed, relative=True)['valor'])
 
+        # Copper/contact clipping outside the band-bearing body is not band
+        # evidence. Clipping any actual painted band is still refused.
+        for a, b in ((190, 230), (250, 295), (320, 365)):
+            clipped = crop.copy()
+            clipped[:, a:b] = 255
+            self.assertIsNone(le_bandas(clipped, relative=True)['valor'])
+
     def test_relative_reader_has_no_wrong_values_on_held_out_exposure_series(self):
         from visao.calibracao import calibra_por_referencia_fixa
         folder = FIXTURES / 'bench-2026-11-11'
@@ -294,3 +301,13 @@ class PipelineBandsTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+def test_pale_yellow_requires_all_three_observed_unclipped_bands():
+    crop = cv.imread(str(FIXTURES / 'band-crops-2026-11-13/470-pale-yellow.png'))
+    assert le_bandas(crop, relative=True)['valor'] == 470
+    for first, last in ((190, 235), (250, 295), (320, 365)):
+        for colour in ((90, 90, 90), (255, 255, 255)):
+            changed = crop.copy()
+            changed[:, first:last] = colour
+            assert le_bandas(changed, relative=True)['valor'] is None

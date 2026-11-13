@@ -127,3 +127,20 @@ def test_saved_picture_replay_is_byte_identical_across_processes():
                                runs=20, subprocesses=2)
     assert result == {'identical': True, 'in_process_runs': 20, 'subprocess_runs': 2,
                       'different_in_process': [], 'different_subprocesses': []}
+
+
+def test_populated_board_saved_publications_match_intentional_snapshots():
+    base = FIXTURES.parent
+    for folder in ('full-board-2026-11-13', 'full-board-fixed-2026-11-13'):
+        directory = base / folder
+        result = replay(directory, frames=2, perturb=False, profile='board')['frames'][-1]
+        published = {key: result[key] for key in ('valid', 'pieces', 'unknown', 'detections', 'decisions')}
+        assert published == json.loads((directory / 'published-snapshot.json').read_text())
+
+
+def test_scorer_counts_an_explicitly_unread_backup_resistor_value():
+    expected = {'pieces': [{'type': 'resistor', 'row': 0, 'a': 0, 'b': 1}]}
+    report = score([{'valid': True, 'reason': '', 'pieces': [],
+                     'unknown': [{'type': 'resistor', 'row': 0, 'a': 1, 'b': 2}]}], expected)
+    assert report['unknown_resistor_values'] == 1
+    assert report['wrong_values'] == 0 and report['longest_correct_streak'] == 1

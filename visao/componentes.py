@@ -24,6 +24,7 @@ class Componente:
     terminais: list        # colunas que são terminais elétricos
     pontos: int = None     # nº de pontos pretos (só calculado quando precisa desempatar)
     faixa: str = None      # cor da faixa do meio (peças azuis): define resistor/capacitor
+    polaridade: dict = None  # observed printed signs, or explicitly unknown
     id: str = field(init=False)
 
     def __post_init__(self):

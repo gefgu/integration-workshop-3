@@ -206,8 +206,8 @@ class TestCurrentResistor(unittest.TestCase):
         pipeline.registrador.atualiza.return_value = registration
         image = np.zeros((720, 1280, 3), np.uint8)
         with mock.patch('visao.pipeline_atual.retifica', return_value=rectified):
-            self.assertFalse(pipeline.processa(image).completo)
-            self.assertFalse(pipeline.processa(image).completo)
+            for _ in range(cfg.FRAMES_ESTAVEIS - 1):
+                self.assertFalse(pipeline.processa(image).completo)
             complete = pipeline.processa(image)
             self.assertTrue(complete.completo)
             self.assertTrue(np.all(complete.observacoes[0] == 'empty'))
@@ -236,7 +236,8 @@ class TestCurrentResistor(unittest.TestCase):
             original = retifica(image, registration['H'])
             rectified = np.zeros_like(original)
             mask = np.zeros(original.shape[:2], np.uint8)
-            mask[2:268, 15:765] = 255
+            bottom = round(cfg.para_retificada(0, cfg.N_LINHAS_METADE - 1)[1] + 25)
+            mask[2:bottom, 2:cfg.LARGURA_RET - 2] = 255
             for row in range(6):
                 for col in range(11):
                     x, y = (int(round(v)) for v in cfg.para_retificada(col, row))
@@ -260,7 +261,9 @@ class TestCurrentResistor(unittest.TestCase):
             self.assertTrue(result.completo)
             self.assertTrue(np.all(result.observacoes[0] == 'empty'))
             x, y = (int(round(v)) for v in cfg.para_retificada(4.5, 2))
-            cv.rectangle(rectified, (x - 55, y - 35), (x + 55, y - 10), (0, 0, 255), -1)
+            # A plain blue body has no band-derived value. A red body is a
+            # recognized kit battery and does not test unknown identity.
+            cv.rectangle(rectified, (x - 55, y - 35), (x + 55, y - 10), (255, 0, 0), -1)
             unknown_piece = project(rectified)
             now[0] = 1
             result = pipeline.processa(unknown_piece)

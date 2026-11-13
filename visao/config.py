@@ -40,7 +40,9 @@ ITER_RASTREIO = 2
 # pixels por unidade de socket (x e y têm passos físicos diferentes)
 PX_X = 68
 PX_Y = 40
-MARGEM_X = 0.7
+# A two-socket holder crop extends 95 px past its midpoint. Leave that
+# physical overhang visible at both edge columns, plus a small guard margin.
+MARGEM_X = 1.2
 MARGEM_Y = 2.0  # include the full body of pieces on the first row
 LARGURA_RET = int((N_COLUNAS - 1 + 2 * MARGEM_X) * PX_X)
 ALTURA_RET = int((GAP + N_LINHAS_METADE - 1 + 2 * MARGEM_Y) * PX_Y)
@@ -87,7 +89,7 @@ TERMINAIS = {
     'jumper_3': (0, 3),
 }
 
-TIPOS_JUMPER = ('jumper_curto', 'jumper_longo', 'jumper_3')
+TIPOS_JUMPER = ('jumper_curto', 'jumper_longo', 'jumper_3', 'jumper_4')
 
 # ------------------------------------------------------------------ FAIXA COLORIDA DAS PEÇAS AZUIS
 # Legacy drawing colours only. These are never used to identify a component;

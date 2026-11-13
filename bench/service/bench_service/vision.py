@@ -68,7 +68,16 @@ def to_pieces(circuit: dict[str, Any]) -> tuple[list[dict[str, Any]], list[dict[
             unknown.append({"id": identifier, "type": kind, "row": row, "a": cols[0] + 1, "b": cols[-1] + 1,
                             "reason": reason})
             continue
-        pieces.append({"id": identifier, "type": piece_type, "a": cols[0] + 1, "b": cols[-1] + 1, "row": row})
+        piece = {"id": identifier, "type": piece_type, "a": cols[0] + 1, "b": cols[-1] + 1, "row": row}
+        polarity = comp.get('polaridade')
+        if polarity is not None:
+            piece['polarity'] = dict(polarity)
+            if polarity.get('status') == 'known':
+                piece['a'], piece['b'] = polarity['positive'] + 1, polarity['negative'] + 1
+                piece['polarity'].update(positive=piece['a'], negative=piece['b'])
+            else:
+                unknown.append(dict(piece, reason='Polaridade não identificada pelos sinais impressos.', reason_code='polarity_unknown'))
+        pieces.append(piece)
     return pieces, unknown
 
 
@@ -79,10 +88,11 @@ def unknown_from_partial(unlabeled: list[dict[str, Any]]) -> list[dict[str, Any]
         cols = item["colunas"]
         row = published_row(item['metade'], item['linha'])
         stale = item["atualidade"] == "stale"
-        out.append({"id": f"sem_tipo_{item['metade']}{row % BANK_ROWS}_{cols[0]}", "type": "peca_sem_tipo",
+        out.append({"id": f"sem_tipo_{item['metade']}{row % BANK_ROWS}_{cols[0]}", "type": item.get('type', 'peca_sem_tipo'),
                     "row": row, "a": cols[0] + 1, "b": cols[-1] + 1,
                     "reason": "Peça vista na bancada, mas a câmera ainda não sabe qual é"
-                              + (" (última leitura, agora fora de vista)." if stale else ".")})
+                              + (" (última leitura, agora fora de vista)." if stale else ".")
+                              + (" " + item['reason'] if item.get('reason') else "")})
     return out
 
 
@@ -100,6 +110,9 @@ def _import_visao(profile: str = "current", calibration: str | None = None):
     if profile == "legacy":
         from visao.pipeline import Pipeline
         return (lambda: Pipeline()), para_dict, debug
+    if profile == 'board':
+        from visao.pipeline_bancada import PipelineBancada
+        return (lambda: PipelineBancada()), para_dict, debug
     from visao.pipeline_atual import PipelineAtual
     return (lambda: PipelineAtual(calibration)), para_dict, debug
 
@@ -206,6 +219,8 @@ class CameraSettings:
     gamma: float | None = None
     power_line_frequency: int | None = None
     focus: float | None = None
+    sharpness: float | None = None
+    backlight_compensation: float | None = None
 
     @classmethod
     def from_file(cls, path: str | Path) -> 'CameraSettings':
@@ -233,6 +248,8 @@ class CameraSettings:
             ('CAP_PROP_WB_TEMPERATURE', self.white_balance_temperature),
             ('CAP_PROP_BRIGHTNESS', self.brightness), ('CAP_PROP_CONTRAST', self.contrast),
             ('CAP_PROP_SATURATION', self.saturation), ('CAP_PROP_GAMMA', self.gamma)) if value is not None]
+        controls += [(prop, value) for prop, value in (
+            ('CAP_PROP_SHARPNESS', self.sharpness), ('CAP_PROP_BACKLIGHT', self.backlight_compensation)) if value is not None]
         if self.focus is not None:
             controls += [('CAP_PROP_AUTOFOCUS', 0), ('CAP_PROP_FOCUS', self.focus)]
         for name, value in controls:
@@ -337,7 +354,7 @@ class VisionSource:
     def __init__(self, camera: int | str | None = None, image: str | None = None,
                  profile: str = "current", calibration: str | None = None,
                  record: str | None = None, camera_settings: str | None = None) -> None:
-        if profile not in ("current", "legacy"):
+        if profile not in ("current", "legacy", "board"):
             raise ValueError(f"unknown vision profile {profile!r}")
         if record and image:
             raise ValueError('recording requires a camera, not a still picture')
@@ -345,7 +362,7 @@ class VisionSource:
         self.profile, self.calibration = profile, calibration
         self.record = record
         self.camera_settings = camera_settings
-        self.demo_assume_1k = os.getenv('TEDTRONICS_DEMO_ASSUME_1K') == '1'
+        self.demo_assume_1k = profile != 'board' and os.getenv('TEDTRONICS_DEMO_ASSUME_1K') == '1'
         self._record_session = 0
         self._lock = threading.Lock()
         self._recalibrate = threading.Event()
@@ -380,10 +397,14 @@ class VisionSource:
         with self._lock:
             out = dict(self._state)
         # Seconds since the last processed frame, computed here so it needs no shared clock with the screen.
-        out["age_s"] = None if out["updated_at"] is None else round(max(0.0, time.time() - out["updated_at"]), 1)
-        if out["age_s"] is not None and out["age_s"] > MAX_FRAME_AGE_S:
+        age = None if out["updated_at"] is None else max(0.0, time.time() - out["updated_at"])
+        out["age_s"] = None if age is None else round(age, 1)
+        max_age = 1.0 if self.profile == 'board' else MAX_FRAME_AGE_S
+        if age is not None and age > max_age:
             out.update(valid=False, reason="A câmera parou de atualizar. Confira a conexão.",
                        pieces=[], unknown=[], version=-1 - out["version"])
+            if self.profile == 'board':
+                out.update(detections=[], decisions=[], uncertain=True)
         return out
 
     def frame(self) -> bytes | None:
@@ -501,9 +522,18 @@ class VisionSource:
                                            "updated_at": time.time(), "recalibrating": recalibrating,
                                            "fps": fps_from(times), "frame_size": list(frame.shape[1::-1]),
                                            "confirming": confirming}
+                if self.profile == 'board':
+                    changes.update(detections=para_dict(result.grafo)['componentes'],
+                                   decisions=result.decisions, full_board=True,
+                                   calibration_method='four_existing_stickers',
+                                   confirming=sum(1 for n in pipeline.counts.values() if n < 2))
                 pieces, unknown = to_pieces(para_dict(result.grafo))
                 if self.profile == 'current':
                     pieces, uncertain = held.update(pieces, result)
+                elif self.profile == 'board':
+                    uncertain = (not result.valido or any(
+                        result.atualidade[c.metade, c.linha, c.colunas[0]] != 'fresh'
+                        for c in result.componentes))
                 else:
                     uncertain = not result.valido
                 unknown += unknown_from_partial(getattr(result, "pecas_sem_tipo", []))

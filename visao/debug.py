@@ -21,13 +21,15 @@ def desenha_frame(frame, res, reverse_rows=False):
     """ grid projetado + componentes sobre o frame original."""
     img = frame.copy()
     H = res.registro.get('H')
+    bank_h = res.registro.get('bank_homographies')
     if H is not None:
-        proj = cv.perspectiveTransform(cfg.MODELO[None], H)[0]
+        proj = (np.concatenate([cv.perspectiveTransform(cfg.MODELO[:66][None], h)[0] for h in bank_h])
+                if bank_h else cv.perspectiveTransform(cfg.MODELO[None], H)[0])
         vistos = res.registro.get('furos_vistos')
         for k, p in enumerate(proj):
             if hasattr(res, 'atualidade'):
                 m, l, c = cfg.SOCKETS[k]
-                if m != 0:
+                if m != 0 and not bank_h:
                     continue
                 cor = ATUALIDADE_BGR[res.atualidade[m, l, c]]
             else:
@@ -35,11 +37,13 @@ def desenha_frame(frame, res, reverse_rows=False):
             cv.circle(img, tuple(int(v) for v in p), 5, cor, 1)
 
         for comp in res.componentes:
-            pts = np.float32([[cfg.coord_modelo(comp.metade, comp.linha, c)] for c in comp.colunas])
-            pts = cv.perspectiveTransform(pts, H).reshape(-1, 2).astype(int)
+            model_bank = 0 if bank_h else comp.metade
+            component_h = bank_h[comp.metade] if bank_h else H
+            pts = np.float32([[cfg.coord_modelo(model_bank, comp.linha, c)] for c in comp.colunas])
+            pts = cv.perspectiveTransform(pts, component_h).reshape(-1, 2).astype(int)
             cv.polylines(img, [pts.reshape(-1, 1, 2)], False, COR_BGR.get(comp.cor, (255, 0, 255)), 4)
             for c in comp.terminais:
-                p = cv.perspectiveTransform(np.float32([[cfg.coord_modelo(comp.metade, comp.linha, c)]]), H)[0, 0]
+                p = cv.perspectiveTransform(np.float32([[cfg.coord_modelo(model_bank, comp.linha, c)]]), component_h)[0, 0]
                 cv.circle(img, tuple(int(v) for v in p), 7, (255, 0, 255), 2)
             label_row = cfg.N_LINHAS_METADE - 1 - comp.linha if reverse_rows else comp.linha
             rotulo = (f'{comp.tipo} {cfg.METADES[comp.metade]}{label_row}:'
@@ -48,8 +52,10 @@ def desenha_frame(frame, res, reverse_rows=False):
 
         for peca in getattr(res, 'pecas_sem_tipo', []):
             metade = cfg.METADES.index(peca['metade'])
-            pts = np.float32([[cfg.coord_modelo(metade, peca['linha'], c)] for c in peca['colunas']])
-            pts = cv.perspectiveTransform(pts, H).reshape(-1, 2).astype(int)
+            model_bank = 0 if bank_h else metade
+            piece_h = bank_h[metade] if bank_h else H
+            pts = np.float32([[cfg.coord_modelo(model_bank, peca['linha'], c)] for c in peca['colunas']])
+            pts = cv.perspectiveTransform(pts, piece_h).reshape(-1, 2).astype(int)
             cor = ATUALIDADE_BGR[peca['atualidade']]
             cv.polylines(img, [pts.reshape(-1, 1, 2)], False, cor, 3)
             label_row = cfg.N_LINHAS_METADE - 1 - peca['linha'] if reverse_rows else peca['linha']

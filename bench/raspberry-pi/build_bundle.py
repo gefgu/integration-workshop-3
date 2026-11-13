@@ -30,7 +30,9 @@ SKIP_SUFFIXES = {".pyc", ".sqlite3"}
 # Test photos are left out, except the reference photo that visao/calibracao.py matches features against
 # (calibra_por_referencia) when the grid edges are not all visible.
 KEEP_FILES = {"visao/fixtures/current/frame-00.jpg", "visao/fixtures/current/reference-completed.jpg",
-              "visao/fixtures/current/bench-2026-11-11/normal-1.jpg"}
+              "visao/fixtures/current/bench-2026-11-11/normal-1.jpg",
+              "visao/fixtures/current/marked-empty-2026-11-11.jpg",
+              "visao/fixtures/current/full-board-2026-11-13/frame-00.jpg"}
 
 
 def build_ui() -> None:

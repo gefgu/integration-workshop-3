@@ -45,7 +45,8 @@ class ReplayCamera:
     """V4L2-shaped picture source; never opens a device."""
 
     def __init__(self, directory: Path, width: int, height: int, seed: int,
-                 series: str = 'a', perturb: bool = True, normal_exposure: int = int(vision.DEFAULT_EXPOSURE)):
+                 series: str = 'a', perturb: bool = True, normal_exposure: int = int(vision.DEFAULT_EXPOSURE),
+                 single_exposure: bool = False):
         self.directory = Path(directory)
         self.width, self.height, self.seed = width, height, seed
         self.perturb, self.normal_exposure = perturb, normal_exposure
@@ -53,6 +54,7 @@ class ReplayCamera:
         self.read_count = 0
         self.normal_count = 0
         self.read_log = []
+        self.single_exposure = single_exposure
         self.exposures: dict[int, list[Path]] = {}
         manifest = self.directory / 'frames.jsonl'
         if manifest.exists():
@@ -64,13 +66,15 @@ class ReplayCamera:
             self.normal = self.exposures.get(normal_exposure, [])
         else:
             self.normal = sorted(self.directory.glob('normal-*.jpg'))
+            if single_exposure and not self.normal:
+                self.normal = sorted(self.directory.glob('frame-*.jpg'))
             for path in sorted(self.directory.glob(f'bands-{series}-exp*.jpg')):
                 match = re.search(r'exp(\d+)\.jpg$', path.name)
                 if match:
                     self.exposures.setdefault(int(match.group(1)), []).append(path)
         if not self.normal:
             raise ValueError(f'no normal frames for exposure {normal_exposure} in {directory}')
-        if not self.exposures:
+        if not self.exposures and not single_exposure:
             raise ValueError(f'no exposure series {series!r} in {directory}')
         self.exposure_counts: dict[int, int] = {}
         self._images = {}
@@ -96,6 +100,8 @@ class ReplayCamera:
             self.normal_count += 1
             actual, synthetic_exposure = None, False
         else:
+            if not self.exposures:
+                raise ValueError('single-exposure replay has no measured alternative exposure')
             actual = min(self.exposures, key=lambda x: (abs(x - requested), x))
             paths = self.exposures[actual]
             count = self.exposure_counts.get(actual, 0)
@@ -154,21 +160,25 @@ class CapturedState(dict):
                 self.source.stop()
 
 
-def replay(directory, frames=35, width=1280, height=720, seed=0, series='a', perturb=True):
+def replay(directory, frames=35, width=1280, height=720, seed=0, series='a', perturb=True, profile='current'):
     """Run the actual service loop synchronously, with a fake camera and clock."""
     # Use the service's normal import path setup when invoked from bench/service.
-    _, para_dict, debug = vision._import_visao('current', None)
+    _, para_dict, debug = vision._import_visao(profile, None)
     from visao.pipeline_atual import PipelineAtual
 
     cv.setRNGSeed(seed)
     cv.setNumThreads(1)
     clock = FakeClock()
-    camera = ReplayCamera(Path(directory), width, height, seed, series, perturb)
-    source = vision.VisionSource(camera=0)
+    camera = ReplayCamera(Path(directory), width, height, seed, series, perturb, single_exposure=profile == 'board')
+    source = vision.VisionSource(camera=0, profile=profile)
     state = CapturedState(source._state, source, frames)
     source._state = state
     fake_time = SimpleNamespace(monotonic=clock.monotonic, time=clock.time, sleep=clock.sleep)
-    make_pipeline = lambda: PipelineAtual(clock=clock.monotonic)
+    if profile == 'board':
+        from visao.pipeline_bancada import PipelineBancada
+        make_pipeline = lambda: PipelineBancada(clock=clock.monotonic)
+    else:
+        make_pipeline = lambda: PipelineAtual(clock=clock.monotonic)
     # A folder captured with the exposure switch (the Nov 11 pictures) says so in expected.json; every
     # other folder replays with the service's current band-reading mode.
     expected_file = Path(directory) / 'expected.json'
@@ -184,7 +194,7 @@ def replay(directory, frames=35, width=1280, height=720, seed=0, series='a', per
 
 def _location(piece, editor_coordinates):
     offset = 1 if editor_coordinates else 0
-    return piece['row'], piece['a'] - offset, piece['b'] - offset
+    return piece['row'], min(piece['a'], piece['b']) - offset, max(piece['a'], piece['b']) - offset
 
 
 def score(frames, expected, warmup=0):
@@ -196,8 +206,9 @@ def score(frames, expected, warmup=0):
     resistor_types = {'resistor_220', 'resistor_470', 'resistor_1k'}
     for index, frame in enumerate(frames):
         seen = {}
-        for piece in frame['pieces'] + frame['unknown']:
+        for piece in frame['pieces'] + [p for p in frame['unknown'] if p.get('reason_code') != 'polarity_unknown']:
             seen.setdefault(_location(piece, True), []).append(piece['type'])
+            unknowns += piece['type'] == 'resistor'
         errors = []
         if not frame['valid']:
             errors.append({'kind': 'invalid_frame', 'reason': frame['reason']})
@@ -212,9 +223,9 @@ def score(frames, expected, warmup=0):
                 if wanted_type in resistor_types and any(t in resistor_types for t in types):
                     kind = 'wrong_value'
                     wrong_values += 1
-                elif 'peca_sem_tipo' in types:
+                elif any(t in ('peca_sem_tipo', 'resistor') for t in types):
                     kind = 'unknown'
-                    unknowns += wanted_type in resistor_types
+                    unknowns += wanted_type in resistor_types and 'resistor' not in types
                 else:
                     kind = 'missing_or_wrong_type'
                 errors.append({'kind': kind, 'position': location, 'expected': wanted_type, 'actual': types})
@@ -231,27 +242,27 @@ def score(frames, expected, warmup=0):
             'unknown_bodies': unknown_bodies}
 
 
-def canonical_result(directory, expected, frames, width, height, seed, series, perturb, warmup):
-    result = replay(directory, frames, width, height, seed, series, perturb)
+def canonical_result(directory, expected, frames, width, height, seed, series, perturb, warmup, profile='current'):
+    result = replay(directory, frames, width, height, seed, series, perturb, profile=profile)
     return json.dumps({'score': score(result['frames'], expected, warmup), **result},
                       ensure_ascii=False, sort_keys=True, separators=(',', ':')).encode('utf-8')
 
 
 def check_determinism(directory, expected, frames=35, width=1280, height=720, seed=0,
-                      series='a', perturb=True, warmup=5, runs=20, subprocesses=2):
+                      series='a', perturb=True, warmup=5, runs=20, subprocesses=2, profile='current'):
     """Compare complete canonical replay output in-process and in fresh interpreters."""
     if runs < 1 or subprocesses < 0:
         raise ValueError('invalid replay repetition counts')
-    reference = canonical_result(directory, expected, frames, width, height, seed, series, perturb, warmup)
+    reference = canonical_result(directory, expected, frames, width, height, seed, series, perturb, warmup, profile)
     different_in_process = []
     for index in range(1, runs):
-        if canonical_result(directory, expected, frames, width, height, seed, series, perturb, warmup) != reference:
+        if canonical_result(directory, expected, frames, width, height, seed, series, perturb, warmup, profile) != reference:
             different_in_process.append(index)
     different_subprocesses = []
     for index in range(subprocesses):
         command = [sys.executable, '-m', 'bench_service.replay', str(directory), '--frames', str(frames),
                    '--width', str(width), '--height', str(height), '--seed', str(seed), '--series', series,
-                   '--warmup', str(warmup)]
+                   '--warmup', str(warmup), '--profile', profile]
         if not perturb:
             command.append('--no-perturb')
         env = os.environ.copy()
@@ -273,6 +284,7 @@ def main():
     parser.add_argument('--height', type=int, default=720)
     parser.add_argument('--seed', type=int, default=0)
     parser.add_argument('--series', choices=('a', 'b'), default='a')
+    parser.add_argument('--profile', choices=('current', 'board'), default='current')
     parser.add_argument('--no-perturb', action='store_true')
     parser.add_argument('--determinism', action='store_true',
                         help='compare 20 in-process replays and two subprocess replays')
@@ -282,11 +294,11 @@ def main():
     expected = json.loads((args.directory / 'expected.json').read_text())
     if args.determinism:
         result = check_determinism(args.directory, expected, args.frames, args.width, args.height, args.seed,
-                                   args.series, not args.no_perturb, args.warmup)
+                                   args.series, not args.no_perturb, args.warmup, profile=args.profile)
         print(json.dumps(result, ensure_ascii=False, sort_keys=True, separators=(',', ':')))
     else:
         print(canonical_result(args.directory, expected, args.frames, args.width, args.height, args.seed,
-                               args.series, not args.no_perturb, args.warmup).decode('utf-8'))
+                               args.series, not args.no_perturb, args.warmup, profile=args.profile).decode('utf-8'))
 
 
 if __name__ == '__main__':

@@ -15,7 +15,8 @@ def monta_grafo(componentes):
     G = nx.Graph()
     for comp in componentes:
         G.add_node(comp.id, kind='componente', tipo=comp.tipo, cor=comp.cor, faixa=comp.faixa,
-                   metade=cfg.METADES[comp.metade], linha=comp.linha, colunas=comp.colunas)
+                   metade=cfg.METADES[comp.metade], linha=comp.linha, colunas=comp.colunas,
+                   polaridade=comp.polaridade)
         for i, rede in enumerate(comp.redes()):
             G.add_node(rede, kind='rede')
             G.add_edge(comp.id, rede, terminal=i)
@@ -65,6 +66,8 @@ def para_dict(G):
         componentes.append({'id': n, 'tipo': d['tipo'], 'cor': d['cor'], 'faixa': d.get('faixa'),
                             'posicao': {'metade': d['metade'], 'linha': d['linha'], 'colunas': d['colunas']},
                             'redes': [e[1] for e in terminais]})
+        if d.get('polaridade') is not None:
+            componentes[-1]['polaridade'] = d['polaridade']
     redes = sorted((n for n, d in G.nodes(data=True) if d['kind'] == 'rede'), key=_ordem_rede)
     return {'componentes': sorted(componentes, key=lambda c: c['id']), 'redes': redes}
 

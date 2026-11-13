@@ -36,17 +36,34 @@ def contact_candidates(image):
     legacy square-hole aspect limit discards these. Socket spacing, uniqueness,
     row/column distribution and reprojection error are checked separately.
     """
-    gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+    # The dim copper patches have JPEG-sized holes at their borders. Smooth
+    # those pixels before measuring the same .65 fill used by the original
+    # socket detector; do not mistake unfiltered compression speckles for
+    # the contact's physical outline.
+    gray = cv.GaussianBlur(cv.cvtColor(image, cv.COLOR_BGR2GRAY), (3, 3), 0)
     scale = image.shape[0] * image.shape[1] / (1280 * 720)
     points = list(candidatos(image))
-    for threshold in (35, 50, 70, 90, 120, 160, 200):
+    separation = 5 * np.sqrt(scale)
+    buckets = {}
+    for point in points:
+        key = (int(point[0] // separation), int(point[1] // separation))
+        buckets.setdefault(key, []).append(point)
+    for threshold in (200, 160, 120, 90, 70, 50, 35, 25, 15):
         _, mask = cv.threshold(gray, threshold, 255, cv.THRESH_BINARY)
         _, _, stats, centers = cv.connectedComponentsWithStats(mask)
-        for (_, _, w, h, area), center in zip(stats[1:], centers[1:]):
-            if (110 * scale <= area <= 900 * scale and 1.2 <= w / h <= 3.5
-                    and area / (w * h) >= .70
-                    and all(np.linalg.norm(center - p) > 5 * np.sqrt(scale) for p in points)):
+        widths, heights, areas = stats[1:, 2], stats[1:, 3], stats[1:, 4]
+        eligible = np.flatnonzero((areas >= 110 * scale) & (areas <= 900 * scale)
+                                  & (widths >= 1.2 * heights) & (widths <= 3.5 * heights)
+                                  & (areas >= .65 * widths * heights)) + 1
+        for index in eligible:
+            center = centers[index]
+            x, y = map(float, center)
+            key = (int(x // separation), int(y // separation))
+            near = (p for dx in (-1, 0, 1) for dy in (-1, 0, 1)
+                    for p in buckets.get((key[0] + dx, key[1] + dy), ()))
+            if all((x - p[0]) ** 2 + (y - p[1]) ** 2 > separation ** 2 for p in near):
                 points.append(center)
+                buckets.setdefault(key, []).append(center)
     return np.asarray(points, np.float32).reshape(-1, 2)
 
 
@@ -73,9 +90,16 @@ def fit_bank(proposal, points, shape, minimum=12):
     source = np.float32([GRID[j] for j, _ in matches])
     target = np.float32([points[i] for _, i in matches])
     cv.setRNGSeed(0)
-    h, mask = cv.findHomography(source, target, cv.RANSAC, spacing * .10)
-    if h is None or mask is None:
+    # The four markings already establish perspective. A free projective
+    # fit from a crowded bank can swing its hidden edge by half a column.
+    # Permit a small affine correction for the bank's printed pitch/shear,
+    # preserving the projective denominator established by the four markings.
+    predicted_matches = cv.perspectiveTransform(source[None], proposal)[0]
+    correction, mask = cv.estimateAffine2D(predicted_matches, target, method=cv.RANSAC,
+                                           ransacReprojThreshold=spacing * .10)
+    if correction is None or mask is None:
         return None
+    h = np.vstack([correction, [0., 0., 1.]]) @ proposal
     keep = mask.ravel().astype(bool)
     model = source[keep]
     if (len(model) < minimum or len(set(model[:, 0])) < 4 or len(set(model[:, 1])) < 3
@@ -94,6 +118,31 @@ def fit_bank(proposal, points, shape, minimum=12):
     return dict(H=h, inliers=int(keep.sum()), erro=float(np.median(error)), seen=seen)
 
 
+def validate_fixed_bank(h, points, shape):
+    """Validate a fixed camera without re-estimating hidden grid coordinates."""
+    projected = cv.perspectiveTransform(GRID[None], h)[0]
+    height, width = shape[:2]
+    if (not len(points) or not np.isfinite(projected).all() or np.any(projected < 0)
+            or np.any(projected[:, 0] >= width) or np.any(projected[:, 1] >= height)):
+        return None
+    spacing = float(np.median(np.linalg.norm(np.diff(projected.reshape(6, 11, 2), axis=1), axis=2)))
+    distances = np.linalg.norm(projected[:, None] - points[None], axis=2)
+    pairs = sorted((float(distances[j, i]), j, int(i)) for j, i in enumerate(distances.argmin(axis=1)))
+    used, accepted = set(), []
+    for distance, j, i in pairs:
+        if distance <= spacing * .15 and i not in used:
+            used.add(i)
+            accepted.append((distance, j))
+    model = GRID[[j for _, j in accepted]]
+    if (len(accepted) < 12 or len(set(model[:, 0])) < 4 or len(set(model[:, 1])) < 3
+            or np.ptp(model[:, 0]) < 6 or np.ptp(model[:, 1]) < 3
+            or np.median([d for d, _ in accepted]) > spacing * .08):
+        return None
+    seen = np.zeros(66, bool)
+    seen[[j for _, j in accepted]] = True
+    return dict(H=h, inliers=len(accepted), erro=float(np.median([d for d, _ in accepted])), seen=seen)
+
+
 def _white_options(gray, warped, predicted):
     """Several local maxima are checked against sockets; a jumper cannot win by brightness alone."""
     x, y = np.rint(predicted).astype(int)
@@ -101,8 +150,13 @@ def _white_options(gray, warped, predicted):
     if x < half or y < half or x + half >= gray.shape[1] or y + half >= gray.shape[0]:
         return []
     patch = warped[y - half:y + half + 1, x - half:x + half + 1]
-    x0, y0 = max(0, x - 90), max(0, y - 90)
-    search = gray[y0:min(gray.shape[0], y + 90), x0:min(gray.shape[1], x + 90)]
+    # Two diagonal greens provide only a similarity seed. In the newer
+    # perspective the lower white marking is ~73 px from that seed. Include
+    # its whole patch within two reference socket spacings, then let the
+    # four-point fit and distributed sockets reject competing white pieces.
+    radius = 130
+    x0, y0 = max(0, x - radius), max(0, y - radius)
+    search = gray[y0:min(gray.shape[0], y + radius), x0:min(gray.shape[1], x + radius)]
     scores = cv.matchTemplate(search, patch, cv.TM_CCOEFF_NORMED)
     out = []
     for _ in range(16):
@@ -124,11 +178,18 @@ def four_sticker_proposal(image):
         return None
     small = cv.resize(image, (1280, 720), interpolation=cv.INTER_AREA)
     hsv = cv.cvtColor(small, cv.COLOR_BGR2HSV)
-    mask = cv.inRange(hsv, (65, 65, 35), (100, 255, 255))
-    n, _, stats, centers = cv.connectedComponentsWithStats(mask)
-    greens = sorted((centers[i] for i in range(1, n)
-                     if 600 <= stats[i, 4] <= 2400 and .5 < stats[i, 2] / stats[i, 3] < 1.8),
-                    key=lambda p: (float(p.sum()), float(p[0])))
+    # At the measured 1000–1300 settings the genuine green sticker has
+    # V~20–30. Its chroma and rectangle remain strong; an absolute V=35
+    # cutoff removed that reference before socket validation could run.
+    greens = []
+    for value in (35, 25, 15):
+        mask = cv.inRange(hsv, (65, 65, value), (100, 255, 255))
+        n, _, stats, centers = cv.connectedComponentsWithStats(mask)
+        for i in range(1, n):
+            if (600 <= stats[i, 4] <= 2400 and .5 < stats[i, 2] / stats[i, 3] < 1.8
+                    and all(np.linalg.norm(centers[i] - p) > 8 for p in greens)):
+                greens.append(centers[i])
+    greens.sort(key=lambda p: (float(p.sum()), float(p[0])))
     contacts = contact_candidates(small)
     if len(contacts) < 24:
         return None

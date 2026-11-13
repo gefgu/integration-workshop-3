@@ -69,6 +69,31 @@ def test_generic_resistor_is_never_given_an_assumed_value():
     assert "valor não foi identificado" in unknown[0]["reason"]
 
 
+def test_printed_polarity_controls_terminal_order_and_unknown_is_explicit():
+    led = comp('led', [6, 7], 'verde')
+    led['polaridade'] = dict(status='known', positive=7, negative=6)
+    pieces, unknown = to_pieces({'componentes': [led]})
+    assert (pieces[0]['a'], pieces[0]['b']) == (8, 7)
+    assert pieces[0]['polarity']['positive'] == 8
+    assert not unknown
+    led['polaridade'] = dict(status='unknown', reason='printed_signs_ambiguous')
+    pieces, unknown = to_pieces({'componentes': [led]})
+    assert pieces[0]['polarity']['status'] == 'unknown'
+    assert unknown[0]['reason_code'] == 'polarity_unknown'
+
+
+def test_full_board_ignores_demo_assumptions_and_expires_a_stopped_camera_in_one_second(monkeypatch):
+    from bench_service.vision import VisionSource
+    import bench_service.vision as vision
+    monkeypatch.setenv('TEDTRONICS_DEMO_ASSUME_1K', '1')
+    source = VisionSource(profile='board', image='unused')
+    assert not source.demo_assume_1k
+    source._set(valid=True, updated_at=100.0, pieces=[{'id': 'battery'}])
+    monkeypatch.setattr(vision.time, 'time', lambda: 101.2)
+    state = source.state()
+    assert not state['valid'] and state['pieces'] == []
+
+
 def test_every_vision_type_is_mapped_or_explained():
     import sys
     from pathlib import Path
@@ -138,3 +163,15 @@ def test_fps_and_frame_age_are_reported():
     source._set(updated_at=__import__("time").time() - 3)
     assert 2.5 <= source.state()["age_s"] <= 4
     assert VisionSource(image="x.jpg", calibration="cal.json").state()["calibration"] == "manual"
+
+
+def test_board_stale_frame_clears_raw_decisions_without_rounding_the_limit(monkeypatch):
+    from bench_service import vision
+    source = vision.VisionSource(profile='board')
+    source._set(valid=True, updated_at=100., pieces=[{'id': 'battery'}],
+                detections=[{'id': 'battery'}], decisions=[{'reason': 'detected'}])
+    monkeypatch.setattr(vision.time, 'time', lambda: 101.01)
+    state = source.state()
+    assert state['age_s'] == 1.0
+    assert not state['valid'] and state['uncertain']
+    assert state['pieces'] == state['detections'] == state['decisions'] == []

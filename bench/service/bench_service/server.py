@@ -215,6 +215,7 @@ def create_app(store: BenchStore, dev_unlock: bool = False, vision: VisionSource
                 smart_ok = not is_smart_lesson or (smart_visible and bool(controls.smart_state()["slots"]))
                 valid = (isinstance(message, dict) and re.fullmatch(r"curriculo-(?:03-guiada-1k|teste-voltimetro-buzzer)(?:-p\d+)?", str(message.get("lesson", ""))) is not None
                          and state.get("available") and state.get("running") and state.get("valid")
+                         and (state.get('profile') != 'board' or not state.get('uncertain'))
                          and acceptable_unknown and smart_ok
                          and not state.get("recalibrating") and state.get("age_s") is not None
                          and state["age_s"] <= 8.0 and message.get("version") == state.get("version"))

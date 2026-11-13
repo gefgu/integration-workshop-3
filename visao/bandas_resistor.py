@@ -30,12 +30,13 @@ MIN_LARGURA = 9                # 3x pixels
 MAX_SATURADO = .02             # share of clipped pixels that makes the exposure unusable
 
 
-def recorte_corpo(frame, H, linha, coluna):
+def recorte_corpo(frame, H, linha, coluna, vertical_window=None):
     """3x rectified crop of the resistor body at (row, column), or None outside the frame."""
     M = np.diag([ESCALA, ESCALA, 1.0]) @ _T @ np.linalg.inv(H)
     cx, cy = cfg.para_retificada(coluna + .5, linha)
     x0, x1 = int((cx + _JANELA[0]) * ESCALA), int((cx + _JANELA[1]) * ESCALA)
-    y0, y1 = int((cy + _JANELA[2]) * ESCALA), int((cy + _JANELA[3]) * ESCALA)
+    top, bottom = vertical_window if vertical_window is not None else _JANELA[2:]
+    y0, y1 = int((cy + top) * ESCALA), int((cy + bottom) * ESCALA)
     # A canonical canvas edge is not a camera edge. The first-column holder
     # extends past the canonical margin even when fully visible in the source.
     # Check the entire requested window in the actual photograph instead.
@@ -48,6 +49,8 @@ def recorte_corpo(frame, H, linha, coluna):
     # Only warp the window that is needed.
     shift = np.array([[1, 0, -x0], [0, 1, -y0], [0, 0, 1.0]])
     crop = cv.warpPerspective(frame, shift @ M, (x1 - x0, y1 - y0))
+    if vertical_window is not None:
+        crop = cv.resize(crop, (x1 - x0, (_JANELA[3] - _JANELA[2]) * ESCALA), interpolation=cv.INTER_AREA)
     return crop
 
 
@@ -66,7 +69,18 @@ def _runs(mask, minimum, gap=2):
 def _corpo(hsv, linhas=_LINHAS_FAIXA, relative=False):
     """Columns of the grey ceramic body, between the blue holder's two ends."""
     band = hsv[linhas[0]:linhas[1]]
-    blue = ((band[:, :, 0] >= 88) & (band[:, :, 0] <= 110) & (band[:, :, 1] >= 150) & (band[:, :, 2] >= (18 if relative else 40)))
+    saturation_min = 150
+    if relative:
+        blue_hue = ((band[:, :, 0] >= 88) & (band[:, :, 0] <= 130) & (band[:, :, 2] >= 25))
+        chroma = band[:, :, 1][blue_hue]
+        if chroma.size:
+            # The ceramic can acquire a blue cast in shadow. Use the holder's
+            # own stronger chroma so that cast cannot become a false blue end
+            # and cut a genuine brown band out of the body window.
+            saturation_min = max(90, min(170, float(np.percentile(chroma, 80)) * .8))
+    blue = ((band[:, :, 0] >= 88) & (band[:, :, 0] <= (130 if relative else 110))
+            & (band[:, :, 1] >= saturation_min)
+            & (band[:, :, 2] >= (18 if relative else 40)))
     runs = _runs(blue.mean(axis=0) >= .35, 18, gap=4)
     if len(runs) < 2:
         return None
@@ -75,21 +89,29 @@ def _corpo(hsv, linhas=_LINHAS_FAIXA, relative=False):
     return (start, end) if end - start >= 150 else None
 
 
-def _le_faixas(crop, linhas, relative=False):
+def _le_faixas(crop, linhas, relative=False, hsv=None, clipped_mask=None):
     """Per-body reading: dict(valor=int|None, motivo=str, faixas=[(start, end, name)])."""
     def recusa(motivo, faixas=()):
         return dict(valor=None, motivo=motivo, faixas=list(faixas))
 
     if crop is None or crop.size == 0:
         return recusa('corpo fora da imagem')
-    clipped = float(np.mean(crop.max(axis=2) >= 250))
-    if clipped > MAX_SATURADO:
+    if clipped_mask is None:
+        clipped_mask = crop.max(axis=2) >= 250
+    if not relative and float(clipped_mask.mean()) > MAX_SATURADO:
         return recusa('imagem estourada; reduza a exposição')
-    hsv = cv.cvtColor(cv.GaussianBlur(crop, (5, 5), 0), cv.COLOR_BGR2HSV)
+    if hsv is None:
+        hsv = cv.cvtColor(cv.GaussianBlur(crop, (5, 5), 0), cv.COLOR_BGR2HSV)
     span = _corpo(hsv, linhas, relative=relative)
     if span is None:
         return recusa('corpo azul do resistor não encontrado')
     x0, x1 = span
+    if relative:
+        # Copper contacts and neighbouring white jumpers can clip above the
+        # holder. Test the actual band-bearing body, with the same strict
+        # clipping limit; never normalize or reconstruct saturated bands.
+        if float(clipped_mask[linhas[0]:linhas[1], x0:x1].mean()) > MAX_SATURADO:
+            return recusa('imagem estourada; reduza a exposição')
     strip = hsv[linhas[0]:linhas[1], x0:x1]
     # Column medians of each channel (hue is only read where saturation says it is colour).
     h, s, v = (np.median(strip[:, :, i], axis=0) for i in range(3))
@@ -101,6 +123,14 @@ def _le_faixas(crop, linhas, relative=False):
     yellow_min = max(30, min(110, reference_v * .65)) if relative else 110
     warm = ((h <= 14) | (h >= 165)) & (s >= 60) & (v >= warm_min)
     yellow = (h >= 22) & (h <= 45) & (s >= 70) & (v >= yellow_min)
+    if relative:
+        # The current 470 holder's yellow paint is pale (H~31, S~45,
+        # V~220 at commanded saturation 256), not the vivid S>=70 paint
+        # in the older series. Require its positive yellow hue and a bright
+        # band relative to this body's grey; the other two bands are still
+        # mandatory and must retain their order and spacing.
+        yellow |= ((h >= 22) & (h <= 45) & (s >= 35)
+                   & (v >= max(140, reference_v * 1.2)))
     violet = (h >= 110) & (h <= 150) & (s >= 45) & (v >= 18)
     # Close sub-band holes caused by interpolation/JPEG: four 3x pixels
     # are smaller than the minimum accepted band, not a missing colour band.
@@ -157,18 +187,59 @@ def le_bandas(crop, relative=False):
               (30, 80), (50, 85))
     if relative:
         strips += ((45, 95), (55, 100), (70, 115), (80, 120))
-    reads = [_le_faixas(crop, rows, relative=relative) for rows in strips]
+        # The current 1 kΩ's curved ceramic has a clipped reflection across
+        # its centre. Narrow strips above/below it can independently show
+        # all three bands. Each still applies the same clipping refusal,
+        # and two complete reads must agree; no missing band is supplied.
+        strips += ((20, 40), (30, 50), (100, 120), (110, 130))
+    hsv = None if crop is None or crop.size == 0 else cv.cvtColor(cv.GaussianBlur(crop, (5, 5), 0), cv.COLOR_BGR2HSV)
+    clipped_mask = None if hsv is None else crop.max(axis=2) >= 250
+    reads = [_le_faixas(crop, rows, relative=relative, hsv=hsv, clipped_mask=clipped_mask) for rows in strips]
     decoded = [read for read in reads if read['valor'] is not None]
     values = {read['valor'] for read in decoded}
     if len(values) > 1:
         return dict(valor=None, motivo='leituras de faixas conflitantes', faixas=[])
     if len(decoded) >= 2:
         return decoded[0]
+    if relative and not (values - {470}):
+        # A curved/shadowed body can expose yellow in its upper rows and
+        # brown in its lower rows. Account for all three *observed* bands,
+        # each confirmed at different vertical positions. Never fill a band
+        # from the inventory, and never outvote a contradictory full read.
+        clusters = []
+        events = sorted((name, float((a + b) / 2), int(a), int(b), index)
+                        for index, read in enumerate(reads) for a, b, name in read['faixas'])
+        for name, center, a, b, index in events:
+            nearby = [group for group in clusters if group['name'] == name
+                      and abs(center - np.median(group['centers'])) <= 25]
+            if nearby:
+                group = nearby[0]
+            else:
+                group = dict(name=name, centers=[], starts=[], ends=[], strips=set())
+                clusters.append(group)
+            group['centers'].append(center)
+            group['starts'].append(a)
+            group['ends'].append(b)
+            group['strips'].add(index)
+        confirmed = []
+        for group in clusters:
+            positions = [(strips[i][0] + strips[i][1]) / 2 for i in group['strips']]
+            if len(positions) >= 2 and max(positions) - min(positions) >= 10:
+                confirmed.append(group)
+        if len(confirmed) == len(clusters) == 3:
+            confirmed.sort(key=lambda group: np.median(group['centers']))
+            names = [group['name'] for group in confirmed]
+            centers = [float(np.median(group['centers'])) for group in confirmed]
+            gaps = np.diff(centers)
+            if (sorted(names) == ['violet', 'warm', 'yellow'] and names[1] == 'violet'
+                    and min(gaps) >= .6 * max(gaps)):
+                return dict(valor=470, motivo='complete_bands_across_rows',
+                            faixas=[(int(np.median(g['starts'])), int(np.median(g['ends'])), g['name']) for g in confirmed])
     if decoded:
         return dict(valor=None, motivo='faixas sem confirmação entre linhas', faixas=decoded[0]['faixas'])
     return reads[0]
 
 
-def le_valor(frame, H, linha, coluna, relative=False):
+def le_valor(frame, H, linha, coluna, relative=False, vertical_window=None):
     """Value in ohms (220, 470 or 1000) of the resistor at (row, column), with the reading details."""
-    return le_bandas(recorte_corpo(frame, H, linha, coluna), relative=relative)
+    return le_bandas(recorte_corpo(frame, H, linha, coluna, vertical_window=vertical_window), relative=relative)

@@ -58,7 +58,7 @@ def _resistores_azuis(ret_bgr, valor_minimo):
     return found
 
 
-def pecas_kit(ret_bgr):
+def pecas_kit(ret_bgr, short_jumpers=False, white_floor=180):
     """Candidate kit pieces; identities and polarity follow the test-kit convention.
 
     Returns (type, colour, row, first column, last column). Bright openings and
@@ -76,7 +76,7 @@ def pecas_kit(ret_bgr):
             if neutral.size >= 30:
                 contacts.append(float(np.median(neutral)))
     reference = float(np.median(contacts)) if len(contacts) >= 20 else 0.0
-    white_min = int(min(180, max(120, reference * .8))) if reference >= 150 else 180
+    white_min = int(min(180, max(120, reference * .8))) if reference >= 150 else white_floor
     red = cv.inRange(hsv, (0, 80, 70), (8, 255, 255)) | cv.inRange(hsv, (165, 80, 70), (179, 255, 255))
     masks = [
         ('vermelho_2', 'vermelho', red),
@@ -85,9 +85,37 @@ def pecas_kit(ret_bgr):
     ]
     found = []
     for kind, colour, mask in masks:
-        mask = cv.morphologyEx(mask, cv.MORPH_CLOSE, np.ones((5, 11), np.uint8))
+        if short_jumpers and kind == 'jumper':
+            # The wider canvas retains blue edge-holder crops. White table
+            # background beyond the board must not join an edge jumper.
+            left = round((cfg.MARGEM_X - .7) * cfg.PX_X)
+            right = round((cfg.N_COLUNAS - 1 + cfg.MARGEM_X + .7) * cfg.PX_X)
+            mask[:, :max(0, left)] = 0
+            mask[:, right:] = 0
+        # On the populated upper bank neighbouring white bodies are only a
+        # few pixels apart vertically. Close horizontal fragments without
+        # joining two distinct jumpers across that gap.
+        close_height = 1 if short_jumpers and kind == 'jumper' else 5
+        mask = cv.morphologyEx(mask, cv.MORPH_CLOSE, np.ones((close_height, 11), np.uint8))
         _, labels, stats, _ = cv.connectedComponentsWithStats(mask)
-        for label, (x, y, width, height, area) in enumerate(stats[1:], 1):
+        regions = list(enumerate(stats[1:], 1))
+        if short_jumpers and kind == 'jumper':
+            # JPEG/reflection pixels can connect two separate rows. Split
+            # their dense horizontal cores at the actual low-occupancy gap.
+            regions = []
+            for label, (x, y, width, height, _) in enumerate(stats[1:], 1):
+                if width < 85:
+                    continue
+                body = labels[y:y + height, x:x + width] == label
+                dense = np.count_nonzero(body, axis=1) >= min(width * .5, cfg.PX_X * .7)
+                edges = np.flatnonzero(np.diff(np.r_[False, dense, False].astype(int)))
+                for top, bottom in zip(edges[::2], edges[1::2]):
+                    if bottom - top < 12:
+                        continue
+                    core = body[top:bottom].astype(np.uint8)
+                    bx, by, bw, bh = cv.boundingRect(core)
+                    regions.append((label, (x + bx, y + top + by, bw, bh, int(core.sum()))))
+        for label, (x, y, width, height, area) in regions:
             # Reflections on a neighboring piece can connect to the body and
             # extend its bounding box into the next row. Keep the horizontal
             # core instead of treating that sparse tail as part of the piece.
@@ -108,7 +136,7 @@ def pecas_kit(ret_bgr):
             span = 1 if width < 170 else round((width - 60) / cfg.PX_X)
             # Short pale bodies can be resistors. Four-gap recognition is
             # supported by a synthetic shape test, but needs a live check.
-            if kind == 'jumper' and span not in (3, 4):
+            if kind == 'jumper' and span not in ((1, 2, 3, 4) if short_jumpers else (3, 4)):
                 continue
             if kind != 'jumper' and span != 1 or not 1 <= span <= 4:
                 continue
@@ -120,7 +148,7 @@ def pecas_kit(ret_bgr):
             expected_x, expected_y = cfg.para_retificada(first + span / 2, row)
             if abs(x + width / 2 - offset - expected_x) > 24 or abs(y + height - 3 - expected_y) > 18:
                 continue
-            piece_type = kind if kind != 'jumper' else {3: 'jumper_3', 4: 'jumper_4'}[span]
+            piece_type = kind if kind != 'jumper' else {1: 'jumper_curto', 2: 'jumper_longo', 3: 'jumper_3', 4: 'jumper_4'}[span]
             found.append((piece_type, colour, row, first, first + span))
     return found
 
@@ -273,14 +301,14 @@ def suporte_marcado(vistos, linha, coluna_inicial, coluna_final):
     return bool(near.any())
 
 
-def corpos_azuis(ret_bgr):
+def corpos_azuis(ret_bgr, relative=False):
     """Blue bodies at the normal brightness (V>=150) or a relaxed one (V>=110) for dim frames; see
     resistores_azuis_kit for why both passes are kept."""
     return (_corpos_azuis(ret_bgr, 150) | _corpos_azuis(ret_bgr, 110)
-            | _corpos_com_extremos_azuis(ret_bgr))
+            | _corpos_com_extremos_azuis(ret_bgr, relative=relative))
 
 
-def _corpos_com_extremos_azuis(ret_bgr):
+def _corpos_com_extremos_azuis(ret_bgr, relative=False):
     """Paired holder ends survive when bands obscure most of the blue area.
 
     Require both blue ends around the socket-pair centre. This locates a
@@ -288,6 +316,7 @@ def _corpos_com_extremos_azuis(ret_bgr):
     and position in PipelineAtual.
     """
     from .bandas_resistor import ESCALA, _JANELA, _corpo
+    board_hsv = cv.cvtColor(ret_bgr, cv.COLOR_BGR2HSV)
     found = set()
     for row in range(cfg.N_LINHAS_METADE):
         for col in range(cfg.N_COLUNAS - 1):
@@ -296,9 +325,16 @@ def _corpos_com_extremos_azuis(ret_bgr):
             y0, y1 = int(cy + _JANELA[2]), int(cy + _JANELA[3])
             if x0 < 0 or y0 < 0 or x1 > ret_bgr.shape[1] or y1 > ret_bgr.shape[0]:
                 continue
+            # Two accepted blue-end runs require far more than 40 native
+            # pixels. Avoid 3x enlargement/blur on the many empty grid cells.
+            raw = board_hsv[y0:y1, x0:x1]
+            blue = ((raw[:, :, 0] >= 85) & (raw[:, :, 0] <= 135)
+                    & (raw[:, :, 1] >= 65) & (raw[:, :, 2] >= 15))
+            if np.count_nonzero(blue) < 40:
+                continue
             crop = cv.resize(ret_bgr[y0:y1, x0:x1], None, fx=ESCALA, fy=ESCALA)
             hsv = cv.cvtColor(cv.GaussianBlur(crop, (5, 5), 0), cv.COLOR_BGR2HSV)
-            span = _corpo(hsv)
+            span = _corpo(hsv, relative=relative)
             centre = -_JANELA[0] * ESCALA
             if span is not None and span[0] < centre < span[1] and abs(sum(span) / 2 - centre) <= 60:
                 found.add((row, col))

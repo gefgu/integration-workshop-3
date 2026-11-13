@@ -24,8 +24,8 @@ def main() -> None:
                         help="record original MJPEG camera frames and control commands for later replay")
     parser.add_argument("--camera-settings", default=None, metavar="FILE",
                         help="JSON file of explicitly commanded camera controls")
-    parser.add_argument("--vision-profile", choices=("current", "legacy"), default=None,
-                        help="board profile: current (default, half-populated kit board) or legacy (full board)")
+    parser.add_argument("--vision-profile", choices=("current", "legacy", "board"), default=None,
+                        help="board profile: board (four stickers, both banks), current (legacy kit demo) or legacy")
     parser.add_argument("--calibration", default=None,
                         help="manual calibration file made with `python -m visao --calibrate FILE` (current profile)")
     parser.add_argument("--controls", default=None,

@@ -1,0 +1,137 @@
+{
+  "description": "Earlier camera pose: provisional visual socket annotation, not electrical placement verification. Raised-body parallax differs from the later capture; do not treat these as consecutive stationary frames. Smart modes and backup resistor value remain unknown.",
+  "pieces": [
+    {
+      "type": "resistor_1k",
+      "row": 5,
+      "a": 0,
+      "b": 1
+    },
+    {
+      "type": "resistor_220",
+      "row": 5,
+      "a": 4,
+      "b": 5
+    },
+    {
+      "type": "jumper_3",
+      "row": 5,
+      "a": 7,
+      "b": 10
+    },
+    {
+      "type": "jumper_longo",
+      "row": 4,
+      "a": 1,
+      "b": 3
+    },
+    {
+      "type": "jumper_longo",
+      "row": 3,
+      "a": 3,
+      "b": 5
+    },
+    {
+      "type": "led",
+      "row": 3,
+      "a": 6,
+      "b": 7
+    },
+    {
+      "type": "led",
+      "row": 3,
+      "a": 9,
+      "b": 10
+    },
+    {
+      "type": "potenciometro",
+      "row": 1,
+      "a": 0,
+      "b": 2
+    },
+    {
+      "type": "capacitor",
+      "row": 1,
+      "a": 5,
+      "b": 6
+    },
+    {
+      "type": "resistor_1k",
+      "row": 1,
+      "a": 8,
+      "b": 9
+    },
+    {
+      "type": "jumper_curto",
+      "row": 0,
+      "a": 3,
+      "b": 4
+    },
+    {
+      "type": "bateria",
+      "row": 0,
+      "a": 9,
+      "b": 10
+    },
+    {
+      "type": "jumper_3",
+      "row": 11,
+      "a": 0,
+      "b": 3
+    },
+    {
+      "type": "jumper_4",
+      "row": 11,
+      "a": 6,
+      "b": 10
+    },
+    {
+      "type": "jumper_4",
+      "row": 10,
+      "a": 4,
+      "b": 8
+    },
+    {
+      "type": "buzzer",
+      "row": 10,
+      "a": 9,
+      "b": 10
+    },
+    {
+      "type": "resistor_470",
+      "row": 9,
+      "a": 5,
+      "b": 6
+    },
+    {
+      "type": "jumper_4",
+      "row": 8,
+      "a": 0,
+      "b": 4
+    },
+    {
+      "type": "jumper_longo",
+      "row": 8,
+      "a": 8,
+      "b": 10
+    },
+    {
+      "type": "capsula_smart",
+      "row": 6,
+      "a": 0,
+      "b": 2
+    },
+    {
+      "type": "capsula_smart",
+      "row": 6,
+      "a": 4,
+      "b": 6
+    },
+    {
+      "type": "resistor",
+      "row": 6,
+      "a": 9,
+      "b": 10
+    }
+  ]
+}
