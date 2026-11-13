@@ -13,7 +13,7 @@ from unittest import mock
 import cv2 as cv
 import numpy as np
 
-from visao.bandas_resistor import le_valor, le_bandas
+from visao.bandas_resistor import le_valor, le_bandas, recorte_corpo
 from visao.pipeline_atual import MIN_ASSINATURA, PipelineAtual, assinatura_corpo
 
 FIXTURES = Path(__file__).resolve().parents[1] / 'visao' / 'fixtures' / 'current'
@@ -34,6 +34,15 @@ def registered(small=False):
 
 
 class BandDecoderTest(unittest.TestCase):
+    def test_edge_holder_crop_is_checked_against_source_not_rectified_canvas(self):
+        frame = np.full((720, 1280, 3), 100, np.uint8)
+        h = np.float64([[60, 0, 200], [0, 40, 250], [0, 0, 1]])
+        for col in (0, 9):
+            self.assertIsNotNone(recorte_corpo(frame, h, 0, col))
+        # The same requested body really does cross the camera's left edge.
+        h[0, 2] = 0
+        self.assertIsNone(recorte_corpo(frame, h, 0, 0))
+
     def test_live_lesson_crops_with_fragmented_bands(self):
         folder = FIXTURES / 'band-crops-2026-11-12'
         for case in json.loads((folder / 'expected.json').read_text()):

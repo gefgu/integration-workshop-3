@@ -36,13 +36,19 @@ def recorte_corpo(frame, H, linha, coluna):
     cx, cy = cfg.para_retificada(coluna + .5, linha)
     x0, x1 = int((cx + _JANELA[0]) * ESCALA), int((cx + _JANELA[1]) * ESCALA)
     y0, y1 = int((cy + _JANELA[2]) * ESCALA), int((cy + _JANELA[3]) * ESCALA)
-    if x0 < 0 or y0 < 0:
+    # A canonical canvas edge is not a camera edge. The first-column holder
+    # extends past the canonical margin even when fully visible in the source.
+    # Check the entire requested window in the actual photograph instead.
+    window = np.float32([[[x0, y0], [x1, y0], [x1, y1], [x0, y1]]])
+    source = cv.perspectiveTransform(window, np.linalg.inv(M))[0]
+    height, width = frame.shape[:2]
+    if (not np.isfinite(source).all() or np.any(source < 1)
+            or np.any(source[:, 0] >= width - 1) or np.any(source[:, 1] >= height - 1)):
         return None
-    size = (cfg.LARGURA_RET * ESCALA, cfg.ALTURA_RET * ESCALA)
     # Only warp the window that is needed.
     shift = np.array([[1, 0, -x0], [0, 1, -y0], [0, 0, 1.0]])
     crop = cv.warpPerspective(frame, shift @ M, (x1 - x0, y1 - y0))
-    return crop if crop.shape[1] == x1 - x0 and size[0] > x1 and size[1] > y1 else None
+    return crop
 
 
 def _runs(mask, minimum, gap=2):
