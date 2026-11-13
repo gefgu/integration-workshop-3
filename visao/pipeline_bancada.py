@@ -14,7 +14,7 @@ from .calibracao_bancada import contact_candidates, validate_fixed_bank, four_st
 from .circuito import contrai_jumpers, monta_grafo
 from .componentes import Componente
 from .pecas_atuais import led_vermelho_kit, pecas_kit
-from .pecas_bancada import blue_bodies, potentiometers, buzzers, white_jumpers
+from .pecas_bancada import blue_bodies, potentiometers, buzzers, white_jumpers, smart_housings
 from .pipeline import Resultado
 from .polaridade import read_polarity
 from .sockets import retifica
@@ -150,9 +150,9 @@ class PipelineBancada:
                 result.visiveis[index][seen] = True
                 candidates = sorted(set([p for p in pecas_kit(rect, short_jumpers=True, white_floor=100)
                                          if not p[0].startswith('jumper')]
-                                         + white_jumpers(rect, registration['white_level']) + led_vermelho_kit(rect)))
+                                         + white_jumpers(rect, registration['white_level']) + led_vermelho_kit(rect, board=True)))
                 found_buzzers = buzzers(rect)
-                smarts = smart_candidates(rect)
+                smarts = sorted(set(smart_candidates(rect) + smart_housings(rect)))
                 capacitors = capacitor_candidates(rect)
                 cap_polarities = {item['piece'][2:5]: item['polarity'] for item in capacitors}
                 inside_smart = lambda row, first, last: any(row == s[2]
@@ -174,8 +174,10 @@ class PipelineBancada:
                 occupied_colour = [(r, a, a + 1) for r, a in blue] + [p[2:5] for p in pots]
                 candidates = [p for p in candidates if not (p[0].startswith('jumper') and any(
                     p[2] == r and max(p[3], a) < min(p[4], b) for r, a, b in occupied_colour))]
+                typed_footprints = {p[2:5] for p in candidates
+                                    if p[0] in ('led', 'buzzer', 'capacitor', 'capsula_smart', 'potenciometro')}
                 for row, col in sorted(blue):
-                    if (row, col, col + 1) in cap_polarities:
+                    if (row, col, col + 1) in typed_footprints:
                         continue
                     reading = le_valor(frame, bank['H'], row, col, relative=True, vertical_window=blue[(row, col)])
                     result.decisions.append(dict(bank=cfg.METADES[index], row=row, a=col, b=col + 1,
@@ -235,6 +237,19 @@ class PipelineBancada:
             self.missing.pop(key, None)
             if not self.temporal or self.counts[key] >= 2:
                 self.accepted[key] = comp
+        # Body presence and type confirmation are separate facts. In an
+        # unknown -> capacitor transition the blue proposal has already lost
+        # to positive print evidence, but its type still needs a second frame.
+        # Keep that visible body unknown instead of dropping it for one frame.
+        for key, comp in sorted(detected.items()):
+            footprint = (cfg.METADES[comp.metade], comp.linha, tuple(comp.colunas))
+            if key not in self.accepted and footprint not in unknown_footprints:
+                result.pecas_sem_tipo.append(dict(metade=footprint[0], linha=comp.linha,
+                    colunas=comp.colunas, atualidade='fresh', type='peca_sem_tipo',
+                    reason='confirming_component_type', candidate_type=comp.tipo))
+                result.observacoes[comp.metade, comp.linha, comp.colunas] = 'unknown'
+                result.atualidade[comp.metade, comp.linha, comp.colunas] = 'fresh'
+                result.visiveis[comp.metade, comp.linha, comp.colunas] = True
         result.componentes = [self.accepted[key] for key in sorted(self.accepted)]
         for comp in result.componentes:
             freshness = 'fresh' if comp.id in detected else 'stale'

@@ -76,6 +76,16 @@ def blue_bodies(rect, details=False, blocked=()):
     mask = cv.inRange(hsv, (85, 65, 35), (135, 255, 255))
     mask = cv.morphologyEx(mask, cv.MORPH_CLOSE, np.ones((3, 35), np.uint8))
     _, labels, stats, centers = cv.connectedComponentsWithStats(mask)
+    # A plain blue capacitor need not expose the grey ceramic gap expected
+    # by legacy resistor candidates. Preserve its body even when the white
+    # prints cannot be read. Geometry alone never supplies an electrical type.
+    for tag, (_, _, width, height, area) in enumerate(stats[1:], 1):
+        if 90 <= width <= 190 and 18 <= height <= 70 and area >= 1000:
+            x, y = centers[tag]
+            col = round(x / cfg.PX_X - cfg.MARGEM_X - .5)
+            row = round((y + 22) / cfg.PX_Y - cfg.MARGEM_Y)
+            if 0 <= col < cfg.N_COLUNAS - 1 and 0 <= row < cfg.N_LINHAS_METADE:
+                candidates.add((row, col))
     by_blob = {}
     fallback = {}
     for row, col in sorted(candidates):
@@ -89,8 +99,26 @@ def blue_bodies(rect, details=False, blocked=()):
         tag = int(tags[np.argmax(counts)])
         if stats[tag, cv.CC_STAT_WIDTH] > 190:
             # Paired local holder ends remain evidence even if a dark blue
-            # reflection joins them to a large background component.
-            fallback[(row, col)] = (-44, 4)
+            # reflection joins them to a large background component. Locate
+            # their dense bright face locally; a fixed y-window cut off the
+            # rearranged upper 1k's bands whenever that reflection appeared.
+            y0, y1 = max(0, cy - 80), min(rect.shape[0], cy + 12)
+            x0, x1 = max(0, cx - 75), min(rect.shape[1], cx + 75)
+            local = hsv[y0:y1, x0:x1]
+            blue = cv.inRange(local, (85, 65, 35), (135, 255, 255)) > 0
+            values = local[:, :, 2][blue]
+            bounds = (-44, 4)
+            if values.size:
+                floor = max(40., float(np.percentile(values, 95)) * .45)
+                profile = np.mean(blue & (local[:, :, 2] >= floor), axis=1)
+                edges = np.flatnonzero(np.diff(np.r_[False, profile >= .20, False].astype(int)))
+                faces = [(float(profile[a:b].sum()), int(a), int(b))
+                         for a, b in zip(edges[::2], edges[1::2]) if 10 <= b - a <= 60]
+                if faces:
+                    _, a, b = max(faces)
+                    center_y = y0 + (a + b - 1) / 2
+                    bounds = (round(center_y - cy - 24), round(center_y - cy + 24))
+            fallback[(row, col)] = bounds
             continue
         score = abs(float(centers[tag, 1]) - (cy - 22))
         previous = by_blob.get(tag)
@@ -137,26 +165,70 @@ def potentiometers(rect):
 
 
 def smart_housings(rect):
-    """Positive case, screen aperture and OLED evidence in the six permitted slots."""
-    hsv = cv.cvtColor(rect, cv.COLOR_BGR2HSV)
+    """Positive three-sided housing and dark aperture, independent of OLED text.
+
+    The foreground can shift vertically relative to the grid because it is
+    raised. Only the six user-defined electrical slots are considered, but
+    every slot still requires a visible housing and aperture.
+    """
     gray = cv.cvtColor(rect, cv.COLOR_BGR2GRAY)
-    neutral = (hsv[:, :, 1] < 100) & (gray >= 20) & (gray < 145)
-    blue = (hsv[:, :, 0] >= 90) & (hsv[:, :, 0] <= 145) & (hsv[:, :, 1] >= 40) & (hsv[:, :, 2] >= 30)
-    dark = gray < 45
+    lab = cv.cvtColor(rect, cv.COLOR_BGR2LAB).astype(np.float32)
+    # A shaded grey housing reaches HSV S=123 at V=26 in the rearranged
+    # recording. HSV saturation exaggerates that small absolute colour
+    # difference; perceptual Lab chroma keeps it neutral. The independent
+    # three-rail geometry, aperture and contrast checks remain mandatory.
+    neutral = (np.hypot(lab[:, :, 1] - 128, lab[:, :, 2] - 128) <= 18) & (gray >= 12) & (gray <= 180)
+    dark = (gray < 45).astype(np.uint8)
+    closed = cv.morphologyEx(dark, cv.MORPH_CLOSE, np.ones((1, 3), np.uint8))
+    run_width = round(cfg.PX_X)
+    long_aperture = cv.erode(closed, np.ones((1, run_width), np.uint8), borderType=cv.BORDER_CONSTANT, borderValue=0)
+    planes = [cv.integral(plane.astype(np.uint8)) for plane in (neutral, dark, gray)]
+
+    def fraction(plane, x0, x1, y0, y1):
+        x0, x1 = max(0, int(x0)), min(rect.shape[1], int(x1))
+        y0, y1 = max(0, int(y0)), min(rect.shape[0], int(y1))
+        if x1 <= x0 or y1 <= y0:
+            return 0.
+        integral = planes[plane]
+        return float(integral[y1, x1] - integral[y0, x1] - integral[y1, x0] + integral[y0, x0]) / ((x1 - x0) * (y1 - y0))
+
+    def continuous_aperture(panel):
+        x0, x1, y0, y1 = map(int, panel)
+        half = run_width // 2
+        patch = long_aperture[max(0, y0):min(rect.shape[0], y1),
+                              max(0, x0 + half):min(rect.shape[1], x1 - half)]
+        # Empty socket holes can have a high dark fraction too, but their
+        # intervening grid pillars break horizontal runs. A real OLED
+        # aperture remains continuous across more than one socket pitch.
+        return bool(patch.size and np.mean(np.any(patch > 0, axis=1)) >= .35)
+
     found = []
     for first in (0, 4, 8):
-        row = 5
-        cx, cy = cfg.para_retificada(first + 1, row)
-        case = min(_fracao(neutral, cx - 85, cx + 85, cy - 95, cy - 70),
-                   _fracao(neutral, cx - 85, cx - 55, cy - 60, cy - 10),
-                   _fracao(neutral, cx + 55, cx + 85, cy - 60, cy - 10))
-        screen = max(_fracao(dark, cx + dx - 42, cx + dx + 42, cy + dy - 58, cy + dy - 37)
-                     for dx in (-24, -12, 0, 12, 24) for dy in (-8, 0, 8))
-        oled = _fracao(blue, cx - 65, cx + 65, cy - 35, cy - 5)
-        if case >= .40 and screen >= .45 and oled >= .10:
-            found.append(('capsula_smart', 'preto', row, first, first + 2))
+        cx, cy = cfg.para_retificada(first + 1, 5)
+        accepted = False
+        for dx in range(-20, 21, 10):
+            for dy in range(-24, 25, 6):
+                x, y = cx + dx, cy + dy
+                rails = ((x - 80, x + 80, y - 80, y - 55),
+                         (x - 85, x - 55, y - 50, y - 10),
+                         (x + 55, x + 85, y - 50, y - 10))
+                if min(fraction(0, *r) for r in rails) < .65:
+                    continue
+                # The black aperture border survives changes to the active
+                # display contents; there is no blue/text/mode requirement.
+                panels = ((x - 40, x + 40, y - 40, y - 12),
+                          (x - 40, x + 40, y - 40, y - 30))
+                rail_level = min(fraction(2, *r) for r in rails)
+                if any(fraction(1, *panel) >= .65 and rail_level - fraction(2, *panel) >= 12
+                       and continuous_aperture(panel)
+                       for panel in panels):
+                    accepted = True
+                    break
+            if accepted:
+                break
+        if accepted:
+            found.append(('capsula_smart', 'preto', 5, first, first + 2))
     return found
-
 
 
 def buzzers(rect):

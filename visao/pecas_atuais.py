@@ -231,7 +231,7 @@ def smart_kit(ret_bgr, metade=0):
     return sorted(('capsula_smart', 'preto', row, first, first + 2) for _, row, first in found)
 
 
-def led_vermelho_kit(ret_bgr):
+def led_vermelho_kit(ret_bgr, board=False):
     """Detect the pictured red LED lens on its pale green two-position holder."""
     hsv = cv.cvtColor(ret_bgr, cv.COLOR_BGR2HSV)
     red = cv.inRange(hsv, (0, 80, 60), (12, 255, 255)) | cv.inRange(hsv, (165, 80, 60), (179, 255, 255))
@@ -240,12 +240,20 @@ def led_vermelho_kit(ret_bgr):
         if not (9 <= width <= 24 and 8 <= height <= 23 and 65 <= area <= 350):
             continue
         cx, cy = x + width / 2, y + height / 2
-        col = round((cx - 20) / cfg.PX_X - cfg.MARGEM_X - .5)
+        # The old 20-pixel lateral correction was measured at one camera
+        # position. A lens at the left edge then rounded outside the board.
+        # The board profile uses the actual lens centre and nearest valid
+        # two-pin footprint; positive pale-PCB support is still mandatory.
+        lens_x = cx if board else cx - 20
+        col = round(lens_x / cfg.PX_X - cfg.MARGEM_X - .5)
+        if board:
+            col = min(cfg.N_COLUNAS - 2, max(0, col))
         row = round((cy + 27) / cfg.PX_Y - cfg.MARGEM_Y)
         if not (0 <= row < cfg.N_LINHAS_METADE and 0 <= col < cfg.N_COLUNAS - 1):
             continue
         ex, ey = cfg.para_retificada(col + .5, row)
-        if abs(cx - 20 - ex) > 22 or abs(cy + 27 - ey) > 16:
+        max_x_error = cfg.PX_X * .6 if board else 22
+        if abs(lens_x - ex) > max_x_error or abs(cy + 27 - ey) > 16:
             continue
         px, py = int(cx), int(cy)
         if px < 55 or px + 55 >= hsv.shape[1] or py < 14 or py + 15 >= hsv.shape[0]:

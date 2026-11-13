@@ -1,0 +1,127 @@
+{
+  "description": "Visual annotations of the user-rearranged November 13 saved PC picture; not electrical seating verification. Capacitor may remain an unknown body without all printed marks. Backup resistor value and smart mode are unconfirmed.",
+  "pieces": [
+    {
+      "type": "resistor_1k",
+      "row": 5,
+      "a": 0,
+      "b": 1
+    },
+    {
+      "type": "potenciometro",
+      "row": 5,
+      "a": 2,
+      "b": 4
+    },
+    {
+      "type": "jumper_curto",
+      "row": 5,
+      "a": 5,
+      "b": 6
+    },
+    {
+      "type": "jumper_3",
+      "row": 5,
+      "a": 7,
+      "b": 10
+    },
+    {
+      "type": "jumper_longo",
+      "row": 4,
+      "a": 1,
+      "b": 3
+    },
+    {
+      "type": "resistor_220",
+      "row": 4,
+      "a": 6,
+      "b": 7
+    },
+    {
+      "type": "jumper_longo",
+      "row": 3,
+      "a": 3,
+      "b": 5
+    },
+    {
+      "type": "resistor_470",
+      "row": 2,
+      "a": 8,
+      "b": 9
+    },
+    {
+      "type": "jumper_3",
+      "row": 1,
+      "a": 0,
+      "b": 3
+    },
+    {
+      "type": "capsula_smart",
+      "row": 0,
+      "a": 4,
+      "b": 6
+    },
+    {
+      "type": "bateria",
+      "row": 0,
+      "a": 8,
+      "b": 9
+    },
+    {
+      "type": "resistor_1k",
+      "row": 11,
+      "a": 2,
+      "b": 3
+    },
+    {
+      "type": "jumper_4",
+      "row": 11,
+      "a": 6,
+      "b": 10
+    },
+    {
+      "type": "buzzer",
+      "row": 10,
+      "a": 0,
+      "b": 1
+    },
+    {
+      "type": "jumper_4",
+      "row": 9,
+      "a": 4,
+      "b": 8
+    },
+    {
+      "type": "jumper_4",
+      "row": 8,
+      "a": 0,
+      "b": 4
+    },
+    {
+      "type": "jumper_longo",
+      "row": 8,
+      "a": 8,
+      "b": 10
+    },
+    {
+      "type": "led",
+      "row": 6,
+      "a": 0,
+      "b": 1
+    },
+    {
+      "type": "capacitor",
+      "row": 6,
+      "a": 4,
+      "b": 5,
+      "allow_unknown_body": true
+    },
+    {
+      "type": "resistor",
+      "row": 6,
+      "a": 9,
+      "b": 10,
+      "allow_unknown_body": true
+    }
+  ]
+}

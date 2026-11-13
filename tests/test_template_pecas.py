@@ -90,3 +90,24 @@ def test_smart_housing_template_moves_to_each_allowed_slot_without_display_pixel
             # Only the labelled plastic case is pasted. OLED content is absent.
             assert smart_candidates(canvas) == [('capsula_smart', 'preto', 5, col, col + 2)]
     assert smart_candidates(np.full((340, cfg.LARGURA_RET, 3), 15, np.uint8)) == []
+
+
+def test_rearranged_capacitor_keeps_positive_prints_without_a_position_assumption():
+    frame = cv.imread(str(FIXTURES / 'full-board-rearranged-2026-11-13/frame-00.jpg'))
+    calibration = four_sticker_proposal(frame)
+    banks = [retifica(frame, bank['H'])[:340] for bank in calibration['banks']]
+    assert capacitor_candidates(banks[0]) == []
+    found = capacitor_candidates(banks[1])
+    assert [item['piece'] for item in found] == [('capacitor', 'azul', 5, 4, 5)]
+    assert found[0]['polarity']['status'] == 'known'
+    assert found[0]['polarity']['positive'] == 5
+
+
+def test_reversed_rearranged_buzzer_has_shape_and_green_pcb_evidence():
+    frame = cv.imread(str(FIXTURES / 'full-board-rearranged-2026-11-13/frame-00.jpg'))
+    calibration = four_sticker_proposal(frame)
+    banks = [retifica(frame, bank['H'])[:340] for bank in calibration['banks']]
+    assert buzzer_candidates(banks[0]) == []
+    assert buzzer_candidates(banks[1]) == [('buzzer', 'verde', 1, 0, 1)]
+    image = paste_template(buzzer_template(), 2, 3, mirrored=True)
+    assert buzzer_candidates(image) == [('buzzer', 'verde', 2, 3, 4)]

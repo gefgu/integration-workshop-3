@@ -99,3 +99,34 @@ def test_smart_housing_overhang_does_not_reserve_other_electrical_rows():
     result = pipeline.processa(frame)
     assert [(c.metade, c.linha, c.colunas) for c in result.componentes if c.tipo == 'resistor_470'] == [(1, 3, [5, 6])]
     assert len([c for c in result.componentes if c.tipo == 'capsula_smart']) == 2
+
+
+def test_rearranged_resistor_is_read_from_its_measured_face_when_background_joins_it():
+    from visao.pecas_bancada import blue_bodies
+    from visao.bandas_resistor import recorte_corpo, le_bandas
+    path = PHOTO.parent.parent / 'full-board-rearranged-2026-11-13/frame-00.jpg'
+    frame = cv.imread(str(path))
+    result = PipelineBancada(temporal=False).processa(frame)
+    bounds = blue_bodies(result.retificadas[1], details=True)[(0, 2)]
+    assert bounds != (-44, 4)
+    crop = recorte_corpo(frame, result.registro['bank_homographies'][1], 0, 2, vertical_window=bounds)
+    assert le_bandas(crop, relative=True)['valor'] == 1000
+
+
+def test_visible_capacitor_body_never_disappears_during_unknown_to_typed_confirmation(monkeypatch):
+    import visao.pipeline_bancada as board
+    frame = cv.imread(str(PHOTO.parent.parent / 'full-board-rearranged-2026-11-13/frame-00.jpg'))
+    pipeline = PipelineBancada()
+    pipeline.processa(frame)
+    assert any(c.tipo == 'capacitor' for c in pipeline.processa(frame).componentes)
+    with monkeypatch.context() as scoped:
+        scoped.setattr(board, 'capacitor_candidates', lambda image: [])
+        uncertain = pipeline.processa(frame)
+    confirming = pipeline.processa(frame)
+    confirmed = pipeline.processa(frame)
+    for result in (uncertain, confirming):
+        assert not any(c.tipo == 'capacitor' for c in result.componentes)
+        assert any(p['metade'] == 'B' and p['linha'] == 5 and p['colunas'] == [4, 5]
+                   for p in result.pecas_sem_tipo)
+    assert any(c.tipo == 'capacitor' and c.metade == 1 and c.colunas == [4, 5]
+               for c in confirmed.componentes)

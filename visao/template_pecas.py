@@ -121,24 +121,32 @@ def buzzer_candidates(rect):
     hsv = cv.cvtColor(rect, cv.COLOR_BGR2HSV)
     green = ((hsv[:, :, 0] >= 35) & (hsv[:, :, 0] <= 100) & (hsv[:, :, 1] >= 15)
              & (hsv[:, :, 2] >= 25)).astype(np.float32)
-    correlation = masked_correlation(gray, cv.cvtColor(image, cv.COLOR_BGR2GRAY), mask)
-    colour = cv.matchTemplate(green, green_mask, cv.TM_CCORR) / max(1., float(green_mask.sum()))
-    correlation[colour < .5] = -1
-    found = {}
-    for _ in range(66):
-        _, score, _, (x, y) = cv.minMaxLoc(correlation)
-        if score < .88:
-            break
-        px, py = np.float32([x, y]) + anchor
-        col = round(float(px / cfg.PX_X - cfg.MARGEM_X))
-        row = round(float(py / cfg.PX_Y - cfg.MARGEM_Y))
-        if 0 <= row < 6 and 0 <= col < 10:
-            ex, ey = cfg.para_retificada(col, row)
-            if abs(px - ex) < cfg.PX_X * .3 and abs(py - ey) < cfg.PX_Y * .3:
-                key = ('buzzer', 'verde', row, col, col + 1)
-                found[key] = max(found.get(key, 0.), score)
-        cv.rectangle(correlation, (max(0, x - image.shape[1] // 2), max(0, y - image.shape[0] // 2)),
-                     (x + image.shape[1] // 2, y + image.shape[0] // 2), -1, -1)
+    found = set()
+    for mirrored in (False, True):
+        template, stencil, support = (cv.flip(item, 1) if mirrored else item
+                                      for item in (image, mask, green_mask))
+        offset = anchor.copy()
+        if mirrored:
+            offset[0] = image.shape[1] - 1 - (anchor[0] + cfg.PX_X)
+        correlation = masked_correlation(gray, cv.cvtColor(template, cv.COLOR_BGR2GRAY), stencil)
+        colour = cv.matchTemplate(green, support, cv.TM_CCORR) / max(1., float(support.sum()))
+        correlation[colour < .5] = -1
+        for _ in range(66):
+            _, score, _, (x, y) = cv.minMaxLoc(correlation)
+            # Nov 13 reversed/left-edge housing: .757, versus <=.590
+            # at other valid slots in all three annotated picture sets.
+            # Require the independent green PCB support as well as shape.
+            if score < .72:
+                break
+            px, py = np.float32([x, y]) + offset
+            col = round(float(px / cfg.PX_X - cfg.MARGEM_X))
+            row = round(float(py / cfg.PX_Y - cfg.MARGEM_Y))
+            if 0 <= row < 6 and 0 <= col < 10:
+                ex, ey = cfg.para_retificada(col, row)
+                if abs(px - ex) < cfg.PX_X * .45 and abs(py - ey) < cfg.PX_Y * .45:
+                    found.add(('buzzer', 'verde', row, col, col + 1))
+            cv.rectangle(correlation, (max(0, x - image.shape[1] // 2), max(0, y - image.shape[0] // 2)),
+                         (x + image.shape[1] // 2, y + image.shape[0] // 2), -1, -1)
     return sorted(found)
 
 
@@ -172,11 +180,25 @@ def capacitor_candidates(rect):
             all_marks = True
             for group in glyphs:
                 region = cv.flip(group.astype(np.uint8), 1).astype(bool) if mirrored else group
-                actual, wanted = patch[region], template_gray[region]
-                actual = actual - actual.mean()
+                gy, gx = np.nonzero(region)
+                wanted = template_gray[region]
                 wanted = wanted - wanted.mean()
-                denominator = float(np.linalg.norm(actual) * np.linalg.norm(wanted))
-                if float(np.std(actual)) < 3 or denominator < 1 or float(actual @ wanted) / denominator < .70:
+                best = -1.
+                # Each small print can land at a different resampling phase
+                # after perspective correction. Allow two canonical pixels,
+                # while still requiring every actual glyph at the same .70
+                # correlation and contrast; an absent mark is never supplied.
+                for dy in (-2, 0, 2):
+                    for dx in (-2, 0, 2):
+                        yy, xx = y + gy + dy, x + gx + dx
+                        if yy.min() < 0 or xx.min() < 0 or yy.max() >= gray.shape[0] or xx.max() >= gray.shape[1]:
+                            continue
+                        actual = gray[yy, xx].astype(np.float32)
+                        actual -= actual.mean()
+                        denominator = float(np.linalg.norm(actual) * np.linalg.norm(wanted))
+                        if float(np.std(actual)) >= 3 and denominator >= 1:
+                            best = max(best, float(actual @ wanted) / denominator)
+                if best < .70:
                     all_marks = False
                     break
             px, py = np.float32([x, y]) + offset
@@ -184,7 +206,11 @@ def capacitor_candidates(rect):
             row = round(float(py / cfg.PX_Y - cfg.MARGEM_Y))
             if all_marks and 0 <= row < 6 and 0 <= col < 10:
                 ex, ey = cfg.para_retificada(col, row)
-                if abs(px - ex) < cfg.PX_X * .3 and abs(py - ey) < cfg.PX_Y * .3:
+                # The rearranged upper-bank body has all three prints at
+                # correlation .915, but raised-body parallax shifts its
+                # anchor by .30 row. Keep a guard below the half-socket
+                # ambiguity boundary instead of rejecting that evidence.
+                if abs(px - ex) < cfg.PX_X * .45 and abs(py - ey) < cfg.PX_Y * .45:
                     found.setdefault((row, col), []).append((score, mirrored))
             cv.rectangle(correlation, (max(0, x - image.shape[1] // 2), max(0, y - image.shape[0] // 2)),
                          (x + image.shape[1] // 2, y + image.shape[0] // 2), -1, -1)
