@@ -63,10 +63,10 @@ def _runs(mask, minimum, gap=2):
     return [(a, b) for a, b in runs if b - a + 1 >= minimum]
 
 
-def _corpo(hsv, linhas=_LINHAS_FAIXA):
+def _corpo(hsv, linhas=_LINHAS_FAIXA, relative=False):
     """Columns of the grey ceramic body, between the blue holder's two ends."""
     band = hsv[linhas[0]:linhas[1]]
-    blue = ((band[:, :, 0] >= 88) & (band[:, :, 0] <= 110) & (band[:, :, 1] >= 150) & (band[:, :, 2] >= 40))
+    blue = ((band[:, :, 0] >= 88) & (band[:, :, 0] <= 110) & (band[:, :, 1] >= 150) & (band[:, :, 2] >= (18 if relative else 40)))
     runs = _runs(blue.mean(axis=0) >= .35, 18, gap=4)
     if len(runs) < 2:
         return None
@@ -75,7 +75,7 @@ def _corpo(hsv, linhas=_LINHAS_FAIXA):
     return (start, end) if end - start >= 150 else None
 
 
-def _le_faixas(crop, linhas):
+def _le_faixas(crop, linhas, relative=False):
     """Per-body reading: dict(valor=int|None, motivo=str, faixas=[(start, end, name)])."""
     def recusa(motivo, faixas=()):
         return dict(valor=None, motivo=motivo, faixas=list(faixas))
@@ -86,15 +86,21 @@ def _le_faixas(crop, linhas):
     if clipped > MAX_SATURADO:
         return recusa('imagem estourada; reduza a exposição')
     hsv = cv.cvtColor(cv.GaussianBlur(crop, (5, 5), 0), cv.COLOR_BGR2HSV)
-    span = _corpo(hsv, linhas)
+    span = _corpo(hsv, linhas, relative=relative)
     if span is None:
         return recusa('corpo azul do resistor não encontrado')
     x0, x1 = span
     strip = hsv[linhas[0]:linhas[1], x0:x1]
     # Column medians of each channel (hue is only read where saturation says it is colour).
     h, s, v = (np.median(strip[:, :, i], axis=0) for i in range(3))
-    warm = ((h <= 14) | (h >= 165)) & (s >= 60) & (v >= 80)
-    yellow = (h >= 22) & (h <= 45) & (s >= 70) & (v >= 110)
+    # In the populated upper bank the brown band is in shadow (V~35),
+    # while the same band's hue/saturation remain readable. Compare its
+    # brightness with its own strip, retaining all three-band requirements.
+    reference_v = float(np.percentile(v, 70))
+    warm_min = max(20, min(80, reference_v * .45)) if relative else 80
+    yellow_min = max(30, min(110, reference_v * .65)) if relative else 110
+    warm = ((h <= 14) | (h >= 165)) & (s >= 60) & (v >= warm_min)
+    yellow = (h >= 22) & (h <= 45) & (s >= 70) & (v >= yellow_min)
     violet = (h >= 110) & (h <= 150) & (s >= 45) & (v >= 18)
     # Close sub-band holes caused by interpolation/JPEG: four 3x pixels
     # are smaller than the minimum accepted band, not a missing colour band.
@@ -140,16 +146,18 @@ def _le_faixas(crop, linhas):
     return recusa('padrão de faixas desconhecido', bands)
 
 
-def le_bandas(crop):
+def le_bandas(crop, relative=False):
     """Decode only kit patterns; require agreement across body strips.
 
     Socket edges, glare and the curved ceramic surface affect different rows.
     Each strip must independently account for the complete three-band pattern.
     A conflicting value is refused, including when a majority would win.
     """
-    reads = [_le_faixas(crop, rows) for rows in
-             (_LINHAS_FAIXA, (20, 50), (40, 65), (65, 90), (60, 100), (75, 105),
-              (30, 80), (50, 85))]
+    strips = (_LINHAS_FAIXA, (20, 50), (40, 65), (65, 90), (60, 100), (75, 105),
+              (30, 80), (50, 85))
+    if relative:
+        strips += ((45, 95), (55, 100), (70, 115), (80, 120))
+    reads = [_le_faixas(crop, rows, relative=relative) for rows in strips]
     decoded = [read for read in reads if read['valor'] is not None]
     values = {read['valor'] for read in decoded}
     if len(values) > 1:
@@ -161,6 +169,6 @@ def le_bandas(crop):
     return reads[0]
 
 
-def le_valor(frame, H, linha, coluna):
+def le_valor(frame, H, linha, coluna, relative=False):
     """Value in ohms (220, 470 or 1000) of the resistor at (row, column), with the reading details."""
-    return le_bandas(recorte_corpo(frame, H, linha, coluna))
+    return le_bandas(recorte_corpo(frame, H, linha, coluna), relative=relative)

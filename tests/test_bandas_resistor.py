@@ -34,6 +34,36 @@ def registered(small=False):
 
 
 class BandDecoderTest(unittest.TestCase):
+    def test_relative_brightness_reads_shadowed_470_without_inventing_a_missing_band(self):
+        from visao.calibracao_bancada import four_sticker_proposal
+        frame = cv.imread(str(FIXTURES / 'full-board-2026-11-13/frame-00.jpg'))
+        h = four_sticker_proposal(frame)['banks'][1]['H']
+        crop = recorte_corpo(frame, h, 2, 5)
+        self.assertEqual(le_bandas(crop, relative=True)['valor'], 470)
+        # Removing any painted band cannot be repaired from kit inventory.
+        for a, b in ((190, 230), (250, 295), (320, 365)):
+            removed = crop.copy()
+            removed[:, a:b] = (90, 90, 90)
+            self.assertIsNone(le_bandas(removed, relative=True)['valor'])
+
+    def test_relative_reader_has_no_wrong_values_on_held_out_exposure_series(self):
+        from visao.calibracao import calibra_por_referencia_fixa
+        folder = FIXTURES / 'bench-2026-11-11'
+        # The exposure series shares a fixed camera/board. Some dark frames
+        # rightly refuse automatic calibration; supply the measured reference
+        # geometry here to test band decoding independently of acquisition.
+        reference_h = calibra_por_referencia_fixa(cv.imread(str(folder / 'normal-1.jpg')))
+        self.assertIsNotNone(reference_h)
+        for path in sorted(folder.glob('bands-*-exp*.jpg')):
+            frame = cv.imread(str(path))
+            h = calibra_por_referencia_fixa(frame)
+            if h is None:
+                h = reference_h
+            for pos, expected in BODIES.items():
+                value = le_valor(frame, h, *pos, relative=True)['valor']
+                self.assertIn(value, (None, expected), (path.name, pos, value))
+            self.assertIsNone(le_valor(frame, h, *CAPACITOR, relative=True)['valor'])
+
     def test_edge_holder_crop_is_checked_against_source_not_rectified_canvas(self):
         frame = np.full((720, 1280, 3), 100, np.uint8)
         h = np.float64([[60, 0, 200], [0, 40, 250], [0, 0, 1]])
