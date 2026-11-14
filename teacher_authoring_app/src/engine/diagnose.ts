@@ -1,4 +1,4 @@
-import type { DiagnoseResult, Piece } from '../model/types.ts';
+import type { DiagnoseResult, FlowStep, Piece } from '../model/types.ts';
 import { nodeOf } from './nodes.ts';
 import { analyze, BENCH_LIMIT_MA, branchCurrent, MSG } from './sim.ts';
 
@@ -45,13 +45,17 @@ export function diagnose(
     const bat = pieces.find((p) => p.type === 'bateria');
     const edgeIds = new Set<string>([bat.id]);
     const nodes = new Set<number>([nodeOf(bat.a, bat.row), nodeOf(bat.b, bat.row)]);
+    // Inside the battery the current goes from − (b) back to + (a); outside it follows each branch.
+    const flow: FlowStep[] = [{ id: bat.id, from: nodeOf(bat.b, bat.row), to: nodeOf(bat.a, bat.row) }];
     for (const b of branches)
       for (const t of b.trail) {
         edgeIds.add(t.id);
         nodes.add(t.from);
         nodes.add(t.to);
+        if (!flow.some((f) => f.id === t.id && f.from === t.from && f.to === t.to))
+          flow.push({ id: t.id, from: t.from, to: t.to });
       }
-    trail = { edgeIds, nodes };
+    trail = { edgeIds, nodes, flow };
     for (const p of pieces) if (p.loose && edgeIds.has(p.id)) looseIds.push(p.id);
   }
   const tone = an.code === 'valido' ? 'ok' : an.code === 'sem_bateria' ? 'info' : 'erro';

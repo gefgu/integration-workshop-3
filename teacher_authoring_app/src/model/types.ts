@@ -240,9 +240,21 @@ export interface CircuitAnalysis {
   /** Every conducting path that powers a load (an LED and a buzzer in parallel give two). */
   branches?: { trail: TrailStep[]; ohms: number; load: 'led' | 'buzzer' | null }[];
 }
+/**
+ * One piece carrying current from node `from` to node `to` (conventional current, + to −). A source
+ * (battery, a capsule output) has its inside step too, so every energized track sees where current
+ * comes in and goes out. -1 = the current starts or ends inside the piece (a capsule output).
+ */
+export interface FlowStep {
+  id: string;
+  from: number;
+  to: number;
+}
 export interface CircuitTrail {
   edgeIds: Set<string>;
   nodes: Set<number>;
+  /** Direction of the current through each energized piece; absent = glow only, no flow arrows. */
+  flow?: FlowStep[];
 }
 export interface DiagnoseResult {
   currents?: Partial<Record<'led' | 'buzzer', number>>;
