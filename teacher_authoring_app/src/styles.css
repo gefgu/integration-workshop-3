@@ -1028,8 +1028,18 @@ a.dash-row:hover {
     stroke-dashoffset: -14;
   }
 }
+/* The spark running along the powered path (dash 4 + gap 16 = one 20 px period). */
+.redstone-pulse {
+  animation: redstone-pulse 600ms linear infinite;
+}
+@keyframes redstone-pulse {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
-  .track-flow {
+  .track-flow,
+  .redstone-pulse {
     animation: none;
   }
 }
