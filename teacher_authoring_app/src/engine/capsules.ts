@@ -1,4 +1,4 @@
-import type { CapsuleReading, CircuitTrail, Piece } from '../model/types.ts';
+import type { CapsuleReading, CircuitTrail, FlowStep, Piece } from '../model/types.ts';
 import { bankOf, nodeOf } from './nodes.ts';
 import { analyze, capsuleConfig, corrente, isCapsule } from './sim.ts';
 
@@ -176,6 +176,10 @@ export function simulateCapsules(
   const bat = pieces.find((p) => p.type === 'bateria');
   const edgeIds = new Set<string>();
   const nodes = new Set<number>();
+  const flow: FlowStep[] = [];
+  const addFlow = (f: FlowStep) => {
+    if (!flow.some((g) => g.id === f.id && g.from === f.from && f.to === g.to)) flow.push(f);
+  };
   let drivenMa = 0;
   if (bat) {
     // Return path is the battery's − node, which only exists in the bank the battery sits in.
@@ -185,21 +189,26 @@ export function simulateCapsules(
       const r = analyze([...base, source], { pressed: opts.pressed ?? null });
       if (r.code !== 'valido' || !r.trail) continue;
       edgeIds.add(p.id);
+      // The current starts inside the capsule, leaves by P3 and ends at the battery's − leg.
+      addFlow({ id: p.id, from: -1, to: nodeOf(p.c as number, p.row) });
       for (const s of r.trail) {
         edgeIds.add(s.id);
         nodes.add(s.from);
         nodes.add(s.to);
+        addFlow({ id: s.id, from: s.from, to: s.to });
       }
+      addFlow({ id: bat.id, from: nodeOf(bat.b, bat.row), to: -1 });
       drivenMa = Math.max(drivenMa, corrente(r));
     }
   }
-  return { readings, driven: edgeIds.size ? { edgeIds, nodes } : null, drivenMa, memory };
+  return { readings, driven: edgeIds.size ? { edgeIds, nodes, flow } : null, drivenMa, memory };
 }
 
 /** The energized path of the battery loop together with loads a capsule drives. */
 export function mergeTrails(a: CircuitTrail | null, b: CircuitTrail | null): CircuitTrail | null {
   if (!a || !b) return a || b;
-  return { edgeIds: new Set([...a.edgeIds, ...b.edgeIds]), nodes: new Set([...a.nodes, ...b.nodes]) };
+  const flow = a.flow || b.flow ? [...(a.flow ?? []), ...(b.flow ?? [])] : undefined;
+  return { edgeIds: new Set([...a.edgeIds, ...b.edgeIds]), nodes: new Set([...a.nodes, ...b.nodes]), flow };
 }
 
 const GATE_TEXT: Record<string, string> = {

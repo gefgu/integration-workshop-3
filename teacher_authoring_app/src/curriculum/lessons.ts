@@ -519,7 +519,8 @@ function lesson03Resistor1k(): Lesson[] {
   return [
     lesson({
       id: `${SEED_PREFIX}03-guiada-1k`,
-      title: 'Lição 3 — Bateria, resistor de 1 kΩ e LED (guiada)',
+      // Same name as its test module, so the site, the phone app and the bench all show one name.
+      title: 'Teste — Bateria, resistor de 1 kΩ e LED',
       instruction: 'Monte bateria + resistor de 1 kΩ + LED e acenda a luz.',
       kind: 'guided',
       board,
