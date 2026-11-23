@@ -108,7 +108,7 @@ export default function PieceView({
         d.stripe && !isJumper && <Stripe color={d.stripe} />
       )}
       {type === 'potenciometro' ? (
-        <PotFace value={value || POT_DEFAULT} onStep={onPotStep} />
+        <PotFace value={value ?? POT_DEFAULT} onStep={onPotStep} />
       ) : type === 'botao' ? (
         <ButtonCap pressed={pressed} onChange={onButton} />
       ) : (
@@ -153,6 +153,30 @@ export default function PieceView({
           bg={type === 'bateria' ? (reversed ? '#f5ead8' : '#8b9096') : '#fff'}
         />
       )}
+      {pins &&
+        type === 'potenciometro' &&
+        (reversed ? ['B', 'W', 'A'] : ['A', 'W', 'B']).map((label, i) => (
+          <span
+            key={label}
+            aria-label={`Terminal ${label === 'W' ? 'W, cursor' : label}`}
+            style={{
+              position: 'absolute',
+              left: `${12 + i * 38}%`,
+              bottom: -7,
+              transform: 'translateX(-50%)',
+              borderRadius: 6,
+              width: 15,
+              height: 13,
+              background: '#f5ead8',
+              color: '#22201f',
+              fontSize: 8,
+              textAlign: 'center',
+              zIndex: 3,
+            }}
+          >
+            {label}
+          </span>
+        ))}
     </div>
   );
 }
@@ -263,7 +287,7 @@ function PotFace({ value, onStep }) {
           −
         </button>
       )}
-      {formatOhms(value)}
+      <span title="Resistência A–W (modelo)">{formatOhms(value)}</span>
       {onStep && (
         <button
           type="button"

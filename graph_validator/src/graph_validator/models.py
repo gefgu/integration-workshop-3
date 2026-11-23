@@ -21,7 +21,7 @@ class Piece(BaseModel):
     b: int
     row: int
     value: int | None = None
-    c: int | None = None  # third column (P3), smart capsules only
+    c: int | None = None  # smart P3; for pots, the middle wiper W (a/b are outer ends)
     config: dict[str, Any] | None = None  # smart capsule behaviour (mode, op, hz, duty...)
 
     @field_validator("type", mode="before")
@@ -64,6 +64,9 @@ class MatchOptions(BaseModel):
     match_values: bool = False
     strict_positions: bool = False
     fixed_battery_first_two: bool = False
+    # The (fixed-polarity) battery may sit on any pair of adjacent columns within the first N: negative on the
+    # lower column, positive on the next. 0 = no such rule.
+    battery_max_column: int = 0
 
 
 class Category(str, Enum):
@@ -118,7 +121,7 @@ def board_problems(pieces: list[Piece]) -> list[str]:
         if p.id in seen_ids:
             out.append(f"duplicate piece id {p.id}")
         seen_ids.add(p.id)
-        cols = [p.a, p.b] + ([p.c] if p.type in CAPSULES and p.c is not None else [])
+        cols = [p.a, p.b] + ([p.c] if p.type in CAPSULES | {"potenciometro"} and p.c is not None else [])
         if not all(1 <= x <= COLS for x in cols):
             out.append(f"{p.id}: column out of 1..{COLS}")
         if not (0 <= p.row < ROWS):
@@ -132,6 +135,15 @@ def board_problems(pieces: list[Piece]) -> list[str]:
             elif p.type == "capsula_amperimetro" and slot != AMMETER_SLOT:
                 out.append(f"{p.id}: the ammeter only works in slot {AMMETER_SLOT}")
             out += [f"{p.id}: {m}" for m in config_problems(p.type, p.config)]
+        elif p.type == 'potenciometro':
+            if abs(p.a - p.b) != 2:
+                out.append(f"{p.id}: potenciometro must span 2 column(s)")
+            if p.c is not None and p.c != (p.a + p.b) / 2:
+                out.append(f"{p.id}: potentiometer W must be the middle column")
+            if p.config:
+                out.append(f"{p.id}: potentiometer takes no smart config")
+            if p.value is not None and not 0 <= p.value <= 10000:
+                out.append(f"{p.id}: potentiometer A-W resistance must be within 0..10000 ohms")
         else:
             if abs(p.a - p.b) != CATALOG[p.type].length:
                 out.append(f"{p.id}: {p.type} must span {CATALOG[p.type].length} column(s)")

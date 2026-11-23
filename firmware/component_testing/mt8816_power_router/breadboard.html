@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TedTronics three-node breadboard</title>
+<style>
+:root{font:16px system-ui,sans-serif;color:#182627;background:#f3f5f2}
+body{max-width:1260px;margin:auto;padding:20px}
+h1{margin:0 0 8px;font-size:clamp(1.6rem,4vw,2.5rem)}
+p{line-height:1.5;margin:8px 0 16px}
+nav{display:flex;gap:6px;flex-wrap:wrap;margin:16px 0}
+button{font:inherit;border:1px solid #a5b1ac;border-radius:6px;background:white;color:#182627;padding:7px 11px;cursor:pointer}
+button[aria-pressed="true"]{background:#174b43;color:white;border-color:#174b43}
+button:focus-visible,tr:focus-visible{outline:3px solid #b34b00;outline-offset:2px}
+figure{margin:0;background:#dce5df;border:1px solid #a9b9b0;border-radius:9px;padding:8px}
+.board{overflow:auto}
+canvas{display:block;width:100%;height:auto;min-width:830px}
+canvas.zoom{width:1512px;max-width:none}
+figcaption{padding:8px 6px 4px;font-size:.88rem}
+h2{margin:20px 0 4px;font-size:1.3rem}
+table{width:100%;border-collapse:collapse;background:white;font-size:.92rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid #dbe3df}
+tbody tr{cursor:pointer}
+tbody tr.selected,tbody tr:hover{background:#e3f2eb}
+td:last-child{font-variant-numeric:tabular-nums}
+a{color:#174b43}
+</style>
+<main>
+<h1>TedTronics three-node breadboard</h1>
+<p>Use a standard 830-point breadboard with numbered strips 1–63. The five holes <b>a–e</b> at each number are connected, and the five holes <b>f–j</b> form a separate strip. The ESP32 plugs into USB and sits beside the breadboard. Keep the original PCB disconnected.</p>
+<nav id="steps" aria-label="Assembly steps"></nav>
+<figure>
+<div class="board" id="board"><canvas id="layout" width="1512" height="514" aria-label="Top-down assembly drawing. The wiring table below lists every endpoint."></canvas></div>
+<figcaption>Hover or select a table row to highlight its holes. <button id="zoom" aria-pressed="false">Zoom</button></figcaption>
+</figure>
+<h2 id="heading"></h2>
+<p id="note"></p>
+<table><thead><tr><th>Part or connection</th><th>From / lead 1</th><th>To / remaining leads</th></tr></thead><tbody id="connections"></tbody></table>
+<p><a href="mt8816_power_router.ino">Arduino sketch</a></p>
+</main>
+<script>
+"use strict";
+const railNames = {P12:"+12 V", G1:"GND top", P5:"+5 V", G2:"GND bottom"};
+const railY = {P12:74, G1:96, P5:396, G2:418};
+const railColor = {P12:"#ae390d", G1:"#303a44", P5:"#bc294d", G2:"#303a44"};
+const tapRows = Array.from({length:60},(_,i)=>i+2).filter(n => (n-2)%6!==5);
+const x = n => 119+(n-1)*20;
+const y = letter => 139+"abcdefghij".indexOf(letter)*20+(letter>="f"?32:0);
+const dip = pin => pin<=20 ? "f"+(pin+2) : "e"+(43-pin);
+const relay = ["e25","e26","f26","f25"];
+const occupied = new Set([...Array.from({length:40},(_,i)=>dip(i+1)),...relay]);
+const stages = [];
+const external = {};
+let step;
+function stage(name,note) {
+  step = {name,note,items:[]};
+  stages.push(step);
+}
+function add(kind,label,a,b,color,leads) {
+  const item = {kind,label,a,b,color,leads:leads||[a,b],stage:stages.length-1};
+  for(const hole of item.leads) {
+    if(hole in external || kind==="chip") continue;
+    if(occupied.has(hole)) throw new Error("Hole already occupied: "+hole);
+    occupied.add(hole);
+  }
+  step.items.push(item);
+  return item;
+}
+function tap(rail,near) {
+  const number = [...tapRows].sort((a,b)=>Math.abs(a-near)-Math.abs(b-near))
+    .find(n=>!occupied.has(rail+"."+n));
+  if(number===undefined) throw new Error("No rail hole available");
+  return rail+"."+number;
+}
+const wire = (label,a,b,color="#16776b") => add("wire",label,a,b,color);
+const resistor = (label,a,b) => add("resistor",label,a,b,"#96642c");
+function railWire(rail,to,near) { return wire(railNames[rail],tap(rail,near),to,railColor[rail]); }
+function outside(name,index,side) {
+  external[name]=[x(index),side==="top"?25:480];
+  return name;
+}
+stage("Rails","Rail numbers are aligned to the drawing’s main strip numbers. Match the five-hole rail groups by position. Use a continuity meter to identify rail splits. The four short bridges shown connect the halves on a split-rail board. With power off, verify that +12 V and +5 V are separate and both ground rails have continuity.");
+for(const rail of Object.keys(railY)) {
+  wire("Bridge "+railNames[rail]+" halves",rail+".30",rail+".32",railColor[rail]);
+}
+wire("Join both GND rails",tap("G1",62),tap("G2",62),railColor.G1);
+for(const [name,rail,n] of [["12 V supply +","P12",3],["12 V supply −","G1",8],["5 V supply +","P5",3],["5 V supply −","G2",8],["ESP32 GND","G2",16]]) {
+  wire(name,outside(name,n,rail==="G2"||rail==="P5"?"bottom":"top"),tap(rail,n),railColor[rail]);
+}
+
+stage("Matrix","Place the DIP across the gap with its notch pointing left. Pin 1 is f3 at the lower left. Fit the two capacitors near pin 40. Leave the original PCB disconnected.");
+add("chip","MT8816AE · notch left","e3","f22",null,["e3","e22","f22","f3"]);
+railWire("P12","a3",3);
+railWire("P12","a5",5);
+railWire("P12","a7",7);
+for(const n of [4,6,18,22]) railWire("G2","j"+n,n);
+for(const n of [6,18,20]) railWire("G1","a"+n,n);
+add("capacitor","100 nF ceramic","b3","b6","#247ca8");
+add("capacitor","10 µF electrolytic · + then −","c3","c6","#247ca8");
+
+function driver(label,letter,n,ground,input,output) {
+  const top = letter==="c";
+  const [outer,base,lead] = top ? ["a","b","d"] : ["j","i","g"];
+  const emitter = letter+n, basePin=letter+(n+1), collector=letter+(n+2);
+  add("transistor",label+" · E, B, C",emitter,collector,null,[emitter,basePin,collector]);
+  railWire(ground,base+n,n);
+  resistor("4.7 kΩ base pull-down",outer+(n+1),tap(ground,n+1));
+  if(input) {
+    resistor("1 kΩ GPIO series",base+(n+3),base+(n+1));
+    wire(input,outside(input,n+2,top?"top":"bottom"),lead+(n+3),"#355fa7");
+  }
+  if(output!=="source") {
+    if(top) {
+      resistor("10 kΩ collector pull-up",outer+(n+2),tap("P12",n+2));
+    } else {
+      resistor("10 kΩ collector pull-up",outer+(n+2),outer+(n+4));
+      railWire("P12","f"+(n+4),n+4);
+    }
+  }
+  if(output && output!=="source") wire(label+" output",lead+(n+2),output);
+}
+for(const [label,number,gpio,output] of [
+  ["AX0",30,"GPIO18","h7"],["AX1",36,"GPIO19","c21"],["AY0",42,"GPIO21","c19"],["RESET",48,"GPIO22","h5"]
+]) {
+  stage(label,"Place the 2N3904 with emitter, base and collector in three consecutive numbered strips. Match E/B/C to the part’s datasheet. Gently spread the three leads if needed. Use the ESP32 pin marked "+gpio+".");
+  driver(label,"c",number,"G1",gpio,output);
+}
+stage("Strobe","Build both 2N3904 stages. The 4.7 kΩ resistor between stages couples the first collector to the second base. This holds MT pin 18 low when the ESP32 is unplugged.");
+driver("STROBE input","h",30,"G2","GPIO26",null);
+driver("STROBE output","h",36,"G2",null,"h20");
+resistor("4.7 kΩ between strobe stages","g32","i37");
+
+stage("5 V source","Place the PhotoMOS DIP across the gap with its pin-1 mark at f25. Keep the source jumper out during the first tests. The 560 Ω resistor is the current limiter.");
+add("chip","AQY212EH · pin 1 at f25","e25","f26",null,["e25","e26","f26","f25"]);
+driver("Source enable","h",42,"G2","GPIO23","source");
+wire("PhotoMOS pin 2 to driver collector","h26","g44");
+resistor("470 Ω PhotoMOS LED series",tap("P5",24),"h25");
+resistor("560 Ω ±1% current limiter","c24","c25");
+railWire("P5","a24",26);
+wire("SOURCE OUT probe lead","c26",outside("SOURCE OUT",27,"bottom"),"#b54d13");
+
+stage("Nodes and test","The three node leads are the only exposed router outputs. Test SOURCE OUT before fitting the removable jumper. Use a movable 10 kΩ load between selected nodes for the bench test.");
+for(const [pin,hole,n,node] of [[33,"c10",9,0],[32,"c11",13,1],[31,"c12",17,2]]) {
+  wire("Node "+node+" · X"+node+" pin "+pin,hole,outside("Node "+node,n,"bottom"),"#7b45a8");
+}
+wire("Removable source jumper","d26","c8","#b54d13");
+
+stage("10 kΩ test load","Send POWER 0 1 and place the removable test resistor as shown. Put the red meter lead at b10 (node 0) and the black lead at b11 (node 1). Expect about +4.7 V across the resistor from a 5.00 V supply. For POWER 0 2, move the resistor lead from d11 to d12 and the black meter lead from b11 to b12.");
+resistor("Optional 10 kΩ load for POWER 0 1","a10","d11");
+
+const canvas = document.getElementById("layout");
+const ctx = canvas.getContext("2d");
+const allItems = stages.flatMap(group=>group.items);
+let current = 0;
+let selected = null;
+let hovered = null;
+
+function point(name) {
+  if(name in external) return external[name];
+  const [rail,n] = name.split(".");
+  if(n) return [x(Number(n)),railY[rail]];
+  return [x(Number(name.slice(1))), y(name[0])];
+}
+function line(a,b,color,width=2) {
+  ctx.beginPath();
+  ctx.moveTo(...a);
+  ctx.lineTo(...b);
+  ctx.strokeStyle=color;
+  ctx.lineWidth=width;
+  ctx.lineCap="round";
+  ctx.stroke();
+}
+function dot(a,r,color) {
+  ctx.beginPath();
+  ctx.arc(a[0],a[1],r,0,2*Math.PI);
+  ctx.fillStyle=color;
+  ctx.fill();
+}
+function box(x,y,w,h,r,color) {
+  ctx.beginPath();
+  ctx.roundRect(x,y,w,h,r);
+  ctx.fillStyle=color;
+  ctx.fill();
+}
+function text(value,x,y,color="#293b36",font="bold 12px system-ui",align="center") {
+  ctx.font=font;
+  ctx.fillStyle=color;
+  ctx.textAlign=align;
+  ctx.textBaseline="middle";
+  ctx.fillText(value,x,y);
+}
+function drawPart(item) {
+  const [ax,ay] = point(item.a);
+  const [bx,by] = point(item.b);
+  if(item.kind==="chip") {
+    box(ax-10,ay-7,bx-ax+20,by-ay+14,4,"#263035");
+    for(let n=Number(item.a.slice(1));n<=Number(item.b.slice(1));n++) {
+      for(const row of ["e","f"]) {
+        box(x(n)-3,y(row)-4,6,8,1,"#9ca9aa");
+      }
+    }
+    dot([ax-10,(ay+by)/2],9,"#c4c8c4");
+    dot([ax+3,by-12],3,"#f5a65f");
+    text(item.a==="e3"?"MT8816AE":"AQY", (ax+bx)/2,(ay+by)/2,"#fff","bold 12px system-ui");
+  } else if(item.kind==="transistor") {
+    box(ax-10,ay-8,bx-ax+20,16,6,"#313c40");
+    for(const [i,lead] of item.leads.entries()) {
+      const [lx,ly]=point(lead);
+      text("EBC"[i],lx,ly,"#f4faf6","bold 11px system-ui");
+    }
+  } else {
+    line([ax,ay],[bx,by],"#fafaf4",item.kind==="wire"?7:5);
+    line([ax,ay],[bx,by],item.color,item.kind==="wire"?3.6:2);
+    if(item.kind!=="wire") {
+      ctx.save();
+      ctx.translate((ax+bx)/2,(ay+by)/2);
+      ctx.rotate(Math.atan2(by-ay,bx-ax));
+      const color=item.kind==="resistor"?"#dfbb81":"#4784a5";
+      box(-12,-5,24,10,4,color);
+      for(const n of [-7,0,6]) box(n,-4,2,8,0,item.kind==="resistor"?"#6e4832":"#c8e6f8");
+      ctx.restore();
+    }
+    dot([ax,ay],3.3,item.color);
+    dot([bx,by],3.3,item.color);
+  }
+}
+function draw() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  box(65,50,1337,392,15,"#f7f6ed");
+  box(88,224,1291,22,4,"#cccfc8");
+  for(let n=1;n<=63;n++) {
+    for(const [a,b] of [["a","e"],["f","j"]]) line([x(n),y(a)],[x(n),y(b)],"#e4e6df",7);
+    text(n,x(n),121,"#354943","11px system-ui");
+    text(n,x(n),378,"#354943","11px system-ui");
+    for(const letter of "abcdefghij") box(x(n)-3,y(letter)-3,6,6,1,"#929a91");
+  }
+  for(const letter of "abcdefghij") text(letter,98,y(letter));
+  for(const rail of Object.keys(railY)) {
+    const height=railY[rail];
+    for(const [start,end] of [[2,30],[32,60]]) {
+      line([x(start),height],[x(end),height],railColor[rail]+"42",9);
+    }
+    for(const n of tapRows) box(x(n)-3,height-3,6,6,1,railColor[rail]);
+    text(railNames[rail],85,height,railColor[rail],"bold 11px system-ui");
+  }
+  for(const item of allItems) {
+    if(item.kind==="chip" || item.kind==="transistor") {
+      ctx.globalAlpha=item.stage<=current || current===stages.length ? 1 : .18;
+      drawPart(item);
+    }
+  }
+  const items = current===stages.length ? allItems : stages[current].items;
+  for(const item of items) {
+    if(item.kind==="chip"||item.kind==="transistor") continue;
+    if(current===stages.length && /^(Removable source jumper|Optional 10 kΩ load)/.test(item.label)) continue;
+    ctx.globalAlpha=selected||hovered ? .24 : 1;
+    drawPart(item);
+  }
+  ctx.globalAlpha=1;
+  const target=hovered||selected;
+  if(target) {
+    drawPart(target);
+    for(const lead of target.leads) {
+      const [lx,ly]=point(lead);
+      ctx.beginPath();
+      ctx.arc(lx,ly,8,0,Math.PI*2);
+      ctx.strokeStyle="#a74916";
+      ctx.lineWidth=2;
+      ctx.stroke();
+    }
+  }
+  for(const [name,[lx,ly]] of Object.entries(external)) {
+    if(items.some(item=>item.leads.includes(name))) {
+      dot([lx,ly],4,"#405b50");
+      text(name,lx,ly+(ly<50?-12:16),"#253e36","bold 12px system-ui");
+    }
+  }
+}
+const nav = document.getElementById("steps");
+const tbody = document.getElementById("connections");
+const overview = {name:"Overview",note:"Use the steps for clearer endpoints. Select the source jumper or test load row to see its placement."};
+const buttons = [...stages,overview].map((group,i)=>{
+  const button=document.createElement("button");
+  button.type="button";
+  button.textContent=group.name;
+  button.onclick=()=>showStep(i);
+  nav.append(button);
+  return button;
+});
+function showStep(number) {
+  current=number;
+  selected=hovered=null;
+  const group=stages[number]||overview;
+  buttons.forEach((button,i)=>button.setAttribute("aria-pressed",String(i===number)));
+  document.getElementById("heading").textContent=group.name;
+  document.getElementById("note").textContent=group.note;
+  tbody.replaceChildren();
+  for(const item of group.items||allItems) {
+    const row=tbody.insertRow();
+    row.tabIndex=0;
+    const fields=[item.label,item.leads[0],item.leads.slice(1).join(", ")];
+    for(const field of fields) row.insertCell().textContent=field;
+    function toggle() {
+      selected=selected===item?null:item;
+      for(const previous of tbody.querySelectorAll(".selected")) previous.classList.remove("selected");
+      row.classList.toggle("selected",Boolean(selected));
+      draw();
+    }
+    row.onmouseenter=()=>{hovered=item;draw();};
+    row.onmouseleave=()=>{hovered=null;draw();};
+    row.onclick=toggle;
+    row.onkeydown=event=>{
+      if(event.key==="Enter"||event.key===" ") {
+        event.preventDefault();
+        toggle();
+      }
+    };
+  }
+  draw();
+}
+document.getElementById("zoom").onclick=event=>{
+  const zoomed=canvas.classList.toggle("zoom");
+  event.currentTarget.setAttribute("aria-pressed",String(zoomed));
+};
+showStep(0);
+</script>
+</html>

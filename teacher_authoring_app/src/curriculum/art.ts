@@ -128,7 +128,6 @@ ${text(360, 232, `${b ? `${b.digits[0]}${b.digits[1]} × ${10 ** b.digits[2]}` :
   );
 }
 
-
 /** Lesson 4: LED polarity. */
 export function artLedPolarity(): Illustration {
   return art(
@@ -163,11 +162,12 @@ export function artPot(): Illustration {
     720,
     260,
     `${line(60, 120, 230, 120)}${rect(230, 96, 220, 48, '#fff', 6, INK)}${line(450, 120, 640, 120)}
-${line(340, 52, 340, 96, ORANGE, 4)}<path d="M330 80 L340 98 L350 80" fill="${ORANGE}"/>${text(340, 40, 'botão giratório', { anchor: 'middle', bold: true, fill: ORANGE })}
+${line(340, 52, 340, 96, ORANGE, 4)}${circle(340, 52, 5, ORANGE)}<path d="M330 80 L340 98 L350 80" fill="${ORANGE}"/>${text(340, 35, 'W: cursor', { anchor: 'middle', bold: true, fill: ORANGE })}
+${circle(60, 120, 5, INK)}${circle(640, 120, 5, INK)}${text(65, 100, 'A', { bold: true })}${text(630, 100, 'B', { bold: true })}
 ${text(235, 170, 'menos resistência', { size: 13 })}${text(445, 170, 'mais resistência', { size: 13, anchor: 'end' })}
 ${arrow(240, 192, 440, 192, TEAL)}${text(340, 218, 'mais resistência → menos corrente → LED mais fraco', { anchor: 'middle', bold: true, fill: TEAL, size: 14 })}`,
-    'Potenciômetro desenhado como um resistor com uma seta giratória; girar para um lado aumenta a resistência e reduz a corrente.',
-    'O potenciômetro regula a resistência. Na tela, −/+ usa sete valores.'
+    'Potenciômetro com três terminais: extremos A e B e cursor W, indicado pela seta sobre a pista.',
+    'A–B: 10 kΩ fixos no modelo. O cursor W divide a pista; −/+ regula A–W em sete valores.'
   );
 }
 

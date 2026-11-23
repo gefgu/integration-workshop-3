@@ -13,6 +13,7 @@ import { DEMO_STUDENTS, type DemoChoice, demoChoices, demoPackage } from './demo
 import FitStage from './FitStage.tsx';
 import { ensureSelection, handlePadKey, padElements, selectedItem, selectElement } from './pad.ts';
 import { lessonStates, nextLessonId, type Screen, screenAfterLesson } from './screens.ts';
+import { BUTTON_LABEL, type ButtonName, dotKind, dotTitle, useButtonStatus, useButtonStatusSocket } from './buttonStatus.ts';
 import { useHardwareControls } from './useHardwareControls.ts';
 import { useVision } from './useVision.ts';
 import { mirrorVision } from './mirrorVision.ts';
@@ -29,6 +30,7 @@ export default function BenchApp() {
   const base = useMemo(() => serviceUrl(), []);
   const api = useMemo(() => benchApi(base), [base]);
   useHardwareControls(base); // ESP32 joystick + Energizar, through the bench service
+  useButtonStatusSocket(base); // the Energizar / Voltar dots
   const [status, setStatus] = useState<BenchStatus | null>(null);
   const [pkg, setPkg] = useState<BenchPackage | null>(null);
   const [screen, setScreen] = useState<Screen>({ name: 'locked' });
@@ -673,7 +675,7 @@ function LessonScreen({
         liveProgressUncertain={!!vision.available && (!vision.valid || !!otherUnknown)}
         smartReady={!smartLesson || (smartVisible && smartSlots.length > 0)}
         visionVersion={vision.available ? vision.version : undefined}
-        barExtra={<><CameraStatus vision={vision} />{smartLesson && <span role="status"> {smartVisible ? 'Câmera: inteligente visto' : 'Câmera: aguardando inteligente'} · {smartSlots.length ? `ESP32: tela responde (slot ${smartSlots.join(', ')})` : 'ESP32: aguardando tela'}</span>}</>}
+        barExtra={<><CameraStatus vision={vision} /><ButtonDots />{smartLesson && <span role="status"> {smartVisible ? 'Câmera: inteligente visto' : 'Câmera: aguardando inteligente'} · {smartSlots.length ? `ESP32: tela responde (slot ${smartSlots.join(', ')})` : 'ESP32: aguardando tela'}</span>}</>}
       />
       <PadHints />
       <FitLeftColumn />
@@ -751,8 +753,8 @@ function PadHints() {
 function CameraStatus({ vision }: { vision: VisionState }) {
   if (!vision.available) {
     return (
-      <span className="bench-camera-chip off" title="Sem câmera: a placa da tela é uma simulação.">
-        <Icon name="camera" size={18} /> simulação
+      <span className="bench-camera-chip off" title={vision.reason || "Sem câmera: a placa da tela é uma simulação."}>
+        <Icon name="camera" size={18} /> simulação{vision.searching ? " · procurando a câmera…" : ""}
       </span>
     );
   }
@@ -762,6 +764,22 @@ function CameraStatus({ vision }: { vision: VisionState }) {
       <Icon name="camera" size={18} />
       {vision.valid ? (vision.uncertain ? 'confirmando peças…' : 'lendo a placa') : vision.reason || 'aguardando imagem'}
       {unknown > 0 && ` · ${unknown} peça${unknown > 1 ? 's' : ''} não reconhecida${unknown > 1 ? 's' : ''}`}
+    </span>
+  );
+}
+
+/** Next to the camera status: one dot per push button (Energizar, Voltar), lit while it is pressed. */
+function ButtonDots() {
+  const status = useButtonStatus();
+  const names: ButtonName[] = ['energizar', 'voltar'];
+  return (
+    <span className="bench-button-dots">
+      {names.map((name) => (
+        <span key={name} className="bench-button-dot-item" title={dotTitle(status, name)}>
+          <span className={`bench-button-dot ${dotKind(status, name)}`} role="status" aria-label={dotTitle(status, name)} />
+          {BUTTON_LABEL[name]}
+        </span>
+      ))}
     </span>
   );
 }

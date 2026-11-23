@@ -244,6 +244,17 @@ void updateJoystick(uint32_t now) {
   }
 }
 
+// `joy debug`: live raw readings every 150 ms, whatever the calibration says, to see what the wires deliver.
+bool joyDebug = false;
+uint32_t lastJoyDebug = 0;
+void printJoyDebug(uint32_t now) {
+  if (!joyDebug || now - lastJoyDebug < 150) return;
+  lastJoyDebug = now;
+  const int x = readAxis(JOY_X), y = readAxis(JOY_Y);
+  Serial.printf("JOYDBG X=%d Y=%d | center %d,%d | dx=%d dy=%d | a direction needs |d| > %d | calibrated=%s\n",
+                x, y, centerX, centerY, x - centerX, y - centerY, DEAD_ZONE, calibrated ? "YES" : "NO");
+}
+
 // Fixed-size, newline-delimited command buffers; discard an entire malformed line.
 LineReader usbLine, piLine;
 
@@ -266,6 +277,7 @@ void help() {
   Serial.println("screens 0 1 2  update up to THREE slots sequentially");
   Serial.println("off            stop OLED traffic (does not remove screen power)");
   Serial.println("joy on | joy off; c = calibrate released joystick");
+  Serial.println("joy debug | joy debug off  stream raw X/Y readings (to check the joystick wiring)");
   Serial.println("loop           UART TX/RX jumper test; disconnect Pi first");
   Serial.println("POWER 1 | POWER 0  USB test GPIO14 (lease expires after 1.5 seconds)");
   Serial.println("Joystick click: OK; hold: MENU (KEY events over USB and UART)");
@@ -311,6 +323,8 @@ void handleUsb(const char* line) {
   } else if (!strcmp(line, "help") || !strcmp(line, "?")) help();
   else if (!strcmp(line, "scan")) scanScreens();
   else if (!strcmp(line, "off")) { disableScreens(); Serial.println("OLED traffic stopped; panels may retain image."); }
+  else if (!strcmp(line, "joy debug")) { joyDebug = true; Serial.println("Joystick debug on: move the stick; joy debug off stops."); }
+  else if (!strcmp(line, "joy debug off")) { joyDebug = false; Serial.println("Joystick debug off."); }
   else if (!strcmp(line, "joy on")) {
     joystickOn = true; calibrated = false;
     Serial.println("Joystick enabled; release stick then send c.");
@@ -403,6 +417,7 @@ void loop() {
   }
   if (voltTest && now - voltTestAt >= 2000) voltTest = false;
   if (!calibrated && joystickOn && now - lastCalibration >= 3000) calibrate();
+  printJoyDebug(now);
   const int click = update(sw, now);
   if (click > 0) longSent = false;
   if (sw.stable && sw.armed && !longSent && now - sw.pressedAt >= LONG_PRESS_MS) {

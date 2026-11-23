@@ -20,7 +20,10 @@ class Issue:
 
 def _token(p: Part, dx: int, values: bool) -> tuple:
     cols = tuple(node(t.col, t.row) + dx for t in p.terms)
-    cols = cols if p.ctype in ORDERED else tuple(sorted(cols))
+    if p.ctype == 'potenciometro' and not values:
+        cols = (*sorted(cols[:2]), cols[2])
+    else:
+        cols = cols if p.ctype in ORDERED else tuple(sorted(cols))
     return (p.family, cols, p.value if values else None, p.config)
 
 

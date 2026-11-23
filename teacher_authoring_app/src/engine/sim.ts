@@ -1,3 +1,7 @@
+import { expandPotentiometers, potResistances, type ElectricalPiece } from './potentiometer.ts';
+import { solveDc, type DcElement, type DcSolution } from './dc.ts';
+export { POT_VALUES, POT_DEFAULT, POT_TOTAL } from './potentiometer.ts';
+
 /**
  * Circuit model copied from prototipo_design (guided/engine.js).
  *
@@ -121,12 +125,9 @@ export const RESISTOR_OHMS: Record<string, number> = {
   capsula_amperimetro: 10,
 };
 
-/** Potentiometer wiper settings (Ω), stepped with −/+ on the piece. */
-export const POT_VALUES = [100, 220, 470, 1000, 2200, 4700, 10000];
-export const POT_DEFAULT = 1000;
-
-export function pieceOhms(p: Piece): number {
-  if (p.type === 'potenciometro') return p.value || POT_DEFAULT;
+export function pieceOhms(p: ElectricalPiece): number {
+  if (p._ohms != null) return p._ohms;
+  if (p.type === 'potenciometro') return potResistances(p).aw;
   return RESISTOR_OHMS[p.type] || 0;
 }
 
@@ -176,6 +177,7 @@ export const MSG = {
   sem_led: 'O caminho fecha sem passar por um LED ou buzzer. Leve a corrente por uma carga.',
   capacitor: 'O capacitor bloqueia a corrente contínua: depois de carregar, nada passa. Tire-o do caminho.',
   botao_aberto: 'O botão está solto, então o caminho está aberto. Segure o botão para fechar o circuito.',
+  tensao_baixa: 'O cursor está ligado, mas a tensão nele ainda não basta para acender o LED.',
   valido: 'Circuito fechado.',
 };
 
@@ -189,9 +191,9 @@ export function analyze(
 ): CircuitAnalysis {
   // Only the ammeter conducts (10 Ω shunt between P1 and P2); the other capsules just sense or drive.
   // Pieces become edges between nodes; a column is one node per bank, so the banks never connect.
-  const pieces = all
-    .filter((p) => !isCapsule(p.type) || p.type === 'capsula_amperimetro')
-    .map((p) => ({ ...p, a: nodeOf(p.a, p.row), b: nodeOf(p.b, p.row) }));
+  const pieces = expandPotentiometers(all.filter((p) => !isCapsule(p.type) || p.type === 'capsula_amperimetro')).map(
+    (p) => ({ ...p, a: nodeOf(p.a, p.row), b: nodeOf(p.b, p.row) })
+  );
   const bat = pieces.find((p) => p.type === 'bateria');
   const poweredNodes = bat ? new Set([...reach(pieces, bat.a, []), ...reach(pieces, bat.b, [])]) : new Set<number>();
   for (let i = 0; i < pieces.length; i++) {
@@ -202,8 +204,13 @@ export function analyze(
       if ((a.a === b.a && a.b === b.b) || (a.a === b.b && a.b === b.a)) {
         // Two capacitors across the same columns are just a bigger capacitor, not a mistake.
         if (a.type === 'capacitor' && b.type === 'capacitor') continue;
+        // A load across one track section, or a wiper strapped to an end,
+        // is legitimate potentiometer wiring rather than a duplicate part.
+        if (a._segment || b._segment) continue;
         // A jumper over the battery's own two nodes is the classic short, not a duplicated piece.
-        const shorted = (a.type === 'bateria' && b.type.startsWith('jumper')) || (b.type === 'bateria' && a.type.startsWith('jumper'));
+        const shorted =
+          (a.type === 'bateria' && b.type.startsWith('jumper')) ||
+          (b.type === 'bateria' && a.type.startsWith('jumper'));
         return { code: shorted ? 'curto' : 'par_duplicado', trail: null };
       }
     }
@@ -224,7 +231,7 @@ export function analyze(
         return;
       }
       for (const e of edges) {
-        if (trail.some((t) => t.id === e.id)) continue;
+        if (trail.some((t) => t.id === e.id && t.segment === e._segment)) continue;
         let other = null,
           fwd = false;
         if (e.a === node) {
@@ -236,7 +243,15 @@ export function analyze(
         } else continue;
         if (visited.has(other) && other !== bat.b) continue;
         visited.add(other);
-        trail.push({ id: e.id, type: e.type, from: node, to: other, forward: fwd, ohms: pieceOhms(e) });
+        trail.push({
+          id: e.id,
+          type: e.type,
+          from: node,
+          to: other,
+          forward: fwd,
+          ohms: pieceOhms(e),
+          ...(e._segment ? { segment: e._segment } : {}),
+        });
         walk(other);
         trail.pop();
         visited.delete(other);
@@ -271,7 +286,24 @@ export function analyze(
     if (code === 'valido') branches.push({ trail: t, ohms, load });
     if (!best || rank.indexOf(code) < rank.indexOf(best.code)) best = { code, trail: t, ohms, load };
   }
-  if (best) return best.code === 'valido' ? { ...best, branches } : best;
+  if (best) {
+    if (best.code === 'valido' && all.some((p) => p.type === 'potenciometro')) {
+      const solved = solvePotCircuit(all, pressed);
+      if (solved) {
+        const seen = new Set<string>();
+        const measured = branches.flatMap((branch) => {
+          const load = branch.trail.find((step) => step.type === 'led' || step.type === 'buzzer');
+          if (!load || seen.has(load.id)) return [];
+          seen.add(load.id);
+          const mA = Math.abs(solved.currents.get(load.id) ?? 0) * 1000;
+          return mA > 1e-8 ? [{ ...branch, mA }] : [];
+        });
+        if (!measured.length) return { code: 'tensao_baixa', trail: null };
+        return { ...best, ...measured[0], branches: measured };
+      }
+    }
+    return best.code === 'valido' ? { ...best, branches } : best;
+  }
 
   // No conducting path: explain *why* when a capacitor or a released button is the cause.
   if (base.some((p) => p.type === 'botao') && pressed) {
@@ -292,7 +324,7 @@ export function analyze(
 export function reach(pieces: Piece[], start: number, excludeIds: string[]): Set<number> {
   const seen = new Set([start]);
   const q = [start];
-  const edges = pieces.filter((p) => p.type !== 'bateria' && excludeIds.indexOf(p.id) < 0);
+  const edges = expandPotentiometers(pieces).filter((p) => p.type !== 'bateria' && excludeIds.indexOf(p.id) < 0);
   while (q.length) {
     const n = q.shift();
     for (const e of edges) {
@@ -309,6 +341,7 @@ export function reach(pieces: Piece[], start: number, excludeIds: string[]): Set
 /** Current (mA) through the load for an `analyze` result: 5 V source, ~2 V LED drop, buzzer ≈ 250 Ω. */
 export function corrente(an: CircuitAnalysis): number {
   if (an.code !== 'valido') return 0;
+  if (an.mA != null) return an.mA;
   return an.load === 'buzzer' ? (5 / (an.ohms + 250)) * 1000 : ((5 - 2.0) / an.ohms) * 1000;
 }
 
@@ -316,9 +349,38 @@ export function corrente(an: CircuitAnalysis): number {
 export const BENCH_LIMIT_MA = 15;
 
 /** Current (mA) through one lit branch, capped at the bench ceiling; `limited` says the cap applied. */
-export function branchCurrent(branch: { ohms: number; load: 'led' | 'buzzer' | null }): { mA: number; limited: boolean } {
-  const raw = branch.load === 'buzzer' ? (5 / (branch.ohms + 250)) * 1000 : branch.ohms > 0 ? ((5 - 2.0) / branch.ohms) * 1000 : Infinity;
+export function branchCurrent(branch: { ohms: number; load: 'led' | 'buzzer' | null; mA?: number }): {
+  mA: number;
+  limited: boolean;
+} {
+  const raw =
+    branch.mA ??
+    (branch.load === 'buzzer'
+      ? (5 / (branch.ohms + 250)) * 1000
+      : branch.ohms > 0
+        ? ((5 - 2.0) / branch.ohms) * 1000
+        : Infinity);
   return raw > BENCH_LIMIT_MA ? { mA: BENCH_LIMIT_MA, limited: true } : { mA: raw, limited: false };
+}
+
+/** Exact linear track/loading model for boards containing a potentiometer. */
+export function solvePotCircuit(pieces: Piece[], pressed: Set<string> | null = null): DcSolution | null {
+  if (!pieces.some((p) => p.type === 'potenciometro')) return null;
+  const battery = pieces.find((p) => p.type === 'bateria');
+  if (!battery) return null;
+  const elements: DcElement[] = [];
+  for (const p of expandPotentiometers(pieces)) {
+    if (p.type === 'bateria' || p.type === 'capacitor' || (isCapsule(p.type) && p.type !== 'capsula_amperimetro'))
+      continue;
+    if (p.type === 'botao' && pressed && !pressed.has(p.id)) continue;
+    elements.push({
+      key: p._segment ? `${p.id}:${p._segment}` : p.id,
+      a: nodeOf(p.a, p.row),
+      b: nodeOf(p.b, p.row),
+      ...(p.type === 'led' ? { led: true } : { ohms: p.type === 'buzzer' ? 250 : pieceOhms(p) }),
+    });
+  }
+  return solveDc(elements, { a: nodeOf(battery.a, battery.row), b: nodeOf(battery.b, battery.row), volts: 5 });
 }
 
 import type { CapsuleConfig, CircuitAnalysis, Piece, PieceType } from '../model/types.ts';

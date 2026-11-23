@@ -62,6 +62,19 @@ if [ -d "$PREFIX/app/graph_validator/audio" ]; then
 fi
 mkdir -p "$DROPIN_DIR"
 if [ -f "$DROPIN" ]; then cp -p "$DROPIN" "$STAGE/old-dropin"; had_dropin=1; fi
+# Camera access, as install.sh sets it up: the service user in group video (read when the service starts, below)
+# and a udev rule for USB cameras. Older installs pass --camera 0; the new service reads that as "find it".
+SERVICE_USER="$(systemctl show -p User --value "$SERVICE" 2>/dev/null || true)"
+SERVICE_USER="${SERVICE_USER:-${SUDO_USER:-}}"
+if [ -n "$SERVICE_USER" ]; then usermod -aG video "$SERVICE_USER" || true; fi
+UDEV_RULE=/etc/udev/rules.d/99-tedtronics-camera.rules
+{
+  cat > "$UDEV_RULE" <<'EOF'
+SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTR{index}=="0", GROUP="video", MODE="0660", SYMLINK+="tedtronics-camera"
+EOF
+  udevadm control --reload-rules
+  udevadm trigger --subsystem-match=video4linux
+} 2>/dev/null || echo 'Aviso: não consegui configurar a regra udev da câmera.' >&2
 rollback=1
 systemctl stop "$SERVICE"
 mv "$PREFIX/app" "$STAGE/old-app"

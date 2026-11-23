@@ -5,6 +5,7 @@ Run on the Raspberry Pi (or a laptop for the demo):
 """
 from __future__ import annotations
 
+import logging
 import os
 import threading
 import sys
@@ -20,8 +21,9 @@ from pydantic import BaseModel, Field
 from graph_validator.service.app import app as validator_app
 
 from .camera_debug import CAMERA_DEBUG_HTML
-from .controls import KEYS, ControlsHub, SerialControls
+from .controls import KEYS, ControlsHub, GpioButtons, SerialControls, parse_button_pins
 from .protocol import FrameAssembler, Session, encode_frames
+from .router_power import RouterPower, route_from_battery
 from .store import BenchStore
 from .vision import VisionSource
 
@@ -30,6 +32,26 @@ LOCKED = "Conecte o app do professor para liberar a bancada."
 
 
 _speech_lock = threading.Lock()
+
+ROUTER_BANK_FIRST_ROW = 6  # the lower bank (vision's bank B): rows 6..11 in the editor
+BOARD_COLS = 11  # the screen mirrors the camera's columns left to right: screen column = 12 - camera column
+
+
+def battery_route(pieces: Any) -> tuple[int, int] | None:
+    """(source node, GND node) for the power router from the camera's single battery, or None.
+
+    The battery's `a` is its + column and `b` its - column, as the lesson assumes (the camera cannot read polarity).
+    The router's three nodes are wired to the lower bank (editor rows 6..11); a battery in the upper bank has no route.
+    """
+    batteries = [p for p in pieces or [] if isinstance(p, dict) and p.get("type") == "bateria"]
+    if len(batteries) != 1:
+        return None
+    try:
+        if int(batteries[0]["row"]) < ROUTER_BANK_FIRST_ROW:
+            return None
+        return route_from_battery(BOARD_COLS + 1 - int(batteries[0]["a"]), BOARD_COLS + 1 - int(batteries[0]["b"]))
+    except (KeyError, TypeError, ValueError):
+        return None
 
 
 def synthesize_speech(phrase: str) -> Path:
@@ -191,6 +213,28 @@ def create_app(store: BenchStore, dev_unlock: bool = False, vision: VisionSource
     def controls_state() -> dict:
         return controls.state()
 
+    @app.get("/controls/buttons")
+    def controls_buttons() -> dict:
+        """Energizar / Voltar buttons: gpio off|ready|error (+ the reason), the pins and which are down right now."""
+        return controls.buttons_status()
+
+    @app.websocket("/controls/status")
+    async def controls_status(socket: WebSocket) -> None:
+        """Pushes the buttons' status (see /controls/buttons) when it connects and on every change: the screen's dots."""
+        import asyncio
+
+        await socket.accept()
+        last = None
+        try:
+            while True:
+                status = controls.buttons_status()
+                if status != last:
+                    await socket.send_json(status)
+                    last = status
+                await asyncio.sleep(0.03)
+        except (WebSocketDisconnect, RuntimeError):
+            return
+
     @app.get("/controls/smart")
     def controls_smart() -> dict:
         return controls.smart_state()
@@ -213,13 +257,14 @@ def create_app(store: BenchStore, dev_unlock: bool = False, vision: VisionSource
                 smart_visible = any(p.get("type") == "capsula_smart" for p in unknown)
                 acceptable_unknown = all(p.get("type") == "capsula_smart" for p in unknown) if is_smart_lesson else not unknown
                 smart_ok = not is_smart_lesson or (smart_visible and bool(controls.smart_state()["slots"]))
-                valid = (isinstance(message, dict) and re.fullmatch(r"curriculo-(?:03-guiada-1k|teste-voltimetro-buzzer)(?:-p\d+)?", str(message.get("lesson", ""))) is not None
+                valid = (isinstance(message, dict) and re.fullmatch(r"curriculo-(?:03-guiada-1k(?:-livre)?|teste-voltimetro-buzzer)(?:-p\d+)?", str(message.get("lesson", ""))) is not None
                          and state.get("available") and state.get("running") and state.get("valid")
                          and (state.get('profile') != 'board' or not state.get('uncertain'))
                          and acceptable_unknown and smart_ok
                          and not state.get("recalibrating") and state.get("age_s") is not None
                          and state["age_s"] <= 8.0 and message.get("version") == state.get("version"))
-                if not valid or not (controls.renew_power(owner) if claimed else controls.claim_power(owner)):
+                route = battery_route(state.get("pieces")) if controls.router else None
+                if not valid or not (controls.renew_power(owner, route) if claimed else controls.claim_power(owner, route)):
                     await socket.send_json({"ok": False})
                     break
                 claimed = True
@@ -357,12 +402,21 @@ def default_app() -> FastAPI:
     calibration = os.getenv("TEDTRONICS_BENCH_CALIBRATION") or None
     record = os.getenv("TEDTRONICS_BENCH_RECORD") or None
     camera_settings = os.getenv("TEDTRONICS_BENCH_CAMERA_SETTINGS") or None
-    from .camera_device import camera_argument
-    vision = (VisionSource(camera_argument(camera) if camera else None, image, profile, calibration, record, camera_settings).start()
+    from .camera_device import service_camera
+    vision = (VisionSource(service_camera(camera) if camera else None, image, profile, calibration, record, camera_settings).start()
               if camera or image else None)
     controls = ControlsHub()
     port = os.getenv("TEDTRONICS_BENCH_CONTROLS")  # "auto" (USB or GPIO), /dev/ttyUSB0, /dev/serial0, COM4
     if port:
         SerialControls(port, controls).start()
+    router = os.getenv("TEDTRONICS_BENCH_ROUTER")  # serial port of the HC4051 power router ESP32 (replaces --controls)
+    if router and not port:
+        RouterPower(controls, router).start()
+    buttons = os.getenv("TEDTRONICS_BENCH_BUTTONS")  # BCM pins "17,27" of the Energizar and Voltar buttons
+    if buttons:
+        try:
+            GpioButtons(controls, parse_button_pins(buttons)).start()
+        except ValueError as error:
+            logging.getLogger("bench.controls").warning("controls: TEDTRONICS_BENCH_BUTTONS ignored (%s)", error)
     return create_app(store, dev_unlock=os.getenv("TEDTRONICS_BENCH_DEV") == "1", vision=vision,
                       controls=controls, ui_dir=find_ui_dir())

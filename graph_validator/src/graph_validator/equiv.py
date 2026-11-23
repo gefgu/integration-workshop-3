@@ -135,7 +135,7 @@ def net_graph(nl: Netlist, values: bool) -> nx.Graph:
         g.add_node(("p", i), kind=(p.family, p.value if values else None, p.config))
         by: dict[int, list[str]] = defaultdict(list)
         for t, n in zip(p.terms, nl.legs[i]):
-            by[n].append(t.name)
+            by[n].append('end' if p.ctype == 'potenciometro' and not values and t.name in ('A', 'B') else t.name)
         for n, names in by.items():
             g.add_edge(("p", i), ("n", n), terms=tuple(sorted(names)))
     return g
@@ -224,11 +224,14 @@ def _signatures(nl: Netlist, values: bool) -> list[tuple]:
     members: dict[int, list[tuple[int, str]]] = defaultdict(list)
     for i, (p, legs) in enumerate(zip(nl.parts, nl.legs)):
         for t, n in zip(p.terms, legs):
-            members[n].append((i, t.name))
+            name = 'end' if p.ctype == 'potenciometro' and not values and t.name in ('A', 'B') else t.name
+            members[n].append((i, name))
     out = []
     for i, (p, legs) in enumerate(zip(nl.parts, nl.legs)):
         leg_sigs = [tuple(sorted((nl.parts[j].family, tn) for j, tn in members[n] if j != i)) for n in legs]
-        if p.ctype not in ORDERED:
+        if p.ctype == 'potenciometro' and not values:
+            leg_sigs[:2] = sorted(leg_sigs[:2])
+        elif p.ctype not in ORDERED:
             leg_sigs.sort()
         out.append((p.family, p.value if values else None, p.config, tuple(leg_sigs)))
     return out

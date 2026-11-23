@@ -16,7 +16,7 @@ def main():
     command = ['node', '--import', 'tsx', '--input-type=module', '-e',
                'import {curriculumLessons} from "./src/curriculum/lessons.ts"; console.log(JSON.stringify(curriculumLessons()))']
     lessons = json.loads(subprocess.check_output(command, cwd=ROOT / 'teacher_authoring_app', text=True))
-    ids = {'curriculo-03-guiada-1k', 'curriculo-teste-voltimetro-buzzer'}
+    ids = {'curriculo-03-guiada-1k', 'curriculo-03-guiada-1k-livre', 'curriculo-teste-voltimetro-buzzer'}
     selected = [item for item in lessons if item['id'] in ids]
     if len(selected) != len(ids):
         raise SystemExit('A test lesson is missing from the curriculum.')

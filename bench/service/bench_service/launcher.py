@@ -67,7 +67,7 @@ def main() -> None:
     parser.add_argument("--port", type=int, default=8765)
     parser.add_argument("--host", default="0.0.0.0", help="0.0.0.0 lets the teacher app connect over Wi-Fi")
     camera = parser.add_mutually_exclusive_group()
-    camera.add_argument("--camera", default='0', help="camera index or persistent /dev/v4l/by-id path (default 0)")
+    camera.add_argument("--camera", default="auto", help="auto (find the USB camera and keep looking if it is missing), or a camera index / /dev/v4l/by-id path")
     camera.add_argument("--no-camera", action="store_true", help="no camera: the board is simulated on screen")
     camera.add_argument("--vision-image", help="demo: run the vision pipeline on this photo in a loop")
     camera.add_argument("--vision-profile", choices=("current", "legacy"), default=None,
@@ -83,6 +83,11 @@ def main() -> None:
     parser.add_argument("--adapter", default=None, help="Bluetooth adapter for --ble, e.g. hci0")
     parser.add_argument("--controls", default=None,
                         help="serial port of the ESP32 joystick + Energizar: auto (USB or GPIO), /dev/ttyUSB0, /dev/serial0, COM4")
+    parser.add_argument("--router", default=None, metavar="PORT",
+                        help="serial port of the ESP32 running hc4051_power_router: the PC puts 3.3 V and GND on the "
+                             "first three columns according to the battery the camera sees (not with --controls)")
+    parser.add_argument("--buttons", default=None, metavar="ENERGIZAR,VOLTAR",
+                        help="BCM pins of two push buttons wired to the Pi (to ground, internal pull-up): Energizar and Voltar, e.g. 17,27")
     args = parser.parse_args()
     if args.record and (args.no_camera or args.vision_image):
         parser.error('--record requires a camera')
@@ -91,6 +96,12 @@ def main() -> None:
     os.environ["TEDTRONICS_BENCH_DB"] = args.db or str(data / "bench.sqlite3")
     if not args.no_demo:
         os.environ["TEDTRONICS_BENCH_DEV"] = "1"
+    if args.buttons:
+        os.environ["TEDTRONICS_BENCH_BUTTONS"] = args.buttons
+    if args.controls and args.router:
+        parser.error('--router and --controls cannot share one ESP32: use one of them')
+    if args.router:
+        os.environ["TEDTRONICS_BENCH_ROUTER"] = args.router
     if args.controls:
         os.environ["TEDTRONICS_BENCH_CONTROLS"] = args.controls
     if args.vision_profile:

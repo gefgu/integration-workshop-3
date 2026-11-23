@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { serviceUrl } from '../src/bench/benchApi.ts';
+import { dotKind, dotTitle, NO_BUTTON_STATUS, parseButtonStatus, statusSocketUrl } from '../src/bench/buttonStatus.ts';
 import { cameraErrorMessage, gridLines } from '../src/bench/camera.ts';
 import { lessonStates, nextLessonId, screenAfterLesson } from '../src/bench/screens.ts';
 import { mergeVision } from '../src/bench/useVision.ts';
@@ -104,4 +105,25 @@ test('visão: mantém o mesmo estado enquanto o circuito não muda e troca quand
   const off = { available: false };
   assert.equal(mergeVision(off, { available: false }), off);
   assert.equal(mergeVision(a, off), off);
+});
+
+test('o status dos botões vem do serviço e mostra apertado, solto ou indisponível', () => {
+  const ready = parseButtonStatus({ gpio: 'ready', detail: '', pins: [17, 27], buttons: { energizar: true, voltar: false } });
+  assert.ok(ready);
+  assert.equal(dotKind(ready, 'energizar'), 'down');
+  assert.equal(dotKind(ready, 'voltar'), 'idle');
+  assert.match(dotTitle(ready, 'energizar'), /apertado/);
+
+  const broken = parseButtonStatus({ gpio: 'error', detail: 'OSError: sem GPIO', buttons: { energizar: false, voltar: false } });
+  assert.ok(broken);
+  assert.equal(dotKind(broken, 'voltar'), 'unavailable');
+  assert.match(dotTitle(broken, 'voltar'), /OSError: sem GPIO/);
+  // a press from the ESP32 buttons still lights the dot while the Pi's GPIO is not working
+  assert.equal(dotKind({ ...broken, buttons: { energizar: true, voltar: false } }, 'energizar'), 'down');
+
+  assert.equal(dotKind(NO_BUTTON_STATUS, 'voltar'), 'nosignal');
+  assert.equal(parseButtonStatus({ gpio: 'banana', buttons: {} }), null);
+  assert.equal(parseButtonStatus({ gpio: 'ready' }), null);
+  assert.equal(parseButtonStatus('x'), null);
+  assert.equal(statusSocketUrl('http://pi:8765'), 'ws://pi:8765/controls/status');
 });

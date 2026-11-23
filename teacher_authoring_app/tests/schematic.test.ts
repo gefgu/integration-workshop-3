@@ -52,7 +52,7 @@ test('unfinished, branched, and isolated circuits retain every placed edge', () 
 });
 
 test('SVG uses the placed component values, including potentiometer adjustments', () => {
-  const pieces = [piece('r', 'resistor_220', 1, 2), piece('pot', 'potenciometro', 3, 4, 1, 4700)];
+  const pieces = [piece('r', 'resistor_220', 1, 2), piece('pot', 'potenciometro', 3, 5, 1, 4700)];
   const render = () => renderToStaticMarkup(createElement(SchematicPreview, { pieces }));
   assert.match(render(), /220 Ω/);
   assert.match(render(), /4,7 kΩ/);

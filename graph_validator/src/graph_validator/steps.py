@@ -5,7 +5,7 @@ from collections import Counter
 
 from pydantic import BaseModel
 
-from .catalog import DIRECTED
+from .catalog import DIRECTED, bank
 from .diff import diff_inventory, diff_parts
 from .equiv import circuit_hash, diff_nets, equivalent, net_partners
 from .feedback import feedback, misconnected_message
@@ -138,9 +138,22 @@ def evaluate_step(
             terminals = {t.name: t for t in batteries[0].terms}
             positive, negative = terminals.get('+'), terminals.get('-')
             if not (positive and negative and positive.col == 2 and negative.col == 1
-                    and 0 <= positive.row < 6 and 0 <= negative.row < 6):
+                    and bank(positive.row) == bank(negative.row)):
                 return StepResult(approved=False, category=Category.INCORRECT_CONNECTION,
-                                  message='A bateria fixa deve ficar na bancada superior: negativo na coluna 1 e positivo na coluna 2.',
+                                  message='Coloque o negativo da bateria na coluna 1 e o positivo na coluna 2 da mesma metade da placa.',
+                                  graph_hash=graph_hash(build_graph(parts), opts))
+    if (opts.battery_max_column and not opts.fixed_battery_first_two and step.action != 'interact'
+            and any(p.ctype == 'bateria' for p in target_parts)):
+        batteries = [p for p in parts if p.ctype == 'bateria']
+        if len(batteries) == 1:
+            terminals = {t.name: t for t in batteries[0].terms}
+            positive, negative = terminals.get('+'), terminals.get('-')
+            limit = opts.battery_max_column
+            if not (positive and negative and 1 <= negative.col and positive.col == negative.col + 1
+                    and positive.col <= limit):
+                return StepResult(approved=False, category=Category.INCORRECT_CONNECTION,
+                                  message=f'A bateria deve ficar em uma das bancadas, dentro das {limit} primeiras colunas, '
+                                          'com o negativo na coluna da esquerda e o positivo na da direita.',
                                   graph_hash=graph_hash(build_graph(parts), opts))
     if lesson.kind == "guided" and step.action in ("place_component", "place_connection"):
         issues = diff_inventory(parts, target_parts, opts)

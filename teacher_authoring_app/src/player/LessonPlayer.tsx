@@ -74,7 +74,7 @@ const ISSUE_LABELS = {
 
 function pieceDescription(piece, withPosition = true) {
   let name =
-    piece.type === 'potenciometro' && piece.value
+    piece.type === 'potenciometro' && piece.value != null
       ? `${NOMES[piece.type]} ${formatOhms(piece.value)}`
       : NOMES[piece.type] || piece.type;
   if (isCapsule(piece.type)) {
@@ -448,7 +448,7 @@ export default function LessonPlayer({
                     {!(bench && intro) && phase.type === 'explain' && (
                       <ExplainStep key={stepKey} step={phase.step} onDone={next} />
                     )}
-                    {!(bench && intro) && phase.type === 'experiment' && bench && /^curriculo-03-guiada-1k(?:-p\d+)?$/.test(lesson.id) && (
+                    {!(bench && intro) && phase.type === 'experiment' && bench && /^curriculo-03-guiada-1k(?:-livre)?(?:-p\d+)?$/.test(lesson.id) && (
                       <BuildStep
                         key={stepKey}
                         lesson={lesson}
@@ -469,7 +469,7 @@ export default function LessonPlayer({
                         smartReady={smartReady}
                       />
                     )}
-                    {!(bench && intro) && phase.type === 'experiment' && !(bench && /^curriculo-03-guiada-1k(?:-p\d+)?$/.test(lesson.id)) && (
+                    {!(bench && intro) && phase.type === 'experiment' && !(bench && /^curriculo-03-guiada-1k(?:-livre)?(?:-p\d+)?$/.test(lesson.id)) && (
                       <ExperimentStep
                         key={stepKey}
                         lesson={lesson}
@@ -865,7 +865,7 @@ function BuildStep({
   // The circuit matches; the lesson may also want to see it work (energized and lit) with firm contacts.
   const stepUncertain = stepVisionBlocked(final, liveUncertain, liveProgressUncertain);
   const built = !!res?.approved && !looseLeft && !stepUncertain && (!final || smartReady);
-  const physicalLesson = bench && /^curriculo-(?:03-guiada-1k|teste-voltimetro-buzzer)(?:-p\d+)?$/.test(lesson.id);
+  const physicalLesson = bench && /^curriculo-(?:03-guiada-1k(?:-livre)?|teste-voltimetro-buzzer)(?:-p\d+)?$/.test(lesson.id);
   const physicalAllowed = physicalLesson && physicalLive && final && built && diag.code === 'valido' && !expired && visionVersion != null;
   const requestedVersion = useRef<number | undefined>(undefined);
   const [powerError, setPowerError] = useState('');
@@ -944,6 +944,9 @@ function BuildStep({
       !touched && final && lesson.kind === 'guided'
         ? 'Esta etapa está conferida. Observe a montagem e clique em Continuar.'
         : (shown?.msg ?? 'Muito bem!') + (working && !diag.limited ? ' Circuito fechado ✓' : '');
+  } else if (bench && physicalLive && res?.category === 'incorrect_connection' && !res.approved) {
+    tone = toneFor(res.category);
+    msg = res.message;
   } else if (shown && (touched || misses > 0 || res?.approved)) ({ tone, msg } = { tone: shown.tone, msg: shown.msg });
 
   if (autoBuild && placing) {
@@ -1022,6 +1025,12 @@ function BuildStep({
         {(approved || expired) && (
           <button type="button" className="btn-primary" data-pad="next" onClick={onDone}>
             Continuar
+          </button>
+        )}
+        {/* Test aid for the live camera lessons: go on even when the camera has not accepted the step (→ also works). */}
+        {physicalLesson && !(approved || expired) && (
+          <button type="button" className="btn-outline" data-pad="next" onClick={onDone}>
+            Pular etapa (teste)
           </button>
         )}
       </div>

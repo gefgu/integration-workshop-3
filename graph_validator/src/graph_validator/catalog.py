@@ -40,7 +40,7 @@ CATALOG: dict[str, ComponentDef] = {
     "resistor_1k": ComponentDef("resistor", 1, _PIN, value=1000, kit_limit=1),
     "capacitor": ComponentDef("capacitor", 1, _PIN, kit_limit=2),
     "botao": ComponentDef("botao", 1, _PIN, kit_limit=2),
-    "potenciometro": ComponentDef("potenciometro", 2, _PIN, kit_limit=1),  # two columns apart, like the app (DEFS.len)
+    "potenciometro": ComponentDef("potenciometro", 2, ("A", "B", "W"), kit_limit=1),
     "jumper_curto": ComponentDef("jumper", 1, _PIN, kit_limit=6),
     "jumper_longo": ComponentDef("jumper", 2, _PIN, kit_limit=3),
     "jumper_3": ComponentDef("jumper", 3, _PIN, kit_limit=3),
@@ -65,7 +65,7 @@ DIRECTED = frozenset({"bateria", "led"})
 CAPSULES = frozenset(t for t in CATALOG if t.startswith("capsula_"))
 MAX_CAPSULES = 3
 # Types whose terminals are not interchangeable (polarity or pin roles).
-ORDERED = DIRECTED | CAPSULES
+ORDERED = DIRECTED | CAPSULES | {"potenciometro"}
 
 # Smart-capsule slots on the connection board (PCB v0.4): P1/P2/P3 sit on columns 1-3, 5-7 and 9-11
 # of the first row of bank A (row 0) and the last row of bank B (row 11). Numbered 1..6 like the PCB.

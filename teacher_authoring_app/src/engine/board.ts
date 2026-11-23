@@ -67,7 +67,8 @@ export function buildPiece(type: PieceType, id: string, col: number, row: number
   const fits = (d: number) => col + d * len >= 1 && col + d * len <= COLS;
   const d = fits(dir) ? dir : fits(-dir) ? -dir : 0;
   if (!d) return null;
-  return { id, type, a: col, b: col + d * len, row };
+  const b = col + d * len;
+  return { id, type, a: col, b, row, ...(type === 'potenciometro' ? { c: (col + b) / 2 } : {}) };
 }
 
 /** Returns an error message, or null when `piece` can be placed. */

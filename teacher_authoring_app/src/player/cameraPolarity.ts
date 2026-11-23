@@ -8,6 +8,6 @@ export function cameraLessonPieces(lesson: Lesson, pieces: Piece[] | null): Piec
     return pieces.map((piece) => !piece.polarity && (piece.type === 'buzzer' || piece.type === 'led')
       ? { ...piece, a: Math.min(piece.a, piece.b), b: Math.max(piece.a, piece.b) }
       : piece);
-  if (!pieces || !/^curriculo-03-guiada-1k(?:-p\d+)?$/.test(lesson.id)) return pieces;
+  if (!pieces || !/^curriculo-03-guiada-1k(?:-livre)?(?:-p\d+)?$/.test(lesson.id)) return pieces;
   return pieces.map((piece) => piece.type === 'led' && !piece.polarity ? { ...piece, a: piece.b, b: piece.a } : piece);
 }

@@ -34,6 +34,9 @@ export interface VisionState {
   /** At least one displayed piece is temporarily unseen, or the frame is unusable. */
   uncertain?: boolean;
   reason?: string;
+  /** the service is looking for the camera again (simulated board meanwhile); `attempts` counts the tries */
+  searching?: boolean;
+  attempts?: number;
   /** "current" reads the half-populated kit board: unlisted positions are unknown, not empty */
   profile?: string;
   partial?: boolean;

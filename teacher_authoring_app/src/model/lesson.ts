@@ -1,13 +1,6 @@
 import { COLS, ROWS } from '../engine/board.ts';
 import { AMMETER_SLOT, slotOf } from '../engine/nodes.ts';
-import {
-  configProblems,
-  countByType,
-  isCapsule,
-  KIT_LIMITS,
-  MAX_CAPSULES,
-  TYPES,
-} from '../engine/sim.ts';
+import { configProblems, countByType, isCapsule, KIT_LIMITS, MAX_CAPSULES, TYPES } from '../engine/sim.ts';
 import { uid } from './ids.ts';
 import { ACTIONS, autoSplit, CATEGORIES, connectionStep, stepProblems } from './steps.ts';
 import type {
@@ -99,12 +92,19 @@ function checkPieces(pieces: any[]): string | null {
         return `O amperímetro só funciona no encaixe ${AMMETER_SLOT}.`;
       const bad = configProblems(p.type, p.config);
       if (bad.length) return `${p.type}: ${bad[0]}`;
+    } else if (p.type === 'potenciometro') {
+      if (Math.abs(p.a - p.b) !== 2 || (p.c != null && p.c !== (p.a + p.b) / 2))
+        return 'O potenciômetro precisa de dois extremos e do cursor na coluna do meio.';
+      if (p.config != null) return 'O potenciômetro não tem configuração de cápsula inteligente.';
+      if (p.value != null && (!Number.isInteger(p.value) || p.value < 0 || p.value > 10000))
+        return 'O cursor do potenciômetro vai de 0 Ω a 10 kΩ.';
     } else if (p.c != null || p.config != null) return `${p.type} não tem terceira coluna nem configuração.`;
     if (typeof p.id !== 'string' || ids.has(p.id)) return 'Peças com id repetido.';
     ids.add(p.id);
   }
   const used = countByType(pieces);
-  for (const t of TYPES) if ((used[t] || 0) > KIT_LIMITS[t]) return `Peças demais: o kit tem só ${KIT_LIMITS[t]} × ${t}.`;
+  for (const t of TYPES)
+    if ((used[t] || 0) > KIT_LIMITS[t]) return `Peças demais: o kit tem só ${KIT_LIMITS[t]} × ${t}.`;
   if (pieces.filter((p) => isCapsule(p.type)).length > MAX_CAPSULES)
     return `No máximo ${MAX_CAPSULES} cápsulas inteligentes ao mesmo tempo.`;
   return null;
@@ -115,12 +115,23 @@ function cleanPiece(p: any): Piece {
   if (isCapsule(p.type)) {
     base.c = p.c;
     if (p.config) base.config = p.config;
-  } else if (p.type === 'potenciometro' && Number.isInteger(p.value) && p.value > 0) base.value = p.value;
+  } else if (p.type === 'potenciometro') {
+    base.c = p.c ?? (p.a + p.b) / 2;
+    if (Number.isInteger(p.value) && p.value >= 0) base.value = p.value;
+  }
   if (p.loose === true) base.loose = true;
   return base;
 }
 
-const SETTING_FLAGS = ['statusLed', 'allowNoResistor', 'requireLit', 'matchValues', 'strictPositions', 'fixedBatteryFirstTwo'];
+const SETTING_FLAGS = [
+  'statusLed',
+  'allowNoResistor',
+  'requireLit',
+  'matchValues',
+  'strictPositions',
+  'fixedBatteryFirstTwo',
+  'batteryInFirstThree',
+];
 
 function cleanSettings(raw: any): LessonSettings | undefined {
   if (!raw || typeof raw !== 'object') return undefined;
@@ -249,7 +260,11 @@ function cleanStep(st: any) {
 
 function cleanIllustration(raw: any): Illustration | null {
   if (!raw || typeof raw.svg !== 'string' || !raw.svg.trim().startsWith('<svg')) return null;
-  return { svg: raw.svg, alt: typeof raw.alt === 'string' ? raw.alt : '', ...(typeof raw.caption === 'string' && raw.caption ? { caption: raw.caption } : {}) };
+  return {
+    svg: raw.svg,
+    alt: typeof raw.alt === 'string' ? raw.alt : '',
+    ...(typeof raw.caption === 'string' && raw.caption ? { caption: raw.caption } : {}),
+  };
 }
 
 /** Optional fields of explain/experiment steps; absent on the older step kinds. */
@@ -262,9 +277,19 @@ function cleanClientFields(st: any): Partial<LessonStep> {
   if (st.action === 'experiment' && st.experiment && Array.isArray(st.experiment.goals)) {
     const e = st.experiment;
     out.experiment = {
-      goals: e.goals.map((g) => ({ id: String(g.id), label: String(g.label ?? ''), ...(g.seen ? { seen: g.seen } : {}), ...(g.now ? { now: g.now } : {}), ...(g.ccDistinct ? { ccDistinct: g.ccDistinct } : {}), ...(g.presetsLit ? { presetsLit: g.presetsLit } : {}), ...(g.presetsFaded ? { presetsFaded: g.presetsFaded } : {}) })),
+      goals: e.goals.map((g) => ({
+        id: String(g.id),
+        label: String(g.label ?? ''),
+        ...(g.seen ? { seen: g.seen } : {}),
+        ...(g.now ? { now: g.now } : {}),
+        ...(g.ccDistinct ? { ccDistinct: g.ccDistinct } : {}),
+        ...(g.presetsLit ? { presetsLit: g.presetsLit } : {}),
+        ...(g.presetsFaded ? { presetsFaded: g.presetsFaded } : {}),
+      })),
       ...(Array.isArray(e.board) ? { board: e.board.map(cleanPiece) } : {}),
-      ...(Array.isArray(e.presets) ? { presets: e.presets.map((p) => ({ label: String(p.label), pieces: p.pieces.map(cleanPiece) })) } : {}),
+      ...(Array.isArray(e.presets)
+        ? { presets: e.presets.map((p) => ({ label: String(p.label), pieces: p.pieces.map(cleanPiece) })) }
+        : {}),
       ...(e.slider ? { slider: { pieceId: String(e.slider.pieceId), label: String(e.slider.label ?? '') } } : {}),
       ...(e.clips ? { clips: { a: Number(e.clips.a), b: Number(e.clips.b) } } : {}),
     };

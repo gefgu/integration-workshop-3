@@ -31,12 +31,16 @@ class Part:
 
 
 def part_from_piece(p: Piece) -> Part:
-    cols = (p.a, p.b, p.c) if p.type in CAPSULES else (p.a, p.b)
+    if p.type == 'potenciometro':
+        cols = (p.a, p.b, p.c if p.c is not None else (p.a + p.b) // 2)
+    else:
+        cols = (p.a, p.b, p.c) if p.type in CAPSULES else (p.a, p.b)
     terms = tuple(Term(n, col, p.row) for n, col in zip(CATALOG[p.type].terminals, cols))
     return Part(p.id, p.type, terms, piece_value(p.type, p.value), config_key(p.type, p.config))
 
 
-_ALIASES = {"+": "+", "plus": "+", "-": "-", "−": "-", "minus": "-"}
+_ALIASES = {"+": "+", "plus": "+", "-": "-", "−": "-", "minus": "-",
+            "wiper": "W", "cursor": "W", "end_a": "A", "end_b": "B"}
 
 
 def part_from_detected(c: DetectedComponent, index: int) -> Part:

@@ -24,12 +24,35 @@ test('camera mirror reverses columns and preserves bank, row, and terminal ident
   assert.equal(lesson.board.pieces.find((p) => p.id === 'bat')?.a, 2);
 });
 
-test('the bench demo offers the one-jumper 1 kΩ lesson as a standalone module', async () => {
+test('the free-battery 1 kΩ lesson accepts the battery on columns 1–2 or 2–3 only', () => {
+  const lesson = lessons.find((l) => l.id === `${SEED_PREFIX}03-guiada-1k-livre`)!;
+  assert.ok(lesson);
+  assert.equal(lesson.settings?.batteryInFirstThree, true);
+  assert.equal(lesson.settings?.fixedBatteryFirstTwo, undefined);
+  const steps = toValidatorLesson(lesson).steps;
+  assert.ok(steps.every((s) => s.options.battery_max_column === 3 && !('fixed_battery_first_two' in s.options)));
+  assert.deepEqual(lesson.board.pieces.map((p) => p.type), ['bateria', 'resistor_1k', 'led', 'jumper_3']);
+  assert.equal(diagnose(lesson.board.pieces, new Set()).code, 'valido');
+  // the example build: + on column 3, − on column 2
+  const battery = lesson.board.pieces.find((p) => p.type === 'bateria')!;
+  assert.deepEqual([battery.a, battery.b], [3, 2]);
+  // the same loop one column to the left (columns 1–2) is just as valid
+  const shifted = lesson.board.pieces.map((p) => ({ ...p, a: p.a - 1, b: p.b - 1 }));
+  assert.equal(diagnose(shifted, new Set()).code, 'valido');
+  // the original lesson keeps its fixed battery
+  const fixed = lessons.find((l) => l.id === `${SEED_PREFIX}03-guiada-1k`)!;
+  assert.equal(fixed.settings?.fixedBatteryFirstTwo, true);
+  assert.equal(fixed.settings?.batteryInFirstThree, undefined);
+});
+
+test('the bench demo offers the one-jumper 1 kΩ lessons as a test module', async () => {
   const id = `${SEED_PREFIX}03-guiada-1k`;
-  const choice = (await demoChoices()).find((c) => c.lessonIds?.length === 1 && c.lessonIds[0] === id);
+  const free = `${SEED_PREFIX}03-guiada-1k-livre`;
+  const choice = (await demoChoices()).find((c) => c.lessonIds?.length === 2 && c.lessonIds[0] === free);
   assert.ok(choice);
+  assert.deepEqual(choice.lessonIds, [free, id]);
   const pkg = await demoPackage(choice);
-  assert.deepEqual(pkg.module.lesson_ids, [id]);
+  assert.deepEqual(pkg.module.lesson_ids, [free, id]);
   assert.deepEqual(pkg.lessons[0].board.pieces.map((p) => p.type), ['bateria', 'resistor_1k', 'led', 'jumper_3']);
   assert.equal(diagnose(pkg.lessons[0].board.pieces, new Set()).code, 'valido');
 });
@@ -64,7 +87,8 @@ test('the curriculum has every Notion lesson, guided and challenge', () => {
     assert.ok(ids.includes(`${SEED_PREFIX}${id}`), id);
   assert.equal(new Set(ids).size, ids.length);
   assert.ok(ids.includes(`${SEED_PREFIX}03-guiada-1k`));
-  assert.equal(lessons.length, 22);
+  assert.ok(ids.includes(`${SEED_PREFIX}03-guiada-1k-livre`));
+  assert.equal(lessons.length, 23);
 });
 
 test('voltmeter test preserves detected buzzer and does not reinterpret an LED', () => {

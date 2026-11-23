@@ -175,3 +175,13 @@ def test_board_stale_frame_clears_raw_decisions_without_rounding_the_limit(monke
     assert state['age_s'] == 1.0
     assert not state['valid'] and state['uncertain']
     assert state['pieces'] == state['detections'] == state['decisions'] == []
+
+
+def test_potentiometer_publishes_outer_ends_and_middle_wiper_without_a_guessed_setting():
+    pieces, unknown = to_pieces({'componentes': [comp('potenciometro', [2, 3, 4], 'amarelo')]})
+    assert unknown == []
+    assert pieces == [dict(id='potenciometro', type='potenciometro', a=3, b=5, c=4, row=5)]
+    assert 'value' not in pieces[0]
+    pieces, unknown = to_pieces({'componentes': [comp('potenciometro', [2, 4, 5], 'amarelo')]})
+    assert pieces == []
+    assert unknown[0]['reason_code'] == 'invalid_pot_terminals'

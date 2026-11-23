@@ -26,7 +26,7 @@ log = logging.getLogger(__name__)
 BANK_ROWS = 6
 # Vision types the lesson editor knows under the same name.
 # The resistor values come from the colored stripe on the blue pieces (visao/config.py FAIXAS).
-SAME_TYPE = {"led", "buzzer", "capacitor", "botao", "jumper_curto", "jumper_longo", "jumper_3", "jumper_4",
+SAME_TYPE = {"led", "buzzer", "capacitor", "botao", "potenciometro", "jumper_curto", "jumper_longo", "jumper_3", "jumper_4",
              "resistor_220", "resistor_470", "resistor_1k"}
 # Vision types that need a choice the camera cannot make (value, polarity), mapped to the editor type.
 ASSUMED_TYPE = {
@@ -36,7 +36,6 @@ ASSUMED_TYPE = {
 UNSUPPORTED = {
     "resistor": "Resistor detectado; o valor não foi identificado pelas faixas.",
     "capsula_smart": "Componente inteligente detectado; a câmera não identifica sua função ou configuração.",
-    "potenciometro": "O potenciômetro da câmera ocupa 3 furos; nas lições ele ainda tem 2.",
     "led_ou_buzzer": "Não deu para saber se é LED ou buzzer (pontos pretos não lidos).",
     "resistor_ou_capacitor": "Não deu para saber se é resistor ou capacitor (pontos pretos não lidos).",
 }
@@ -69,6 +68,11 @@ def to_pieces(circuit: dict[str, Any]) -> tuple[list[dict[str, Any]], list[dict[
                             "reason": reason})
             continue
         piece = {"id": identifier, "type": piece_type, "a": cols[0] + 1, "b": cols[-1] + 1, "row": row}
+        if kind == 'potenciometro':
+            if len(cols) != 3 or cols != list(range(cols[0], cols[0] + 3)):
+                unknown.append(dict(piece, reason='Potenciômetro sem três terminais consecutivos.', reason_code='invalid_pot_terminals'))
+                continue
+            piece['c'] = cols[1] + 1  # W: a/b are the outer ends; no knob value is inferred.
         polarity = comp.get('polaridade')
         if polarity is not None:
             piece['polarity'] = dict(polarity)
@@ -190,6 +194,9 @@ class PieceHold:
             else:
                 self.empty_counts.pop(ident, None)
             uncertain = True
+            if getattr(self, "_logged", None) != ident:
+                self._logged = ident
+                log.warning("held piece not seen this frame: %s (fresh: %s)", ident, sorted(fresh))
         return [self.pieces[ident] for ident in sorted(self.pieces)], uncertain
 
 
@@ -364,6 +371,8 @@ class VisionSource:
         self.camera_settings = camera_settings
         self.demo_assume_1k = profile != 'board' and os.getenv('TEDTRONICS_DEMO_ASSUME_1K') == '1'
         self._record_session = 0
+        self._device: str | int | None = None  # the camera found by the search (auto mode)
+        self._session_opened = False
         self._lock = threading.Lock()
         self._recalibrate = threading.Event()
         self._stop = threading.Event()
@@ -372,10 +381,10 @@ class VisionSource:
                                        "fps": None, "frame_size": None, "confirming": 0, "stable_frames": None,
                                        "calibration": "manual" if calibration else "automatic",
                                        "updated_at": None}
-        self._jpeg: bytes | None = None
-        self._thread = threading.Thread(target=self._run, name="vision", daemon=True)
         if self.demo_assume_1k:
             self._state['resistor_value_assumed'] = '1k'
+        self._jpeg: bytes | None = None
+        self._thread = threading.Thread(target=self._run, name="vision", daemon=True)
 
     def start(self) -> "VisionSource":
         self._thread.start()
@@ -415,18 +424,70 @@ class VisionSource:
         with self._lock:
             self._state.update(changes)
 
+    @property
+    def auto(self) -> bool:
+        """The camera is searched for (USB capture nodes, a picture is read) instead of being a fixed device."""
+        return self.camera == 'auto' and not self.image
+
+    def _open_auto(self, cv: Any) -> tuple[Any, str | None]:
+        """Try each USB capture node, the last good one first; keep the first that delivers a picture."""
+        from .camera_device import access_problem, find_cameras
+        found = find_cameras()
+        candidates = [0] if found is None else found
+        if self._device in candidates:
+            candidates.remove(self._device)
+            candidates.insert(0, self._device)
+        if not candidates:
+            return None, 'Nenhuma câmera USB encontrada. Confira o cabo e a porta USB da câmera.'
+        problem = None
+        for device in candidates:
+            problem = access_problem(device) or problem
+            cap = open_camera(cv, device)
+            if cap.isOpened() and self._delivers_picture(cap):
+                self._device = device
+                self._set(camera_device=str(device))
+                log.info('camera found: %s', device)
+                return cap, None
+            cap.release()
+            log.warning('camera %s did not deliver a picture', device)
+        why = problem or 'outro programa pode estar usando a câmera'
+        return None, f'Câmera encontrada, mas sem imagem: {why}.'
+
+    def _delivers_picture(self, cap: Any) -> bool:
+        for _ in range(10):
+            ok, frame = cap.read()
+            if ok and frame is not None:
+                return True
+            if self._stop.wait(0.2):
+                return False
+        return False
+
     def _run(self) -> None:
         from .camera_device import persistent_camera, has_persistent_identity
-        if not self.image:
+        if not self.image and not self.auto:
             self.camera = persistent_camera(self.camera if self.camera is not None else 0)
             log.info('camera pinned to %s', self.camera)
             if isinstance(self.camera, str):
                 self._set(camera_device=self.camera)
+        attempts = 0
         while not self._stop.is_set():
             self._retry_camera = False
             self._run_once()
             if self.image or not self._retry_camera or self._stop.is_set():
                 return
+            if self.auto:
+                # Searching again is safe: only USB capture nodes that give a picture are taken, and the last
+                # good one is tried first. The screen keeps saying why, and the count, while it is simulated.
+                attempts = 1 if self._session_opened else attempts + 1
+                reason = self._state.get('reason') or 'Procurando a câmera…'
+                self._set(valid=False, pieces=[], unknown=[], updated_at=None, confirming=0, uncertain=True,
+                          searching=True, attempts=attempts,
+                          reason=f'{reason.split(" (tentativa")[0]} (tentativa {attempts}; procurando de novo)')
+                with self._lock:
+                    self._jpeg = None
+                if self._stop.wait(min(1.0 + attempts * 0.5, 5.0)):
+                    return
+                continue
             # Without a persistent identity, reusing an index after unplugging
             # could silently open a different camera. Refuse that fallback.
             if not has_persistent_identity(self.camera):
@@ -452,13 +513,23 @@ class VisionSource:
             self._set(available=False, reason=f"Não consegui abrir a imagem {self.image}.")
             return
         cap = None
+        self._session_opened = False
         if still is None:
-            cap = open_camera(cv, self.camera or 0)
-            if not cap.isOpened():
-                cap.release()
+            if self.auto:
+                cap, problem = self._open_auto(cv)
+                opened = cap is not None
+            else:
+                cap = open_camera(cv, self.camera or 0)
+                opened = cap.isOpened()
+                problem = "Nenhuma câmera encontrada. Confira o cabo da câmera."
+                if not opened:
+                    cap.release()
+            if not opened:
                 self._retry_camera = True
-                self._set(available=False, reason="Nenhuma câmera encontrada. Confira o cabo da câmera.")
+                self._set(available=False, reason=problem)
                 return
+            self._session_opened = True
+            camera = self._device if self.auto else (self.camera or 0)
             if self.record:
                 from .recorder import RecordingCamera
                 try:
@@ -478,7 +549,7 @@ class VisionSource:
                 power_line = None
                 if settings.power_line_frequency is not None:
                     from .v4l2_controls import set_power_line_frequency
-                    power_line = lambda value: set_power_line_frequency(self.camera or 0, value)
+                    power_line = lambda value: set_power_line_frequency(camera, value)
                 settings.apply(cv, cap, power_line)
                 if settings.power_line_frequency is not None and hasattr(cap, 'note_control'):
                     cap.note_control('power_line_frequency', settings.power_line_frequency)
@@ -494,6 +565,8 @@ class VisionSource:
         period = 1.0 / 5
         times: deque[float] = deque(maxlen=25)
         self._set(available=True, running=True)
+        if self.auto:
+            self._set(searching=False, attempts=0)
         try:
             while not self._stop.is_set():
                 started = time.monotonic()

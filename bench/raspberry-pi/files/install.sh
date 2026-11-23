@@ -2,8 +2,11 @@
 # TedTronics bench installer for the Raspberry Pi (Raspberry Pi OS Bookworm, 64-bit, desktop).
 #
 #   sudo ./install.sh [--no-ble] [--controls auto|/dev/ttyUSB0|/dev/serial0 | --no-controls] [--no-demo]
-#                     [--camera N | --no-camera] [--no-autostart]
+#                     [--camera auto|N|/dev/v4l/by-id/... | --no-camera] [--no-autostart]
+#                     [--buttons 17,27 | --no-buttons]
 #
+#   --buttons     BCM pins of the Energizar and Voltar push buttons wired to the Pi, default 17,27 (physical pins 11
+#                 and 13, each button to a GND pin such as 9 or 14); --no-buttons turns them off.
 #   --no-ble      without the Bluetooth link to the teacher app (it is on by default; the Pi 3/4/5 have Bluetooth)
 #   --controls    serial port of the ESP32 with the joystick + Energizar. Default "auto": the ESP32 is found on
 #                 the USB cable (/dev/ttyUSB*, /dev/ttyACM*) or on the GPIO UART (/dev/serial0) by itself.
@@ -17,8 +20,9 @@ PREFIX=/opt/tedtronics-bancada
 HERE="$(cd "$(dirname "$0")" && pwd)"
 BLE=1
 CONTROLS=auto
+BUTTONS=17,27
 DEMO=1
-CAMERA=0
+CAMERA=auto
 AUTOSTART=1
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -26,6 +30,8 @@ while [ $# -gt 0 ]; do
     --no-ble) BLE=0 ;;
     --controls) CONTROLS="$2"; shift ;;
     --no-controls) CONTROLS="" ;;
+    --buttons) BUTTONS="$2"; shift ;;
+    --no-buttons) BUTTONS="" ;;
     --no-demo) DEMO=0 ;;
     --camera) CAMERA="$2"; shift ;;
     --no-camera) CAMERA=none ;;
@@ -49,6 +55,7 @@ fi
 echo "==> 1/6  Pacotes do sistema"
 apt-get update -y
 apt-get install -y python3-venv python3-pip curl
+if [ -n "$BUTTONS" ]; then apt-get install -y swig python3-dev build-essential liblgpio-dev || true; fi  # lgpio, for the GPIO buttons
 apt-get install -y chromium-browser || apt-get install -y chromium
 if [ "$BLE" = 1 ]; then
   apt-get install -y bluez
@@ -77,6 +84,10 @@ EXTRAS="vision"
 if [ "$BLE" = 1 ]; then EXTRAS="$EXTRAS,ble"; fi
 if [ -n "$CONTROLS" ]; then EXTRAS="$EXTRAS,controls"; fi
 "$PREFIX/venv/bin/pip" install "$PREFIX/app/graph_validator[tts]" "$PREFIX/app/bench_service[$EXTRAS]"
+# GPIO libraries for the push buttons: each one is optional, the bench reads the pins with whichever works.
+if [ -n "$BUTTONS" ]; then
+  for lib in lgpio RPi.GPIO gpiozero; do "$PREFIX/venv/bin/pip" install "$lib" || echo "Aviso: $lib não instalou (os botões usam as outras bibliotecas)"; done
+fi
 
 echo "==> 4/6  Serviço da bancada (liga sozinho com a Pi)"
 ARGS="--no-browser"
@@ -85,6 +96,13 @@ if [ "$DEMO" = 0 ]; then ARGS="$ARGS --no-demo"; fi
 if [ "$BLE" = 1 ]; then ARGS="$ARGS --ble"; usermod -aG bluetooth "$USER_NAME" || true; fi
 if [ -n "$CONTROLS" ]; then ARGS="$ARGS --controls $CONTROLS"; usermod -aG dialout "$USER_NAME" || true; fi
 usermod -aG video "$USER_NAME" || true
+if [ -n "$BUTTONS" ]; then ARGS="$ARGS --buttons $BUTTONS"; usermod -aG gpio "$USER_NAME" || true; fi
+# USB cameras: group video may open them, and /dev/tedtronics-camera is a stable name for the capture node.
+cat > /etc/udev/rules.d/99-tedtronics-camera.rules <<'EOF'
+SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTR{index}=="0", GROUP="video", MODE="0660", SYMLINK+="tedtronics-camera"
+EOF
+udevadm control --reload-rules 2>/dev/null || true
+udevadm trigger --subsystem-match=video4linux 2>/dev/null || true
 # Settings kept across reinstalls: the bench secret must match the server's TEDTRONICS_BENCH_SECRET.
 if [ ! -f /etc/tedtronics-bancada.env ]; then
   cat > /etc/tedtronics-bancada.env <<'EOF'

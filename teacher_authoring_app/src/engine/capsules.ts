@@ -1,6 +1,6 @@
 import type { CapsuleReading, CircuitTrail, FlowStep, Piece } from '../model/types.ts';
 import { bankOf, nodeOf } from './nodes.ts';
-import { analyze, capsuleConfig, corrente, isCapsule } from './sim.ts';
+import { analyze, capsuleConfig, corrente, isCapsule, solvePotCircuit } from './sim.ts';
 
 /**
  * Static DC model of the smart capsules (EFR31/EFR32). The capsules are passive: the base ESP32
@@ -52,6 +52,8 @@ function wireClasses(pieces: Piece[]) {
 
 /** Voltage of every node (column of a bank) the battery loop reaches; unreached ones are absent (floating). */
 export function columnVoltages(pieces: Piece[], pressed: Set<string> | null = null): Map<number, number> {
+  const exact = solvePotCircuit(pieces, pressed);
+  if (exact) return exact.volts;
   const volts = new Map<number, number>();
   const bat = pieces.find((p) => p.type === 'bateria');
   if (!bat) return volts;

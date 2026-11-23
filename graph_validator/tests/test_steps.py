@@ -7,7 +7,7 @@ from graph_validator.steps import evaluate_step, lint, resolve_targets
 from helpers import P, loop
 
 
-def test_fixed_battery_requires_top_bank_and_first_two_columns():
+def test_fixed_battery_requires_first_two_columns_on_either_bank():
     lesson = Lesson.model_validate({'id': 'fixed', 'kind': 'guided', 'steps': [
         {'id': 'battery', 'action': 'place_component',
          'add': [P('b', 'bateria', 2, 1, 0).model_dump()],
@@ -16,8 +16,39 @@ def test_fixed_battery_requires_top_bank_and_first_two_columns():
     for battery, expected in [(P('b', 'bateria', 2, 1, 3), True),
                               (P('b', 'bateria', 3, 2, 3), False),
                               (P('b', 'bateria', 1, 2, 3), False),
-                              (P('b', 'bateria', 2, 1, 7), False)]:
+                              (P('b', 'bateria', 2, 1, 7), True),
+                              (P('b', 'bateria', 3, 2, 7), False),
+                              (P('b', 'bateria', 1, 2, 7), False)]:
         assert evaluate_step(lesson, 0, parts_from_pieces([battery])).approved is expected
+
+
+def test_fixed_battery_circuit_can_be_built_on_either_bank():
+    board = [P('bat', 'bateria', 2, 1, 1), P('res', 'resistor_1k', 2, 3, 2),
+             P('led', 'led', 3, 4, 3), P('wire', 'jumper_3', 4, 1, 4)]
+    lesson = Lesson.model_validate({'id': 'fixed', 'kind': 'guided', 'steps': [
+        {'id': 'circuit', 'action': 'connect_circuit', 'pieces': [p.model_dump() for p in board],
+         'options': {'fixed_battery_first_two': True, 'match_values': True}},
+    ]})
+    lower = [p.model_copy(update={'row': p.row + 6}) for p in board]
+    assert evaluate_step(lesson, 0, parts_from_pieces(board)).approved
+    assert evaluate_step(lesson, 0, parts_from_pieces(lower)).approved
+    assert not evaluate_step(lesson, 0, parts_from_pieces([lower[0], *board[1:]])).approved
+
+
+def test_battery_may_sit_on_any_adjacent_pair_of_the_first_three_columns():
+    lesson = Lesson.model_validate({'id': 'free', 'kind': 'guided', 'steps': [
+        {'id': 'battery', 'action': 'place_component',
+         'add': [P('b', 'bateria', 2, 1, 0).model_dump()],
+         'options': {'battery_max_column': 3}},
+    ]})
+    # P(id, type, a, b, row): a = positive column, b = negative column
+    for battery, expected in [(P('b', 'bateria', 2, 1, 3), True),
+                              (P('b', 'bateria', 3, 2, 3), True),
+                              (P('b', 'bateria', 4, 3, 3), False),
+                              (P('b', 'bateria', 1, 2, 3), False),
+                              (P('b', 'bateria', 3, 2, 7), True),  # lower bank
+                              (P('b', 'bateria', 4, 3, 7), False)]:
+        assert evaluate_step(lesson, 0, parts_from_pieces([battery])).approved is expected, battery
 
 
 def lesson(kind="guided", **kw):

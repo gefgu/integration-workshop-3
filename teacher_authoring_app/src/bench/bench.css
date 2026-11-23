@@ -924,6 +924,42 @@
   color: var(--color-neutral-700);
 }
 
+/* The two push-button dots (Energizar, Voltar) beside the camera status. */
+.bench-shell .bench-button-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex: none;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--color-neutral-200);
+  color: var(--color-neutral-700);
+}
+.bench-shell .bench-button-dot-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.bench-shell .bench-button-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  background: var(--color-neutral-400);
+  transition: background 60ms, box-shadow 60ms;
+}
+.bench-shell .bench-button-dot.down {
+  background: var(--color-accent-500);
+  box-shadow: 0 0 0 4px var(--color-accent-200);
+}
+.bench-shell .bench-button-dot.unavailable,
+.bench-shell .bench-button-dot.nosignal {
+  background: transparent;
+  border: 2px dashed var(--color-neutral-500);
+}
+
 /* ---------- Guided tour on the 7" screen ---------- */
 .bench-shell .bench-header {
   gap: 14px;

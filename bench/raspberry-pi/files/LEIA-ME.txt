@@ -41,9 +41,12 @@ Opções do instalador (pode rodar de novo para mudar):
      (joystick + Energizar: ligue a ESP32 no USB da Pi; a bancada acha a porta sozinha)
      sudo ./install.sh --controls /dev/serial0   fixa a ESP32 na porta serial dos pinos GPIO
      sudo ./install.sh --no-controls             sem os controles físicos
+     sudo ./install.sh --buttons 17,27  pinos GPIO (BCM) dos botões Energizar e Voltar (padrão 17,27 = pinos físicos 11 e 13;
+                                        cada botão entre o pino e um GND, ex.: pino 9 ou 14; sem resistor)
+     sudo ./install.sh --no-buttons              sem os botões ligados direto na Pi
      sudo ./install.sh --no-ble        sem o Bluetooth (o app conecta só pelo Wi-Fi)
      sudo ./install.sh --no-demo       esconde o "Modo demonstração" (bancada real em aula)
-     sudo ./install.sh --camera 1      usa outra câmera (índice 1)
+     sudo ./install.sh --camera 1      fixa a câmera número 1 (o padrão é "auto": acha a câmera USB sozinho)
      sudo ./install.sh --no-camera     sem câmera: a protoboard é simulada na tela
      sudo ./install.sh --no-autostart  não abre a tela sozinha ao ligar
 
@@ -68,3 +71,6 @@ Desinstalar:
 
 Teclas da bancada (joystick e botões físicos chegam como teclas):
      setas = joystick · Enter = OK · Esc = Voltar · E = Energizar
+     Botão Energizar (GPIO17) = Enter · botão Voltar (GPIO27) = seta para a esquerda (igual ao joystick para a esquerda)
+     Teste dos botões: curl http://localhost:8765/controls/buttons  (gpio "ready" = pinos ok; "error" mostra o motivo)
+     Na tela da lição, dois pontinhos ao lado do status da câmera acendem ao apertar Energizar e Voltar.

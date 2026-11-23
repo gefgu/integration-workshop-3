@@ -17,8 +17,14 @@ def _node_attrs(opts: MatchOptions) -> tuple[str, ...]:
 
 
 def _label(g: nx.Graph, n: str, attrs: tuple[str, ...]) -> tuple:
-    d = g.nodes[n]
-    return tuple(d.get(a) for a in attrs)
+    return _attrs_label(g.nodes[n], attrs)
+
+
+def _attrs_label(d: dict, attrs: tuple[str, ...]) -> tuple:
+    # Turning the pot around changes control sense, not its three-terminal
+    # topology. W stays distinct. Named A/B matter when matching R(A-W).
+    return tuple('end' if a == 'terminal' and d.get('ctype') == 'potenciometro'
+                 and d.get(a) in ('A', 'B') and 'value' not in attrs else d.get(a) for a in attrs)
 
 
 def graph_hash(g: nx.Graph, opts: MatchOptions | None = None) -> str:
@@ -46,7 +52,7 @@ def is_match(student: nx.Graph, target: nx.Graph, opts: MatchOptions | None = No
         return False
     gm = GraphMatcher(
         student, target,
-        node_match=lambda a, b: all(a.get(k) == b.get(k) for k in attrs),
+        node_match=lambda a, b: _attrs_label(a, attrs) == _attrs_label(b, attrs),
         edge_match=lambda a, b: a.get("kind") == b.get("kind"),
     )
     return gm.is_isomorphic()

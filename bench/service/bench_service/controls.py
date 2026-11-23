@@ -34,6 +34,7 @@ KEYS = {
     "VOLTAR": "ArrowLeft",  # a dedicated Back button, if the bench gets one
     "ENERGIZAR": "Enter",  # the dedicated Energizar button (GPIO32); for now the PC keyboard's Enter
 }
+BUTTON_FLASH_S = 0.3  # a press lights the screen's dot at least this long, even for a quick tap
 MAX_LINE = 63
 PING_EVERY_S = 2.0
 LINK_TIMEOUT_S = 5.0
@@ -94,8 +95,37 @@ class ControlsHub:
         self.smart_at = 0.0
         self._power_owner: object | None = None
         self._power_until = 0.0
+        self._power_route: tuple[int, int] | None = None
+        self.router = False  # the power comes from the HC4051 router (RouterPower): every lease needs a route
         self._voltmeter_owner: object | None = None
         self._voltmeter_until = 0.0
+        # The two push buttons (Energizar, Voltar): what the screen's two status dots show.
+        self._held = {"energizar": False, "voltar": False}
+        self._flash_until = {"energizar": 0.0, "voltar": 0.0}
+        self.gpio = "off"  # "off" (buttons not configured) | "ready" | "error" (retrying; see gpio_detail)
+        self.gpio_detail = ""
+        self.gpio_pins: list[int] | None = None
+
+    def button_down(self, name: str, down: bool) -> None:
+        """A button on the Pi's GPIO went down or up; a press stays visible for at least BUTTON_FLASH_S."""
+        with self._lock:
+            self._held[name] = down
+            if down:
+                self._flash_until[name] = time.monotonic() + BUTTON_FLASH_S
+
+    def button_flash(self, name: str) -> None:
+        """A press that arrived as a single event (the ESP32 buttons): lit for BUTTON_FLASH_S."""
+        with self._lock:
+            self._flash_until[name] = time.monotonic() + BUTTON_FLASH_S
+
+    def buttons_down(self) -> dict:
+        now = time.monotonic()
+        with self._lock:
+            return {name: self._held[name] or now < self._flash_until[name] for name in self._held}
+
+    def buttons_status(self) -> dict:
+        """{gpio, detail, pins, buttons: {energizar, voltar}}: what the screen dots and /controls/buttons report."""
+        return {"gpio": self.gpio, "detail": self.gpio_detail, "pins": self.gpio_pins, "buttons": self.buttons_down()}
 
     def smart_state(self) -> dict:
         fresh = self.connected and self.smart_at > 0 and time.monotonic() - self.smart_at < 4.0
@@ -116,19 +146,26 @@ class ControlsHub:
         with self._lock:
             return self.connected and self._voltmeter_owner is not None and time.monotonic() < self._voltmeter_until
 
-    def claim_power(self, owner: object) -> bool:
+    def claim_power(self, owner: object, route: tuple[int, int] | None = None) -> bool:
+        """`route` = (source node, GND node) for the HC4051 power router; None for the plain POWER 1/0 firmware."""
         with self._lock:
             if not self.connected or not self.power_capable or self._power_owner is not None:
                 return False
+            if self.router and route is None:
+                return False
             self._power_owner = owner
             self._power_until = time.monotonic() + 1.2
+            self._power_route = route
             return True
 
-    def renew_power(self, owner: object) -> bool:
+    def renew_power(self, owner: object, route: tuple[int, int] | None = None) -> bool:
         with self._lock:
             if self._power_owner is not owner or not self.connected or time.monotonic() >= self._power_until:
                 return False
+            if self.router and route is None:
+                return False
             self._power_until = time.monotonic() + 1.2
+            self._power_route = route
             return True
 
     def release_power(self, owner: object | None = None) -> None:
@@ -136,6 +173,14 @@ class ControlsHub:
             if owner is None or self._power_owner is owner:
                 self._power_owner = None
                 self._power_until = 0.0
+                self._power_route = None
+
+    def power_route(self) -> tuple[int, int] | None:
+        """The route to energize right now, or None when power is not requested."""
+        with self._lock:
+            if self.connected and self._power_owner is not None and time.monotonic() < self._power_until:
+                return self._power_route
+            return None
 
     def power_requested(self) -> bool:
         with self._lock:
@@ -159,6 +204,130 @@ class ControlsHub:
 
     def state(self) -> dict:
         return {"port": self.port, "connected": self.connected, "seq": self.seq}
+
+
+DEFAULT_BUTTON_PINS = (17, 27)  # BCM numbers: GPIO17 = physical pin 11 (Energizar), GPIO27 = pin 13 (Voltar)
+
+
+def parse_button_pins(spec: str) -> tuple[int, int]:
+    """'17,27' -> (17, 27): the BCM pins of the Energizar and Voltar buttons, in that order."""
+    parts = [part.strip() for part in spec.split(",")]
+    if len(parts) != 2 or not all(part.isdigit() and 2 <= int(part) <= 27 for part in parts) or parts[0] == parts[1]:
+        raise ValueError(f"expected two different BCM pins (2-27) such as 17,27, got {spec!r}")
+    return int(parts[0]), int(parts[1])
+
+
+class GpioButtons:
+    """Two push buttons wired straight to the Pi: each one connects its GPIO pin to ground (internal pull-up).
+
+    Energizar sends the same key as the ESP32's ENERGIZAR line and Voltar the same as its VOLTAR line, so the
+    screen cannot tell them apart. It runs next to SerialControls (the joystick keeps coming from the ESP32).
+
+    Built to survive a bad day on the bench:
+      - the pins are sampled by a thread of our own (every `poll_s`) and a change counts after `settle` equal
+        samples (software debounce), so it does not depend on gpiozero's edge callbacks;
+      - gpiozero missing, no GPIO, a busy pin or a GPIO error never stops the bench: the state goes to the hub
+        (`hub.gpio` / `hub.gpio_detail`, shown by GET /controls/buttons) and the pins are opened again every
+        `retry_s` until they work;
+      - a button already held when the pins open is not a press, and a button held when the GPIO is lost is
+        released.
+    Needs gpiozero (extra `gpio`). Avoid GPIO14/15 (the ESP32 UART) and GPIO2/3 (I2C).
+    """
+
+    NAMES = ("energizar", "voltar")
+
+    def __init__(self, hub: ControlsHub, pins: tuple[int, int] = DEFAULT_BUTTON_PINS,
+                 factory: Callable[..., object] | None = None, poll_s: float = 0.01, settle: int = 3,
+                 retry_s: float = 5.0) -> None:
+        self.hub = hub
+        self.pins = pins
+        self.poll_s = poll_s
+        self.settle = settle
+        self.retry_s = retry_s
+        self._factory = factory
+        self._buttons: list[object] = []
+        self._stable = [False, False]
+        self._count = [0, 0]
+        self._stop = threading.Event()
+        self._last_error = ""
+        hub.gpio_pins = list(pins)
+
+    def open(self) -> bool:
+        """Opens both pins. False (and the reason in the hub) when the GPIO is not usable right now."""
+        try:
+            factory = self._factory
+            if factory is None:
+                from .gpio_inputs import open_input
+
+                factory = open_input
+            self._buttons = []  # one by one: if the second pin fails, close() still frees the first
+            for pin in self.pins:
+                self._buttons.append(factory(pin, pull_up=True, bounce_time=None))
+            self._stable = [bool(button.is_pressed) for button in self._buttons]
+            self._count = [0, 0]
+        except Exception as error:
+            self.close()
+            self._fail(f"{type(error).__name__}: {error}")
+            return False
+        self._last_error = ""
+        self.hub.gpio, self.hub.gpio_detail = "ready", ""
+        log.warning("controls: GPIO buttons ready (Energizar GPIO%d, Voltar GPIO%d, via %s)", *self.pins,
+                    getattr(self._buttons[0], "backend", "?"))
+        return True
+
+    def _fail(self, detail: str) -> None:
+        self.hub.gpio, self.hub.gpio_detail = "error", detail
+        if detail != self._last_error:  # say it once, not every retry
+            log.warning("controls: GPIO buttons unavailable, retrying every %.0f s (%s)", self.retry_s, detail)
+            self._last_error = detail
+
+    def scan(self) -> None:
+        """One pass over the pins: a change that stays for `settle` samples becomes a press or a release."""
+        for index, button in enumerate(self._buttons):
+            down = bool(button.is_pressed)
+            if down == self._stable[index]:
+                self._count[index] = 0
+                continue
+            self._count[index] += 1
+            if self._count[index] >= self.settle:
+                self._stable[index], self._count[index] = down, 0
+                name = self.NAMES[index]
+                self.hub.button_down(name, down)
+                if down:
+                    log.info("controls: GPIO button %s pressed", name)
+                    self.hub.push(KEYS[name.upper()])
+
+    def run(self) -> None:
+        while not self._stop.is_set():
+            if not self._buttons and not self.open():
+                self._stop.wait(self.retry_s)
+                continue
+            try:
+                self.scan()
+            except Exception as error:  # the GPIO went away while running: drop it and start over
+                self.close()
+                self._fail(f"{type(error).__name__}: {error}")
+                continue
+            self._stop.wait(self.poll_s)
+
+    def start(self) -> "GpioButtons":
+        threading.Thread(target=self.run, name="bench-gpio-buttons", daemon=True).start()
+        return self
+
+    def close(self) -> None:
+        for button in self._buttons:
+            try:
+                button.close()
+            except Exception:
+                pass
+        self._buttons = []
+        for name in self.NAMES:
+            self.hub.button_down(name, False)
+
+    def stop(self) -> None:
+        self._stop.set()
+        self.close()
+        self.hub.gpio = "off"
 
 
 class SerialControls:
@@ -292,5 +461,8 @@ class SerialControls:
         if self.auto:
             self.hub.port = self._current
         if message[0] == "key":
+            button = line.split()[2].lower()  # the ESP32's own Energizar / Voltar buttons light the dots too
+            if button in ("energizar", "voltar"):
+                self.hub.button_flash(button)
             link.write(f"ACK {message[1]}\n".encode("ascii"))
             self.hub.push(message[2])

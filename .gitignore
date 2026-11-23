@@ -85,3 +85,6 @@ bench/raspberry-pi/dist/
 .env
 .env.*
 !.env.example
+
+# Local investigation artifacts
+.scratch/

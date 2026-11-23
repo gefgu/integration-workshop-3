@@ -486,7 +486,12 @@ function lesson03(): Lesson[] {
 
 const L03_1K_NOTES = `Objetivo: montar o circuito mais simples com resistor — bateria, resistor de 1 kΩ e LED — e ver que um resistor maior deixa o LED mais fraco.
 Como saber que deu certo: LED aceso na simulação; a pergunta final compara a corrente com a do resistor de 470 Ω (cerca de 3 mA contra 6 mA).
-Esta é a lição indicada para testar a câmera da bancada com a peça de 1 kΩ do kit: são três componentes e um jumper. A bateria fixa ocupa as colunas 1 e 2, com negativo na coluna 1 e positivo na coluna 2. A câmera não mede polaridade.
+Esta é a lição indicada para testar a câmera da bancada com a peça de 1 kΩ do kit: são três componentes e um jumper. Em qualquer metade da placa, a bateria fixa ocupa as colunas 1 e 2, com negativo na coluna 1 e positivo na coluna 2. A câmera não mede polaridade.
+${SIM} A corrente vem de (5 V − 2 V do LED) ÷ 1000 Ω ≈ 3 mA. O valor do resistor é uma configuração do kit; a câmera não mede a resistência.`;
+
+const L03_1K_FREE_NOTES = `Objetivo: o mesmo circuito da lição de 1 kΩ (bateria, resistor, LED e um jumper), mas com a bateria livre nas três primeiras colunas.
+Como saber que deu certo: LED aceso na simulação; a pergunta final compara a corrente com a do resistor de 470 Ω (cerca de 3 mA contra 6 mA).
+A bateria pode ocupar as colunas 1 e 2 ou as colunas 2 e 3 (negativo na coluna da esquerda, positivo na da direita), na bancada superior ou na inferior. O restante do circuito é conferido pelas ligações, não pelas colunas exatas; com o jumper de três espaços o laço fecha nas duas posições. A câmera não mede polaridade.
 ${SIM} A corrente vem de (5 V − 2 V do LED) ÷ 1000 Ω ≈ 3 mA. O valor do resistor é uma configuração do kit; a câmera não mede a resistência.`;
 
 function lesson03Resistor1k(): Lesson[] {
@@ -528,12 +533,12 @@ function lesson03Resistor1k(): Lesson[] {
         explain(
           'e-1k',
           'O circuito mais simples com resistor',
-          'Use a bateria, um resistor de 1 kΩ (1000 Ω), o LED e um jumper. A bateria fixa ocupa as colunas 1 e 2: negativo na coluna 1 e positivo na coluna 2. A corrente sai do + da bateria, passa pelo resistor, pelo LED e volta ao − pelo jumper.\n\nConfira a polaridade física: a câmera não a mede.\n\nO resistor protege o LED: com 1 kΩ passam cerca de 3 mA, bem menos que com o resistor de 470 Ω.'
+          'Use a bateria, um resistor de 1 kΩ (1000 Ω), o LED e um jumper. Escolha uma metade da placa e coloque o negativo da bateria na coluna 1 e o positivo na coluna 2. A corrente sai do + da bateria, passa pelo resistor, pelo LED e volta ao − pelo jumper.\n\nConfira a polaridade física: a câmera não a mede.\n\nO resistor protege o LED: com 1 kΩ passam cerca de 3 mA, bem menos que com o resistor de 470 Ω.'
         ),
         ...build(
           board,
           [
-            ['bat', 'A bateria fica nas colunas 1 e 2: negativo na 1, positivo na 2.'],
+            ['bat', 'Escolha uma metade da placa. Coloque o negativo da bateria na coluna 1 e o positivo na coluna 2.'],
             ['res', 'Coloque o resistor de 1 kΩ.'],
             ['led', 'Coloque o LED, depois do resistor. O lado da barra é o −.'],
             ['w2', 'Jumper do LED de volta ao − da bateria.'],
@@ -550,7 +555,47 @@ function lesson03Resistor1k(): Lesson[] {
       quizzes: [qPrev, qCompare],
       settings: { requireLit: true, fixedBatteryFirstTwo: true, tray: KIT('bateria', 'resistor_1k', 'led', 'jumper_3') },
       notes: L03_1K_NOTES,
-      tags: ['guiada', 'resistor', 'câmera', 'exemplo'],
+      tags: ['demo', 'guiada', 'resistor', 'câmera', 'exemplo'],
+    }),
+    lesson({
+      id: `${SEED_PREFIX}03-guiada-1k-livre`,
+      title: 'Teste — Bateria livre, resistor de 1 kΩ e LED',
+      instruction: 'Monte bateria + resistor de 1 kΩ + LED, com a bateria em qualquer uma das três primeiras colunas.',
+      kind: 'guided',
+      // The example build: battery on columns 2 and 3 (+ on 3, − on 2); any other valid spot also works.
+      board: [
+        P('bat', 'bateria', 3, 2, 1),
+        P('res', 'resistor_1k', 3, 4, 2),
+        P('led', 'led', 4, 5, 3),
+        P('w2', 'jumper_3', 5, 2, 4),
+      ],
+      steps: [
+        explain(
+          'e-livre',
+          'A bateria pode mudar de lugar',
+          'É o mesmo circuito da lição anterior, mas agora você escolhe onde fica a bateria: ela pode ocupar as colunas 1 e 2 ou as colunas 2 e 3, em qualquer uma das duas bancadas. O negativo fica na coluna da esquerda e o positivo na da direita. Na montagem de exemplo, a bateria fica nas colunas 2 e 3: negativo na 2 e positivo na 3.\n\nO resto do circuito acompanha a bateria: a corrente sai do + da bateria, passa pelo resistor de 1 kΩ e pelo LED e volta ao − pelo jumper. Se a bateria andar uma coluna, o resistor, o LED e o jumper andam junto.\n\nConfira a polaridade física: a câmera não a mede.'
+        ),
+        ...build(
+          board,
+          [
+            ['bat', 'Coloque a bateria nas colunas 1 e 2 ou nas colunas 2 e 3: negativo na coluna da esquerda, positivo na da direita.'],
+            ['res', 'Coloque o resistor de 1 kΩ saindo do + da bateria.'],
+            ['led', 'Coloque o LED depois do resistor. O lado da barra é o −.'],
+            ['w2', 'Jumper do LED de volta ao − da bateria.'],
+          ],
+          'Confira o circuito inteiro e faça sua previsão antes de energizar.',
+          { matchValues: true, strictPositions: false }
+        ),
+        interact('i-prev', 'Pense antes de testar.', qPrev),
+        experiment('x-lit', 'Energize e veja o LED', 'Clique em Energizar e observe o LED.', {
+          goals: [{ id: 'lit', label: 'Energize e veja o LED acender.', seen: ['lit'] }],
+        }),
+        interact('i-compara', 'Compare com o resistor de 470 Ω.', qCompare),
+      ],
+      quizzes: [qPrev, qCompare],
+      settings: { requireLit: true, batteryInFirstThree: true, tray: KIT('bateria', 'resistor_1k', 'led', 'jumper_3') },
+      notes: L03_1K_FREE_NOTES,
+      tags: ['demo', 'guiada', 'resistor', 'câmera', 'exemplo'],
     }),
   ];
 }
@@ -833,7 +878,7 @@ function lesson06(): Lesson[] {
       explain(
         'e-pot',
         'Um resistor que gira',
-        'O potenciômetro é um resistor que você regula com um botão giratório. Girando para um lado a resistência aumenta e a corrente diminui; para o outro, acontece o contrário. Um potenciômetro físico permite valores intermediários. Nesta tela, −/+ usa sete valores; no experimento há também um controle deslizante.',
+        'O potenciômetro tem três terminais: os extremos A e B e o cursor W. No modelo, A–B fica em 10 kΩ; o botão muda como W divide essa pista. Girando para um lado a resistência aumenta e a corrente diminui; para o outro, acontece o contrário. Um potenciômetro físico permite valores intermediários. Nesta tela, −/+ usa sete valores; no experimento há também um controle deslizante.',
         artPot()
       ),
       ...build(
@@ -852,7 +897,7 @@ function lesson06(): Lesson[] {
         'Gire o botão',
         'Energize e experimente −/+ (sete valores) ou o controle deslizante abaixo. Compare o brilho.',
         {
-          slider: { pieceId: 'pot', label: 'Resistência do potenciômetro' },
+          slider: { pieceId: 'pot', label: 'Resistência A–W (cursor)' },
           goals: [
             { id: 'lit', label: 'Energize e veja o LED acender.', seen: ['lit'] },
             { id: 'baixo', label: 'Leve o controle até o lado de MENOS resistência.', seen: ['pot_low'] },
@@ -863,7 +908,7 @@ function lesson06(): Lesson[] {
       interact('i-gradual', 'Responda sobre o que viu.', qGradual),
     ],
     quizzes: [qGradual],
-    settings: { tray: KIT('bateria', 'potenciometro', 'led', 'jumper_longo', 'jumper_4') },
+    settings: { tray: KIT('bateria', 'potenciometro', 'led', 'jumper_longo', 'jumper_3') },
     notes: L06_NOTES,
     tags: ['guiada', 'potenciômetro', 'experimento', 'exemplo'],
   });
@@ -897,7 +942,7 @@ function lesson06(): Lesson[] {
       interact('i-pred', 'Faça sua previsão antes de girar.', qPred),
       experiment('x-varre', 'Varra o potenciômetro', 'Energize e leve o controle de uma ponta à outra.', {
         board,
-        slider: { pieceId: 'pot', label: 'Resistência do potenciômetro' },
+        slider: { pieceId: 'pot', label: 'Resistência A–W (cursor)' },
         goals: [
           { id: 'lit', label: 'Energize e veja o LED acender.', seen: ['lit'] },
           { id: 'baixo', label: 'Passe pelo lado de MENOS resistência.', seen: ['pot_low'] },
@@ -1156,7 +1201,7 @@ function lesson08(): Lesson[] {
         'Varie o som',
         'Energize e arraste o controle devagar de um lado ao outro, escutando o som (simulado).',
         {
-          slider: { pieceId: 'pot', label: 'Resistência do potenciômetro' },
+          slider: { pieceId: 'pot', label: 'Resistência A–W (cursor)' },
           goals: [
             { id: 'buz', label: 'Energize e escute o buzzer.', seen: ['buzzed'] },
             { id: 'baixo', label: 'Leve o controle ao lado de MENOS resistência.', seen: ['pot_low'] },
@@ -1167,7 +1212,7 @@ function lesson08(): Lesson[] {
       interact('i-pot', 'Conte o que escutou.', qPot),
     ],
     quizzes: [qPot],
-    settings: { tray: KIT('bateria', 'potenciometro', 'buzzer', 'jumper_longo', 'jumper_4') },
+    settings: { tray: KIT('bateria', 'potenciometro', 'buzzer', 'jumper_longo', 'jumper_3') },
     notes: L08_NOTES,
     tags: ['guiada', 'buzzer', 'potenciômetro', 'som simulado', 'exemplo'],
   });
@@ -1442,7 +1487,7 @@ export function curriculumModules(): CurriculumModule[] {
     {
       title: 'Trilha 1 — Primeiros circuitos (lições 1 a 3)',
       description: 'Bancada e nós, primeiro circuito fechado e o resistor. Cada lição tem versão guiada e desafio.',
-      lessonIds: track('01-guiada', '01-desafio', '02-guiada', '02-desafio', '03-guiada', '03-guiada-1k', '03-desafio'),
+      lessonIds: track('01-guiada', '01-desafio', '02-guiada', '02-desafio', '03-guiada', '03-guiada-1k', '03-guiada-1k-livre', '03-desafio'),
     },
     {
       title: 'Trilha 2 — Sentido do LED e botão (lições 4 e 5)',
@@ -1469,8 +1514,8 @@ export function curriculumModules(): CurriculumModule[] {
     },
     {
       title: 'Teste — Bateria, resistor de 1 kΩ e LED',
-      description: 'Uma lição guiada com bateria, resistor de 1 kΩ, LED e um jumper.',
-      lessonIds: track('03-guiada-1k'),
+      description: 'Duas lições guiadas com bateria, resistor de 1 kΩ, LED e um jumper: bateria livre nas três primeiras colunas, ou fixa nas colunas 1 e 2.',
+      lessonIds: track('03-guiada-1k-livre', '03-guiada-1k'),
     },
     {
       title: 'Teste — Tela inteligente, LED e buzzer',
@@ -1488,6 +1533,7 @@ export function curriculumModules(): CurriculumModule[] {
         '02-desafio',
         '03-guiada',
         '03-guiada-1k',
+        '03-guiada-1k-livre',
         'teste-voltimetro-buzzer',
         '03-desafio',
         '04-guiada',

@@ -23,7 +23,14 @@ def parts_problems(parts: list[Part]) -> list[str]:
                 out.append(f"{p.id}: {p.ctype} must sit in a capsule slot")
             elif p.ctype == "capsula_amperimetro" and slot != AMMETER_SLOT:
                 out.append(f"{p.id}: the ammeter only works in slot {AMMETER_SLOT}")
-        if abs(p.terms[0].col - p.terms[-1].col) != CATALOG[p.ctype].length:
+        if p.ctype == 'potenciometro':
+            if (len(p.terms) != 3 or len({t.row for t in p.terms}) != 1
+                    or p.terms[2].col != (p.terms[0].col + p.terms[1].col) / 2):
+                out.append(f"{p.id}: potentiometer needs outer A/B and middle W on one row")
+            last = p.terms[1]
+        else:
+            last = p.terms[-1]
+        if abs(p.terms[0].col - last.col) != CATALOG[p.ctype].length:
             out.append(f"{p.id}: {p.ctype} must span {CATALOG[p.ctype].length} column(s)")
     for t, n in Counter(p.ctype for p in parts).items():
         if n > CATALOG[t].kit_limit:

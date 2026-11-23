@@ -10,6 +10,7 @@ from .componentes import Componente
 from .pipeline import Resultado
 from .bandas_resistor import VALORES, le_valor
 from .pecas_atuais import abertura_vazia, buzzer_kit, corpos_azuis, led_vermelho_kit, pecas_kit, ponte_clara, regiao_colorida, resistores_azuis_kit, smart_kit, suporte_local, suporte_marcado, suporte_smart
+from .polaridade import read_polarity
 from .sockets import retifica
 
 
@@ -20,6 +21,7 @@ RETENTA_BANDAS_FRAMES = 6
 MAX_RETENTA_BANDAS_FRAMES = 60
 ESQUECE_VALOR_FRAMES = 3
 MAX_ESTADO_OBSERVACAO_FRAMES = 1
+UPPER_HOLD_FRAMES = 30  # the other bank: frames (6 s at 5 fps) a piece stays published after its last detection
 
 
 # A read value belongs to the physical body that was read. Its look at normal
@@ -61,6 +63,8 @@ class PipelineAtual:
         self.kit_last_seen = {}
         self.empty_counts = {}
         self.empty_last_seen = {}
+        self.upper_kit_counts, self.upper_blue_counts, self.upper_empty_counts = {}, {}, {}
+        self.upper_memory = {"rows": {}, "seen": {}, "blue_rows": {}, "blue_seen": {}, "pol": {}}
         self.generation = None
         # Resistor values read from the colour bands (see bandas_resistor.py),
         # keyed by the body's (row, first column): {'valor', 'lido_em', 'visto_em'}.
@@ -82,6 +86,8 @@ class PipelineAtual:
         self.kit_last_seen.clear()
         self.empty_counts.clear()
         self.empty_last_seen.clear()
+        self.upper_kit_counts, self.upper_blue_counts, self.upper_empty_counts = {}, {}, {}
+        self.upper_memory = {"rows": {}, "seen": {}, "blue_rows": {}, "blue_seen": {}, "pol": {}}
         self.previous = None
         self.generation = None
 
@@ -159,6 +165,146 @@ class PipelineAtual:
                 self._falhou_bandas(pos, now)
                 out[pos] = None
         return out
+
+    def _banco_superior(self, frame, registration, result):
+        """Reads the bank ABOVE C (the other bank of the bench, half 1 / `B` in the outputs).
+
+        The grid was fitted to the lower bank (C) only; the other bank is rigid with it, 7.5 socket rows up
+        (`cfg.BANCO_SUPERIOR_DY`). Rectifying with the grid moved up that far shows it exactly where C is, so the
+        same body detectors run on it. Its sockets are never matched by the registration, so there is no
+        distributed-socket support: the grid fit of C (>= 40 inliers) is the only geometric evidence, and a piece
+        still needs `FRAMES_ESTAVEIS` consecutive frames. Resistor values are only the demo's 1 kΩ assumption.
+        """
+        if registration['inliers'] < 17:
+            self.upper_kit_counts, self.upper_empty_counts, self.upper_blue_counts = {}, {}, {}
+            self.upper_memory = {"rows": {}, "seen": {}, "blue_rows": {}, "blue_seen": {}, "pol": {}}
+            return
+        shift = np.array([[1, 0, 0], [0, 1, cfg.BANCO_SUPERIOR_DY], [0, 0, 1.0]])
+        ret = retifica(frame, registration['H'] @ shift)
+        blue_raw = resistores_azuis_kit(ret)
+        visible_blue = corpos_azuis(ret) | blue_raw
+        # Bodies in this bank lean the other way (about 0 px, not +20 px, from the socket midpoint) and their
+        # bottom edge sits up to ~25 px from the row line, so the holder offset and vertical tolerance differ.
+        standard = sorted(set(pecas_kit(ret, holder_offset=0, y_tolerance=26) + led_vermelho_kit(ret)))
+        candidates_buzzer = buzzer_kit(ret)
+        buzzers = [b for b in candidates_buzzer
+                   if not any(p[0] == 'led' and p[2] == b[2] and p[3:5] != b[3:5]
+                              and p[3] <= b[4] + 1 and b[3] <= p[4] + 1 for p in standard)]
+        standard = [p for p in standard if not (p[0] == 'led' and any(p[2:5] == b[2:5] for b in buzzers))]
+        memory, now = self.upper_memory, self.frame_index
+        # This bank is read through an extrapolated grid, so a body's row can jitter between neighbours and a
+        # detection can drop for a frame. A piece keeps its row while the same piece (kind, colour, columns) is
+        # seen within one row of it, and stays for UPPER_HOLD_FRAMES frames after its last detection. Without this
+        # the published circuit changes every few frames and no power lease can stay tied to one camera version.
+        kit = set()
+        detected_now = set()
+        for kind, colour, row, first, last in set(standard + buzzers):
+            same = (kind, colour, first, last)
+            previous = memory['rows'].get(same)
+            if previous is not None and abs(previous - row) <= 1:
+                row = previous
+            memory['rows'][same] = row
+            memory['seen'][(kind, colour, row, first, last)] = now
+            detected_now.add((kind, colour, row, first, last))
+        # The kit has one of each body: a piece seen somewhere new replaces its held copy at the old columns at once,
+        # instead of waiting out the hold (otherwise a moved piece would exist twice for a few seconds).
+        for key in list(memory['seen']):
+            if key not in detected_now and any(key[:2] == seen_now[:2] and key[3:] != seen_now[3:]
+                                               for seen_now in detected_now):
+                del memory['seen'][key]
+                memory['rows'].pop((key[0], key[1], key[3], key[4]), None)
+        for key, seen in list(memory['seen'].items()):
+            if now - seen <= UPPER_HOLD_FRAMES:
+                kit.add(key)
+            else:
+                del memory['seen'][key]
+                memory['rows'].pop((key[0], key[1], key[3], key[4]), None)
+        resistors = blue_raw if self.demo_assume_1k else set()
+        if self.demo_assume_1k and not resistors and len(visible_blue) == 1:
+            # The demo kit has one blue resistor holder: a single blue body is the 1 kΩ (as README.md describes).
+            # In this bank its axial body is often outside the crop `resistores_azuis_kit` checks.
+            resistors = set(visible_blue)
+        if self.demo_assume_1k:
+            for row, col in set(resistors):
+                previous = memory['blue_rows'].get(col)
+                if previous is not None and abs(previous - row) <= 1:
+                    row = previous
+                memory['blue_rows'][col] = row
+                memory['blue_seen'][(row, col)] = now
+            resistors = set()
+            for key, seen in list(memory['blue_seen'].items()):
+                if now - seen <= UPPER_HOLD_FRAMES:
+                    resistors.add(key)
+                else:
+                    del memory['blue_seen'][key]
+                    memory['blue_rows'].pop(key[1], None)
+        held_columns = {col for _, col in resistors}
+        unknown_blue = {pos for pos in visible_blue if pos[1] not in held_columns}
+        footprint = {(row, col + offset) for row, col in visible_blue for offset in (0, 1)}
+        footprint.update((row, col) for _, _, row, first, last in kit for col in range(first, last + 1))
+        for row in range(6):
+            for col in range(10):
+                if ponte_clara(ret, row, col):
+                    footprint.update(((row, col), (row, col + 1)))
+        # This bank's pads are dim, so `abertura_vazia` (bright opening, dark borders) fails on most empty holes.
+        # Every piece the kit has here is a coloured body or a pale jumper, both already in `footprint`.
+        empty = {(row, col) for row in range(6) for col in range(11)
+                 if (row, col) not in footprint and not regiao_colorida(ret, row, col)}
+        self.upper_kit_counts = {p: self.upper_kit_counts.get(p, 0) + 1 for p in kit}
+        self.upper_blue_counts = {p: self.upper_blue_counts.get(p, 0) + 1 for p in resistors}
+        self.upper_empty_counts = {p: self.upper_empty_counts.get(p, 0) + 1 for p in empty}
+        stable = lambda count: not self.temporal or count >= cfg.FRAMES_ESTAVEIS
+        for kind, colour, row, first, last in sorted(kit):
+            if stable(self.upper_kit_counts[(kind, colour, row, first, last)]):
+                comp = Componente(kind, colour, 1, row, list(range(first, last + 1)), [first, last])
+                if kind in ('vermelho_2', 'led', 'buzzer'):
+                    polarity = self._polaridade_superior(ret, kind, colour, row, first, last,
+                                                         (kind, colour, row, first, last) in detected_now)
+                    if polarity is not None:
+                        comp.polaridade = polarity
+                result.componentes.append(comp)
+                result.observacoes[1, row, first:last + 1] = 'occupied'
+                result.atualidade[1, row, first:last + 1] = 'fresh'
+                result.visiveis[1, row, first:last + 1] = True
+        for row, col in sorted(resistors):
+            if stable(self.upper_blue_counts[(row, col)]):
+                result.componentes.append(Componente(VALORES[1000], 'azul', 1, row, [col, col + 1], [col, col + 1]))
+                result.observacoes[1, row, col:col + 2] = 'occupied'
+                result.atualidade[1, row, col:col + 2] = 'fresh'
+                result.visiveis[1, row, col:col + 2] = True
+        for row, col in sorted(unknown_blue):
+            result.pecas_sem_tipo.append({'metade': 'B', 'linha': row, 'colunas': [col, col + 1], 'atualidade': 'fresh'})
+        for row, col in empty:
+            if stable(self.upper_empty_counts[(row, col)]) and result.atualidade[1, row, col] == 'unknown':
+                result.observacoes[1, row, col] = 'empty'
+                result.atualidade[1, row, col] = 'fresh'
+                result.visiveis[1, row, col] = True
+
+    def _polaridade_superior(self, ret, kind, colour, row, first, last, fresh):
+        """Printed +/- marks of a body in the other bank, or None until two frames in a row agree.
+
+        Only a confirmed, complementary reading is published. When the signs cannot be read the body keeps the
+        old convention (first terminal positive) and carries no `polaridade`, so it never blocks the lesson.
+        """
+        slot = self.upper_memory['pol'].setdefault((kind, colour, first, last),
+                                                   {'seen': None, 'votes': 0, 'confirmed': None})
+        if fresh:
+            # The body's row is only known to within one row in this bank, and the signs are read in a window
+            # tied to the row: try the neighbours too and trust the strongest reading, unless another one
+            # of similar strength says the opposite.
+            attempts = [read_polarity(ret, r, first, last, kind) for r in (row, row + 1, row - 1) if 0 <= r < 6]
+            known = sorted((a for a in attempts if a['status'] == 'known'), key=lambda a: -a['score'])
+            if known and any(a['positive'] != known[0]['positive'] and a['score'] > .75 * known[0]['score']
+                             for a in known[1:]):
+                reading = dict(status='unknown', reason='printed_signs_conflict')
+            else:
+                reading = known[0] if known else attempts[0]
+            signature = (reading['status'], reading.get('positive'), reading.get('negative'))
+            slot['votes'] = slot['votes'] + 1 if slot['seen'] == signature else 1
+            slot['seen'] = signature
+            if reading['status'] == 'known' and slot['votes'] >= (cfg.FRAMES_ESTAVEIS if self.temporal else 1):
+                slot['confirmed'] = {k: v for k, v in reading.items() if k != 'score'}
+        return slot['confirmed']
 
     def processa(self, frame):
         self.frame_index += 1
@@ -347,9 +493,10 @@ class PipelineAtual:
                     result.observacoes[1, row, first:last + 1] = 'occupied'
                     result.atualidade[1, row, first:last + 1] = 'fresh'
                     result.visiveis[1, row, first:last + 1] = True
+            self._banco_superior(frame, registration, result)
             result.grafo = monta_grafo(result.componentes)
             result.grafo_eletrico = contrai_jumpers(result.grafo)
-        self.last_seen = {key: when for key, when in self.last_seen.items() if now - when <= MAX_ESTADO_OBSERVACAO_FRAMES}
+        self.last_seen ={key: when for key, when in self.last_seen.items() if now - when <= MAX_ESTADO_OBSERVACAO_FRAMES}
         self.empty_last_seen = {key: when for key, when in self.empty_last_seen.items() if now - when <= MAX_ESTADO_OBSERVACAO_FRAMES}
         self.kit_last_seen = {key: when for key, when in self.kit_last_seen.items() if now - when <= MAX_ESTADO_OBSERVACAO_FRAMES}
         for (_, _, row, first, last), _ in self.kit_last_seen.items():

@@ -159,6 +159,16 @@ choices; sound, help, ranking, camera and leaving live in a game menu.
 | Joystick click held 0.8 s | `KEY <id> MENU` | `Escape` | Open / close the game menu (sound, help, ranking, camera, leave) |
 | Energizar button | `KEY <id> ENERGIZAR` | `Enter` | Power the board on or off; for now the PC keyboard's Enter |
 
+The Energizar and Voltar buttons can also be wired straight to the Pi instead of (or besides) the ESP32: each button
+goes between a GPIO pin and a GND pin (internal pull-up, no resistor). The installer's `--buttons 17,27` (default;
+`--no-buttons` turns it off) sets the BCM pins: GPIO17 = physical pin 11 = Energizar (`Enter`), GPIO27 = pin 13 =
+Voltar (`ArrowLeft`, same as joystick left). They run in parallel with the ESP32 serial link (`GpioButtons` in
+`bench_service/controls.py`, `gpiozero`), so the joystick works exactly as before. Avoid GPIO14/15 (ESP32 UART).
+The service samples the pins itself (30 ms debounce), keeps running if the GPIO fails and reopens it every 5 s.
+`GET /controls/buttons` shows `gpio` (`off`/`ready`/`error` + the reason) and which buttons are down; the same data
+arrives on `ws://<bench>:8765/controls/status` and drives the two dots (Energizar, Voltar) beside the camera status
+on the lesson bar: lit while pressed, hollow when the Pi's buttons cannot work.
+
 The Pi answers every `KEY` with `ACK <id>` and checks the link with `PING <n>` / `PONG <n>` every 2 s. A keyboard
 still works the same way, so the screen can be tested without the hardware (`POST /dev/controls/<name>` in demo mode
 simulates a serial line).

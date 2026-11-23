@@ -10,6 +10,10 @@ N_COLUNAS = 11
 N_LINHAS_METADE = 6
 GAP = 7.5  # distância (em linhas) entre a 1a linha de cima e a 1a linha de baixo
 
+# O outro banco da bancada (lido por `PipelineAtual._banco_superior`) fica ACIMA da metade C na imagem, rígido
+# com ela: a mesma distância de GAP linhas, para cima. Medido na bancada de 19/11/2026.
+BANCO_SUPERIOR_DY = -GAP
+
 def coord_modelo(metade, linha, coluna):
     """ posição (x, y) do socket no modelo da placa."""
     return (coluna, linha + (GAP if metade == 1 else 0))

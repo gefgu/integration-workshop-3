@@ -1,6 +1,7 @@
 import type { Piece } from '../model/types.ts';
 import { nodeOf } from './nodes.ts';
 import { isCapsule } from './sim.ts';
+import { potWiper } from './potentiometer.ts';
 
 export interface OrientedPiece {
   piece: Piece;
@@ -21,11 +22,16 @@ export function schematicLayout(all: Piece[]): SchematicLayout {
   // `a`/`b` become node ids: a column is one node per bank, and the banks never connect.
   const pieces = all
     .filter((piece) => !sensingCapsules([piece]).length)
-    .map((piece) => ({ ...piece, a: nodeOf(piece.a, piece.row), b: nodeOf(piece.b, piece.row) }));
+    .map((piece) => ({
+      ...piece,
+      a: nodeOf(piece.a, piece.row),
+      b: nodeOf(piece.b, piece.row),
+      ...(piece.type === 'potenciometro' ? { c: nodeOf(potWiper(piece), piece.row) } : {}),
+    }));
   if (pieces.length === 0) return { kind: 'empty' };
 
   const batteries = pieces.filter((piece) => piece.type === 'bateria');
-  if (batteries.length === 1) {
+  if (batteries.length === 1 && !pieces.some((p) => p.type === 'potenciometro')) {
     const battery = batteries[0];
     const others = pieces.filter((piece) => piece.id !== battery.id);
     const used = new Set<string>();
@@ -48,7 +54,13 @@ export function schematicLayout(all: Piece[]): SchematicLayout {
 
   return {
     kind: 'network',
-    nodes: [...new Set(pieces.flatMap((piece) => [piece.a, piece.b]))].sort((a, b) => a - b),
+    nodes: [
+      ...new Set(
+        pieces.flatMap((piece) =>
+          piece.type === 'potenciometro' ? [piece.a, piece.b, piece.c as number] : [piece.a, piece.b]
+        )
+      ),
+    ].sort((a, b) => a - b),
     edges: [...pieces].sort((a, b) => a.row - b.row || a.id.localeCompare(b.id)),
   };
 }

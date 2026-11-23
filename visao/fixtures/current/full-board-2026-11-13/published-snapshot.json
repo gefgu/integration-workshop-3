@@ -658,6 +658,14 @@
     },
     {
       "a": 1,
+      "b": 3,
+      "c": 2,
+      "id": "potenciometro@C1:0-2",
+      "row": 1,
+      "type": "potenciometro"
+    },
+    {
+      "a": 1,
       "b": 2,
       "id": "resistor_1k@C5:0-1",
       "row": 5,
@@ -714,14 +722,6 @@
       "reason": "Componente inteligente detectado; a câmera não identifica sua função ou configuração.",
       "row": 6,
       "type": "capsula_smart"
-    },
-    {
-      "a": 1,
-      "b": 3,
-      "id": "potenciometro@C1:0-2",
-      "reason": "O potenciômetro da câmera ocupa 3 furos; nas lições ele ainda tem 2.",
-      "row": 1,
-      "type": "potenciometro"
     },
     {
       "a": 10,

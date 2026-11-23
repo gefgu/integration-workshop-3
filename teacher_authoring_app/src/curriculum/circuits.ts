@@ -73,10 +73,10 @@ export const circuitL05Challenge = (): Piece[] => [
 /** Lesson 6 (schematic _06): the potentiometer is a resistor you can turn. */
 export const circuitL06 = (value = 1000): Piece[] => [
   battery(),
-  P('pot', 'potenciometro', 3, 5, 2, { value }),
-  P('led', 'led', 5, 6, 3),
+  P('pot', 'potenciometro', 3, 5, 2, { value, c: 4 }),
+  P('led', 'led', 4, 5, 3),
   P('w1', 'jumper_longo', 1, 3, 4),
-  P('w2', 'jumper_4', 6, 2, 5),
+  P('w2', 'jumper_3', 5, 2, 5),
 ];
 
 /**
@@ -102,10 +102,10 @@ export const circuitL08 = (resistor: PieceType = 'resistor_470'): Piece[] => [
 /** Lesson 8, potentiometer version (schematic _08_potenciometro). */
 export const circuitL08Pot = (value = 1000): Piece[] => [
   battery(),
-  P('pot', 'potenciometro', 3, 5, 2, { value }),
-  P('buz', 'buzzer', 5, 6, 3),
+  P('pot', 'potenciometro', 3, 5, 2, { value, c: 4 }),
+  P('buz', 'buzzer', 4, 5, 3),
   P('w1', 'jumper_longo', 1, 3, 4),
-  P('w2', 'jumper_4', 6, 2, 5),
+  P('w2', 'jumper_3', 5, 2, 5),
 ];
 
 /** Lesson 10 (schematic _10): the button feeds two parallel branches, LED+resistor and buzzer+resistor. */
@@ -121,7 +121,6 @@ export const circuitL10 = (): Piece[] => [
   P('w4', 'jumper_3', 6, 9, 1), // buzzer return joins node 3
   P('w2', 'jumper_4', 6, 2, 0), // node 3 → battery −
 ];
-
 
 /** The same board with one piece changed, keeping everything else (used for presets and faults). */
 export const withPiece = (pieces: Piece[], id: string, patch: Partial<Piece>): Piece[] =>

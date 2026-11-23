@@ -15,7 +15,8 @@ import {
   span,
 } from '../engine/board.ts';
 import { AMMETER_SLOT, slotAnchor } from '../engine/nodes.ts';
-import { CAPSULE, DEFS, isCapsule, NOMES, nextConfig, POT_DEFAULT, POT_VALUES } from '../engine/sim.ts';
+import { potWiper, stepPotValue } from '../engine/potentiometer.ts';
+import { CAPSULE, DEFS, isCapsule, NOMES, nextConfig } from '../engine/sim.ts';
 import type { CapsuleReading, CircuitTrail, Piece, PieceType } from '../model/types.ts';
 import Breadboard from './Breadboard.tsx';
 import { BoardSlotContext } from './boardSlot.ts';
@@ -207,8 +208,7 @@ export default function BoardWorkspace({
   }, [onChange, say, holeAt, begin, readOnly, onReseat]);
 
   function stepPot(p, dir) {
-    const i = POT_VALUES.indexOf(p.value || POT_DEFAULT);
-    const next = POT_VALUES[Math.min(POT_VALUES.length - 1, Math.max(0, i + dir))];
+    const next = stepPotValue(p.value, dir);
     onChange(piecesRef.current.map((x) => (x.id === p.id ? { ...x, value: next } : x)));
   }
 
@@ -321,9 +321,11 @@ export default function BoardWorkspace({
                   title={
                     p.loose
                       ? `${NOMES[p.type]} — mal encaixado: clique para encaixar de verdade`
-                      : isCapsule(p.type)
-                        ? `${NOMES[p.type]} — clique para mudar (Shift: ciclo)`
-                        : NOMES[p.type]
+                      : p.type === 'potenciometro'
+                        ? `Potenciômetro — A: coluna ${p.a}; W (cursor): coluna ${potWiper(p)}; B: coluna ${p.b}`
+                        : isCapsule(p.type)
+                          ? `${NOMES[p.type]} — clique para mudar (Shift: ciclo)`
+                          : NOMES[p.type]
                   }
                   style={{
                     position: 'absolute',

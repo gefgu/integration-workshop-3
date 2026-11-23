@@ -163,12 +163,13 @@ test('botão só fecha o caminho enquanto pressionado', () => {
 test('potenciômetro: valor muda a corrente e é preservado no JSON', () => {
   const mk = (value) => [
     P('bat', 'bateria', 1, 2),
-    { ...P('p', 'potenciometro', 1, 3), value },
-    P('led', 'led', 3, 4),
-    P('w', 'jumper_longo', 4, 2, 1),
+    { ...P('p', 'potenciometro', 3, 5, 2), c: 4, value },
+    P('led', 'led', 4, 5, 3),
+    P('plus', 'jumper_longo', 1, 3, 4),
+    P('return', 'jumper_3', 5, 2, 5),
   ];
   assert.ok(corrente(analyze(mk(100))) > corrente(analyze(mk(10000))));
-  const l = { ...newLesson(), board: { pieces: [{ ...P('p', 'potenciometro', 1, 2), value: 2200 }] } };
+  const l = { ...newLesson(), board: { pieces: [{ ...P('p', 'potenciometro', 1, 3), value: 2200 }] } };
   const parsed = validateLesson(l);
   assert.equal(parsed.ok === true ? parsed.lesson.board.pieces[0].value : null, 2200);
 });

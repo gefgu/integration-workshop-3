@@ -238,11 +238,13 @@ def test_vision_components_become_editor_pieces():
     ]})
     assert [(p["type"], p["a"], p["b"], p["row"]) for p in pieces] == [
         ("led", 3, 4, 5), ("jumper_longo", 1, 3, 6), ("bateria", 1, 2, 5),
+        ("potenciometro", 7, 9, 2),
     ]
-    assert [u["type"] for u in unknown] == ["resistor", "led_ou_buzzer", "potenciometro", "desconhecido_azul_1"]
+    assert pieces[-1]['c'] == 8
+    assert [u["type"] for u in unknown] == ["resistor", "led_ou_buzzer", "desconhecido_azul_1"]
     assert all(u["reason"] for u in unknown)
     # the validator accepts them as a board
-    assert len(load_board({"pieces": pieces})) == 3
+    assert len(load_board({"pieces": pieces})) == 4
 
 
 class FakeVision:

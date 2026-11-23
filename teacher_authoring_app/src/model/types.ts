@@ -36,7 +36,7 @@ export interface Piece {
   /** Camera observation of the printed terminal signs; absent in authored/simulated pieces. */
   polarity?: { status: 'known' | 'unknown'; positive?: number; negative?: number; reason?: string };
   value?: number;
-  /** Third column (P3) of a smart capsule; its pins are a (P1), b = a + 1 (P2) and c = a + 2 (P3). */
+  /** Smart P3; for a potentiometer c is its middle wiper, with a/b the outer track ends. */
   c?: number;
   config?: CapsuleConfig;
   /** Poorly seated (lesson 9): conducts intermittently until the student re-seats it by clicking. */
@@ -83,14 +83,7 @@ export type LabEvent =
   | 'heard_b'
   | 'seated';
 /** What is true right now on the board. */
-export type LabState =
-  | 'status_led'
-  | 'lit'
-  | 'dark'
-  | 'closed'
-  | 'no_short'
-  | 'no_loose'
-  | 'all_lit';
+export type LabState = 'status_led' | 'lit' | 'dark' | 'closed' | 'no_short' | 'no_loose' | 'all_lit';
 
 export interface LabGoal {
   id: string;
@@ -182,6 +175,8 @@ export interface LessonStart {
 export interface LessonSettings {
   /** Fixed test source: top bank columns 1 (−) and 2 (+). */
   fixedBatteryFirstTwo?: boolean;
+  /** The battery may sit on columns 1–2 or 2–3 (negative on the lower column, positive on the next). */
+  batteryInFirstThree?: boolean;
   /** Show the bench's built-in status LED (lesson 1). Simulated here. */
   statusLed?: boolean;
   /** Withhold the validator's hint until the same mistake happened this many times in a row. */
@@ -233,14 +228,16 @@ export interface TrailStep {
   to: number;
   forward: boolean;
   ohms: number;
+  segment?: 'AW' | 'WB';
 }
 export interface CircuitAnalysis {
   code: string;
   trail: TrailStep[] | null;
   ohms?: number;
+  mA?: number;
   load?: 'led' | 'buzzer' | null;
   /** Every conducting path that powers a load (an LED and a buzzer in parallel give two). */
-  branches?: { trail: TrailStep[]; ohms: number; load: 'led' | 'buzzer' | null }[];
+  branches?: { trail: TrailStep[]; ohms: number; load: 'led' | 'buzzer' | null; mA?: number }[];
 }
 /**
  * One piece carrying current from node `from` to node `to` (conventional current, + to −). A source

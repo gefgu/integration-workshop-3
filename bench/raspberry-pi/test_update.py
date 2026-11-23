@@ -32,9 +32,10 @@ class UpdateTest(unittest.TestCase):
         script = script.replace('PREFIX=/opt/tedtronics-bancada', f'PREFIX={self.prefix}')
         script = script.replace('DROPIN_DIR=/etc/systemd/system/$SERVICE.d', f'DROPIN_DIR={self.root}/systemd/$SERVICE.d')
         script = script.replace('/usr/local/bin/tedtronics-tela', str(self.root / 'local-bin/tedtronics-tela'))
+        script = script.replace('UDEV_RULE=/etc/udev/rules.d/99-tedtronics-camera.rules', f'UDEV_RULE={self.root}/camera.rules')
         script = script.replace('[ "$(id -u)" -ne 0 ]', '[ 0 -ne 0 ]')
         (self.bundle / 'update.sh').write_text(script)
-        for name, body in {'systemctl': 'exit 0', 'curl': 'exit "${FAKE_CURL_EXIT:-0}"', 'sleep': 'exit 0'}.items():
+        for name, body in {'usermod': 'exit 0', 'udevadm': 'exit 0', 'systemctl': 'exit 0', 'curl': 'exit "${FAKE_CURL_EXIT:-0}"', 'sleep': 'exit 0'}.items():
             path = self.bin / name
             path.write_text(f'#!/bin/sh\n{body}\n')
             path.chmod(0o755)
@@ -50,6 +51,7 @@ class UpdateTest(unittest.TestCase):
         self.assertTrue((self.prefix / 'venv/bin/python').exists())
         dropin = self.root / 'systemd/tedtronics-bancada.service.d/tedtronics-source.conf'
         self.assertIn(f'{self.prefix}/app/graph_validator/src', dropin.read_text())
+        self.assertIn('video4linux', (self.root / 'camera.rules').read_text())
 
     def test_failure_rolls_back(self):
         result = self.run_update(FAKE_CURL_EXIT='1')

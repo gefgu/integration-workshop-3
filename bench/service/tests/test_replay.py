@@ -131,9 +131,13 @@ def test_saved_picture_replay_is_byte_identical_across_processes():
 
 def test_populated_board_saved_publications_match_intentional_snapshots():
     base = FIXTURES.parent
-    for folder in ('full-board-2026-11-13', 'full-board-fixed-2026-11-13'):
+    for folder in ('full-board-2026-11-13', 'full-board-fixed-2026-11-13', 'full-board-rearranged-2026-11-13'):
         directory = base / folder
-        result = replay(directory, frames=2, perturb=False, profile='board')['frames'][-1]
+        # The rearranged set includes an actually recorded dark frame and a
+        # rejected startup image after JPEG recompression. Preserve that
+        # refusal and snapshot the stable publication after normal warm-up.
+        frames = 5 if folder == 'full-board-rearranged-2026-11-13' else 2
+        result = replay(directory, frames=frames, perturb=False, profile='board')['frames'][-1]
         published = {key: result[key] for key in ('valid', 'pieces', 'unknown', 'detections', 'decisions')}
         assert published == json.loads((directory / 'published-snapshot.json').read_text())
 

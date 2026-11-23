@@ -313,3 +313,237 @@ def test_smart_lesson_power_requires_camera_and_fresh_screen_response(tmp_path):
     asyncio.run(endpoint(present))
     assert present.replies == [{'ok': True}, {'ok': False}]
     assert not hub.power_requested()
+
+
+class FakeButton:
+    """Stands in for gpiozero.Button: `is_pressed` is whatever the test says the contact is doing."""
+
+    made: list = []
+
+    def __init__(self, pin, pull_up=True, bounce_time=None) -> None:
+        self.pin, self.pull_up, self.bounce_time = pin, pull_up, bounce_time
+        self.is_pressed = False
+        self.closed = False
+        FakeButton.made.append(self)
+
+    def close(self) -> None:
+        self.closed = True
+
+
+def gpio_buttons(hub, **kwargs):
+    from bench_service.controls import GpioButtons
+
+    FakeButton.made = []
+    buttons = GpioButtons(hub, (17, 27), factory=FakeButton, **kwargs)
+    assert buttons.open()
+    return buttons, *FakeButton.made
+
+
+def samples(buttons, count=3):
+    for _ in range(count):
+        buttons.scan()
+
+
+def test_gpio_buttons_send_energizar_and_voltar_next_to_the_joystick():
+    hub = ControlsHub()
+    buttons, energizar, voltar = gpio_buttons(hub)
+    assert (energizar.pin, voltar.pin) == (17, 27) and energizar.pull_up
+    assert (hub.gpio, hub.gpio_pins) == ("ready", [17, 27])
+    energizar.is_pressed = True
+    samples(buttons)
+    voltar.is_pressed = True
+    samples(buttons)
+    SerialControls("/dev/ttyUSB0", hub)._handle(FakeLink(b""), "KEY 1 RIGHT")  # the ESP32 joystick still works
+    assert [event["key"] for event in hub.since(0)] == ["Enter", "ArrowLeft", "ArrowRight"]
+    assert hub.connected  # only the joystick link sets this; the buttons do not fake an ESP32
+
+
+def test_gpio_buttons_press_once_per_press_and_ignore_contact_bounce():
+    hub = ControlsHub()
+    buttons, energizar, _ = gpio_buttons(hub)
+    for level in (True, False, True, False, True):  # bounce: never 3 equal samples in a row
+        energizar.is_pressed = level
+        buttons.scan()
+    assert hub.since(0) == []
+    energizar.is_pressed = True
+    samples(buttons, 10)  # held down: still one press
+    assert [event["key"] for event in hub.since(0)] == ["Enter"]
+    assert hub.buttons_down()["energizar"]
+    energizar.is_pressed = False
+    samples(buttons)
+    energizar.is_pressed = True
+    samples(buttons)
+    assert len(hub.since(0)) == 2
+
+
+def test_button_dot_stays_lit_for_a_quick_tap_then_goes_out(monkeypatch):
+    import bench_service.controls as module
+
+    clock = [100.0]
+    monkeypatch.setattr(module.time, "monotonic", lambda: clock[0])
+    hub = ControlsHub()
+    buttons, _, voltar = gpio_buttons(hub)
+    voltar.is_pressed = True
+    samples(buttons)
+    voltar.is_pressed = False
+    samples(buttons)  # released at once, but the dot must still be seen
+    assert hub.buttons_down() == {"energizar": False, "voltar": True}
+    clock[0] += module.BUTTON_FLASH_S + 0.01
+    assert hub.buttons_down() == {"energizar": False, "voltar": False}
+
+
+def test_a_button_already_down_when_the_pins_open_is_not_a_press():
+    from bench_service.controls import GpioButtons
+
+    class Held(FakeButton):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.is_pressed = True
+
+    hub = ControlsHub()
+    buttons = GpioButtons(hub, factory=Held)
+    assert buttons.open()
+    samples(buttons, 5)
+    assert hub.since(0) == []
+
+
+def test_esp32_energizar_and_voltar_also_light_the_dots():
+    hub = ControlsHub()
+    serial = SerialControls("/dev/ttyUSB0", hub)
+    serial._handle(FakeLink(b""), "KEY 1 VOLTAR")
+    assert hub.buttons_down() == {"energizar": False, "voltar": True}
+    serial._handle(FakeLink(b""), "KEY 2 LEFT")  # a joystick move is not a button
+    assert hub.buttons_status()["gpio"] == "off"
+
+
+def test_gpio_failure_is_reported_retried_and_never_stops_the_bench():
+    from bench_service.controls import GpioButtons
+
+    attempts = []
+
+    def flaky(pin, **kwargs):
+        attempts.append(pin)
+        if len(attempts) <= 2:  # first try: both pins fail
+            raise RuntimeError("no GPIO here")
+        return FakeButton(pin, **kwargs)
+
+    hub = ControlsHub()
+    buttons = GpioButtons(hub, factory=flaky, retry_s=0.01, poll_s=0.005).start()
+    try:
+        deadline = time.time() + 3
+        while hub.gpio != "ready" and time.time() < deadline:
+            time.sleep(0.01)
+        assert hub.gpio == "ready" and hub.gpio_detail == ""  # recovered by itself
+    finally:
+        buttons.stop()
+    assert hub.gpio == "off"
+
+
+def test_gpio_unavailable_reports_the_reason():
+    from bench_service.controls import GpioButtons
+
+    def broken(*args, **kwargs):
+        raise RuntimeError("no GPIO here")
+
+    hub = ControlsHub()
+    assert not GpioButtons(hub, factory=broken).open()
+    assert hub.gpio == "error" and "no GPIO here" in hub.gpio_detail
+
+
+def test_gpio_lost_while_running_releases_the_buttons_and_reopens():
+    from bench_service.controls import GpioButtons
+
+    opened = []
+
+    class Dying(FakeButton):
+        broken = False
+        pressed = False
+
+        @property
+        def is_pressed(self):
+            if Dying.broken:
+                raise OSError("gpio chip gone")
+            return Dying.pressed
+
+        @is_pressed.setter
+        def is_pressed(self, value):
+            pass
+
+    hub = ControlsHub()
+    buttons = GpioButtons(hub, factory=lambda pin, **kw: (opened.append(pin), Dying(pin, **kw))[1],
+                          retry_s=0.01, poll_s=0.005)
+    assert buttons.open()
+    Dying.pressed = True  # from now on the contacts read as pressed
+    samples(buttons)
+    assert hub._held["energizar"]
+    Dying.broken = True
+    buttons.start()
+    try:
+        deadline = time.time() + 3
+        while hub._held["energizar"] and time.time() < deadline:
+            time.sleep(0.01)
+        assert not hub._held["energizar"] and hub.gpio == "error"  # released, reported, retrying
+        Dying.broken = False
+        deadline = time.time() + 3
+        while hub.gpio != "ready" and time.time() < deadline:
+            time.sleep(0.01)
+        assert hub.gpio == "ready"
+    finally:
+        buttons.stop()
+
+
+def test_controls_buttons_endpoint_and_status_socket(tmp_path):
+    hub = ControlsHub()
+    bench = TestClient(create_app(BenchStore(str(tmp_path / "b.sqlite3")), dev_unlock=True, controls=hub))
+    assert bench.get("/controls/buttons").json() == {
+        "gpio": "off", "detail": "", "pins": None, "buttons": {"energizar": False, "voltar": False}}
+    with bench.websocket_connect("/controls/status") as socket:
+        assert socket.receive_json()["buttons"] == {"energizar": False, "voltar": False}
+        hub.button_down("voltar", True)
+        assert socket.receive_json()["buttons"]["voltar"] is True
+
+
+def test_parse_button_pins():
+    import pytest
+    from bench_service.controls import parse_button_pins
+
+    assert parse_button_pins("17,27") == (17, 27)
+    assert parse_button_pins(" 5 , 6 ") == (5, 6)
+    for bad in ("17", "17,17", "1,27", "a,b", "17,28", ""):
+        with pytest.raises(ValueError):
+            parse_button_pins(bad)
+
+
+def test_open_input_falls_back_to_the_next_gpio_library_and_reports_every_failure():
+    import pytest
+    from bench_service import gpio_inputs
+
+    class Broken:
+        def __init__(self, pin):
+            raise OSError(22, "Invalid argument")
+
+    class Works:
+        def __init__(self, pin):
+            self.pin, self.is_pressed = pin, False
+
+    device = gpio_inputs.open_input(17, backends=[("lgpio", Broken), ("RPi.GPIO", Works)])
+    assert device.pin == 17 and device.backend == "RPi.GPIO"
+    with pytest.raises(OSError) as error:
+        gpio_inputs.open_input(17, backends=[("lgpio", Broken), ("gpiozero", Broken)])
+    assert "lgpio: OSError" in str(error.value) and "gpiozero: OSError" in str(error.value)
+
+
+def test_gpio_buttons_free_the_first_pin_when_the_second_fails():
+    from bench_service.controls import GpioButtons
+
+    made = []
+
+    def second_fails(pin, **kwargs):
+        if made:
+            raise OSError(22, "Invalid argument")
+        made.append(FakeButton(pin, **kwargs))
+        return made[0]
+
+    hub = ControlsHub()
+    assert not GpioButtons(hub, factory=second_fails).open()
+    assert made[0].closed and hub.gpio == "error" and "Invalid argument" in hub.gpio_detail

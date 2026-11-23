@@ -44,8 +44,8 @@ def test_values_only_matter_when_requested():
 
 
 def test_pot_value_matching():
-    a = G([P("p", "potenciometro", 1, 2, value=100)])
-    b = G([P("p", "potenciometro", 1, 2, value=4700)])
+    a = G([P("p", "potenciometro", 1, 3, value=100)])
+    b = G([P("p", "potenciometro", 1, 3, value=4700)])
     assert is_match(a, b)
     assert not is_match(a, b, MatchOptions(match_values=True))
 

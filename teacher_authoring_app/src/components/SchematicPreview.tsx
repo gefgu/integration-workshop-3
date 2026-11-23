@@ -2,13 +2,15 @@ import { nodeBank, nodeCol } from '../engine/nodes.ts';
 import { schematicLayout, sensingCapsules } from '../engine/schematic.ts';
 import { capsuleConfig, formatOhms, NOMES, pieceOhms } from '../engine/sim.ts';
 import type { Piece } from '../model/types.ts';
+import { potWiper, POT_TOTAL } from '../engine/potentiometer.ts';
 
 // IEC 60617-style circuit symbols: rectangular resistors and a multi-cell battery.
 const STROKE = '#3f493f';
 
 function labelFor(piece: Piece) {
   if (piece.type === 'bateria') return '5 V';
-  if (piece.type.startsWith('resistor') || piece.type === 'potenciometro') return formatOhms(pieceOhms(piece));
+  if (piece.type === 'potenciometro') return `${formatOhms(POT_TOTAL)} · A–W: ${formatOhms(pieceOhms(piece))}`;
+  if (piece.type.startsWith('resistor')) return formatOhms(pieceOhms(piece));
   if (piece.type === 'capacitor') return '1000 µF';
   if (piece.type === 'led') return 'LED';
   if (piece.type === 'buzzer') return 'Buzzer';
@@ -70,7 +72,7 @@ export function ComponentSymbol({
           {(type.startsWith('resistor') || type === 'potenciometro' || type === 'capsula_amperimetro') && (
             <rect x="-17" y="-7" width="34" height="14" />
           )}
-          {type === 'potenciometro' && <path d="M -12 15 L 12 -13 M 4 -12 L 12 -13 L 11 -5" />}
+          {type === 'potenciometro' && <path data-terminal="W" d="M 0 24 L 0 7 M -4 14 L 0 7 L 4 14" />}
           {type === 'capacitor' && (
             <>
               <line x1="-6" y1="-15" x2="-6" y2="15" />
@@ -173,7 +175,13 @@ function NetworkDiagram({ nodes, edges }: { nodes: number[]; edges: Piece[] }) {
   const yFor = edges.map((_, index) => 80 + index * 58);
   const spans = new Map(
     nodes.map((node) => {
-      const ys = edges.flatMap((piece, index) => (piece.a === node || piece.b === node ? [yFor[index]] : []));
+      const ys = edges.flatMap((piece, index) =>
+        piece.type === 'potenciometro' && piece.c === node
+          ? [yFor[index] + 24]
+          : piece.a === node || piece.b === node
+            ? [yFor[index]]
+            : []
+      );
       return [node, { top: Math.min(...ys), bottom: Math.max(...ys), degree: ys.length }] as const;
     })
   );
@@ -212,6 +220,18 @@ function NetworkDiagram({ nodes, edges }: { nodes: number[]; edges: Piece[] }) {
             <g key={piece.id}>
               <line x1={left} y1={y} x2={symbolX - 20} y2={y} />
               <path d={wirePath(symbolX + 20, right, y, crossings)} />
+              {piece.type === 'potenciometro' && (
+                <>
+                  <line data-terminal="W" x1={symbolX} y1={y + 24} x2={xFor.get(piece.c as number)} y2={y + 24} />
+                  <circle
+                    cx={xFor.get(piece.c as number)}
+                    cy={y + 24}
+                    r="3"
+                    fill={spans.get(piece.c as number).degree === 1 ? 'white' : STROKE}
+                    stroke={STROKE}
+                  />
+                </>
+              )}
             </g>
           );
         })}
@@ -277,6 +297,13 @@ export default function SchematicPreview({ pieces }: { pieces: Piece[] }) {
           ))}
         </ul>
       )}
+      {pieces
+        .filter((p) => p.type === 'potenciometro')
+        .map((p) => (
+          <p key={`pot-terminals-${p.id}`} className="schematic-capsules">
+            Potenciômetro: A col. {p.a}, W (cursor) col. {potWiper(p)}, B col. {p.b}.
+          </p>
+        ))}
     </section>
   );
 }

@@ -58,7 +58,7 @@ def _resistores_azuis(ret_bgr, valor_minimo):
     return found
 
 
-def pecas_kit(ret_bgr, short_jumpers=False, white_floor=180):
+def pecas_kit(ret_bgr, short_jumpers=False, white_floor=180, holder_offset=20, x_tolerance=24, y_tolerance=18):
     """Candidate kit pieces; identities and polarity follow the test-kit convention.
 
     Returns (type, colour, row, first column, last column). Bright openings and
@@ -140,13 +140,13 @@ def pecas_kit(ret_bgr, short_jumpers=False, white_floor=180):
                 continue
             if kind != 'jumper' and span != 1 or not 1 <= span <= 4:
                 continue
-            offset = 0 if kind == 'jumper' else 20
+            offset = 0 if kind == "jumper" else holder_offset
             first = round((x + width / 2 - offset) / cfg.PX_X - cfg.MARGEM_X - span / 2)
             row = round((y + height - 3) / cfg.PX_Y - cfg.MARGEM_Y)
             if not (0 <= row < cfg.N_LINHAS_METADE and 0 <= first < first + span < cfg.N_COLUNAS):
                 continue
             expected_x, expected_y = cfg.para_retificada(first + span / 2, row)
-            if abs(x + width / 2 - offset - expected_x) > 24 or abs(y + height - 3 - expected_y) > 18:
+            if abs(x + width / 2 - offset - expected_x) > x_tolerance or abs(y + height - 3 - expected_y) > y_tolerance:
                 continue
             piece_type = kind if kind != 'jumper' else {1: 'jumper_curto', 2: 'jumper_longo', 3: 'jumper_3', 4: 'jumper_4'}[span]
             found.append((piece_type, colour, row, first, first + span))
