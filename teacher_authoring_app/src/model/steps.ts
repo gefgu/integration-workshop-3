@@ -67,9 +67,6 @@ const NOME = {
   potenciometro: 'o potenciômetro',
   capsula_pulso: 'a cápsula de pulso',
   capsula_voltimetro: 'a cápsula voltímetro',
-  capsula_amperimetro: 'a cápsula amperímetro',
-  capsula_porta: 'a cápsula de porta lógica',
-  capsula_memoria: 'a cápsula de memória',
 };
 
 export function actionFor(piece: Piece): StepAction {

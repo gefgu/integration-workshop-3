@@ -183,46 +183,47 @@ def _cap(i, t, a, row, **config):
     return P(i, t, a, a + 1, row).model_copy(update={"c": a + 2, "config": config or None})
 
 
-def _gate_board(op="and", order=("bat", "r", "gate")):
-    """Gate in slot 2 (bank A, columns 5-7). P1 (col 5) is wired to the battery's + side by `j`."""
+def _gate_board(hz=1.0, order=("pu", "r", "led")):
+    """Pulse-powered loop, no battery: pulse in slot 2 (bank A, P1 col 5 = GND, P3 col 7 = output),
+    P3 -> R220 -> LED -> jumper back to P1."""
     ps = {
-        "bat": P("bat", "bateria", 1, 2, 1),
-        "r": P("r", "resistor_220", 2, 3, 2),
-        "gate": _cap("gate", "capsula_porta", 5, 0, op=op),
-        "j": P("j", "jumper_longo", 3, 5, 3),
+        "pu": _cap("pu", "capsula_pulso", 5, 0, hz=hz),
+        "r": P("r", "resistor_220", 7, 8, 2),
+        "led": P("led", "led", 8, 9, 3),
+        "j": P("j", "jumper_4", 9, 5, 4),
     }
     return [ps[k] for k in order] + [ps["j"]]
 
 
 def test_capsule_board_is_equivalent_when_reordered():
     a = _gate_board()
-    b = _gate_board(order=("gate", "bat", "r"))
+    b = _gate_board(order=("led", "pu", "r"))
     assert equivalent(parts(a), parts(b), OFF)
     assert circuit_hash(parts(a)) == circuit_hash(parts(b))
 
 
 def test_capsule_with_other_gate_is_wrong_config():
-    issues = diff_nets(parts(_gate_board("or")), parts(_gate_board("and")), OFF)
-    assert [(i.category, i.part_id) for i in issues] == [(Category.WRONG_CONFIG, "gate")]
-    assert not equivalent(parts(_gate_board("or")), parts(_gate_board("and")), OFF)
+    issues = diff_nets(parts(_gate_board(2.0)), parts(_gate_board(1.0)), OFF)
+    assert [(i.category, i.part_id) for i in issues] == [(Category.WRONG_CONFIG, "pu")]
+    assert not equivalent(parts(_gate_board(2.0)), parts(_gate_board(1.0)), OFF)
 
 
 def test_capsule_defaults_match_explicit_defaults():
-    explicit = _gate_board("and")
-    implicit = [p.model_copy(update={"config": None}) if p.id == "gate" else p for p in explicit]
+    explicit = _gate_board(1.0)
+    implicit = [p.model_copy(update={"config": None}) if p.id == "pu" else p for p in explicit]
     assert equivalent(parts(implicit), parts(explicit), OFF)
 
 
 def test_capsule_pins_are_not_interchangeable():
     t = _gate_board()
-    swapped = [p if p.id != "j" else P("j", "jumper_curto", 3, 4, 3) for p in t]
+    swapped = [p if p.id != "j" else P("j", "jumper_3", 9, 6, 4) for p in t]  # return on P2, not P1
     assert not equivalent(parts(swapped), parts(t), OFF)
 
 
 def test_capsule_strict_diff_names_the_config():
     from graph_validator.diff import diff_parts
 
-    issues = diff_parts(parts(_gate_board("or")), parts(_gate_board("and")), STRICT)
+    issues = diff_parts(parts(_gate_board(2.0)), parts(_gate_board(1.0)), STRICT)
     assert issues[0].category == Category.WRONG_CONFIG
 
 
@@ -230,14 +231,14 @@ def test_capsule_board_problems():
     from graph_validator.models import board_problems
 
     assert board_problems(_gate_board()) == []
-    bad_cfg = [p if p.id != "gate" else p.model_copy(update={"config": {"op": "nope"}}) for p in _gate_board()]
-    assert any("op must be" in m for m in board_problems(bad_cfg))
-    gap = [p if p.id != "gate" else p.model_copy(update={"c": 9}) for p in _gate_board()]
+    bad_cfg = [p if p.id != "pu" else p.model_copy(update={"config": {"op": "and"}}) for p in _gate_board()]
+    assert any("unknown config key op" in m for m in board_problems(bad_cfg))
+    gap = [p if p.id != "pu" else p.model_copy(update={"c": 9}) for p in _gate_board()]
     assert any("three consecutive" in m for m in board_problems(gap))
     pulse = _cap("pu", "capsula_pulso", 1, 0, hz=50)
     assert any("hz must" in m for m in board_problems([pulse]))
-    four = [_cap("c1", "capsula_porta", 1, 0), _cap("c2", "capsula_porta", 5, 0),
-            _cap("c3", "capsula_porta", 9, 0), _cap("c4", "capsula_porta", 1, 11)]
+    four = [_cap("c1", "capsula_voltimetro", 1, 0), _cap("c2", "capsula_voltimetro", 5, 0),
+            _cap("c3", "capsula_voltimetro", 9, 0), _cap("c4", "capsula_voltimetro", 1, 11)]
     assert any("at most 3" in m for m in board_problems(four))
 
 
@@ -245,17 +246,26 @@ def test_capsules_only_fit_the_six_fixed_slots():
     from graph_validator.models import board_problems
 
     for a, row in [(1, 0), (5, 0), (9, 0), (1, 11), (5, 11), (9, 11)]:
-        assert board_problems([_cap("c", "capsula_porta", a, row)]) == [], (a, row)
+        assert board_problems([_cap("c", "capsula_voltimetro", a, row)]) == [], (a, row)
     for a, row in [(2, 0), (4, 0), (5, 1), (5, 5), (5, 6)]:
-        assert any("capsule slot" in m for m in board_problems([_cap("c", "capsula_porta", a, row)])), (a, row)
+        assert any("capsule slot" in m for m in board_problems([_cap("c", "capsula_voltimetro", a, row)])), (a, row)
 
 
-def test_ammeter_only_in_slot_2():
+def test_pulse_and_battery_never_share_a_board():
     from graph_validator.models import board_problems
+    from graph_validator.validate import parts_problems
 
-    assert board_problems([_cap("a", "capsula_amperimetro", 5, 0)]) == []
-    for a, row in [(1, 0), (9, 0), (5, 11)]:
-        assert any("ammeter" in m for m in board_problems([_cap("a", "capsula_amperimetro", a, row)]))
+    both = _gate_board() + [P("bat", "bateria", 1, 2, 1)]
+    assert any("cannot share a board with the battery" in m for m in board_problems(both))
+    assert any("cannot share a board with the battery" in m for m in parts_problems(parts(both)))
+    volt = [P("bat", "bateria", 1, 2, 1), _cap("v", "capsula_voltimetro", 5, 0)]
+    assert board_problems(volt) == []
+
+
+def test_only_pulse_and_voltmeter_exist():
+    from graph_validator.catalog import CAPSULES
+
+    assert CAPSULES == {"capsula_pulso", "capsula_voltimetro"}
 
 
 def test_banks_are_separate_nets():
@@ -269,9 +279,9 @@ def test_banks_are_separate_nets():
 def test_connect_step_reports_wrong_capsule_config():
     lesson = Lesson(
         id="l", kind="guided",
-        steps=[Step(id="c", action="connect_circuit", pieces=_gate_board("and"))],
+        steps=[Step(id="c", action="connect_circuit", pieces=_gate_board(1.0))],
     )
-    assert evaluate_step(lesson, 0, parts(_gate_board("and"))).approved
-    wrong = evaluate_step(lesson, 0, parts(_gate_board("nor")))
+    assert evaluate_step(lesson, 0, parts(_gate_board(1.0))).approved
+    wrong = evaluate_step(lesson, 0, parts(_gate_board(5.0)))
     assert not wrong.approved and wrong.category == Category.WRONG_CONFIG
     assert "configurada" in wrong.message

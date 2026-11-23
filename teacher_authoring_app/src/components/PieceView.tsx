@@ -26,7 +26,6 @@ interface PieceViewProps {
   pressed?: boolean;
   /** Smart capsule: lines shown on its OLED. */
   oled?: string[];
-  fault?: boolean;
   onButton?: (down: boolean) => void;
   style?: CSSProperties;
 }
@@ -44,7 +43,6 @@ export default function PieceView({
   onPotStep,
   pressed = false,
   oled,
-  fault = false,
   onButton,
   style,
 }: PieceViewProps) {
@@ -78,7 +76,7 @@ export default function PieceView({
     base.boxShadow += `, 0 0 ${14 + 26 * brilho}px rgba(110,230,130,${0.5 + 0.4 * brilho})`;
   }
 
-  if (isCapsule(type)) return <CapsuleFace base={base} text={d.text} oled={oled} fault={fault} pins={pins} />;
+  if (isCapsule(type)) return <CapsuleFace base={base} text={d.text} oled={oled} pins={pins} />;
 
   return (
     <div style={base}>
@@ -182,7 +180,7 @@ export default function PieceView({
 }
 
 /** Smart capsule: a dark body with the OLED on top and the three pins P1, P2, P3 along the bottom edge. */
-function CapsuleFace({ base, text, oled, fault, pins }) {
+function CapsuleFace({ base, text, oled, pins }) {
   const lines = oled && oled.length ? oled : [text];
   return (
     <div style={{ ...base, justifyContent: 'flex-start', padding: '0 14px' }}>
@@ -194,7 +192,7 @@ function CapsuleFace({ base, text, oled, fault, pins }) {
           height: '78%',
           borderRadius: 4,
           background: '#06231d',
-          color: fault ? '#ff9b8f' : '#9ff0d0',
+          color: '#9ff0d0',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',

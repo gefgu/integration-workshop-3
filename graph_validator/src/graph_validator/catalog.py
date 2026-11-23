@@ -47,11 +47,9 @@ CATALOG: dict[str, ComponentDef] = {
     "jumper_4": ComponentDef("jumper", 4, _PIN, kit_limit=3),
     "jumper_5": ComponentDef("jumper", 5, _PIN, kit_limit=3),
     # Passive smart capsules: three consecutive columns (P1, P2, P3); behaviour is in `config`.
+    # Only two exist: the pulse source (P3 = output, P1 = its GND) and the voltmeter (P1 - P2).
     "capsula_pulso": ComponentDef("capsula_pulso", 2, _CAPSULE, kit_limit=3),
     "capsula_voltimetro": ComponentDef("capsula_voltimetro", 2, _CAPSULE, kit_limit=3),
-    "capsula_amperimetro": ComponentDef("capsula_amperimetro", 2, _CAPSULE, kit_limit=1),
-    "capsula_porta": ComponentDef("capsula_porta", 2, _CAPSULE, kit_limit=3),
-    "capsula_memoria": ComponentDef("capsula_memoria", 2, _CAPSULE, kit_limit=3),
 }
 
 TYPES = tuple(CATALOG)
@@ -71,7 +69,14 @@ ORDERED = DIRECTED | CAPSULES | {"potenciometro"}
 # of the first row of bank A (row 0) and the last row of bank B (row 11). Numbered 1..6 like the PCB.
 SLOT_COLS = (1, 5, 9)
 SLOT_ROWS = (0, ROWS - 1)
-AMMETER_SLOT = 2  # INA219 + shunt are wired to this position only: bank A, columns 5-7
+
+# The pulse is a lesson's power source: a board never has both it and the battery.
+PULSE_BATTERY = "the pulse capsule is the power source and cannot share a board with the battery"
+
+
+def source_clash(types) -> str | None:
+    s = set(types)
+    return PULSE_BATTERY if {"bateria", "capsula_pulso"} <= s else None
 
 
 def slot_of(col: int, row: int) -> int | None:
@@ -80,16 +85,11 @@ def slot_of(col: int, row: int) -> int | None:
         return None
     return SLOT_ROWS.index(row) * len(SLOT_COLS) + SLOT_COLS.index(col) + 1
 
-GATE_OPS = ("and", "or", "nand", "nor", "xor", "not")
-MEM_KINDS = ("d", "sr")
 PULSE_HZ = (0.5, 10.0)
 PULSE_DUTY = (25, 75)
 CONFIG_DEFAULTS: dict[str, dict] = {
     "capsula_pulso": {"hz": 1.0, "duty": 50},
     "capsula_voltimetro": {},
-    "capsula_amperimetro": {},
-    "capsula_porta": {"op": "and"},
-    "capsula_memoria": {"mem": "d"},
 }
 
 
@@ -105,10 +105,6 @@ def config_problems(ctype: str, config: dict | None) -> list[str]:
             out.append(f"hz must be within {PULSE_HZ[0]}..{PULSE_HZ[1]}")
         if not PULSE_DUTY[0] <= cfg["duty"] <= PULSE_DUTY[1]:
             out.append(f"duty must be within {PULSE_DUTY[0]}..{PULSE_DUTY[1]}")
-    elif ctype == "capsula_porta" and cfg["op"] not in GATE_OPS:
-        out.append(f"op must be one of {', '.join(GATE_OPS)}")
-    elif ctype == "capsula_memoria" and cfg["mem"] not in MEM_KINDS:
-        out.append(f"mem must be one of {', '.join(MEM_KINDS)}")
     return out
 
 

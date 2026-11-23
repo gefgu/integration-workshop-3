@@ -23,7 +23,7 @@ stateDiagram-v2
     }
     note right of SafeBoot
         SR_OE_N is held high by its pull-up.
-        U4 = 0x00 means DRV low and ammeter open.
+        U4 = 0x00 means DRV low and the old ammeter switch (AMM_EN) open.
         U5 = 0xFF means every P3 is high-Z.
     end note
 
@@ -52,19 +52,9 @@ stateDiagram-v2
 
     Off --> Pulse : set p pulse hz duty [fewer than 3 active, 0.5–10 Hz, 25–75 %] / OE_N = 0, t0 = now
     Off --> Voltmeter : set p volt [fewer than 3 active]
-    Off --> Ammeter : set 2 amm [p = 2, fewer than 3 active] / AMM_EN = 1
-    Off --> Gate : set p gate op [fewer than 3 active] / OE_N = 0
-    Off --> Memory : set p mem d or sr [fewer than 3 active] / OE_N = 0, Q = 0
 
     Pulse --> Off : set p off
     Voltmeter --> Off : set p off
-    Ammeter --> Off : set 2 off / AMM_EN = 0
-    Gate --> Off : set p off
-    Memory --> Off : set p off
-    AmmeterFault --> Off : set 2 off
-
-    Ammeter --> AmmeterFault : current above 15 mA / AMM_EN = 0
-    AmmeterFault --> Ammeter : set 2 amm / AMM_EN = 1
 
     state Pulse {
         [*] --> High
@@ -78,19 +68,9 @@ stateDiagram-v2
         Averaging --> Averaging : every 100 ms / publish average, redraw OLED
     }
 
-    state Memory {
-        state kind <<choice>>
-        [*] --> kind
-        kind --> Q0 : D or SR
-        Q0 --> Q1 : D - P2 rises with P1 = 1, or SR - S = 1 and R = 0
-        Q1 --> Q0 : D - P2 rises with P1 = 0, or SR - R = 1
-    }
-
-    note right of Gate
-        Every sensing round (≤ 12 ms):
-        P3 = op(P1, P2), with op one of
-        AND, OR, NAND, NOR, XOR, NOT.
-        Logic input: low ≤ 1.0 V, high ≥ 2.0 V.
+    note right of Pulse
+        P3 is the output and P1 its GND return:
+        the pulse powers the lesson, no battery.
     end note
     note left of Off
         P3 high-Z (OE_N = 1), DRV = 0.
@@ -189,10 +169,10 @@ sequenceDiagram
     end
 ```
 
-## 5. Sequence — pulse and gate sharing the 595 chain
+## 5. Sequence — pulse and voltmeter sharing the 74HCT595 chain and the CPU
 
-The pulse task (core 0) and the sensing loop (core 1) both write the same
-16-bit shift-register image. A spinlock makes each update atomic.
+The pulse task (core 0) writes the 16-bit shift-register image; the sensing loop
+(core 1) only reads the voltmeter positions. A spinlock keeps each update atomic.
 
 ```mermaid
 sequenceDiagram
@@ -212,42 +192,9 @@ sequenceDiagram
         O->>H: shift 16 bits + latch (~5 µs)
         O->>O: exit critical section
     and every sensing round
-        L->>C: senseRound(): read P1, P2 of the gate position
-        C->>C: hysteresis, out = op(P1, P2)
-        C->>O: apply(DRV of that position, out)
-        O->>O: wait for the spinlock if the pulse task holds it
-        O->>H: shift 16 bits + latch
+        L->>C: senseRound(): read P1, P2 of each voltmeter position
+        C->>C: add V(P1) − V(P2); publish the average every 100 ms
     end
-```
-
-## 6. Sequence — ammeter over-current
-
-```mermaid
-sequenceDiagram
-    autonumber
-    participant T as i2c task core 0
-    participant A as INA219 (SDA_2)
-    participant C as capsules
-    participant O as outputs (595)
-    participant K as AQW212 (PhotoMOS)
-    participant D as OLED at position 2
-
-    loop every 100 ms while position 2 is Ammeter
-        T->>T: select(2): route SDA to IO19
-        T->>A: read shunt register (0x01)
-        A-->>T: raw, 10 µV per bit (1 µA on 10 Ω)
-        T->>C: ammeterSample(mA, ok)
-        alt current above 15 mA
-            C->>C: fault = true, version++
-            C->>O: apply(AMM_EN, 0)
-            O->>K: LED off, switch opens
-            Note over K: the circuit sees an open<br/>circuit between P1 and P2
-            T->>D: "Amperímetro / ABERTO / Sobrecorrente!"
-        else normal
-            T->>D: "+3,21 mA" (value only)
-        end
-    end
-    Note over C: Ammeter stays in AmmeterFault until<br/>"set 2 amm" or "set 2 off"
 ```
 
 ---

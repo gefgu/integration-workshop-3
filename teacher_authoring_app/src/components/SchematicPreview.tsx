@@ -15,7 +15,6 @@ function labelFor(piece: Piece) {
   if (piece.type === 'led') return 'LED';
   if (piece.type === 'buzzer') return 'Buzzer';
   if (piece.type === 'botao') return 'Botão';
-  if (piece.type === 'capsula_amperimetro') return 'Amperímetro';
   return '';
 }
 
@@ -69,7 +68,7 @@ export function ComponentSymbol({
               <line x1="10" y1="-7" x2="10" y2="7" />
             </>
           )}
-          {(type.startsWith('resistor') || type === 'potenciometro' || type === 'capsula_amperimetro') && (
+          {(type.startsWith('resistor') || type === 'potenciometro') && (
             <rect x="-17" y="-7" width="34" height="14" />
           )}
           {type === 'potenciometro' && <path data-terminal="W" d="M 0 24 L 0 7 M -4 14 L 0 7 L 4 14" />}

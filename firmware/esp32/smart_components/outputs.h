@@ -3,7 +3,7 @@
 
 // 74HCT595 chain: SER -> U4 -> U4 Q7S -> U5.
 //   bit 0..5  = U4 Q0..Q5 = DRV1..DRV6 -> 74HCT125 input of POS0..POS5
-//   bit 6     = U4 Q6     = AMM_EN (AQW212 LED, POS2 shunt in series)
+//   bit 6     = U4 Q6     = AMM_EN (AQW212 LED, POS2 shunt); the ammeter was removed, always off
 //   bit 8..13 = U5 Q0..Q5 = OE_N1..OE_N6 -> 74HCT125 OE# of POS0..POS5 (1 = P3 high-Z)
 namespace outputs {
 

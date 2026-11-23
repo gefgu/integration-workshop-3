@@ -1,6 +1,6 @@
 import type { Piece, PieceType } from '../model/types.ts';
-import { AMMETER_SLOT, nearestSlot, slotAnchor, slotOf } from './nodes.ts';
-import { countByType, DEFS, isCapsule, KIT_LIMITS, MAX_CAPSULES, NOMES } from './sim.ts';
+import { nearestSlot, slotAnchor, slotOf } from './nodes.ts';
+import { countByType, DEFS, isCapsule, KIT_LIMITS, MAX_CAPSULES, NOMES, sourceClash } from './sim.ts';
 
 /**
  * Two banks of 11 columns × 6 rows (12 rows total) split by a central channel.
@@ -79,9 +79,9 @@ export function placementError(pieces: Piece[], piece: Piece, ignoreId: string |
   if (isCapsule(piece.type)) {
     const slot = slotOf(piece);
     if (slot == null) return 'As cápsulas inteligentes só cabem nos 6 encaixes marcados na bancada.';
-    if (piece.type === 'capsula_amperimetro' && slot !== AMMETER_SLOT)
-      return `O amperímetro só funciona no encaixe ${AMMETER_SLOT} (primeira linha, colunas 5–7).`;
   }
+  const clash = sourceClash([...others, piece]);
+  if (clash) return clash;
   if (isCapsule(piece.type) && others.filter((p) => isCapsule(p.type)).length >= MAX_CAPSULES)
     return `No máximo ${MAX_CAPSULES} cápsulas inteligentes podem ficar ativas ao mesmo tempo.`;
   const used = countByType(others)[piece.type] || 0;

@@ -71,8 +71,8 @@ test('the lesson 7 capacitor empties through the resistor and the LED', () => {
   assert.equal(capDischarge(all.L04), null);
 });
 
-test('the ammeter in lesson 3 sits in series and adds its 10 Ω shunt', () => {
+test('lesson 3 is battery, 470 Ω and LED with no smart capsule', () => {
   const d = diagnose(all.L03);
-  assert.ok(d.trail?.edgeIds.has('amp'));
-  assert.ok(Math.abs(d.mA - 3000 / 480) < 0.01);
+  assert.ok(!all.L03.some((p) => p.type.startsWith('capsula_')));
+  assert.ok(Math.abs(d.mA - 3000 / 470) < 0.01);
 });

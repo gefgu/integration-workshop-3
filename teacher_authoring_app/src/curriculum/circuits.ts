@@ -30,14 +30,13 @@ export const circuitL02 = (): Piece[] => [
   P('w2', 'jumper_longo', 4, 2, 4), // LED cathode → −
 ];
 
-/** Lesson 3 (schematic _03): resistor limits the current; the ammeter capsule (slot E2) shows it in mA. */
+/** Lesson 3 (schematic _03): the resistor limits the current through the LED. */
 export const circuitL03 = (resistor: PieceType = 'resistor_470'): Piece[] => [
   battery(),
   P('res', resistor, 3, 4, 2),
   P('led', 'led', 4, 5, 3),
-  P('amp', 'capsula_amperimetro', 5, 6, 0, { c: 7 }),
   P('w1', 'jumper_longo', 1, 3, 4),
-  P('w2', 'jumper_4', 6, 2, 5),
+  P('w2', 'jumper_3', 5, 2, 5),
 ];
 
 /** Lessons 4, 9 and the base of 5/7: battery, 470 Ω, LED, two jumpers (schematic _04). The 1 kΩ lesson reuses it. */

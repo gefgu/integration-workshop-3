@@ -5,7 +5,6 @@
 //  TedTronics smart components - base-side firmware (ESP32 DevKitC 38-pin)
 //  Hardware: SCH_TedTronics_2026-10-04(6) + the review fixes:
 //    #5  J1-15 (IO13) is SR_OE_N, 10k pull-up to 3V3
-//    #7  INA219 SDA on SDA_2
 //    #8  J2-13 (IO4) is SDA_0
 // =====================================================================
 
@@ -17,7 +16,6 @@
 //   POS3 = slot 3: bank A row 1, columns 9-11    POS0 = slot 6: bank B row 12, columns 9-11
 constexpr uint8_t NUM_POS = 6;
 constexpr uint8_t MAX_ACTIVE = 3;   // at most 3 capsules working at the same time
-constexpr uint8_t AMMETER_POS = 2;  // INA219 + AQW212 + shunt only on POS2
 
 // ---------- Pins ----------
 constexpr uint8_t PIN_ADC_P1 = 34;  // J1-5, ADC1_CH6, divider after U6 (P1 mux)
@@ -45,7 +43,6 @@ constexpr uint8_t MUX_CH_GND = 6;
 
 // ---------- I2C devices ----------
 constexpr uint8_t OLED_ADDR = 0x3C;    // SSD1306 0.96" 128x64 (budget: 5-pack)
-constexpr uint8_t INA219_ADDR = 0x40;  // A0 = A1 = GND
 constexpr uint32_t I2C_HZ_DEFAULT = 400000;
 
 // ---------- Measurement network ----------
@@ -57,7 +54,6 @@ constexpr float DIV_Z_MV = 261.7f;  // node voltage with Vin = 0
 // Node time constant ~ 373k * 1n = 0.37 ms. 2 ms = 5.4 tau (~0.5% of a step).
 constexpr uint32_t MUX_SETTLE_US_DEFAULT = 2000;
 constexpr uint8_t SAMPLES_VOLT = 16;   // per ADC per visit, voltmeter
-constexpr uint8_t SAMPLES_LOGIC = 4;   // per ADC per visit, gate / memory
 constexpr uint8_t SAMPLES_ZERO = 32;   // GND channel
 constexpr uint32_t ZERO_PERIOD_MS = 250;
 
@@ -65,11 +61,6 @@ constexpr uint32_t ZERO_PERIOD_MS = 250;
 constexpr uint32_t VOLT_PUBLISH_MS = 100;  // SFR10: 10 readings per second
 constexpr float PULSE_HZ_MIN = 0.5f, PULSE_HZ_MAX = 10.0f;  // EFR32.2
 constexpr uint8_t PULSE_DUTY_MIN = 25, PULSE_DUTY_MAX = 75;
-constexpr float LOGIC_HIGH_V = 2.0f;  // input hysteresis for gate / memory
-constexpr float LOGIC_LOW_V = 1.0f;
-constexpr float SHUNT_OHMS = 10.0f;
-constexpr float AMM_TRIP_MA = 15.0f;   // above this the PhotoMOS is opened (EFR32.4 range is +-10 mA)
-constexpr uint32_t AMM_PERIOD_MS = 100;
 
 // ---------- I2C task ----------
 constexpr uint32_t OLED_MIN_INTERVAL_MS = 200;  // max 5 frames/s per display

@@ -63,7 +63,8 @@ def test_sfr6_removing_a_piece_breaks_match():
 
 
 def _max_kit_board(seed):
-    """Maximum legal kit inventory, including the three-capsule board limit."""
+    """Maximum legal kit inventory, including the three-capsule board limit. The battery is on the
+    board, so the capsules are voltmeters: the pulse never shares a board with the battery."""
     rnd = random.Random(seed)
     pieces, n = [], 0
     for t, d in CATALOG.items():
@@ -73,7 +74,7 @@ def _max_kit_board(seed):
             a = rnd.randint(1, COLS - d.length)
             pieces.append(Piece(id=f"p{n}", type=t, a=a, b=a + d.length, row=n % ROWS))
             n += 1
-    capsule_types = rnd.sample(sorted(CAPSULES), MAX_CAPSULES)
+    capsule_types = ["capsula_voltimetro"] * MAX_CAPSULES
     slots = [(1, 0), (5, 0), (9, ROWS - 1)]
     for t, (a, row) in zip(capsule_types, slots):
         pieces.append(Piece(id=f"p{n}", type=t, a=a, b=a + 1, c=a + 2, row=row))

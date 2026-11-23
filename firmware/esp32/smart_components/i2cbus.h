@@ -2,7 +2,7 @@
 #include <Arduino.h>
 
 // One I2C controller, shared SCL, six SDA lines (one per position).
-// A FreeRTOS task owns the bus: capsule detection, INA219 reads, OLED frames.
+// A FreeRTOS task owns the bus: capsule detection, OLED frames.
 namespace i2cbus {
 
 enum class SwitchMode : uint8_t {

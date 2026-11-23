@@ -1,39 +1,30 @@
 import type { CapsuleReading, CircuitTrail, FlowStep, Piece } from '../model/types.ts';
-import { bankOf, nodeOf } from './nodes.ts';
+import { nodeOf } from './nodes.ts';
 import { analyze, capsuleConfig, corrente, isCapsule, solvePotCircuit } from './sim.ts';
 
 /**
- * Static DC model of the smart capsules (EFR31/EFR32). The capsules are passive: the base ESP32
- * senses P1/P2 and drives P3. Here that is a voltage per column from the battery loop, logic
- * levels with the firmware thresholds (low ≤ 1.0 V, high ≥ 2.0 V) and, for the pulse source, a
- * square wave from the clock `t` (ms). Time-stepped behaviour is out of scope.
+ * Static DC model of the two smart capsules (EFR31/EFR32): the pulse source and the voltmeter. The
+ * capsules are passive: the base ESP32 senses P1/P2 and drives P3. The pulse is the lesson's power
+ * source (a lesson with it has no battery): while P3 is high it is 5 V from P3 back to the capsule's
+ * own P1 (GND); a square wave from the clock `t` (ms). The voltmeter shows V(P1) − V(P2).
+ * Time-stepped behaviour is out of scope.
  */
-const HIGH_V = 2.0;
-const LOW_V = 1.0;
 const SUPPLY_V = 5;
 const LED_DROP_V = 2.0;
 const BUZZER_OHMS = 250;
-/** The ammeter capsule trips above this current (firmware). */
-const TRIP_MA = 15;
-
-export interface MemoryState {
-  q: boolean;
-  clk: boolean;
-}
-export type CapsuleMemory = Record<string, MemoryState>;
 
 export interface CapsuleSim {
   readings: Record<string, CapsuleReading>;
-  /** Energized path of loads driven by a capsule's P3 (null when no capsule drives one). */
+  /** Energized path of loads the pulse drives (null when no pulse drives one). */
   driven: CircuitTrail | null;
-  /** Current (mA) through the loads driven by a capsule. */
+  /** Current (mA) through the loads the pulse drives. */
   drivenMa: number;
-  /** Memory after this evaluation; feed it back in as `memory` on the next one. */
-  memory: CapsuleMemory;
 }
 
 const num = (n: number) => n.toFixed(2).replace('.', ',');
-const bit = (b: boolean) => (b ? '1' : '0');
+
+/** The pulse capsule seen as a 5 V source: + on P3, − on P1. */
+export const pulseSource = (p: Piece): Piece => ({ id: `p3_${p.id}`, type: 'bateria', a: p.c as number, b: p.a, row: p.row });
 
 /** Nodes tied together by jumpers share one voltage. */
 function wireClasses(pieces: Piece[]) {
@@ -85,97 +76,47 @@ export function columnVoltages(pieces: Piece[], pressed: Set<string> | null = nu
   return volts;
 }
 
-const level = (v: number | undefined, prev = false): boolean =>
-  v == null ? false : v >= HIGH_V ? true : v <= LOW_V ? false : prev;
+const pulseHigh = (p: Piece, t: number) => {
+  const cfg = capsuleConfig(p);
+  const period = 1000 / (cfg.hz as number);
+  return t % period < period * ((cfg.duty as number) / 100);
+};
 
-function gate(op: string, a: boolean, b: boolean): boolean {
-  switch (op) {
-    case 'or':
-      return a || b;
-    case 'nand':
-      return !(a && b);
-    case 'nor':
-      return !(a || b);
-    case 'xor':
-      return a !== b;
-    case 'not':
-      return !a;
-    default:
-      return a && b;
-  }
-}
-
-/** One step of the 1-bit memory: D flip-flop (P1 = D, P2 = clock) or SR latch (P1 = S, P2 = R). */
-export function stepMemory(prev: MemoryState, mem: 'd' | 'sr', p1: boolean, p2: boolean): MemoryState {
-  if (mem === 'd') return { q: p2 && !prev.clk ? p1 : prev.q, clk: p2 };
-  if (p1 && !p2) return { q: true, clk: p2 };
-  if (p2 && !p1) return { q: false, clk: p2 };
-  return { q: prev.q, clk: p2 };
-}
-
-export function simulateCapsules(
-  pieces: Piece[],
-  opts: { pressed?: Set<string> | null; memory?: CapsuleMemory; t?: number } = {}
-): CapsuleSim {
+export function simulateCapsules(pieces: Piece[], opts: { pressed?: Set<string> | null; t?: number } = {}): CapsuleSim {
   const caps = pieces.filter((p) => isCapsule(p.type));
   const readings: Record<string, CapsuleReading> = {};
-  const memory: CapsuleMemory = {};
-  if (!caps.length) return { readings, driven: null, drivenMa: 0, memory };
-  const volts = columnVoltages(pieces, opts.pressed ?? null);
-  const an = analyze(pieces, { pressed: opts.pressed ?? null });
-  const outs: Piece[] = [];
+  if (!caps.length) return { readings, driven: null, drivenMa: 0 };
+  const pressed = opts.pressed ?? null;
+  const t = opts.t ?? 0;
+  const pulses = caps.filter((p) => p.type === 'capsula_pulso');
+  const high = pulses.filter((p) => pulseHigh(p, t));
+  // Passive circuit around the sources: no battery and no capsule conducts.
+  const base = pieces.filter((p) => p.type !== 'bateria' && !isCapsule(p.type));
+
+  // Node voltages: from the battery, or from the pulse while its P3 is high (0 V while it is low).
+  let volts: Map<number, number>;
+  if (pieces.some((p) => p.type === 'bateria')) volts = columnVoltages(pieces, pressed);
+  else if (pulses.length) {
+    const sourced = columnVoltages([...pieces, pulseSource(pulses[0])], pressed);
+    volts = high.includes(pulses[0]) ? sourced : new Map([...sourced.keys()].map((n) => [n, 0]));
+  } else volts = new Map();
 
   for (const p of caps) {
     const cfg = capsuleConfig(p);
-    const v1 = volts.get(nodeOf(p.a, p.row));
-    const v2 = volts.get(nodeOf(p.b, p.row));
-    const in1 = level(v1);
-    const in2 = level(v2);
-    let reading: CapsuleReading;
     if (p.type === 'capsula_pulso') {
-      const period = 1000 / (cfg.hz as number);
-      const high = (opts.t ?? 0) % period < period * ((cfg.duty as number) / 100);
-      reading = {
-        lines: [`PULSO ${String(cfg.hz).replace('.', ',')} Hz`, `${cfg.duty}%  P3 ${high ? 'ALTO' : 'BAIXO'}`],
-        out: high ? 'alto' : 'baixo',
-      };
-    } else if (p.type === 'capsula_voltimetro') {
-      reading = {
-        lines: ['VOLTÍMETRO', v1 == null || v2 == null ? 'sem sinal' : `${num(v1 - v2)} V`],
-        out: 'z',
-      };
-    } else if (p.type === 'capsula_amperimetro') {
-      const inLoop = an.code === 'valido' && an.trail?.some((s) => s.id === p.id);
-      const mA = inLoop ? corrente(an) : 0;
-      const fault = mA > TRIP_MA;
-      reading = {
-        lines: ['AMPERÍMETRO', fault ? 'DISPAROU' : inLoop ? `${mA.toFixed(1).replace('.', ',')} mA` : 'sem corrente'],
-        out: 'z',
-        fault,
-      };
-    } else if (p.type === 'capsula_porta') {
-      const op = cfg.op as string;
-      const out = gate(op, in1, in2);
-      reading = {
-        lines: [op.toUpperCase(), op === 'not' ? `${bit(in1)} → ${bit(out)}` : `${bit(in1)} ${bit(in2)} → ${bit(out)}`],
-        out: out ? 'alto' : 'baixo',
+      const on = high.includes(p);
+      readings[p.id] = {
+        lines: [`PULSO ${String(cfg.hz).replace('.', ',')} Hz`, `${cfg.duty}%  P3 ${on ? 'ALTO' : 'BAIXO'}`],
+        out: on ? 'alto' : 'baixo',
       };
     } else {
-      const kind = cfg.mem as 'd' | 'sr';
-      const prev = opts.memory?.[p.id] ?? { q: false, clk: false };
-      const next = stepMemory(prev, kind, in1, in2);
-      memory[p.id] = next;
-      reading = {
-        lines: [kind === 'd' ? 'MEMÓRIA D' : 'MEMÓRIA SR', `Q = ${bit(next.q)}`],
-        out: next.q ? 'alto' : 'baixo',
-      };
+      const v1 = volts.get(nodeOf(p.a, p.row));
+      const v2 = volts.get(nodeOf(p.b, p.row));
+      readings[p.id] = { lines: ['VOLTÍMETRO', v1 == null || v2 == null ? 'sem sinal' : `${num(v1 - v2)} V`], out: 'z' };
     }
-    readings[p.id] = reading;
-    if (reading.out === 'alto') outs.push(p);
   }
 
-  // A capsule whose P3 is high is a 5 V source from that column back to the battery's − column.
-  const bat = pieces.find((p) => p.type === 'bateria');
+  // While P3 is high the pulse is a 5 V source from P3 back to its own P1.
   const edgeIds = new Set<string>();
   const nodes = new Set<number>();
   const flow: FlowStep[] = [];
@@ -183,27 +124,22 @@ export function simulateCapsules(
     if (!flow.some((g) => g.id === f.id && g.from === f.from && f.to === g.to)) flow.push(f);
   };
   let drivenMa = 0;
-  if (bat) {
-    // Return path is the battery's − node, which only exists in the bank the battery sits in.
-    const base = pieces.filter((p) => p.type !== 'bateria' && (!isCapsule(p.type) || p.type === 'capsula_amperimetro'));
-    for (const p of outs.filter((o) => bankOf(o.row) === bankOf(bat.row))) {
-      const source: Piece = { id: `p3_${p.id}`, type: 'bateria', a: p.c as number, b: bat.b, row: p.row };
-      const r = analyze([...base, source], { pressed: opts.pressed ?? null });
-      if (r.code !== 'valido' || !r.trail) continue;
-      edgeIds.add(p.id);
-      // The current starts inside the capsule, leaves by P3 and ends at the battery's − leg.
-      addFlow({ id: p.id, from: -1, to: nodeOf(p.c as number, p.row) });
-      for (const s of r.trail) {
-        edgeIds.add(s.id);
-        nodes.add(s.from);
-        nodes.add(s.to);
-        addFlow({ id: s.id, from: s.from, to: s.to });
-      }
-      addFlow({ id: bat.id, from: nodeOf(bat.b, bat.row), to: -1 });
-      drivenMa = Math.max(drivenMa, corrente(r));
+  for (const p of high) {
+    const r = analyze([...base, pulseSource(p)], { pressed });
+    if (r.code !== 'valido' || !r.trail) continue;
+    edgeIds.add(p.id);
+    // The current leaves the capsule by P3 and comes back into it by P1.
+    addFlow({ id: p.id, from: -1, to: nodeOf(p.c as number, p.row) });
+    for (const s of r.trail) {
+      edgeIds.add(s.id);
+      nodes.add(s.from);
+      nodes.add(s.to);
+      addFlow({ id: s.id, from: s.from, to: s.to });
     }
+    addFlow({ id: p.id, from: nodeOf(p.a, p.row), to: -1 });
+    drivenMa = Math.max(drivenMa, corrente(r));
   }
-  return { readings, driven: edgeIds.size ? { edgeIds, nodes, flow } : null, drivenMa, memory };
+  return { readings, driven: edgeIds.size ? { edgeIds, nodes, flow } : null, drivenMa };
 }
 
 /** The energized path of the battery loop together with loads a capsule drives. */
@@ -212,15 +148,6 @@ export function mergeTrails(a: CircuitTrail | null, b: CircuitTrail | null): Cir
   const flow = a.flow || b.flow ? [...(a.flow ?? []), ...(b.flow ?? [])] : undefined;
   return { edgeIds: new Set([...a.edgeIds, ...b.edgeIds]), nodes: new Set([...a.nodes, ...b.nodes]), flow };
 }
-
-const GATE_TEXT: Record<string, string> = {
-  and: 'AND (E): a saída só vale 1 quando as duas entradas valem 1.',
-  or: 'OR (OU): a saída vale 1 quando pelo menos uma entrada vale 1.',
-  nand: 'NAND: o contrário do AND — só vale 0 quando as duas entradas valem 1.',
-  nor: 'NOR: o contrário do OR — só vale 1 quando as duas entradas valem 0.',
-  xor: 'XOR (OU exclusivo): a saída vale 1 quando as entradas são diferentes.',
-  not: 'NOT (NÃO): inverte a entrada P1 — 0 vira 1 e 1 vira 0.',
-};
 
 /**
  * What a capsule's screen means, in plain Portuguese, for the reading it shows right now.
@@ -235,44 +162,18 @@ export function explainReading(piece: Piece, reading: CapsuleReading | undefined
         title: `Voltímetro — tela: “${shown}”`,
         lines: [
           'V = volts, a unidade de tensão: a “força” que empurra a corrente.',
-          'O número é quanto a tensão em P1 passa a de P2. Perto de 5 V, P1 está ligado ao + da bateria e P2 ao −; 0 V, os dois pontos estão no mesmo nó.',
-          '“sem sinal” quer dizer que P1 ou P2 não está ligado à bateria por nenhum caminho.',
+          'O número é quanto a tensão em P1 passa a de P2. Perto de 5 V, P1 está ligado ao + da fonte (bateria ou pulso) e P2 ao −; 0 V, os dois pontos estão no mesmo nó.',
+          '“sem sinal” quer dizer que P1 ou P2 não está ligado à fonte por nenhum caminho.',
         ],
       };
-    case 'capsula_amperimetro':
-      return {
-        title: `Amperímetro — tela: “${shown}”`,
-        lines: [
-          'mA = miliampère, um milésimo de ampère (1 mA = 0,001 A): mede quanta corrente passa pelo caminho.',
-          'Ele fica NO caminho, em série: toda a corrente do circuito atravessa as portas P1 e P2.',
-          '“sem corrente” = não há caminho fechado. “DISPAROU” = passou de 15 mA, o limite seguro da bancada.',
-        ],
-      };
-    case 'capsula_pulso':
+    default:
       return {
         title: `Pulso — tela: “${shown}”`,
         lines: [
           `Hz = ciclos por segundo: ${String(cfg.hz).replace('.', ',')} Hz liga e desliga ${String(cfg.hz).replace('.', ',')} vez(es) por segundo.`,
           `${cfg.duty}% = a parte de cada ciclo em que a saída fica ligada.`,
-          'P3 ALTO = saída ligada (5 V) agora; BAIXO = desligada (0 V). A tela muda sozinha com o relógio.',
-        ],
-      };
-    case 'capsula_porta':
-      return {
-        title: `Porta lógica — tela: “${shown}”`,
-        lines: [
-          '0 = nível baixo (perto de 0 V); 1 = nível alto (perto de 5 V). A tela mostra as entradas P1 P2 → a saída P3.',
-          GATE_TEXT[cfg.op as string] ?? '',
-        ],
-      };
-    default:
-      return {
-        title: `Memória de 1 bit — tela: “${shown}”`,
-        lines: [
-          'Q é o bit guardado: 0 ou 1. Ele continua igual mesmo depois que a entrada muda.',
-          cfg.mem === 'sr'
-            ? 'Tipo SR: um pulso em P1 coloca Q em 1 (set); um pulso em P2 volta Q a 0 (reset).'
-            : 'Tipo D: quando P2 (relógio) sobe de 0 para 1, Q copia o valor de P1.',
+          'P3 ALTO = saída ligada (5 V entre P3 e P1, o GND da cápsula) agora; BAIXO = desligada (0 V). A tela muda sozinha com o relógio.',
+          'O pulso é a fonte de energia da aula: ele substitui a bateria, que não entra junto com ele.',
         ],
       };
   }

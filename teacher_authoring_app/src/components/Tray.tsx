@@ -69,8 +69,8 @@ export default function Tray({
       )}
       {current?.id === 'capsules' && !(bench && needed) && (
         <p style={{ margin: 0, fontSize: 12, color: 'var(--color-neutral-600)' }}>
-          Cabem só nos 6 encaixes tracejados (E1–E6), com P1, P2 e P3 em 3 colunas. O amperímetro só funciona no E2.
-          Clique na cápsula para mudar o modo; no máximo 3 ao mesmo tempo.
+          Cabem só nos 6 encaixes tracejados (E1–E6), com P1, P2 e P3 em 3 colunas. O pulso é a fonte da aula (saída em P3,
+          GND em P1) e não entra junto com a bateria. Clique no pulso para mudar a frequência; no máximo 3 ao mesmo tempo.
         </p>
       )}
       {current && (
