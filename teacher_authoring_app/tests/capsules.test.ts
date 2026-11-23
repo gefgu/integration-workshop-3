@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { buildPiece, placementError } from '../src/engine/board.ts';
-import { columnVoltages, simulateCapsules, stepMemory } from '../src/engine/capsules.ts';
+import { columnVoltages, simulateCapsules } from '../src/engine/capsules.ts';
 import { nodeOf, slotAnchor, slotOf } from '../src/engine/nodes.ts';
 import { analyze, configProblems, nextConfig } from '../src/engine/sim.ts';
 import { newLesson, validateLesson } from '../src/model/lesson.ts';
@@ -51,77 +51,65 @@ test('voltímetro lê um circuito fechado só com resistores', () => {
   assert.equal(measured.readings.m.lines[1], '1,59 V');
 });
 
-test('porta lógica avalia os níveis e aciona P3', () => {
-  // P1 ligado ao + (5 V), P2 ligado ao − (0 V)
-  const wired = (op) => [
-    ...loop(),
-    slot3('g', 'capsula_porta', { op }),
-    P('w1', 'jumper_longo', 1, 9, 5),
-    P('w2', 'jumper_longo', 2, 10, 5),
-  ];
-  const lines = (op) => simulateCapsules(wired(op)).readings.g.lines[1];
-  assert.equal(lines('and'), '1 0 → 0');
-  assert.equal(lines('or'), '1 0 → 1');
-  assert.equal(lines('nand'), '1 0 → 1');
-  assert.equal(lines('xor'), '1 0 → 1');
-  assert.equal(lines('not'), '1 → 0');
-  assert.equal(simulateCapsules(wired('or')).readings.g.out, 'alto');
-});
-
-test('memória D captura na borda do clock e SR liga/desliga', () => {
-  let s = { q: false, clk: false };
-  s = stepMemory(s, 'd', true, false);
-  assert.equal(s.q, false); // sem borda
-  s = stepMemory(s, 'd', true, true);
-  assert.equal(s.q, true); // borda de subida
-  s = stepMemory(s, 'd', false, true);
-  assert.equal(s.q, true); // clock ainda alto: segura
-  s = stepMemory({ q: true, clk: false }, 'sr', false, true);
-  assert.equal(s.q, false); // R
-  s = stepMemory(s, 'sr', true, false);
-  assert.equal(s.q, true); // S
-});
-
-test('pulso alterna P3 com o relógio e liga a carga ligada em P3', () => {
+test('pulso é a fonte: P3 alimenta a carga e o retorno volta pela P1', () => {
   const board = [
-    P('bat', 'bateria', 1, 2, 1),
-    slot3('p', 'capsula_pulso', { hz: 1, duty: 50 }), // P3 = column 11
+    slot3('p', 'capsula_pulso', { hz: 1, duty: 50 }), // P1 = column 9 (GND), P3 = column 11
     P('r', 'resistor_220', 11, 8, 2),
-    P('led', 'led', 8, 2, 3),
+    P('led', 'led', 8, 9, 3),
   ];
   const high = simulateCapsules(board, { t: 100 });
   const low = simulateCapsules(board, { t: 700 });
   assert.equal(high.readings.p.out, 'alto');
   assert.equal(low.readings.p.out, 'baixo');
   assert.ok(high.driven?.edgeIds.has('led'));
+  assert.ok(Math.abs(high.drivenMa - 13.6) < 0.1);
   assert.equal(low.driven, null);
-  // a load in the other bank cannot return to the battery's − node
+  // without a way back to P1 nothing lights
+  const open = board.map((p) => (p.id === 'led' ? { ...p, b: 7 } : p));
+  assert.equal(simulateCapsules(open, { t: 100 }).driven, null);
+  // a load in the other bank is not wired to the capsule
   const other = board.map((p) => (p.id === 'led' || p.id === 'r' ? { ...p, row: p.row + 5 } : p));
   assert.equal(simulateCapsules(other, { t: 100 }).driven, null);
 });
 
-test('amperímetro em série mede a corrente e dispara acima de 15 mA', () => {
-  const amm = () => cap('a', 'capsula_amperimetro', 5, 0); // slot 2: P1 col 5, P2 col 6
-  const direct = [
-    P('bat', 'bateria', 1, 2, 1),
-    P('w1', 'jumper_longo', 1, 5, 2),
-    amm(),
-    P('led', 'led', 6, 7, 3),
-    P('w2', 'jumper_longo', 7, 2, 4),
+test('voltímetro lê o pulso sem bateria', () => {
+  const board = [
+    slot3('p', 'capsula_pulso', { hz: 1, duty: 50 }),
+    P('r', 'resistor_220', 11, 8, 2),
+    P('led', 'led', 8, 9, 3),
+    cap('m', 'capsula_voltimetro', 5, 0),
+    P('w1', 'jumper_5', 11, 6, 4), // P2 do voltímetro ← P3 do pulso
+    P('w2', 'jumper_4', 9, 5, 5), // P1 do voltímetro ← P1 (GND) do pulso
   ];
-  const fault = simulateCapsules(direct);
-  assert.equal(fault.readings.a.fault, true); // 3 V / 10 Ω = 300 mA
-  assert.equal(fault.readings.a.lines[1], 'DISPAROU');
-  const safe = simulateCapsules([
-    direct[0],
-    direct[1],
-    amm(),
-    P('r', 'resistor_470', 6, 7, 3),
-    P('led', 'led', 7, 8, 4),
-    P('w2', 'jumper_4', 8, 2, 5),
-  ]);
-  assert.equal(safe.readings.a.fault, false);
-  assert.match(safe.readings.a.lines[1], /mA$/);
+  assert.equal(simulateCapsules(board, { t: 100 }).readings.m.lines[1], '-5,00 V');
+  assert.equal(simulateCapsules(board, { t: 700 }).readings.m.lines[1], '0,00 V');
+});
+
+test('pulso e bateria não ficam juntos na bancada nem na lição', () => {
+  const pulse = slot3('p', 'capsula_pulso');
+  assert.match(placementError([P('bat', 'bateria', 1, 2, 1)], pulse) as string, /bateria/);
+  assert.match(placementError([pulse], P('bat', 'bateria', 1, 2, 1)) as string, /bateria/);
+  assert.equal(placementError([cap('m', 'capsula_voltimetro', 1, 0)], pulse), null);
+  const l = newLesson();
+  l.id = 'x';
+  l.board.pieces = [pulse] as any;
+  assert.equal((validateLesson(JSON.parse(JSON.stringify(l))) as any).ok, true);
+  l.board.pieces = [pulse, P('bat', 'bateria', 1, 2, 1)] as any;
+  assert.equal((validateLesson(JSON.parse(JSON.stringify(l))) as any).ok, false);
+  l.board.pieces = [pulse] as any;
+  l.settings = { tray: ['bateria', 'led'] };
+  assert.equal((validateLesson(JSON.parse(JSON.stringify(l))) as any).ok, false);
+  l.settings = { tray: ['capsula_pulso', 'led'] };
+  l.start = { pieces: [P('bat', 'bateria', 1, 2, 1)] as any };
+  assert.equal((validateLesson(JSON.parse(JSON.stringify(l))) as any).ok, false);
+});
+
+test('só existem as cápsulas de pulso e voltímetro', () => {
+  const l = newLesson();
+  for (const type of ['capsula_amperimetro', 'capsula_porta', 'capsula_memoria']) {
+    l.board.pieces = [cap('x', type, 5, 0)] as any;
+    assert.equal((validateLesson(JSON.parse(JSON.stringify(l))) as any).ok, false);
+  }
 });
 
 test('os bancos A e B são nós separados', () => {
@@ -131,27 +119,26 @@ test('os bancos A e B são nós separados', () => {
   assert.notEqual(nodeOf(3, 0), nodeOf(3, 6));
 });
 
-test('cápsula só cabe nos 6 encaixes e o amperímetro só no encaixe 2', () => {
+test('cápsula só cabe nos 6 encaixes', () => {
   assert.deepEqual(slotAnchor(1), { a: 1, row: 0 });
   assert.deepEqual(slotAnchor(6), { a: 9, row: 6 });
   assert.equal(slotOf({ a: 5, row: 6 }), 5);
   assert.equal(slotOf({ a: 2, row: 0 }), null);
   // dropping anywhere snaps to the nearest slot of that bank
-  const snapped = buildPiece('capsula_porta', 'x', 11, 3);
+  const snapped = buildPiece('capsula_voltimetro', 'x', 11, 3);
   assert.deepEqual([snapped?.a, snapped?.b, snapped?.c, snapped?.row], [9, 10, 11, 0]);
-  const low = buildPiece('capsula_porta', 'x', 6, 8);
+  const low = buildPiece('capsula_voltimetro', 'x', 6, 8);
   assert.deepEqual([low?.a, low?.row], [5, 6]);
-  assert.match(placementError([], cap('x', 'capsula_porta', 2, 0)) as string, /6 encaixes/);
-  assert.match(placementError([], cap('x', 'capsula_amperimetro', 9, 0)) as string, /só funciona/);
-  assert.equal(placementError([], cap('x', 'capsula_amperimetro', 5, 0)), null);
+  assert.match(placementError([], cap('x', 'capsula_voltimetro', 2, 0)) as string, /6 encaixes/);
+  assert.equal(placementError([], cap('x', 'capsula_voltimetro', 5, 0)), null);
   const three = [
     cap('c1', 'capsula_voltimetro', 1, 0),
     cap('c2', 'capsula_voltimetro', 5, 0),
     cap('c3', 'capsula_voltimetro', 1, 6),
   ];
-  assert.match(placementError(three, cap('d', 'capsula_porta', 1, 6)) as string, /No máximo 3/);
+  assert.match(placementError(three, cap('d', 'capsula_voltimetro', 1, 6)) as string, /No máximo 3/);
   assert.match(
-    placementError([cap('a', 'capsula_porta', 1, 0)], P('r', 'resistor_220', 2, 3, 0)) as string,
+    placementError([cap('a', 'capsula_voltimetro', 1, 0)], P('r', 'resistor_220', 2, 3, 0)) as string,
     /Já existe/
   );
 });
@@ -159,9 +146,9 @@ test('cápsula só cabe nos 6 encaixes e o amperímetro só no encaixe 2', () =>
 test('configuração: faixas e ciclo de ajustes', () => {
   assert.deepEqual(configProblems('capsula_pulso', { hz: 2, duty: 50 }), []);
   assert.ok(configProblems('capsula_pulso', { hz: 50 }).length);
-  assert.ok(configProblems('capsula_porta', { op: 'xnor' }).length);
-  assert.ok(configProblems('led', { op: 'and' }).length);
-  assert.equal(nextConfig(cap('g', 'capsula_porta', 1, 0, { op: 'not' }))?.op, 'and');
+  assert.ok(configProblems('capsula_voltimetro', { op: 'xnor' }).length);
+  assert.ok(configProblems('led', { hz: 1 }).length);
+  assert.equal(nextConfig(cap('p', 'capsula_pulso', 1, 0, { duty: 75 }), 'duty')?.duty, 25);
   assert.equal(nextConfig(cap('p', 'capsula_pulso', 1, 0, { hz: 10 }))?.hz, 0.5);
   assert.equal(nextConfig(cap('v', 'capsula_voltimetro', 1, 0)), undefined);
 });
@@ -169,21 +156,19 @@ test('configuração: faixas e ciclo de ajustes', () => {
 test('validateLesson mantém c e config e recusa cápsulas malformadas', () => {
   const l = newLesson();
   l.id = 'x';
-  l.board.pieces = [cap('g', 'capsula_porta', 5, 0, { op: 'xor' })] as any;
+  l.board.pieces = [cap('g', 'capsula_pulso', 5, 0, { hz: 2, duty: 25 })] as any;
   const ok: any = validateLesson(JSON.parse(JSON.stringify(l)));
   assert.equal(ok.ok, true);
-  assert.deepEqual(ok.lesson.board.pieces[0].config, { op: 'xor' });
+  assert.deepEqual(ok.lesson.board.pieces[0].config, { hz: 2, duty: 25 });
   assert.equal(ok.lesson.board.pieces[0].c, 7);
-  l.board.pieces = [P('g', 'capsula_porta', 5, 6, 0, { c: 9 })] as any;
+  l.board.pieces = [P('g', 'capsula_voltimetro', 5, 6, 0, { c: 9 })] as any;
   assert.equal((validateLesson(JSON.parse(JSON.stringify(l))) as any).ok, false);
-  l.board.pieces = [cap('g', 'capsula_porta', 5, 0, { op: 'nope' })] as any;
+  l.board.pieces = [cap('g', 'capsula_pulso', 5, 0, { hz: 50 })] as any;
   assert.equal((validateLesson(JSON.parse(JSON.stringify(l))) as any).ok, false);
 });
 
 test('validateLesson recusa cápsula fora dos encaixes', () => {
   const l = newLesson();
-  l.board.pieces = [cap('g', 'capsula_porta', 3, 0)] as any;
-  assert.equal((validateLesson(JSON.parse(JSON.stringify(l))) as any).ok, false);
-  l.board.pieces = [cap('a', 'capsula_amperimetro', 1, 0)] as any;
+  l.board.pieces = [cap('g', 'capsula_voltimetro', 3, 0)] as any;
   assert.equal((validateLesson(JSON.parse(JSON.stringify(l))) as any).ok, false);
 });

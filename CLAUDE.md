@@ -100,3 +100,13 @@ The color-code resistor (the three-disc "resistor de código de cores", piece ty
 bonus lessons; the curriculum is now 21 lessons (incl. the extra battery + 1 kΩ + LED guided lesson `03-guiada-1k`)). Ordinary 220 Ω, 470 Ω and 1 kΩ resistors stay, and the app still
 draws their bands from the value. Lessons saved earlier with a `resistor_cc` piece are no longer valid. `circuito.json`
 is a captured vision output from before the removal and still lists one such piece.
+
+## Smart components: only pulse and voltmeter
+
+The only smart components (`capsula_*`) are the **pulse source** (`capsula_pulso`) and the **voltmeter**
+(`capsula_voltimetro`). The ammeter, logic gate and 1-bit memory capsules are **removed** from the teacher app,
+graph_validator, schema and `firmware/esp32/smart_components`; do not bring them back. Lesson 3 no longer has a
+smart display (the current comes from the calculation). The pulse is the lesson's power source — P3 is its output
+and P1 its GND return — so **a lesson never has the pulse and the battery together** (board, starting bench, tray,
+experiment presets); the app, the validator and the editor enforce this. The firmware keeps the PCB's AMM_EN bit held
+off; wiring P1 of a pulse position to GND is a hardware change still to be confirmed on the bench.

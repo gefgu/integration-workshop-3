@@ -20,8 +20,6 @@ struct Slot {
   int64_t t0 = 0;
   uint32_t periodUs = 1000000, highUs = 500000;
   bool pulseHi = false;
-  // memory
-  bool lastClk = true;  // no edge on the first read
   // voltmeter average
   float acc = 0;
   uint32_t accN = 0;
@@ -41,41 +39,19 @@ float zero1 = DIV_Z_MV, zero2 = DIV_Z_MV;
 int64_t lastZeroUs = 0, lastPublishUs = 0;
 Preferences prefs;
 
-bool drivesP3(Mode m) { return m == Mode::Pulse || m == Mode::Gate || m == Mode::Mem; }
-bool sensesInputs(Mode m) { return m == Mode::Volt || m == Mode::Gate || m == Mode::Mem; }
+bool drivesP3(Mode m) { return m == Mode::Pulse; }
+bool sensesInputs(Mode m) { return m == Mode::Volt; }
 
-bool logicLevel(bool prev, float v) {
-  if (v >= LOGIC_HIGH_V) return true;
-  if (v <= LOGIC_LOW_V) return false;
-  return prev;  // in the hysteresis band (or NaN)
-}
-
-bool evalGate(GateOp op, bool a, bool b) {
-  switch (op) {
-    case GateOp::And: return a && b;
-    case GateOp::Or: return a || b;
-    case GateOp::Nand: return !(a && b);
-    case GateOp::Nor: return !(a || b);
-    case GateOp::Xor: return a != b;
-    case GateOp::Not: return !a;
-  }
-  return false;
-}
-
-// Pushes OE / DRV / AMM_EN for one position according to its mode and the rail.
+// Pushes OE / DRV for one position according to its mode and the rail. The old ammeter switch
+// (AMM_EN, POS2) is no longer a feature: it is held off, PhotoMOS open.
 void applyOutputs(uint8_t p) {
   portENTER_CRITICAL(&lock);
   const Mode m = slots[p].cfg.mode;
-  const bool fault = slots[p].live.fault;
   portEXIT_CRITICAL(&lock);
 
-  uint16_t mask = outputs::drvBit(p) | outputs::oenBit(p);
-  uint16_t val = outputs::oenBit(p);  // P3 high-Z, DRV low (EFR28)
-  if (p == AMMETER_POS) mask |= outputs::AMM_BIT;
-  if (railOn) {
-    if (drivesP3(m)) val &= ~outputs::oenBit(p);
-    if (m == Mode::Amm && !fault) val |= outputs::AMM_BIT;
-  }
+  const uint16_t mask = outputs::drvBit(p) | outputs::oenBit(p) | outputs::AMM_BIT;
+  uint16_t val = outputs::oenBit(p);  // P3 high-Z, DRV low (EFR28), AMM_EN off
+  if (railOn && drivesP3(m)) val &= ~outputs::oenBit(p);
   outputs::apply(mask, val);
 }
 
@@ -132,7 +108,6 @@ void begin() {
 
 const char* configure(uint8_t p, const Config& c) {
   if (p >= NUM_POS) return "position must be 0..5";
-  if (c.mode == Mode::Amm && p != AMMETER_POS) return "the ammeter only exists at position 2";
   if (c.mode == Mode::Pulse) {
     if (c.hz < PULSE_HZ_MIN || c.hz > PULSE_HZ_MAX) return "frequency must be 0.5..10 Hz";
     if (c.duty < PULSE_DUTY_MIN || c.duty > PULSE_DUTY_MAX) return "duty must be 25..75 %";
@@ -151,7 +126,6 @@ const char* configure(uint8_t p, const Config& c) {
   s.cfg = c;
   s.live = Live();
   s.pulseHi = false;
-  s.lastClk = true;
   s.acc = 0;
   s.accN = 0;
   if (c.mode == Mode::Pulse) {
@@ -222,10 +196,9 @@ bool senseRound() {
     const uint32_t t = micros();
     sensing::select(MUX_CH[p]);
     delayMicroseconds(settle);
-    const sensing::Node nd = sensing::readNode(m == Mode::Volt ? SAMPLES_VOLT : SAMPLES_LOGIC);
+    const sensing::Node nd = sensing::readNode(SAMPLES_VOLT);
     g_stats.posRead.add(micros() - t);
 
-    bool drive = false, out = false;
     portENTER_CRITICAL(&lock);
     Slot& s = slots[p];
     if (s.cfg.mode == m) {  // not reconfigured meanwhile
@@ -233,32 +206,10 @@ bool senseRound() {
       const float v2 = sensing::toVolts(nd.mv2, zero2) * s.g2;
       s.live.v1 = v1;
       s.live.v2 = v2;
-      if (m == Mode::Volt) {
-        s.acc += v1 - v2;
-        s.accN++;
-      } else {
-        const bool a = logicLevel(s.live.in1, v1);
-        const bool b = logicLevel(s.live.in2, v2);
-        bool q = s.live.out;
-        if (m == Mode::Gate) {
-          q = evalGate(s.cfg.op, a, b);
-        } else if (s.cfg.mem == MemKind::D) {
-          if (b && !s.lastClk) q = a;  // rising edge of P2 captures P1
-          s.lastClk = b;
-        } else {
-          if (b) q = false;  // reset wins
-          else if (a) q = true;
-        }
-        if (a != s.live.in1 || b != s.live.in2 || q != s.live.out) s.version++;
-        s.live.in1 = a;
-        s.live.in2 = b;
-        s.live.out = q;
-        drive = true;
-        out = q;
-      }
+      s.acc += v1 - v2;
+      s.accN++;
     }
     portEXIT_CRITICAL(&lock);
-    if (drive && railOn) outputs::apply(outputs::drvBit(p), out ? outputs::drvBit(p) : 0);
   }
 
   now = esp_timer_get_time();
@@ -308,22 +259,6 @@ void setFound(uint8_t p, bool found) {
   portEXIT_CRITICAL(&lock);
 }
 
-void ammeterSample(float ma, bool ok) {
-  bool trip = false;
-  portENTER_CRITICAL(&lock);
-  Slot& s = slots[AMMETER_POS];
-  if (s.cfg.mode == Mode::Amm && !s.live.fault) {
-    s.live.ma = ok ? ma : NAN;
-    if (ok && fabsf(ma) > AMM_TRIP_MA) {
-      s.live.fault = true;
-      trip = true;
-    }
-    s.version++;
-  }
-  portEXIT_CRITICAL(&lock);
-  if (trip) applyOutputs(AMMETER_POS);
-}
-
 int32_t frameShown(uint8_t p, uint32_t version) {
   int32_t us = -1;
   portENTER_CRITICAL(&lock);
@@ -356,36 +291,17 @@ const char* modeName(Mode m) {
     case Mode::Off: return "off";
     case Mode::Pulse: return "pulse";
     case Mode::Volt: return "volt";
-    case Mode::Amm: return "amm";
-    case Mode::Gate: return "gate";
-    case Mode::Mem: return "mem";
   }
   return "?";
 }
 
 namespace {
-const char* gateName(GateOp op) {
-  static const char* names[] = {"and", "or", "nand", "nor", "xor", "not"};
-  return names[(uint8_t)op];
-}
-
 void printOne(Print& out, uint8_t p, const PosView& v) {
   out.printf("%u:%s", p, modeName(v.cfg.mode));
   switch (v.cfg.mode) {
     case Mode::Off: break;
     case Mode::Pulse: out.printf(" %.1fHz %u%%", v.cfg.hz, v.cfg.duty); break;
     case Mode::Volt: out.printf(" %+.3fV (P1=%.3f P2=%.3f)", v.live.vdiff, v.live.v1, v.live.v2); break;
-    case Mode::Amm:
-      if (v.live.fault) out.print(" OVERCURRENT-open");
-      else out.printf(" %+.3fmA", v.live.ma);
-      break;
-    case Mode::Gate:
-      out.printf(" %s in=%d%d out=%d", gateName(v.cfg.op), v.live.in1, v.live.in2, v.live.out);
-      break;
-    case Mode::Mem:
-      out.printf(" %s in=%d%d Q=%d", v.cfg.mem == MemKind::D ? "D" : "SR", v.live.in1, v.live.in2,
-                 v.live.out);
-      break;
   }
 }
 }  // namespace

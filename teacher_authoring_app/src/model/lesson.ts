@@ -1,6 +1,6 @@
 import { COLS, ROWS } from '../engine/board.ts';
-import { AMMETER_SLOT, slotOf } from '../engine/nodes.ts';
-import { configProblems, countByType, isCapsule, KIT_LIMITS, MAX_CAPSULES, TYPES } from '../engine/sim.ts';
+import { slotOf } from '../engine/nodes.ts';
+import { configProblems, countByType, isCapsule, KIT_LIMITS, MAX_CAPSULES, PULSE_BATTERY_MSG, sourceClash, TYPES } from '../engine/sim.ts';
 import { uid } from './ids.ts';
 import { ACTIONS, autoSplit, CATEGORIES, connectionStep, stepProblems } from './steps.ts';
 import type {
@@ -69,8 +69,29 @@ export function lessonProblems(lesson: Lesson): string[] {
     if (q.options.some((o) => !o.text.trim())) out.push(`Pergunta ${n}: há alternativa em branco.`);
     if (!q.options.some((o) => o.id === q.correctId)) out.push(`Pergunta ${n}: marque a alternativa correta.`);
   });
+  const clash = lessonSourceClash(lesson);
+  if (clash) out.push(clash);
   out.push(...stepProblems(lesson));
   return out;
+}
+
+/**
+ * The pulse is the lesson's power source, so a lesson never has both it and the battery anywhere:
+ * target board, starting bench, tray or experiment boards/presets.
+ */
+export function lessonSourceClash(lesson: any): string | null {
+  const types: { type: string }[] = [];
+  const add = (list: unknown) => {
+    if (Array.isArray(list)) for (const p of list) if (p && typeof p.type === 'string') types.push(p);
+  };
+  add(lesson?.board?.pieces);
+  add(lesson?.start?.pieces);
+  if (Array.isArray(lesson?.settings?.tray)) for (const type of lesson.settings.tray) types.push({ type });
+  for (const st of Array.isArray(lesson?.steps) ? lesson.steps : []) {
+    add(st?.experiment?.board);
+    for (const preset of st?.experiment?.presets ?? []) add(preset?.pieces);
+  }
+  return sourceClash(types as any) ? PULSE_BATTERY_MSG : null;
 }
 
 const isInt = (n) => Number.isInteger(n);
@@ -88,8 +109,6 @@ function checkPieces(pieces: any[]): string | null {
         return `${p.type} precisa de três colunas seguidas (P1, P2, P3).`;
       const slot = slotOf(p);
       if (slot == null) return `${p.type} só cabe nos 6 encaixes de cápsula da bancada.`;
-      if (p.type === 'capsula_amperimetro' && slot !== AMMETER_SLOT)
-        return `O amperímetro só funciona no encaixe ${AMMETER_SLOT}.`;
       const bad = configProblems(p.type, p.config);
       if (bad.length) return `${p.type}: ${bad[0]}`;
     } else if (p.type === 'potenciometro') {
@@ -107,7 +126,7 @@ function checkPieces(pieces: any[]): string | null {
     if ((used[t] || 0) > KIT_LIMITS[t]) return `Peças demais: o kit tem só ${KIT_LIMITS[t]} × ${t}.`;
   if (pieces.filter((p) => isCapsule(p.type)).length > MAX_CAPSULES)
     return `No máximo ${MAX_CAPSULES} cápsulas inteligentes ao mesmo tempo.`;
-  return null;
+  return sourceClash(pieces);
 }
 
 function cleanPiece(p: any): Piece {
@@ -161,6 +180,8 @@ export function validateLesson(raw: any): LessonValidation {
     const startError = checkPieces(startRaw.pieces);
     if (startError) return fail(`Bancada inicial: ${startError}`);
   }
+  const clash = lessonSourceClash(raw);
+  if (clash) return fail(clash);
   if (!Array.isArray(raw.quizzes)) return fail('Perguntas inválidas.');
   for (const q of raw.quizzes) {
     if (!q || typeof q.id !== 'string' || !POSITIONS.includes(q.position) || typeof q.prompt !== 'string')

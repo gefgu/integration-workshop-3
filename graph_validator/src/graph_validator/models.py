@@ -7,7 +7,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, Field, field_validator
 
 from .catalog import (
-    AMMETER_SLOT, CAPSULES, CATALOG, COLS, MAX_CAPSULES, ROWS, SLOT_COLS, SLOT_ROWS, TYPES, config_problems,
+    CAPSULES, CATALOG, COLS, MAX_CAPSULES, ROWS, SLOT_COLS, SLOT_ROWS, TYPES, config_problems, source_clash,
     normalize_type, slot_of,
 )
 
@@ -22,7 +22,7 @@ class Piece(BaseModel):
     row: int
     value: int | None = None
     c: int | None = None  # smart P3; for pots, the middle wiper W (a/b are outer ends)
-    config: dict[str, Any] | None = None  # smart capsule behaviour (mode, op, hz, duty...)
+    config: dict[str, Any] | None = None  # smart capsule behaviour (pulse hz, duty)
 
     @field_validator("type", mode="before")
     @classmethod
@@ -129,11 +129,8 @@ def board_problems(pieces: list[Piece]) -> list[str]:
         if p.type in CAPSULES:
             if p.c is None or (p.b, p.c) != (p.a + 1, p.a + 2):
                 out.append(f"{p.id}: {p.type} needs three consecutive columns a, a+1, a+2")
-            slot = slot_of(p.a, p.row)
-            if slot is None:
+            if slot_of(p.a, p.row) is None:
                 out.append(f"{p.id}: {p.type} must sit in a capsule slot (columns {SLOT_COLS}, rows {SLOT_ROWS})")
-            elif p.type == "capsula_amperimetro" and slot != AMMETER_SLOT:
-                out.append(f"{p.id}: the ammeter only works in slot {AMMETER_SLOT}")
             out += [f"{p.id}: {m}" for m in config_problems(p.type, p.config)]
         elif p.type == 'potenciometro':
             if abs(p.a - p.b) != 2:
@@ -160,6 +157,8 @@ def board_problems(pieces: list[Piece]) -> list[str]:
             out.append(f"kit has only {CATALOG[t].kit_limit} x {t} (found {n})")
     if sum(n for t, n in used.items() if t in CAPSULES) > MAX_CAPSULES:
         out.append(f"at most {MAX_CAPSULES} smart capsules can be active at once")
+    if clash := source_clash(used):
+        out.append(clash)
     return out
 
 

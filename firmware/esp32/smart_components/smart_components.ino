@@ -1,13 +1,15 @@
 // TedTronics - smart components firmware (base side, ESP32 DevKitC)
 //
-// One ESP32 runs up to 3 active passive capsules on 6 positions:
-//   pulse source (EFR32.2), voltmeter (EFR32.3), ammeter at position 2 (EFR32.4),
-//   logic gate (EFR32.1), 1-bit memory (EFR32.5), each with its own OLED (EFR31.x).
+// One ESP32 runs up to 3 active passive capsules on 6 positions. Only two smart components exist:
+//   pulse source (EFR32.2): P3 = output, P1 = its GND return. It is the lesson's power source and
+//                           never shares a lesson with the battery.
+//   voltmeter (EFR32.3):    V(P1) - V(P2).
+// Each has its own OLED (EFR31.x).
 //
 // Tasks:
-//   loop()  core 1  serial commands + mux/ADC sensing + gate/memory logic
+//   loop()  core 1  serial commands + mux/ADC sensing (voltmeter)
 //   pulse   core 0  1 ms tick, P3 pulse edges through the 595 chain
-//   i2c     core 0  capsule detection, INA219, OLED frames (one bus, 6 SDA lines)
+//   i2c     core 0  capsule detection, OLED frames (one bus, 6 SDA lines)
 //
 // Type `help` in the Serial Monitor (115200 baud, newline).
 
@@ -37,15 +39,12 @@ static void watchdogBegin() {
 
 static void printHelp() {
   Serial.println(F(
-      "Commands (positions 0..5, max 3 active, ammeter only at 2):\n"
+      "Commands (positions 0..5, max 3 active):\n"
       "  set <p> off\n"
       "  set <p> pulse <hz 0.5-10> <duty 25-75>\n"
       "  set <p> volt\n"
-      "  set 2 amm\n"
-      "  set <p> gate <and|or|nand|nor|xor|not>\n"
-      "  set <p> mem <d|sr>            d: P1=D, P2=clock   sr: P1=S, P2=R\n"
-      "  demo <mix|volt|gate|off>      load a 3-capsule scenario\n"
-      "  rail <on|off>                 firmware rail state (P3 outputs / ammeter)\n"
+      "  demo <pulse|volt|off>         pulse: 10 Hz at 0; volt: voltmeters at 0, 1, 3\n"
+      "  rail <on|off>                 firmware rail state (P3 outputs)\n"
       "  status | stream <on|off> | scan\n"
       "  stats [reset]                 timings measured while running\n"
       "  bench                         micro-benchmarks + estimates\n"
@@ -59,16 +58,6 @@ static void report(uint8_t p, const char* err, uint32_t us) {
   if (err) Serial.printf("ERR %s\n", err);
   else Serial.printf("OK position %u -> %s (outputs applied in %lu us)\n", p, capsules::modeName(capsules::view(p).cfg.mode),
                      (unsigned long)us);
-}
-
-static bool parseGate(const char* s, GateOp& op) {
-  static const char* names[] = {"and", "or", "nand", "nor", "xor", "not"};
-  for (uint8_t i = 0; i < 6; ++i)
-    if (s && !strcasecmp(s, names[i])) {
-      op = (GateOp)i;
-      return true;
-    }
-  return false;
 }
 
 static void cmdSet(char* args) {
@@ -90,20 +79,8 @@ static void cmdSet(char* args) {
     c.duty = d ? atoi(d) : 50;
   } else if (!strcasecmp(sm, "volt")) {
     c.mode = Mode::Volt;
-  } else if (!strcasecmp(sm, "amm")) {
-    c.mode = Mode::Amm;
-  } else if (!strcasecmp(sm, "gate")) {
-    c.mode = Mode::Gate;
-    if (!parseGate(strtok(nullptr, " "), c.op)) {
-      Serial.println("ERR gate must be and|or|nand|nor|xor|not");
-      return;
-    }
-  } else if (!strcasecmp(sm, "mem")) {
-    const char* k = strtok(nullptr, " ");
-    c.mode = Mode::Mem;
-    c.mem = (k && !strcasecmp(k, "sr")) ? MemKind::SR : MemKind::D;
   } else {
-    Serial.println("ERR unknown mode");
+    Serial.println("ERR unknown mode (off, pulse or volt)");
     return;
   }
   const uint32_t t = micros();
@@ -122,26 +99,13 @@ static void demo(const char* which) {
     c.mode = Mode::Volt;
     for (uint8_t p : {0, 1, 3}) capsules::configure(p, c);
     Serial.println("OK voltmeters at 0, 1, 3");
-  } else if (which && !strcasecmp(which, "gate")) {
-    c.mode = Mode::Gate;
-    c.op = GateOp::And;
-    capsules::configure(0, c);
-    c.op = GateOp::Xor;
-    capsules::configure(3, c);
-    c.mode = Mode::Mem;
-    capsules::configure(5, c);
-    Serial.println("OK AND at 0, XOR at 3, D memory at 5");
   } else {
+    // The pulse is the lesson's power source: no battery on the board with it.
     c.mode = Mode::Pulse;
     c.hz = 10;
     c.duty = 50;
     capsules::configure(0, c);
-    c = Config();
-    c.mode = Mode::Volt;
-    capsules::configure(1, c);
-    c.mode = Mode::Amm;
-    capsules::configure(2, c);
-    Serial.println("OK pulse 10 Hz at 0, voltmeter at 1, ammeter at 2");
+    Serial.println("OK pulse 10 Hz at 0 (P3 out, P1 GND)");
   }
 }
 
@@ -154,7 +118,6 @@ static void printStats() {
   g_stats.zeroRead.print(Serial, "auto-zero read");
   g_stats.busSwitch.print(Serial, "I2C bus switch");
   g_stats.probe.print(Serial, "capsule probe");
-  g_stats.inaRead.print(Serial, "INA219 read");
   g_stats.oledRender.print(Serial, "OLED render (CPU)");
   g_stats.oledFull.print(Serial, "OLED full frame");
   g_stats.oledPartial.print(Serial, "OLED value-only frame");
@@ -162,8 +125,6 @@ static void printStats() {
   if (g_stats.pulseEdgeErr.n)
     Serial.printf("  worst pulse edge delay = %.2f %% of a 10 Hz period (EFR32.2 allows 5 %%)\n",
                   g_stats.pulseEdgeErr.mx / 1000.0f);
-  if (g_stats.senseRound.n)
-    Serial.printf("  gate/memory input->P3 delay <= %.2f ms (one round)\n", g_stats.senseRound.mx / 1000.0f);
   Serial.printf("  free heap %lu B, loop stack free %lu B\n", (unsigned long)ESP.getFreeHeap(),
                 (unsigned long)uxTaskGetStackHighWaterMark(nullptr));
 }
@@ -259,7 +220,7 @@ static void pollSerial() {
 }
 
 void setup() {
-  outputs::begin();  // first: every P3 high-Z, ammeter open
+  outputs::begin();  // first: every P3 high-Z, old ammeter switch open
   Serial.begin(115200);
   delay(200);
   sensing::begin();

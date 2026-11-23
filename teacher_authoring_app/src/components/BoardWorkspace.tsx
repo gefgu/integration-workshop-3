@@ -14,7 +14,7 @@ import {
   SOCKET,
   span,
 } from '../engine/board.ts';
-import { AMMETER_SLOT, slotAnchor } from '../engine/nodes.ts';
+import { slotAnchor } from '../engine/nodes.ts';
 import { potWiper, stepPotValue } from '../engine/potentiometer.ts';
 import { CAPSULE, DEFS, isCapsule, NOMES, nextConfig } from '../engine/sim.ts';
 import type { CapsuleReading, CircuitTrail, Piece, PieceType } from '../model/types.ts';
@@ -265,11 +265,7 @@ export default function BoardWorkspace({
                 <div
                   key={`slot-${slot}`}
                   aria-hidden="true"
-                  title={
-                    slot === AMMETER_SLOT
-                      ? 'Encaixe 2: único com amperímetro'
-                      : `Encaixe ${slot} de cápsula inteligente`
-                  }
+                  title={`Encaixe ${slot} de cápsula inteligente`}
                   style={{
                     position: 'absolute',
                     left: colX(a) - BODY_PAD - 3,
@@ -290,7 +286,7 @@ export default function BoardWorkspace({
                     boxSizing: 'border-box',
                   }}
                 >
-                  {slot === AMMETER_SLOT ? `E${slot} · A` : `E${slot}`}
+                  {`E${slot}`}
                 </div>
               );
             })}
@@ -375,7 +371,6 @@ export default function BoardWorkspace({
                     brilho={brilho}
                     value={p.value}
                     oled={readings?.[p.id]?.lines}
-                    fault={readings?.[p.id]?.fault}
                     onPotStep={!readOnly && p.type === 'potenciometro' ? (dir) => stepPot(p, dir) : undefined}
                     pressed={!!pressed && pressed.has(p.id)}
                     onButton={p.type === 'botao' && onPress ? (down) => onPress(p.id, down) : undefined}

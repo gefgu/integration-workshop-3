@@ -29,7 +29,8 @@ O esquema formal está em [`lesson.schema.json`](lesson.schema.json). Na leitura
 
 - `a` e `b` são as colunas dos terminais (1–11). `row` vai de 0 a 11: as linhas 0–5 são o banco A e as linhas 6–11 são o banco B.
 - `value` existe só no potenciômetro (`potenciometro`): um dos valores de `POT_VALUES`.
-- `c` e `config` existem só nas cápsulas inteligentes (`capsula_*`).
+- `c` e `config` existem só nas cápsulas inteligentes, que são apenas duas: `capsula_pulso` (saída em P3, GND em P1; `config` com `hz` e `duty`) e `capsula_voltimetro` (mede P1 − P2, sem `config`).
+- O pulso é a fonte de energia da aula: uma lição nunca tem pulso e `bateria` juntos (bancada, bancada inicial, bandeja ou experimentos).
 
 ### LessonStep
 

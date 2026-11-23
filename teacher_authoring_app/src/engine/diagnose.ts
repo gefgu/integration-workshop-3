@@ -1,6 +1,7 @@
 import type { DiagnoseResult, FlowStep, Piece } from '../model/types.ts';
+import { pulseSource } from './capsules.ts';
 import { nodeOf } from './nodes.ts';
-import { analyze, BENCH_LIMIT_MA, branchCurrent, MSG } from './sim.ts';
+import { analyze, BENCH_LIMIT_MA, branchCurrent, capsuleConfig, MSG } from './sim.ts';
 
 /**
  * Plain-language read of a circuit, plus the energized path (for glow) when it is valid.
@@ -25,6 +26,8 @@ export function diagnose(
       looseIds: [],
     };
   }
+  const pulse = pieces.find((p) => p.type === 'capsula_pulso');
+  if (pulse && !pieces.some((p) => p.type === 'bateria')) return diagnosePulse(pieces, pulse, pressed, opts);
   const an = analyze(pieces, { pressed, allowNoResistor: opts.allowNoResistor });
   const branches = an.code === 'valido' ? an.branches || [{ trail: an.trail, ohms: an.ohms, load: an.load }] : [];
   let mA = 0;
@@ -82,5 +85,39 @@ export function diagnose(
     limited,
     loadsLit,
     looseIds,
+  };
+}
+
+/**
+ * A lesson powered by the pulse capsule (no battery): the loop is judged with P3 high as the source
+ * and P1 as its return. The glow itself comes from the capsule simulation, which follows the clock.
+ */
+function diagnosePulse(
+  pieces: Piece[],
+  pulse: Piece,
+  pressed: Set<string> | null,
+  opts: { allowNoResistor?: boolean }
+): DiagnoseResult {
+  const passive = pieces.filter((p) => !p.type.startsWith('capsula_'));
+  const an = analyze([...passive, pulseSource(pulse)], { pressed, allowNoResistor: opts.allowNoResistor });
+  const ok = an.code === 'valido';
+  const c = ok ? branchCurrent(an.branches?.[0] ?? { trail: an.trail, ohms: an.ohms, load: an.load }) : null;
+  const hz = String(capsuleConfig(pulse).hz).replace('.', ',');
+  const msg = ok
+    ? `Circuito fechado pelo pulso: a carga liga e desliga ${hz} vez(es) por segundo; com P3 alto passam ${c.mA.toFixed(1)} mA.`
+    : an.code === 'aberto'
+      ? 'Falta um pedaço do caminho. Siga da P3 do pulso até a P1 dele com o dedo e veja onde ele para.'
+      : (MSG[an.code] || '').replaceAll('da bateria', 'do pulso (P3 e P1)').replaceAll('a bateria', 'o pulso');
+  return {
+    code: ok ? 'pulso' : an.code,
+    tone: ok ? 'ok' : 'erro',
+    msg,
+    currents: {},
+    trail: null,
+    mA: 0,
+    load: an.load || null,
+    limited: !!c?.limited,
+    loadsLit: [],
+    looseIds: [],
   };
 }

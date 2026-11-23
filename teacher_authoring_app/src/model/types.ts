@@ -14,17 +14,12 @@ export type PieceType =
   | 'jumper_4'
   | 'jumper_5'
   | 'capsula_pulso'
-  | 'capsula_voltimetro'
-  | 'capsula_amperimetro'
-  | 'capsula_porta'
-  | 'capsula_memoria';
+  | 'capsula_voltimetro';
 
 /** Smart-capsule behaviour. Missing keys fall back to the defaults in `engine/sim.ts`. */
 export interface CapsuleConfig {
   hz?: number;
   duty?: number;
-  op?: 'and' | 'or' | 'nand' | 'nor' | 'xor' | 'not';
-  mem?: 'd' | 'sr';
 }
 
 export interface Piece {
@@ -36,7 +31,7 @@ export interface Piece {
   /** Camera observation of the printed terminal signs; absent in authored/simulated pieces. */
   polarity?: { status: 'known' | 'unknown'; positive?: number; negative?: number; reason?: string };
   value?: number;
-  /** Smart P3; for a potentiometer c is its middle wiper, with a/b the outer track ends. */
+  /** Smart P3 (the pulse output); for a potentiometer c is its middle wiper, with a/b the outer track ends. */
   c?: number;
   config?: CapsuleConfig;
   /** Poorly seated (lesson 9): conducts intermittently until the student re-seats it by clicking. */
@@ -275,7 +270,6 @@ export interface DiagnoseResult {
 export interface CapsuleReading {
   lines: string[];
   out: 'alto' | 'baixo' | 'z';
-  fault?: boolean;
 }
 
 export type LessonValidation = { ok: true; lesson: Lesson } | { ok: false; error: string };

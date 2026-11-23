@@ -17,8 +17,6 @@ export const nodeBank = (node: number) => Math.floor(node / BANK_NODE);
  */
 export const SLOT_COLS = [1, 5, 9];
 export const SLOT_ROWS = [0, BANK_SIZE];
-/** The INA219 and shunt are only wired to slot 2 (bank A, columns 5–7). */
-export const AMMETER_SLOT = 2;
 
 export function slotOf(p: { a: number; row: number }): number | null {
   const c = SLOT_COLS.indexOf(p.a);

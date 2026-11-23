@@ -350,17 +350,17 @@ function lesson02(): Lesson[] {
 
 // --- Lesson 3 ------------------------------------------------------------------------------------
 
-const L03_NOTES = `Objetivo: o resistor protege o LED limitando a corrente; ler a corrente em mA no amperímetro.
-Como saber que deu certo: LED aceso e a tela do amperímetro mostrando a corrente em mA, com a unidade explicada.
-Observação: o amperímetro é a cápsula que mostra o valor em mA; ela entra em série no circuito, no encaixe E2 (o único em que ela funciona). O resistor sugerido é 470 Ω.
-${SIM} A corrente vem de (5 V − 2 V do LED) ÷ resistência total (inclui 10 Ω do amperímetro).
+const L03_NOTES = `Objetivo: o resistor protege o LED limitando a corrente; calcular a corrente em mA.
+Como saber que deu certo: LED aceso e o aluno entende a corrente em mA pela conta, com a unidade explicada.
+Observação: a lição não usa tela inteligente; a corrente sai da conta (5 V − 2 V do LED) ÷ resistência. O resistor sugerido é 470 Ω.
+${SIM} A corrente vem de (5 V − 2 V do LED) ÷ 470 Ω ≈ 6,4 mA.
 Desafio: o kit só tem resistores de 220 Ω, 470 Ω e 1 kΩ; o aluno compara 220 Ω e 1 kΩ trocando-os pelos botões do experimento.`;
 
 function lesson03(): Lesson[] {
   const board = circuitL03();
   const qUnit = quiz(
     'q-ma',
-    'A tela do amperímetro mostra um valor perto de “6 mA”. O que isso quer dizer?',
+    'A conta (5 V − 2 V) ÷ 470 Ω dá cerca de “6 mA”. O que isso quer dizer?',
     [
       ['Passam cerca de 6 milésimos de ampère de corrente pelo circuito.', 'Isso! mA é miliampère: 1 mA = 0,001 A.'],
       ['A bateria tem 6 mil volts.', 'Volt é outra grandeza (a “força” que empurra a corrente). mA mede a corrente.'],
@@ -381,7 +381,7 @@ function lesson03(): Lesson[] {
   const guided = lesson({
     id: `${SEED_PREFIX}03-guiada`,
     title: 'Lição 3 — Limitando a corrente: o resistor (guiada)',
-    instruction: 'Monte o circuito com resistor e leia a corrente no amperímetro.',
+    instruction: 'Monte o circuito com resistor e calcule a corrente que passa pelo LED.',
     kind: 'guided',
     board,
     steps: [
@@ -397,36 +397,32 @@ function lesson03(): Lesson[] {
           ['bat', 'Coloque a bateria na bancada.'],
           ['res', 'Coloque o resistor de 470 Ω (faixas amarelo, violeta, marrom).'],
           ['led', 'Coloque o LED, depois do resistor.'],
-          [
-            'amp',
-            'Encaixe o amperímetro no encaixe E2 (o tracejado marcado “A”). Ele mede a corrente que passa por ele.',
-          ],
           ['w1', 'Jumper do + da bateria até o resistor.'],
-          ['w2', 'Jumper do amperímetro de volta ao − da bateria.'],
+          ['w2', 'Jumper do LED de volta ao − da bateria.'],
         ],
         'Conecte tudo, confira o circuito e clique em Energizar.',
         { matchValues: true, strictPositions: false }
       ),
       experiment(
         'x-ma',
-        'Leia a corrente',
-        'Energize e olhe a tela do amperímetro: ela mostra a corrente simulada pelo LED. As telas arredondam para uma casa decimal: 6,25 mA aparece como 6,3 mA. O amperímetro acrescenta 10 Ω ao modelo; sem ele, 470 Ω dá cerca de 6,4 mA.',
+        'Acenda o LED',
+        'Energize e veja o LED acender. A corrente que passa por ele vem da conta: (5 V − 2 V do LED) ÷ 470 Ω ≈ 6,4 mA.',
         {
           goals: [
-            { id: 'lit', label: 'Energize: o LED acende e o amperímetro mostra a corrente em mA.', seen: ['lit'] },
+            { id: 'lit', label: 'Energize: o LED acende com o resistor de 470 Ω.', seen: ['lit'] },
           ],
         }
       ),
-      interact('i-ma', 'Agora que você viu o número…', qUnit),
+      interact('i-ma', 'Agora faça a conta…', qUnit),
       interact('i-mais', 'Pense na conta: corrente = (5 V − 2 V do LED) ÷ resistência.', qMais),
     ],
     quizzes: [qUnit, qMais],
     settings: {
       requireLit: true,
-      tray: KIT('bateria', 'resistor_470', 'led', 'capsula_amperimetro', 'jumper_longo', 'jumper_4'),
+      tray: KIT('bateria', 'resistor_470', 'led', 'jumper_longo', 'jumper_3'),
     },
     notes: L03_NOTES,
-    tags: ['guiada', 'resistor', 'telas inteligentes', 'unidades', 'exemplo'],
+    tags: ['guiada', 'resistor', 'unidades', 'exemplo'],
   });
   const r220 = circuitL03('resistor_220');
   const r1k = circuitL03('resistor_1k');
@@ -444,7 +440,7 @@ function lesson03(): Lesson[] {
     'q-obs',
     'Depois de testar os dois: qual deixou o LED mais fraco?',
     [
-      ['220 Ω', 'Olhe os mA no amperímetro: 220 Ω deixou passar mais corrente e o LED ficou mais forte.'],
+      ['220 Ω', 'Compare o brilho: 220 Ω deixou passar mais corrente (cerca de 13,6 mA) e o LED ficou mais forte.'],
       ['1 kΩ', 'Isso! 1 kΩ deixou passar menos corrente — sua previsão estava certa se você escolheu isso antes.'],
     ],
     1
@@ -461,7 +457,7 @@ function lesson03(): Lesson[] {
       experiment(
         'x-troca',
         'Teste os dois resistores no mesmo ponto',
-        'Energize com cada resistor e compare o brilho e os mA do amperímetro.',
+        'Energize com cada resistor e compare o brilho. Pela conta, 220 Ω dá cerca de 13,6 mA e 1 kΩ, cerca de 3 mA.',
         {
           board: r220,
           presets: [

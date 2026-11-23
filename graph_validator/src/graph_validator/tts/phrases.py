@@ -14,8 +14,6 @@ _NOME = {
     "resistor_220": "o resistor de 220 Ω", "resistor_470": "o resistor de 470 Ω", "resistor_1k": "o resistor de 1 kΩ",
     "capacitor": "o capacitor", "botao": "o botão", "potenciometro": "o potenciômetro",
     "capsula_pulso": "a cápsula de pulso", "capsula_voltimetro": "a cápsula voltímetro",
-    "capsula_amperimetro": "a cápsula amperímetro", "capsula_porta": "a cápsula de porta lógica",
-    "capsula_memoria": "a cápsula de memória",
 }
 CONNECT_TEXT = "Agora conecte os componentes conforme o circuito pedido. As ligações serão conferidas nesta etapa."
 

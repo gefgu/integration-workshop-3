@@ -25,8 +25,6 @@ NAMES = {
     "capacitor": "o capacitor", "botao": "o botão", "potenciometro": "o potenciômetro",
     "jumper": "o jumper", "*": "a peça",
     "capsula_pulso": "a cápsula de pulso", "capsula_voltimetro": "a cápsula voltímetro",
-    "capsula_amperimetro": "a cápsula amperímetro", "capsula_porta": "a cápsula de porta lógica",
-    "capsula_memoria": "a cápsula de memória",
 }
 
 # SFR15: every category has a default message. Short on purpose (SNFR5: at most 2 lines).
@@ -65,9 +63,6 @@ _COMPONENT_LABELS = {
     "jumper_5": "jumper",
     "capsula_pulso": "cápsula de pulso",
     "capsula_voltimetro": "cápsula voltímetro",
-    "capsula_amperimetro": "cápsula amperímetro",
-    "capsula_porta": "cápsula de porta lógica",
-    "capsula_memoria": "cápsula de memória",
 }
 _CONNECTED_OBJECTS = {
     "bateria": "à bateria",
@@ -86,9 +81,6 @@ _CONNECTED_OBJECTS = {
     "jumper_5": "ao jumper",
     "capsula_pulso": "à cápsula de pulso",
     "capsula_voltimetro": "à cápsula voltímetro",
-    "capsula_amperimetro": "à cápsula amperímetro",
-    "capsula_porta": "à cápsula de porta lógica",
-    "capsula_memoria": "à cápsula de memória",
 }
 
 

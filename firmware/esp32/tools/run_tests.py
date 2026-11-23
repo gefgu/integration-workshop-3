@@ -16,17 +16,17 @@ STEPS = [
     ("status", 1),
     ("scan", 1),
     ("sim on", 0.5),
-    ("demo mix", 2),
+    ("demo pulse", 2),
     ("stream on", 1.2),
     ("stream off", 0.5),
-    ("stats reset", 10),  # let pulse + voltmeter + ammeter run for 10 s
+    ("stats reset", 10),  # let the pulse run for 10 s
     ("stats", 1),
     ("bench", 8),
     ("stats reset", 0.2),
-    ("demo gate", 10),
+    ("demo volt", 10),
     ("stats", 1),
     ("set 4 volt", 1),  # 4th active position must be refused
-    ("set 1 amm", 0.5),  # ammeter only at 2
+    ("set 1 amm", 0.5),  # removed mode: must answer ERR unknown mode
     ("set 0 pulse 20 50", 0.5),  # out of range
     ("rail off", 0.5),
     ("status", 1),

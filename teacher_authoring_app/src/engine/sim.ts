@@ -40,9 +40,6 @@ export const DEFS = {
   // Smart capsules are passive: three pins (P1, P2, P3) on columns a, a+1, a+2.
   capsula_pulso: { len: 2, cor: 'preto', text: 'PULSO' },
   capsula_voltimetro: { len: 2, cor: 'preto', text: 'VOLT' },
-  capsula_amperimetro: { len: 2, cor: 'preto', text: 'AMP' },
-  capsula_porta: { len: 2, cor: 'preto', text: 'PORTA' },
-  capsula_memoria: { len: 2, cor: 'preto', text: 'MEM' },
 };
 
 export const NOMES = {
@@ -62,26 +59,29 @@ export const NOMES = {
   jumper_5: 'Jumper 5 colunas',
   capsula_pulso: 'Cápsula de pulso',
   capsula_voltimetro: 'Cápsula voltímetro',
-  capsula_amperimetro: 'Cápsula amperímetro',
-  capsula_porta: 'Cápsula de porta lógica',
-  capsula_memoria: 'Cápsula de memória 1 bit',
 };
 
-/** Smart capsules (EFR32): passive parts whose behaviour the base ESP32 runs. */
+/**
+ * Smart capsules (EFR32): passive parts whose behaviour the base ESP32 runs. Only two exist: the
+ * pulse source and the voltmeter. The pulse is a lesson's power source, so it never shares a lesson
+ * with the battery.
+ */
 /** At most this many capsules can be active at once (firmware `MAX_ACTIVE`). */
 export const MAX_CAPSULES = 3;
 export const isCapsule = (type: string) => type.startsWith('capsula_');
-export const GATE_OPS = ['and', 'or', 'nand', 'nor', 'xor', 'not'] as const;
-export const MEM_KINDS = ['d', 'sr'] as const;
 export const PULSE_HZ = [0.5, 1, 2, 5, 10];
 export const PULSE_DUTY = [25, 50, 75];
 const CONFIG_DEFAULTS: Record<string, CapsuleConfig> = {
   capsula_pulso: { hz: 1, duty: 50 },
   capsula_voltimetro: {},
-  capsula_amperimetro: {},
-  capsula_porta: { op: 'and' },
-  capsula_memoria: { mem: 'd' },
 };
+
+/** The pulse capsule is the lesson's power source, so it never shares a board or a lesson with the battery. */
+export const PULSE_BATTERY_MSG = 'O pulso é a fonte de energia da aula e não pode ficar junto com a bateria. Use um ou o outro.';
+export function sourceClash(pieces: Pick<Piece, 'type'>[]): string | null {
+  const types = new Set(pieces.map((p) => p.type));
+  return types.has('bateria') && types.has('capsula_pulso') ? PULSE_BATTERY_MSG : null;
+}
 
 /** The capsule's config with defaults filled in. */
 export function capsuleConfig(p: Pick<Piece, 'type' | 'config'>): CapsuleConfig {
@@ -99,17 +99,14 @@ export function configProblems(type: string, config: unknown): string[] {
   if (type === 'capsula_pulso') {
     if (!(typeof cfg.hz === 'number' && cfg.hz >= 0.5 && cfg.hz <= 10)) out.push('A frequência vai de 0,5 a 10 Hz.');
     if (!(typeof cfg.duty === 'number' && cfg.duty >= 25 && cfg.duty <= 75)) out.push('O ciclo vai de 25 a 75 %.');
-  } else if (type === 'capsula_porta' && !GATE_OPS.includes(cfg.op)) out.push('Porta lógica inválida.');
-  else if (type === 'capsula_memoria' && !MEM_KINDS.includes(cfg.mem)) out.push('Tipo de memória inválido.');
+  }
   return out;
 }
 
-/** Click on a capsule steps through its setting: gate, memory type or pulse frequency. */
+/** Click on the pulse capsule steps through its frequency (or its duty cycle). */
 export function nextConfig(p: Piece, field: 'main' | 'duty' = 'main'): CapsuleConfig | undefined {
   const cfg = capsuleConfig(p);
   const step = <T>(list: readonly T[], cur: T) => list[(list.indexOf(cur) + 1) % list.length];
-  if (p.type === 'capsula_porta') return { ...cfg, op: step(GATE_OPS, cfg.op) };
-  if (p.type === 'capsula_memoria') return { ...cfg, mem: step(MEM_KINDS, cfg.mem) };
   if (p.type === 'capsula_pulso')
     return field === 'duty' ? { ...cfg, duty: step(PULSE_DUTY, cfg.duty) } : { ...cfg, hz: step(PULSE_HZ, cfg.hz) };
   return undefined;
@@ -122,7 +119,6 @@ export const RESISTOR_OHMS: Record<string, number> = {
   resistor_220: 220,
   resistor_470: 470,
   resistor_1k: 1000,
-  capsula_amperimetro: 10,
 };
 
 export function pieceOhms(p: ElectricalPiece): number {
@@ -153,9 +149,6 @@ export const KIT_LIMITS = {
   jumper_5: 3,
   capsula_pulso: 3,
   capsula_voltimetro: 3,
-  capsula_amperimetro: 1,
-  capsula_porta: 3,
-  capsula_memoria: 3,
 };
 
 export function countByType(pieces: Piece[]): Partial<Record<PieceType, number>> {
@@ -189,9 +182,9 @@ export function analyze(
   all: Piece[],
   opts: { pressed?: Set<string> | null; allowNoResistor?: boolean } = {}
 ): CircuitAnalysis {
-  // Only the ammeter conducts (10 Ω shunt between P1 and P2); the other capsules just sense or drive.
+  // Capsules never conduct between their pins: the voltmeter only senses, the pulse drives P3.
   // Pieces become edges between nodes; a column is one node per bank, so the banks never connect.
-  const pieces = expandPotentiometers(all.filter((p) => !isCapsule(p.type) || p.type === 'capsula_amperimetro')).map(
+  const pieces = expandPotentiometers(all.filter((p) => !isCapsule(p.type))).map(
     (p) => ({ ...p, a: nodeOf(p.a, p.row), b: nodeOf(p.b, p.row) })
   );
   const bat = pieces.find((p) => p.type === 'bateria');
@@ -370,7 +363,7 @@ export function solvePotCircuit(pieces: Piece[], pressed: Set<string> | null = n
   if (!battery) return null;
   const elements: DcElement[] = [];
   for (const p of expandPotentiometers(pieces)) {
-    if (p.type === 'bateria' || p.type === 'capacitor' || (isCapsule(p.type) && p.type !== 'capsula_amperimetro'))
+    if (p.type === 'bateria' || p.type === 'capacitor' || isCapsule(p.type))
       continue;
     if (p.type === 'botao' && pressed && !pressed.has(p.id)) continue;
     elements.push({

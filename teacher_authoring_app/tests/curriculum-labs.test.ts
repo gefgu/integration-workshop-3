@@ -65,7 +65,7 @@ test('L2: close the circuit, see it light, then open it and see it dark', () => 
   assert.equal(play('02-guiada', 'x-fecha', [{ pieces: b.filter((p) => p.id !== 'w1'), energized: true }])[0][1], false, 'never lit → not done');
 });
 
-test('L3: the ammeter shows mA and the two resistors give different currents', () => {
+test('L3: the LED lights and the two resistors give different currents', () => {
   const g = board('03-guiada');
   allDone(play('03-guiada', 'x-ma', [{ pieces: g, energized: true }]));
   const { step } = lab('03-desafio', 'x-troca');

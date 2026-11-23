@@ -14,9 +14,8 @@ export type SchematicLayout =
   | { kind: 'network'; nodes: number[]; edges: Piece[] };
 
 /** Build a stable view of every placed edge, independent of circuit validity. */
-/** Capsules that only sense or drive (everything but the ammeter, which sits in series). */
-export const sensingCapsules = (pieces: Piece[]) =>
-  pieces.filter((piece) => isCapsule(piece.type) && piece.type !== 'capsula_amperimetro');
+/** Capsules only sense (voltmeter) or drive (pulse); none sits in series. */
+export const sensingCapsules = (pieces: Piece[]) => pieces.filter((piece) => isCapsule(piece.type));
 
 export function schematicLayout(all: Piece[]): SchematicLayout {
   // `a`/`b` become node ids: a column is one node per bank, and the banks never connect.

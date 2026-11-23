@@ -294,7 +294,7 @@ def diff_nets(student: list[Part], target: list[Part], opts: MatchOptions) -> li
 
 
 def _config_issues(student: list[Part], target: list[Part], opts: MatchOptions) -> list[Issue]:
-    """Same wiring but a capsule is set to the wrong mode/gate/frequency: one WRONG_CONFIG each."""
+    """Same wiring but the pulse capsule is set to the wrong frequency/duty: one WRONG_CONFIG each."""
     if not any(p.ctype in CAPSULES for p in student):
         return []
     bare = lambda ps: [replace(p, config=()) for p in ps]  # noqa: E731
