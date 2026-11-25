@@ -114,8 +114,10 @@ function AppRoutes() {
   }, [teacherId]);
 
   // The open lesson differs from the saved one (or was never saved): leaving or testing would not keep the edits.
+  // Compared by content, not by text: the server stores the lesson with its own key order (Postgres JSONB) and
+  // writes absent optional fields as null, so a lesson just saved must not count as changed.
   const unsaved = (() => {
-    const strip = (l) => JSON.stringify({ ...l, updatedAt: 0, audio: 0 });
+    const strip = (l) => JSON.stringify(canonical({ ...l, updatedAt: null, audio: null }));
     const stored = lessons.find((item) => item.id === lesson.id);
     return !stored || strip(stored) !== strip(lesson);
   })();
@@ -130,8 +132,13 @@ function AppRoutes() {
       flash('Salvando e gerando a voz do tutor…');
       const saved = await workspace.saveLesson(selectedLesson);
       setLessons((items) => [saved, ...items.filter((item) => item.id !== saved.id)]);
+      // No edit since the click: the editor takes the server's copy, so both sides are the same lesson.
       setLesson((current) =>
-        current.id === saved.id ? { ...current, updatedAt: saved.updatedAt, audio: saved.audio } : current
+        current === selectedLesson
+          ? saved
+          : current.id === saved.id
+            ? { ...current, updatedAt: saved.updatedAt, audio: saved.audio }
+            : current
       );
       setError('');
       flash(`Lição salva. ${audioStatus(saved.audio)}`);
@@ -500,4 +507,17 @@ function AppError({ message }) {
       {message}
     </p>
   );
+}
+
+/** Same content gives the same value: object keys sorted, null and undefined fields dropped. */
+function canonical(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(canonical);
+  if (value && typeof value === 'object')
+    return Object.fromEntries(
+      Object.keys(value)
+        .sort()
+        .filter((key) => value[key] != null)
+        .map((key) => [key, canonical(value[key])])
+    );
+  return value;
 }
